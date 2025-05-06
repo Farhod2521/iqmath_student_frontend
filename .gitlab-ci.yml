@@ -12,63 +12,22 @@ deploy:
   only:
     - master
   script:
-    # Kerakli paketlar
+    # 1. Kerakli paketlar
     - apt-get update -y && apt-get install -y sshpass rsync openssh-client
 
-    # SSH xatolarni oldini olish: known_hosts faylga serverni qo‘shamiz
+    # 2. SSH host key verification muammosini oldini olish
     - mkdir -p ~/.ssh
     - ssh-keyscan -H 95.46.96.179 >> ~/.ssh/known_hosts
 
-    # Keraksiz fayllarsiz rsync
+    # 3. Faqat kerakli fayllarni rsync bilan yuborish
     - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-        --exclude=node_modules \
-        --exclude=.git \
-        --exclude=.next \
-        --exclude=npm-debug.log \
-        -e "ssh -o StrictHostKeyChecking=no" . root@95.46.96.179:/var/www/iqmath_student
+      --exclude=node_modules \
+      --exclude=.git \
+      --exclude=.next \
+      --exclude=npm-debug.log \
+      -e "ssh -o StrictHostKeyChecking=no" . root@95.46.96.179:/var/www/iqmath_student
 
-    # Serverda node env + build + pm2 start
-    - >
-      sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@95.46.96.179 '
-        export NVM_DIR="$HOME/.nvm";
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
-        nvm use 20;
-        cd /var/www/iqmath_student &&
-        npm install --prefer-offline --no-audit --progress=false &&
-        npm run build &&
-        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- start -- -p 3002 &&
-        pm2 save
-      '
-image: node:20
-
-stages:
-  - deploy
-
-cache:
-  paths:
-    - node_modules/
-
-deploy:
-  stage: deploy
-  only:
-    - master
-  script:
-    # Kerakli paketlar
-    - apt-get update -y && apt-get install -y sshpass rsync openssh-client
-
-    # SSH xatolarni oldini olish: known_hosts faylga serverni qo‘shamiz
-    - mkdir -p ~/.ssh
-    - ssh-keyscan -H 95.46.96.179 >> ~/.ssh/known_hosts
-
-    # Keraksiz fayllarsiz rsync
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-        --exclude=node_modules \
-        --exclude=.git \
-        --exclude=.next \
-        --exclude=npm-debug.log \
-        -e "ssh -o StrictHostKeyChecking=no" . root@95.46.96.179:/var/www/iqmath_student
-
-    # Serverda node env + build + pm2 start
+    # 4. Serverda: nvm orqali NodeJS faollashtirish, install, build, pm2 restart
     - >
       sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@95.46.96.179 '
         export NVM_DIR="$HOME/.nvm";
