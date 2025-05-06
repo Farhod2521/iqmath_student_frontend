@@ -23,6 +23,6 @@ deploy:
         cd /var/www/iqmath_student &&
         npm install &&
         npm run build &&
-        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- start -- -p 3001 &&
+        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- start -- -p 3002 &&
         pm2 save
       '
