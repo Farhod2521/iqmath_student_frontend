@@ -17,13 +17,7 @@ deploy:
     - ssh-keyscan -H 95.46.96.179 >> ~/.ssh/known_hosts
 
     # Faqat kerakli fayllarni yuborish
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-      --exclude=node_modules \
-      --exclude=.git \
-      --exclude=.next \
-      --exclude=npm-debug.log \
-      -e "ssh -o StrictHostKeyChecking=no" \
-      . root@95.46.96.179:/var/www/iqmath_student
+    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete --exclude=node_modules --exclude=.git --exclude=.next --exclude=npm-debug.log -e "ssh -o StrictHostKeyChecking=no" ./ root@95.46.96.179:/var/www/iqmath_student
 
     # Serverda node, npm, pm2 bilan ishlash (dev rejim)
     - >
