@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+
+body {
+  color: #2a3547;
+  background: white;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: "Myriad Pro";
+  src: url("/fonts/MyriadPro-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/SF-Pro-Display-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/SF-Pro-Display-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/SF-Pro-Display-Italic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Bicubik";
+  src: url("/fonts/Bicubik.OTF") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[data-theme="dark"] body {
+  background: #202936ff;
+  color: #fff;
+}
+
+.faq {
+  padding: 16px;
+}
+
+.faq a {
+  color: #5d87ff;
+}
+
+.custom-phone-input {
+  border: 2px solid #5d87ff; /* Example border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px; /* Add some padding */
+}
+
+/* Hide the default checkbox */
+.custom-checkbox input {
+  display: none;
+}
+
+/* Create a custom checkbox */
+.custom-checkbox .checkmark {
+  width: 25px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+}
+
+/* Style the checkmark when the checkbox is checked */
+.custom-checkbox input:checked + .checkmark {
+  background-color: #5d87ff;
+}
+
+.custom-checkbox .checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+  top: 4px;
+  left: 8px;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* Show the checkmark when the checkbox is checked */
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+}
+
+.sidebar-card {
+  background: radial-gradient(circle, #9747ff, #37265a, rgba(20, 0, 62, 0.5));
+}
+
+/* .cursor-custom {
+  cursor: url("/images/close-red.png") 9 9, auto;
+}
+img {
+  mix-blend-mode: multiply;
+} */
+
+.gradient-bg {
+  width: 100%;
+  height: 300px;
+  background: radial-gradient(ellipse at top, rgba(100, 0, 200, 0.8), black);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 10px; /* Icon markazida joylashish uchun */
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #ccc;
+}
+
+.timeline-item:first-child::before {
+  top: 50%;
+}
+
+.timeline-item:last-child::before {
+  display: none;
+}
+
+.check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 1;
+}
+
+.custom-grid {
+  border: none;
+  font-family: "Bicubik";
+}
+
+.custom-grid .ag-header {
+  color: #000 !important;
+  font-family: "SF Pro Display";
+  font-size: 17px;
+  font-weight: normal !important;
+  border: none;
+  text-align: center;
+}
+
+.custom-grid .ag-cell {
+  padding: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  font-family: "SF Pro Display";
+  text-align: center;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.custom-grid .ag-row:hover {
+  background-color: #e2e8f0 !important;
+}
+
+.tex-button {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tex-button svg {
+  width: 30px;
+  height: 30px;
+}
