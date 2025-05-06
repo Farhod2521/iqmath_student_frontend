@@ -1,0 +1,28 @@
+image: node:20
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    # Kerakli paketlar
+    - apt-get update -y && apt-get install -y sshpass rsync
+
+    # Fayllarni serverga ko‘chirish
+    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" . root@95.46.96.179:/var/www/iqmath_student
+
+    # Serverda nvm orqali node/npm faollashtirish + build
+    - >
+      sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@95.46.96.179 '
+        export NVM_DIR="$HOME/.nvm";
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
+        nvm use 20;
+        cd /var/www/iqmath_student &&
+        npm install &&
+        npm run build &&
+        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- start -- -p 3001 &&
+        pm2 save
+      '
