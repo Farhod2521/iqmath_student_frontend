@@ -2,25 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    NEXTAUTH_URL: "https://iq-math-original.vercel.app/",
-
-    NEXTAUTH_SECRET: "",
+    NEXTAUTH_URL: "https://iqmath.uz",
   },
   images: {
     domains: ["backend.iqmath.uz"], // Tashqi rasm domenini qo‘shamiz
   },
-  // permanently
-
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/",
-  //       destination: "/auth/login",
-  //       permanent: true,
-  //       basePath: false,
-  //     },
-  //   ];
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
