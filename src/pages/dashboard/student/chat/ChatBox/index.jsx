@@ -1,19 +1,19 @@
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
 
 const ChatBox = ({ chat, messages, onSendMessage }) => {
-  const messagesEndRef = useRef(null);
-  const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef(null)
+  const [newMessage, setNewMessage] = useState('')
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   const handleSend = () => {
-    if (!newMessage.trim()) return;
-    onSendMessage(newMessage);
-    setNewMessage("");
-  };
+    if (!newMessage.trim()) return
+    onSendMessage(newMessage)
+    setNewMessage('')
+  }
 
   return (
     <div className="h-[80vh] flex flex-col w-full border-l bg-white border border-[#E9E9E9] rounded-[12px]">
@@ -30,30 +30,14 @@ const ChatBox = ({ chat, messages, onSendMessage }) => {
           msg.fromMe ? (
             <div key={msg.id} className="flex justify-end">
               <div className="flex items-end gap-3 max-w-[75%]">
-                <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">
-                  {msg.text}
-                </div>
-                <Image
-                  src={chat.avatar}
-                  alt="avatar"
-                  width={40}
-                  height={40}
-                  className="rounded-full bg-black"
-                />
+                <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
+                <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
               </div>
             </div>
           ) : (
             <div key={msg.id} className="flex items-start gap-3 max-w-[75%]">
-              <Image
-                src={chat.avatar}
-                alt="avatar"
-                width={40}
-                height={40}
-                className="rounded-full bg-black"
-              />
-              <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">
-                {msg.text}
-              </div>
+              <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
+              <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
             </div>
           )
         )}
@@ -67,7 +51,7 @@ const ChatBox = ({ chat, messages, onSendMessage }) => {
           placeholder="Введите сообщение"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           className="flex-1 p-3 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
@@ -76,7 +60,7 @@ const ChatBox = ({ chat, messages, onSendMessage }) => {
         ></button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatBox;
+export default ChatBox
