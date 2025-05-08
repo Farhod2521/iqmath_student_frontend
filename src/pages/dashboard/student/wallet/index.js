@@ -21,7 +21,7 @@ const Index = () => {
         >
           <div>
             <h5 className="text-[15px] font-medium ">Тарифный план</h5>
-            <p className="font-semibold text-[28px] my-[12px]">145,000 сум</p>
+            <p className="font-semibold text-[28px] my-[12px]">149,000 сум</p>
             <p className="text-[15px] font-medium ">Следующая списания 21 марта</p>
           </div>
 

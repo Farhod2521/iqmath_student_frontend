@@ -1,7 +1,10 @@
-import Brand from '@/components/brand'
-import React, { useState } from 'react'
-import SidebarMenu from './SidebarMenu'
+import React from 'react'
+
 import { useSettingStore } from '@/store'
+import SidebarMenu from './SidebarMenu'
+import SidebarLogo from './SidebarLogo'
+import SidebarPlan from './SidebarPlan'
+import SidebarFooter from './SidebarFooter'
 
 function Sidebar() {
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
@@ -21,10 +24,10 @@ function Sidebar() {
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="p-[30px] border-b border-b-[#E9E9E9] dark:border-b-[#2A3447FF] ">
-          <Brand />
-        </div>
+        <SidebarLogo />
         <SidebarMenu />
+        <SidebarPlan />
+        <SidebarFooter />
       </div>
     </>
   )

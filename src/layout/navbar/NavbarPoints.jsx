@@ -1,0 +1,33 @@
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { get } from 'lodash'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import React from 'react'
+
+function NavbarPoints() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  // o'quvchini bali
+  const { data: coins, isLoading: coinsLoading } = useGetQuery({
+    key: KEYS.coins,
+    url: URLS.coins,
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    enabled: !!session?.accessToken
+  })
+
+  return (
+    <div
+      onClick={() => router.push('/dashboard/student/coins')}
+      className="flex gap-x-[8px] items-center py-[7px] cursor-pointer px-[12px] border border-[#E9E9E9] rounded-[12px]"
+    >
+      <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={26} height={26} />
+      <p className="text-[19px] font-medium">{get(coins, 'data.score')} баллов</p>
+    </div>
+  )
+}
+
+export default NavbarPoints
