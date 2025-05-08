@@ -1,97 +1,97 @@
-"use client";
-import { useRouter } from "next/router";
-import { questions } from "@/dummy-data";
-import { useState } from "react";
-import Button from "@/components/button";
-import Image from "next/image";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import InfoCircleIcon from "@/components/icons/info-circle";
-import WarningModal from "@/components/modal/warning-modal";
-import { AnimatePresence, motion } from "framer-motion";
-import SimpleModal from "@/components/modal/simple-modal";
-import { dropRight } from "lodash";
-import Link from "next/link";
+'use client'
+import { useRouter } from 'next/router'
+import { questions } from '@/dummy-data'
+import { useState } from 'react'
+import Button from '@/components/button'
+import Image from 'next/image'
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
+import InfoCircleIcon from '@/components/icons/info-circle'
+import WarningModal from '@/components/modal/warning-modal'
+import { AnimatePresence, motion } from 'framer-motion'
+import SimpleModal from '@/components/modal/simple-modal'
+import { dropRight } from 'lodash'
+import Link from 'next/link'
 
 const mathSymbols = {
-  "√x": "\\sqrt{x}",
-  "∛": "\\sqrt[3]{}",
-  "√": "\\sqrt{}",
-  π: "\\pi",
-  "¼": "\\frac{1}{4}",
-  "≤": "\\leq",
-  "≥": "\\geq",
-  "<": "<",
-  ">": ">",
-  "∩": "\\cap",
-  "∪": "\\cup",
-  fx: "f_x",
-  "f(x)": "f(x)",
-  "%": "%",
-  "-": "-",
-  "×": "\\times",
-  "÷": "\\div",
-};
+  '√x': '\\sqrt{x}',
+  '∛': '\\sqrt[3]{}',
+  '√': '\\sqrt{}',
+  π: '\\pi',
+  '¼': '\\frac{1}{4}',
+  '≤': '\\leq',
+  '≥': '\\geq',
+  '<': '<',
+  '>': '>',
+  '∩': '\\cap',
+  '∪': '\\cup',
+  fx: 'f_x',
+  'f(x)': 'f(x)',
+  '%': '%',
+  '-': '-',
+  '×': '\\times',
+  '÷': '\\div'
+}
 
 const buttons = [
-  "√x",
-  "4",
-  "8",
-  "9",
-  "≤",
-  "π",
-  "y",
-  "Z",
-  "▦",
-  "-",
-  "∛",
-  "3",
-  "7",
-  "0",
-  "≥",
-  "¼",
-  "x",
-  "▥",
-  "{}",
-  "×",
-  "√",
-  "2",
-  "6",
-  "<",
-  "∩",
-  "fx",
-  "e",
-  "▧",
-  "⦅⦆",
-  "÷",
-  "%",
-  "1",
-  "5",
-  ">",
-  "∪",
-  "f(x)",
-  "i",
-  "▤",
-  "XY",
-  "+",
-];
+  '√x',
+  '4',
+  '8',
+  '9',
+  '≤',
+  'π',
+  'y',
+  'Z',
+  '▦',
+  '-',
+  '∛',
+  '3',
+  '7',
+  '0',
+  '≥',
+  '¼',
+  'x',
+  '▥',
+  '{}',
+  '×',
+  '√',
+  '2',
+  '6',
+  '<',
+  '∩',
+  'fx',
+  'e',
+  '▧',
+  '⦅⦆',
+  '÷',
+  '%',
+  '1',
+  '5',
+  '>',
+  '∪',
+  'f(x)',
+  'i',
+  '▤',
+  'XY',
+  '+'
+]
 
 const Index = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const router = useRouter();
-  const [showWarning, setShowWarning] = useState(false);
-  const [showCalculator, setShowCalculator] = useState(false);
-  const [showMistake, setShowMistake] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null)
+  const router = useRouter()
+  const [showWarning, setShowWarning] = useState(false)
+  const [showCalculator, setShowCalculator] = useState(false)
+  const [showMistake, setShowMistake] = useState(false)
 
   const handleShowWarning = () => {
-    setShowWarning(true);
-    setTimeout(() => setShowWarning(false), 5000);
-  };
+    setShowWarning(true)
+    setTimeout(() => setShowWarning(false), 5000)
+  }
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('')
 
   const handleClick = (btn) => {
-    setInput((prev) => prev + (mathSymbols[btn] || btn));
-  };
+    setInput((prev) => prev + (mathSymbols[btn] || btn))
+  }
 
   return (
     <div className="font-sf">
@@ -99,19 +99,12 @@ const Index = () => {
         <div className="flex items-center gap-x-[12px]">
           <h1 className="text-[22px] font-semibold">Теория</h1>
           <div className="w-[1px] h-[26px] bg-[#E9E9E9]"></div>
-          <p className="text-[17px] text-[#525252]">
-            Задача (Elixir.Task_5_3_5(x1))
-          </p>
+          <p className="text-[17px] text-[#525252]">Задача (Elixir.Task_5_3_5(x1))</p>
         </div>
 
         <div>
           <button onClick={() => router.back()} className="float-right rounded">
-            <Image
-              src={"/icons/close.svg"}
-              alt="circle"
-              width={24}
-              height={24}
-            />
+            <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
           </button>
         </div>
       </div>
@@ -127,9 +120,7 @@ const Index = () => {
               >
                 <div
                   className={`w-10 h-10 flex items-center justify-center border-2  ${
-                    selectedQuestion === question
-                      ? "border-[#007AFF]"
-                      : "hover:bg-gray-100 border-gray-300"
+                    selectedQuestion === question ? 'border-[#007AFF]' : 'hover:bg-gray-100 border-gray-300'
                   } rounded-full text-black font-bold`}
                 >
                   {index + 1}
@@ -144,28 +135,17 @@ const Index = () => {
           <div className="flex justify-between p-[4px] border border-[#E9E9E9] rounded-[12px] mb-[60px]">
             <div className="flex gap-x-[15px] items-center">
               <div className="w-[60px] h-[60px] bg-[#EDEDF2] flex items-center justify-center rounded-[8px]">
-                <Image
-                  src={"/icons/play.svg"}
-                  alt="play"
-                  width={24}
-                  height={24}
-                />
+                <Image src={'/icons/play.svg'} alt="play" width={24} height={24} />
               </div>
 
               <div className="space-y-[4px]">
                 <h3 className="text-[17px] font-medium">Видео подсказка</h3>
-                <p className="text-[#8A8A8E]">
-                  Посмотрите перед тем как начать
-                </p>
+                <p className="text-[#8A8A8E]">Посмотрите перед тем как начать</p>
               </div>
             </div>
 
             <div className="flex items-center gap-x-[8px]">
-              <Button
-                border={"border border-[#D1D1D6]"}
-                px="px-[16px]"
-                py="py-[11px]"
-              >
+              <Button border={'border border-[#D1D1D6]'} px="px-[16px]" py="py-[11px]">
                 Смотреть
               </Button>
             </div>
@@ -174,9 +154,7 @@ const Index = () => {
             <div className="">
               <MathJaxContext>
                 <div className="space-y-[32px] p-4">
-                  <p className="text-black text-[19px] font-medium text-center">
-                    {selectedQuestion}
-                  </p>
+                  <p className="text-black text-[19px] font-medium text-center">{selectedQuestion}</p>
 
                   {/* Matematik ifodani ko'rsatish */}
                   <div className="w-full px-4 py-[16px] text-center border-none rounded-[12px] text-lg bg-gray-100 min-h-[50px] flex items-center justify-center">
@@ -185,53 +163,29 @@ const Index = () => {
 
                   <div className="flex justify-between items-center">
                     <div className="flex relative">
-                      <Button
-                        onclick={() => setShowMistake(true)}
-                        px="px-[16px]"
-                        py="py-[11px]"
-                      >
+                      <Button onclick={() => setShowMistake(true)} px="px-[16px]" py="py-[11px]">
                         Проверить
                       </Button>
 
-                      <Button
-                        px="px-[16px]"
-                        py="py-[11px]"
-                        classname={
-                          "bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]"
-                        }
-                      >
+                      <Button px="px-[16px]" py="py-[11px]" classname={'bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]'}>
                         Показать решение
                       </Button>
 
                       <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
                         <button onClick={handleShowWarning}>
-                          <InfoCircleIcon
-                            color={!showWarning ? "#4D555DFF" : "#F97316FF"}
-                          />
+                          <InfoCircleIcon color={!showWarning ? '#4D555DFF' : '#F97316FF'} />
                         </button>
 
                         {showWarning && (
-                          <WarningModal
-                            classname={
-                              "absolute w-full max-w-[351px] -top-[80px]"
-                            }
-                          >
-                            Чтобы получить кешбек, вам нужно решить задачу c
-                            первого раза, без подсказки
+                          <WarningModal classname={'absolute w-full max-w-[351px] -top-[80px]'}>
+                            Чтобы получить кешбек, вам нужно решить задачу c первого раза, без подсказки
                           </WarningModal>
                         )}
                       </div>
 
                       <div className="p-[6px] mr-[20px] cursor-pointer flex items-center">
-                        <button
-                          onClick={() => setShowCalculator(!showCalculator)}
-                        >
-                          <Image
-                            src="/icons/calculator.svg"
-                            alt="info"
-                            width={28}
-                            height={28}
-                          />
+                        <button onClick={() => setShowCalculator(!showCalculator)}>
+                          <Image src="/icons/calculator.svg" alt="info" width={28} height={28} />
                         </button>
                       </div>
                     </div>
@@ -256,15 +210,13 @@ const Index = () => {
                               <button
                                 key={i}
                                 className={`p-3 w-[60px] h-[50px] text-xl font-normal rounded shadow ${
-                                  ["-", "×", "÷", "+"].includes(btn)
-                                    ? "text-white bg-orange-500 hover:bg-orange-600"
-                                    : "text-[#59626B] bg-[#F5F6F8] hover:bg-gray-300"
+                                  ['-', '×', '÷', '+'].includes(btn)
+                                    ? 'text-white bg-orange-500 hover:bg-orange-600'
+                                    : 'text-[#59626B] bg-[#F5F6F8] hover:bg-gray-300'
                                 }`}
                                 onClick={() => handleClick(btn)}
                               >
-                                <MathJax>{`\\(${
-                                  mathSymbols[btn] || btn
-                                }\\)`}</MathJax>
+                                <MathJax>{`\\(${mathSymbols[btn] || btn}\\)`}</MathJax>
                               </button>
                             ))}
                           </div>
@@ -280,16 +232,8 @@ const Index = () => {
                   <div>
                     <div className="flex justify-between px-[16px] py-[18px]">
                       <h3 className="text-[19px] font-semibold">Мои ошибки</h3>
-                      <button
-                        onClick={() => setShowMistake(false)}
-                        className="rounded"
-                      >
-                        <Image
-                          src={"/icons/close.svg"}
-                          alt="circle"
-                          width={24}
-                          height={24}
-                        />
+                      <button onClick={() => setShowMistake(false)} className="rounded">
+                        <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
                       </button>
                     </div>
 
@@ -316,10 +260,7 @@ const Index = () => {
 
                     <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
-                    <Link
-                      href={"/dashboard/student/subjects/1"}
-                      className="flex items-center justify-center py-[16px]"
-                    >
+                    <Link href={'/dashboard/student/subjects/1'} className="flex items-center justify-center py-[16px]">
                       <Button>Рекомендация</Button>
                     </Link>
                   </div>
@@ -332,7 +273,7 @@ const Index = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

@@ -1,9 +1,11 @@
 import Brand from '@/components/brand'
 import React, { useState } from 'react'
 import SidebarMenu from './SidebarMenu'
+import { useSettingStore } from '@/store'
 
-function Sidebar({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+function Sidebar() {
+  const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
+  const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
   return (
     <>
       <div

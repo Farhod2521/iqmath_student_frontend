@@ -1,50 +1,49 @@
-import React, { useState, useEffect } from "react";
-import { useSettingsStore } from "@/store";
-import { useTranslation } from "react-i18next";
-import { get } from "lodash";
-import LangIcon from "../icons/lang";
+import React, { useState, useEffect } from 'react'
+import { useLangStore, useSettingsStore } from '@/store'
+import { useTranslation } from 'react-i18next'
+import { get } from 'lodash'
+import LangIcon from '../icons/lang'
 
 const LanguageDropdown = () => {
-  const { i18n } = useTranslation();
-  const setLang = useSettingsStore((state) => get(state, "setLang", () => {}));
+  const { i18n } = useTranslation()
+  const setLang = useSettingsStore((state) => get(state, 'setLang', () => {}))
 
   const languages = [
-    { code: "uz", name: "Uzbek" },
-    { code: "ru", name: "Russian" },
-  ];
+    { code: 'uz', name: 'Uzbek' },
+    { code: 'ru', name: 'Russian' }
+  ]
 
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const [isOpen, setIsOpen] = useState(false); // Declare isOpen
-  const [isHydrated, setIsHydrated] = useState(false); // Ensure hydration is complete
+  const [selectedLanguage, setSelectedLanguage] = useState(null)
+  const [isOpen, setIsOpen] = useState(false) // Declare isOpen
+  const [isHydrated, setIsHydrated] = useState(false) // Ensure hydration is complete
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedLang = localStorage.getItem("lang") || "uz";
-      const initialLang =
-        languages.find((lang) => lang.code === storedLang) || languages[0];
+    if (typeof window !== 'undefined') {
+      const storedLang = localStorage.getItem('lang') || 'uz'
+      const initialLang = languages.find((lang) => lang.code === storedLang) || languages[0]
 
-      setSelectedLanguage(initialLang);
-      i18n.changeLanguage(initialLang.code); // Change i18n language
-      setLang(initialLang.code); // Update global state
+      setSelectedLanguage(initialLang)
+      i18n.changeLanguage(initialLang.code) // Change i18n language
+      setLang(initialLang.code) // Update global state
 
-      setIsHydrated(true); // Hydration is complete
+      setIsHydrated(true) // Hydration is complete
     }
-  }, [i18n, setLang]); // Dependencies to re-run the effect if needed
+  }, [i18n, setLang]) // Dependencies to re-run the effect if needed
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const toggleDropdown = () => setIsOpen((prev) => !prev)
 
   const selectLanguage = (language) => {
-    setSelectedLanguage(language);
-    setIsOpen(false);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("lang", language.code);
+    setSelectedLanguage(language)
+    setIsOpen(false)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lang', language.code)
     }
-    setLang(language.code);
-    i18n.changeLanguage(language.code);
-  };
+    setLang(language.code)
+    i18n.changeLanguage(language.code)
+  }
 
   // Prevent rendering until hydration is complete
-  if (!isHydrated || !selectedLanguage) return null;
+  if (!isHydrated || !selectedLanguage) return null
 
   return (
     <div className="relative inline-block">
@@ -52,10 +51,8 @@ const LanguageDropdown = () => {
         onClick={toggleDropdown}
         className="bg-white hover:bg-[#d8d9db] dark:bg-[#26334A] p-2 rounded-full transform duration-200 active:scale-90 scale-100 flex items-center gap-x-[5px]"
       >
-        <LangIcon color={"#5A6A85"} />
-        <p className="uppercase text-sm text-black dark:text-white">
-          {selectedLanguage?.code}
-        </p>
+        <LangIcon color={'#5A6A85'} />
+        <p className="uppercase text-sm text-black dark:text-white">{selectedLanguage?.code}</p>
       </button>
 
       {isOpen && (
@@ -74,7 +71,7 @@ const LanguageDropdown = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default LanguageDropdown;
+export default LanguageDropdown

@@ -1,46 +1,47 @@
-import PresentCard from "@/card/card-coins";
-import Dashboard from "@/components/dashboard";
-import CoinsIcon from "@/components/icons/coins";
-import Image from "next/image";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import { useSession } from "next-auth/react";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
-import useGetQuery from "@/hooks/api/useGetQuery";
-import { get } from "lodash";
+import PresentCard from '@/card/card-coins'
+import Dashboard from '@/components/dashboard'
+import CoinsIcon from '@/components/icons/coins'
+import Image from 'next/image'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { useSession } from 'next-auth/react'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { get } from 'lodash'
 
 const items = [
-  { img: "t-shirt", title: "Футболка с принтом", coin: "50" },
-  { img: "phone", title: "Смартфон", coin: "50" },
-  { img: "noutbook", title: "Ноутбук", coin: "50" },
-  { img: "bag", title: "Сумка", coin: "50" },
-  { img: "noutbook", title: "Сумка", coin: "50" },
-  { img: "bag", title: "Сумка", coin: "50" },
-  { img: "phone", title: "Сумка", coin: "50" },
-];
+  { img: 't-shirt', title: 'Футболка с принтом', coin: '50' },
+  { img: 'phone', title: 'Смартфон', coin: '50' },
+  { img: 'noutbook', title: 'Ноутбук', coin: '50' },
+  { img: 'bag', title: 'Сумка', coin: '50' },
+  { img: 'noutbook', title: 'Сумка', coin: '50' },
+  { img: 'bag', title: 'Сумка', coin: '50' },
+  { img: 'phone', title: 'Сумка', coin: '50' }
+]
 
 const Index = () => {
-  const { data: session } = useSession();
-  const { t } = useTranslation();
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const closeModal = () => setOpenModal(false);
+  const { data: session } = useSession()
+  const { t } = useTranslation()
+  const [openModal, setOpenModal] = useState(false)
+  const handleOpenModal = () => setOpenModal(true)
+  const closeModal = () => setOpenModal(false)
 
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
     url: URLS.coins,
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${session?.accessToken}`
     },
-    enabled: !!session?.accessToken,
-  });
+    enabled: !!session?.accessToken
+  })
+  // headerTitle={"Баллы"}
   return (
-    <Dashboard headerTitle={"Баллы"}>
+    <>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
@@ -50,20 +51,17 @@ const Index = () => {
 
           <div className="flex items-center gap-x-[10px] mt-[8px] mb-[20px]">
             <CoinsIcon color="white" />
-            <p className="text-[26px] font-semibold">
-              {get(coins, "data.score")} баллов
-            </p>
+            <p className="text-[26px] font-semibold">{get(coins, 'data.score')} баллов</p>
           </div>
 
           <p className="text-[17px] text-[#DCDCDD] w-3/5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea{" "}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea{' '}
           </p>
 
           <Image
-            src={"/images/wallet-img-1.png"}
+            src={'/images/wallet-img-1.png'}
             alt="wallet-img"
             width={254}
             height={266}
@@ -71,7 +69,7 @@ const Index = () => {
           />
 
           <Image
-            src={"/images/wallet-img-2.png"}
+            src={'/images/wallet-img-2.png'}
             alt="wallet-img"
             width={153}
             height={159}
@@ -79,7 +77,7 @@ const Index = () => {
           />
 
           <Image
-            src={"/images/wallet-img-3.png"}
+            src={'/images/wallet-img-3.png'}
             alt="wallet-img"
             width={90}
             height={90}
@@ -87,7 +85,7 @@ const Index = () => {
           />
 
           <Image
-            src={"/images/wallet-img-4.png"}
+            src={'/images/wallet-img-4.png'}
             alt="wallet-img"
             width={41}
             height={41}
@@ -96,9 +94,7 @@ const Index = () => {
         </div>
 
         <div className="col-span-12 ">
-          <h1 className="text-[24px] font-semibold my-[24px]">
-            Доступные призы
-          </h1>
+          <h1 className="text-[24px] font-semibold my-[24px]">Доступные призы</h1>
 
           <div className="relative">
             <Swiper
@@ -109,7 +105,7 @@ const Index = () => {
                 0: { slidesPerView: 1 },
                 768: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 },
-                1440: { slidesPerView: 4 },
+                1440: { slidesPerView: 4 }
               }}
               loop={true}
               className="present-swiper"
@@ -143,35 +139,23 @@ const Index = () => {
           >
             <div className="bg-white p-6 rounded-[16px] shadow-lg w-[497px] font-sf">
               <button onClick={closeModal} className="float-right rounded">
-                <Image
-                  src={"/icons/close.svg"}
-                  alt="circle"
-                  width={24}
-                  height={24}
-                />
+                <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
               </button>
               <div className="flex flex-col items-center justify-center">
-                <Image
-                  src={"/images/success-circle.png"}
-                  alt="circle"
-                  width={85}
-                  height={85}
-                />
+                <Image src={'/images/success-circle.png'} alt="circle" width={85} height={85} />
 
-                <h2 className=" font-semibold mt-[24px] text-[22px]">
-                  Вы успешно обменяли свои баллы
-                </h2>
+                <h2 className=" font-semibold mt-[24px] text-[22px]">Вы успешно обменяли свои баллы</h2>
                 <p className="text-[19px] text-[#484848] mt-[16px] text-center">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua.
                 </p>
               </div>
             </div>
           </div>
         </>
       )}
-    </Dashboard>
-  );
-};
+    </>
+  )
+}
 
-export default Index;
+export default Index

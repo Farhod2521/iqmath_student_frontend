@@ -3,15 +3,15 @@ import { useState, useEffect, useRef } from 'react'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import storage from '@/services/storage'
 import { get, isEmpty } from 'lodash'
 import { useRouter } from 'next/router'
 import LanguageDropdown from '@/components/language'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from 'next-themes'
+import { useSettingsStore, useSettingStore } from '@/store'
+import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai'
 
-const Navbar = ({ toggleSidebar = 'toggleSidebar', title = 'title', handleTab = () => {}, tab }) => {
+const Navbar = ({ handleTab = () => {}, tab = '' }) => {
   const { data: session } = useSession()
   const [openProfile, setOpenProfile] = useState(false)
   const router = useRouter()
@@ -20,6 +20,16 @@ const Navbar = ({ toggleSidebar = 'toggleSidebar', title = 'title', handleTab = 
   const profileRef = useRef(null)
   const { t } = useTranslation()
 
+  const titlePage = useSettingsStore((state) => state.titlePage)
+  // const setTitlePage = useSettingsStore((state) => state.setTitlePage)
+
+  const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
+  const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
+
+  useEffect(() => {
+    console.log('titlePage', titlePage)
+  }, [titlePage])
+
   const {
     data: studentProfile,
     isLoading,
@@ -27,9 +37,7 @@ const Navbar = ({ toggleSidebar = 'toggleSidebar', title = 'title', handleTab = 
   } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken
   })
 
@@ -37,9 +45,7 @@ const Navbar = ({ toggleSidebar = 'toggleSidebar', title = 'title', handleTab = 
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
     url: URLS.coins,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken
   })
 
@@ -89,11 +95,11 @@ const Navbar = ({ toggleSidebar = 'toggleSidebar', title = 'title', handleTab = 
     <div className="border-b">
       <div className={'flex justify-between px-[24px] pt-[24px] pb-[16px]'}>
         <div className={'flex items-center gap-x-[24px] flex-1'}>
-          <button onClick={toggleSidebar}>
-            <Image src={'/icons/sidebar.svg'} alt={'sidebar'} width={24} height={24} />
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            {isSidebarOpen ? <AiOutlineMenuFold size={24} /> : <AiOutlineMenuUnfold size={24} />}
           </button>
 
-          <p className="text-[24px]  font-semibold text-black">{title}</p>
+          <p className="text-[24px]  font-semibold text-black">{titlePage}sadfsad</p>
 
           {router.pathname === '/dashboard/student/my-study' && (
             <div className="flex bg-[#F2F2F7] p-[4px] max-w-[223px] w-full rounded-[8px]">

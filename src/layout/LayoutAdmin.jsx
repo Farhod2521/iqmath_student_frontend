@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'
-import Sidebar from './Sidebar'
+import Sidebar from './sidebar/Sidebar'
 import Main from './Main'
+import { useSettingStore } from '@/store'
 
 const LayoutAdmin = ({ children }) => {
   const router = useRouter()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(null) // Boshlang‘ich holat yo‘q
 
+  const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
+  const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
   useEffect(() => {
     setIsSidebarOpen(window.innerWidth > 1024) // Sahifa yuklanganda aniqlash
   }, [])
