@@ -22,7 +22,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
 
   const router = useRouter()
 
-  const isAdminRoute = router.pathname.startsWith('/dashboard')
+  const isAdminRoute = router.pathname.startsWith('/dashboard') && !router.pathname.endsWith('question')
   const Layout = isAdminRoute ? LayoutAdmin : LayoutHome
 
   // Set language on the client after the component is mounted
@@ -46,11 +46,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
             <UserProfileProvider>
               <Layout>
                 <Component {...pageProps} />
+                <Toaster />
               </Layout>
             </UserProfileProvider>
-
             <ReactQueryDevtools initialIsOpen={false} />
-            <Toaster />
           </Hydrate>
         </QueryClientProvider>
       </SessionProvider>

@@ -90,27 +90,21 @@ const Index = () => {
       )}
 
       <div className="flex flex-wrap gap-6">
-        {studentSubjects.data.map((item, index) => {
+        {studentSubjects?.data?.map((item, index) => {
           const imageUrl =
             i18n.language === 'uz'
               ? `${config.API_URL}${get(item, 'image_uz')}`
               : `${config.API_URL}${get(item, 'image_ru')}`
 
           const classAll = i18n.language === 'uz' ? get(item, 'class_uz') : get(item, 'class_ru')
-          const className = classAll.split(' ')[0]
-
-          const classSubject = classAll.split(' ')[1]
 
           if (item.is_open) {
             return (
               <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
                 <Card isFooterBlurred className={`border-none cursor-pointer shadow-md`} radius="md">
-                  <Image alt={className} className="object-cover" src={imageUrl} width={240} />
-                  <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                    <p className="">{classSubject}</p>
-                    <Button className=" text-white bg-black/20" color="default" radius="lg" size="sm" variant="flat">
-                      {className}
-                    </Button>
+                  <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
+                  <CardFooter className="justify-center border-white/20 border-1 overflow-hidden  absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                    {classAll}
                   </CardFooter>
                 </Card>
                 {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
@@ -133,17 +127,11 @@ const Index = () => {
           } else {
             return (
               <Card isFooterBlurred key={index} className={`shadow-md`} radius="md">
-                <Image alt={className} className="object-cover" src={imageUrl} width={240} />
+                <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
+                <div className="absolute z-20 bottom-4 text-black/20 w-full flex justify-center">{classAll}</div>
                 <CardFooter className="absolute bg-white/10 h-full bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
                   <div className="flex items-center justify-center w-full">
-                    {/* <div className="p-8 bg-white shadow-sm rounded-md"> */}
                     <FaLock size={40} className="text-black/40" />
-                    {/* </div> */}
-                    {/* <Image
-                      alt="Breathing app icon"
-                      className="rounded-full w-10 h-11 bg-black"
-                      src="https://heroui.com/images/breathing-app-icon.jpeg"
-                    /> */}
                   </div>
                 </CardFooter>
               </Card>
