@@ -9,7 +9,6 @@ import '@/styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 import { UserProfileProvider } from '@/context/responseProvider'
 import { useTranslation } from 'react-i18next'
-import Script from 'next/script'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import LayoutHome from '@/home/Layout'
 
@@ -22,7 +21,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
 
   const router = useRouter()
 
-  const isAdminRoute = router.pathname.startsWith('/dashboard') && !router.pathname.endsWith('question')
+  const isAdminRoute =
+    router.pathname.startsWith('/dashboard') &&
+    !router.pathname.endsWith('question') &&
+    !router.pathname.endsWith('diagnostics')
   const Layout = isAdminRoute ? LayoutAdmin : LayoutHome
 
   // Set language on the client after the component is mounted

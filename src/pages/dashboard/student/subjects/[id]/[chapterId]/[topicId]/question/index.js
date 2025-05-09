@@ -13,7 +13,8 @@ import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import Symbols from '@/components/mathSymbols'
 import InfoCircleIcon from '@/components/icons/info-circle'
-import Button from '@/components/button'
+// import Button from '@/components/button'
+import { Button } from '@heroui/react'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { toast } from 'react-hot-toast'
 import Link from 'next/link'
@@ -24,6 +25,7 @@ const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => 
 
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { useTranslation } from 'react-i18next'
+import NavbarLangue from '@/layout/navbar/NavbarLangue'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -263,14 +265,16 @@ const Index = () => {
         </div>
 
         <div className="flex items-center">
-          <LanguageDropdown />
+          <NavbarLangue />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-[10px]"></div>
-          <button
-            onClick={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}
+          <Button
+            onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}
             className="float-right rounded"
+            variant="light"
+            isIconOnly
           >
             <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -425,11 +429,9 @@ const Index = () => {
                   <div className="flex relative items-center gap-8">
                     <div className="flex justify-between items-center  gap-4">
                       <Button
-                        onclick={handlePrev}
+                        onPress={handlePrev}
                         disabled={selectedIndex === 0}
-                        px="px-[16px]"
-                        py="py-[11px]"
-                        className={`px-4 py-2 rounded-md ${
+                        className={`px-4 py-2 rounded-md  ${
                           selectedIndex === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-500 text-white'
                         }`}
                       >
@@ -438,26 +440,23 @@ const Index = () => {
 
                       {selectedIndex === get(questions, 'data', []).length - 1 ? (
                         <Button
-                          onclick={() => {
+                          onPress={() => {
                             handleCheckMyResults()
                           }}
-                          px="px-[16px]"
-                          py="py-[11px]"
+                          className="px-4 py-2 rounded-md  bg-blue-500 text-white"
                         >
                           {t('check')}
                         </Button>
                       ) : (
-                        <Button px="px-[16px]" py="py-[11px]" onclick={handleNext}>
+                        <Button className="px-4 py-2 rounded-md bg-blue-500 text-white" onPress={handleNext}>
                           {t('next')}
                         </Button>
                       )}
                     </div>
 
                     <Button
-                      onclick={() => setShowSolution(true)}
-                      px="px-[16px]"
-                      py="py-[11px]"
-                      classname={'bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]'}
+                      onPress={() => setShowSolution(true)}
+                      className="px-8 rounded-md bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]"
                     >
                       Показать решение
                     </Button>
@@ -563,9 +562,9 @@ const Index = () => {
                     <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
                     <div className="flex pb-[24px] gap-x-[12px] text-sm">
-                      <Button onclick={() => setShowMistake(true)}>Мои результаты</Button>
+                      <Button onPress={() => setShowMistake(true)}>Мои результаты</Button>
                       <Button
-                        onclick={() => {
+                        onPress={() => {
                           setShowResult(false)
                           setShowNextModal(true)
                         }}
@@ -641,8 +640,8 @@ const Index = () => {
                     <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
                     <div className="py-[16px] px-[16px] flex justify-end gap-[12px]">
-                      <Button classname={'!bg-transparent border !text-black'}>Отправить ментору</Button>
-                      <Button onclick={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
+                      <Button className={'!bg-transparent border !text-black'}>Отправить ментору</Button>
+                      <Button onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
                         Повторить все темы
                       </Button>
                     </div>

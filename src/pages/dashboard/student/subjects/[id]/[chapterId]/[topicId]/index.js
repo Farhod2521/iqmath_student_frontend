@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { get } from 'lodash'
 import RightIcon from '@/components/icons/right'
 import { motion } from 'framer-motion'
-import Button from '@/components/button'
+// import Button from '@/components/button'
 import Image from 'next/image'
 import Link from 'next/link'
 import parse from 'html-react-parser'
@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import VideoPlayer from '@/components/video-player'
 import ContentLoader from '@/components/loader/content-loader'
 import MainWrapper from '@/layout/MainWrapper'
+import { Button } from '@heroui/react'
 const Index = () => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
@@ -164,18 +165,12 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-x-[8px]">
-              <Button
-                onclick={() => setShowPlayer(true)}
-                border={'border border-[#D1D1D6]'}
-                px="px-[16px]"
-                py="py-[11px]"
-                classname={'bg-white !text-black'}
-              >
+              <Button onPress={() => setShowPlayer(true)} className="rounded-md">
                 {t('watch')}
               </Button>
 
               <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${topicId}/question`}>
-                <Button px="px-[16px]" py="py-[11px]">
+                <Button className="px-[16px] py-[11px] rounded-md" color="primary">
                   {t('takeTest')}
                 </Button>
               </Link>

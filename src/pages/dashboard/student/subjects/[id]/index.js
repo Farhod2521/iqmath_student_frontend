@@ -71,7 +71,7 @@ const Index = () => {
                   <li
                     key={get(chapter, 'id')}
                     onClick={() => setSelectedChapterId(get(chapter, 'id'))}
-                    className={`p-[12px] pl-[24px] border-b border-[#E9E9E9] cursor-pointer last:border-b-0 ${
+                    className={`p-[12px] pl-[24px] border-b border-[#E9E9E9] cursor-pointer last:border-b-0 hover:bg-[#F0F9FF] ${
                       isActive ? 'bg-[#F0F9FF]' : 'bg-white'
                     }`}
                   >
@@ -93,10 +93,10 @@ const Index = () => {
                       {get(topic, 'data', []).map((topic, index) => (
                         <li
                           key={index}
-                          className="p-[12px] pl-[24px] border-b border-[#E9E9E9] bg-white last:border-b-0"
+                          className="p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] border-[#E9E9E9] bg-white last:border-b-0"
                         >
                           <Link href={`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`}>
-                            <div className="flex justify-between">
+                            <div className="flex justify-between ">
                               <div>{i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}</div>
 
                               <div>
