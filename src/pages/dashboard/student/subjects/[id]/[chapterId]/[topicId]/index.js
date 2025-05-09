@@ -15,6 +15,7 @@ import parse from 'html-react-parser'
 import { useTranslation } from 'react-i18next'
 import VideoPlayer from '@/components/video-player'
 import ContentLoader from '@/components/loader/content-loader'
+import MainWrapper from '@/layout/MainWrapper'
 const Index = () => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
@@ -100,9 +101,9 @@ const Index = () => {
   }
 
   return (
-    <>
-      <div className="font-sf">
-        <div className="col-span-12 border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
+    <MainWrapper title="Темы/разделы">
+      <div className="font-sf ">
+        <div className="col-span-12 border bg-white border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">
             <button
               className="bg-white text-xl px-[12px] py-[15px]  rounded-[12px] rotate-180"
@@ -198,7 +199,7 @@ const Index = () => {
           )}
         </div>
       </div>
-    </>
+    </MainWrapper>
   )
 }
 

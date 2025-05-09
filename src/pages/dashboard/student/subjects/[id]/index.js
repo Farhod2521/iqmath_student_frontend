@@ -6,12 +6,13 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import RightIcon from '@/components/icons/right'
 import Link from 'next/link'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
+import MainWrapper from '@/layout/MainWrapper'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -45,6 +46,11 @@ const Index = () => {
     enabled: !!selectedChapterId && !!session?.accessToken
   })
 
+  useEffect(() => {
+    // setSelectedChapterId(get(chapter, 'data', [])[0].id)
+    chapter && setSelectedChapterId(chapter.data[0].id)
+  }, [chapter])
+
   if (isLoadingChapter || isFetchingChapter) {
     return (
       // <Dashboard headerTitle={"Математика"}>
@@ -53,10 +59,9 @@ const Index = () => {
     )
   }
   return (
-    <>
+    <MainWrapper title="Математика">
       <div className="font-sf">
         <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
-
         <div className="grid grid-cols-12 gap-[24px]">
           <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
             <ul className="w-full">
@@ -123,7 +128,7 @@ const Index = () => {
           )}
         </div>
       </div>
-    </>
+    </MainWrapper>
   )
 }
 

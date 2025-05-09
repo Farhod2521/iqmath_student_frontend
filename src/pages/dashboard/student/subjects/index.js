@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 
@@ -12,7 +11,8 @@ import { config } from '@/config'
 import SimpleModal from '@/components/modal/simple-modal'
 import ContentLoader from '@/components/loader/content-loader'
 import MainWrapper from '@/layout/MainWrapper'
-import { Button } from '@heroui/react'
+import { Button, Card, CardFooter, Image } from '@heroui/react'
+import { FaLock } from 'react-icons/fa'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -96,28 +96,59 @@ const Index = () => {
               ? `${config.API_URL}${get(item, 'image_uz')}`
               : `${config.API_URL}${get(item, 'image_ru')}`
 
-          const className = i18n.language === 'uz' ? get(item, 'class_uz') : get(item, 'class_ru')
+          const classAll = i18n.language === 'uz' ? get(item, 'class_uz') : get(item, 'class_ru')
+          const className = classAll.split(' ')[0]
 
-          return (
-            <div
-              key={index}
-              className="space-y-3 w-[200px] cursor-pointer group"
-              onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}
-            >
-              <div className="rounded-[12px]">
-                <Image
-                  src={imageUrl}
-                  alt={className}
-                  width={95}
-                  height={124}
-                  className="w-full object-contain shadow-lg transition-all duration-300 group-hover:-translate-y-3 group-hover:shadow-[0px_4px_20px_rgba(0,0,0,0.1)] bg-white"
-                />
+          const classSubject = classAll.split(' ')[1]
+
+          if (item.is_open) {
+            return (
+              <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
+                <Card isFooterBlurred className={`border-none cursor-pointer shadow-md`} radius="md">
+                  <Image alt={className} className="object-cover" src={imageUrl} width={240} />
+                  <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                    <p className="">{classSubject}</p>
+                    <Button className=" text-white bg-black/20" color="default" radius="lg" size="sm" variant="flat">
+                      {className}
+                    </Button>
+                  </CardFooter>
+                </Card>
+                {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
+                  {className}
+                </p> */}
+                {/* <div className="rounded-[12px]">
+                  <Image
+                    src={imageUrl}
+                    alt={className}
+                    width={95}
+                    height={124}
+                    className="w-full object-contain shadow-lg transition-all duration-300 group-hover:-translate-y-3 group-hover:shadow-[0px_4px_20px_rgba(0,0,0,0.1)] bg-white"
+                  />
+                </div>
+                <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
+                  {className}
+                </p> */}
               </div>
-              <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
-                {className}
-              </p>
-            </div>
-          )
+            )
+          } else {
+            return (
+              <Card isFooterBlurred key={index} className={`shadow-md`} radius="md">
+                <Image alt={className} className="object-cover" src={imageUrl} width={240} />
+                <CardFooter className="absolute bg-white/10 h-full bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+                  <div className="flex items-center justify-center w-full">
+                    {/* <div className="p-8 bg-white shadow-sm rounded-md"> */}
+                    <FaLock size={40} className="text-black/40" />
+                    {/* </div> */}
+                    {/* <Image
+                      alt="Breathing app icon"
+                      className="rounded-full w-10 h-11 bg-black"
+                      src="https://heroui.com/images/breathing-app-icon.jpeg"
+                    /> */}
+                  </div>
+                </CardFooter>
+              </Card>
+            )
+          }
         })}
       </div>
     </MainWrapper>
