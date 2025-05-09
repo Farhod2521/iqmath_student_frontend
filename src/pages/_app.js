@@ -13,6 +13,8 @@ import Script from 'next/script'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import LayoutHome from '@/home/Layout'
 
+import { HeroUIProvider } from '@heroui/react'
+
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => reactQueryClient)
   const [mounted, setMounted] = useState(false)
@@ -37,19 +39,21 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   }
 
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps?.dehydratedState}>
-          <UserProfileProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </UserProfileProvider>
+    <HeroUIProvider>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps?.dehydratedState}>
+            <UserProfileProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </UserProfileProvider>
 
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Toaster />
-        </Hydrate>
-      </QueryClientProvider>
-    </SessionProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Toaster />
+          </Hydrate>
+        </QueryClientProvider>
+      </SessionProvider>
+    </HeroUIProvider>
   )
 }

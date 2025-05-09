@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 function SidebarLogo() {
   const router = useRouter()
   return (
-    <div className="py-[20px] px-[32px] border-b border-b-[#E9E9E9] dark:border-b-[#2A3447FF] ">
+    <div className="py-[16px] px-[32px] border-b border-b-[#E9E9E9] dark:border-b-[#2A3447FF] ">
       <div className={'  '}>
         <Link href={'/'} className="flex gap-x-[16px] items-center">
           <Image src={'/icons/brand.svg'} alt="brand" width={34} height={34} />

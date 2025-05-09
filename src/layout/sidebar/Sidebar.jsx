@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useSettingStore } from '@/store'
 import SidebarMenu from './SidebarMenu'
 import SidebarLogo from './SidebarLogo'
@@ -20,7 +19,7 @@ function Sidebar() {
 
       <div
         className={`fixed left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 
-        transition-transform duration-300 z-50 w-[350px] overflow-y-auto ${
+        transition-transform duration-300 z-50 w-[300px] overflow-y-auto ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

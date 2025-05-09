@@ -1,6 +1,7 @@
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
+import { Button } from '@heroui/react'
 import { get } from 'lodash'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -20,13 +21,10 @@ function NavbarPoints() {
   })
 
   return (
-    <div
-      onClick={() => router.push('/dashboard/student/coins')}
-      className="flex gap-x-[8px] items-center py-[7px] cursor-pointer px-[12px] border border-[#E9E9E9] rounded-[12px]"
-    >
+    <Button variant="bordered" onPress={() => router.push('/dashboard/student/coins')} className="border-[#E9E9E9]">
       <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={26} height={26} />
       <p className="text-[19px] font-medium">{get(coins, 'data.score')} баллов</p>
-    </div>
+    </Button>
   )
 }
 
