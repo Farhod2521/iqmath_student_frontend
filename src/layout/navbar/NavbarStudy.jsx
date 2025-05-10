@@ -1,10 +1,12 @@
 import React from 'react'
 
 import { useMyStudyStore } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 function NavbarStudy() {
   const tab = useMyStudyStore((state) => state.tab)
   const handleTab = useMyStudyStore((state) => state.handleTab)
+  const { t } = useTranslation()
 
   return (
     <div className="flex gap-2 px-2 py-1 bg-[#F2F2F7] rounded-[8px]">
@@ -14,7 +16,7 @@ function NavbarStudy() {
           tab === 'active' ? 'bg-white text-black shadow-md' : 'text-[#5A6A85] hover:bg-[#ECF2FF]'
         }`}
       >
-        Активные
+        {t('active')}
       </button>
       <button
         onClick={() => handleTab('frozen')}
@@ -22,7 +24,7 @@ function NavbarStudy() {
           tab === 'frozen' ? 'bg-white text-black shadow-md' : 'text-[#5A6A85] hover:bg-[#ECF2FF]'
         }`}
       >
-        Замароженные
+        {t('frozen')}
       </button>
     </div>
   )

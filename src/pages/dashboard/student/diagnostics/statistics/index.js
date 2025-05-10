@@ -7,6 +7,7 @@ import { get } from 'lodash'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Button } from '@heroui/react'
+import MainWrapper from '@/layout/MainWrapper'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -20,9 +21,9 @@ const Index = () => {
     },
     enabled: !!session?.accessToken
   })
-  // headerTitle={t("diagnostics")}
+  // headerTitle={}
   return (
-    <>
+    <MainWrapper title={t('diagnostics')}>
       <div className="grid grid-cols-12 gap-[24px] rounded-[12px]">
         <div className="col-span-8 rounded-[12px]">
           <div className="space-y-[12px]">
@@ -87,7 +88,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </>
+    </MainWrapper>
   )
 }
 

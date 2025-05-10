@@ -1,9 +1,11 @@
 import MainWrapper from '@/layout/MainWrapper'
 import { Button, Card } from '@heroui/react'
+import { useTranslation } from 'react-i18next'
 
 const Index = () => {
+  const { t } = useTranslation()
   return (
-    <MainWrapper title="Кошелек">
+    <MainWrapper title={t('wallet')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div className="col-span-6 space-y-[12px]">
           <Card className="rounded-[12px] ">

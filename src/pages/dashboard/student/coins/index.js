@@ -42,7 +42,7 @@ const Index = () => {
   })
   // headerTitle={"Баллы"}
   return (
-    <MainWrapper title="Баллы">
+    <MainWrapper title={t('points')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}

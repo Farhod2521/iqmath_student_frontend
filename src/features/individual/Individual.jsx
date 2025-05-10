@@ -2,19 +2,22 @@ import React, { useCallback } from 'react'
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from '@heroui/table'
 import { Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
 import { useRouter } from 'next/router'
-
-const columns = [
-  { label: '№', key: 'id' },
-  { label: 'Тема', key: 'theme' },
-  { label: 'Дата назначения', key: 'startTime' },
-  { label: 'Статус', key: 'status' },
-  { label: 'Крайний срок', key: 'endTime' },
-  { label: 'Прогресс', key: 'progress' },
-  { label: 'Действие', key: 'action' }
-]
+import { useTranslation } from 'react-i18next'
 
 function Individual({ data }) {
+  const { t } = useTranslation()
+
   const router = useRouter()
+
+  const columns = [
+    { label: '№', key: 'id' },
+    { label: t('theme'), key: 'theme' },
+    { label: t('startTime'), key: 'startTime' },
+    { label: t('status'), key: 'status' },
+    { label: t('stopTime'), key: 'endTime' },
+    { label: t('progress'), key: 'progress' },
+    { label: t('action'), key: 'action' }
+  ]
   const renderCell = useCallback((data, columnKey) => {
     const cellValue = data[columnKey]
 
@@ -34,7 +37,7 @@ function Individual({ data }) {
             className="m-0 p-0 h-8 rounded-md w-full"
             color={cellValue ? 'primary' : 'default'}
           >
-            {cellValue ? 'Продолжить' : 'Начать'}
+            {cellValue ? t('continueTest') : t('begin')}
           </Button>
         )
       default:
@@ -63,10 +66,9 @@ function Individual({ data }) {
               radius="sm"
               className="w-[160px]"
             >
-              <SelectItem key="5">Показать по 5</SelectItem>
-              <SelectItem key="10">Показать по 10</SelectItem>
-              <SelectItem key="20">Показать по 20</SelectItem>
-              <SelectItem key="50">Показать по 50</SelectItem>
+              {['5', '10', '20', '50'].map((i) => (
+                <SelectItem key={i}>{`${t('showby')} ${i}`}</SelectItem>
+              ))}
             </Select>
             <Pagination
               isCompact
@@ -80,7 +82,7 @@ function Individual({ data }) {
             />
 
             <p className="text-[15px] text-[#8a8a8e]">
-              Показаны 1-{pageSize} из {data.length} элементов
+              {t('paginationInfo', { pageSize: pageSize > data.length ? data.length : pageSize, total: data.length })}
             </p>
           </div>
         }

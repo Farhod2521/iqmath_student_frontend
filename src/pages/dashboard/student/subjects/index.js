@@ -68,7 +68,7 @@ const Index = () => {
   if (isLoading || isFetching) return <ContentLoader />
 
   return (
-    <MainWrapper title="Предметы">
+    <MainWrapper title={t('subjects')}>
       {showModal && phone && (
         <SimpleModal>
           <div className="flex justify-between px-4 py-4">

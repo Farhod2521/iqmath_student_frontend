@@ -9,9 +9,11 @@ import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import { Button, Card } from '@heroui/react'
 import MainWrapper from '@/layout/MainWrapper'
+import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const { data: session } = useSession()
+  const { t } = useTranslation()
   const {
     data: studentProfile,
     isLoading,
@@ -26,7 +28,7 @@ const Index = () => {
   })
   const router = useRouter()
   return (
-    <MainWrapper title="Профиль">
+    <MainWrapper title={t('profile')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <Card className="col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">

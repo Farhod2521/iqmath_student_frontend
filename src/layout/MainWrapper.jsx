@@ -9,7 +9,7 @@ function MainWrapper({ children, title = '' }) {
     return () => {
       setTitlePage('')
     }
-  }, [])
+  }, [title])
 
   return <>{children}</>
 }

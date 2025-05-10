@@ -4,12 +4,54 @@ import ButtonCellRenderer from '@/components/grid-table/buttonCell'
 import MyStudyAcitve from '@/features/my-study/MyStudyAcitve'
 import MainWrapper from '@/layout/MainWrapper'
 import { useMyStudyStore } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const tab = useMyStudyStore((state) => state.tab)
 
+  const { t } = useTranslation()
+
+  const rowData = [
+    {
+      id: '01',
+      startTime: '10:00, 01.01.2024',
+      endTime: '12:00, 01.01.2024',
+      value: 15,
+      progress: 75,
+      stars: '⭐⭐⭐',
+      buttonType: t('continueTest')
+    },
+    {
+      id: '02',
+      startTime: '14:00, 02.01.2024',
+      endTime: '16:00, 02.01.2024',
+      value: 20,
+      progress: 45,
+      stars: '⭐⭐⭐⭐',
+      buttonType: t('continueTest')
+    },
+    {
+      id: '03',
+      startTime: '14:00, 02.01.2024',
+      endTime: '16:00, 02.01.2024',
+      value: 20,
+      progress: 40,
+      stars: '⭐⭐⭐',
+      buttonType: t('continueTest')
+    },
+    {
+      id: '04',
+      startTime: '14:00, 02.01.2024',
+      endTime: '16:00, 02.01.2024',
+      value: 20,
+      progress: 60,
+      stars: '⭐⭐⭐',
+      buttonType: t('continueTest')
+    }
+  ]
+
   return (
-    <MainWrapper title="Мое обучение">
+    <MainWrapper title={t('myLearning')}>
       {tab === 'active' ? (
         <MyStudyAcitve data={rowData} />
       ) : (
@@ -21,45 +63,6 @@ const Index = () => {
 }
 
 export default Index
-
-const rowData = [
-  {
-    id: '01',
-    startTime: '10:00, 01.01.2024',
-    endTime: '12:00, 01.01.2024',
-    value: 15,
-    progress: 75,
-    stars: '⭐⭐⭐',
-    buttonType: 'Продолжить'
-  },
-  {
-    id: '02',
-    startTime: '14:00, 02.01.2024',
-    endTime: '16:00, 02.01.2024',
-    value: 20,
-    progress: 45,
-    stars: '⭐⭐⭐⭐',
-    buttonType: 'Продолжить'
-  },
-  {
-    id: '03',
-    startTime: '14:00, 02.01.2024',
-    endTime: '16:00, 02.01.2024',
-    value: 20,
-    progress: 40,
-    stars: '⭐⭐⭐',
-    buttonType: 'Продолжить'
-  },
-  {
-    id: '04',
-    startTime: '14:00, 02.01.2024',
-    endTime: '16:00, 02.01.2024',
-    value: 20,
-    progress: 60,
-    stars: '⭐⭐⭐',
-    buttonType: 'Продолжить'
-  }
-]
 
 const colDefs = [
   { headerName: '№', field: 'id', width: 80 },

@@ -101,7 +101,7 @@ const Index = () => {
   }
 
   return (
-    <MainWrapper title="Темы/разделы">
+    <MainWrapper title={t('topics')}>
       <div className="font-sf ">
         <div className="col-span-12 border bg-white border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">

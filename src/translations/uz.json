@@ -222,5 +222,17 @@
   "continueTest": "Davom ettirish",
   "tariffPlan": "Tarif rejasi",
   "cancelContract": "Bekor qilish",
-  "nextCharge": "Keyingi yechib olinadigan summa"
+  "nextCharge": "Keyingi yechib olinadigan summa",
+  "startTime": "Boshlanish sanasi",
+  "endTime": "Tugash sanasi",
+  "grade": "Baho",
+  "progress": "Progress",
+  "active": "Faol",
+  "frozen": "Muzlatilgan",
+  "ball": "ball",
+  "showby": "Ko'rsatish:",
+  "paginationInfo": "{{total}} ta elementdan 1–{{pageSize}} ko'rsatilmoqda",
+  "theme": "Mavzu",
+  "status": "Status",
+  "stopTime": "Topshirish muddati"
 }

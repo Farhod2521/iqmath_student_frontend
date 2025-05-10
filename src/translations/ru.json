@@ -222,5 +222,17 @@
   "continueTest": "Продолжить",
   "tariffPlan": "Тарифный план",
   "cancelContract": "Отменить",
-  "nextCharge": "Следующая списания"
+  "nextCharge": "Следующая списания",
+  "startTime": "Дата начала",
+  "endTime": "Дата завершения",
+  "grade": "Оценка",
+  "progress": "Прогресс",
+  "active": "Активные",
+  "frozen": "Замороженные",
+  "ball": "баллов",
+  "showby": "Показать по",
+  "paginationInfo": "Показаны 1–{{pageSize}} из {{total}} элементов",
+  "theme": "Тема",
+  "status": "Статус",
+  "stopTime": "Крайний срок"
 }

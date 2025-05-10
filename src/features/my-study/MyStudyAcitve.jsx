@@ -1,18 +1,21 @@
 import React from 'react'
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from '@heroui/table'
 import { Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
-
-const columns = [
-  { label: '№', key: 'id' },
-  { label: 'Дата начала', key: 'startTime' },
-  { label: 'Дата завершения', key: 'endTime' },
-  { label: 'Задачи', key: 'value' },
-  { label: 'Оценка', key: 'stars' },
-  { label: 'Прогресс', key: 'progress' },
-  { label: 'Действие', key: 'buttonType' }
-]
+import { useTranslation } from 'react-i18next'
 
 function MyStudyAcitve({ data }) {
+  const { t } = useTranslation()
+
+  const columns = [
+    { label: '№', key: 'id' },
+    { label: t('startTime'), key: 'startTime' },
+    { label: t('endTime'), key: 'endTime' },
+    { label: t('task'), key: 'value' },
+    { label: t('grade'), key: 'stars' },
+    { label: t('progress'), key: 'progress' },
+    { label: t('action'), key: 'buttonType' }
+  ]
+
   const renderCell = React.useCallback((data, columnKey) => {
     const cellValue = data[columnKey]
 
@@ -56,10 +59,9 @@ function MyStudyAcitve({ data }) {
               radius="sm"
               className="w-[160px]"
             >
-              <SelectItem key="5">Показать по 5</SelectItem>
-              <SelectItem key="10">Показать по 10</SelectItem>
-              <SelectItem key="20">Показать по 20</SelectItem>
-              <SelectItem key="50">Показать по 50</SelectItem>
+              {['5', '10', '20', '50'].map((i) => (
+                <SelectItem key={i}>{`${t('showby')} ${i}`}</SelectItem>
+              ))}
             </Select>
             <Pagination
               isCompact
@@ -73,7 +75,7 @@ function MyStudyAcitve({ data }) {
             />
 
             <p className="text-[15px] text-[#8a8a8e]">
-              Показаны 1-{pageSize} из {data.length} элементов
+              {t('paginationInfo', { pageSize: pageSize > data.length ? data.length : pageSize, total: data.length })}
             </p>
           </div>
         }

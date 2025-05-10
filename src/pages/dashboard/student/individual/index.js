@@ -2,10 +2,12 @@ import GridExample from '@/components/grid-table'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
 import Individual from '@/features/individual/Individual'
 import MainWrapper from '@/layout/MainWrapper'
+import { useTranslation } from 'react-i18next'
 
 const Index = () => {
+  const { t } = useTranslation()
   return (
-    <MainWrapper title="Самостоятельные">
+    <MainWrapper title={t('independent')}>
       <Individual data={rowData} />
       {/* <GridExample rowData={rowData} colDefs={colDefs} /> */}
     </MainWrapper>

@@ -58,7 +58,7 @@ const Index = () => {
     )
   }
   return (
-    <MainWrapper title="Математика">
+    <MainWrapper title={t('subjects')}>
       <div className="font-sf">
         <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
         <div className="grid grid-cols-12 gap-[24px]">
