@@ -198,9 +198,7 @@ const DashboardNav = () => {
                 style={{ backgroundImage: `url(/images/bg-img.png)` }}
               >
                 <h3 className="text-[13px] font-medium">{t('tariffPlan')}</h3>
-
-                <p className="text-[24px] font-semibold my-[12px]">149,000 сум</p>
-
+                <p className="text-[24px] font-semibold my-[12px]">499,000 {t('sum')}</p>
                 <p className="text-[15px] font-medium">
                   {t('nextCharge')} <br /> 21 марта
                 </p>

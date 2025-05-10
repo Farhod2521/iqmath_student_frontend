@@ -234,5 +234,6 @@
   "paginationInfo": "Показаны 1–{{pageSize}} из {{total}} элементов",
   "theme": "Тема",
   "status": "Статус",
-  "stopTime": "Крайний срок"
+  "stopTime": "Крайний срок",
+  "sum": "сум"
 }

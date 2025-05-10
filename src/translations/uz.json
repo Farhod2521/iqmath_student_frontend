@@ -234,5 +234,6 @@
   "paginationInfo": "{{total}} ta elementdan 1–{{pageSize}} ko'rsatilmoqda",
   "theme": "Mavzu",
   "status": "Status",
-  "stopTime": "Topshirish muddati"
+  "stopTime": "Topshirish muddati",
+  "sum": "so'm"
 }

@@ -373,7 +373,7 @@ const Index = () => {
                                 ...prev,
                                 [selectedQuestion.id]: {
                                   ...(prev[selectedQuestion.id] || {}),
-                                  [item.id]: mathField.latex()
+                                  [item.id]: mathField.latex().replace('?', '✀')
                                 }
                               }))
                             }}
@@ -406,7 +406,7 @@ const Index = () => {
                           onChange={(mathField) =>
                             setTextAnswers((prev) => ({
                               ...prev,
-                              [selectedQuestion.id]: mathField.latex()
+                              [selectedQuestion.id]: mathField.latex().replace('?', '✀')
                             }))
                           }
                           style={{
