@@ -5,49 +5,16 @@ import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
 
 const Index = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   return (
     <MainWrapper title={t('independent')}>
-      <Individual data={rowData} />
+      <Individual data={i18n.language === 'uz' ? rowDataUz : rowData} />
       {/* <GridExample rowData={rowData} colDefs={colDefs} /> */}
     </MainWrapper>
   )
 }
 
 export default Index
-
-const colDefs = [
-  { headerName: '№', field: 'id', width: 80 },
-  { headerName: 'Тема', field: 'theme', flex: 2 },
-  { headerName: 'Дата назначения', field: 'startTime', flex: 1 },
-  {
-    headerName: 'Статус',
-    field: 'status',
-    flex: 1,
-    cellRenderer: () => <span className="text-green-500">Активный</span>
-  },
-  { headerName: 'Крайний срок', field: 'endTime', flex: 1 },
-  {
-    headerName: 'Прогресс',
-    field: 'progress',
-    flex: 1,
-    cellRenderer: ({ value }) => (
-      <div className="flex items-center space-x-4">
-        <div className="relative w-24 h-3 bg-gray-200 rounded-full">
-          <div className="absolute top-0 left-0 h-full bg-orange-500 rounded-full" style={{ width: `${value}%` }} />
-        </div>
-        <span className="text-sm font-medium text-gray-700">{value}%</span>
-      </div>
-    )
-  },
-  {
-    headerName: 'Действие',
-    field: 'progress',
-    cellRenderer: ({ value }) => (
-      <ButtonCellRenderer url={'/dashboard/student/individual/'} value={value === 0 ? 'Начать' : 'Продолжить'} />
-    )
-  }
-]
 
 const rowData = [
   {
@@ -100,6 +67,63 @@ const rowData = [
     theme: 'Сравнение натуральных чисел.\nДвойное неравенство',
     startTime: '23:34, 10.01.2025',
     status: 'Активный',
+    endTime: '23:34, 10.01.2025',
+    progress: 0,
+    action: 0
+  }
+]
+
+const rowDataUz = [
+  {
+    id: '1',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
+    endTime: '23:34, 10.01.2025',
+    progress: 75,
+    action: 75
+  },
+  {
+    id: '2',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
+    endTime: '23:34, 10.01.2025',
+    progress: 0,
+    action: 0
+  },
+  {
+    id: '3',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
+    endTime: '23:34, 10.01.2025',
+    progress: 0,
+    action: 0
+  },
+  {
+    id: '4',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
+    endTime: '23:34, 10.01.2025',
+    progress: 0,
+    action: 0
+  },
+  {
+    id: '5',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
+    endTime: '23:34, 10.01.2025',
+    progress: 0,
+    action: 0
+  },
+  {
+    id: '6',
+    theme: 'Natural sonlarni taqqoslash.\nIkki tomonlama tengsizlik',
+    startTime: '23:34, 10.01.2025',
+    status: 'Faol',
     endTime: '23:34, 10.01.2025',
     progress: 0,
     action: 0

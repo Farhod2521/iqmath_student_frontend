@@ -7,9 +7,10 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
-import { Button, Card } from '@heroui/react'
+import { Avatar, AvatarIcon, Button, Card } from '@heroui/react'
 import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
+import { FaUser } from 'react-icons/fa'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -32,13 +33,14 @@ const Index = () => {
       <div className="grid grid-cols-12 gap-x-[24px]">
         <Card className="col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
-            <Image
+            <Avatar size="lg" className="" icon={<AvatarIcon />} />
+            {/* <Image
               src={'/images/avatar-profile.png'}
               alt="avatar"
               width={100}
               height={100}
               className="rounded-full bg-black"
-            />
+            /> */}
 
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
               {get(studentProfile, 'data.full_name', '')}

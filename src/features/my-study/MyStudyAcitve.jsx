@@ -38,8 +38,8 @@ function MyStudyAcitve({ data }) {
     }
   }, [])
 
-  const [value, setValue] = React.useState(new Set(['10']))
-  const pageSize = Number([...value][0]) || 10
+  const [value, setValue] = React.useState(new Set(['100']))
+  const pageSize = Number([...value][0]) || 100
   return (
     <div>
       <Table
@@ -57,9 +57,9 @@ function MyStudyAcitve({ data }) {
                 e.size && setValue(e)
               }}
               radius="sm"
-              className="w-[160px]"
+              className="w-[180px]"
             >
-              {['5', '10', '20', '50'].map((i) => (
+              {['100', '200', '500'].map((i) => (
                 <SelectItem key={i}>{`${t('showby')} ${i}`}</SelectItem>
               ))}
             </Select>

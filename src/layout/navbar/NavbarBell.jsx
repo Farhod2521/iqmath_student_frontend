@@ -1,6 +1,7 @@
 import { Button } from '@heroui/react'
 import Image from 'next/image'
 import React from 'react'
+import { FaBell } from 'react-icons/fa'
 
 function NavbarBell() {
   return (
@@ -10,7 +11,7 @@ function NavbarBell() {
       variant="light"
       className="scale-100 active:scale-110 transition-all duration-300 p-[6px] cursor-pointer"
     >
-      <Image src={'/icons/bell.svg'} alt="coins-logo" width={26} height={26} />
+      <FaBell size={24} />
     </Button>
   )
 }

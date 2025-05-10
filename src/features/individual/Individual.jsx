@@ -23,7 +23,7 @@ function Individual({ data }) {
 
     switch (columnKey) {
       case 'status':
-        return <span className="text-green-500">Активный</span>
+        return <span className="text-green-500">{cellValue}</span>
       case 'progress':
         return (
           <div className="flex gap-4 w-[140px]">
@@ -45,8 +45,8 @@ function Individual({ data }) {
     }
   }, [])
 
-  const [value, setValue] = React.useState(new Set(['10']))
-  const pageSize = Number([...value][0]) || 10
+  const [value, setValue] = React.useState(new Set(['100']))
+  const pageSize = Number([...value][0]) || 100
   return (
     <div>
       <Table
@@ -64,9 +64,9 @@ function Individual({ data }) {
                 e.size && setValue(e)
               }}
               radius="sm"
-              className="w-[160px]"
+              className="w-[180px]"
             >
-              {['5', '10', '20', '50'].map((i) => (
+              {['100', '200', '500'].map((i) => (
                 <SelectItem key={i}>{`${t('showby')} ${i}`}</SelectItem>
               ))}
             </Select>

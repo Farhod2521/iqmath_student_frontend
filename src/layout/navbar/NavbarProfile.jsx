@@ -6,7 +6,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from '@heroui/react'
-import { User, Avatar, Button } from '@heroui/react'
+import { User, Avatar, AvatarIcon, Button } from '@heroui/react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@heroui/react'
 
 function NavbarProfile() {
@@ -37,8 +37,8 @@ function NavbarProfile() {
     <>
       <Dropdown classNames={{ content: 'w-[280px] rounded-md' }}>
         <DropdownTrigger>
-          <Button variant="light" isIconOnly radius="full" className="p-0 bg-transparent">
-            <Avatar src="/images/avatar.png" radius="full" size="md" className="bg-transparent" />
+          <Button isIconOnly radius="full" className="p-0 bg-transparent">
+            <Avatar icon={<AvatarIcon />} radius="full" size="sm" className="bg-transparent" />
           </Button>
         </DropdownTrigger>
         <DropdownMenu disabledKeys={['peymentkey']}>
@@ -53,7 +53,7 @@ function NavbarProfile() {
             <DropdownItem isReadOnly className="h-14 gap-2 opacity-100">
               <Link href="/dashboard/student/profile">
                 <User
-                  avatarProps={{ size: 'md', className: 'rounded-md', src: '/images/avatar.png' }}
+                  avatarProps={{ size: 'md', className: 'rounded-md' }}
                   classNames={{
                     name: 'text-black dark:text-white font-semibold',
                     description: 'text-[#7C8FAC] dark:text-gray-200 text-sm'

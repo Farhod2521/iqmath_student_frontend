@@ -200,7 +200,7 @@ const DashboardNav = () => {
                 <h3 className="text-[13px] font-medium">{t('tariffPlan')}</h3>
                 <p className="text-[24px] font-semibold my-[12px]">499,000 {t('sum')}</p>
                 <p className="text-[15px] font-medium">
-                  {t('nextCharge')} <br /> 21 марта
+                  {t('nextCharge')} <br /> 21 {t('mart')}
                 </p>
 
                 <button className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]">

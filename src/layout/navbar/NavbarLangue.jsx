@@ -45,7 +45,7 @@ const NavbarLangue = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button className="border-[#E9E9E9]" variant="bordered">
+        <Button className="border-[#E9E9E9] border-1 shadow-sm" variant="bordered">
           <CiGlobe color={'#5A6A85'} size={24} />
           <p className="uppercase text-sm text-black dark:text-white">{selectedLanguage?.name}</p>
         </Button>
