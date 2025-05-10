@@ -1,5 +1,7 @@
+import { Button } from '@heroui/react'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
+import { IoMdSend } from 'react-icons/io'
 
 const ChatBox = ({ chat, messages, onSendMessage }) => {
   const messagesEndRef = useRef(null)
@@ -54,10 +56,9 @@ const ChatBox = ({ chat, messages, onSendMessage }) => {
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           className="flex-1 p-3 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
-          onClick={handleSend}
-          className="p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition"
-        ></button>
+        <Button color="primary" onPress={handleSend} isIconOnly className="">
+          <IoMdSend />
+        </Button>
       </div>
     </div>
   )

@@ -1,5 +1,4 @@
 import PresentCard from '@/card/card-coins'
-import Dashboard from '@/components/dashboard'
 import CoinsIcon from '@/components/icons/coins'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -13,6 +12,8 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { get } from 'lodash'
+import MainWrapper from '@/layout/MainWrapper'
+import { Card } from '@heroui/react'
 
 const items = [
   { img: 't-shirt', title: 'Футболка с принтом', coin: '50' },
@@ -41,7 +42,7 @@ const Index = () => {
   })
   // headerTitle={"Баллы"}
   return (
-    <>
+    <MainWrapper title="Баллы">
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
@@ -108,18 +109,18 @@ const Index = () => {
                 1440: { slidesPerView: 4 }
               }}
               loop={true}
-              className="present-swiper"
+              className="present-swiper bg-transparent"
             >
               {items.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <div className="bg-[#F5F6F8] border border-[#E9E9E9] pt-[5px] px-[16px] pb-[16px] rounded-[12px]">
+                  <Card className="bg-[#F5F6F8] border border-[#E9E9E9] pt-[5px] px-[16px] pb-[16px] rounded-[12px]">
                     <PresentCard
                       img={item.img}
                       title={item.title}
                       coin={item.coin}
                       onclick={index === 0 ? handleOpenModal : undefined}
                     />
-                  </div>
+                  </Card>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -154,7 +155,7 @@ const Index = () => {
           </div>
         </>
       )}
-    </>
+    </MainWrapper>
   )
 }
 

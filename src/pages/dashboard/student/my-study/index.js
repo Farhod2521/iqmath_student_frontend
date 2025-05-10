@@ -1,16 +1,22 @@
-import Dashboard from '@/components/dashboard'
+import EmptyPage from '@/components/empty-page'
 import GridExample from '@/components/grid-table'
-import { useState } from 'react'
-import ProgressCellRenderer from '@/components/grid-table/progressCell'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
+import MyStudyAcitve from '@/features/my-study/MyStudyAcitve'
+import MainWrapper from '@/layout/MainWrapper'
 import { useMyStudyStore } from '@/store'
 
 const Index = () => {
   const tab = useMyStudyStore((state) => state.tab)
 
-  // headerTitle={"Мое обучение"} tab={tab} handleTab={handleTab}
   return (
-    <>{tab === 'active' ? <GridExample rowData={rowData} colDefs={colDefs} /> : <p>Muzlatilgan darslar ro'yxati</p>}</>
+    <MainWrapper title="Мое обучение">
+      {tab === 'active' ? (
+        <MyStudyAcitve data={rowData} />
+      ) : (
+        <EmptyPage title={"Muzlatilgan darslar ro'yxati"}></EmptyPage>
+      )}
+      {/* {tab === 'active' ? <GridExample rowData={rowData} colDefs={colDefs} /> : <p>Muzlatilgan darslar ro'yxati</p>} */}
+    </MainWrapper>
   )
 }
 

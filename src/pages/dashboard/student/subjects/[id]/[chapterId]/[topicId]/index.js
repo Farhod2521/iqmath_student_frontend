@@ -1,4 +1,3 @@
-import Dashboard from '@/components/dashboard'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import useGetQuery from '@/hooks/api/useGetQuery'

@@ -1,3 +1,4 @@
+import { Button } from '@heroui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -18,10 +19,12 @@ function SidebarPlan() {
           {t('nextCharge')} <br /> 21 марта
         </p>
 
-        <button className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]">
-          {' '}
+        <Button
+          variant="bordered"
+          className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
+        >
           {t('cancelContract')}
-        </button>
+        </Button>
       </div>
     </div>
   )

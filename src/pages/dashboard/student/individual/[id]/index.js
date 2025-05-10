@@ -1,10 +1,9 @@
-import Button from '@/components/button'
-import Dashboard from '@/components/dashboard'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { fractionsData } from '@/dummy-data'
+import { Button, Card } from '@heroui/react'
 
 const topics = [
   { title: 'Пропорции и проценты', link: 'topic/percentages', locked: false },
@@ -51,7 +50,7 @@ const Index = () => {
   }, [])
   return (
     <>
-      <div className="my-[24px] relative border border-[#E9E9E9] rounded-[12px] mx-[169px] font-sf" ref={dropdownRef}>
+      <Card className="my-[24px] relative border border-[#E9E9E9] rounded-[12px] mx-[169px] font-sf" ref={dropdownRef}>
         <div className="py-[12px]">
           <div className="cursor-pointer" onClick={() => setOpen(!open)}>
             <h1 className="text-[17px] text-center">
@@ -99,14 +98,11 @@ const Index = () => {
           </div>
 
           <div className="flex items-center gap-x-[8px]">
-            <Button border={'border border-[#D1D1D6]'} px="px-[16px]" py="py-[11px]" classname={'bg-white !text-black'}>
-              Смотреть
-            </Button>
-
+            <Button className="rounded-md">Смотреть</Button>
             <Button
-              px="px-[16px]"
-              py="py-[11px]"
-              onclick={() => router.push('/dashboard/student/individual/undefined/1')}
+              color="primary"
+              className="rounded-md"
+              onPress={() => router.push('/dashboard/student/individual/3/1')}
             >
               Пройти тест
             </Button>
@@ -131,7 +127,7 @@ const Index = () => {
             ))}
           </div>
         </div>
-      </div>
+      </Card>
 
       <AnimatePresence>
         {showWarning && (

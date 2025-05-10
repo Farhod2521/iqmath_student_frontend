@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router'
 import { questions } from '@/dummy-data'
 import { useState } from 'react'
-import Button from '@/components/button'
+// import Button from '@/components/button'
 import Image from 'next/image'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import InfoCircleIcon from '@/components/icons/info-circle'
@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import SimpleModal from '@/components/modal/simple-modal'
 import { dropRight } from 'lodash'
 import Link from 'next/link'
+import { Button, Card } from '@heroui/react'
 
 const mathSymbols = {
   '√x': '\\sqrt{x}',
@@ -76,7 +77,7 @@ const buttons = [
 ]
 
 const Index = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState(null)
+  const [selectedQuestion, setSelectedQuestion] = useState(questions[0])
   const router = useRouter()
   const [showWarning, setShowWarning] = useState(false)
   const [showCalculator, setShowCalculator] = useState(false)
@@ -103,13 +104,13 @@ const Index = () => {
         </div>
 
         <div>
-          <button onClick={() => router.back()} className="float-right rounded">
+          <Button onPress={() => router.back()} isIconOnly variant="light" className="rounded-md">
             <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-12 p-[24px]">
+      <div className="grid grid-cols-12 gap-4 p-[24px]">
         <div className="col-span-6 overflow-y-auto max-h-screen border-r border-r-[#F2F2F7]">
           <ul className="space-y-2">
             {questions.map((question, index) => (
@@ -145,7 +146,7 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-x-[8px]">
-              <Button border={'border border-[#D1D1D6]'} px="px-[16px]" py="py-[11px]">
+              <Button variant="bordered" className="border border-[#D1D1D6] rounded-md">
                 Смотреть
               </Button>
             </div>
@@ -163,13 +164,10 @@ const Index = () => {
 
                   <div className="flex justify-between items-center">
                     <div className="flex relative">
-                      <Button onclick={() => setShowMistake(true)} px="px-[16px]" py="py-[11px]">
+                      <Button onPress={() => setShowMistake(true)} className="rounded-md">
                         Проверить
                       </Button>
-
-                      <Button px="px-[16px]" py="py-[11px]" classname={'bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]'}>
-                        Показать решение
-                      </Button>
+                      <Button className={'rounded-md !text-black ml-[12px] mr-[20px]'}>Показать решение</Button>
 
                       <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
                         <button onClick={handleShowWarning}>

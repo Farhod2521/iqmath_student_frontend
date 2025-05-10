@@ -1,36 +1,49 @@
-import Dashboard from '@/components/dashboard'
+import MainWrapper from '@/layout/MainWrapper'
+import { Button, Card } from '@heroui/react'
 
 const Index = () => {
   return (
-    // <Dashboard headerTitle={"Кошелек"}>
-    <div className="grid grid-cols-12 gap-x-[24px]">
-      <div className="col-span-6 space-y-[12px]">
-        <div className=" border border-[#E9E9E9] py-[16px] px-[24px] rounded-[12px] flex items-center justify-between">
-          <div>
-            <h5 className="text-[17px] font-medium mb-[12px]">Общий баланс</h5>
-            <p className="font-semibold text-[26px]">0.00</p>
-          </div>
+    <MainWrapper title="Кошелек">
+      <div className="grid grid-cols-12 gap-x-[24px]">
+        <div className="col-span-6 space-y-[12px]">
+          <Card className="rounded-[12px] ">
+            <div className="border border-[#E9E9E9] py-[16px] px-[24px]  flex items-center justify-between">
+              <div>
+                <h5 className="text-[17px] font-medium mb-[12px]">Общий баланс</h5>
+                <p className="font-semibold text-[26px]">0.00</p>
+              </div>
 
-          <button className="text-white bg-[#5D87FF] text-[15px] font-medium py-[13px] px-[16px] rounded-[10px]">
-            Пополнить
-          </button>
-        </div>
-        <div
-          style={{ backgroundImage: `url(/images/bg-img.png)` }}
-          className="  py-[16px] px-[24px] rounded-[12px] flex items-start justify-between bg-no-repeat bg-cover text-white"
-        >
-          <div>
-            <h5 className="text-[15px] font-medium ">Тарифный план</h5>
-            <p className="font-semibold text-[28px] my-[12px]">149,000 сум</p>
-            <p className="text-[15px] font-medium ">Следующая списания 21 марта</p>
-          </div>
+              <Button className="text-white bg-[#5D87FF] text-[15px] font-medium py-[13px] px-[16px] rounded-[10px]">
+                Пополнить
+              </Button>
+            </div>
+          </Card>
+          <Card>
+            <div
+              style={{
+                backgroundImage: `url(/images/bg-img.png)`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'
+              }}
+              className="  py-[16px] px-[24px] rounded-[12px] flex items-start justify-between bg-no-repeat bg-cover text-white"
+            >
+              <div>
+                <h5 className="text-[15px] font-medium ">Тарифный план</h5>
+                <p className="font-semibold text-[28px] my-[12px]">149,000 сум</p>
+                <p className="text-[15px] font-medium ">Следующая списания 21 марта</p>
+              </div>
 
-          <button className="text-white bg-transparent border border-white text-[15px] font-medium py-[9px] px-[16px] rounded-[10px]">
-            Оплатить
-          </button>
+              <Button
+                variant="bordered"
+                className="text-white bg-transparent border border-white text-[15px] font-medium py-[9px] px-[16px] rounded-[10px]"
+              >
+                Оплатить
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
-    </div>
+    </MainWrapper>
   )
 }
 

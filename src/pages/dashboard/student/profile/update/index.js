@@ -1,8 +1,7 @@
-import Dashboard from '@/components/dashboard'
 import { useState } from 'react'
 import RightIcon from '@/components/icons/right'
 import Input from '@/components/input'
-import Button from '@/components/button'
+// import Button from '@/components/button'
 import Image from 'next/image'
 import TrashIcon from '@/components/icons/trash'
 import ImageUploader from '@/components/image-uploader'
@@ -14,6 +13,7 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'react-hook-form'
+import { Button, Card } from '@heroui/react'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -86,7 +86,7 @@ const Index = () => {
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-12 lg:col-span-6 space-y-[12px]">
           {/* Main infos */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
+          <Card className="border py-[17px] shadow-sm px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMain(!showDropdownMain)}
               className="flex justify-between items-center cursor-pointer"
@@ -94,7 +94,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Основные данные</h4>
               <button>
                 <RightIcon
-                  classname={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
+                  className={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -129,13 +129,15 @@ const Index = () => {
                     <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
                   </div>
 
-                  <Button onclick={handleProfileUpdate}>Сохранить</Button>
+                  <Button color="primary" className="border" onPress={handleProfileUpdate}>
+                    Сохранить
+                  </Button>
                 </form>
               </AnimateUp>
             )}
-          </div>
+          </Card>
           {/* Email */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
+          <Card className="border py-[17px] shadow-sm  px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMail(!showDropdownMail)}
               className="flex justify-between items-center cursor-pointer"
@@ -143,7 +145,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Изменить email-адрес</h4>
               <button>
                 <RightIcon
-                  classname={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
+                  className={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -162,13 +164,15 @@ const Index = () => {
                     <Input type="email" placeholder={'E-mail'} />
                   </div>
 
-                  <Button disabled={true}>Сохранить</Button>
+                  <Button color="primary" isDisabled>
+                    Сохранить
+                  </Button>
                 </form>
               </AnimateUp>
             )}
-          </div>
+          </Card>
           {/* Password */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
+          <Card className="border py-[17px] shadow-sm px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownPassword(!showDropdownPassword)}
               className="flex justify-between items-center cursor-pointer"
@@ -176,7 +180,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Изменить пароль</h4>
               <button>
                 <RightIcon
-                  classname={`${!showDropdownPassword ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
+                  className={`${!showDropdownPassword ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -197,18 +201,18 @@ const Index = () => {
                     </div>
 
                     <div className="flex gap-[12px] flex-wrap">
-                      <Button disabled={true}>Сохранить</Button>
-                      <Button px="px-[16px]" classname={'bg-[#EDEDF2] !text-black'}>
-                        Сгенерировать новый
+                      <Button color="primary" isDisabled>
+                        Сохранить
                       </Button>
+                      <Button>Сгенерировать новый</Button>
                     </div>
                   </form>
                 </div>
               </AnimateUp>
             )}
-          </div>
+          </Card>
           {/* Account Delete */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
+          <Card className="border py-[17px]  shadow-sm  px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownAccount(!showDropdownAccount)}
               className="flex justify-between items-center cursor-pointer"
@@ -216,7 +220,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Учетная запись</h4>
               <button>
                 <RightIcon
-                  classname={`${!showDropdownAccount ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
+                  className={`${!showDropdownAccount ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -243,10 +247,8 @@ const Index = () => {
                   </div>
 
                   <Button
-                    px="px-[15px]"
-                    py="py-[11px]"
-                    border={'border border-[#FF3B30]'}
-                    classname={'flex bg-transparent !text-black gap-x-[8px]'}
+                    variant="bordered"
+                    className={'flex bg-transparent !text-black gap-x-[8px] border border-[#FF3B30]'}
                   >
                     <TrashIcon color="#FF3B30" />
                     <p>Удалить аккаунт</p>
@@ -254,7 +256,7 @@ const Index = () => {
                 </div>
               </div>
             )}
-          </div>
+          </Card>
         </div>
 
         <div className="col-span-12 lg:col-span-6">
@@ -263,8 +265,8 @@ const Index = () => {
       </div>
       {/* Save or exit section */}
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md border-t border-t-[#E9E9E9] p-4 flex justify-end gap-2">
-        <button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">Отменить изменения</button>
-        <button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">Сохранить изменения</button>
+        <Button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">Отменить изменения</Button>
+        <Button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">Сохранить изменения</Button>
       </div>
     </>
   )

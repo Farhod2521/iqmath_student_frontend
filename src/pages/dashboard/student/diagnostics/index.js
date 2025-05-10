@@ -15,7 +15,7 @@ import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
-import Button from '@/components/button'
+// import Button from '@/components/button'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import Link from 'next/link'
 import { get } from 'react-hook-form'
@@ -25,6 +25,8 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import LanguageDropdown from '@/components/language'
+import NavbarLangue from '@/layout/navbar/NavbarLangue'
+import { Button } from '@heroui/react'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -302,11 +304,16 @@ const Index = () => {
         </div>
 
         <div className="flex items-center">
-          <LanguageDropdown />
+          <NavbarLangue />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-[10px]"></div>
-          <button onClick={() => router.push('/dashboard/student/profile/')} className="float-right rounded">
+          <Button
+            variant="light"
+            isIconOnly
+            onPress={() => router.push('/dashboard/student/profile/')}
+            className="float-right rounded"
+          >
             <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -459,30 +466,27 @@ const Index = () => {
                   <div className="flex relative items-center gap-8">
                     <div className="flex justify-between items-center  gap-4">
                       <Button
-                        onclick={handlePrev}
-                        disabled={selectedIndex === 0}
-                        px="px-[16px]"
-                        py="py-[11px]"
-                        className={`px-4 py-2 rounded-md ${
-                          selectedIndex === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-500 text-white'
-                        }`}
+                        color="primary"
+                        onPress={handlePrev}
+                        isDisabled={selectedIndex === 0}
+                        className={`px-4 py-2 rounded-md`}
                       >
                         {t('back')}
                       </Button>
 
                       {selectedIndex === testQuestions.length - 1 ? (
                         <Button
-                          onclick={() => {
+                          color="primary"
+                          className="rounded-md"
+                          onPress={() => {
                             setShowMistake(true)
                             handleCheckMyResults()
                           }}
-                          px="px-[16px]"
-                          py="py-[11px]"
                         >
                           {t('check')}
                         </Button>
                       ) : (
-                        <Button px="px-[16px]" py="py-[11px]" onclick={handleNext}>
+                        <Button className="rounded-md" color="primary" onPress={handleNext}>
                           {t('next')}
                         </Button>
                       )}

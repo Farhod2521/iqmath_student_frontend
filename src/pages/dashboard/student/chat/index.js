@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import Dashboard from '@/components/dashboard'
 import Image from 'next/image'
 import ChatBox from './ChatBox'
-
+import { Card } from '@heroui/react'
+import { Tabs, Tab } from '@heroui/react'
+import MainWrapper from '@/layout/MainWrapper'
 const Index = () => {
   const chats = [
     {
@@ -22,7 +23,7 @@ const Index = () => {
   ]
 
   const [activeTab, setActiveTab] = useState('all')
-  const [selectedChat, setSelectedChat] = useState(null)
+  const [selectedChat, setSelectedChat] = useState(chats[0])
 
   const [userMessages, setUserMessages] = useState({
     1: [{ id: 1, text: 'Salom Savlat!', fromMe: false, time: '22:00' }],
@@ -69,11 +70,43 @@ const Index = () => {
 
   // headerTitle={"Чат"}
   return (
-    <>
-      <div className="flex">
-        <div className="border border-[#E9E9E9] rounded-[12px] py-[16px] px-[24px] w-[350px]">
+    <MainWrapper title="Чат">
+      <div className="flex gap-2">
+        <Card className="border border-[#E9E9E9] rounded-[12px] py-[16px] px-[24px] w-[400px]">
           <h2>Сообщение</h2>
-          <div className="flex bg-[#f4f4f4] rounded-xl p-1 w-fit mt-[12px]">
+          <Tabs
+            aria-label="Options"
+            fullWidth
+            className="mt-4 rounded-md"
+            classNames={{
+              tabList: '',
+              cursor: 'bg-white',
+              tab: '',
+              tabContent: ''
+            }}
+          >
+            <Tab key="all" title="Все">
+              {chats.map((chat) => (
+                <MessageItem
+                  key={chat.id}
+                  chat={chat}
+                  onClick={() => handleChatClick(chat)}
+                  isActive={selectedChat?.id === chat.id}
+                />
+              ))}
+            </Tab>
+            <Tab key="unread" title="Непрочитанные">
+              {chats.slice(0, 1).map((chat) => (
+                <MessageItem
+                  key={chat.id}
+                  chat={chat}
+                  onClick={() => handleChatClick(chat)}
+                  isActive={selectedChat?.id === chat.id}
+                />
+              ))}
+            </Tab>
+          </Tabs>
+          {/* <div className="flex bg-[#f4f4f4] rounded-xl p-1 w-fit mt-[12px]">
             <button
               onClick={() => setActiveTab('all')}
               className={`px-6 py-2 rounded-xl text-sm font-medium transition w-[150px]
@@ -116,10 +149,10 @@ const Index = () => {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </div> */}
+        </Card>
 
-        <div className="w-full mx-[24px]">
+        <Card className="w-full">
           {selectedChat ? (
             <ChatBox
               chat={selectedChat}
@@ -129,9 +162,9 @@ const Index = () => {
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400">Выберите чат слева</div>
           )}
-        </div>
+        </Card>
       </div>
-    </>
+    </MainWrapper>
   )
 }
 

@@ -24,8 +24,11 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const isAdminRoute =
     router.pathname.startsWith('/dashboard') &&
     !router.pathname.endsWith('question') &&
-    !router.pathname.endsWith('diagnostics')
+    !router.pathname.endsWith('diagnostics') &&
+    !router.pathname.endsWith('[test]')
   const Layout = isAdminRoute ? LayoutAdmin : LayoutHome
+
+  console.log(router)
 
   // Set language on the client after the component is mounted
   useEffect(() => {

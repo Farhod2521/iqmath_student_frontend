@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
@@ -53,6 +53,18 @@ const Index = () => {
     }, 300)
   }
 
+  const subjectsData = useMemo(() => {
+    const types = !studentSubjects
+      ? []
+      : [...new Set([...studentSubjects?.data?.map((i) => (i18n.language === 'uz' ? i.name_uz : i.name_ru))])]
+
+    const listData = types.map((i) => ({
+      type: i,
+      data: studentSubjects.data.filter((j) => j.name_uz === i || j.name_ru === i)
+    }))
+    return listData || []
+  }, [studentSubjects, i18n.language])
+
   if (isLoading || isFetching) return <ContentLoader />
 
   return (
@@ -89,28 +101,36 @@ const Index = () => {
         </SimpleModal>
       )}
 
-      <div className="flex flex-wrap gap-6">
-        {studentSubjects?.data?.map((item, index) => {
-          const imageUrl =
-            i18n.language === 'uz'
-              ? `${config.API_URL}${get(item, 'image_uz')}`
-              : `${config.API_URL}${get(item, 'image_ru')}`
+      <div>
+        {subjectsData.map((subject, idx) => (
+          <div key={idx}>
+            <h2 className="font-bold mb-2 text-[20px]">{subject.type}</h2>
+            <div className="flex flex-wrap gap-6">
+              {subject.data?.map((item, index) => {
+                const imageUrl =
+                  i18n.language === 'uz'
+                    ? `${config.API_URL}${get(item, 'image_uz')}`
+                    : `${config.API_URL}${get(item, 'image_ru')}`
 
-          const classAll = i18n.language === 'uz' ? get(item, 'class_uz') : get(item, 'class_ru')
+                const classAll = i18n.language === 'uz' ? get(item, 'class_uz') : get(item, 'class_ru')
 
-          if (item.is_open) {
-            return (
-              <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
-                <Card isFooterBlurred className={`border-none cursor-pointer shadow-md`} radius="md">
-                  <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
-                  <CardFooter className="justify-center border-white/20 border-1 overflow-hidden  absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                    {classAll}
-                  </CardFooter>
-                </Card>
-                {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
+                if (item.is_open) {
+                  return (
+                    <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
+                      <Card
+                        isFooterBlurred
+                        className={`border-none cursor-pointer h-[280px] w-[200px] shadow-sm`}
+                        radius="sm"
+                      >
+                        <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
+                        <CardFooter className="justify-center border-white/20 border-1 overflow-hidden rounded-md  absolute before:rounded-xl bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                          {classAll}
+                        </CardFooter>
+                      </Card>
+                      {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
                   {className}
                 </p> */}
-                {/* <div className="rounded-[12px]">
+                      {/* <div className="rounded-[12px]">
                   <Image
                     src={imageUrl}
                     alt={className}
@@ -122,22 +142,30 @@ const Index = () => {
                 <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
                   {className}
                 </p> */}
-              </div>
-            )
-          } else {
-            return (
-              <Card isFooterBlurred key={index} className={`shadow-md`} radius="md">
-                <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
-                <div className="absolute z-20 bottom-4 text-black/20 w-full flex justify-center">{classAll}</div>
-                <CardFooter className="absolute bg-white/10 h-full bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                  <div className="flex items-center justify-center w-full">
-                    <FaLock size={40} className="text-black/40" />
-                  </div>
-                </CardFooter>
-              </Card>
-            )
-          }
-        })}
+                    </div>
+                  )
+                } else {
+                  return (
+                    <Card
+                      isFooterBlurred
+                      key={index}
+                      className={`border-none cursor-pointer h-[280px] w-[200px] shadow-sm`}
+                      radius="sm"
+                    >
+                      <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
+                      <div className="absolute z-20 bottom-4 text-black/20 w-full flex justify-center">{classAll}</div>
+                      <CardFooter className="absolute bg-white/10 h-full  bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+                        <div className="flex items-center justify-center w-full">
+                          <FaLock size={40} className="text-black/40" />
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  )
+                }
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </MainWrapper>
   )
