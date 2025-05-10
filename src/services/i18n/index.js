@@ -1,32 +1,29 @@
-import { initReactI18next } from "react-i18next";
-import i18next from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import uzTranslations from "@/translations/uz.json";
-import ruTranslations from "@/translations/ru.json";
-import enTranslations from "@/translations/en.json";
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
-// Get the saved language from localStorage (default to 'uz')
-let storedLang = "uz";
-if (typeof window !== "undefined") {
-  storedLang = localStorage.getItem("lang") || "uz"; // Get from localStorage if available
-}
+import uz from '@/translations/uz.json'
+import ru from '@/translations/ru.json'
+import en from '@/translations/en.json'
 
-i18next
-  .use(initReactI18next)
+i18n
   .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
+    fallbackLng: 'uz',
+    lng: 'uz',
     resources: {
-      uz: { translation: uzTranslations },
-      ru: { translation: ruTranslations },
-      en: { translation: enTranslations },
+      uz: { translation: uz },
+      ru: { translation: ru },
+      en: { translation: en }
     },
-    lng: storedLang, // Use the stored language if available
-    fallbackLng: "uz",
-    keepPreviousData: false,
-    debug: true,
+    detection: {
+      order: ['localStorage'], // Tilni aniqlash tartibi
+      caches: ['localStorage'] // Tanlangan tilni shu yerda saqlaydi
+    },
     interpolation: {
-      escapeValue: false,
-    },
-  });
+      escapeValue: false
+    }
+  })
 
-export default i18next;
+export default i18n
