@@ -13,8 +13,8 @@ import '@/services/i18n' // i18n'ni faqat import qilish kifoya!
 import { UserProfileProvider } from '@/context/responseProvider'
 import { HeroUIProvider } from '@heroui/react'
 
-const LayoutAdmin = dynamic(() => import('@/layout/LayoutAdmin'))
-const LayoutHome = dynamic(() => import('@/home/Layout'))
+const LayoutAdmin = dynamic(() => import('@/layout/LayoutAdmin'), { ssr: false })
+const LayoutHome = dynamic(() => import('@/home/Layout'), { ssr: false })
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => reactQueryClient)

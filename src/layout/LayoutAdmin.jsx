@@ -7,33 +7,32 @@ import { useSettingStore } from '@/store'
 
 const LayoutAdmin = ({ children }) => {
   const router = useRouter()
-
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
-  useEffect(() => {
-    setIsSidebarOpen(window.innerWidth > 1024) // Sahifa yuklanganda aniqlash
-  }, [])
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setIsSidebarOpen(true)
-      } else {
-        setIsSidebarOpen(false)
-      }
+    // Faqat bir marta ishga tushadi
+    const updateSidebarState = () => {
+      setIsSidebarOpen(window.innerWidth > 1024)
     }
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    updateSidebarState() // dastlabki holat
+    window.addEventListener('resize', updateSidebarState)
+
+    setIsMounted(true)
+
+    return () => window.removeEventListener('resize', updateSidebarState)
+  }, [setIsSidebarOpen])
 
   useEffect(() => {
+    // Route o'zgarsa va kichik ekran bo‘lsa, sidebar yopiladi
     if (window.innerWidth < 1024) {
       setIsSidebarOpen(false)
     }
-  }, [router.pathname])
+  }, [router.pathname, setIsSidebarOpen])
 
-  if (isSidebarOpen === null) return null
+  if (!isMounted) return null // SSR bilan muammoni oldini olish
 
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
