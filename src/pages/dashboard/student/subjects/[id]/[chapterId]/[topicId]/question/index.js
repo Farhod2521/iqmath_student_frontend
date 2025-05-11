@@ -491,7 +491,7 @@ export default function StudentTestPage() {
                       >
                         {t('goAgain')}
                       </Button>
-                      <Button onclick={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
+                      <Button onPress={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
                     </div>
                   </div>
                 </SimpleModal>
