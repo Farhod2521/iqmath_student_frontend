@@ -236,5 +236,14 @@
   "theme": "Тема",
   "status": "Статус",
   "stopTime": "Крайний срок",
-  "sum": "сум"
+  "sum": "сум",
+  "sendMentor": "Отправить ментору",
+  "repeatTopic": "Повторить все темы",
+  "chooseQueation": "Выберите вопрос...",
+  "toHomePage": "Вернуться на главную",
+  "goAgain": "Пройти заново",
+  "showSolution": "Показать решение",
+  "yourScore": "Ваш балл {{score}}",
+  "yourAnswer": "Вы ответили правильно на {{answer}} вопросов из {{total}}",
+  "yourResult": "Ваш результат: {{result}}"
 }

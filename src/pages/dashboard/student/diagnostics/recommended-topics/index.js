@@ -22,7 +22,7 @@ const Index = () => {
     },
     enabled: !!session?.accessToken,
     params: {
-      level: topic
+      level: 1
     }
   })
 
@@ -47,7 +47,7 @@ const Index = () => {
                   setSelectedTopic(item.id)
                   router.push(`/dashboard/student/diagnostics/recommended-topics/${item.id}`)
                 }}
-                className="p-[12px] pl-[24px] bg-white border-b border-[#E9E9E9] last:border-b-0"
+                className="p-[12px] pl-[24px] hover:bg-blue-50 cursor-pointer bg-white border-b border-[#E9E9E9] last:border-b-0"
               >
                 {i18n.language === 'uz' ? item.name_uz : item.name_ru}
               </li>

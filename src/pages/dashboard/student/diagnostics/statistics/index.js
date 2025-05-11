@@ -55,7 +55,7 @@ const Index = () => {
                 <div className="w-1/3 flex justify-end">
                   {get(item, 'message', '') ? (
                     <Button
-                      onClick={() => {
+                      onPress={() => {
                         router.push('/dashboard/student/diagnostics')
                       }}
                       className="py-[9px] px-[33px] bg-[#EDEDF2] hover:bg-[#c0c0c0] rounded-[8px] transition-all duration-300"
@@ -64,15 +64,16 @@ const Index = () => {
                     </Button>
                   ) : (
                     <div className="flex items-center gap-x-[17px]">
-                      <button
-                        onClick={() => {
+                      <Button
+                        onPress={() => {
                           router.push('/dashboard/student/diagnostics')
                         }}
                         className="py-[9px] px-[13px] bg-[#5D87FF] text-white rounded-[8px]"
                       >
                         {t('continueTest')}
-                      </button>
+                      </Button>
                       <Button
+                        isIconOnly
                         onPress={() => {
                           router.push('/dashboard/student/diagnostics')
                         }}

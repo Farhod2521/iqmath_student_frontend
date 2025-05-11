@@ -42,13 +42,13 @@ const wrapPlainMath = (value) => {
 export default function StudentTestPage() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const { id, chapterId, topicId } = router.query
+  const { chapterId, id } = router.query
   const { data: session } = useSession()
-
+  console.log(router.query)
   const [tab, setTab] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedQuestion, setSelectedQuestion] = useState(null)
-  const [showNextModal, setShowNextModal] = useState(true)
+  const [showNextModal, setShowNextModal] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
   const [showCalculator, setShowCalculator] = useState(false)
   const [showSolution, setShowSolution] = useState(false)
@@ -64,10 +64,10 @@ export default function StudentTestPage() {
 
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
-    url: `${URLS.studentQuestions}${topicId}/`,
-    params: { level: tab },
+    url: `${URLS.studentQuestions}${id}/`,
+    params: { level: 1 },
     headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
-    enabled: !!topicId && !!session?.accessToken
+    enabled: !!id && !!session?.accessToken
   })
 
   const { mutate: checkMyResults } = usePostQuery({
@@ -116,17 +116,8 @@ export default function StudentTestPage() {
       .filter((q) => q.question_type === 'composite')
       .map((q) => ({
         question_id: q.id,
-        answers: q.sub_questions.map((sub) => ({
-          question_id: sub.id,
-          answer: wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || '')
-        }))
+        answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
-
-    console.log(' { choice_answers, composite_answers, text_answers }', {
-      choice_answers,
-      composite_answers,
-      text_answers
-    })
 
     checkMyResults(
       {
@@ -144,14 +135,14 @@ export default function StudentTestPage() {
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
-        onError: () => toast.error('Error submitting test')
+        onError: () => toast.error("Test to'liq bajaring!")
       }
     )
   }
 
   return (
     <div className="font-sf">
-      {showNextModal && (
+      {/* {showNextModal && (
         <SimpleModal>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold">{t('diagnostics')}</h3>
@@ -207,7 +198,7 @@ export default function StudentTestPage() {
             </button>
           </div>
         </SimpleModal>
-      )}
+      )} */}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
           <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
@@ -219,7 +210,7 @@ export default function StudentTestPage() {
           <NavbarLangue />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-[10px]"></div>
           <Button
-            onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}
+            onPress={() => router.push(`/dashboard/student/diagnostics/recommended-topics/${id}`)}
             className="float-right rounded"
             variant="light"
             isIconOnly
@@ -500,7 +491,7 @@ export default function StudentTestPage() {
                       >
                         {t('goAgain')}
                       </Button>
-                      <Button onclick={() => router.push('/')}>{t('toHomePage')}</Button>
+                      <Button onPress={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
                     </div>
                   </div>
                 </SimpleModal>
@@ -563,8 +554,15 @@ export default function StudentTestPage() {
                     <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
                     <div className="py-[16px] px-[16px] flex justify-end gap-[12px]">
-                      <Button className={'!bg-transparent border !text-black'}>{t('sendMentor')}</Button>
-                      <Button onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
+                      <Button
+                        className={'!bg-transparent border !text-black'}
+                        onPress={() => {
+                          toast.success('Mentorga yuborildi')
+                        }}
+                      >
+                        {t('sendMentor')}
+                      </Button>
+                      <Button onPress={() => router.push(`/dashboard/student/diagnostics/recommended-topics/${id}`)}>
                         {t('repeatTopic')}
                       </Button>
                     </div>

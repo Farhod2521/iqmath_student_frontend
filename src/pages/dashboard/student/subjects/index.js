@@ -21,8 +21,9 @@ const Index = () => {
   const searchParams = useSearchParams()
   const phone = searchParams.get('phone')
 
+  console.log('phone', phone)
   const [copied, setCopied] = useState(false)
-  const [showModal, setShowModal] = useState(!!phone)
+  const [showModal, setShowModal] = useState(true)
 
   const {
     data: studentSubjects,
@@ -47,10 +48,10 @@ const Index = () => {
   }
 
   const closeModal = () => {
-    setTimeout(() => {
-      setShowModal(false)
-      router.push('/dashboard/student/diagnostics')
-    }, 300)
+    // setTimeout(() => {
+    setShowModal(false)
+    router.push('/dashboard/student/diagnostics')
+    // }, 10)
   }
 
   const subjectsData = useMemo(() => {
@@ -69,7 +70,7 @@ const Index = () => {
 
   return (
     <MainWrapper title={t('subjects')}>
-      {showModal && phone && (
+      {phone && showModal && (
         <SimpleModal>
           <div className="flex justify-between px-4 py-4">
             <h3 className="text-[19px] font-semibold">{t('confidentiality')}</h3>

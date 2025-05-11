@@ -131,6 +131,10 @@ const Index = () => {
       }
     )
   }
+
+  useEffect(() => {
+    handleBeginTest()
+  }, [])
   // natijani ko'rish uchun post
   const { mutate: checkMyResults, isLoading: isLoadingCheck } = usePostQuery({
     listKeyId: 'check-my-results',
@@ -192,14 +196,22 @@ const Index = () => {
         }
       })
 
+    console.log(
+      'composite_answers',
+      testQuestions.filter((q) => q.question_type === 'composite')
+    )
+    console.log('compositeAnswers', compositeAnswers)
     const composite_answers = testQuestions
       .filter((q) => q.question_type === 'composite')
       .map((q) => {
         const userSubAnswers = compositeAnswers[q.id] || {}
-        const sub_answers = q.sub_questions.map((sub) => ({
-          question_id: sub.id,
-          answer: wrapPlainMath(userSubAnswers[sub.id] || '') // wrap qilingan javob
-        }))
+        // const sub_answers = q.sub_questions.map((sub) => ({
+        //   question_id: sub.id,
+        //   answer: wrapPlainMath(userSubAnswers[sub.id] || '') // wrap qilingan javob
+        // }))
+        const sub_answers = q.sub_questions.map((sub) => {
+          return wrapPlainMath(userSubAnswers[sub.id] || '')
+        })
         return {
           question_id: q.id,
           answers: sub_answers
@@ -228,10 +240,11 @@ const Index = () => {
           setCompositeAnswers({})
           setChoiceAnswers({})
           toast.success('Siz testni yakunladingiz!')
+          setShowMistake(true)
         },
         onError: (err) => {
-          console.log(err)
-          toast.error('Error submitting test')
+          // toast.error(err?.response?.data?.message)
+          toast.error("Testni to'liq bajaring!")
         }
       }
     )
@@ -239,7 +252,7 @@ const Index = () => {
 
   return (
     <div className="font-sf">
-      {showNextModal && (
+      {/* {showNextModal && (
         <SimpleModal>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold">{t('diagnostics')}</h3>
@@ -295,7 +308,7 @@ const Index = () => {
             </button>
           </div>
         </SimpleModal>
-      )}
+      )} */}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
           <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
@@ -309,7 +322,7 @@ const Index = () => {
           <Button
             variant="light"
             isIconOnly
-            onPress={() => router.push('/dashboard/student/profile/')}
+            onPress={() => router.push('/dashboard/student/diagnostics/statistics')}
             className="float-right rounded"
           >
             <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
@@ -387,10 +400,10 @@ const Index = () => {
                       </label>
                     ))}
                   {selectedQuestion?.question_type === 'composite' && (
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 items-center">
                       {selectedQuestion?.sub_questions?.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
-                          <span className="w-1/3 text-gray-800 text-[16px]">
+                          <span className=" text-gray-800 text-[16px]">
                             <MathJaxContext
                               config={{
                                 loader: { load: ['input/tex', 'output/chtml'] }
@@ -415,16 +428,7 @@ const Index = () => {
                               }))
                             }}
                             onFocus={() => setActiveInputId(item.id)}
-                            style={{
-                              width: '100%',
-                              height: '70px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              fontSize: '24px',
-                              borderRadius: '8px',
-                              padding: '10px',
-                              border: '1px solid #E9E9E9'
-                            }}
+                            style={compositeMathStyle}
                           />
                           <span>{item?.text2 || item?.text2_uz || item?.text2_ru}</span>
                         </div>
@@ -446,16 +450,7 @@ const Index = () => {
                               [selectedQuestion.id]: mathField.latex()
                             }))
                           }
-                          style={{
-                            width: '100%',
-                            height: '70px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            fontSize: '24px',
-                            borderRadius: '8px',
-                            padding: '10px',
-                            border: '1px solid #E9E9E9'
-                          }}
+                          style={textMathStyle}
                         />
                       </div>
                     </div>
@@ -479,7 +474,7 @@ const Index = () => {
                           color="primary"
                           className="rounded-md"
                           onPress={() => {
-                            setShowMistake(true)
+                            // setShowMistake(true)
                             handleCheckMyResults()
                           }}
                         >
@@ -491,14 +486,6 @@ const Index = () => {
                         </Button>
                       )}
                     </div>
-
-                    {/* <Button
-                      px="px-[16px]"
-                      py="py-[11px]"
-                      classname={"bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]"}
-                    >
-                      Показать решение
-                    </Button> */}
 
                     <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
                       <button onClick={handleShowWarning}>
@@ -633,10 +620,10 @@ const Index = () => {
                     <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
                     <Link
-                      href={'/dashboard/student/diagnostics/recommended-topics'}
+                      href={`/dashboard/student/diagnostics/recommended-topics`}
                       className="flex items-center justify-center py-[16px]"
                     >
-                      <Button>{t('recommendation')}</Button>
+                      <Button color="primary">{t('recommendation')}</Button>
                     </Link>
                   </div>
                 </SimpleModal>
@@ -652,3 +639,25 @@ const Index = () => {
 }
 
 export default Index
+
+const compositeMathStyle = {
+  width: '140px',
+  height: '40px',
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '24px',
+  borderRadius: '8px',
+  padding: '10px',
+  border: '1px solid #E9E9E9'
+}
+
+const textMathStyle = {
+  width: '100%',
+  height: '70px',
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '24px',
+  borderRadius: '8px',
+  padding: '10px',
+  border: '1px solid #E9E9E9'
+}

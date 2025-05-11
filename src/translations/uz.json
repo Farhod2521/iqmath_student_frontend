@@ -236,5 +236,14 @@
   "theme": "Mavzu",
   "status": "Status",
   "stopTime": "Topshirish muddati",
-  "sum": "so'm"
+  "sum": "so'm",
+  "sendMentor": "Mentorga yuboring",
+  "repeatTopic": "Barcha mavzularni takrorlang",
+  "chooseQueation": "Savolni tanlash...",
+  "toHomePage": "Bosh sahifaga qaytish",
+  "goAgain": "Yana o'ting",
+  "showSolution": "Yechimni ko'rsatish",
+  "yourScore": "Sizning ballingiz {{score}}",
+  "yourAnswer": "Siz {{answer}} ta savolga {{total}} savolga toʻgʻri javob berdingiz",
+  "yourResult": "Sizning natijangiz: {{result}}"
 }
