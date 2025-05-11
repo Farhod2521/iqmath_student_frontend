@@ -140,8 +140,6 @@ export default function StudentTestPage() {
     )
   }
 
-  console.log('questions', questions)
-
   return (
     <div className="font-sf">
       {showNextModal && (
