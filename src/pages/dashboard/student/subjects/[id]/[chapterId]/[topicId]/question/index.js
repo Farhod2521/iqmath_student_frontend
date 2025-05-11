@@ -116,17 +116,8 @@ export default function StudentTestPage() {
       .filter((q) => q.question_type === 'composite')
       .map((q) => ({
         question_id: q.id,
-        answers: q.sub_questions.map((sub) => ({
-          question_id: sub.id,
-          answer: wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || '')
-        }))
+        answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
-
-    console.log(' { choice_answers, composite_answers, text_answers }', {
-      choice_answers,
-      composite_answers,
-      text_answers
-    })
 
     checkMyResults(
       {
@@ -144,10 +135,12 @@ export default function StudentTestPage() {
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
-        onError: () => toast.error('Error submitting test')
+        onError: () => toast.error("Testni to'liq bajaring")
       }
     )
   }
+
+  console.log('questions', questions)
 
   return (
     <div className="font-sf">
@@ -500,7 +493,7 @@ export default function StudentTestPage() {
                       >
                         {t('goAgain')}
                       </Button>
-                      <Button onclick={() => router.push('/')}>{t('toHomePage')}</Button>
+                      <Button onclick={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
                     </div>
                   </div>
                 </SimpleModal>
@@ -563,7 +556,12 @@ export default function StudentTestPage() {
                     <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
                     <div className="py-[16px] px-[16px] flex justify-end gap-[12px]">
-                      <Button className={'!bg-transparent border !text-black'}>{t('sendMentor')}</Button>
+                      <Button
+                        className={'!bg-transparent border !text-black'}
+                        onPress={() => toast.success('Mentorga yuborildi')}
+                      >
+                        {t('sendMentor')}
+                      </Button>
                       <Button onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
                         {t('repeatTopic')}
                       </Button>
