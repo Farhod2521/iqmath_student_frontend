@@ -10,25 +10,25 @@ export default function UserAgreement() {
   const [isChecked, setIsChecked] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(false)
-  const iframeRef = useRef(null)
+  // const iframeRef = useRef(null)
 
-  // Qurilma turini aniqlash (mobil yoki desktop)
-  const isMobile = window.innerWidth <= 768
+  // // Qurilma turini aniqlash (mobil yoki desktop)
+  // const isMobile = window.innerWidth <= 768
 
-  useEffect(() => {
-    const iframe = iframeRef.current
-    if (iframe && !isMobile) {
-      iframe.onload = () => {
-        const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-        iframeDocument.onscroll = () => {
-          const { scrollTop, scrollHeight, clientHeight } = iframeDocument.documentElement
-          if (scrollTop + clientHeight >= scrollHeight - 5) {
-            setIsScrolledToEnd(true)
-          }
-        }
-      }
-    }
-  }, [isMobile])
+  // useEffect(() => {
+  //   const iframe = iframeRef.current
+  //   if (iframe && !isMobile) {
+  //     iframe.onload = () => {
+  //       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
+  //       iframeDocument.onscroll = () => {
+  //         const { scrollTop, scrollHeight, clientHeight } = iframeDocument.documentElement
+  //         if (scrollTop + clientHeight >= scrollHeight - 5) {
+  //           setIsScrolledToEnd(true)
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [isMobile])
 
   const {
     data: ofertas,
@@ -62,9 +62,16 @@ export default function UserAgreement() {
 
       {/* Custom Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex z-50 items-center w-full justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center w-full justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl shadow-lg w-[1200px]">
+            {/* Scrollable PDF */}
             <div className="h-[500px] overflow-y-auto border relative">
+              {/* <object
+                data={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&embedded=true`}
+                type="application/pdf"
+                className="w-full h-full"
+              ></object> */}
+
               <embed
                 src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
                 type="application/pdf"

@@ -7,7 +7,7 @@ import { URLS } from '@/constants/url'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import UserAgreement from '@/components/oferta'
+// import UserAgreement from '@/components/oferta'
 
 import InputText from '@/components/form/input/InputText'
 import InputPhone from '@/components/form/input/InputPhone'
