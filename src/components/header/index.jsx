@@ -1,29 +1,29 @@
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
-import LanguageDropdown from "../language";
-import Brand from "../brand";
-import { TelegramIcon } from "../icons/social-media/telegram";
-import { InstagramIcon } from "../icons/social-media/instagram";
-import PhoneIcon from "../icons/social-media/phone";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
-import useGetQuery from "@/hooks/api/useGetQuery";
-import { get, isEmpty } from "lodash";
-import Image from "next/image";
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
+import LanguageDropdown from '../language'
+import Brand from '../brand'
+import { TelegramIcon } from '../icons/social-media/telegram'
+import { InstagramIcon } from '../icons/social-media/instagram'
+import PhoneIcon from '../icons/social-media/phone'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { get, isEmpty } from 'lodash'
+import Image from 'next/image'
 const navLinks = [
-  { href: "/", label: "Главная" },
-  { href: "#about-us", label: "О нас" },
+  { href: '/', label: 'Главная' },
+  { href: '#about-us', label: 'О нас' },
   // { href: "https://iqmath.uz/", label: "courses" },
-  { href: "#faq", label: "Вопросы и ответы" },
+  { href: '#faq', label: 'Вопросы и ответы' }
   // { href: "/about-olympics", label: "Об олимпиаде" },
-];
+]
 
-const Header = ({ color = "white" }) => {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
+const Header = ({ color = 'white' }) => {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // const {
   //   data: networkings,
@@ -43,16 +43,14 @@ const Header = ({ color = "white" }) => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex justify-center gap-4 items-center">
             {navLinks.map(({ href, label }) =>
-              href.startsWith("http") ? (
+              href.startsWith('http') ? (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`py-2 px-3 rounded-md  font-medium uppercase text-[17px]  transition ${
-                    router.pathname === href
-                      ? "text-[#5D87FF]"
-                      : "text-[#8A8A8E]"
+                    router.pathname === href ? 'text-[#5D87FF]' : 'text-[#8A8A8E]'
                   }`}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -63,9 +61,7 @@ const Header = ({ color = "white" }) => {
                   key={href}
                   href={href}
                   className={`py-2 px-3 rounded-md  font-medium  text-[17px] transition ${
-                    router.pathname === href
-                      ? "text-[#5D87FF]"
-                      : "text-[#8A8A8E]"
+                    router.pathname === href ? 'text-[#5D87FF]' : 'text-[#8A8A8E]'
                   }`}
                 >
                   {t(label)}
@@ -77,17 +73,9 @@ const Header = ({ color = "white" }) => {
             <LanguageDropdown />
 
             <div className="hidden lg:flex items-center gap-x-[10px]">
-              <Image
-                src={"/icons/phone.svg"}
-                alt="phone"
-                width={24}
-                height={24}
-              />
+              <Image src={'/icons/phone.svg'} alt="phone" width={24} height={24} />
 
-              <a
-                className="text-[15px] font-medium text-black"
-                href="tel:+998 88 198 90 00"
-              >
+              <a className="text-[15px] font-medium text-black" href="tel:+998 88 198 90 00">
                 +998 88 198 90 00
               </a>
             </div>
@@ -106,11 +94,7 @@ const Header = ({ color = "white" }) => {
                   stroke="currentColor"
                   className="w-7 h-7"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
                 <svg
@@ -121,11 +105,7 @@ const Header = ({ color = "white" }) => {
                   stroke="currentColor"
                   className="w-7 h-7"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
               )}
             </button>
@@ -138,14 +118,14 @@ const Header = ({ color = "white" }) => {
       {/* Mobile Navigation */}
       <div
         className={`fixed inset-0 bg-black/50 z-30 transition-opacity duration-300 ${
-          menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={() => setMenuOpen(false)}
       ></div>
 
       <aside
         className={`fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-40 transform transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
+          menuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex justify-between items-center p-4 border-b">
@@ -159,11 +139,7 @@ const Header = ({ color = "white" }) => {
               stroke="currentColor"
               className="w-7 h-7"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
@@ -174,9 +150,7 @@ const Header = ({ color = "white" }) => {
               key={href}
               href={href}
               className={`block py-3 px-4 text-lg transition ${
-                router.pathname === href
-                  ? "bg-[#3965c6] text-white"
-                  : "text-gray-800 hover:bg-gray-100"
+                router.pathname === href ? 'bg-[#3965c6] text-white' : 'text-gray-800 hover:bg-gray-100'
               }`}
               onClick={() => setMenuOpen(false)}
             >
@@ -211,7 +185,7 @@ const Header = ({ color = "white" }) => {
         </div> */}
       </aside>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

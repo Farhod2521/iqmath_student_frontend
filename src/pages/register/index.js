@@ -40,8 +40,6 @@ const Register = () => {
     url: URLS.schoolClasses
   })
 
-  console.log(schoolClasses)
-
   const filteredCourses = get(schoolClasses, 'data', [])
 
   // kursni tanlash
