@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-function InputPassword({ className = '', ...props }) {
+const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
     <div className="relative">
       <input
+        ref={ref}
         type={showPassword ? 'text' : 'password'}
         className={`w-full border border-[#E9E9E9] bg-white rounded-md px-3 py-2 text-sm text-black focus:outline-none ${className}`}
         {...props}
@@ -21,6 +22,6 @@ function InputPassword({ className = '', ...props }) {
       </div>
     </div>
   )
-}
+})
 
 export default InputPassword
