@@ -1,0 +1,26 @@
+import Image from 'next/image'
+import React, { useState } from 'react'
+
+function InputPassword({ className = '', ...props }) {
+  const [showPassword, setShowPassword] = useState(false)
+
+  return (
+    <div className="relative">
+      <input
+        type={showPassword ? 'text' : 'password'}
+        className={`w-full border border-[#E9E9E9] bg-white rounded-md px-3 py-2 text-sm text-black focus:outline-none ${className}`}
+        {...props}
+      />
+      <div onClick={() => setShowPassword((prev) => !prev)} className="absolute top-2.5 right-3 cursor-pointer">
+        <Image
+          src={showPassword ? '/icons/eye.svg' : '/icons/eye-off.svg'}
+          alt="toggle visibility"
+          width={24}
+          height={24}
+        />
+      </div>
+    </div>
+  )
+}
+
+export default InputPassword
