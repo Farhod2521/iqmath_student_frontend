@@ -1,4 +1,6 @@
-import BannerAuth from './BannerAuth'
+// import BannerAuth from './BannerAuth'
+
+import Auth from '../../auth/Auth'
 
 function BannerHeader() {
   return (
@@ -6,7 +8,8 @@ function BannerHeader() {
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-10 md:mb-0"></div>
         <div className="md:w-1/2  md:pl-10">
-          <BannerAuth />
+          {/* <BannerAuth /> */}
+          <Auth />
         </div>
       </div>
     </section>
