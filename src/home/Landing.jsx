@@ -24,7 +24,7 @@ function Landing() {
       <HeaderAlert />
       <HpHeader />
       <BannerHeader />
-      <Features />
+      {/* <Features />
       <DefendFocus />
       <Leadership />
       <PowerfulDozens />
@@ -32,8 +32,8 @@ function Landing() {
       <ExceptionalFeature />
       <Pricing />
       <FAQ />
-      <C2a />
-      <Footer />
+      <C2a /> */}
+      {/* <Footer /> */}
       <ScrollToTop />
     </ThemeProvider>
   )

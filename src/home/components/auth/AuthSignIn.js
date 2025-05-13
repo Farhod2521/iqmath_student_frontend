@@ -3,7 +3,6 @@ import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
 import { signIn } from 'next-auth/react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -14,7 +13,6 @@ function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const { currentTab } = useAuthTabStore((state) => state.currentTab)
   const { setTab } = useAuthTabStore.getState()
 
   const { t } = useTranslation()
@@ -24,17 +22,22 @@ function AuthSignIn() {
 
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
-    const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
-    const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
+    try {
+      const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
+      const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
 
-    if (result?.error) {
-      toast.error(result.error)
-    } else {
-      toast.success('Logged in successfully')
-      router.push('/dashboard/student/subjects')
+      console.log('result', result)
+      if (result?.error) {
+        toast.error(result.error)
+      } else {
+        router.push('/dashboard/student/subjects')
+        toast.success('Logged in successfully')
+      }
+    } catch (error) {
+      console.log(err)
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
   return (

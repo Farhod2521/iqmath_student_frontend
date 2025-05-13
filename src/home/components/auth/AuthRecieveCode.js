@@ -1,14 +1,3 @@
-// import { useAuthTabStore } from '@/store'
-// import React from 'react'
-
-// function AuthRecieveCode() {
-//   const { currentTab } = useAuthTabStore((state) => state.currentTab)
-//   const { setTab } = useAuthTabStore.getState()
-//   return <div>AuthRecieveCode</div>
-// }
-
-// export default AuthRecieveCode
-
 import { useState, useEffect, useContext } from 'react'
 import Brand from '@/components/brand'
 import usePostQuery from '@/hooks/api/usePostQuery'

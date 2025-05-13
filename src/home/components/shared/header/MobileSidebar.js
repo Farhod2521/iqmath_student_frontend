@@ -5,13 +5,13 @@ import Stack from '@mui/material/Stack'
 // import Logo from '../../../../layouts/full/shared/logo/Logo';
 import { NavLinks } from './Navigations'
 import { Chip } from '@mui/material'
+import Brand from '@/components/brand'
 
 const MobileSidebar = () => {
   return (
     <>
       <Box px={3}>
-        {/* <Logo /> */}
-        Logo
+        <Brand />
       </Box>
       <Box p={3}>
         <Stack direction="column" spacing={2}>
@@ -40,7 +40,7 @@ const MobileSidebar = () => {
             </Button>
           ))}
 
-          <Button
+          {/* <Button
             color="inherit"
             href="#"
             sx={{
@@ -48,10 +48,10 @@ const MobileSidebar = () => {
             }}
           >
             Support
-          </Button>
-          <Button color="primary" variant="contained" href="/auth/login">
+          </Button> */}
+          {/* <Button color="primary" variant="contained" href="/auth/login">
             Get Started
-          </Button>
+          </Button> */}
         </Stack>
       </Box>
     </>

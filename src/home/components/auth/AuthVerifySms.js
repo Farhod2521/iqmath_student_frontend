@@ -81,7 +81,7 @@ const AuthVerifySms = () => {
       {
         url: URLS.resendSMSCodeForget,
         attributes: {
-          phone: parseInt(`998${phone.replace(/[^0-9]/g, '')}`),
+          phone: parseInt(formattedPhone),
           sms_code: verifyCode
         }
       },

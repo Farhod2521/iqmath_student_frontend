@@ -8,10 +8,10 @@ import { Chip } from '@mui/material'
 import Link from 'next/link'
 
 export const NavLinks = [
-  { title: 'Bosh sahifa', to: '#' },
-  { title: 'Biz haqimmizda', to: '#' },
+  { title: 'Bosh sahifa', to: '/' },
+  { title: 'Biz haqimmizda', to: '/about' },
   { title: 'Narxlar', to: '#' },
-  { title: 'Savol javob', to: '#' }
+  { title: 'Savol javob', to: '/faqs' }
 ]
 
 const Navigations = () => {

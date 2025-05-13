@@ -52,11 +52,7 @@ const HpHeader = () => {
 
   return (
     <AppBarStyled position="sticky" elevation={0}>
-      <Container
-        sx={{
-          maxWidth: '1400px !important'
-        }}
-      >
+      <Container sx={{ maxWidth: '1400px !important' }}>
         <ToolbarStyled>
           {/* <Logo /> */}
           <Brand />

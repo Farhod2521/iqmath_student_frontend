@@ -11,7 +11,10 @@ import InputText from '@/components/form/input/InputText'
 import InputPhone from '@/components/form/input/InputPhone'
 import SelectClass from '@/components/form/select/SelectClass'
 import { useAuthTabStore } from '@/store'
-import UserAgreement from '@/components/oferta'
+import { URLS } from '@/constants/url'
+import SimpleLoader from '@/components/loader/simple-loader'
+import toast from 'react-hot-toast'
+// import UserAgreement from '@/components/oferta'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
@@ -21,36 +24,43 @@ function AuthSignUp() {
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
 
   const { register, handleSubmit } = useForm()
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { mutate: registerRequest, isLoading } = usePostQuery({
+  const { mutate: registerRequest } = usePostQuery({
     listKeyId: KEYS.register
   })
 
-  const onSubmit = ({ full_name, phone }) => {
-    let formData = new FormData()
-    formData.append('full_name', full_name)
-    formData.append('phone', `${String(998) + String(phone)}`)
-    formData.append('class_name', selectedOptionCourse?.value)
-    setTab('receiveCode')
-    setPhoneTab(phone)
-    // registerRequest(
-    //   { url: URLS.register, attributes: formData },
-    //   {
-    //     onSuccess: (data) => {
-    //       toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz")
-    //       // router.push(`/auth/recieve-code/${phone}`)
-    //       setTab('receiveCode')
-    //     },
-    //     onError: (error) => {
-    //       if (error.response?.data?.errors) {
-    //         const errors = error.response.data.errors
-    //         toast.error(Object.values(errors).flat().join('\n'))
-    //       } else {
-    //         console.log('error occured')
-    //       }
-    //     }
-    //   }
-    // )
+  const onSubmit = async ({ full_name, phone }) => {
+    setIsLoading(true)
+    try {
+      let formData = new FormData()
+      formData.append('full_name', full_name)
+      formData.append('phone', `${String(998) + String(phone)}`)
+      formData.append('class_name', selectedOptionCourse?.value)
+      registerRequest(
+        { url: URLS.register, attributes: formData },
+        {
+          onSuccess: (data) => {
+            console.log('data', data)
+            toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz")
+            setTab('receiveCode')
+            setPhoneTab(phone)
+          },
+          onError: (error) => {
+            if (error.response?.data?.errors) {
+              const errors = error.response.data.errors
+              toast.error(Object.values(errors).flat().join('\n'))
+            } else {
+              console.log('error occured')
+            }
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -66,7 +76,7 @@ function AuthSignUp() {
       />
       <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
 
-      <UserAgreement />
+      {/* <UserAgreement /> */}
 
       <div className="flex justify-center items-center">
         <button

@@ -1,9 +1,7 @@
+import { Box, Container, Grid, Typography } from '@mui/material'
 import React from 'react'
-import { Box, Stack, Typography, Container, Button } from '@mui/material'
-import Grid from '@mui/material/Grid2'
-import Link from 'next/link'
 
-const Banner = () => {
+function BannerFaq() {
   return (
     <Box
       bgcolor="primary.light"
@@ -22,7 +20,7 @@ const Banner = () => {
         <Grid container spacing={3} justifyContent="center">
           <Grid size={{ xs: 12, lg: 8 }} alignItems="center" textAlign="center">
             <Typography color="primary.main" textTransform="uppercase" fontSize="13px">
-              Biz haqimmizda
+              Faqs
             </Typography>
             <Typography
               variant="h1"
@@ -31,13 +29,13 @@ const Banner = () => {
               fontWeight={700}
               sx={{
                 fontSize: {
-                  xs: '26px'
-                  // sm: '48px',
-                  // lg: '56px'
+                  xs: '34px',
+                  sm: '48px',
+                  lg: '56px'
                 }
               }}
             >
-              IQmath - bu matematikani samarali o'qitish uchun maxsus ishlab chiqilgan innovatsion elektron platforma.
+              Tez-tez so'raladigan savollar
             </Typography>
           </Grid>
         </Grid>
@@ -46,4 +44,4 @@ const Banner = () => {
   )
 }
 
-export default Banner
+export default BannerFaq

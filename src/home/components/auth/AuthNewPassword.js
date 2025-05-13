@@ -39,7 +39,7 @@ const AuthNewPassword = () => {
       {
         onSuccess: (data) => {
           toast.success('Logged in successfully')
-          router.push(`/`)
+          setTab('signIn')
         },
         onError: (error) => {
           console.log('Full error response:')
