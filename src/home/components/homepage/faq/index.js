@@ -90,7 +90,7 @@ const FAQ = () => {
             }}
             fontWeight="700"
           >
-            Frequently Asked Questions
+            Savollarga javoblar
           </Typography>
           <Box mt={7}>
             <StyledAccordian expanded={expanded} onChange={handleChange}>
@@ -99,11 +99,12 @@ const FAQ = () => {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                What is included with my purchase?
+                IQMATH o'zi nima?
               </AccordionSummary>
               <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
+                IQmath - bu matematika fanini samarali o'qish uchun maxsus ishlab chiqilgan innovatsion elektron
+                platforma bo'lib, unda maktab darsliklarini yaxshi o'zlashtirishga va oliy ta'lim dargohlariga kirish
+                imtihonlarida yuqori natijalarni qo'lga kiritishda yordam beradi.
               </AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded2} onChange={handleChange2}>
@@ -112,11 +113,10 @@ const FAQ = () => {
                 aria-controls="panel2-content"
                 id="panel2-header"
               >
-                Are there any recurring fees?
+                IQMATH bo'yicha qiziqtirgan savollarimga qayerdan javob olsam bo'ladi?
               </AccordionSummary>
               <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
+                +998 (78) 888 08 00 raqamiga qo'ng'iroq qilib istalgan savollaringizga javob olishingiz mumkin.
               </AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded3} onChange={handleChange3}>
@@ -125,11 +125,11 @@ const FAQ = () => {
                 aria-controls="panel3-content"
                 id="panel3-header"
               >
-                Can I use the template on multiple projects?
+                IQMATH platformasidan kimlar ro'yxatdan o'tishi mumkin?
               </AccordionSummary>
               <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
+                IQmath platformasidan foydalanish uchun yosh chegarasi belgilanmagan. Istalgan foydalanuchi saytdan
+                foydlanishi mumkin. Saytdan foydalanish pullik.
               </AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded4} onChange={handleChange4}>
@@ -138,14 +138,15 @@ const FAQ = () => {
                 aria-controls="panel2-content"
                 id="panel2-header"
               >
-                Can I customize the admin dashboard template to match my brand?
+                IQMATH platformasida a'lochi foydalanuvchilar uchun bonuslar beriladimi?
               </AccordionSummary>
               <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
+                IQmath platformasida berilgan topshiriqlarni o'z vaqtida muvaffaqiyatli bajargan foydalanuvchilar uchun
+                bonuslar beriladi. Ushbu ballarni tez orada qimmatbaho sovg'alarga almashtirishingiz mumkin bo'ladi (Bu
+                boraga ishlar boshlangan).
               </AccordionDetails>
             </StyledAccordian>
-            <StyledAccordian expanded={expanded5} onChange={handleChange5}>
+            {/* <StyledAccordian expanded={expanded5} onChange={handleChange5}>
               <AccordionSummary
                 expandIcon={expanded5 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
                 aria-controls="panel2-content"
@@ -170,7 +171,7 @@ const FAQ = () => {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
                 blandit leo lobortis eget.
               </AccordionDetails>
-            </StyledAccordian>
+            </StyledAccordian> */}
           </Box>
         </Grid>
       </Grid>

@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export const NavLinks = [
   { title: 'Bosh sahifa', to: '/' },
-  { title: 'Biz haqimmizda', to: '/about' },
+  { title: 'Biz haqimizda', to: '/about' },
   { title: 'Narxlar', to: '#' },
   { title: 'Savol javob', to: '/faqs' }
 ]
