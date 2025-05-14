@@ -18,6 +18,7 @@ import { Instagram, Phone, Telegram, Twitter } from '@mui/icons-material'
 import axios from 'axios'
 import { request } from '@/services/api'
 import NavbarLangue from '@/layout/navbar/NavbarLangue'
+import LanguageDropdown from '@/components/language'
 
 const HpHeader = () => {
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
@@ -69,8 +70,8 @@ const HpHeader = () => {
               <Stack spacing={1} direction="row" alignItems="center">
                 <Navigations />
               </Stack>
-              <div className="flex gap-2">
-                <NavbarLangue />
+              <div className="flex gap-2 items-center">
+                <LanguageDropdown />
                 <a href="#" className="">
                   <IconButton color="primary">
                     <Instagram />
