@@ -1,114 +1,103 @@
-import { useState, useEffect, useContext } from "react";
-import Brand from "@/components/brand";
-import usePostQuery from "@/hooks/api/usePostQuery";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
+import { useState, useEffect, useContext } from 'react'
+import Brand from '@/components/brand'
+import usePostQuery from '@/hooks/api/usePostQuery'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 
-import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-import Header from "@/components/header";
-import { useSearchParams } from "next/navigation";
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
+import Header from '@/components/header'
+import { useSearchParams } from 'next/navigation'
 
 const Index = () => {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const { phone } = router.query;
-  const [verifyCode, setVerifyCode] = useState("");
-  const [code, setCode] = useState(new Array(5).fill(""));
-  const [timer, setTimer] = useState(20);
+  const { t } = useTranslation()
+  const router = useRouter()
+  const { phone } = router.query
+  const [verifyCode, setVerifyCode] = useState('')
+  const [code, setCode] = useState(new Array(5).fill(''))
+  const [timer, setTimer] = useState(20)
 
   const formatPhoneNumber = (phone) => {
-    if (phone?.length !== 9) return phone; // Noto'g'ri uzunlikda bo'lsa, o'zgartirmaymiz
-    return `+998 (${phone.slice(0, 2)}) ${phone.slice(2, 5)}-${phone.slice(
-      5,
-      7
-    )}-${phone.slice(7, 9)}`;
-  };
+    if (phone?.length !== 9) return phone // Noto'g'ri uzunlikda bo'lsa, o'zgartirmaymiz
+    return `+998 (${phone.slice(0, 2)}) ${phone.slice(2, 5)}-${phone.slice(5, 7)}-${phone.slice(7, 9)}`
+  }
 
-  const formattedPhone = formatPhoneNumber(phone);
+  const formattedPhone = formatPhoneNumber(phone)
 
   useEffect(() => {
     // Get saved timestamp from localStorage
-    const savedTimestamp = localStorage.getItem("timerTimestampForgetPassword");
-    const savedTime = parseInt(localStorage.getItem("timerForgetPassword"), 10);
+    const savedTimestamp = localStorage.getItem('timerTimestampForgetPassword')
+    const savedTime = parseInt(localStorage.getItem('timerForgetPassword'), 10)
 
     if (savedTimestamp && savedTime) {
-      const elapsedTime = Math.floor(
-        (Date.now() - parseInt(savedTimestamp, 10)) / 1000
-      );
-      const newTime = Math.max(savedTime - elapsedTime, 0); // Ensure timer never goes negative
-      setTimer(newTime);
+      const elapsedTime = Math.floor((Date.now() - parseInt(savedTimestamp, 10)) / 1000)
+      const newTime = Math.max(savedTime - elapsedTime, 0) // Ensure timer never goes negative
+      setTimer(newTime)
     } else {
-      setTimer(120);
-      localStorage.setItem("timerForgetPassword", 120);
-      localStorage.setItem(
-        "timerTimestampForgetPassword",
-        Date.now().toString()
-      );
+      setTimer(120)
+      localStorage.setItem('timerForgetPassword', 120)
+      localStorage.setItem('timerTimestampForgetPassword', Date.now().toString())
     }
 
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
+          clearInterval(interval)
+          return 0
         }
-        localStorage.setItem("timerForgetPassword", prev - 1);
-        localStorage.setItem(
-          "timerTimestampForgetPassword",
-          Date.now().toString()
-        );
-        return prev - 1;
-      });
-    }, 1000);
+        localStorage.setItem('timerForgetPassword', prev - 1)
+        localStorage.setItem('timerTimestampForgetPassword', Date.now().toString())
+        return prev - 1
+      })
+    }, 1000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   const handleChange = (value, index) => {
     if (value.match(/^[0-9]$/)) {
-      const newCode = [...code];
-      newCode[index] = value;
-      setCode(newCode);
+      const newCode = [...code]
+      newCode[index] = value
+      setCode(newCode)
 
       // Focus the next input
       if (index < code.length - 1) {
-        document.getElementById(`input-${index + 1}`).focus();
+        document.getElementById(`input-${index + 1}`).focus()
       }
     }
-  };
+  }
 
   const { mutate: resendSMSCodeForget, isLoading } = usePostQuery({
-    listKeyId: KEYS.resendSMSCodeForget,
-  });
+    listKeyId: KEYS.resendSMSCodeForget
+  })
 
   const onSubmit = () => {
-    const formattedPhone = `998${phone.replace(/[^0-9]/g, "")}`;
+    const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
     resendSMSCodeForget(
       {
         url: URLS.resendSMSCodeForget,
         attributes: {
-          phone: parseInt(`998${phone.replace(/[^0-9]/g, "")}`),
-          sms_code: verifyCode,
-        },
+          phone: parseInt(`998${phone.replace(/[^0-9]/g, '')}`),
+          sms_code: verifyCode
+        }
       },
 
       {
         onSuccess: (data) => {
-          console.log(data);
-          toast.success("Logged in successfully");
-          router.push(`/auth/new-password/${phone}`);
+          // console.log(data);
+          toast.success('Logged in successfully')
+          router.push(`/auth/new-password/${phone}`)
         },
         onError: (error) => {
-          console.log("Full error response:");
+          // console.log('Full error response:')
 
-          toast.error(error.response?.data.error);
-        },
+          toast.error(error.response?.data.error)
+        }
       }
-    );
-  };
+    )
+  }
 
   // const handleKeyDown = (e, index) => {
   //   if (e.key === "Backspace") {
@@ -127,11 +116,9 @@ const Index = () => {
 
   // const isCodeComplete = code.every((digit) => digit !== "");
 
-  const minutes = Math.floor(timer / 60);
-  const seconds = timer % 60;
-  const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${
-    seconds < 10 ? `0${seconds}` : seconds
-  }`;
+  const minutes = Math.floor(timer / 60)
+  const seconds = timer % 60
+  const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
 
   return (
     <div
@@ -141,9 +128,7 @@ const Index = () => {
       <Header />
       <div className="flex flex-grow items-center justify-center font-sf">
         <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white mx-auto rounded-lg p-6 sm:p-8 shadow-md">
-          <h3 className="font-extrabold text-[26px] text-center">
-            Подтвердите номер телефона
-          </h3>
+          <h3 className="font-extrabold text-[26px] text-center">Подтвердите номер телефона</h3>
           <p className="text-sm sm:text-[19px] font-medium text-center mt-[8px] mb-[32px]">
             Мы отправили смс на номер <br />
             {formattedPhone}
@@ -187,13 +172,13 @@ const Index = () => {
                   onClick={() => router.back()}
                   className="bg-[#EDEDF2] hover:bg-[#EDEDF2] text-black py-2 sm:py-[13px] w-1/2 rounded-[10px] transition-all duration-300"
                 >
-                  {t("back")}
+                  {t('back')}
                 </button>
                 <button
                   onClick={onSubmit}
                   className=" bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 sm:py-3 w-1/2 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition-all duration-300"
                 >
-                  {t("submit")}
+                  {t('submit')}
                 </button>
               </div>
             </div>
@@ -201,7 +186,7 @@ const Index = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

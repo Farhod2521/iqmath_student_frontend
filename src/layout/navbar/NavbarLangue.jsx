@@ -10,8 +10,8 @@ const NavbarLangue = () => {
   const setLang = useSettingsStore((state) => get(state, 'setLang', () => {}))
 
   const languages = [
-    { code: 'uz', name: "O'zbekcha" },
-    { code: 'ru', name: 'Русский' }
+    { code: 'uz', name: 'UZ' },
+    { code: 'ru', name: 'RU' }
   ]
 
   const [selectedLanguage, setSelectedLanguage] = useState(null)
@@ -45,7 +45,7 @@ const NavbarLangue = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button className="border-[#E9E9E9] border-1 shadow-sm" variant="bordered">
+        <Button className="border-[#E9E9E9] border-1 shadow-sm p-0 rounded-md" variant="light">
           <CiGlobe color={'#5A6A85'} size={24} />
           <p className="uppercase text-sm text-black dark:text-white">{selectedLanguage?.name}</p>
         </Button>
@@ -59,7 +59,7 @@ const NavbarLangue = () => {
             key={item.code}
             onClick={() => selectLanguage(item)}
             className={
-              'flex items-center px-4 py-2 uppercase hover:bg-gray-100 bg-white dark:bg-[#26334A] text-black dark:text-white'
+              'flex items-center py-2 uppercase hover:bg-gray-100 bg-white dark:bg-[#26334A] text-black dark:text-white'
             }
           >
             {item.name}

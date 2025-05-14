@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import { addStyles, EditableMathField } from "react-mathquill";
+import React, { useState } from 'react'
+import { addStyles, EditableMathField } from 'react-mathquill'
 
-import Symbols from "@/components/mathSymbols";
+import Symbols from '@/components/mathSymbols'
 
-addStyles();
+addStyles()
 
 const MathKeyboard = () => {
-  const [formula, setFormula] = useState("");
+  const [formula, setFormula] = useState('')
 
   function handleChange(mathField) {
-    setFormula(mathField.latex());
+    setFormula(mathField.latex())
   }
 
   function handleInsertSymbol(symbol) {
-    console.log(symbol);
-    setFormula((oldFormula) => oldFormula + symbol);
+    setFormula((oldFormula) => oldFormula + symbol)
   }
 
   return (
@@ -23,12 +22,12 @@ const MathKeyboard = () => {
         latex={formula}
         onChange={handleChange}
         style={{
-          width: "100%",
-          height: "70px",
+          width: '100%',
+          height: '70px',
 
-          placeContent: "center",
-          fontSize: "24px",
-          borderRadius: "8px",
+          placeContent: 'center',
+          fontSize: '24px',
+          borderRadius: '8px'
         }}
       />
 
@@ -36,7 +35,7 @@ const MathKeyboard = () => {
         <Symbols onClick={handleInsertSymbol} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MathKeyboard;
+export default MathKeyboard

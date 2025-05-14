@@ -57,8 +57,6 @@ const Index = () => {
           'Content-Type': 'multipart/form-data'
         }
       })
-
-      console.log('Success:', response.data)
     } catch (error) {
       console.error('Catch Error:', error.response?.data || error.message)
     }

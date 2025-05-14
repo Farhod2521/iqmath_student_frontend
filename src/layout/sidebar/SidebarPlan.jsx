@@ -16,7 +16,8 @@ function SidebarPlan() {
         <p className="text-[24px] font-semibold my-[12px]">499,000 {t('sum')}</p>
 
         <p className="text-[15px] font-medium">
-          {t('nextCharge')} <br /> 21 {t('mart')}
+          {t('nextCharge')} <br /> 16.06.2025
+          {/* 21 {t('mart')} */}
         </p>
 
         <Button

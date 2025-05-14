@@ -10,7 +10,11 @@ const PresentCard = ({ img, title, coin, onclick = () => {} }) => {
       <p className="text-[17px] font-medium">{title}</p>
       <p className="text-[19px] font-semibold mt-[8px]">{coin} баллов</p>
 
-      <Button onPress={onclick} className="bg-[#5D87FF] text-white py-[13px] w-full rounded-[12px] mt-[16px]">
+      <Button
+        isDisabled
+        onPress={onclick}
+        className="bg-[#5D87FF] text-white py-[13px] w-full rounded-[12px] mt-[16px]"
+      >
         Обменять
       </Button>
     </div>

@@ -17,14 +17,17 @@ import Image from 'next/image'
 import { Instagram, Phone, Telegram, Twitter } from '@mui/icons-material'
 import axios from 'axios'
 import { request } from '@/services/api'
+import NavbarLangue from '@/layout/navbar/NavbarLangue'
 
 const HpHeader = () => {
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     justifyContent: 'center',
     [theme.breakpoints.up('lg')]: {
-      minHeight: '100px'
+      minHeight: '60px'
     },
-    backgroundColor: theme.palette.primary.light
+    // backgroundColor: theme.palette.primary.light
+
+    backgroundColor: 'white'
   }))
 
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
@@ -44,11 +47,11 @@ const HpHeader = () => {
   const handleDrawerOpen = () => setOpen(true)
   const toggleDrawer = (newOpen) => () => setOpen(newOpen)
 
-  useEffect(() => {
-    request.get('/api/v1/management/system-settings/').then((res) => {
-      console.log(res)
-    })
-  }, [])
+  // useEffect(() => {
+  //   request.get('/api/v1/management/system-settings/').then((res) => {
+  //     console.log(res)
+  //   })
+  // }, [])
 
   return (
     <AppBarStyled position="sticky" elevation={0}>
@@ -66,8 +69,9 @@ const HpHeader = () => {
               <Stack spacing={1} direction="row" alignItems="center">
                 <Navigations />
               </Stack>
-              <div>
-                <a href="#">
+              <div className="flex gap-2">
+                <NavbarLangue />
+                <a href="#" className="">
                   <IconButton color="primary">
                     <Instagram />
                   </IconButton>

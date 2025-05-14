@@ -48,8 +48,6 @@ const Register = () => {
     setDropdownOpenCourse(false)
   }
 
-  console.log(selectedOptionCourse)
-
   const {
     register,
     handleSubmit,
@@ -78,13 +76,10 @@ const Register = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data)
           toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz")
           router.push(`/auth/recieve-code/${phone}`)
         },
         onError: (error) => {
-          console.log('Full error response:', error.response?.data)
-
           if (error.response?.data?.errors) {
             const errors = error.response.data.errors
 

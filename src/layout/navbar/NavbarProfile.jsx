@@ -33,6 +33,8 @@ function NavbarProfile() {
     sessionStorage.clear()
   }
 
+  console.log(studentProfile)
+
   return (
     <>
       <Dropdown classNames={{ content: 'w-[280px] rounded-md' }}>
@@ -45,7 +47,7 @@ function NavbarProfile() {
           <DropdownSection showDivider>
             <DropdownItem key="peymentkey" isReadOnly className="h-12 gap-2 opacity-100">
               <div className="space-y-[4px] text-black dark:text-white">
-                <p className="text-[17px]">ID: {get(studentProfile, 'data.id')}</p>
+                <p className="text-[17px]">ID: {get(studentProfile, 'data.identification')}</p>
               </div>
             </DropdownItem>
           </DropdownSection>

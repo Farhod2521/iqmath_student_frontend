@@ -68,7 +68,6 @@ const Index = () => {
 
     setSelectedIndex(newIndex)
     setSelectedTopic(topicsList[newIndex])
-    console.log(topicsList[newIndex])
 
     // setSelectTopicId(topicsList[newIndex]?.id)
   }
@@ -79,8 +78,6 @@ const Index = () => {
       setSelectedIndex(0)
     }
   }, [topicsList])
-
-  console.log(selectedTopic)
 
   if (isLoadingTopic || isFetchingTopic) return <ContentLoader />
 

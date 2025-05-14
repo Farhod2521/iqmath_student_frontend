@@ -201,7 +201,7 @@ export default function StudentTestPage() {
       )}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
-          <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
+          <h1 className="text-[22px] font-semibold">{t('diagnostics')}</h1>
           <div className="w-[1px] h-[26px] bg-[#E9E9E9]"></div>
           <p className="text-[17px] text-[#525252]">{t('task')}</p>
         </div>
@@ -413,7 +413,6 @@ export default function StudentTestPage() {
                     >
                       <Symbols
                         onClick={(symbol) => {
-                          console.log('symbol', symbol)
                           setTextAnswers((prev) => ({
                             ...prev,
                             [selectedQuestion.id]: (prev[selectedQuestion.id] || '') + symbol

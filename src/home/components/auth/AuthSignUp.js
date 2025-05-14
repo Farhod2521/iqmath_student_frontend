@@ -41,7 +41,6 @@ function AuthSignUp() {
         { url: URLS.register, attributes: formData },
         {
           onSuccess: (data) => {
-            console.log('data', data)
             toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz")
             setTab('receiveCode')
             setPhoneTab(phone)

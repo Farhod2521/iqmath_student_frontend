@@ -44,7 +44,7 @@ export default function StudentTestPage() {
   const router = useRouter()
   const { chapterId, id } = router.query
   const { data: session } = useSession()
-  console.log(router.query)
+
   const [tab, setTab] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedQuestion, setSelectedQuestion] = useState(null)
@@ -201,7 +201,7 @@ export default function StudentTestPage() {
       )} */}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
-          <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
+          <h1 className="text-[22px] font-semibold">{t('diagnostics')}</h1>
           <div className="w-[1px] h-[26px] bg-[#E9E9E9]"></div>
           <p className="text-[17px] text-[#525252]">{t('task')}</p>
         </div>
@@ -257,10 +257,10 @@ export default function StudentTestPage() {
           {selectedQuestion ? (
             <div className="">
               <div className="space-y-[32px] p-4">
-                <div className="text-black text-[19px]  font-medium text-center">
+                <div className="text-black text-[19px]  font-medium text-center  selected_question">
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                     <MathJax dynamic>
-                      <div className="flex flex-col justify-center items-center">
+                      <div className="flex flex-col justify-center items-center ">
                         {parse(
                           i18n.language === 'uz'
                             ? selectedQuestion?.question_text_uz || ''
@@ -413,7 +413,6 @@ export default function StudentTestPage() {
                     >
                       <Symbols
                         onClick={(symbol) => {
-                          console.log('symbol', symbol)
                           setTextAnswers((prev) => ({
                             ...prev,
                             [selectedQuestion.id]: (prev[selectedQuestion.id] || '') + symbol

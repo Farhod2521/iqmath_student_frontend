@@ -26,7 +26,6 @@ function AuthSignIn() {
       const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
 
-      console.log('result', result)
       if (result?.error) {
         toast.error(result.error)
       } else {
@@ -34,7 +33,6 @@ function AuthSignIn() {
         toast.success('Logged in successfully')
       }
     } catch (error) {
-      console.log(err)
     } finally {
       setIsLoading(false)
     }

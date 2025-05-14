@@ -107,13 +107,10 @@ const Index = () => {
 
       {
         onSuccess: (data) => {
-          console.log(data)
           toast.success('Logged in successfully')
           router.push(`/auth/recieve-code/${phone}`)
         },
         onError: (error) => {
-          console.log('Full error response:')
-
           toast.error(`${error.response?.data.retry_after} dan keyin sinab ko'ring`)
           toast.error(error.response?.data.error)
         }

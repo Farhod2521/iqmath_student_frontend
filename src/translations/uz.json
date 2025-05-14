@@ -212,7 +212,7 @@
   "back": "Ortga",
   "check": "Tekshirish",
   "next": "Keyingi",
-  "cashbackNote": "Keshbek olish uchun siz topshiriqni birinchi urinishda, yordam olmasdan yechishingiz kerak",
+  "cashbackNote": "Misollarni hammasini to'liq bajaring!",
   "myResults": "Mening natijalarim",
   "totalPoints": "Umumiy ballar soni",
   "recommendation": "Tavsiya",
@@ -238,12 +238,16 @@
   "stopTime": "Topshirish muddati",
   "sum": "so'm",
   "sendMentor": "Mentorga yuboring",
-  "repeatTopic": "Barcha mavzularni takrorlang",
+  "repeatTopic": "Mavzuni takrorlash",
   "chooseQueation": "Savolni tanlash...",
   "toHomePage": "Bosh sahifaga qaytish",
   "goAgain": "Yana o'ting",
   "showSolution": "Yechimni ko'rsatish",
   "yourScore": "Sizning ballingiz {{score}}",
-  "yourAnswer": "Siz {{answer}} ta savolga {{total}} savolga toʻgʻri javob berdingiz",
-  "yourResult": "Sizning natijangiz: {{result}}"
+  "yourAnswer": "Siz {{total}} savoldan {{answer}} tasiga to'g'ri javob berdingiz!",
+  "yourResult": "Sizning natijangiz: {{result}}",
+  "yourballs": "Jami ballaringiz",
+  "descballs": " IQmath platformasida berilgan topshiriqlarni o'z vaqtida muvaffaqiyatli bajargan foydalanuvchilar uchun bonuslar beriladi. Ushbu ballarni tez orada qimmatbaho sovg'alarga almashtirishingiz mumkin bo'ladi",
+  "matematika": "Matematika",
+  "editProfile": "Tahrirlash"
 }

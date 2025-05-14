@@ -48,18 +48,16 @@ const Index = () => {
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
           className="col-span-12 p-[24px] rounded-[12px] text-white bg-no-repeat bg-cover relative"
         >
-          <p className="text-[17px] font-medium">Ваши баллы</p>
+          <p className="text-[17px] font-medium">{t('yourballs')}</p>
 
           <div className="flex items-center gap-x-[10px] mt-[8px] mb-[20px]">
             <CoinsIcon color="white" />
-            <p className="text-[26px] font-semibold">{get(coins, 'data.score')} баллов</p>
+            <p className="text-[26px] font-semibold">
+              {get(coins, 'data.score')} {t('ball')}
+            </p>
           </div>
 
-          <p className="text-[17px] text-[#DCDCDD] w-3/5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea{' '}
-          </p>
+          <p className="text-[17px] text-[#DCDCDD] w-3/5">{t('descballs')}</p>
 
           <Image
             src={'/images/wallet-img-1.png'}
@@ -94,7 +92,7 @@ const Index = () => {
           />
         </div>
 
-        <div className="col-span-12 ">
+        {/* <div className="col-span-12 ">
           <h1 className="text-[24px] font-semibold my-[24px]">Доступные призы</h1>
 
           <div className="relative">
@@ -125,7 +123,7 @@ const Index = () => {
               ))}
             </Swiper>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {openModal && (

@@ -21,7 +21,6 @@ const Index = () => {
   const searchParams = useSearchParams()
   const phone = searchParams.get('phone')
 
-  console.log('phone', phone)
   const [copied, setCopied] = useState(false)
   const [showModal, setShowModal] = useState(true)
 
@@ -105,8 +104,8 @@ const Index = () => {
       <div>
         {subjectsData.map((subject, idx) => (
           <div key={idx}>
-            <h2 className="font-bold mb-2 text-[20px]">{subject.type}</h2>
-            <div className="flex flex-wrap gap-6">
+            <h2 className="font-bold mb-8 text-[20px]">{subject.type}</h2>
+            <div className="flex flex-wrap gap-8">
               {subject.data?.map((item, index) => {
                 const imageUrl =
                   i18n.language === 'uz'
@@ -117,16 +116,25 @@ const Index = () => {
 
                 if (item.is_open) {
                   return (
-                    <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
+                    <div
+                      key={index}
+                      // className=" shadow-md"
+                      onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}
+                    >
                       <Card
-                        isFooterBlurred
-                        className={`border-none cursor-pointer h-[280px] w-[200px] shadow-sm`}
+                        // isFooterBlurred
+                        className={`border-none cursor-pointer h-[280px]  w-[200px]`}
                         radius="sm"
                       >
                         <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
-                        <CardFooter className="justify-center border-white/20 border-1 overflow-hidden rounded-md  absolute before:rounded-xl bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                        <div
+                          style={{
+                            backgroundColor: '#5d87ff'
+                          }}
+                          className="justify-center text-white py-3 text-center background-[#5d87ff] border-none overflow-hidden rounded-sm  absolute before:rounded-xl bottom-0 w-full shadow-none z-10"
+                        >
                           {classAll}
-                        </CardFooter>
+                        </div>
                       </Card>
                       {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
                   {className}

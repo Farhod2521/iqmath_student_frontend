@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className={' flex items-center gap-x-[16px]'}>
           <NavbarPoints />
           <NavbarLangue />
-          <NavbarBell />
+          {/* <NavbarBell /> */}
           <NavbarProfile />
         </div>
       </div>

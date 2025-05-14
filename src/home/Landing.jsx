@@ -21,7 +21,7 @@ function Landing() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <HeaderAlert />
+      {/* <HeaderAlert /> */}
       <HpHeader />
       <BannerHeader />
       {/* <Features />

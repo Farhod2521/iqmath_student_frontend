@@ -1,53 +1,50 @@
-import Brand from "@/components/brand";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
-import usePostQuery from "@/hooks/api/usePostQuery";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
-import Header from "@/components/header";
-import { useState } from "react";
+import Brand from '@/components/brand'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import Image from 'next/image'
+import usePostQuery from '@/hooks/api/usePostQuery'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import Header from '@/components/header'
+import { useState } from 'react'
 const Index = () => {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const { phone } = router.query;
-  const [showPassword, setShowPassword] = useState(false);
+  const { t } = useTranslation()
+  const router = useRouter()
+  const { phone } = router.query
+  const [showPassword, setShowPassword] = useState(false)
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors }
+  } = useForm()
 
   const { mutate: newPassword } = usePostQuery({
-    listKeyId: KEYS.newPassword,
-  });
+    listKeyId: KEYS.newPassword
+  })
 
   const onSubmit = ({ new_password }) => {
-    let formData = new FormData();
-    formData.append("phone", `${String(998) + String(phone)}`);
-    formData.append("new_password", new_password);
+    let formData = new FormData()
+    formData.append('phone', `${String(998) + String(phone)}`)
+    formData.append('new_password', new_password)
     newPassword(
       {
         url: URLS.newPassword,
-        attributes: formData,
+        attributes: formData
       },
       {
         onSuccess: (data) => {
-          console.log(data);
-          toast.success("Logged in successfully");
-          router.push(`/`);
+          toast.success('Logged in successfully')
+          router.push(`/`)
         },
         onError: (error) => {
-          console.log("Full error response:");
-
-          toast.error(error.response?.data.error);
-        },
+          toast.error(error.response?.data.error)
+        }
       }
-    );
-  };
+    )
+  }
   return (
     <div
       className="min-h-screen bg-center bg-cover flex flex-col"
@@ -56,9 +53,7 @@ const Index = () => {
       <Header />
       <div className="flex flex-grow items-center justify-center font-sf">
         <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white mx-auto rounded-[12px] p-6 sm:p-[32px] shadow-md">
-          <p className="text-xl  font-extrabold sm:text-[26px] text-center mb-6">
-            {t("resetPassword")}
-          </p>
+          <p className="text-xl  font-extrabold sm:text-[26px] text-center mb-6">{t('resetPassword')}</p>
 
           <div className="w-full mt-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -86,9 +81,9 @@ const Index = () => {
                   {t("newPassword")}
                 </p> */}
                 <input
-                  type={showPassword ? "text" : "password"}
-                  {...register("new_password", { required: true })}
-                  placeholder={`${t("newPassword")}`}
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('new_password', { required: true })}
+                  placeholder={`${t('newPassword')}`}
                   className="border border-[#EAEFF4] bg-white rounded-[12px] text-sm sm:text-[17px] text-black w-full px-[16px] py-[10px] min-h-[46px]"
                 />
                 <div
@@ -96,32 +91,22 @@ const Index = () => {
                   className="absolute top-[10px] right-3 bottom-0 cursor-pointer"
                 >
                   {showPassword ? (
-                    <Image
-                      src={"/icons/eye.svg"}
-                      alt={"edit"}
-                      width={24}
-                      height={24}
-                    />
+                    <Image src={'/icons/eye.svg'} alt={'edit'} width={24} height={24} />
                   ) : (
-                    <Image
-                      src={"/icons/eye-off.svg"}
-                      alt={"edit"}
-                      width={24}
-                      height={24}
-                    />
+                    <Image src={'/icons/eye-off.svg'} alt={'edit'} width={24} height={24} />
                   )}
                 </div>
               </div>
 
               <button className="bg-[#5D87FF] hover:bg-[#4570EA] text-white py-2 sm:py-3 w-full rounded-md transition-all duration-300">
-                {t("finish")}
+                {t('finish')}
               </button>
             </form>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

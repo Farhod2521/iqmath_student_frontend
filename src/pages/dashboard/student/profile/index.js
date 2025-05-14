@@ -10,7 +10,6 @@ import { get } from 'lodash'
 import { Avatar, AvatarIcon, Button, Card } from '@heroui/react'
 import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
-import { FaUser } from 'react-icons/fa'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -28,6 +27,7 @@ const Index = () => {
     enabled: !!session?.accessToken
   })
   const router = useRouter()
+
   return (
     <MainWrapper title={t('profile')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
@@ -47,66 +47,76 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'phone'}
-                    title={'Номер телефона'}
+                    title={t('phone number')}
                     desc={`+${get(studentProfile, 'data.phone', '')}`}
                   />
                 </li>
+                {get(studentProfile, 'data.email', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'email'}
+                      title={'Email адрес'}
+                      desc={get(studentProfile, 'data.email', '')}
+                    />
+                  </li>
+                )}
+                {get(studentProfile, 'data.brithday', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'calendar'}
+                      title={'Дата рождения'}
+                      desc={get(studentProfile, 'data.brithday', '')}
+                    />
+                  </li>
+                )}
+                {get(studentProfile, 'data.region', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'region'}
+                      title={'Регион'}
+                      desc={get(studentProfile, 'data.region', '')}
+                    />
+                  </li>
+                )}
 
-                <li>
-                  <ProfileDetails
-                    detailIcon={'email'}
-                    title={'Email адрес'}
-                    desc={get(studentProfile, 'data.email', '')}
-                  />
-                </li>
+                {get(studentProfile, 'data.districts', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'region'}
+                      title={'Область'}
+                      desc={get(studentProfile, 'data.districts', '')}
+                    />
+                  </li>
+                )}
 
-                <li>
-                  <ProfileDetails
-                    detailIcon={'calendar'}
-                    title={'Дата рождения'}
-                    desc={get(studentProfile, 'data.brithday', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'region'}
-                    title={'Регион'}
-                    desc={get(studentProfile, 'data.region', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'region'}
-                    title={'Область'}
-                    desc={get(studentProfile, 'data.districts', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'address'}
-                    title={'Адрес'}
-                    desc={get(studentProfile, 'data.address', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'education'}
-                    title={'Учреждение'}
-                    desc={`${get(studentProfile, 'data.academy_or_school_name', '')}-maktab`}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'course'}
-                    title={'Курс'}
-                    desc={get(studentProfile, 'data.class_name', '')}
-                  />
-                </li>
+                {get(studentProfile, 'data.address', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'address'}
+                      title={'Адрес'}
+                      desc={get(studentProfile, 'data.address', '')}
+                    />
+                  </li>
+                )}
+                {get(studentProfile, 'data.academy_or_school_name', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'education'}
+                      title={'Учреждение'}
+                      desc={`${get(studentProfile, 'data.academy_or_school_name', '')}-maktab`}
+                    />
+                  </li>
+                )}
+                {get(studentProfile, 'data.class_name', '') && (
+                  <li>
+                    <ProfileDetails
+                      detailIcon={'course'}
+                      title={t('course')}
+                      // desc={get(studentProfile, 'data.class_name', '')}
+                      desc={t('matematika')}
+                    />
+                  </li>
+                )}
               </ul>
 
               <Button
@@ -115,7 +125,7 @@ const Index = () => {
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
-                <p className="font-medium">Изменить</p>
+                <p className="font-medium">{t('editProfile')}</p>
               </Button>
             </div>
           </div>
@@ -123,7 +133,7 @@ const Index = () => {
         <div className="col-span-7 p-4">
           <div className="flex gap-x-[24px]">
             <div className="space-y-[20px] w-2/3">
-              <Card className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+              <Card className="relative opacity-40 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
@@ -133,7 +143,7 @@ const Index = () => {
                 />
                 <p className="text-[28px] font-extrabold">6,825</p>
                 <div className="space-y-[4px]">
-                  <p className="text-[17px]">Total students</p>
+                  <p className="text-[17px]">Общее количество учеников</p>
                   <div className="flex gap-x-[4px] items-center py-[3px]">
                     <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
 
@@ -143,7 +153,7 @@ const Index = () => {
                 </div>
               </Card>
 
-              <Card className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+              <Card className="relative  opacity-40 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
@@ -153,7 +163,7 @@ const Index = () => {
                 />
                 <p className="text-[28px] font-extrabold">6,825</p>
                 <div className="space-y-[4px]">
-                  <p className="text-[17px]">Total students</p>
+                  <p className="text-[17px]">Общее количество учеников</p>
                   <div className="flex gap-x-[4px] items-center py-[3px]">
                     <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
 
@@ -163,7 +173,7 @@ const Index = () => {
                 </div>
               </Card>
             </div>
-            <Card className="bg-[#114FFF] rounded-[12px] w-1/3">
+            <Card className="bg-[#114FFF]  opacity-20 rounded-[12px] w-1/3">
               <ProgressCard />
             </Card>
           </div>

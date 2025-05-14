@@ -31,12 +31,12 @@ const Index = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data)
+          // console.log(data)
           toast.success('Logged in successfully')
           router.push(`/auth/forget-password/verify-sms/${phone}`)
         },
         onError: (error) => {
-          console.log('Full error response:')
+          // console.log('Full error response:')
 
           toast.error(`${error.response?.data.retry_after} dan keyin sinab ko'ring`)
 

@@ -92,8 +92,6 @@ const AuthVerifySms = () => {
           setTab('newPassword')
         },
         onError: (error) => {
-          console.log('Full error response:')
-
           toast.error(error.response?.data.error)
         }
       }

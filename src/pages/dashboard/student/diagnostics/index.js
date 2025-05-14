@@ -118,14 +118,12 @@ const Index = () => {
       },
       {
         onSuccess: (res) => {
-          console.log('res', res)
           setTestQuestions(res?.data)
 
           setShowNextModal(false)
           toast.success('Diqqat! Test boshlandi.')
         },
         onError: (err) => {
-          console.log(err)
           toast.error('Error starting test')
         }
       }
@@ -196,11 +194,6 @@ const Index = () => {
         }
       })
 
-    console.log(
-      'composite_answers',
-      testQuestions.filter((q) => q.question_type === 'composite')
-    )
-    console.log('compositeAnswers', compositeAnswers)
     const composite_answers = testQuestions
       .filter((q) => q.question_type === 'composite')
       .map((q) => {
@@ -232,7 +225,6 @@ const Index = () => {
       },
       {
         onSuccess: (res) => {
-          console.log('res', res)
           setResults(res)
           setScore(res)
           setTopic(tab)
@@ -311,7 +303,7 @@ const Index = () => {
       )} */}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
-          <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
+          <h1 className="text-[22px] font-semibold">{t('diagnostics')}</h1>
           <div className="w-[1px] h-[26px] bg-[#E9E9E9]"></div>
           <p className="text-[17px] text-[#525252]">{t('task')}</p>
         </div>
@@ -369,7 +361,7 @@ const Index = () => {
               <div className="space-y-[32px] p-4">
                 <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                   <MathJax dynamic>
-                    <div className="text-black text-[19px] font-medium text-center">
+                    <div className="text-black text-[19px] font-medium text-center selected_question">
                       {parse(
                         i18n.language === 'uz'
                           ? selectedQuestion?.question_text_uz || ''

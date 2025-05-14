@@ -1,9 +1,9 @@
-import React from "react";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import React from 'react'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 const ProgressCard = () => {
-  const percentage = 40;
+  const percentage = 40
 
   return (
     <div className="bg-[#0057FF] text-white p-6 rounded-2xl  text-center flex flex-col">
@@ -15,11 +15,11 @@ const ProgressCard = () => {
           value={percentage}
           text={`${percentage}%`}
           styles={buildStyles({
-            textColor: "#FFFFFF",
-            pathColor: "#FFFFFF",
-            trailColor: "rgba(255, 255, 255, 0.3)",
-            strokeLinecap: "round",
-            textSize: "20px",
+            textColor: '#FFFFFF',
+            pathColor: '#FFFFFF',
+            trailColor: 'rgba(255, 255, 255, 0.3)',
+            strokeLinecap: 'round',
+            textSize: '20px'
           })}
         />
       </div>
@@ -31,15 +31,15 @@ const ProgressCard = () => {
       <div className="flex justify-between px-4 mt-auto">
         <div className="text-center">
           <p className="text-2xl font-semibold">6,825</p>
-          <p className="text-sm opacity-80">Total students</p>
+          <p className="text-sm opacity-80">Общее количество учеников</p>
         </div>
-        <div className="text-center">
+        {/* <div className="text-center">
           <p className="text-2xl font-semibold">6,825</p>
-          <p className="text-sm opacity-80">Total students</p>
-        </div>
+          <p className="text-sm opacity-80">Общее количество учеников</p>
+        </div> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProgressCard;
+export default ProgressCard

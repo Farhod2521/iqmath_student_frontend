@@ -34,13 +34,13 @@ const SidebarMenu = () => {
     //   icon: <PiBagSimple size={26} />,
     //   disabled: false
     // },
-    {
-      key: 'individual',
-      path: '/dashboard/student/individual',
-      label: t('independent'),
-      icon: <TbChecklist size={26} />,
-      disabled: false
-    },
+    // {
+    //   key: 'individual',
+    //   path: '/dashboard/student/individual',
+    //   label: t('independent'),
+    //   icon: <TbChecklist size={26} />,
+    //   disabled: false
+    // },
     {
       key: 'diagnostics',
       path: '/dashboard/student/diagnostics/statistics',
@@ -57,7 +57,7 @@ const SidebarMenu = () => {
       label: t('profile'),
       icon: <LuUser size={26} />,
       disabled: false
-    }
+    },
     // {
     //   key: 'chat',
     //   path: '/dashboard/student/chat',
@@ -65,13 +65,12 @@ const SidebarMenu = () => {
     //   icon: <HiOutlineChatBubbleLeftRight size={26} />,
     //   disabled: true
     // },
-    // {
-    //   key: 'coins',
-    //   path: '/dashboard/student/coins',
-    //   label: t('points'),
-    //   icon: <FaCoins size={26} />,
-    //   disabled: true
-    // },
+    {
+      key: 'coins',
+      path: '/dashboard/student/coins',
+      label: t('points'),
+      icon: <FaCoins size={26} />
+    }
     // {
     //   key: 'wallet',
     //   path: '/dashboard/student/wallet',
@@ -113,7 +112,7 @@ const SidebarMenu = () => {
       </div>
 
       <div className="border-t">
-        <SidebarTitle>{t('account')}</SidebarTitle>
+        {/* <SidebarTitle>{t('account')}</SidebarTitle> */}
         <ul className="mt-[12px] space-y-[8px] px-[24px] mb-[24px]">
           {menuItemsBottom.map((item) => renderMenuItem(item, router.pathname === item.path))}
         </ul>

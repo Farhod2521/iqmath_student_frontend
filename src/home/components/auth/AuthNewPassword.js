@@ -42,8 +42,6 @@ const AuthNewPassword = () => {
           setTab('signIn')
         },
         onError: (error) => {
-          console.log('Full error response:')
-
           toast.error(error.response?.data.error)
         }
       }
