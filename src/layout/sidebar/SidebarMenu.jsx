@@ -27,13 +27,13 @@ const SidebarMenu = () => {
       icon: <LuBookText size={26} />,
       disabled: false
     },
-    {
-      key: 'my-study',
-      path: '/dashboard/student/my-study',
-      label: t('myLearning'),
-      icon: <PiBagSimple size={26} />,
-      disabled: false
-    },
+    // {
+    //   key: 'my-study',
+    //   path: '/dashboard/student/my-study',
+    //   label: t('myLearning'),
+    //   icon: <PiBagSimple size={26} />,
+    //   disabled: false
+    // },
     {
       key: 'individual',
       path: '/dashboard/student/individual',
@@ -57,28 +57,28 @@ const SidebarMenu = () => {
       label: t('profile'),
       icon: <LuUser size={26} />,
       disabled: false
-    },
-    {
-      key: 'chat',
-      path: '/dashboard/student/chat',
-      label: t('chat'),
-      icon: <HiOutlineChatBubbleLeftRight size={26} />,
-      disabled: true
-    },
-    {
-      key: 'coins',
-      path: '/dashboard/student/coins',
-      label: t('points'),
-      icon: <FaCoins size={26} />,
-      disabled: true
-    },
-    {
-      key: 'wallet',
-      path: '/dashboard/student/wallet',
-      label: t('wallet'),
-      icon: <LuWalletMinimal size={26} />,
-      disabled: true
     }
+    // {
+    //   key: 'chat',
+    //   path: '/dashboard/student/chat',
+    //   label: t('chat'),
+    //   icon: <HiOutlineChatBubbleLeftRight size={26} />,
+    //   disabled: true
+    // },
+    // {
+    //   key: 'coins',
+    //   path: '/dashboard/student/coins',
+    //   label: t('points'),
+    //   icon: <FaCoins size={26} />,
+    //   disabled: true
+    // },
+    // {
+    //   key: 'wallet',
+    //   path: '/dashboard/student/wallet',
+    //   label: t('wallet'),
+    //   icon: <LuWalletMinimal size={26} />,
+    //   disabled: true
+    // }
   ]
 
   const renderMenuItem = (item, isActive) => {
