@@ -82,7 +82,7 @@ const Index = () => {
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
   return (
-    <MainWrapper title={t('topics')}>
+    <MainWrapper title={t('theory')}>
       <div className="font-sf">
         <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">

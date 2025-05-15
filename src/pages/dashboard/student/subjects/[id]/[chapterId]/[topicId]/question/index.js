@@ -46,10 +46,10 @@ export default function StudentTestPage() {
   const { id, chapterId, topicId } = router.query
   const { data: session } = useSession()
 
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(1)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedQuestion, setSelectedQuestion] = useState(null)
-  const [showNextModal, setShowNextModal] = useState(true)
+  const [showNextModal, setShowNextModal] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
   const [showCalculator, setShowCalculator] = useState(false)
   const [showSolution, setShowSolution] = useState(false)
@@ -146,7 +146,7 @@ export default function StudentTestPage() {
       {showNextModal && (
         <SimpleModal>
           <div className="flex justify-between px-[16px] py-[18px]">
-            <h3 className="text-[19px] font-semibold">{t('diagnostics')}</h3>
+            <h3 className="text-[19px] font-semibold">{t('theory')}</h3>
             <button onClick={() => setShowNextModal(false)} className="rounded">
               <Image src="/icons/close.svg" alt="close" width={24} height={24} />
             </button>
@@ -202,7 +202,7 @@ export default function StudentTestPage() {
       )}
       <div className="flex justify-between pl-[24px] pr-[16px] py-[14px] border-b border-b-[#F2F2F7] items-center">
         <div className="flex items-center gap-x-[12px]">
-          <h1 className="text-[22px] font-semibold">{t('diagnostics')}</h1>
+          <h1 className="text-[22px] font-semibold">{t('theory')}</h1>
           <div className="w-[1px] h-[26px] bg-[#E9E9E9]"></div>
           <p className="text-[17px] text-[#525252]">{t('task')}</p>
         </div>
