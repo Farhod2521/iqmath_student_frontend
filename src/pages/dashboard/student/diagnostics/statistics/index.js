@@ -55,7 +55,7 @@ const Index = () => {
                 <div className="w-1/3 flex justify-end">
                   {get(item, 'message', '') ? (
                     <Button
-                      isDisabled
+                      isDisabled={get(item, 'level') != '1'}
                       onPress={() => {
                         router.push('/dashboard/student/diagnostics')
                       }}
