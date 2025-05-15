@@ -2,8 +2,11 @@ import React from 'react'
 import { Box, Stack, Typography, Container, Button } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 const Banner = () => {
+  const { t } = useTranslation()
+
   return (
     <Box
       bgcolor="primary.light"
@@ -22,7 +25,7 @@ const Banner = () => {
         <Grid container spacing={3} justifyContent="center">
           <Grid size={{ xs: 12, lg: 8 }} alignItems="center" textAlign="center">
             <Typography color="primary.main" textTransform="uppercase" fontSize="13px">
-              Biz haqimmizda
+              {t('aboutus')}
             </Typography>
             <Typography
               variant="h1"
@@ -37,7 +40,7 @@ const Banner = () => {
                 }
               }}
             >
-              IQmath - bu matematikani samarali o'qitish uchun maxsus ishlab chiqilgan innovatsion elektron platforma.
+              {t('aboutheader')}
             </Typography>
           </Grid>
         </Grid>

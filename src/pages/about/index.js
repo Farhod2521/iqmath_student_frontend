@@ -13,7 +13,7 @@ function AboutUs() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <HeaderAlert />
+      {/* <HeaderAlert /> */}
       <HpHeader />
       <Banner />
 

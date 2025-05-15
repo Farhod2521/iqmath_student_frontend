@@ -8,10 +8,11 @@ import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const FAQ = () => {
   const theme = useTheme()
-
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(true)
   const [expanded2, setExpanded2] = useState(false)
   const [expanded3, setExpanded3] = useState(false)
@@ -90,7 +91,7 @@ const FAQ = () => {
             }}
             fontWeight="700"
           >
-            Savollarga javoblar
+            {t('faq')}
           </Typography>
           <Box mt={7}>
             <StyledAccordian expanded={expanded} onChange={handleChange}>
@@ -99,13 +100,9 @@ const FAQ = () => {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                IQMATH o'zi nima?
+                {t('faqq1')}
               </AccordionSummary>
-              <AccordionDetails>
-                IQmath - bu matematika fanini samarali o'qish uchun maxsus ishlab chiqilgan innovatsion elektron
-                platforma bo'lib, unda maktab darsliklarini yaxshi o'zlashtirishga va oliy ta'lim dargohlariga kirish
-                imtihonlarida yuqori natijalarni qo'lga kiritishda yordam beradi.
-              </AccordionDetails>
+              <AccordionDetails>{t('faqa1')}</AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded2} onChange={handleChange2}>
               <AccordionSummary
@@ -113,11 +110,9 @@ const FAQ = () => {
                 aria-controls="panel2-content"
                 id="panel2-header"
               >
-                IQMATH bo'yicha qiziqtirgan savollarimga qayerdan javob olsam bo'ladi?
+                {t('faqq2')}
               </AccordionSummary>
-              <AccordionDetails>
-                +998 (78) 888 08 00 raqamiga qo'ng'iroq qilib istalgan savollaringizga javob olishingiz mumkin.
-              </AccordionDetails>
+              <AccordionDetails>{t('faqa2')}</AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded3} onChange={handleChange3}>
               <AccordionSummary
@@ -125,12 +120,9 @@ const FAQ = () => {
                 aria-controls="panel3-content"
                 id="panel3-header"
               >
-                IQMATH platformasidan kimlar ro'yxatdan o'tishi mumkin?
+                {t('faqq3')}
               </AccordionSummary>
-              <AccordionDetails>
-                IQmath platformasidan foydalanish uchun yosh chegarasi belgilanmagan. Istalgan foydalanuchi saytdan
-                foydlanishi mumkin. Saytdan foydalanish pullik.
-              </AccordionDetails>
+              <AccordionDetails>{t('faqa3')}</AccordionDetails>
             </StyledAccordian>
             <StyledAccordian expanded={expanded4} onChange={handleChange4}>
               <AccordionSummary
@@ -138,13 +130,9 @@ const FAQ = () => {
                 aria-controls="panel2-content"
                 id="panel2-header"
               >
-                IQMATH platformasida a'lochi foydalanuvchilar uchun bonuslar beriladimi?
+                {t('faqq4')}
               </AccordionSummary>
-              <AccordionDetails>
-                IQmath platformasida berilgan topshiriqlarni o'z vaqtida muvaffaqiyatli bajargan foydalanuvchilar uchun
-                bonuslar beriladi. Ushbu ballarni tez orada qimmatbaho sovg'alarga almashtirishingiz mumkin bo'ladi (Bu
-                boraga ishlar boshlangan).
-              </AccordionDetails>
+              <AccordionDetails>{t('faqa4')}</AccordionDetails>
             </StyledAccordian>
             {/* <StyledAccordian expanded={expanded5} onChange={handleChange5}>
               <AccordionSummary

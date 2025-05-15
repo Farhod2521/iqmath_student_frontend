@@ -6,6 +6,7 @@ import { Chip } from '@mui/material'
 
 // import { NavLink, useLocation } from 'react-router'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 export const NavLinks = [
   { title: 'Bosh sahifa', to: '/' },
@@ -15,6 +16,14 @@ export const NavLinks = [
 ]
 
 const Navigations = () => {
+  const { t } = useTranslation()
+
+  const navs = [
+    { title: t('homePage'), to: '/' },
+    { title: t('aboutus'), to: '/about' },
+    { title: t('faq'), to: '/faqs' },
+    { title: t('contactus'), to: 'tel:+998881989000' }
+  ]
   const StyledButton = styled(Button)(({ theme }) => ({
     fontSize: '15px',
     color: theme.palette.text.secondary,
@@ -28,7 +37,7 @@ const Navigations = () => {
 
   return (
     <>
-      {NavLinks.map((navlink, i) => (
+      {navs.map((navlink, i) => (
         <StyledButton
           color="primary"
           component={Link}
