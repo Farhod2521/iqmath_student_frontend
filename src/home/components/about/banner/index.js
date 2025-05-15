@@ -1,51 +1,26 @@
 import React from 'react'
-import { Box, Stack, Typography, Container, Button } from '@mui/material'
-import Grid from '@mui/material/Grid2'
-import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
+import Typography from '@mui/material/Typography'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Link from 'next/link'
 
 const Banner = () => {
   const { t } = useTranslation()
 
   return (
-    <Box
-      bgcolor="primary.light"
-      sx={{
-        paddingTop: {
-          xs: '40px',
-          lg: '100px'
-        },
-        paddingBottom: {
-          xs: '40px',
-          lg: '100px'
-        }
-      }}
-    >
-      <Container maxWidth="lg">
-        <Grid container spacing={3} justifyContent="center">
-          <Grid size={{ xs: 12, lg: 8 }} alignItems="center" textAlign="center">
-            <Typography color="primary.main" textTransform="uppercase" fontSize="13px">
-              {t('aboutus')}
-            </Typography>
-            <Typography
-              variant="h1"
-              mb={3}
-              lineHeight={1.4}
-              fontWeight={700}
-              sx={{
-                fontSize: {
-                  xs: '26px'
-                  // sm: '48px',
-                  // lg: '56px'
-                }
-              }}
-            >
-              {t('aboutheader')}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+    <div className="py-[60px] bg-[#5d87ff]">
+      <h1 className="uppercase text-[28px] text-white text-center"> {t('aboutus')}</h1>
+      <div className="flex mt-4 justify-center items-center">
+        <Breadcrumbs sx={{ color: 'white' }} aria-label="breadcrumb">
+          <Link className="text-white/80" underline="hover" color="inherit" href="/">
+            {t('homePage')}
+          </Link>
+          <Typography sx={{ color: 'text.primary' }}>
+            <span className="text-white/80">{t('aboutus')}</span>
+          </Typography>
+        </Breadcrumbs>
+      </div>
+    </div>
   )
 }
 

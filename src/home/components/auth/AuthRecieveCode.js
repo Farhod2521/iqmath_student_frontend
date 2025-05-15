@@ -93,9 +93,10 @@ const AuthRecieveCode = () => {
 
   return (
     <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white mx-auto rounded-md">
-      <h3 className="font-extrabold text-[26px] text-center">Подтвердите номер телефона</h3>
+      <h3 className="font-extrabold text-[26px] text-center">{t('authTitle')}</h3>
       <p className="text-sm sm:text-[19px] font-medium text-center mt-[8px] mb-[32px]">
-        Мы отправили смс на номер <br />
+        {t('authSubTitle')}
+        <br />
         {formattedPhone}
       </p>
 
@@ -106,7 +107,7 @@ const AuthRecieveCode = () => {
               <input
                 type="text"
                 onChange={(e) => setVerifyCode(e.target.value)}
-                placeholder="Код из смс"
+                placeholder={t('authCodePlaceholder')}
                 className="border border-[#E9E9E9] bg-white rounded-[12px] text-black w-full px-3 min-h-[46px] focus:outline-none relative text-[17px] placeholder:text-[17px]"
               />
             </div>

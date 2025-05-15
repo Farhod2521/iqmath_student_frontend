@@ -14,6 +14,7 @@ function Faqs() {
       <CssBaseline />
       {/* <HeaderAlert /> */}
       <HpHeader />
+      <BannerFaq />
       <FAQ />
       <ScrollToTop />
     </ThemeProvider>

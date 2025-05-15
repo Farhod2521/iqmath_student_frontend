@@ -14,7 +14,7 @@ import MobileSidebar from './MobileSidebar'
 import { IconMenu2 } from '@tabler/icons'
 import Brand from '@/components/brand'
 import Image from 'next/image'
-import { Instagram, Phone, Telegram, Twitter } from '@mui/icons-material'
+import { Facebook, Instagram, Phone, Telegram, Twitter, YouTube } from '@mui/icons-material'
 import axios from 'axios'
 import { request } from '@/services/api'
 import NavbarLangue from '@/layout/navbar/NavbarLangue'
@@ -72,19 +72,25 @@ const HpHeader = () => {
               </Stack>
               <div className="flex gap-2 items-center">
                 <LanguageDropdown />
-                <a href="#" className="">
-                  <IconButton color="primary">
-                    <Instagram />
-                  </IconButton>
-                </a>
-                <a href="#">
+                <a href="https://t.me/iqmath2025" target="_blank">
                   <IconButton color="primary">
                     <Telegram />
                   </IconButton>
                 </a>
-                <a href="#">
+                <a href="https://www.instagram.com/iq_mathuz/" target="_blank" className="">
                   <IconButton color="primary">
-                    <Twitter />
+                    <Instagram />
+                  </IconButton>
+                </a>
+
+                {/* <a href="https://www.facebook.com/profile.php?id=61572210159591" target="_blank">
+                  <IconButton color="primary">
+                    <Facebook />
+                  </IconButton>
+                </a> */}
+                <a href="https://www.youtube.com/@iqmathuz" target="_blank">
+                  <IconButton color="primary">
+                    <YouTube />
                   </IconButton>
                 </a>
 

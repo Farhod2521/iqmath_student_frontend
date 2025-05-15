@@ -24,7 +24,7 @@ function SelectClass({ option, onChange }) {
         onClick={() => setDropdownOpenCourse((prev) => !prev)}
         className="w-full text-left px-[16px] py-[10px] border border-[#EAEFF4] rounded-[12px] bg-white focus:outline-none flex items-center justify-between"
       >
-        <span>{option?.label || `Sinfni tanlang`}</span>
+        <span>{option?.label || t('selectClass')}</span>
         <svg
           className={`w-5 h-5 transform ${dropdownOpenCourse ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"

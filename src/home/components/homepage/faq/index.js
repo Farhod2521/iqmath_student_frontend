@@ -70,7 +70,7 @@ const FAQ = () => {
     <Container
       maxWidth="lg"
       sx={{
-        marginTop: '36px',
+        marginTop: '24px',
         pb: {
           xs: '30px',
           lg: '60px'
@@ -79,7 +79,7 @@ const FAQ = () => {
     >
       <Grid container spacing={3} justifyContent="center">
         <Grid size={{ xs: 12, lg: 8 }}>
-          <Typography
+          {/* <Typography
             variant="h4"
             textAlign="center"
             lineHeight="1.2"
@@ -92,7 +92,7 @@ const FAQ = () => {
             fontWeight="700"
           >
             {t('faq')}
-          </Typography>
+          </Typography> */}
           <Box mt={7}>
             <StyledAccordian expanded={expanded} onChange={handleChange}>
               <AccordionSummary

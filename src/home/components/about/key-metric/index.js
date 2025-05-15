@@ -24,9 +24,15 @@ const KeyMetric = () => {
     >
       <Container>
         <Grid container spacing={3} justifyContent="space-between">
-          <Typography lineHeight={1.9}>{t('aboutbody1')}</Typography>
-          <Typography lineHeight={1.9}>{t('aboutbody2')}</Typography>
-          <Typography lineHeight={1.9}>{t('aboutbody3')}</Typography>
+          <Typography lineHeight={1.9} textAlign="justify">
+            {t('aboutbody1')}
+          </Typography>
+          <Typography lineHeight={1.9} textAlign="justify">
+            {t('aboutbody2')}
+          </Typography>
+          <Typography lineHeight={1.9} textAlign="justify">
+            {t('aboutbody3')}
+          </Typography>
         </Grid>
       </Container>
     </Box>
