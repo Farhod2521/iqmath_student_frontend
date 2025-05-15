@@ -309,7 +309,8 @@ const Index = () => {
         </div>
 
         <div className="flex items-center">
-          <NavbarLangue />
+          {/* <NavbarLangue /> */}
+          <LanguageDropdown />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-[10px]"></div>
           <Button
             variant="light"

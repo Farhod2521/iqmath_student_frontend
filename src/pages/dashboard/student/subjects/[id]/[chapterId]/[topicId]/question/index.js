@@ -22,6 +22,7 @@ import InfoCircleIcon from '@/components/icons/info-circle'
 import NavbarLangue from '@/layout/navbar/NavbarLangue'
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
+import LanguageDropdown from '@/components/language'
 
 const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => mod.EditableMathField), { ssr: false })
 
@@ -207,7 +208,8 @@ export default function StudentTestPage() {
         </div>
 
         <div className="flex items-center">
-          <NavbarLangue />
+          {/* <NavbarLangue /> */}
+          <LanguageDropdown />
           <div className="w-[1px] h-[25px] bg-gray-300 mx-[10px]"></div>
           <Button
             onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}
