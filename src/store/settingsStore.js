@@ -11,6 +11,8 @@ export const useSettingsStore = create(
         isSidebarOpen: true,
         lang: config.DEFAULT_APP_LANG,
         titlePage: 'Student',
+        // isRecommendedMenu: false,
+        // setRecommendedMenu: (bisRecommendedMenuol) => set({ isRecommendedMenu }),
         setToken: (token) => set({ token }),
         setLang: (lang) => set({ lang }),
         setTitlePage: (titlePage) => set({ titlePage }),

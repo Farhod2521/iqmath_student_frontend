@@ -12,7 +12,7 @@ import { LuUser } from 'react-icons/lu'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { FaCoins } from 'react-icons/fa6'
 import { LuWalletMinimal } from 'react-icons/lu'
-
+import { BiDirections } from 'react-icons/bi'
 // ...imports
 
 const SidebarMenu = () => {
@@ -43,9 +43,16 @@ const SidebarMenu = () => {
     // },
     {
       key: 'diagnostics',
-      path: '/dashboard/student/diagnostics/statistics',
+      path: '/dashboard/student/diagnostics',
       label: t('diagnostics'),
       icon: <TbCheckbox size={26} />,
+      disabled: false
+    },
+    {
+      key: 'recommended',
+      path: '/dashboard/student/diagnostics/recommended-topics',
+      label: t('recommended'),
+      icon: <BiDirections size={26} />,
       disabled: false
     }
   ]
@@ -107,7 +114,7 @@ const SidebarMenu = () => {
       <div>
         <SidebarTitle>{t('main')}</SidebarTitle>
         <ul className="my-[12px] space-y-[8px] px-[24px]">
-          {menuItems.map((item) => renderMenuItem(item, router.pathname.startsWith(item.path)))}
+          {menuItems.map((item) => renderMenuItem(item, router.pathname.endsWith(item.path)))}
         </ul>
       </div>
 

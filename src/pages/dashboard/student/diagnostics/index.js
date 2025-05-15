@@ -314,7 +314,7 @@ const Index = () => {
           <Button
             variant="light"
             isIconOnly
-            onPress={() => router.push('/dashboard/student/diagnostics/statistics')}
+            onPress={() => router.push('/dashboard/student/subjects')}
             className="float-right rounded"
           >
             <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />

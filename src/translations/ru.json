@@ -267,5 +267,6 @@
   "authTitle": "Подтвердите номер телефонаПодтвердите номер телефона",
   "authSubTitle": "Мы отправили смс на номер",
   "authSuccess": "Вы успешно зарегистрировались!",
-  "authCodePlaceholder": "Код из смс"
+  "authCodePlaceholder": "Код из смс",
+  "recommended": "Рекомендация"
 }

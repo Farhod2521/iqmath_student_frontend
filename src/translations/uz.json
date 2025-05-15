@@ -267,5 +267,6 @@
   "authTitle": "Telefon raqamni tasdiqlash",
   "authSubTitle": "Kod SMS orqali yuborildi",
   "authSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz!",
-  "authCodePlaceholder": "Kodni kiriting"
+  "authCodePlaceholder": "Kodni kiriting",
+  "recommended": "Tavsiya"
 }
