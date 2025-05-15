@@ -70,7 +70,7 @@ const Index = () => {
                   <li
                     key={get(chapter, 'id')}
                     onClick={() => setSelectedChapterId(get(chapter, 'id'))}
-                    className={`p-[12px] pl-[24px] border-b border-[#E9E9E9] cursor-pointer last:border-b-0 hover:bg-[#F0F9FF] ${
+                    className={`p-[12px] pl-[24px] border-b uppercase border-[#E9E9E9] cursor-pointer last:border-b-0 hover:bg-[#F0F9FF] ${
                       isActive ? 'bg-[#F0F9FF]' : 'bg-white'
                     }`}
                   >
@@ -90,24 +90,28 @@ const Index = () => {
                   {get(topic, 'data', []).length > 0 ? (
                     <ul className="w-full">
                       {get(topic, 'data', []).map((topic, index) => (
-                        <li
+                        <Link
                           key={index}
-                          className="p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] border-[#E9E9E9] bg-white last:border-b-0"
+                          href={`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`}
                         >
-                          <Link href={`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`}>
+                          <li className="p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] border-[#E9E9E9] bg-white last:border-b-0">
                             <div className="flex justify-between ">
-                              <div>{i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}</div>
-
+                              <div className="uppercase">
+                                {i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}
+                              </div>
                               <div>
+                                <RightIcon />
+                              </div>
+                              {/* <div>
                                 {get(topic, 'is_open') === false ? (
                                   <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
                                 ) : (
                                   <RightIcon />
                                 )}
-                              </div>
+                              </div> */}
                             </div>
-                          </Link>
-                        </li>
+                          </li>
+                        </Link>
                       ))}
                     </ul>
                   ) : (
