@@ -9,7 +9,6 @@ cache:
 
 deploy:
   stage: deploy
-  timeout: 2h
   only:
     - master
   script:
