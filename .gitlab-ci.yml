@@ -9,6 +9,7 @@ cache:
 
 deploy:
   stage: deploy
+  timeout: 2h
   only:
     - master
   script:
@@ -26,7 +27,7 @@ deploy:
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
         nvm use 20;
         cd /var/www/iqmath_student &&
-        npm install --prefer-offline --no-audit --progress=false &&
+        npm install --legacy-peer-deps --prefer-offline --no-audit --progress=false &&
         pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- run dev &&
         pm2 save
       '
