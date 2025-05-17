@@ -15,6 +15,7 @@ import Link from 'next/link'
 import parse from 'html-react-parser'
 import VideoPlayer from '@/components/video-player'
 import ContentLoader from '@/components/loader/content-loader'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 
 const Index = () => {
   const router = useRouter()
@@ -73,18 +74,26 @@ const Index = () => {
   }
 
   useEffect(() => {
-    if (topicsList.length && !selectedTopic) {
-      setSelectedTopic(topicsList[0])
+    if (topicsList.length && !selectedTopic && id) {
+      const selected = topicsList.find((i) => i.id === Number(id))
+      setSelectedTopic(selected)
       setSelectedIndex(0)
     }
-  }, [topicsList])
+  }, [topicsList, id])
 
   if (isLoadingTopic || isFetchingTopic) return <ContentLoader />
 
   const topicName = i18n.language === 'uz' ? selectedTopic?.name_uz : selectedTopic?.name_ru
 
+  const breadcrumbs = [
+    { link: '/dashboard/student/subjects', title: t('main') },
+    { link: '/dashboard/student/diagnostics/recommended-topics', title: t('recommended') },
+    { link: '', title: topicName }
+  ]
+
   return (
     <div className="font-sf">
+      <BaseBreadcrumbs data={breadcrumbs} />
       <div className="col-span-12 border shadow-sm rounded-[12px] mx-[169px] relative">
         <div className="relative flex items-center justify-between w-full overflow-hidden">
           <button
@@ -153,7 +162,7 @@ const Index = () => {
 
             <Link href={`/dashboard/student/diagnostics/recommended-topics/${selectedTopic?.id}/question`}>
               <Button px="px-[16px]" py="py-[11px]">
-                {t('takeTest')}
+                {t('recommended')}
               </Button>
             </Link>
           </div>

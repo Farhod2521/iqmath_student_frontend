@@ -12,6 +12,7 @@ import Link from 'next/link'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import MainWrapper from '@/layout/MainWrapper'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -50,6 +51,11 @@ const Index = () => {
     chapter && setSelectedChapterId(chapter.data[0].id)
   }, [chapter])
 
+  const breadcrumbs = [
+    { link: '/dashboard/student/subjects', title: t('topics') },
+    { link: '', title: t('departments') }
+  ]
+
   if (isLoadingChapter || isFetchingChapter) {
     return (
       // <Dashboard headerTitle={"Математика"}>
@@ -60,7 +66,8 @@ const Index = () => {
   return (
     <MainWrapper title={t('subjects')}>
       <div className="font-sf">
-        <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
+        <BaseBreadcrumbs data={breadcrumbs} />
+        {/* <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2> */}
         <div className="grid grid-cols-12 gap-[24px]">
           <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
             <ul className="w-full">
@@ -118,10 +125,7 @@ const Index = () => {
                     <div className="flex items-center justify-center h-[200px] gap-2 bg-[#FFF4E5]">
                       <InfoCircleIcon />
                       <div className="flex flex-col items-center">
-                        <h3 className="text-[16px] font-normal text-[#8E8E93]">
-                          {/* {t("noTopics")} */}
-                          Bu bobda mavzular mavjud emas
-                        </h3>
+                        <h3 className="text-[16px] font-normal text-[#8E8E93]">{t('noTopicsInThisSection')}</h3>
                       </div>
                     </div>
                   )}

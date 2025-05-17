@@ -101,10 +101,10 @@ const Index = () => {
         </SimpleModal>
       )}
 
-      <div>
+      <div className="mt-[28px]">
         {subjectsData.map((subject, idx) => (
           <div key={idx}>
-            <h2 className="font-bold mb-8 text-[20px]">{subject.type}</h2>
+            {/* <h2 className="font-bold mb-8 text-[20px]">{subject.type}</h2> */}
             <div className="flex flex-wrap gap-8">
               {subject.data?.map((item, index) => {
                 const imageUrl =

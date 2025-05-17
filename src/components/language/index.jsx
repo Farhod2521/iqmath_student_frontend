@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useLangStore, useSettingsStore } from '@/store'
+import { useSettingsStore } from '@/store'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
-import LangIcon from '../icons/lang'
 import { CiGlobe } from 'react-icons/ci'
 
 const LanguageDropdown = () => {

@@ -33,8 +33,6 @@ function NavbarProfile() {
     sessionStorage.clear()
   }
 
-  console.log(studentProfile)
-
   return (
     <>
       <Dropdown classNames={{ content: 'w-[280px] rounded-md' }}>

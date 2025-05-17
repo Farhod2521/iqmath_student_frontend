@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useLangStore, useSettingsStore } from '@/store'
+import { useSettingsStore } from '@/store'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { CiGlobe } from 'react-icons/ci'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react'
 
 const NavbarLangue = () => {
   const { i18n } = useTranslation()
@@ -15,6 +14,7 @@ const NavbarLangue = () => {
   ]
 
   const [selectedLanguage, setSelectedLanguage] = useState(null)
+  const [isOpen, setIsOpen] = useState(false) // Declare isOpen
   const [isHydrated, setIsHydrated] = useState(false) // Ensure hydration is complete
 
   useEffect(() => {
@@ -30,8 +30,11 @@ const NavbarLangue = () => {
     }
   }, [i18n, setLang]) // Dependencies to re-run the effect if needed
 
+  const toggleDropdown = () => setIsOpen((prev) => !prev)
+
   const selectLanguage = (language) => {
     setSelectedLanguage(language)
+    setIsOpen(false)
     if (typeof window !== 'undefined') {
       localStorage.setItem('lang', language.code)
     }
@@ -43,30 +46,31 @@ const NavbarLangue = () => {
   if (!isHydrated || !selectedLanguage) return null
 
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button className="border-[#E9E9E9] border-1 shadow-sm p-0 rounded-md" variant="light">
-          <CiGlobe color={'#5A6A85'} size={24} />
-          <p className="uppercase text-sm text-black dark:text-white">{selectedLanguage?.name}</p>
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Dynamic Actions"
-        items={languages.filter((language) => language.code !== selectedLanguage.code)}
+    <div className="relative inline-block">
+      <button
+        onClick={toggleDropdown}
+        className="bg-white  hover:bg-[#5d87ff]  text-black hover:text-white py-1 px-3 rounded-md border transform duration-200 active:scale-90 scale-100 flex items-center gap-x-[5px]"
       >
-        {(item) => (
-          <DropdownItem
-            key={item.code}
-            onClick={() => selectLanguage(item)}
-            className={
-              'flex items-center py-2 uppercase hover:bg-gray-100 bg-white dark:bg-[#26334A] text-black dark:text-white'
-            }
-          >
-            {item.name}
-          </DropdownItem>
-        )}
-      </DropdownMenu>
-    </Dropdown>
+        <CiGlobe size={24} />
+        <p className="uppercase text-sm">{selectedLanguage?.code}</p>
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-1 left-0 z-50 bg-white rounded-md dark:bg-[#5d87ff] border border-gray-300 shadow-md">
+          {languages
+            .filter((language) => language.code !== selectedLanguage.code)
+            .map((language) => (
+              <button
+                key={language.code}
+                onClick={() => selectLanguage(language)}
+                className="flex items-center justify-center w-full py-1 rounded-md uppercase  text-sm bg-white  hover:bg-[#5d87ff]  text-black hover:text-white"
+              >
+                {language.code}
+              </button>
+            ))}
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -119,14 +119,14 @@ const Index = () => {
                 )}
               </ul>
 
-              <Button
+              {/* <Button
                 variant="bordered"
                 onPress={() => router.push('/dashboard/student/profile/update')}
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
                 <p className="font-medium">{t('editProfile')}</p>
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Card>

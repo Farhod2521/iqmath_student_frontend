@@ -150,7 +150,8 @@
   "details": "Подробно",
   "action": "Действие",
   "class": "Класс",
-  "topics": "Темы/разделы",
+  "topics": "Темы",
+  "departments": "Отделы",
   "createChapter": "Cоздать главу",
   "editChapter": "Изменить главу",
   "deleteChapter": "Удалить главу",
@@ -268,5 +269,6 @@
   "authSubTitle": "Мы отправили смс на номер",
   "authSuccess": "Вы успешно зарегистрировались!",
   "authCodePlaceholder": "Код из смс",
-  "recommended": "Рекомендация"
+  "recommended": "Рекомендация",
+  "needToStudy": "Список тем, которые вам необходимо изучить"
 }

@@ -150,7 +150,8 @@
   "details": "Batafsil",
   "action": "Amal",
   "class": "Sinf",
-  "topics": "Mavzular / Bo‘limlar",
+  "topics": "Mavzular",
+  "departments": "Bo‘limlar",
   "createChapter": "Bob yaratish",
   "editChapter": "Bobni o'zgartirish",
   "deleteChapter": "Bobni o'chirish",
@@ -268,5 +269,6 @@
   "authSubTitle": "Kod SMS orqali yuborildi",
   "authSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz!",
   "authCodePlaceholder": "Kodni kiriting",
-  "recommended": "Tavsiya"
+  "recommended": "Tavsiya",
+  "needToStudy": "O'zlshtirishingiz kerak bo'lgan mavzular ro'yxati"
 }
