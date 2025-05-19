@@ -82,7 +82,7 @@ const Index = () => {
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
   return (
-    <MainWrapper title={t('theory')}>
+    <MainWrapper title={t('subjects')}>
       <div className="font-sf">
         <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">
@@ -121,7 +121,7 @@ const Index = () => {
                     }`}
                     onClick={() => !topic.locked && handleSelect(topic)}
                   >
-                    <p>{topic.name_uz}</p>
+                    <p>{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</p>
                     {topic.locked && <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />}
                   </li>
                 ))}

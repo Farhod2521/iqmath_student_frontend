@@ -23,6 +23,7 @@ import NavbarLangue from '@/layout/navbar/NavbarLangue'
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import LanguageDropdown from '@/components/language'
+import InfoWarning from '@/features/diagnostics/InfoWarning'
 
 const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => mod.EditableMathField), { ssr: false })
 
@@ -381,18 +382,7 @@ export default function StudentTestPage() {
                     >
                       {t('showSolution')}
                     </Button>
-
-                    <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
-                      <button onClick={handleShowWarning}>
-                        <InfoCircleIcon color={!showWarning ? '#4D555DFF' : '#F97316FF'} />
-                      </button>
-
-                      {showWarning && (
-                        <WarningModal classname={'absolute w-full max-w-[351px] -top-[80px]'}>
-                          {t('cashbackNote')}
-                        </WarningModal>
-                      )}
-                    </div>
+                    <InfoWarning />
 
                     <div className="p-[6px] mr-[20px] cursor-pointer flex items-center">
                       <button onClick={() => setShowCalculator(!showCalculator)}>

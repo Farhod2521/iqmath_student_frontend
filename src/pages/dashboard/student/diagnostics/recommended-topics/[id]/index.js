@@ -128,7 +128,7 @@ const Index = () => {
                   }`}
                   onClick={() => !topic.locked && handleSelect(topic)}
                 >
-                  <p>{topic.name_uz}</p>
+                  <p>{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</p>
                   {topic.locked && <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />}
                 </li>
               ))}
