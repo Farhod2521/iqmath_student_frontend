@@ -297,7 +297,7 @@ export default function StudentTestPage() {
                             }}
                           >
                             <MathJax dynamic>
-                              <div> {item?.text_uz || item?.text_ru}</div>
+                              <div> {i18n.language === 'uz' ? item?.text_uz : item?.text_ru}</div>
                             </MathJax>
                           </MathJaxContext>
                         </span>
@@ -308,7 +308,7 @@ export default function StudentTestPage() {
                       {selectedQuestion?.sub_questions?.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
                           <span className=" text-gray-800 text-[16px]">
-                            {index + 1}) {item?.text1 || item?.text1_uz || item?.text1_ru}
+                            {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
                           </span>
                           <EditableMathField
                             latex={compositeAnswers[selectedQuestion.id]?.[item.id] || ''}
@@ -325,7 +325,7 @@ export default function StudentTestPage() {
                             onFocus={() => setActiveInputId(item.id)}
                             style={compositeMathStyle}
                           />
-                          <span>{item?.text2 || item?.text2_uz || item?.text2_ru}</span>
+                          <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
                         </div>
                       ))}
                     </div>

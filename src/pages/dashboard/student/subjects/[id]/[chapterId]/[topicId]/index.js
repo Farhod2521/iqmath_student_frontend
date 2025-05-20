@@ -16,6 +16,7 @@ import ContentLoader from '@/components/loader/content-loader'
 import MainWrapper from '@/layout/MainWrapper'
 import { Button } from '@heroui/react'
 import parse from 'html-react-parser'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -81,8 +82,15 @@ const Index = () => {
   const topicContent = i18n.language === 'uz' ? selectedTopic?.content_uz : selectedTopic?.content_ru
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
+  const breadcrumbs = [
+    { link: '/dashboard/student/subjects', title: t('main') },
+    { link: `/dashboard/student/subjects/${id}`, title: t('theory') },
+    { link: '', title: topicName }
+  ]
+
   return (
     <MainWrapper title={t('subjects')}>
+      <BaseBreadcrumbs data={breadcrumbs} />
       <div className="font-sf">
         <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">
@@ -148,7 +156,7 @@ const Index = () => {
               </Button>
               <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectTopicId}/question`}>
                 <Button className="px-[16px] py-[11px] rounded-md" color="primary">
-                  {t('takeTest')}
+                  {t('theory')}
                 </Button>
               </Link>
             </div>
