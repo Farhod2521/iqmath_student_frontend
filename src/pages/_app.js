@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
@@ -18,14 +18,15 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const [queryClient] = useState(() => reactQueryClient)
   const router = useRouter()
 
-  const isAdminRoute =
-    router.pathname.startsWith('/dashboard') &&
-    !router.pathname.endsWith('question') &&
-    !router.pathname.endsWith('diagnostics') &&
-    !router.pathname.endsWith('[test]')
-
-  const Layout = isAdminRoute ? LayoutAdmin : LayoutHome
-
+  const Layout = useMemo(() => {
+    const path = router.pathname
+    const isAdminRoute =
+      path.startsWith('/dashboard') &&
+      !path.endsWith('question') &&
+      !path.endsWith('diagnostics') &&
+      !path.endsWith('[test]')
+    return isAdminRoute ? LayoutAdmin : LayoutHome
+  }, [router.pathname])
   return (
     <HeroUIProvider>
       <SessionProvider session={session}>
