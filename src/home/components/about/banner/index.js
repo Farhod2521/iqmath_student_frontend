@@ -15,6 +15,7 @@ const Banner = () => {
           <Link className="text-white/80" underline="hover" color="inherit" href="/">
             {t('homePage')}
           </Link>
+
           <Typography sx={{ color: 'text.primary' }}>
             <span className="text-white/80">{t('aboutus')}</span>
           </Typography>
