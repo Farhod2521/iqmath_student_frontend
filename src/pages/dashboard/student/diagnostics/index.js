@@ -363,12 +363,15 @@ const Index = () => {
               <div className="space-y-[32px] p-4">
                 <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                   <MathJax dynamic>
-                    <div className="text-black text-[19px] font-medium text-center selected_question">
-                      {parse(
-                        i18n.language === 'uz'
-                          ? selectedQuestion?.question_text_uz || ''
-                          : selectedQuestion?.question_text_ru || ''
-                      )}
+                    <div className="flex gap-1">
+                      <div>{selectedIndex + 1})</div>
+                      <div className="flex flex-col justify-center items-center w-full">
+                        {parse(
+                          i18n.language === 'uz'
+                            ? selectedQuestion?.question_text_uz || ''
+                            : selectedQuestion?.question_text_ru || ''
+                        )}
+                      </div>
                     </div>
                   </MathJax>
                 </MathJaxContext>
@@ -424,7 +427,7 @@ const Index = () => {
                             onFocus={() => setActiveInputId(item.id)}
                             style={compositeMathStyle}
                           />
-                          <span>{item?.text2 || item?.text2_uz || item?.text2_ru}</span>
+                          <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
                         </div>
                       ))}
                     </div>

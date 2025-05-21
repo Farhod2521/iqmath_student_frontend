@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
@@ -142,6 +142,13 @@ export default function StudentTestPage() {
     )
   }
 
+  // const changeQuestionIds = useMemo(() => {
+  //   console.log('compositeAnswers', compositeAnswers)
+  //   console.log('textAnswers', textAnswers)
+  //   console.log('choiceAnswers', choiceAnswers)
+  //   return [...Object.keys(textAnswers), ...Object.keys(choiceAnswers), ...Object.keys(compositeAnswers)]
+  // }, [compositeAnswers, textAnswers, choiceAnswers])
+
   return (
     <div className="font-sf">
       {/* {showNextModal && (
@@ -236,9 +243,11 @@ export default function StudentTestPage() {
                 }}
               >
                 <div
-                  className={`min-w-10 min-h-10 flex items-center justify-center border-2  ${
-                    selectedQuestion?.id === question?.id ? 'border-[#007AFF]' : 'hover:bg-gray-100 border-gray-300'
-                  } rounded-full text-black font-bold`}
+                  className={`min-w-10 min-h-10 flex items-center justify-center border-2 
+             
+                    ${
+                      selectedQuestion?.id === question?.id ? 'border-[#007AFF]' : 'hover:bg-gray-100 border-gray-300'
+                    } rounded-full text-black font-bold`}
                 >
                   {index + 1}
                 </div>
@@ -263,12 +272,15 @@ export default function StudentTestPage() {
                 <div className="text-black text-[19px]  font-medium text-center  selected_question">
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                     <MathJax dynamic>
-                      <div className="flex flex-col justify-center items-center ">
-                        {parse(
-                          i18n.language === 'uz'
-                            ? selectedQuestion?.question_text_uz || ''
-                            : selectedQuestion?.question_text_ru || ''
-                        )}
+                      <div className="flex gap-1">
+                        <div>{selectedIndex + 1})</div>
+                        <div className="flex flex-col justify-center items-center w-full">
+                          {parse(
+                            i18n.language === 'uz'
+                              ? selectedQuestion?.question_text_uz || ''
+                              : selectedQuestion?.question_text_ru || ''
+                          )}
+                        </div>
                       </div>
                     </MathJax>
                   </MathJaxContext>

@@ -263,12 +263,15 @@ export default function StudentTestPage() {
                 <div className="text-black text-[19px]  font-medium text-center">
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                     <MathJax dynamic>
-                      <div className="flex flex-col justify-center items-center">
-                        {parse(
-                          i18n.language === 'uz'
-                            ? selectedQuestion?.question_text_uz || ''
-                            : selectedQuestion?.question_text_ru || ''
-                        )}
+                      <div className="flex gap-1">
+                        <div>{selectedIndex + 1})</div>
+                        <div className="flex flex-col justify-center items-center">
+                          {parse(
+                            i18n.language === 'uz'
+                              ? selectedQuestion?.question_text_uz || ''
+                              : selectedQuestion?.question_text_ru || ''
+                          )}
+                        </div>
                       </div>
                     </MathJax>
                   </MathJaxContext>
