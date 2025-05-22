@@ -19,10 +19,12 @@ before_script:
 build:
   stage: build
   script:
-    # 1. .env.production faylini yaratish GitLab o'zgaruvchilari asosida
+    # .env.production faylini yaratish
     - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
+    # kerak bo‘lsa boshqa env lar ham shu yerda
+    # - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
 
-    # 2. Paketlarni o‘rnatish va build qilish
+    # Paketlarni o‘rnatish va build qilish
     - npm install --prefer-offline --no-audit --progress=false
     - npm run build
 
@@ -31,17 +33,21 @@ deploy:
   only:
     - master
   script:
-    # 3. Faqat kerakli fayllarni yuborish (shu jumladan .env.production)
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-      --exclude=node_modules \
-      --exclude=.git \
-      --exclude=npm-debug.log \
-      --exclude=*.log \
-      -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
-
-    # 4. Serverda pm2 bilan prod rejimda ishga tushirish
+    # Faqat kerakli fayllarni yuborish (shu jumladan .env.production)
     - >
-      sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_LOGIN@$SERVER_URL '
+      sshpass -p "$SERVER_PASSWORD" \
+      rsync -az --delete \
+        --exclude=node_modules \
+        --exclude=.git \
+        --exclude=npm-debug.log \
+        --exclude=*.log \
+        -e "ssh -o StrictHostKeyChecking=no" \
+        ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+
+    # Serverda pm2 bilan prod rejimda ishga tushirish
+    - >
+      sshpass -p "$SERVER_PASSWORD" \
+      ssh -o StrictHostKeyChecking=no "$SERVER_LOGIN@$SERVER_URL" '
         export NVM_DIR="$HOME/.nvm";
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
         nvm use 20;
