@@ -1,32 +1,52 @@
 image: node:20
 
 stages:
+  - build
   - deploy
 
 cache:
   paths:
     - node_modules/
 
+variables:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+before_script:
+  - apt-get update -y && apt-get install -y sshpass rsync openssh-client
+  - mkdir -p ~/.ssh
+  - ssh-keyscan -H "$SERVER_URL" >> ~/.ssh/known_hosts
+
+build:
+  stage: build
+  script:
+    # 1. .env.production faylini yaratish GitLab o'zgaruvchilari asosida
+    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
+
+    # 2. Paketlarni o‘rnatish va build qilish
+    - npm install --prefer-offline --no-audit --progress=false
+    - npm run build
+
 deploy:
   stage: deploy
   only:
     - master
   script:
-    - apt-get update -y && apt-get install -y sshpass rsync openssh-client
-    - mkdir -p ~/.ssh
-    - ssh-keyscan -H 95.46.96.179 >> ~/.ssh/known_hosts
+    # 3. Faqat kerakli fayllarni yuborish (shu jumladan .env.production)
+    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
+      --exclude=node_modules \
+      --exclude=.git \
+      --exclude=npm-debug.log \
+      --exclude=*.log \
+      -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
 
-    # Faqat kerakli fayllarni yuborish
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete --exclude=node_modules --exclude=.git --exclude=.next --exclude=npm-debug.log -e "ssh -o StrictHostKeyChecking=no" ./ root@95.46.96.179:/var/www/iqmath_student
-
-    # Serverda node, npm, pm2 bilan ishlash (dev rejim)
+    # 4. Serverda pm2 bilan prod rejimda ishga tushirish
     - >
-      sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@95.46.96.179 '
+      sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_LOGIN@$SERVER_URL '
         export NVM_DIR="$HOME/.nvm";
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
         nvm use 20;
         cd /var/www/iqmath_student &&
         npm install --prefer-offline --no-audit --progress=false &&
-        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- run dev &&
+        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- run start &&
         pm2 save
       '
