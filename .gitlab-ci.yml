@@ -19,35 +19,35 @@ before_script:
 build:
   stage: build
   script:
-    # .env.production faylini yaratish
-    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
-    # kerak bo‘lsa boshqa env lar ham shu yerda
-    # - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
-
-    # Paketlarni o‘rnatish va build qilish
+    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
     - npm install --prefer-offline --no-audit --progress=false
     - npm run build
+  artifacts:
+    paths:
+      - .next
+      - public
+      - package.json
+      - .env
 
 deploy:
   stage: deploy
   only:
     - master
   script:
-    # Faqat kerakli fayllarni yuborish (shu jumladan .env.production)
-    - >
-      - echo "🚀 Fayllar rsync bilan yuborilmoqda..."
-      - sshpass -p "$SERVER_PASSWORD" rsync -az --delete --exclude=node_modules --exclude=.git --exclude=npm-debug.log --exclude=*.log -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
-      - echo "🔁 Serverda ishga tushirish..."
+    - echo "🚀 Fayllar rsync bilan yuborilmoqda..."
+    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
+      --exclude=node_modules --exclude=.git --exclude=npm-debug.log --exclude=*.log \
+      -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
 
-    # Serverda pm2 bilan prod rejimda ishga tushirish
-    - >
+    - echo "🔁 Serverda ishga tushirish..."
+    - |
       sshpass -p "$SERVER_PASSWORD" \
-      ssh -o StrictHostKeyChecking=no "$SERVER_LOGIN@$SERVER_URL" '
-        export NVM_DIR="$HOME/.nvm";
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";
-        nvm use 20;
-        cd /var/www/iqmath_student &&
-        npm install --prefer-offline --no-audit --progress=false &&
-        pm2 restart iqmath_student || pm2 start npm --name "iqmath_student" -- run start &&
+      ssh -o StrictHostKeyChecking=no "$SERVER_LOGIN@$SERVER_URL" "bash -lc '
+        export NVM_DIR=\"\$HOME/.nvm\"
+        [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
+        nvm use 20
+        cd /var/www/iqmath_student
+        npm install --prefer-offline --no-audit --progress=false
+        pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
-      '
+      '"
