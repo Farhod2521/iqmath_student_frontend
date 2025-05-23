@@ -270,5 +270,6 @@
   "authSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz!",
   "authCodePlaceholder": "Kodni kiriting",
   "recommended": "Tavsiya",
-  "needToStudy": "O'zlshtirishingiz kerak bo'lgan mavzular ro'yxati"
+  "needToStudy": "O'zlshtirishingiz kerak bo'lgan mavzular ro'yxati",
+  "examples": "Misollar"
 }

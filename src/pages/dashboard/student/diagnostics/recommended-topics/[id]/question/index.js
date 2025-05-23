@@ -273,7 +273,11 @@ export default function StudentTestPage() {
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                     <MathJax dynamic>
                       <div className="flex gap-1">
-                        <div>{selectedIndex + 1})</div>
+                        <div
+                          className={`min-w-10 mr-2 min-h-10 flex items-center border-[#007AFF] justify-center border-2 rounded-full text-black font-bold`}
+                        >
+                          {selectedIndex + 1}
+                        </div>
                         <div className="flex flex-col justify-center items-center w-full">
                           {parse(
                             i18n.language === 'uz'

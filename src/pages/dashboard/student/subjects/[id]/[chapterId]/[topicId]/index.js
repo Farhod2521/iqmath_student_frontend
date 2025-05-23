@@ -156,7 +156,7 @@ const Index = () => {
               </Button>
               <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectTopicId}/question`}>
                 <Button className="px-[16px] py-[11px] rounded-md" color="primary">
-                  {t('theory')}
+                  {t('examples')}
                 </Button>
               </Link>
             </div>

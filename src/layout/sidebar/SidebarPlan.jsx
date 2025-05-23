@@ -1,9 +1,11 @@
 import { Button } from '@heroui/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 function SidebarPlan() {
   const { t } = useTranslation()
+  const router = useRouter()
 
   return (
     <div className="border-t px-[24px] py-[24px] !text-white">
@@ -21,10 +23,11 @@ function SidebarPlan() {
         </p>
 
         <Button
+          onClick={() => router.push('/dashboard/student/subjects')}
           variant="bordered"
           className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
         >
-          {t('cancelContract')}
+          {t('subjects')}
         </Button>
       </div>
     </div>

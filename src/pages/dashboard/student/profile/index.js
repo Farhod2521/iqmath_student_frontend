@@ -133,7 +133,7 @@ const Index = () => {
         <div className="col-span-7 p-4">
           <div className="flex gap-x-[24px]">
             <div className="space-y-[20px] w-2/3">
-              <Card className="relative opacity-40 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+              <Card className="relative opacity-0 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
@@ -153,7 +153,7 @@ const Index = () => {
                 </div>
               </Card>
 
-              <Card className="relative  opacity-40 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+              <Card className="relative  opacity-0 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
@@ -173,7 +173,7 @@ const Index = () => {
                 </div>
               </Card>
             </div>
-            <Card className="bg-[#114FFF]  opacity-20 rounded-[12px] w-1/3">
+            <Card className="bg-[#114FFF]  opacity-0 rounded-[12px] w-1/3">
               <ProgressCard />
             </Card>
           </div>
