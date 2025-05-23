@@ -400,19 +400,18 @@ const Index = () => {
                     <div className="flex flex-col gap-4 items-center">
                       {selectedQuestion?.sub_questions?.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
-                          <span className=" text-gray-800 text-[16px]">
-                            <MathJaxContext
-                              config={{
-                                loader: { load: ['input/tex', 'output/chtml'] }
-                              }}
-                            >
-                              <MathJax dynamic>
-                                <div className="text-black text-[19px] font-medium text-center">
-                                  {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
-                                </div>
-                              </MathJax>
-                            </MathJaxContext>
-                          </span>
+                          <MathJaxContext
+                            config={{
+                              loader: { load: ['input/tex', 'output/chtml'] }
+                            }}
+                          >
+                            <MathJax dynamic>
+                              <span className=" text-gray-800 text-[16px]">
+                                {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
+                              </span>
+                            </MathJax>
+                          </MathJaxContext>
+
                           <EditableMathField
                             latex={compositeAnswers[selectedQuestion.id]?.[item.id] || ''}
                             onChange={(mathField) => {
@@ -427,7 +426,15 @@ const Index = () => {
                             onFocus={() => setActiveInputId(item.id)}
                             style={compositeMathStyle}
                           />
-                          <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                          <MathJaxContext
+                            config={{
+                              loader: { load: ['input/tex', 'output/chtml'] }
+                            }}
+                          >
+                            <MathJax dynamic>
+                              <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                            </MathJax>
+                          </MathJaxContext>
                         </div>
                       ))}
                     </div>
@@ -436,7 +443,13 @@ const Index = () => {
                   {selectedQuestion?.question_type === 'text' && (
                     <div className="flex items-center justify-center">
                       <span className="text-gray-800 text-[20px] font-medium text-center">
-                        {selectedQuestion?.text1_uz}
+                        <MathJaxContext
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] }
+                          }}
+                        >
+                          <MathJax dynamic>{selectedQuestion?.text1_uz}</MathJax>
+                        </MathJaxContext>
                       </span>
                       <div className="w-full">
                         <EditableMathField
@@ -628,8 +641,8 @@ const Index = () => {
 export default Index
 
 const compositeMathStyle = {
-  width: '140px',
-  height: '40px',
+  width: '160px',
+  height: '60px',
   display: 'flex',
   alignItems: 'center',
   fontSize: '24px',

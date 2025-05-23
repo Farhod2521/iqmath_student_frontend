@@ -302,26 +302,36 @@ export default function StudentTestPage() {
                           }
                           className="w-5 h-5 accent-blue-600"
                         />
-                        <span className="text-gray-800">
-                          <MathJaxContext
-                            config={{
-                              loader: { load: ['input/tex', 'output/chtml'] }
-                            }}
-                          >
-                            <MathJax dynamic>
-                              <div> {i18n.language === 'uz' ? item?.text_uz : item?.text_ru}</div>
-                            </MathJax>
-                          </MathJaxContext>
-                        </span>
+
+                        <MathJaxContext
+                          config={{
+                            loader: { load: ['input/tex', 'output/chtml'] }
+                          }}
+                        >
+                          <MathJax dynamic>
+                            <span className="text-gray-800">
+                              {i18n.language === 'uz' ? item?.text_uz : item?.text_ru}
+                            </span>
+                          </MathJax>
+                        </MathJaxContext>
                       </label>
                     ))}
                   {selectedQuestion?.question_type === 'composite' && (
                     <div className="flex flex-col gap-4">
                       {selectedQuestion?.sub_questions?.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
-                          <span className=" text-gray-800 text-[16px]">
-                            {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
-                          </span>
+                          <MathJaxContext
+                            config={{
+                              loader: { load: ['input/tex', 'output/chtml'] }
+                            }}
+                          >
+                            <MathJax dynamic>
+                              <span className=" text-gray-800 text-[16px]">
+                                {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
+                              </span>
+                            </MathJax>
+                          </MathJaxContext>
+
                           <EditableMathField
                             latex={compositeAnswers[selectedQuestion.id]?.[item.id] || ''}
                             onChange={(mathField) => {
@@ -337,7 +347,15 @@ export default function StudentTestPage() {
                             onFocus={() => setActiveInputId(item.id)}
                             style={compositeMathStyle}
                           />
-                          <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                          <MathJaxContext
+                            config={{
+                              loader: { load: ['input/tex', 'output/chtml'] }
+                            }}
+                          >
+                            <MathJax dynamic>
+                              <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                            </MathJax>
+                          </MathJaxContext>
                         </div>
                       ))}
                     </div>
@@ -581,10 +599,9 @@ export default function StudentTestPage() {
     </div>
   )
 }
-
 const compositeMathStyle = {
-  width: '140px',
-  height: '40px',
+  width: '160px',
+  height: '60px',
   display: 'flex',
   alignItems: 'center',
   fontSize: '24px',

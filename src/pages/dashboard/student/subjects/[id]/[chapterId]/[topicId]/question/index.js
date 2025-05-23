@@ -311,7 +311,15 @@ export default function StudentTestPage() {
                       {selectedQuestion?.sub_questions?.map((item, index) => (
                         <div key={index} className="flex items-center gap-4">
                           <span className=" text-gray-800 text-[16px]">
-                            {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}
+                            <MathJaxContext
+                              config={{
+                                loader: { load: ['input/tex', 'output/chtml'] }
+                              }}
+                            >
+                              <MathJax dynamic>
+                                <div> {i18n.language === 'uz' ? item?.text1_uz : item?.text1_ru}</div>
+                              </MathJax>
+                            </MathJaxContext>
                           </span>
                           <EditableMathField
                             latex={compositeAnswers[selectedQuestion.id]?.[item.id] || ''}
@@ -328,7 +336,15 @@ export default function StudentTestPage() {
                             onFocus={() => setActiveInputId(item.id)}
                             style={compositeMathStyle}
                           />
-                          <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                          <MathJaxContext
+                            config={{
+                              loader: { load: ['input/tex', 'output/chtml'] }
+                            }}
+                          >
+                            <MathJax dynamic>
+                              <span>{i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru}</span>
+                            </MathJax>
+                          </MathJaxContext>
                         </div>
                       ))}
                     </div>
@@ -336,9 +352,18 @@ export default function StudentTestPage() {
 
                   {selectedQuestion?.question_type === 'text' && (
                     <div className="flex items-center justify-center w-full">
-                      <span className="text-gray-800 text-[20px] font-medium text-center">
-                        {selectedQuestion?.text1_uz}
-                      </span>
+                      <MathJaxContext
+                        config={{
+                          loader: { load: ['input/tex', 'output/chtml'] }
+                        }}
+                      >
+                        <MathJax dynamic>
+                          <span className="text-gray-800 text-[20px] font-medium text-center">
+                            {selectedQuestion?.text1_uz}
+                          </span>
+                        </MathJax>
+                      </MathJaxContext>
+
                       <div className="w-full">
                         <EditableMathField
                           latex={textAnswers[selectedQuestion.id] || ''}
@@ -584,8 +609,8 @@ export default function StudentTestPage() {
 }
 
 const compositeMathStyle = {
-  width: '140px',
-  height: '40px',
+  width: '160px',
+  height: '60px',
   display: 'flex',
   alignItems: 'center',
   fontSize: '24px',
