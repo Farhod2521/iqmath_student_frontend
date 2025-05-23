@@ -19,25 +19,30 @@ before_script:
 build:
   stage: build
   script:
+    # ENV fayl
     - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+
+    # Paketlar va build
     - npm install --prefer-offline --no-audit --progress=false
     - npm run build
+
+    # Faqat kerakli fayllarni ajratish
+    - mkdir deploy
+    - cp -r .next public package.json package-lock.json .env deploy/
+
   artifacts:
     paths:
-      - .next
-      - public
-      - package.json
-      - .env
+      - deploy/
 
 deploy:
   stage: deploy
   only:
     - master
   script:
-    - echo "🚀 Fayllar rsync bilan yuborilmoqda..."
+    - echo "🚀 Faqat kerakli fayllar rsync bilan yuborilmoqda..."
     - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-      --exclude=node_modules --exclude=.git --exclude=npm-debug.log --exclude=*.log \
-      -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+      -e "ssh -o StrictHostKeyChecking=no" \
+      deploy/ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
 
     - echo "🔁 Serverda ishga tushirish..."
     - |
