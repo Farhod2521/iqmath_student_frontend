@@ -40,9 +40,7 @@ deploy:
     - master
   script:
     - echo "🚀 Faqat kerakli fayllar rsync bilan yuborilmoqda..."
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete \
-      -e "ssh -o StrictHostKeyChecking=no" \
-      deploy/ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" deploy/ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
 
     - echo "🔁 Serverda ishga tushirish..."
     - |
