@@ -35,13 +35,9 @@ deploy:
   script:
     # Faqat kerakli fayllarni yuborish (shu jumladan .env.production)
     - >
-      sshpass -p "$SERVER_PASSWORD" rsync -az --delete 
-        --exclude=node_modules 
-        --exclude=.git 
-        --exclude=npm-debug.log 
-        --exclude=*.log 
-        -e "ssh -o StrictHostKeyChecking=no" 
-        ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+      - echo "🚀 Fayllar rsync bilan yuborilmoqda..."
+      - sshpass -p "$SERVER_PASSWORD" rsync -az --delete --exclude=node_modules --exclude=.git --exclude=npm-debug.log --exclude=*.log -e "ssh -o StrictHostKeyChecking=no" ./ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+      - echo "🔁 Serverda ishga tushirish..."
 
     # Serverda pm2 bilan prod rejimda ishga tushirish
     - >
