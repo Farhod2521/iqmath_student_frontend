@@ -11,8 +11,10 @@ import { config } from '@/config'
 import SimpleModal from '@/components/modal/simple-modal'
 import ContentLoader from '@/components/loader/content-loader'
 import MainWrapper from '@/layout/MainWrapper'
-import { Button, Card, CardFooter, Image } from '@heroui/react'
+import { Card, CardFooter, Image } from '@heroui/react'
 import { FaLock } from 'react-icons/fa'
+import { request } from '@/services/api'
+import { FaSpinner } from 'react-icons/fa6'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -47,10 +49,8 @@ const Index = () => {
   }
 
   const closeModal = () => {
-    // setTimeout(() => {
     setShowModal(false)
     router.push('/dashboard/student/diagnostics')
-    // }, 10)
   }
 
   const subjectsData = useMemo(() => {
@@ -64,6 +64,17 @@ const Index = () => {
     }))
     return listData || []
   }, [studentSubjects, i18n.language])
+
+  const [isPlaymentLoadinng, setIsPaymetLoading] = useState(false)
+  const handleInitiatePayment = () => {
+    setIsPaymetLoading(true)
+    request
+      .get('/api/v1/payments/initiate-payment/')
+      .then((res) => {
+        window.open(res.data.data.checkout_url, '_blank')
+      })
+      .finally(() => setIsPaymetLoading(false))
+  }
 
   if (isLoading || isFetching) return <ContentLoader />
 
@@ -136,21 +147,6 @@ const Index = () => {
                           {classAll}
                         </div>
                       </Card>
-                      {/* <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
-                  {className}
-                </p> */}
-                      {/* <div className="rounded-[12px]">
-                  <Image
-                    src={imageUrl}
-                    alt={className}
-                    width={95}
-                    height={124}
-                    className="w-full object-contain shadow-lg transition-all duration-300 group-hover:-translate-y-3 group-hover:shadow-[0px_4px_20px_rgba(0,0,0,0.1)] bg-white"
-                  />
-                </div>
-                <p className="text-[20px] font-medium text-center transition-all duration-300 group-hover:text-[#007AFF]">
-                  {className}
-                </p> */}
                     </div>
                   )
                 } else {
@@ -163,9 +159,16 @@ const Index = () => {
                     >
                       <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
                       <div className="absolute z-20 bottom-4 text-black/20 w-full flex justify-center">{classAll}</div>
-                      <CardFooter className="absolute bg-white/10 h-full  bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                        <div className="flex items-center justify-center w-full">
-                          <FaLock size={40} className="text-black/40" />
+                      <CardFooter
+                        onClick={handleInitiatePayment}
+                        className="absolute bg-white/10 h-full  bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100"
+                      >
+                        <div className="flex items-center justify-center w-full hover:scale-110">
+                          {isPlaymentLoadinng ? (
+                            <FaSpinner size={40} className="text-black/40" />
+                          ) : (
+                            <FaLock size={40} className="text-black/40" />
+                          )}
                         </div>
                       </CardFooter>
                     </Card>
