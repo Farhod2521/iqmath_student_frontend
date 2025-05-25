@@ -142,12 +142,18 @@ export default function StudentTestPage() {
     )
   }
 
-  // const changeQuestionIds = useMemo(() => {
-  //   console.log('compositeAnswers', compositeAnswers)
-  //   console.log('textAnswers', textAnswers)
-  //   console.log('choiceAnswers', choiceAnswers)
-  //   return [...Object.keys(textAnswers), ...Object.keys(choiceAnswers), ...Object.keys(compositeAnswers)]
-  // }, [compositeAnswers, textAnswers, choiceAnswers])
+  const selectedList = useMemo(() => {
+    const filterData = (fields) =>
+      Object.entries(fields)
+        .filter(([key, value]) => !!value)
+        .map((i) => i[0])
+
+    const listText = filterData(textAnswers)
+    const listChoice = filterData(choiceAnswers)
+    const listComposite = filterData(compositeAnswers)
+
+    return [...listText, ...listChoice, ...listComposite]
+  }, [textAnswers, choiceAnswers, compositeAnswers])
 
   return (
     <div className="font-sf">
@@ -233,35 +239,38 @@ export default function StudentTestPage() {
       <div className="grid grid-cols-12 p-[24px]">
         <div className="col-span-6 overflow-y-auto max-h-screen border-r border-r-[#F2F2F7]">
           <ul className="space-y-2">
-            {get(questions, 'data', [])?.map((question, index) => (
-              <li
-                key={index}
-                className={`p-3  rounded-md flex items-center gap-x-[12px] cursor-pointer `}
-                onClick={() => {
-                  setSelectedIndex(index)
-                  setSelectedQuestion(question)
-                }}
-              >
-                <div
-                  className={`min-w-10 min-h-10 flex items-center justify-center border-2 
-             
-                    ${
-                      selectedQuestion?.id === question?.id ? 'border-[#007AFF]' : 'hover:bg-gray-100 border-gray-300'
-                    } rounded-full text-black font-bold`}
+            {get(questions, 'data', [])?.map((question, index) => {
+              let classIndex = ''
+              if (!selectedList.includes(String(question?.id))) classIndex = 'border-[#ff0a04]'
+              if (selectedList.includes(String(question?.id))) classIndex = 'border-[#037AFF]'
+              if (selectedQuestion?.id === question?.id) classIndex = 'border-white shadow-md bg-[#037AFF] text-white'
+
+              return (
+                <li
+                  key={index}
+                  className={`p-3  rounded-md flex items-center gap-x-[12px] cursor-pointer `}
+                  onClick={() => {
+                    setSelectedIndex(index)
+                    setSelectedQuestion(question)
+                  }}
                 >
-                  {index + 1}
-                </div>
-                <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-                  <MathJax dynamic>
-                    <div>
-                      {parse(
-                        i18n.language === 'uz' ? question?.question_text_uz || '' : question?.question_text_ru || ''
-                      )}
-                    </div>
-                  </MathJax>
-                </MathJaxContext>
-              </li>
-            ))}
+                  <div
+                    className={`min-w-10 min-h-10 flex items-center justify-center border-2 rounded-full text-black font-bold ${classIndex}`}
+                  >
+                    {index + 1}
+                  </div>
+                  <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
+                    <MathJax dynamic>
+                      <div>
+                        {parse(
+                          i18n.language === 'uz' ? question?.question_text_uz || '' : question?.question_text_ru || ''
+                        )}
+                      </div>
+                    </MathJax>
+                  </MathJaxContext>
+                </li>
+              )
+            })}
           </ul>
         </div>
 
@@ -274,7 +283,7 @@ export default function StudentTestPage() {
                     <MathJax dynamic>
                       <div className="flex gap-1">
                         <div
-                          className={`min-w-10 mr-2 min-h-10 flex items-center border-[#007AFF] justify-center border-2 rounded-full text-black font-bold`}
+                          className={`min-w-10 min-h-10  w-10 mr-2 h-10 flex items-center border-[#007AFF] justify-center border-2 rounded-full text-black font-bold`}
                         >
                           {selectedIndex + 1}
                         </div>
