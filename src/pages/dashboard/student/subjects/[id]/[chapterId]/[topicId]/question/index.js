@@ -120,27 +120,25 @@ export default function StudentTestPage() {
         question_id: q.id,
         answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
-
-    console.log('composite_answers', composite_answers)
-    // checkMyResults(
-    //   {
-    //     url: URLS.studentCheckAnswer,
-    //     attributes: { choice_answers, composite_answers, text_answers },
-    //     config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
-    //   },
-    //   {
-    //     onSuccess: (res) => {
-    //       setScore(res)
-    //       setResults(res)
-    //       setTextAnswers({})
-    //       setCompositeAnswers({})
-    //       setChoiceAnswers({})
-    //       setShowResult(true)
-    //       toast.success('Siz testni yakunladingiz!')
-    //     },
-    //     onError: () => toast.error("Testni to'liq bajaring")
-    //   }
-    // )
+    checkMyResults(
+      {
+        url: URLS.studentCheckAnswer,
+        attributes: { choice_answers, composite_answers, text_answers },
+        config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
+      },
+      {
+        onSuccess: (res) => {
+          setScore(res)
+          setResults(res)
+          setTextAnswers({})
+          setCompositeAnswers({})
+          setChoiceAnswers({})
+          setShowResult(true)
+          toast.success('Siz testni yakunladingiz!')
+        },
+        onError: () => toast.error("Testni to'liq bajaring")
+      }
+    )
   }
 
   const selectedList = useMemo(() => {
