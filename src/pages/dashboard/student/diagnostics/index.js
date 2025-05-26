@@ -178,7 +178,7 @@ const Index = () => {
       .filter((q) => q.question_type === 'text')
       .map((q) => {
         const userAnswer = textAnswers[q.id] || ''
-        const wrapped = wrapPlainMath(userAnswer) // optional: format like \frac etc.
+        const wrapped = wrapMathAnswer(userAnswer) // optional: format like \frac etc.
         return {
           question_id: q.id,
           [langAnswerKey]: wrapped

@@ -522,14 +522,14 @@ export default function StudentTestPage() {
                     <Image src={'/icons/award.svg'} alt="circle" width={84} height={118} className="mt-[24px]" />
 
                     <p className="text-[22px] font-semibold mt-[24px] mb-[16px] ">
-                      {t('yourScore', { score: get(score, 'data.result[0].score', 0) })}
+                      {t('yourScore', { score: get(score, 'data.result[0].correct_answers') })}
                     </p>
                     <p className="text-center">
                       {t('yourAnswer', {
                         answer: get(score, 'data.result[0].correct_answers'),
                         total: get(score, 'data.result[0].total_answers')
                       })}
-                      <br /> {t('yourResult', { result: get(score, 'data.result[0].score', 0) })}
+                      <br /> {t('yourResult', { result: get(score, 'data.result[0].score', 0) })}%
                     </p>
 
                     <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
