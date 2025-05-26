@@ -104,7 +104,7 @@ export default function StudentTestPage() {
       .filter((q) => q.question_type === 'text')
       .map((q) => ({
         question_id: q.id,
-        [langKey]: wrapMathAnswer(textAnswers[q.id] || '')
+        [langKey]: wrapPlainMath(textAnswers[q.id] || '')
       }))
 
     const choice_answers = qData

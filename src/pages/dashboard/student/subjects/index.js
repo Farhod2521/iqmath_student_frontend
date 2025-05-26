@@ -116,7 +116,7 @@ const Index = () => {
         {subjectsData.map((subject, idx) => (
           <div key={idx}>
             {/* <h2 className="font-bold mb-8 text-[20px]">{subject.type}</h2> */}
-            <div className="flex flex-wrap gap-8">
+            <div className="flex flex-wrap gap-4 mb-4">
               {subject.data?.map((item, index) => {
                 const imageUrl =
                   i18n.language === 'uz'
@@ -127,16 +127,8 @@ const Index = () => {
 
                 if (item.is_open) {
                   return (
-                    <div
-                      key={index}
-                      // className=" shadow-md"
-                      onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}
-                    >
-                      <Card
-                        // isFooterBlurred
-                        className={`border-none cursor-pointer h-[280px]  w-[200px]`}
-                        radius="sm"
-                      >
+                    <div key={index} onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}>
+                      <Card className={`border-none cursor-pointer h-[280px]  w-[200px]`} radius="sm">
                         <Image alt={classAll} className="object-cover" src={imageUrl} width={240} />
                         <div
                           style={{
