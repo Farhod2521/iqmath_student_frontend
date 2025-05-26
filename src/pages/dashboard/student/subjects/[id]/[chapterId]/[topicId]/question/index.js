@@ -30,14 +30,14 @@ const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => 
 const wrapMathAnswer = (value) => {
   const trimmedValue = value.trim()
   const isMathExpression = /\\(frac|sqrt|sum|int|log|sin|cos|tan|theta|pi|cdot|times|div)\b/.test(trimmedValue)
-  if (isMathExpression) return `<p>\\( ${trimmedValue} \\)</p>`
+  if (isMathExpression) return `\\( ${trimmedValue} \\)`
   if (/^\d+(\.\d+)?$/.test(trimmedValue)) return trimmedValue
-  return `<p>\\( ${trimmedValue} \\)</p>`
+  return `\\( ${trimmedValue} \\)`
 }
 
 const wrapPlainMath = (value) => {
   const trimmedValue = value.trim()
-  const isMathExpression = /\\(frac|sqrt|sum|int|log|sin|cos|tan|theta|pi|cdot|times|div)\b/.test(trimmedValue)
+  const isMathExpression = /\\(frac|sqrt|sum|int|log|sin|cos|tan|theta|pi|cdot|times|div|)\b/.test(trimmedValue)
   return isMathExpression ? `\\( ${trimmedValue} \\)` : trimmedValue
 }
 
@@ -104,7 +104,7 @@ export default function StudentTestPage() {
       .filter((q) => q.question_type === 'text')
       .map((q) => ({
         question_id: q.id,
-        [langKey]: wrapPlainMath(textAnswers[q.id] || '')
+        [langKey]: wrapMathAnswer(textAnswers[q.id] || '')
       }))
 
     const choice_answers = qData
