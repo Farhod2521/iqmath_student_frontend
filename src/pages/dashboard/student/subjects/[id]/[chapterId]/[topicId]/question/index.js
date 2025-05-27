@@ -30,9 +30,9 @@ const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => 
 const wrapMathAnswer = (value) => {
   const trimmedValue = value.trim()
   const isMathExpression = /\\(frac|sqrt|sum|int|log|sin|cos|tan|theta|pi|cdot|times|div)\b/.test(trimmedValue)
-  if (isMathExpression) return `\\( ${trimmedValue} \\)`
+  if (isMathExpression) return `\\(${trimmedValue}\\)`
   if (/^\d+(\.\d+)?$/.test(trimmedValue)) return trimmedValue
-  return `\\( ${trimmedValue} \\)`
+  return `\\(${trimmedValue}\\)`
 }
 
 const wrapPlainMath = (value) => {

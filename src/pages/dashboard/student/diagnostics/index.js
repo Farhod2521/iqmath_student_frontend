@@ -142,21 +142,10 @@ const Index = () => {
 
   const wrapMathAnswer = (value) => {
     const trimmedValue = value.trim()
-
-    // Agar LaTeX belgilar bo'lsa (fraction, sqrt, sum va h.k.), LaTeX formatda yuboramiz
     const isMathExpression = /\\(frac|sqrt|sum|int|log|sin|cos|tan|theta|pi|cdot|times|div)\b/.test(trimmedValue)
-
-    if (isMathExpression) {
-      return `<p>\\( ${trimmedValue} \\)</p>`
-    }
-
-    // Agar shunchaki raqam yoki oddiy ifoda bo'lsa
-    if (/^\d+(\.\d+)?$/.test(trimmedValue)) {
-      return trimmedValue // faqat sonni yubor
-    }
-
-    // Boshqa holatlarda ham LaTeX sifatida yuboramiz
-    return `<p>\\( ${trimmedValue} \\)</p>`
+    if (isMathExpression) return `\\(${trimmedValue}\\)`
+    if (/^\d+(\.\d+)?$/.test(trimmedValue)) return trimmedValue
+    return `\\(${trimmedValue}\\)`
   }
 
   const wrapPlainMath = (value) => {
