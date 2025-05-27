@@ -24,6 +24,7 @@ import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import LanguageDropdown from '@/components/language'
 import InfoWarning from '@/features/diagnostics/InfoWarning'
+import ModalSolution from '@/features/exams/ModalSolution'
 
 const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => mod.EditableMathField), { ssr: false })
 
@@ -425,26 +426,16 @@ export default function StudentTestPage() {
                         </Button>
                       )}
                     </div>
+                    <ModalSolution selectedQuestion={selectedQuestion} />
 
-                    <Button
+                    {/* <Button
                       onPress={() => setShowSolution(true)}
                       className="px-8 rounded-md bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]"
                     >
                       {t('showSolution')}
-                    </Button>
+                    </Button> */}
 
                     <InfoWarning />
-                    {/* <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
-                      <button onClick={handleShowWarning}>
-                        <InfoCircleIcon color={!showWarning ? '#4D555DFF' : '#F97316FF'} />
-                      </button>
-
-                      {showWarning && (
-                        <WarningModal classname={'absolute w-full max-w-[351px] -top-[80px]'}>
-                          {t('cashbackNote')}
-                        </WarningModal>
-                      )}
-                    </div> */}
 
                     <div className="p-[6px] mr-[20px] cursor-pointer flex items-center">
                       <button onClick={() => setShowCalculator(!showCalculator)}>
@@ -502,13 +493,13 @@ export default function StudentTestPage() {
                 </div>
               )}
 
-              {showSolution && (
+              {/* {showSolution && (
                 <VideoPlayer
                   url={i18n.language === 'uz' ? selectedQuestion?.video_url_uz : selectedQuestion?.video_url_ru}
                   title={i18n.language === 'uz' ? selectedQuestion.name_uz : selectedQuestion.name_ru}
                   onClose={() => setShowSolution(false)}
                 />
-              )}
+              )} */}
 
               {showResult && (
                 <SimpleModal>
