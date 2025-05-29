@@ -56,6 +56,8 @@ const Index = () => {
     { link: '', title: t('departments') }
   ]
 
+  console.log('chapter', chapter)
+
   if (isLoadingChapter || isFetchingChapter) {
     return (
       // <Dashboard headerTitle={"Математика"}>

@@ -14,12 +14,18 @@ function ModalSolution({ selectedQuestion }) {
   const handleSolution = () => {
     onOpen()
     setIsLoading(true)
+    console.log('ddata', selectedQuestion)
     request
       .post('/api/v1/func_teacher/openai/process/', {
-        text: i18n.language === 'uz' ? selectedQuestion?.question_text_uz : selectedQuestion?.question_text_ru
+        question_id: selectedQuestion.id,
+        lang: i18n.language,
+        question_type: selectedQuestion.question_type
       })
       .then((res) => {
-        setData(res.data.result)
+        setData(res.data.ai_response)
+      })
+      .catch((err) => {
+        console.log(err)
       })
       .finally(() => setIsLoading(false))
   }

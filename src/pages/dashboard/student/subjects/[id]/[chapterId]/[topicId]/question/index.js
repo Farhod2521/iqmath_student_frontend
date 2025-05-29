@@ -427,14 +427,6 @@ export default function StudentTestPage() {
                       )}
                     </div>
                     <ModalSolution selectedQuestion={selectedQuestion} />
-
-                    {/* <Button
-                      onPress={() => setShowSolution(true)}
-                      className="px-8 rounded-md bg-[#EDEDF2] !text-black ml-[12px] mr-[20px]"
-                    >
-                      {t('showSolution')}
-                    </Button> */}
-
                     <InfoWarning />
 
                     <div className="p-[6px] mr-[20px] cursor-pointer flex items-center">
@@ -492,14 +484,6 @@ export default function StudentTestPage() {
                   )}
                 </div>
               )}
-
-              {/* {showSolution && (
-                <VideoPlayer
-                  url={i18n.language === 'uz' ? selectedQuestion?.video_url_uz : selectedQuestion?.video_url_ru}
-                  title={i18n.language === 'uz' ? selectedQuestion.name_uz : selectedQuestion.name_ru}
-                  onClose={() => setShowSolution(false)}
-                />
-              )} */}
 
               {showResult && (
                 <SimpleModal>
