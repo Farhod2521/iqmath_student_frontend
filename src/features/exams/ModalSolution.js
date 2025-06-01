@@ -35,7 +35,7 @@ function ModalSolution({ selectedQuestion }) {
       <Button className="px-8 rounded-md bg-[#EDEDF2] !text-black mx-4" onPress={handleSolution}>
         {t('showSolution')}
       </Button>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>

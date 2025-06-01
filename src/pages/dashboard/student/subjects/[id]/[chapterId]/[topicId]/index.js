@@ -17,6 +17,7 @@ import MainWrapper from '@/layout/MainWrapper'
 import { Button } from '@heroui/react'
 import parse from 'html-react-parser'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
+import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -90,6 +91,7 @@ const Index = () => {
 
   return (
     <MainWrapper title={t('subjects')}>
+      {/* <StudentBreadcrumbs /> */}
       <BaseBreadcrumbs data={breadcrumbs} />
       <div className="font-sf">
         <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">

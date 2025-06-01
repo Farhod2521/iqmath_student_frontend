@@ -8,6 +8,8 @@ import Link from 'next/link'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from '@heroui/react'
 import { User, Avatar, AvatarIcon, Button } from '@heroui/react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@heroui/react'
+import { useUserStore } from '@/store'
+import { useEffect } from 'react'
 
 function NavbarProfile() {
   const { data: session } = useSession()
@@ -25,6 +27,16 @@ function NavbarProfile() {
     headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken
   })
+
+  // Zustand store
+  const { setUser } = useUserStore()
+
+  // Effect to store user profile
+  useEffect(() => {
+    if (studentProfile?.data) {
+      setUser(studentProfile.data)
+    }
+  }, [studentProfile, setUser])
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: 'https://iq-math.uz' })

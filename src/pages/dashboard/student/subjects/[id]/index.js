@@ -13,6 +13,7 @@ import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import MainWrapper from '@/layout/MainWrapper'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
+import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -56,8 +57,6 @@ const Index = () => {
     { link: '', title: t('departments') }
   ]
 
-  console.log('chapter', chapter)
-
   if (isLoadingChapter || isFetchingChapter) {
     return (
       // <Dashboard headerTitle={"Математика"}>
@@ -68,7 +67,8 @@ const Index = () => {
   return (
     <MainWrapper title={t('subjects')}>
       <div className="font-sf">
-        <BaseBreadcrumbs data={breadcrumbs} />
+        <StudentBreadcrumbs />
+        {/* <BaseBreadcrumbs data={breadcrumbs} /> */}
         {/* <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2> */}
         <div className="grid grid-cols-12 gap-[24px]">
           <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
