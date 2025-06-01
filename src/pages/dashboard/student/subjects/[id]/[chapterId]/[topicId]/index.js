@@ -91,8 +91,8 @@ const Index = () => {
 
   return (
     <MainWrapper title={t('subjects')}>
-      {/* <StudentBreadcrumbs /> */}
-      <BaseBreadcrumbs data={breadcrumbs} />
+      <StudentBreadcrumbs selectTitle={topicName} />
+      {/* <BaseBreadcrumbs data={breadcrumbs} /> */}
       <div className="font-sf">
         <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
           <div className="relative flex items-center justify-between w-full overflow-hidden">
