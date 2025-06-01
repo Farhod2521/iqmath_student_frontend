@@ -26,7 +26,6 @@ const Index = () => {
   const { id, chapterId, topicId: topicID } = router.query
 
   const [selectedTopic, setSelectedTopic] = useState(null)
-  const [selectTopicId, setSelectTopicId] = useState(topicID)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [open, setOpen] = useState(false)
   const [showPlayer, setShowPlayer] = useState(false)
@@ -51,7 +50,6 @@ const Index = () => {
     if (idx !== -1) {
       setSelectedIndex(idx)
       setSelectedTopic(topic)
-      setSelectTopicId(topic?.id)
       setOpen(false)
     }
   }
@@ -64,7 +62,6 @@ const Index = () => {
 
     setSelectedIndex(newIndex)
     setSelectedTopic(topicsList[newIndex])
-    setSelectTopicId(topicsList[newIndex]?.id)
   }
 
   useEffect(() => {
@@ -83,11 +80,11 @@ const Index = () => {
   const topicContent = i18n.language === 'uz' ? selectedTopic?.content_uz : selectedTopic?.content_ru
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
-  const breadcrumbs = [
-    { link: '/dashboard/student/subjects', title: t('main') },
-    { link: `/dashboard/student/subjects/${id}`, title: t('theory') },
-    { link: '', title: topicName }
-  ]
+  // const breadcrumbs = [
+  //   { link: '/dashboard/student/subjects', title: t('main') },
+  //   { link: `/dashboard/student/subjects/${id}`, title: t('theory') },
+  //   { link: '', title: topicName }
+  // ]
 
   return (
     <MainWrapper title={t('subjects')}>
@@ -156,7 +153,7 @@ const Index = () => {
               <Button onPress={() => setShowPlayer(true)} className="rounded-md">
                 {t('watch')}
               </Button>
-              <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectTopicId}/question`}>
+              <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectedTopic?.id}/question`}>
                 <Button className="px-[16px] py-[11px] rounded-md" color="primary">
                   {t('examples')}
                 </Button>

@@ -99,28 +99,29 @@ const Index = () => {
                   {get(topic, 'data', []).length > 0 ? (
                     <ul className="w-full">
                       {get(topic, 'data', []).map((topic, index) => (
-                        <Link
+                        <li
                           key={index}
-                          href={`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`}
+                          onClick={() =>
+                            get(topic, 'is_open') &&
+                            router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`)
+                          }
+                          className={`p-[12px] pl-[24px] border-b ${
+                            get(topic, 'is_open') ? 'hover:bg-[#F0F9FF] border-[#E9E9E9] bg-white' : 'opacity-50'
+                          } last:border-b-0`}
                         >
-                          <li className="p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] border-[#E9E9E9] bg-white last:border-b-0">
-                            <div className="flex justify-between ">
-                              <div className="uppercase">
-                                {i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}
-                              </div>
-                              <div>
-                                <RightIcon />
-                              </div>
-                              {/* <div>
-                                {get(topic, 'is_open') === false ? (
-                                  <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
-                                ) : (
-                                  <RightIcon />
-                                )}
-                              </div> */}
+                          <div className="flex justify-between ">
+                            <div className="uppercase">
+                              {i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}
                             </div>
-                          </li>
-                        </Link>
+                            <div style={{ minWidth: 40 }} className="flex justify-center items-center">
+                              {!get(topic, 'is_open') ? (
+                                <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
+                              ) : (
+                                <RightIcon />
+                              )}
+                            </div>
+                          </div>
+                        </li>
                       ))}
                     </ul>
                   ) : (
