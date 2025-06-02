@@ -1,4 +1,5 @@
 import { config } from '@/config'
+import { getPaymentInitiate } from '@/services/controllers'
 import { Card, CardFooter, Image } from '@heroui/react'
 import { get } from 'lodash'
 import { useState } from 'react'
@@ -27,7 +28,7 @@ const CardLockedSubject = ({ item }) => {
       <CardFooter onClick={handleInitiatePayment} className="absolute bg-white/10 h-full bottom-0 z-10">
         <div className="flex items-center justify-center w-full hover:scale-110">
           {isPlaymentLoadinng ? (
-            <FaSpinner size={40} className="text-black/40" />
+            <FaSpinner spin size={40} className="text-black/40" />
           ) : (
             <FaLock size={40} className="text-black/40" />
           )}
