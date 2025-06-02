@@ -1,4 +1,5 @@
 import { request } from '@/services/api'
+import { getPaymentInitiate, getPaymentTrailDays } from '@/services/controllers'
 import { Button } from '@heroui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -10,8 +11,16 @@ function SidebarPlan() {
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
 
+  const [isPlaymentLoadinng, setIsPaymetLoading] = useState(false)
+  const handleInitiatePayment = () => {
+    setIsPaymetLoading(true)
+    getPaymentInitiate()
+      .then((res) => window.open(res.data.data.checkout_url, '_blank'))
+      .finally(() => setIsPaymetLoading(false))
+  }
+
   useEffect(() => {
-    request.get('/api/v1/payments/subscription/trial_days/').then((res) => {
+    getPaymentTrailDays().then((res) => {
       setData((prev) => ({ ...prev, ...res.data }))
     })
   }, [])
@@ -27,7 +36,7 @@ function SidebarPlan() {
           {data.payment_amount} {t('sum')}
         </p>
         <p className="text-[15px] font-medium">
-          {t('nextCharge')} <br /> {data.end_date}
+          {t('nextCharge')} {data.end_date}
         </p>
         {data.is_paid ? (
           <p className="text-[15px] font-medium my-[12px]">
@@ -35,17 +44,29 @@ function SidebarPlan() {
           </p>
         ) : (
           <p className="text-[15px] font-medium my-[12px]">
-            {t('daysNextPayment', { day: data.days_until_next_payment })}
+            {!data.days_until_next_payment
+              ? t('makeToPayment')
+              : t('daysNextPayment', { day: data.days_until_next_payment })}
           </p>
         )}
 
-        <Button
-          onClick={() => router.push('/dashboard/student/subjects')}
-          variant="bordered"
-          className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
-        >
-          {t('subjects')}
-        </Button>
+        {!data.is_paid ? (
+          <Button
+            onPress={handleInitiatePayment}
+            variant="bordered"
+            className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
+          >
+            {t('payment')}
+          </Button>
+        ) : (
+          <Button
+            onPress={() => router.push('/dashboard/student/subjects')}
+            variant="bordered"
+            className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
+          >
+            {t('subjects')}
+          </Button>
+        )}
       </div>
     </div>
   )

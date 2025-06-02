@@ -15,6 +15,7 @@ import { Card, CardFooter, Image } from '@heroui/react'
 import { FaLock } from 'react-icons/fa'
 import { request } from '@/services/api'
 import { FaSpinner } from 'react-icons/fa6'
+import { getPaymentInitiate } from '@/services/controllers'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -68,11 +69,8 @@ const Index = () => {
   const [isPlaymentLoadinng, setIsPaymetLoading] = useState(false)
   const handleInitiatePayment = () => {
     setIsPaymetLoading(true)
-    request
-      .get('/api/v1/payments/initiate-payment/')
-      .then((res) => {
-        window.open(res.data.data.checkout_url, '_blank')
-      })
+    getPaymentInitiate()
+      .then((res) => window.open(res.data.data.checkout_url, '_blank'))
       .finally(() => setIsPaymetLoading(false))
   }
 
