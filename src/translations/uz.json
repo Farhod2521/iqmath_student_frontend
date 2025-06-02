@@ -275,5 +275,6 @@
   "daysNextPayment": "To'lov kuniga {{day}} kun qoldi",
   "daysTrialPayment": "Tekin kunga {{day}} kun qoldi",
   "makeToPayment": "To'lovni amalga oshiring!",
-  "payment": "To'lov"
+  "payment": "To'lov",
+  "toUnlock": "Bu mavzu ochilishi uchun, oldingi mavzu topshiriqlaridan 80% dan yuqori ball to'plash kerak bo'ladi!"
 }
