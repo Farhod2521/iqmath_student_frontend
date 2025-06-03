@@ -1,22 +1,13 @@
-import { MathJaxContext } from 'better-react-mathjax'
 import dynamic from 'next/dynamic'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => mod.EditableMathField), { ssr: false })
 
 function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion }) {
+  const { i18n } = useTranslation()
   return (
     <div className="flex items-center justify-center w-full">
-      <MathJaxContext
-        config={{
-          loader: { load: ['input/tex', 'output/chtml'] }
-        }}
-      >
-        <MathJax dynamic>
-          <span className="text-gray-800 text-[20px] font-medium text-center">{selectedQuestion?.text1_uz}</span>
-        </MathJax>
-      </MathJaxContext>
-
       <div className="w-full">
         <EditableMathField
           latex={textAnswers[selectedQuestion.id] || ''}
