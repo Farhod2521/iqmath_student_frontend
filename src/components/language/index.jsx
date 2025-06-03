@@ -1,71 +1,62 @@
 import React, { useState, useEffect } from 'react'
 import { useSettingsStore } from '@/store'
 import { useTranslation } from 'react-i18next'
-import { get } from 'lodash'
 import { CiGlobe } from 'react-icons/ci'
+
+const languages = [
+  { code: 'uz', name: 'UZ' },
+  { code: 'ru', name: 'RU' }
+]
 
 const LanguageDropdown = () => {
   const { i18n } = useTranslation()
-  const setLang = useSettingsStore((state) => get(state, 'setLang', () => {}))
-
-  const languages = [
-    { code: 'uz', name: 'UZ' },
-    { code: 'ru', name: 'RU' }
-  ]
+  const setLang = useSettingsStore((state) => state.setLang || (() => {}))
 
   const [selectedLanguage, setSelectedLanguage] = useState(null)
-  const [isOpen, setIsOpen] = useState(false) // Declare isOpen
-  const [isHydrated, setIsHydrated] = useState(false) // Ensure hydration is complete
+  const [isOpen, setIsOpen] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedLang = localStorage.getItem('lang') || 'uz'
-      const initialLang = languages.find((lang) => lang.code === storedLang) || languages[0]
+    const storedCode = localStorage.getItem('lang') || 'uz'
+    const lang = languages.find((l) => l.code === storedCode) || languages[0]
 
-      setSelectedLanguage(initialLang)
-      i18n.changeLanguage(initialLang.code) // Change i18n language
-      setLang(initialLang.code) // Update global state
+    setSelectedLanguage(lang)
+    i18n.changeLanguage(lang.code)
+    setLang(lang.code)
+    setIsHydrated(true)
+  }, [i18n, setLang])
 
-      setIsHydrated(true) // Hydration is complete
-    }
-  }, [i18n, setLang]) // Dependencies to re-run the effect if needed
-
-  const toggleDropdown = () => setIsOpen((prev) => !prev)
-
-  const selectLanguage = (language) => {
-    setSelectedLanguage(language)
+  const handleSelect = (lang) => {
+    setSelectedLanguage(lang)
     setIsOpen(false)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('lang', language.code)
-    }
-    setLang(language.code)
-    i18n.changeLanguage(language.code)
+    localStorage.setItem('lang', lang.code)
+    setLang(lang.code)
+    i18n.changeLanguage(lang.code)
   }
 
-  // Prevent rendering until hydration is complete
   if (!isHydrated || !selectedLanguage) return null
 
   return (
     <div className="relative inline-block">
       <button
-        onClick={toggleDropdown}
-        className="bg-white  hover:bg-[#5d87ff]  text-black hover:text-white py-1 px-3 rounded-md border transform duration-200 active:scale-90 scale-100 flex items-center gap-x-[5px]"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="flex items-center gap-1 bg-white text-black border rounded-md py-1 px-3 hover:bg-[#5d87ff] hover:text-white transition active:scale-90"
       >
         <CiGlobe size={24} />
-        <p className="uppercase text-sm">{selectedLanguage?.code}</p>
+        <span className="uppercase text-sm">{selectedLanguage.code}</span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1 left-0 z-50 bg-white rounded-md dark:bg-[#5d87ff] border border-gray-300 shadow-md">
+        <div className="absolute left-0 right-0 mt-1 z-50 bg-white dark:bg-[#5d87ff] border border-gray-300 shadow-md rounded-md">
           {languages
-            .filter((language) => language.code !== selectedLanguage.code)
-            .map((language) => (
+            .filter((lang) => lang.code !== selectedLanguage.code)
+            .map((lang) => (
               <button
-                key={language.code}
-                onClick={() => selectLanguage(language)}
-                className="flex items-center justify-center w-full py-1 rounded-md uppercase  bg-white  hover:bg-[#5d87ff]  text-black hover:text-white"
+                key={lang.code}
+                onClick={() => handleSelect(lang)}
+                className="w-full py-1 uppercase text-black bg-white hover:bg-[#5d87ff] hover:text-white rounded-md text-center"
               >
-                {language.code}
+                {lang.code}
               </button>
             ))}
         </div>

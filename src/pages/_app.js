@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import { SessionProvider } from 'next-auth/react'
 
 import reactQueryClient from '@/config/react-query'
-import '@/styles/globals.css'
+import '@/assets/styles/globals.css'
 import '@/services/i18n' // i18n'ni faqat import qilish kifoya!
 
 import { UserProfileProvider } from '@/context/responseProvider'

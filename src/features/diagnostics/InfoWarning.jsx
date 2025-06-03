@@ -19,7 +19,7 @@ export default function InfoWarning() {
   const id = open ? 'simple-popover' : undefined
 
   return (
-    <div className="p-[6px] mr-[20px] cursor-pointer flex items-center ">
+    <div className="cursor-pointer flex items-center ">
       <button aria-describedby={id} variant="contained" onClick={handleClick}>
         <InfoCircleIcon color={!open ? '#4D555DFF' : '#F97316FF'} />
       </button>
