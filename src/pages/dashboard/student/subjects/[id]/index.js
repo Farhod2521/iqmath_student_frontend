@@ -87,7 +87,7 @@ const Index = () => {
                   {get(topic, 'data', []).length > 0 ? (
                     <ul className="w-full">
                       {get(topic, 'data', []).map((topic, index) => {
-                        return !get(topic, 'is_open') ? (
+                        return get(topic, 'is_open') ? (
                           <li
                             key={index}
                             onClick={() =>
