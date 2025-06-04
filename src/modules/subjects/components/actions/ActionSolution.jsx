@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 import { request } from '@/services/api'
 
-function ModalSolution({ selectedQuestion }) {
+function ActionSolution({ selectedQuestion }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { t, i18n } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
@@ -14,7 +14,6 @@ function ModalSolution({ selectedQuestion }) {
   const handleSolution = () => {
     onOpen()
     setIsLoading(true)
-    console.log('ddata', selectedQuestion)
     request
       .post('/api/v1/func_teacher/openai/process/', {
         question_id: selectedQuestion.id,
@@ -72,4 +71,4 @@ function ModalSolution({ selectedQuestion }) {
   )
 }
 
-export default ModalSolution
+export default ActionSolution

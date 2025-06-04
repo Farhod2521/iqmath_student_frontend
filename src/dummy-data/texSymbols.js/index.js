@@ -1,8 +1,5 @@
 export const texSymbols = [
-  {
-    icon: 'squere-root',
-    data: '\\sqrt{✀}'
-  },
+  { icon: 'squere-root', data: '\\sqrt{✀}' },
   {
     icon: '7',
     data: '7'

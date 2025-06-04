@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { get } from 'lodash'
-import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
@@ -14,11 +13,8 @@ import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
 
 import SimpleModal from '@/components/modal/simple-modal'
-import Symbols from '@/components/mathSymbols'
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
-import InfoWarning from '@/features/diagnostics/InfoWarning'
-import ModalSolution from '@/features/exams/ModalSolution'
 import ModalLevel from '../components/modal/ModalLevel'
 import ExamQuestionList from '../components/exam/ExamQuestionList'
 import ExamQuestionSelected from '../components/exam/ExamQuestionSelected'
@@ -26,12 +22,17 @@ import ExamAnswerChoice from '../components/exam/ExamAnswerChoice'
 import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
 import ExamAnswerText from '../components/exam/ExamAnswerText'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
+import ActionSolution from '../components/actions/ActionSolution'
+import ActionInfo from '../components/actions/ActionInfo'
+import ActionCalculator from '../components/actions/ActionCalculator'
+import Calculator from '../components/calculator/Calculator'
 
 export default function SubjectQuestions() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const { id, chapterId, topicId } = router.query
   const { data: session } = useSession()
+  const mathFieldRef = useRef(null)
 
   const [tab, setTab] = useState(1)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -172,6 +173,7 @@ export default function SubjectQuestions() {
                 case 'text':
                   return (
                     <ExamAnswerText
+                      mathFieldRef={mathFieldRef}
                       setTextAnswers={setTextAnswers}
                       textAnswers={textAnswers}
                       selectedQuestion={selectedQuestion}
@@ -207,59 +209,22 @@ export default function SubjectQuestions() {
             </div>
 
             <div className="flex gap-3 items-center">
-              <ModalSolution selectedQuestion={selectedQuestion} />
-              <InfoWarning />
-              <button onClick={() => setShowCalculator(!showCalculator)} className="p-[6px]">
-                <Image src="/icons/calculator.svg" alt="calculator" width={28} height={28} />
-              </button>
+              <ActionSolution selectedQuestion={selectedQuestion} />
+              <ActionInfo />
+              {['composite', 'text'].includes(selectedQuestion?.question_type) && (
+                <ActionCalculator setShowCalculator={setShowCalculator} />
+              )}
             </div>
           </div>
 
           {showCalculator && (
-            <div>
-              {selectedQuestion?.question_type === 'text' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 50 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-6 flex items-center justify-center"
-                >
-                  <Symbols
-                    onClick={(symbol) => {
-                      setTextAnswers((prev) => ({
-                        ...prev,
-                        [selectedQuestion.id]: (prev[selectedQuestion.id] || '') + symbol
-                      }))
-                    }}
-                  />
-                </motion.div>
-              )}
-
-              {selectedQuestion?.question_type === 'composite' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 50 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-6 flex items-center justify-center"
-                >
-                  <Symbols
-                    onClick={(symbol) => {
-                      if (activeInputId) {
-                        setCompositeAnswers((prev) => ({
-                          ...prev,
-                          [selectedQuestion.id]: {
-                            ...(prev[selectedQuestion.id] || {}),
-                            [activeInputId]: (prev[selectedQuestion.id]?.[activeInputId] || '') + symbol
-                          }
-                        }))
-                      }
-                    }}
-                  />
-                </motion.div>
-              )}
-            </div>
+            <Calculator
+              mathFieldRef={mathFieldRef}
+              selectedQuestion={selectedQuestion}
+              setCompositeAnswers={setCompositeAnswers}
+              setTextAnswers={setTextAnswers}
+              activeInputId={activeInputId}
+            />
           )}
 
           {showResult && (
