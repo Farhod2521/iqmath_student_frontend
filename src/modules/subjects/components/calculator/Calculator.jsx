@@ -2,11 +2,17 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Symbols from './MathSymbols'
 
-function Calculator({ selectedQuestion, setCompositeAnswers, setTextAnswers, activeInputId, mathFieldRef }) {
+function Calculator({
+  selectedQuestion,
+  setCompositeAnswers,
+  setTextAnswers,
+  activeInputId,
+  mathFieldRef,
+  mathFieldRefs
+}) {
   const handleInsertSymbol = (symbol) => {
-    const mathField = mathFieldRef.current
-
     if (selectedQuestion?.question_type === 'text') {
+      const mathField = mathFieldRef.current
       if (mathField) {
         mathField.write(symbol)
         mathField.focus()
@@ -16,13 +22,18 @@ function Calculator({ selectedQuestion, setCompositeAnswers, setTextAnswers, act
         }))
       }
     } else if (selectedQuestion?.question_type === 'composite' && activeInputId) {
-      setCompositeAnswers((prev) => ({
-        ...prev,
-        [selectedQuestion.id]: {
-          ...(prev[selectedQuestion.id] || {}),
-          [activeInputId]: (prev[selectedQuestion.id]?.[activeInputId] || '') + symbol
-        }
-      }))
+      const mathField = mathFieldRefs?.current?.[selectedQuestion.id]?.[activeInputId]
+      if (mathField) {
+        mathField.write(symbol)
+        mathField.focus()
+        setCompositeAnswers((prev) => ({
+          ...prev,
+          [selectedQuestion.id]: {
+            ...(prev[selectedQuestion.id] || {}),
+            [activeInputId]: mathField.latex()
+          }
+        }))
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 'use client'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
 import { useTranslation } from 'react-i18next'
 
@@ -22,7 +22,7 @@ function ExamAnswerComposite({
   setCompositeAnswers,
   compositeAnswers,
   setActiveInputId,
-  mathFieldRefs // <-- 🔥 parentdan keladi
+  mathFieldRefs
 }) {
   const { i18n } = useTranslation()
 
@@ -35,11 +35,7 @@ function ExamAnswerComposite({
 
         return (
           <div key={index}>
-            <MathJaxContext
-              config={{
-                loader: { load: ['input/tex', 'output/chtml'] }
-              }}
-            >
+            <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
               <div className="flex items-center gap-4">
                 <span className="text-gray-800 text-[16px]">
                   <MathJax dynamic>{text1}</MathJax>
@@ -58,12 +54,10 @@ function ExamAnswerComposite({
                   }}
                   onFocus={() => setActiveInputId(item.id)}
                   mathquillDidMount={(mathField) => {
-                    if (mathFieldRefs.current) {
-                      if (!mathFieldRefs.current[selectedQuestion.id]) {
-                        mathFieldRefs.current[selectedQuestion.id] = {}
-                      }
-                      mathFieldRefs.current[selectedQuestion.id][item.id] = mathField
+                    if (!mathFieldRefs.current[selectedQuestion.id]) {
+                      mathFieldRefs.current[selectedQuestion.id] = {}
                     }
+                    mathFieldRefs.current[selectedQuestion.id][item.id] = mathField
                   }}
                   style={compositeMathStyle}
                 />
