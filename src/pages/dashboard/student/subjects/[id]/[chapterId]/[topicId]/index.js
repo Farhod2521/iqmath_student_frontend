@@ -91,21 +91,17 @@ const Index = () => {
       <StudentBreadcrumbs selectTitle={topicName} />
       {/* <BaseBreadcrumbs data={breadcrumbs} /> */}
       <div className="font-sf">
-        <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
-          <div className="relative flex items-center justify-between w-full overflow-hidden">
+        <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] w-full max-w-[600px] lg:max-w-[900px] mx-auto p-2 sm:p-4 relative">
+          <div className="flex items-center gap-x-2 py-2">
             <button
-              className="bg-white text-xl px-[12px] py-[15px] rounded-[12px] rotate-180"
+              className="bg-white text-xl px-3 py-2 rounded-[12px] rotate-180"
               onClick={() => handleScroll('left')}
             >
               <RightIcon />
             </button>
-
-            <div className="cursor-pointer" onClick={() => setOpen(!open)}>
-              <h1 className="text-[17px] text-center">{topicName}</h1>
-            </div>
-
+            <div className="flex-1 text-center font-medium text-[14px] max-[400px]:text-[13px] max-[640px]:text-[15px] text-[16px] truncate">{topicName}</div>
             <button
-              className="bg-white text-xl px-[12px] py-[15px] rounded-[12px]"
+              className="bg-white text-xl px-3 py-2 rounded-[12px]"
               onClick={() => handleScroll('right')}
             >
               <RightIcon />
@@ -117,7 +113,7 @@ const Index = () => {
               initial={{ opacity: 0, translateY: '30px' }}
               animate={{ opacity: 1, translateY: '0px' }}
               transition={{ duration: 0.2 }}
-              className="absolute border max-w-[438px] z-20 max-h-[178px] overflow-y-auto w-full rounded-[4px] shadow-md bg-white top-[52px] left-0 right-0 mx-auto"
+              className="absolute border max-w-full sm:max-w-[438px] z-20 max-h-[178px] overflow-y-auto w-full rounded-[4px] shadow-md bg-white top-[52px] left-0 right-0 mx-auto"
             >
               <ul className="p-[4px]">
                 {topicsList.map((topic) => (
@@ -138,23 +134,23 @@ const Index = () => {
 
           <div className="w-full h-[1px] bg-[#F2F2F7]"></div>
 
-          <div className="flex justify-between py-[12px] px-[24px]">
-            <div className="flex gap-x-[15px] items-center">
-              <div className="w-[60px] h-[60px] bg-[#EDEDF2] flex items-center justify-center rounded-[8px]">
-                <Image src="/icons/play.svg" alt="play" width={24} height={24} />
+          <div className="flex flex-row justify-between py-3 max-[500px]:flex-col max-[500px]:gap-y-4">
+            <div className="flex gap-x-3 items-center">
+              <div className="w-10 h-10 lg:w-[60px] lg:h-[60px] bg-[#EDEDF2] flex items-center justify-center rounded-[8px]">
+                <Image src="/icons/play.svg" alt="play" width={20} height={20} className="lg:w-[24px] lg:h-[24px]" />
               </div>
-              <div className="space-y-[4px]">
-                <h3 className="text-[17px] font-medium">{t('videoExplanation')}</h3>
-                <p className="text-[#8A8A8E]">{t('watchBeforeStart')}</p>
+              <div className="space-y-[2px] lg:space-y-[4px]">
+                <h3 className="text-[15px] lg:text-[17px] font-medium">{t('videoExplanation')}</h3>
+                <p className="text-[#8A8A8E] text-[13px] lg:text-[15px]">{t('watchBeforeStart')}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-x-[8px]">
-              <Button onPress={() => setShowPlayer(true)} className="rounded-md">
+            <div className="flex flex-row items-center gap-x-2 max-[500px]:flex-col max-[500px]:gap-y-2">
+              <Button onPress={() => setShowPlayer(true)} className="rounded-md w-full max-[500px]:w-full lg:w-auto">
                 {t('watch')}
               </Button>
-              <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectedTopic?.id}/question`}>
-                <Button className="px-[16px] py-[11px] rounded-md" color="primary">
+              <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectedTopic?.id}/question`} className="w-full max-[500px]:w-full lg:w-auto">
+                <Button className="px-4 py-2 lg:px-[16px] lg:py-[11px] rounded-md w-full max-[500px]:w-full lg:w-auto" color="primary">
                   {t('examples')}
                 </Button>
               </Link>
@@ -163,8 +159,8 @@ const Index = () => {
 
           <div className="w-full h-[1px] bg-[#F2F2F7]"></div>
 
-          <div className="py-[22px] px-[24px]">
-            <div className="mx-auto bg-white">{parse(topicContent || '')}</div>
+          <div className="py-4">
+            <div className="mx-auto bg-white text-[15px] lg:text-base">{parse(topicContent || '')}</div>
           </div>
 
           {showPlayer && <VideoPlayer url={videoUrl} title={topicName} onClose={() => setShowPlayer(false)} />}

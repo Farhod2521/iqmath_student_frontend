@@ -223,3 +223,12 @@ img {
 .selected_question p img {
   margin: 0 auto;
 }
+
+@media (max-width: 450px) {
+  .navbar-lang-responsive .lang-code {
+    display: none !important;
+  }
+  .navbar-points-responsive .ball-text {
+    display: none !important;
+  }
+}
