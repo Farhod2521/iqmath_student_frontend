@@ -30,8 +30,8 @@ const Index = () => {
 
   return (
     <MainWrapper title={t('profile')}>
-      <div className="grid grid-cols-12 gap-x-[24px]">
-        <Card className="col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-0 md:gap-x-[24px] gap-y-4">
+        <Card className="col-span-12 md:col-span-5 border p-3 md:p-4 border-[#E9E9E9] rounded-[12px] w-full">
           <div className="flex justify-center items-center flex-col  p-[20px]">
             <Avatar size="lg" className="" icon={<AvatarIcon />} />
 
@@ -130,50 +130,47 @@ const Index = () => {
             </div>
           </div>
         </Card>
-        <div className="col-span-7 p-4">
-          <div className="flex gap-x-[24px]">
-            <div className="space-y-[20px] w-2/3">
-              <Card className="relative opacity-0 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+        <div className="col-span-12 md:col-span-7 p-3 md:p-4">
+          <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-[24px]">
+            <div className="space-y-[20px] w-full md:w-2/3">
+              <Card className="relative opacity-0 border border-[#E9E9E9] rounded-[12px] py-3 md:py-[12px] px-3 md:px-[16px] space-y-[12px] w-full">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
-                  width={71}
-                  height={71}
-                  className="absolute  top-9 right-9 lg:block hidden"
+                  width={50}
+                  height={50}
+                  className="absolute top-4 right-4 md:top-9 md:right-9 lg:block hidden"
                 />
-                <p className="text-[28px] font-extrabold">6,825</p>
+                <p className="text-[22px] md:text-[28px] font-extrabold">6,825</p>
                 <div className="space-y-[4px]">
-                  <p className="text-[17px]">Общее количество учеников</p>
+                  <p className="text-[15px] md:text-[17px]">Общее количество учеников</p>
                   <div className="flex gap-x-[4px] items-center py-[3px]">
-                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
-
-                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
-                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
+                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={16} height={16} className="md:w-[20px] md:h-[20px]" />
+                    <p className="text-[15px] md:text-[17px] text-[#2EB14F] font-medium">+14%</p>
+                    <p className="text-[13px] md:text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
                   </div>
                 </div>
               </Card>
-
-              <Card className="relative  opacity-0 border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+              <Card className="relative opacity-0 border border-[#E9E9E9] rounded-[12px] py-3 md:py-[12px] px-3 md:px-[16px] space-y-[12px] w-full">
                 <Image
                   src={`/images/education.png`}
                   alt={`education`}
-                  width={71}
-                  height={71}
-                  className="absolute top-9 right-3"
+                  width={50}
+                  height={50}
+                  className="absolute top-4 right-4 md:top-9 md:right-3"
                 />
-                <p className="text-[28px] font-extrabold">6,825</p>
+                <p className="text-[22px] md:text-[28px] font-extrabold">6,825</p>
                 <div className="space-y-[4px]">
-                  <p className="text-[17px]">Общее количество учеников</p>
+                  <p className="text-[15px] md:text-[17px]">Общее количество учеников</p>
                   <div className="flex gap-x-[4px] items-center py-[3px]">
-                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
-
-                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
-                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
+                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={16} height={16} className="md:w-[20px] md:h-[20px]" />
+                    <p className="text-[15px] md:text-[17px] text-[#2EB14F] font-medium">+14%</p>
+                    <p className="text-[13px] md:text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
                   </div>
                 </div>
               </Card>
             </div>
-            <Card className="bg-[#114FFF]  opacity-0 rounded-[12px] w-1/3">
+            <Card className="bg-[#114FFF] opacity-0 rounded-[12px] w-full md:w-1/3">
               <ProgressCard />
             </Card>
           </div>
