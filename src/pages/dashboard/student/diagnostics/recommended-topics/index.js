@@ -47,7 +47,7 @@ const Index = () => {
       <BaseBreadcrumbs data={breadcrumbs} />
       <h1 className="font-semibold text-[20px] mb-[18px]">{t('needToStudy')}</h1>
       <div className="w-full lg:w-4/5 border border-[#E9E9E9] rounded-[12px] overflow-hidden">
-        <ul className="w-full">
+        <nav className="flex flex-wrap items-center gap-x-1 text-xs sm:text-sm md:text-base font-semibold overflow-x-auto whitespace-nowrap">
           {get(advisedTopics, 'data.topics', [])?.map((item, index) => (
             <li
               key={index}
@@ -60,7 +60,7 @@ const Index = () => {
               {i18n.language === 'uz' ? item.name_uz : item.name_ru}
             </li>
           ))}
-        </ul>
+        </nav>
       </div>
     </div>
   )
