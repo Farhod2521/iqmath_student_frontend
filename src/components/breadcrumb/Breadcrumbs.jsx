@@ -3,14 +3,14 @@ import * as React from 'react'
 function BaseBreadcrumbs({ data = [] }) {
   return (
     <div className="mb-[24px]">
-      <nav className="flex flex-wrap items-center gap-x-1 text-[14px] max-[400px]:text-[17px] sm:text-sm md:text-base font-[600] whitespace-normal min-w-0">
+      <nav className="flex flex-wrap items-center gap-x-1 text-[22px] md:text-base sm:text-sm text-xs whitespace-normal min-w-0">
         {data.map(({ link, title }, idx) => (
           <React.Fragment key={idx}>
             {idx > 0 && <span className="mx-1 text-gray-400">/</span>}
             {link ? (
-              <a href={link} className="hover:underline text-black break-words">{title}</a>
+              <a href={link} className="text-[16px] md:text-[22px] sm:text-[15px] font-[600] hover:underline text-black break-words">{title}</a>
             ) : (
-              <span className="text-black break-words">{title}</span>
+              <span className="text-black text-[16px] md:text-[22px] sm:text-[15px] font-[600] break-words">{title}</span>
             )}
           </React.Fragment>
         ))}
