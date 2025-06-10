@@ -1,24 +1,20 @@
 import * as React from 'react'
-import Typography from '@mui/material/Typography'
-import Breadcrumbs from '@mui/material/Breadcrumbs'
-import Link from '@mui/material/Link'
 
 function BaseBreadcrumbs({ data = [] }) {
   return (
     <div className="mb-[24px]">
-      <Breadcrumbs sx={{ color: 'black', fontSize: '20px', fontWeight: '600' }} aria-label="breadcrumb">
-        {data.map(({ link, title }, idx) =>
-          link ? (
-            <Link key={idx} underline="hover" color="inherit" href={link}>
-              {title}
-            </Link>
-          ) : (
-            <Typography key={idx} sx={{ color: 'black', fontSize: '20px', fontWeight: '600' }}>
-              {title}
-            </Typography>
-          )
-        )}
-      </Breadcrumbs>
+      <nav className="flex flex-wrap items-center gap-x-1 text-[14px] max-[400px]:text-[14px] sm:text-sm md:text-base whitespace-normal min-w-0">
+        {data.map(({ link, title }, idx) => (
+          <React.Fragment key={idx}>
+            {idx > 0 && <span className="mx-1 text-gray-400">/</span>}
+            {link ? (
+              <a href={link} className="hover:underline text-black break-words">{title}</a>
+            ) : (
+              <span className="text-black break-words">{title}</span>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
     </div>
   )
 }
