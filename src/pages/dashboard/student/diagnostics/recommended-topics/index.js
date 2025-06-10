@@ -47,7 +47,7 @@ const Index = () => {
       <BaseBreadcrumbs data={breadcrumbs} />
       <h1 className="font-semibold text-[20px] mb-[18px]">{t('needToStudy')}</h1>
       <div className="w-full lg:w-4/5 border border-[#E9E9E9] rounded-[12px] overflow-hidden">
-        <nav className="flex flex-wrap items-center gap-x-1 text-xs sm:text-sm md:text-base font-semibold overflow-x-auto whitespace-nowrap">
+        <div className="grid grid-cols-1 gap-2">
           {get(advisedTopics, 'data.topics', [])?.map((item, index) => (
             <li
               key={index}
@@ -55,12 +55,12 @@ const Index = () => {
                 setSelectedTopic(item.id)
                 router.push(`/dashboard/student/diagnostics/recommended-topics/${item.id}`)
               }}
-              className="p-[12px] pl-[24px] hover:bg-blue-50 cursor-pointer bg-white border-b border-[#E9E9E9] last:border-b-0"
+              className="p-3 list-none hover:bg-blue-50 cursor-pointer border border-[#E9E9E9] rounded-md text-[14px] break-words whitespace-normal transition"
             >
               {i18n.language === 'uz' ? item.name_uz : item.name_ru}
             </li>
           ))}
-        </nav>
+        </div>
       </div>
     </div>
   )
