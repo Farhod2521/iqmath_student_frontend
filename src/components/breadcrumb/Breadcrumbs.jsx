@@ -1,26 +1,23 @@
 import * as React from 'react'
-import Typography from '@mui/material/Typography'
-import Breadcrumbs from '@mui/material/Breadcrumbs'
-import Link from '@mui/material/Link'
 
 function BaseBreadcrumbs({ data = [] }) {
   return (
     <div className="mb-[24px]">
-      <Breadcrumbs sx={{ color: 'black', fontSize: '20px', fontWeight: '600' }} aria-label="breadcrumb">
-        {data.map(({ link, title }, idx) =>
-          link ? (
-            <Link key={idx} underline="hover" color="inherit" href={link}>
-              {title}
-            </Link>
-          ) : (
-            <Typography key={idx} sx={{ color: 'black', fontSize: '20px', fontWeight: '600' }}>
-              {title}
-            </Typography>
-          )
-        )}
-      </Breadcrumbs>
+      <nav className="flex flex-wrap items-center gap-x-1 text-[22px] md:text-base sm:text-sm text-xs whitespace-normal min-w-0">
+        {data.map(({ link, title }, idx) => (
+          <React.Fragment key={idx}>
+            {idx > 0 && <span className="mx-1 text-gray-400">/</span>}
+            {link ? (
+              <a href={link} className="text-[16px] md:text-[22px] sm:text-[15px] font-[600] hover:underline text-black break-words">{title}</a>
+            ) : (
+              <span className="text-black text-[16px] md:text-[22px] sm:text-[15px] font-[600] break-words">{title}</span>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
     </div>
   )
 }
 
-export default BaseBreadcrumbs
+export default BaseBreadcrumbs;
+// 
