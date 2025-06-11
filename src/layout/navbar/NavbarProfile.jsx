@@ -23,9 +23,7 @@ function NavbarProfile() {
     isFetching
   } = useGetQuery({
     key: KEYS.studentProfile,
-    url: URLS.studentProfile,
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
-    enabled: !!session?.accessToken
+    url: URLS.studentProfile
   })
 
   // Zustand store

@@ -1,35 +1,33 @@
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import { Popover, PopoverTrigger, PopoverContent } from '@heroui/react'
+
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { get } from 'lodash'
-import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import ContentLoader from '@/components/loader/content-loader'
-import InfoCircleIcon from '@/components/icons/info-circle'
 import MainWrapper from '@/layout/MainWrapper'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
-import { Popover, PopoverTrigger, PopoverContent } from '@heroui/react'
+import ContentLoader from '@/components/loader/content-loader'
+import InfoCircleIcon from '@/components/icons/info-circle'
 import RightIcon from '@/components/icons/right'
 
-const Index = () => {
+const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
-  const [selectedChapterId, setSelectedChapterId] = useState(null)
   const router = useRouter()
   const { id } = router.query
+  const [selectedChapterId, setSelectedChapterId] = useState(null)
+
   const {
     data: chapter,
     isLoading: isLoadingChapter,
     isFetching: isFetchingChapter
   } = useGetQuery({
     key: KEYS.studentChapters,
-    url: `${URLS.studentChapters}${id}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}` || ''
-    },
+    url: id ? `${URLS.studentChapters}${id}/` : '',
     enabled: !!id && !!session?.accessToken
   })
 
@@ -40,114 +38,93 @@ const Index = () => {
   } = useGetQuery({
     key: [KEYS.studentTopics, selectedChapterId],
     url: selectedChapterId ? `${URLS.studentTopics}${selectedChapterId}/` : '',
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}` || ''
-    },
     enabled: !!selectedChapterId && !!session?.accessToken
   })
 
   useEffect(() => {
-    // setSelectedChapterId(get(chapter, 'data', [])[0].id)
-    chapter && setSelectedChapterId(chapter.data[0].id)
+    if (chapter?.data?.[0]?.id) {
+      setSelectedChapterId(chapter.data[0].id)
+    }
   }, [chapter])
 
-  // console.log(get(chapter, 'data', []))
-
-  // console.log(get(topic, 'data', []));
-  
   if (isLoadingChapter || isFetchingChapter) {
     return <ContentLoader />
   }
+
+  const chapters = chapter?.data || []
+  const topics = topic?.data || []
+
   return (
     <MainWrapper title={t('subjects')}>
       <div className="font-sf">
         <StudentBreadcrumbs />
-        <div className="grid grid-cols-12 gap-[24px]">
-          <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
-            <ul className="w-full">
-              {get(chapter, 'data', []).map((chapter) => {
-                const isActive = selectedChapterId === get(chapter, 'id')
-                return (
-                  <li
-                    key={get(chapter, 'id')}
-                    onClick={() => setSelectedChapterId(get(chapter, 'id'))}
-                    className={`p-[12px] pl-[24px] border-b uppercase border-[#E9E9E9] cursor-pointer last:border-b-0 hover:bg-[#F0F9FF] ${
-                      isActive ? 'bg-[#F0F9FF]' : 'bg-white'
-                    }`}
-                  >
-                    {i18n.language === 'uz' ? get(chapter, 'name_uz') : get(chapter, 'name_ru')}
-                  </li>
-                )
-              })}
+        <div className="grid grid-cols-12 gap-4 md:gap-6">
+          <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
+            <ul>
+              {chapters.map((chapter) => (
+                <li
+                  key={chapter.id}
+                  onClick={() => setSelectedChapterId(chapter.id)}
+                  className={`cursor-pointer border-b border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
+                    selectedChapterId === chapter.id ? 'bg-blue-50' : 'bg-white'
+                  }`}
+                >
+                  {i18n.language === 'uz' ? chapter.name_uz : chapter.name_ru}
+                </li>
+              ))}
             </ul>
           </div>
 
           {selectedChapterId && (
-            <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
+            <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
               {isLoadingTopic || isFetchingTopic ? (
                 <ContentLoader />
-              ) : (
-                <>
-                  {get(topic, 'data', []).length > 0 ? (
-                    <ul className="w-full">
-                      {get(topic, 'data', []).map((topic, index) => {
-                        return get(topic, 'is_open') ? (
-                          <li
-                            key={index}
-                            onClick={() =>
-                              router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${get(topic, 'id')}`)
-                            }
-                            className={`p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] hover:cursor-pointer border-[#E9E9E9] bg-white  last:border-b-0`}
-                          >
-                            <div className="flex justify-between ">
-                              <div className="uppercase">
-                                {i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}
-                              </div>
-                              <div style={{ minWidth: 40 }} className="flex justify-center items-center">
-                                <RightIcon />
-                              </div>
+              ) : topics.length > 0 ? (
+                <ul>
+                  {topics.map((topic, index) =>
+                    topic.is_open ? (
+                      <li
+                        key={index}
+                        onClick={() =>
+                          router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${topic.id}`)
+                        }
+                        className="flex cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
+                      >
+                        <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
+                        <div className="flex min-w-10 items-center justify-center">
+                          <RightIcon />
+                        </div>
+                      </li>
+                    ) : (
+                      <Popover
+                        key={index}
+                        size="md"
+                        showArrow
+                        backdrop="opaque"
+                        classNames={{ content: 'max-w-[400px]' }}
+                      >
+                        <PopoverTrigger>
+                          <li className="flex justify-between border-b border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md  opacity-50 last:border-b-0">
+                            <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
+                            <div className="flex min-w-10 items-center justify-center">
+                              <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
                             </div>
                           </li>
-                        ) : (
-                          <Popover
-                            classNames={{
-                              content: 'max-w-[400px]'
-                            }}
-                            key={index}
-                            size="md"
-                            showArrow
-                            backdrop="opaque"
-                          >
-                            <PopoverTrigger>
-                              <li key={index} className={`p-[12px] pl-[24px] border-b opacity-50 last:border-b-0`}>
-                                <div className="flex justify-between ">
-                                  <div className="uppercase">
-                                    {i18n.language === 'uz' ? get(topic, 'name_uz') : get(topic, 'name_ru')}
-                                  </div>
-                                  <div style={{ minWidth: 40 }} className="flex justify-center items-center">
-                                    <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
-                                  </div>
-                                </div>
-                              </li>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <div className="px-1 py-2 rounded-md">
-                                <div className="text-small ">{t('toUnlock')}</div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        )
-                      })}
-                    </ul>
-                  ) : (
-                    <div className="flex items-center justify-center h-[200px] gap-2 bg-[#FFF4E5]">
-                      <InfoCircleIcon />
-                      <div className="flex flex-col items-center">
-                        <h3 className="text-[16px] font-normal text-[#8E8E93]">{t('noTopicsInThisSection')}</h3>
-                      </div>
-                    </div>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <div className="px-1 py-2">
+                            <p className="text-sm">{t('toUnlock')}</p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )
                   )}
-                </>
+                </ul>
+              ) : (
+                <div className="flex h-48 items-center justify-center gap-2 bg-orange-50">
+                  <InfoCircleIcon />
+                  <h3 className="text-base font-normal text-gray-500">{t('noTopicsInThisSection')}</h3>
+                </div>
               )}
             </div>
           )}
@@ -157,4 +134,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default SubjectsPage

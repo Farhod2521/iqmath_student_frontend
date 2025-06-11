@@ -16,7 +16,6 @@ import ContentLoader from '@/components/loader/content-loader'
 import MainWrapper from '@/layout/MainWrapper'
 import { Button } from '@heroui/react'
 import parse from 'html-react-parser'
-import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 
 const Index = () => {
@@ -80,91 +79,88 @@ const Index = () => {
   const topicContent = i18n.language === 'uz' ? selectedTopic?.content_uz : selectedTopic?.content_ru
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
-  // const breadcrumbs = [
-  //   { link: '/dashboard/student/subjects', title: t('main') },
-  //   { link: `/dashboard/student/subjects/${id}`, title: t('theory') },
-  //   { link: '', title: topicName }
-  // ]
-
   return (
     <MainWrapper title={t('subjects')}>
       <StudentBreadcrumbs selectTitle={topicName} />
-      {/* <BaseBreadcrumbs data={breadcrumbs} /> */}
-      <div className="font-sf">
-        <div className="col-span-12 bg-white border border-[#E9E9E9] rounded-[12px] mx-[169px] relative">
-          <div className="relative flex items-center justify-between w-full overflow-hidden">
+      <div className="font-sf container mx-auto px-0 sm:px-6 lg:px-8">
+        <div className="bg-white border border-[#E9E9E9] rounded-xl mx-auto max-w-4xl relative">
+          {/* Topic Selection Header */}
+          <div className="relative flex items-center justify-between w-full overflow-hidden p-4">
             <button
-              className="bg-white text-xl px-[12px] py-[15px] rounded-[12px] rotate-180"
+              className="bg-white text-xl p-3 rounded-lg rotate-180 hover:bg-gray-100 transition"
               onClick={() => handleScroll('left')}
             >
               <RightIcon />
             </button>
 
-            <div className="cursor-pointer" onClick={() => setOpen(!open)}>
-              <h1 className="text-[17px] text-center">{topicName}</h1>
+            <div className="cursor-pointer flex-1 text-center" onClick={() => setOpen(!open)}>
+              <h1 className="text-base sm:text-lg md:text-xl font-medium truncate">{topicName}</h1>
             </div>
 
             <button
-              className="bg-white text-xl px-[12px] py-[15px] rounded-[12px]"
+              className="bg-white text-xl p-3 rounded-lg hover:bg-gray-100 transition"
               onClick={() => handleScroll('right')}
             >
               <RightIcon />
             </button>
           </div>
 
+          {/* Dropdown Menu */}
           {open && (
             <motion.div
               initial={{ opacity: 0, translateY: '30px' }}
               animate={{ opacity: 1, translateY: '0px' }}
               transition={{ duration: 0.2 }}
-              className="absolute border max-w-[438px] z-20 max-h-[178px] overflow-y-auto w-full rounded-[4px] shadow-md bg-white top-[52px] left-0 right-0 mx-auto"
+              className="absolute border w-full max-w-md z-20 max-h-48 overflow-y-auto rounded-md shadow-md bg-white top-14 left-0 right-0 mx-auto"
             >
-              <ul className="p-[4px]">
+              <ul className="p-2">
                 {topicsList.map((topic) => (
                   <li
                     key={topic.id}
-                    className={`py-[8px] px-[12px] flex justify-between ${
+                    className={`py-2 px-3 flex justify-between text-sm sm:text-base ${
                       topic.locked ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-100'
                     }`}
                     onClick={() => !topic.locked && handleSelect(topic)}
                   >
                     <p>{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</p>
-                    {topic.locked && <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />}
+                    {topic.locked && <Image src="/icons/lock.svg" alt="lock" width={16} height={16} />}
                   </li>
                 ))}
               </ul>
             </motion.div>
           )}
 
-          <div className="w-full h-[1px] bg-[#F2F2F7]"></div>
+          <div className="w-full h-px bg-[#F2F2F7]"></div>
 
-          <div className="flex justify-between py-[12px] px-[24px]">
-            <div className="flex gap-x-[15px] items-center">
-              <div className="w-[60px] h-[60px] bg-[#EDEDF2] flex items-center justify-center rounded-[8px]">
-                <Image src="/icons/play.svg" alt="play" width={24} height={24} />
+          {/* Video Section */}
+          <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6 gap-4">
+            <div className="flex gap-x-4 items-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#EDEDF2] flex items-center justify-center rounded-lg">
+                <Image src="/icons/play.svg" alt="play" width={20} height={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="space-y-[4px]">
-                <h3 className="text-[17px] font-medium">{t('videoExplanation')}</h3>
-                <p className="text-[#8A8A8E]">{t('watchBeforeStart')}</p>
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-medium">{t('videoExplanation')}</h3>
+                <p className="text-gray-500 text-sm">{t('watchBeforeStart')}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-x-[8px]">
-              <Button onPress={() => setShowPlayer(true)} className="rounded-md">
+            <div className="flex items-center gap-x-2">
+              <Button onPress={() => setShowPlayer(true)} className="rounded-md text-sm sm:text-base px-4 py-2">
                 {t('watch')}
               </Button>
               <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectedTopic?.id}/question`}>
-                <Button className="px-[16px] py-[11px] rounded-md" color="primary">
+                <Button className="px-4 py-2 rounded-md text-sm sm:text-base" color="primary">
                   {t('examples')}
                 </Button>
               </Link>
             </div>
           </div>
 
-          <div className="w-full h-[1px] bg-[#F2F2F7]"></div>
+          <div className="w-full h-px bg-[#F2F2F7]"></div>
 
-          <div className="py-[22px] px-[24px]">
-            <div className="mx-auto bg-white">{parse(topicContent || '')}</div>
+          {/* Content Section */}
+          <div className="py-6 px-6 prose prose-sm sm:prose-base max-w-none">
+            <div className="mx-auto">{parse(topicContent || '')}</div>
           </div>
 
           {showPlayer && <VideoPlayer url={videoUrl} title={topicName} onClose={() => setShowPlayer(false)} />}

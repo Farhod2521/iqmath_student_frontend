@@ -1,36 +1,24 @@
-import { KEYS } from '@/constants/key'
-import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useScoreStore } from '@/store'
 import { Button } from '@heroui/react'
-import { get } from 'lodash'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 function NavbarPoints() {
-  const { data: session } = useSession()
   const router = useRouter()
   const { t } = useTranslation()
-  // o'quvchini bali
-  const { data: coins, isLoading: coinsLoading } = useGetQuery({
-    key: KEYS.coins,
-    url: URLS.coins,
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
-    enabled: !!session?.accessToken
-  })
-
+  const { scoreData } = useScoreStore()
 
   return (
     <Button
+      isLoading={scoreData.isLoading}
       variant="bordered"
       onPress={() => router.push('/dashboard/student/coins')}
-      className="border-[#E9E9E9]  border-1 shadow-sm"
+      className="border-[#E9E9E9] py-1 px-1 sm:px-3 rounded-md border shadow-sm min-w-10 sm:min-w-20 h-8 sm:h-9 flex items-center gap-1 sm:gap-2"
     >
-      <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={26} height={26} />
-      <p className="text-[19px] font-medium">
-        {get(coins, 'data.score')} {t('ball')}
+      <Image src="/icons/ball.svg" alt="Points logo" width={18} height={18} className="sm:w-22 sm:h-22" />
+      <p className="text-sm sm:text-md font-medium hidden sm:block">
+        {scoreData.score} {t('ball')}
       </p>
     </Button>
   )
