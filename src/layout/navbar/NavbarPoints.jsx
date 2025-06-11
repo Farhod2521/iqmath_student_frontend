@@ -21,6 +21,7 @@ function NavbarPoints() {
     enabled: !!session?.accessToken
   })
 
+
   return (
     <Button
       variant="bordered"
