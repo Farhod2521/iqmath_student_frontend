@@ -17,8 +17,8 @@ const Navbar = () => {
 
   return (
     <div className="border-b bg-white">
-      <div className="flex flex-row justify-between items-center px-2 sm:px-4 md:px-6 py-2 gap-x-2 sm:gap-x-4">
-        <div className="flex items-center gap-x-2 sm:gap-x-4 flex-1 min-w-0">
+      <div className={'flex justify-between px-[24px] pt-[24px] pb-[16px]'}>
+        <div className="flex items-center gap-x-[24px] flex-1">
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             {isSidebarOpen ? <AiOutlineMenuFold size={24} /> : <AiOutlineMenuUnfold size={24} />}
           </button>
@@ -30,11 +30,12 @@ const Navbar = () => {
           <NavbarCoins />
           <div className="navbar-points-responsive"><NavbarPoints /></div>
           <div className="navbar-lang-responsive"><NavbarLangue /></div>
-          {/* <NavbarBell /> */}
+        <div className={' flex items-center gap-x-[16px]'}>
           <NavbarProfile />
         </div>
       </div>
     </div>
+   </div>
   )
 }
 

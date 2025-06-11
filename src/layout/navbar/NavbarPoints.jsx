@@ -26,12 +26,12 @@ function NavbarPoints() {
     <Button
       variant="bordered"
       onPress={() => router.push('/dashboard/student/coins')}
-      className="border-[#E9E9E9] border-1 min-w-0 h-8 sm:h-9 px-3 sm:px-4 py-1 rounded-md flex items-center gap-x-1 sm:gap-x-2 bg-white"
+      className="border-[#E9E9E9]  border-1 shadow-sm"
     >
-      <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={16} height={16} className="sm:w-[20px] sm:h-[20px]" />
-      <span className="text-[16px] sm:text-[19px] font-medium">
-        {get(coins, 'data.score')} <span className="ball-text">{t('ball')}</span>
-      </span>
+      <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={26} height={26} />
+      <p className="text-[19px] font-medium">
+        {get(coins, 'data.score')} {t('ball')}
+      </p>
     </Button>
   )
 }

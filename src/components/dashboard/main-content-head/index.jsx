@@ -93,13 +93,13 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
 
   return (
     <div className="border-b">
-      <div className={'flex flex-col xs:flex-row justify-between px-2 xs:px-4 sm:px-[16px] md:px-[24px] pt-2 xs:pt-4 pb-2 xs:pb-4 gap-y-2 xs:gap-y-0'}>
-        <div className={'flex items-center gap-x-2 xs:gap-x-[16px] sm:gap-x-[24px] flex-1 min-w-0'}>
+      <div className={'flex justify-between px-[24px] pt-[24px] pb-[16px]'}>
+        <div className={'flex items-center gap-x-[24px] flex-1'}>
           <button onClick={toggleSidebar}>
             <Image src={'/icons/sidebar.svg'} alt={'sidebar'} width={24} height={24} />
           </button>
 
-          <p className="truncate text-[18px] xs:text-[20px] sm:text-[24px] font-semibold text-black max-w-[150px] xs:max-w-none">{title}</p>
+          <p className="text-[24px]  font-semibold text-black">{title}</p>
 
           {router.pathname === '/dashboard/student/my-study' && (
             <div className="flex bg-[#F2F2F7] p-[4px] max-w-[223px] w-full rounded-[8px]">
@@ -128,27 +128,24 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
           )}
         </div>
 
-        <div className={'flex items-center gap-x-2 xs:gap-x-[10px] sm:gap-x-[16px] flex-wrap'}>
+        <div className={' flex items-center gap-x-[16px]'}>
           <div
             onClick={() => router.push('/dashboard/student/coins')}
-            className="flex gap-x-1 items-center py-1 xs:py-[7px] cursor-pointer px-2 xs:px-[12px] border border-[#E9E9E9] rounded-[12px] min-w-0"
+            className="flex gap-x-[8px] items-center py-[7px] cursor-pointer px-[12px] border border-[#E9E9E9] rounded-[12px]"
           >
-            <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={20} height={20} className="xs:w-[26px] xs:h-[26px]" />
-            <p className="text-[14px] xs:text-[16px] sm:text-[19px] font-medium truncate max-w-[60px] xs:max-w-none">
-              {get(coins, 'data.score')} <span className="hidden min-[401px]:inline">{t('ball')}</span>
-            </p>
+            <Image src={'/icons/coins-logo.svg'} alt="coins-logo" width={26} height={26} />
+
+            <p className="text-[19px] font-medium">{get(coins, 'data.score')} баллов</p>
           </div>
 
-          <div className="[&>button>span]:hidden min-[401px]:[&>button>span]:inline">
-            <LanguageDropdown />
+          <LanguageDropdown />
+
+          <div className="scale-100 active:scale-110 transition-all duration-300 p-[6px] cursor-pointer">
+            <Image src={'/icons/bell.svg'} alt="coins-logo" width={26} height={26} />
           </div>
 
-          <div className="scale-100 active:scale-110 transition-all duration-300 p-1 xs:p-[6px] cursor-pointer">
-            <Image src={'/icons/bell.svg'} alt="coins-logo" width={20} height={20} className="xs:w-[26px] xs:h-[26px]" />
-          </div>
-
-          <button onClick={handleProfile} className="ml-1 xs:ml-0">
-            <Image src={'/images/avatar.png'} alt={'user'} width={28} height={28} className="xs:w-[40px] xs:h-[40px] rounded-full" />
+          <button onClick={handleProfile}>
+            <Image src={'/images/avatar.png'} alt={'user'} width={40} height={40} />
           </button>
 
           {/* <div className="hidden lg:flex items-center gap-x-[10px]">

@@ -62,8 +62,8 @@ const Index = () => {
     <MainWrapper title={t('subjects')}>
       <div className="font-sf">
         <StudentBreadcrumbs />
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-[24px]">
-          <div className="col-span-12 md:col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
+        <div className="grid grid-cols-12 gap-[24px]">
+          <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
             <ul className="w-full">
               {get(chapter, 'data', []).map((chapter) => {
                 const isActive = selectedChapterId === get(chapter, 'id')
@@ -83,7 +83,7 @@ const Index = () => {
           </div>
 
           {selectedChapterId && (
-            <div className="col-span-12 md:col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
+            <div className="col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
               {isLoadingTopic || isFetchingTopic ? (
                 <ContentLoader />
               ) : (

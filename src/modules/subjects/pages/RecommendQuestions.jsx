@@ -13,6 +13,8 @@ import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
 
 import SimpleModal from '@/components/modal/simple-modal'
+import VideoPlayer from '@/components/video-player'
+
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import ModalLevel from '../components/modal/ModalLevel'
@@ -21,24 +23,26 @@ import ExamQuestionSelected from '../components/exam/ExamQuestionSelected'
 import ExamAnswerChoice from '../components/exam/ExamAnswerChoice'
 import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
 import ExamAnswerText from '../components/exam/ExamAnswerText'
-import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 import ActionSolution from '../components/actions/ActionSolution'
 import ActionInfo from '../components/actions/ActionInfo'
-import ActionCalculator from '../components/actions/ActionCalculator'
 import Calculator from '../components/calculator/Calculator'
+import ActionCalculator from '../components/actions/ActionCalculator'
+import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 
-export default function SubjectQuestions() {
+export default function RecommendQuestions() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const { id, chapterId, topicId } = router.query
+  const { chapterId, id } = router.query
   const { data: session } = useSession()
   const mathFieldRef = useRef(null)
   const mathFieldRefs = useRef({})
 
-  const [tab, setTab] = useState(1)
+  const [tab, setTab] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedQuestion, setSelectedQuestion] = useState(null)
+
   const [showCalculator, setShowCalculator] = useState(false)
+  const [showSolution, setShowSolution] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const [showMistake, setShowMistake] = useState(false)
   const [activeInputId, setActiveInputId] = useState(null)
@@ -51,10 +55,10 @@ export default function SubjectQuestions() {
 
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
-    url: `${URLS.studentQuestions}${topicId}/`,
-    params: { level: tab },
+    url: `${URLS.studentQuestions}${id}/`,
+    params: { level: 1 },
     headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
-    enabled: !!topicId && !!session?.accessToken
+    enabled: !!id && !!session?.accessToken
   })
 
   const { mutate: checkMyResults } = usePostQuery({
@@ -100,6 +104,7 @@ export default function SubjectQuestions() {
         question_id: q.id,
         answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
+
     checkMyResults(
       {
         url: URLS.studentCheckAnswer,
@@ -116,7 +121,7 @@ export default function SubjectQuestions() {
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
-        onError: () => toast.error("Testni to'liq bajaring")
+        onError: () => toast.error("Test to'liq bajaring!")
       }
     )
   }
@@ -135,6 +140,7 @@ export default function SubjectQuestions() {
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
+
   return (
     <div className="font-sf">
       <ModalLevel handleTabChange={handleTabChange} tab={tab} />
@@ -151,6 +157,7 @@ export default function SubjectQuestions() {
 
         <div className="md:col-span-6 py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
           <ExamQuestionSelected selectedQuestion={selectedQuestion} selectedIndex={selectedIndex} />
+
           <div className="w-full flex flex-col items-center">
             {(() => {
               switch (selectedQuestion?.question_type) {
@@ -186,7 +193,6 @@ export default function SubjectQuestions() {
               }
             })()}
           </div>
-
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex gap-4">
               <Button
@@ -209,13 +215,10 @@ export default function SubjectQuestions() {
                 </Button>
               )}
             </div>
-
             <div className="flex gap-3 items-center">
               <ActionSolution selectedQuestion={selectedQuestion} />
               <ActionInfo />
-              {['composite', 'text'].includes(selectedQuestion?.question_type) && (
-                <ActionCalculator setShowCalculator={setShowCalculator} />
-              )}
+              <ActionCalculator setShowCalculator={setShowCalculator} />
             </div>
           </div>
 
@@ -227,6 +230,14 @@ export default function SubjectQuestions() {
               setCompositeAnswers={setCompositeAnswers}
               setTextAnswers={setTextAnswers}
               activeInputId={activeInputId}
+            />
+          )}
+
+          {showSolution && (
+            <VideoPlayer
+              url={i18n.language === 'uz' ? selectedQuestion?.video_url_uz : selectedQuestion?.video_url_ru}
+              title={i18n.language === 'uz' ? selectedQuestion.name_uz : selectedQuestion.name_ru}
+              onClose={() => setShowSolution(false)}
             />
           )}
 
@@ -242,21 +253,27 @@ export default function SubjectQuestions() {
                 <Image src={'/icons/award.svg'} alt="circle" width={84} height={118} className="mt-[24px]" />
 
                 <p className="text-[22px] font-semibold mt-[24px] mb-[16px] ">
-                  {t('yourScore', { score: get(score, 'data.result[0].correct_answers') })}
+                  {t('yourScore', { score: get(score, 'data.result[0].score', 0) })}
                 </p>
                 <p className="text-center">
                   {t('yourAnswer', {
                     answer: get(score, 'data.result[0].correct_answers'),
                     total: get(score, 'data.result[0].total_answers')
                   })}
-                  <br /> {t('yourResult', { result: get(score, 'data.result[0].score', 0) })}%
+                  <br /> {t('yourResult', { result: get(score, 'data.result[0].score', 0) })}
                 </p>
 
                 <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
                 <div className="flex pb-[24px] gap-x-[12px] text-sm">
                   <Button onPress={() => setShowMistake(true)}>{t('myResults')}</Button>
-                  <Button onPress={() => setShowResult(false)}>{t('goAgain')}</Button>
+                  <Button
+                    onPress={() => {
+                      setShowResult(false)
+                    }}
+                  >
+                    {t('goAgain')}
+                  </Button>
                   <Button onPress={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
                 </div>
               </div>
@@ -322,11 +339,13 @@ export default function SubjectQuestions() {
                 <div className="py-[16px] px-[16px] flex justify-end gap-[12px]">
                   <Button
                     className={'!bg-transparent border !text-black'}
-                    onPress={() => toast.success('Mentorga yuborildi')}
+                    onPress={() => {
+                      toast.success('Mentorga yuborildi')
+                    }}
                   >
                     {t('sendMentor')}
                   </Button>
-                  <Button onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
+                  <Button onPress={() => router.push(`/dashboard/student/diagnostics/recommended-topics/${id}`)}>
                     {t('repeatTopic')}
                   </Button>
                 </div>
