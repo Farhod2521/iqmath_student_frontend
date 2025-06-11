@@ -11,7 +11,7 @@ const NavbarCoins = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const { t } = useTranslation()
-  // o'quvchini coinlari
+
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
     url: URLS.coins,
