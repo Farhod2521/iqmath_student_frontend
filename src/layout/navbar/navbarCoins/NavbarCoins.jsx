@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
-import { get } from 'lodash'
 import CoinIcon from './CoinIcon'
 import { useRouter } from 'next/router'
 import { KEYS } from '@/constants/key'
