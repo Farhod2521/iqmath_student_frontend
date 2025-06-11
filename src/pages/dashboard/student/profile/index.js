@@ -31,7 +31,7 @@ const Index = () => {
   return (
     <MainWrapper title={t('profile')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
-        <Card className="col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
+        <Card className="col-span-12 sm:col-span-8 md:col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
             <Avatar size="lg" className="" icon={<AvatarIcon />} />
 
