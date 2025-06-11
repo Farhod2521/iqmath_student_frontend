@@ -7,6 +7,7 @@ import NavbarPoints from './NavbarPoints'
 import NavbarBell from './NavbarBell'
 import NavbarProfile from './NavbarProfile'
 import NavbarStudy from './NavbarStudy'
+import NavbarCoins from './navbarCoins/NavbarCoins'
 
 const Navbar = () => {
   const router = useRouter()
@@ -25,14 +26,16 @@ const Navbar = () => {
           {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
         </div>
 
+        <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap">
+          <NavbarCoins />
+          <div className="navbar-points-responsive"><NavbarPoints /></div>
+          <div className="navbar-lang-responsive"><NavbarLangue /></div>
         <div className={' flex items-center gap-x-[16px]'}>
-          <NavbarPoints />
-          <NavbarLangue />
-          {/* <NavbarBell /> */}
           <NavbarProfile />
         </div>
       </div>
     </div>
+   </div>
   )
 }
 

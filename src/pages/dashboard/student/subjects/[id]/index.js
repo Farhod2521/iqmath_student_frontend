@@ -51,6 +51,10 @@ const Index = () => {
     chapter && setSelectedChapterId(chapter.data[0].id)
   }, [chapter])
 
+  // console.log(get(chapter, 'data', []))
+
+  // console.log(get(topic, 'data', []));
+  
   if (isLoadingChapter || isFetchingChapter) {
     return <ContentLoader />
   }
