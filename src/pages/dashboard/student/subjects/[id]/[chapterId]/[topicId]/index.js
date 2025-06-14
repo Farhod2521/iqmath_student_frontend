@@ -81,7 +81,7 @@ const Index = () => {
 
   return (
     <MainWrapper title={t('subjects')}>
-      <StudentBreadcrumbs selectTitle={topicName} />
+      <StudentBreadcrumbs selectTitle={topicName} mainLink="/dashboard/student/subjects" />
       <div className="font-sf container mx-auto px-0 sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E9E9E9] rounded-xl mx-auto max-w-4xl relative">
           {/* Topic Selection Header */}

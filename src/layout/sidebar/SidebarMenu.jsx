@@ -53,7 +53,7 @@ const SidebarMenu = () => {
     },
     {
       key: 'recommended',
-      path: '/dashboard/student/diagnostics/recommended-topics',
+      path: '/dashboard/student/recommendations',
       label: t('recommended'),
       icon: <BiDirections size={26} />,
       disabled: false
@@ -118,7 +118,7 @@ const SidebarMenu = () => {
 
   const filteredMenuItems = menuItems.filter((item) => {
     // Agar item key = 'recommended' bo'lsa, va user.has_diagnost true bo'lsa — uni ko'rsatmaymiz
-    if (item.key === 'recommended' && !user?.has_diagnost) {
+    if (item.key === 'recommendations' && !user?.has_diagnost) {
       return false
     }
     return true

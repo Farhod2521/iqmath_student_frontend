@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSettingsStore } from '@/store'
 
-function StudentBreadcrumbs({ selectTitle }) {
+function StudentBreadcrumbs({ selectTitle, mainLink }) {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const { lang } = useSettingsStore((state) => state)
@@ -15,7 +15,7 @@ function StudentBreadcrumbs({ selectTitle }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const breadcrumbs = useMemo(() => {
-    const mainPath = { link: '/dashboard/student/subjects', title: t('topics') }
+    const mainPath = { link: mainLink, title: t('topics') }
 
     if (data && data.length === 1) {
       const item = data[0]
@@ -27,8 +27,8 @@ function StudentBreadcrumbs({ selectTitle }) {
       const item3 = data[2]
       return [
         mainPath,
-        { link: `/dashboard/student/subjects/${id}`, title: item1[`title_${lang}`] },
-        { link: `/dashboard/student/subjects/${id}`, title: item2[`title_${lang}`] },
+        { link: `${mainLink}/${id}`, title: item1[`title_${lang}`] },
+        { link: `${mainLink}/${id}`, title: item2[`title_${lang}`] },
         { link: ``, title: selectTitle }
       ]
     }

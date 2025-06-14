@@ -2,11 +2,6 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import { Popover, PopoverTrigger, PopoverContent } from '@heroui/react'
-
-import { KEYS } from '@/constants/key'
-import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import MainWrapper from '@/layout/MainWrapper'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
@@ -26,8 +21,8 @@ const SubjectsPage = () => {
     isLoading: isLoadingChapter,
     isFetching: isFetchingChapter
   } = useGetQuery({
-    key: KEYS.studentChapters,
-    url: id ? `${URLS.studentChapters}${id}/` : '',
+    key: 'my-diagnost-subject',
+    url: id ? `/api/v1/func_student/my-diagnost-subject/${id}/chapters/` : '',
     enabled: !!id && !!session?.accessToken
   })
 
@@ -36,13 +31,14 @@ const SubjectsPage = () => {
     isLoading: isLoadingTopic,
     isFetching: isFetchingTopic
   } = useGetQuery({
-    key: [KEYS.studentTopics, selectedChapterId],
-    url: selectedChapterId ? `${URLS.studentTopics}${selectedChapterId}/` : '',
+    key: ['my-diagnost-chapter', selectedChapterId],
+    url: selectedChapterId ? `/api/v1/func_student/my-diagnost-chapter/${selectedChapterId}/topics/` : '',
     enabled: !!selectedChapterId && !!session?.accessToken
   })
 
   useEffect(() => {
     if (chapter?.data?.[0]?.id) {
+      console.log(chapter)
       setSelectedChapterId(chapter.data[0].id)
     }
   }, [chapter])
@@ -81,44 +77,20 @@ const SubjectsPage = () => {
                 <ContentLoader />
               ) : topics.length > 0 ? (
                 <ul>
-                  {topics.map((topic, index) =>
-                    topic.is_open ? (
-                      <li
-                        key={index}
-                        onClick={() =>
-                          router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${topic.id}`)
-                        }
-                        className="flex cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
-                      >
-                        <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
-                        <div className="flex min-w-10 items-center justify-center">
-                          <RightIcon />
-                        </div>
-                      </li>
-                    ) : (
-                      <Popover
-                        key={index}
-                        size="md"
-                        showArrow
-                        backdrop="opaque"
-                        classNames={{ content: 'max-w-[400px]' }}
-                      >
-                        <PopoverTrigger>
-                          <li className="flex justify-between border-b border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md  opacity-50 last:border-b-0">
-                            <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
-                            <div className="flex min-w-10 items-center justify-center">
-                              <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
-                            </div>
-                          </li>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <div className="px-1 py-2">
-                            <p className="text-sm">{t('toUnlock')}</p>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    )
-                  )}
+                  {topics.map((topic, index) => (
+                    <li
+                      key={index}
+                      onClick={() =>
+                        router.push(`/dashboard/student/recommendations/${selectedChapterId}/${topic.id}/question`)
+                      }
+                      className="flex cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
+                    >
+                      <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
+                      <div className="flex min-w-10 items-center justify-center">
+                        <RightIcon />
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               ) : (
                 <div className="flex h-48 items-center justify-center gap-2 bg-orange-50">

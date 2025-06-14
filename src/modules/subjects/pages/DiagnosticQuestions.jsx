@@ -350,7 +350,7 @@ const DiagnosticQuestions = () => {
                 <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
                 <Link
-                  href={`/dashboard/student/diagnostics/recommended-topics`}
+                  href={`/dashboard/student/recommendations`}
                   className="flex items-center justify-center py-[16px]"
                 >
                   <Button color="primary">{t('recommendation')}</Button>

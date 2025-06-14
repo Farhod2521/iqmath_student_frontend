@@ -32,7 +32,8 @@ import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 export default function RecommendQuestions() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const { chapterId, id } = router.query
+  const { topicId, id } = router.query
+
   const { data: session } = useSession()
   const mathFieldRef = useRef(null)
   const mathFieldRefs = useRef({})
@@ -55,10 +56,10 @@ export default function RecommendQuestions() {
 
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
-    url: `${URLS.studentQuestions}${id}/`,
+    url: `${URLS.studentQuestions}${topicId}/`,
     params: { level: 1 },
     headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
-    enabled: !!id && !!session?.accessToken
+    enabled: !!topicId && !!session?.accessToken
   })
 
   const { mutate: checkMyResults } = usePostQuery({
@@ -345,7 +346,7 @@ export default function RecommendQuestions() {
                   >
                     {t('sendMentor')}
                   </Button>
-                  <Button onPress={() => router.push(`/dashboard/student/diagnostics/recommended-topics/${id}`)}>
+                  <Button onPress={() => router.push(`/dashboard/student/recommendations/${topicId}`)}>
                     {t('repeatTopic')}
                   </Button>
                 </div>

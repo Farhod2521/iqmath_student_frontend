@@ -31,5 +31,6 @@ export const URLS = {
   advisedTopics: '/api/v1/func_student/my-diagnost-detail/',
   levelStatistics: '/api/v1/func_student/my-diagnost-level/',
   profileUpdate: '/api/v1/auth/student/profile-update/',
-  diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/'
+  diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
+  recommendations: '/api/v1/func_student/my-diagnost-subjects/'
 }
