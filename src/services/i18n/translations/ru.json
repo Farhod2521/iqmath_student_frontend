@@ -271,7 +271,7 @@
   "authCodePlaceholder": "Код из смс",
   "recommended": "Рекомендация",
   "needToStudy": "Список тем, которые вам необходимо изучить",
-  "examples": "Задана",
+  "examples": "Задача",
   "daysNextPayment": "До дня оплаты осталось {{day}} дней",
   "daysTrialPayment": "Осталось {{day}} дней",
   "makeToPayment": "Произведите оплату!",
