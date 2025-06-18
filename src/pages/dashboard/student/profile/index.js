@@ -28,6 +28,7 @@ const Index = () => {
   })
   const router = useRouter()
 
+
   return (
     <MainWrapper title={t('profile')}>
       <div className="grid grid-cols-12 gap-x-[24px]">

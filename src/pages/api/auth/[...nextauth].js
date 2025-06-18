@@ -42,6 +42,7 @@ export default NextAuth({
 
           return {
             token: data.access_token,
+            refreshToken: data.refresh_token,
             phone,
             login: data.login || phone, // Assuming `login` exists in response
             password: data.password || password, // Assuming `password` exists in response
@@ -58,6 +59,7 @@ export default NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.token
+        token.refreshToken = user.refreshToken
         token.phone = user.phone
         token.login = user.login
         token.password = user.password
@@ -67,9 +69,10 @@ export default NextAuth({
     },
     async session({ session, token }) {
       if (Date.now() / 1000 > token.expiresAt) {
-        return null // 2 soat o‘tgach, sessiyani tozalash
+        return null // 2 soat o'tgach, sessiyani tozalash
       }
       session.accessToken = token.accessToken
+      session.refreshToken = token.refreshToken
       session.phone = token.phone
       session.login = token.login
       session.password = token.password
