@@ -20,9 +20,13 @@ function SidebarPlan() {
   }
 
   useEffect(() => {
-    getPaymentTrailDays().then((res) => {
-      setData((prev) => ({ ...prev, ...res.data }))
-    })
+    getPaymentTrailDays()
+      .then((res) => {
+        setData((prev) => ({ ...prev, ...res?.data }));
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }, [])
 
   return (
