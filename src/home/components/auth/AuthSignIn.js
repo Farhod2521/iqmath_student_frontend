@@ -47,7 +47,7 @@ function AuthSignIn() {
           <input type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
           <span>{t('remember')}</span>
         </label>
-        <div className="text-[#5D87FF] font-medium hover:underline" onClick={() => setTab('forgetPassword')}>
+        <div className="hover:text-[#5D87FF] cursor-pointer font-medium " onClick={() => setTab('forgetPassword')}>
           {t('forget password')}
         </div>
       </div>

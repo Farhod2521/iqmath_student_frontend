@@ -277,5 +277,7 @@
   "makeToPayment": "To'lovni amalga oshiring!",
   "payment": "To'lov",
   "toUnlock": "Bu mavzu ochilishi uchun, oldingi mavzu topshiriqlaridan 80% dan yuqori ball to'plash kerak bo'ladi!",
-  "coin": "tanga"
+  "coin": "tanga",
+  "yourcoins": "Jami tangalaringiz"
 }
+

@@ -12,7 +12,7 @@ const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
         className={`w-full border border-[#E9E9E9] bg-white rounded-md px-3 py-2 text-sm text-black focus:outline-none ${className}`}
         {...props}
       />
-      <div onClick={() => setShowPassword((prev) => !prev)} className="absolute top-2.5 right-3 cursor-pointer">
+      <div onClick={() => setShowPassword((prev) => !prev)} className="absolute top-2 right-3 cursor-pointer">
         <Image
           src={showPassword ? '/icons/eye.svg' : '/icons/eye-off.svg'}
           alt="toggle visibility"
