@@ -14,7 +14,7 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { get } from 'lodash'
 import MainWrapper from '@/layout/MainWrapper'
 import { Card } from '@heroui/react'
-
+import { useScoreStore } from '@/store'
 const items = [
   { img: 't-shirt', title: 'Футболка с принтом', coin: '50' },
   { img: 'phone', title: 'Смартфон', coin: '50' },
@@ -31,6 +31,7 @@ const Index = () => {
   const [openModal, setOpenModal] = useState(false)
   const handleOpenModal = () => setOpenModal(true)
   const closeModal = () => setOpenModal(false)
+  const { scoreData } = useScoreStore()
 
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
@@ -40,6 +41,8 @@ const Index = () => {
     },
     enabled: !!session?.accessToken
   })
+
+  console.log(scoreData)
   // headerTitle={"Баллы"}
   return (
     <MainWrapper title={t('points')}>
@@ -48,15 +51,26 @@ const Index = () => {
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
           className="col-span-12 p-[24px] rounded-[12px] text-white bg-no-repeat bg-cover relative"
         >
-          <p className="text-[17px] font-medium">{t('yourballs')}</p>
-
-          <div className="flex items-center gap-x-[10px] mt-[8px] mb-[20px]">
-            <CoinsIcon color="white" />
-            <p className="text-[26px] font-semibold">
-              {get(coins, 'data.score')} {t('ball')}
-            </p>
+          <div className="flex gap-8 mb-6">
+            <div className=" min-w-[180px]">
+              <p className="text-[17px] font-medium">{t('yourballs')}</p>
+              <div className="flex items-center gap-x-[10px] mt-[8px] mb-[8px]">
+                <CoinsIcon color="white" />
+                <p className="text-[26px] font-semibold">
+                  {get(coins, 'data.score')} {t('ball')}
+                </p>
+              </div>
+            </div>
+            <div className=" min-w-[180px]">
+              <p className="text-[17px] font-medium text-white">{t('yourcoins') || 'Jami tangalaringiz'}</p>
+              <div className="flex items-center gap-x-[10px] mt-[8px] mb-[8px]">
+                <CoinsIcon color="white" />
+                <p className="text-[26px] font-semibold text-white">
+                  {get(scoreData, 'coin', 0)} {t('coin') || 'tanga'}
+                </p>
+              </div>
+            </div>
           </div>
-
           <p className="text-[17px] text-[#DCDCDD] w-3/5">{t('descballs')}</p>
 
           <Image
