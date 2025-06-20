@@ -9,7 +9,7 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
 
   // agar tashqaridan qiymat o‘zgarsa, u holda `latex()` yangilansin
   useEffect(() => {
-    if (mathFieldRef.current) {
+    if (mathFieldRef.current && mathFieldRef.current.latex() !== latex) {
       mathFieldRef.current.latex(latex)
     }
   }, [latex, mathFieldRef])
@@ -22,7 +22,7 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
           onChange={(mathField) => {
             setTextAnswers((prev) => ({
               ...prev,
-              [selectedQuestion.id]: mathField.latex()
+              [selectedQuestion.id]: mathField.latex(),
             }))
           }}
           mathquillDidMount={(mathField) => {
