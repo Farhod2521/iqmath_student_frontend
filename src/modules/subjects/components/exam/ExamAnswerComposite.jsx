@@ -72,4 +72,4 @@ function ExamAnswerComposite({
   )
 }
 
-export default ExamAnswerComposite
+export default ExamAnswerComposite;
