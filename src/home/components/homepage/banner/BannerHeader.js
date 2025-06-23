@@ -6,7 +6,7 @@ function BannerHeader() {
       className="bg-[#ecf2ff] w-full flex justify-center items-center"
       style={{
         height: 'calc(100vh - 60px)',
-        backgroundImage: 'url("/images/bg-main-img.png")',
+        backgroundImage: 'url("/images/bg-banner.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}
