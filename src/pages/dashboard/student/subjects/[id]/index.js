@@ -55,6 +55,7 @@ const SubjectsPage = () => {
   const chapters = chapter?.data || []
   const topics = topic?.data || []
 
+
   return (
     <MainWrapper title={t('subjects')}>
       <div className="font-sf">
@@ -89,11 +90,21 @@ const SubjectsPage = () => {
                         onClick={() =>
                           router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${topic.id}`)
                         }
-                        className="flex items-center cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
+                        className="flex flex-col gap-1 cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
                       >
-                        <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
-                        <div className="flex min-w-10 items-center justify-center">
-                          <RightIcon />
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="uppercase break-words">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
+                          {(typeof topic.score === 'number' || topic.score === null) && (
+                            <div className="flex items-center gap-1 min-w-[120px]">
+                              <div className="w-[80px] h-1.5 bg-gray-200 rounded">
+                                <div
+                                  className="h-1.5 bg-green-500 rounded"
+                                  style={{ width: `${topic.score === null ? 0 : topic.score}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-xs text-gray-600 font-medium min-w-[24px]">{topic.score === null ? 0 : topic.score}%</span>
+                            </div>
+                          )}
                         </div>
                       </li>
                     ) : (
