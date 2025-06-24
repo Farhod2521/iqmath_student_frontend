@@ -15,10 +15,10 @@ import { IconMenu2 } from '@tabler/icons'
 import Brand from '@/components/brand'
 import Image from 'next/image'
 import { Facebook, Instagram, Phone, Telegram, Twitter, YouTube } from '@mui/icons-material'
-import axios from 'axios'
 import { request } from '@/services/api'
 import NavbarLangue from '@/layout/navbar/NavbarLangue'
 import LanguageDropdown from '@/components/language'
+import { URLS } from '@/constants/url'
 
 const HpHeader = () => {
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
@@ -44,15 +44,35 @@ const HpHeader = () => {
   const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'))
 
   const [open, setOpen] = React.useState(false)
+  const [socialLinks, setSocialLinks] = React.useState({
+    telegram: '',
+    instagram: '',
+    facebook: '',
+    youtube: '',
+    twitter: '',
+    phone: ''
+  })
 
   const handleDrawerOpen = () => setOpen(true)
   const toggleDrawer = (newOpen) => () => setOpen(newOpen)
 
-  // useEffect(() => {
-  //   request.get('/api/v1/management/system-settings/').then((res) => {
-  //     console.log(res)
-  //   })
-  // }, [])
+  useEffect(() => {
+    request.get(URLS.systemSettings).then((res) => {
+      if (res.data && res.data.length > 0) {
+        const settings = res.data[0]
+        setSocialLinks({
+          telegram: settings.telegram_link || '',
+          instagram: settings.instagram_link || '',
+          facebook: settings.facebook_link || '',
+          youtube: settings.youtube_link || '',
+          twitter: settings.twitter_link || '',
+          phone: '+998881989000'
+        })
+      }
+    }).catch((error) => {
+      console.error('Error fetching social links:', error)
+    })
+  }, [])
 
   return (
     <AppBarStyled position="sticky" elevation={0}>
@@ -72,33 +92,51 @@ const HpHeader = () => {
               </Stack>
               <div className="flex gap-2 items-center">
                 <LanguageDropdown />
-                <a href="https://t.me/iqmath2025" target="_blank">
-                  <IconButton color="primary">
-                    <Telegram />
-                  </IconButton>
-                </a>
-                <a href="https://www.instagram.com/iq_mathuz/" target="_blank" className="">
-                  <IconButton color="primary">
-                    <Instagram />
-                  </IconButton>
-                </a>
+                {socialLinks.telegram && (
+                  <a href={socialLinks.telegram} target="_blank">
+                    <IconButton color="primary">
+                      <Telegram />
+                    </IconButton>
+                  </a>
+                )}
+                {socialLinks.instagram && (
+                  <a href={socialLinks.instagram} target="_blank" className="">
+                    <IconButton color="primary">
+                      <Instagram />
+                    </IconButton>
+                  </a>
+                )}
 
-                {/* <a href="https://www.facebook.com/profile.php?id=61572210159591" target="_blank">
-                  <IconButton color="primary">
-                    <Facebook />
-                  </IconButton>
-                </a> */}
-                <a href="https://www.youtube.com/@iqmathuz" target="_blank">
-                  <IconButton color="primary">
-                    <YouTube />
-                  </IconButton>
-                </a>
+                {socialLinks.facebook && (
+                  <a href={socialLinks.facebook} target="_blank">
+                    <IconButton color="primary">
+                      <Facebook />
+                    </IconButton>
+                  </a>
+                )}
+                {socialLinks.youtube && (
+                  <a href={socialLinks.youtube} target="_blank">
+                    <IconButton color="primary">
+                      <YouTube />
+                    </IconButton>
+                  </a>
+                )}
 
-                <a href="tel:+998881989000">
-                  <IconButton color="primary">
-                    <Phone />
-                  </IconButton>
-                </a>
+                {socialLinks.twitter && (
+                  <a href={socialLinks.twitter} target="_blank">
+                    <IconButton color="primary">
+                      <Twitter />
+                    </IconButton>
+                  </a>
+                )}
+
+                {socialLinks.phone && (
+                  <a href={`tel:${socialLinks.phone}`}>
+                    <IconButton color="primary">
+                      <Phone />
+                    </IconButton>
+                  </a>
+                )}
               </div>
             </>
           ) : null}

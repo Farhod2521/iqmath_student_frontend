@@ -33,5 +33,6 @@ export const URLS = {
   profileUpdate: '/api/v1/auth/student/profile-update/',
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
-  refreshToken: '/api/v1/auth/token/refresh/'
+  refreshToken: '/api/v1/auth/token/refresh/',
+  systemSettings: '/api/v1/management/system-settings/'
 }

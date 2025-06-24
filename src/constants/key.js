@@ -27,5 +27,6 @@ export const KEYS = {
   advisedTopics: 'advisedTopics',
   levelStatistics: 'levelStatistics',
   diagnosticsTopics: 'diagnosticsTopics',
-  recommendations: 'recommendations'
+  recommendations: 'recommendations',
+  systemSettings: 'systemSettings'
 }
