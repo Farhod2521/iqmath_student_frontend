@@ -19,46 +19,46 @@ function Auth() {
   const handleTabChange = (newTab) => setTab(newTab)
 
   return (
-    <div className="w-full max-w-sm md:max-w-md lg:max-w-[486px] bg-white rounded-lg p-6 md:p-8 shadow-lg">
-      {!session?.accessToken ? (
-        <div>
-          {currentTab === 'signIn' || currentTab === 'signUp' ? (
-            <div>
-              <div className="flex bg-[#F2F2F7] gap-2 p-2 mb-8 rounded-md">
-                <button
-                  onClick={() => handleTabChange('signIn')}
-                  className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
-                    currentTab === 'signIn'
-                      ? 'bg-[#5D87FF] hover:bg-[#4570EA] shadow-md text-white'
-                      : 'text-[#5A6A85] hover:bg-[#ECF2FF]'
-                  }`}
-                >
-                  {t('login')}
-                </button>
-                <button
-                  onClick={() => handleTabChange('signUp')}
-                  className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
-                    currentTab === 'signUp'
-                      ? 'bg-[#5D87FF] hover:bg-[#4570EA] shadow-md text-white'
-                      : 'text-[#5A6A85] hover:bg-[#ECF2FF]'
-                  }`}
-                >
-                  {t('sign in')}
-                </button>
+    <div className="min-h-screen flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <div className="w-full max-w-xl md:min-w-[550px] rounded-lg p-12 shadow-lg" style={{background: 'rgba(255,255,255,0.4)'}}>
+        {!session?.accessToken ? (
+          <div>
+            {currentTab === 'signIn' || currentTab === 'signUp' ? (
+              <div>
+                <div className="flex gap-2 p-2 mb-8 rounded-md" style={{background: '#ECF2FF'}}>
+                  <button
+                    onClick={() => handleTabChange('signIn')}
+                    className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
+                      currentTab === 'signIn'
+                        ? 'bg-[#5D87FF] hover:bg-[#4570EA] shadow-md text-white'
+                        : 'text-[#222] hover:bg-[#ECF2FF]'
+                    }`}
+                  >
+                    {t('login')}
+                  </button>
+                  <button
+                    onClick={() => handleTabChange('signUp')}
+                    className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
+                      currentTab === 'signUp'
+                        ? 'bg-[#5D87FF] hover:bg-[#4570EA] text-white shadow-md'
+                        : 'text-[#222] hover:bg-[#ECF2FF]'
+                    }`}
+                  >
+                    {t('sign in')}
+                  </button>
+                </div>
+                {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}
               </div>
-              {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}
-            </div>
-          ) : (
-            <></>
-          )}
-          {currentTab === 'forgetPassword' ? <AuthForgetPassword /> : <></>}
-          {currentTab === 'receiveCode' ? <AuthRecieveCode /> : <></>}
-          {currentTab === 'verifySms' ? <AuthVerifySms /> : <></>}
-          {currentTab === 'newPassword' ? <AuthNewPassword /> : <></>}
-        </div>
-      ) : (
-        <AuthWelcome />
-      )}
+            ) : null}
+            {currentTab === 'forgetPassword' ? <AuthForgetPassword /> : null}
+            {currentTab === 'receiveCode' ? <AuthRecieveCode /> : null}
+            {currentTab === 'verifySms' ? <AuthVerifySms /> : null}
+            {currentTab === 'newPassword' ? <AuthNewPassword /> : null}
+          </div>
+        ) : (
+          <AuthWelcome />
+        )}
+      </div>
     </div>
   )
 }

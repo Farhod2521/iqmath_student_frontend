@@ -71,19 +71,16 @@ function AuthSignUp() {
         pattern="[0-9]*"
         {...register('phone', { required: true })}
         onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ''))}
-        placeholder="Номер телефона"
       />
       <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
 
       {/* <UserAgreement /> */}
 
-      <div className="flex justify-center items-center">
-        <button
+      <div className="w-full flex justify-center items-center">
+      <button
           type="submit"
           disabled={isLoading}
-          className={`w-1/2 py-2 text-white rounded-md transition ${
-            isLoading ? 'bg-[#8D97B2]' : 'bg-[#5D87FF] hover:bg-[#4570EA]'
-          }`}
+          className={`w-[60%] border py-2 mt-2 text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
         >
           {isLoading ? <SimpleLoader /> : t('Kirish')}
         </button>
