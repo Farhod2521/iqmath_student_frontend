@@ -43,22 +43,19 @@ function AuthSignIn() {
       <InputPhone {...register('phone', { required: true })} placeholder="Номер телефона" />
       <InputPassword {...register('password', { required: true })} placeholder="Введите пароль" />
       <div className="flex justify-between items-center text-sm mt-2">
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-white">
           <input type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
           <span>{t('remember')}</span>
         </label>
-        <div className="hover:text-[#5D87FF] cursor-pointer font-medium " onClick={() => setTab('forgetPassword')}>
+        <div className="hover:text-[#5D87FF] cursor-pointer font-medium text-white" onClick={() => setTab('forgetPassword')}>
           {t('forget password')}
         </div>
       </div>
-
-      <div className="flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-1/2 py-2 text-white rounded-md transition ${
-            isLoading ? 'bg-[#8D97B2]' : 'bg-[#5D87FF] hover:bg-[#4570EA]'
-          }`}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
         >
           {isLoading ? <SimpleLoader /> : t('Kirish')}
         </button>

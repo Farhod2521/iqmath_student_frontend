@@ -12,6 +12,8 @@ import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { get, isEmpty } from 'lodash'
 import Image from 'next/image'
+import YoutubeIcon from '../icons/social-media/youtube'
+
 const navLinks = [
   { href: '/', label: 'Главная' },
   { href: '#about-us', label: 'О нас' },
@@ -25,14 +27,12 @@ const Header = ({ color = 'white' }) => {
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // const {
-  //   data: networkings,
-  //   isLoading,
-  //   isFetching,
-  // } = useGetQuery({
-  //   key: KEYS.networkings,
-  //   url: URLS.networkings,
-  // });
+  const { data: systemSettings } = useGetQuery({
+    key: KEYS.systemSettings,
+    url: URLS.systemSettings,
+    showErrorMsg: false
+  })
+  const socialLinks = systemSettings?.data?.[0]
 
   return (
     <header className="relative z-20 py-3 bg-white">
@@ -72,9 +72,34 @@ const Header = ({ color = 'white' }) => {
           <div className=" flex items-center lg:gap-x-[32px]">
             <LanguageDropdown />
 
+            {/* Ijtimoiy tarmoq linklari */}
+            {socialLinks && (
+              <div className="hidden lg:flex items-center gap-x-4 ml-4">
+                {socialLinks.telegram_link && (
+                  <a href={socialLinks.telegram_link} target="_blank" rel="noopener noreferrer">
+                    <TelegramIcon className="w-6 h-6 text-[#5D87FF] hover:text-[#4570EA] transition-colors" />
+                  </a>
+                )}
+                {socialLinks.instagram_link && (
+                  <a href={socialLinks.instagram_link} target="_blank" rel="noopener noreferrer">
+                    <InstagramIcon className="w-6 h-6 text-[#5D87FF] hover:text-[#4570EA] transition-colors" />
+                  </a>
+                )}
+                {socialLinks.youtube_link && (
+                  <a href={socialLinks.youtube_link} target="_blank" rel="noopener noreferrer">
+                    <YoutubeIcon className="w-6 h-6 text-[#5D87FF] hover:text-[#4570EA] transition-colors" />
+                  </a>
+                )}
+                {socialLinks.phone && (
+                  <a href={`tel:${socialLinks.phone}`}>
+                    <PhoneIcon className="w-6 h-6 text-[#5D87FF] hover:text-[#4570EA] transition-colors" />
+                  </a>
+                )}
+              </div>
+            )}
+
             <div className="hidden lg:flex items-center gap-x-[10px]">
               <Image src={'/icons/phone.svg'} alt="phone" width={24} height={24} />
-
               <a className="text-[15px] font-medium text-black" href="tel:+998 88 198 90 00">
                 +998 88 198 90 00
               </a>
