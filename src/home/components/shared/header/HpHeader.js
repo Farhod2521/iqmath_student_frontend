@@ -26,7 +26,6 @@ const HpHeader = () => {
     [theme.breakpoints.up('lg')]: {
       minHeight: '60px'
     },
-    // backgroundColor: theme.palette.primary.light
 
     backgroundColor: 'white'
   }))
@@ -57,21 +56,24 @@ const HpHeader = () => {
   const toggleDrawer = (newOpen) => () => setOpen(newOpen)
 
   useEffect(() => {
-    request.get(URLS.systemSettings).then((res) => {
-      if (res.data && res.data.length > 0) {
-        const settings = res.data[0]
-        setSocialLinks({
-          telegram: settings.telegram_link || '',
-          instagram: settings.instagram_link || '',
-          facebook: settings.facebook_link || '',
-          youtube: settings.youtube_link || '',
-          twitter: settings.twitter_link || '',
-          phone: '+998881989000'
-        })
-      }
-    }).catch((error) => {
-      console.error('Error fetching social links:', error)
-    })
+    request
+      .get(URLS.systemSettings)
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          const settings = res.data[0]
+          setSocialLinks({
+            telegram: settings.telegram_link || '',
+            instagram: settings.instagram_link || '',
+            facebook: settings.facebook_link || '',
+            youtube: settings.youtube_link || '',
+            twitter: settings.twitter_link || '',
+            phone: '+998881989000'
+          })
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching social links:', error)
+      })
   }, [])
 
   return (

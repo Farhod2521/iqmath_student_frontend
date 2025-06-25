@@ -28,5 +28,6 @@ export const KEYS = {
   levelStatistics: 'levelStatistics',
   diagnosticsTopics: 'diagnosticsTopics',
   recommendations: 'recommendations',
-  systemSettings: 'systemSettings'
+  systemSettings: 'systemSettings',
+  systemFaqs: 'systemFaqs'
 }

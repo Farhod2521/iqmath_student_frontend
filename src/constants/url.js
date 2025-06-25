@@ -34,5 +34,7 @@ export const URLS = {
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',
-  systemSettings: '/api/v1/management/system-settings/'
+  systemSettings: '/api/v1/management/system-settings/',
+  systemFaqs: '/api/v1/management/faqs/',
+  systemBanner: '/api/v1/management/banner/'
 }

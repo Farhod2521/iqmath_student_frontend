@@ -1,218 +1,86 @@
-import * as React from 'react'
-import { Box, Typography, Container, Link } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Box, Container, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { styled } from '@mui/material/styles'
 import { IconMinus, IconPlus } from '@tabler/icons'
-import { useTheme } from '@mui/material/styles'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { request } from '@/services/api'
+import { URLS } from '@/constants/url'
+
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  borderRadius: '8px',
+  marginBottom: '16px !important',
+  boxShadow: theme.palette.mode === 'light' ? '0px 3px 0px rgba(235, 241, 246, 0.25)' : 'none',
+  border: `1px solid ${theme.palette.divider}`,
+  '&:before': { display: 'none' },
+  '&.Mui-expanded': { margin: 0 },
+  '& .MuiAccordionSummary-root': {
+    padding: '8px 24px',
+    minHeight: '60px',
+    fontSize: '18px',
+    fontWeight: 500
+  },
+  '& .MuiAccordionDetails-root': {
+    padding: '0 24px 24px'
+  }
+}))
 
 const FAQ = () => {
-  const theme = useTheme()
-  const { t } = useTranslation()
-  const [expanded, setExpanded] = useState(true)
-  const [expanded2, setExpanded2] = useState(false)
-  const [expanded3, setExpanded3] = useState(false)
-  const [expanded4, setExpanded4] = useState(false)
-  const [expanded5, setExpanded5] = useState(false)
-  const [expanded6, setExpanded6] = useState(false)
+  const [expandedIndex, setExpandedIndex] = useState(0)
+  const { t, i18n } = useTranslation()
+  const language = i18n.language
+  const faqItems = [
+    { question: 'faqq1', answer: 'faqa1' },
+    { question: 'faqq2', answer: 'faqa2' },
+    { question: 'faqq3', answer: 'faqa3' },
+    { question: 'faqq4', answer: 'faqa4' }
+  ]
 
-  const handleChange = () => {
-    setExpanded(!expanded)
+  const handleChange = (index) => (_, isExpanded) => {
+    setExpandedIndex(isExpanded ? index : false)
   }
 
-  const handleChange2 = () => {
-    setExpanded2(!expanded2)
-  }
-
-  const handleChange3 = () => {
-    setExpanded3(!expanded3)
-  }
-
-  const handleChange4 = () => {
-    setExpanded4(!expanded4)
-  }
-
-  const handleChange5 = () => {
-    setExpanded5(!expanded5)
-  }
-
-  const handleChange6 = () => {
-    setExpanded6(!expanded6)
-  }
-
-  const StyledAccordian = styled(Accordion)(() => ({
-    borderRadius: '8px',
-    marginBottom: '16px !important',
-    boxShadow: theme.palette.mode == 'light' ? '0px 3px 0px rgba(235, 241, 246, 0.25)' : null,
-    border: `1px solid ${theme.palette.divider}`,
-    '&:before': {
-      display: 'none'
-    },
-    '&.Mui-expanded': {
-      margin: '0'
-    },
-    '& .MuiAccordionSummary-root': {
-      padding: '8px 24px',
-      minHeight: '60px',
-      fontSize: '18px',
-      fontWeight: 500
-    },
-    '& .MuiAccordionDetails-root': {
-      padding: '0 24px 24px'
-    }
-  }))
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    setLoading(true)
+    request
+      .get(URLS.systemFaqs)
+      .then((res) => {
+        setData(res.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching social links:', error)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        marginTop: '24px',
-        pb: {
-          xs: '30px',
-          lg: '60px'
-        }
-      }}
-    >
+    <Container maxWidth="lg" sx={{ mt: 3, pb: { xs: '30px', lg: '60px' } }}>
       <Grid container spacing={3} justifyContent="center">
-        <Grid size={{ xs: 12, lg: 8 }}>
-          {/* <Typography
-            variant="h4"
-            textAlign="center"
-            lineHeight="1.2"
-            sx={{
-              fontSize: {
-                lg: '40px',
-                xs: '35px'
-              }
-            }}
-            fontWeight="700"
-          >
-            {t('faq')}
-          </Typography> */}
+        <Grid xs={12} lg={8}>
           <Box mt={7}>
-            <StyledAccordian expanded={expanded} onChange={handleChange}>
-              <AccordionSummary
-                expandIcon={expanded ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-              >
-                {t('faqq1')}
-              </AccordionSummary>
-              <AccordionDetails>{t('faqa1')}</AccordionDetails>
-            </StyledAccordian>
-            <StyledAccordian expanded={expanded2} onChange={handleChange2}>
-              <AccordionSummary
-                expandIcon={expanded2 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel2-content"
-                id="panel2-header"
-              >
-                {t('faqq2')}
-              </AccordionSummary>
-              <AccordionDetails>{t('faqa2')}</AccordionDetails>
-            </StyledAccordian>
-            <StyledAccordian expanded={expanded3} onChange={handleChange3}>
-              <AccordionSummary
-                expandIcon={expanded3 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel3-content"
-                id="panel3-header"
-              >
-                {t('faqq3')}
-              </AccordionSummary>
-              <AccordionDetails>{t('faqa3')}</AccordionDetails>
-            </StyledAccordian>
-            <StyledAccordian expanded={expanded4} onChange={handleChange4}>
-              <AccordionSummary
-                expandIcon={expanded4 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel2-content"
-                id="panel2-header"
-              >
-                {t('faqq4')}
-              </AccordionSummary>
-              <AccordionDetails>{t('faqa4')}</AccordionDetails>
-            </StyledAccordian>
-            {/* <StyledAccordian expanded={expanded5} onChange={handleChange5}>
-              <AccordionSummary
-                expandIcon={expanded5 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel2-content"
-                id="panel2-header"
-              >
-                Are there any restrictions on using the template?
-              </AccordionSummary>
-              <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
-              </AccordionDetails>
-            </StyledAccordian>
-            <StyledAccordian expanded={expanded6} onChange={handleChange6}>
-              <AccordionSummary
-                expandIcon={expanded6 ? <IconMinus size="21" stroke="1.5" /> : <IconPlus size="21" stroke="1.5" />}
-                aria-controls="panel2-content"
-                id="panel2-header"
-              >
-                How can I get support after purchase?
-              </AccordionSummary>
-              <AccordionDetails>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
-              </AccordionDetails>
-            </StyledAccordian> */}
+            {data.map((item, index) => (
+              <StyledAccordion key={index} expanded={expandedIndex === index} onChange={handleChange(index)}>
+                <AccordionSummary
+                  expandIcon={
+                    expandedIndex === index ? <IconMinus size={21} stroke={1.5} /> : <IconPlus size={21} stroke={1.5} />
+                  }
+                >
+                  {language === 'uz' ? item.question_uz : item.question_ru}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div dangerouslySetInnerHTML={{ __html: language === 'uz' ? item.answer_uz : item.answer_ru }} />
+                </AccordionDetails>
+              </StyledAccordion>
+            ))}
           </Box>
         </Grid>
       </Grid>
-      {/* <Grid container spacing={3} justifyContent="center">
-        <Grid size={{ xs: 12, lg: 5 }}>
-          <Box
-            mt={5}
-            borderRadius="8px"
-            display="inline-flex"
-            justifyContent="center"
-            gap="4px"
-            alignItems="center"
-            fontWeight={500}
-            sx={{
-              border: `1px dashed ${theme.palette.divider}`,
-              padding: '7px 10px',
-              cursor: 'pointer',
-              '&:hover': {
-                borderColor: 'primary.main'
-              }
-            }}
-          >
-            <Typography>Still have a question?</Typography>
-            <Link
-              href="https://discord.com/invite/XujgB8ww4n"
-              color="inherit"
-              underline="always"
-              sx={{
-                '&:hover': {
-                  color: 'primary.main'
-                }
-              }}
-            >
-              Ask on discord{' '}
-            </Link>
-            <Typography>or</Typography>
-            <Link
-              href="https://adminmart.com/support/"
-              color="inherit"
-              underline="always"
-              sx={{
-                '&:hover': {
-                  color: 'primary.main'
-                }
-              }}
-            >
-              submit a ticket
-            </Link>
-            .
-          </Box>
-        </Grid>
-      </Grid> */}
     </Container>
   )
 }
+
 export default FAQ
