@@ -28,6 +28,7 @@ const Index = () => {
   })
   const router = useRouter()
 
+  console.log(studentProfile)
 
   return (
     <MainWrapper title={t('profile')}>
@@ -39,7 +40,7 @@ const Index = () => {
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
               {get(studentProfile, 'data.full_name', '')}
             </h3>
-            <p className="text-[#8A8A8E] text-[15px]">ID:123023020</p>
+            <p className="text-[#8A8A8E] text-[15px]">ID: {get(studentProfile, 'data.id', '')}</p>
           </div>
 
           <div className="border-t border-t-[#E9E9E9]">

@@ -40,8 +40,8 @@ function AuthSignIn() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <InputPhone {...register('phone', { required: true })} placeholder="Номер телефона" />
-      <InputPassword {...register('password', { required: true })} placeholder="Введите пароль" />
+      <InputPhone {...register('phone', { required: true })} placeholder={t('phone number')} />
+      <InputPassword {...register('password', { required: true })} placeholder={t('password')} />
       <div className="flex justify-between items-center text-sm mt-2">
         <label className="flex items-center gap-2 text-white">
           <input type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />

@@ -1,13 +1,23 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
 
 const Brand = () => {
-  const router = useRouter()
+  const router = useRouter();
+
+  const systemSettings = useGetQuery({
+    key: KEYS.systemSettings,
+    url: URLS.systemSettings
+  })
+
+
   return (
     <div className={'  '}>
       <Link href={'/'} className="flex gap-x-[4px] items-center">
-        <Image src={'/icons/brand.svg'} alt="brand" width={34} height={34} />
+        <Image src={systemSettings?.data?.data[0]?.logo} alt="brand" width={34} height={34} />
         <h1
           className={` font-normal text-[32px] font-bicubik text-black font-myriad   ${
             router.pathname === '/' ? 'dark:text-[#3965c6]' : 'dark:text-white'
