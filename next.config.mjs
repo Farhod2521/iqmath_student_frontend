@@ -6,7 +6,7 @@ const nextConfig = {
     NEXTAUTH_URL: 'https://iqmath.uz'
   },
   images: {
-    domains: ['backend.iqmath.uz'] // Tashqi rasm domenini qo‘shamiz
+    domains: ['backend.iqmath.uz', 'api.iqmath.uz'] // Tashqi rasm domenini qo‘shamiz
   },
   eslint: {
     ignoreDuringBuilds: true
