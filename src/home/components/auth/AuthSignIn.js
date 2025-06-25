@@ -39,7 +39,7 @@ function AuthSignIn() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px]">
       <InputPhone {...register('phone', { required: true })} placeholder={t('phone number')} />
       <InputPassword {...register('password', { required: true })} placeholder={t('password')} />
       <div className="flex justify-between items-center text-sm mt-2">
@@ -56,6 +56,7 @@ function AuthSignIn() {
           type="submit"
           disabled={isLoading}
           className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
+          style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
           {isLoading ? <SimpleLoader /> : t('Kirish')}
         </button>

@@ -63,7 +63,7 @@ function AuthSignUp() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-[10px]  rounded-[4px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px] rounded-[4px]">
       {/* Ism */}
       <InputText {...register('full_name', { required: true })} placeholder={`${t('full name')}`} />
       <InputPhone
