@@ -17,7 +17,12 @@ const Brand = () => {
   return (
     <div className={'  '}>
       <Link href={'/'} className="flex gap-x-[4px] items-center">
-        <Image src={systemSettings?.data?.data[0]?.logo} alt="brand" width={34} height={34} />
+        <img
+          src={systemSettings?.data?.data[0]?.logo}
+          alt="brand"
+          width={34}
+          height={34}
+        />
         <h1
           className={` font-normal text-[32px] font-bicubik text-black font-myriad   ${
             router.pathname === '/' ? 'dark:text-[#3965c6]' : 'dark:text-white'

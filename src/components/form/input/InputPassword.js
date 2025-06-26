@@ -1,4 +1,5 @@
-import Image from 'next/image'
+import Eye from '@/components/icons/eye/Eye'
+import EyeOff from '@/components/icons/eye/EyeOff'
 import React, { useState } from 'react'
 
 const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
@@ -17,12 +18,7 @@ const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
         onClick={() => setShowPassword((prev) => !prev)}
         className="absolute top-0 bottom-0 right-3 cursor-pointer flex items-center"
       >
-        <Image
-          src={showPassword ? '/icons/eye.svg' : '/icons/eye-off.svg'}
-          alt="toggle visibility"
-          width={24}
-          height={24}
-        />
+        {showPassword ? <Eye width={24} height={24} /> : <EyeOff width={24} height={24} />}
       </div>
     </div>
   )
