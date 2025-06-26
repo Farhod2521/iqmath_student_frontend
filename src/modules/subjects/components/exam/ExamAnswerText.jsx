@@ -1,18 +1,47 @@
 'use client'
-import dynamic from 'next/dynamic'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const EditableMathField = dynamic(() => import('react-mathquill').then((mod) => mod.EditableMathField), { ssr: false })
+// MathQuill'ni to'g'ridan-to'g'ri import qilish
+let EditableMathField = null
+try {
+  const mathQuill = require('react-mathquill')
+  EditableMathField = mathQuill.EditableMathField
+} catch (error) {
+  // Fallback uchun dynamic import
+}
 
 function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFieldRef }) {
+  const [mathQuillLoaded, setMathQuillLoaded] = useState(false)
   const latex = textAnswers[selectedQuestion.id] || ''
 
-  // agar tashqaridan qiymat o‘zgarsa, u holda `latex()` yangilansin
+  // MathQuill yuklanganini tekshirish
+  useEffect(() => {
+    const checkMathQuill = async () => {
+      try {
+        if (EditableMathField) {
+          setMathQuillLoaded(true)
+        } else {
+          const mathQuill = await import('react-mathquill')
+          EditableMathField = mathQuill.EditableMathField
+          setMathQuillLoaded(true)
+        }
+      } catch (error) {
+        setMathQuillLoaded(false)
+      }
+    }
+    checkMathQuill()
+  }, [])
+
+  // agar tashqaridan qiymat o'zgarsa, u holda `latex()` yangilansin
   useEffect(() => {
     if (mathFieldRef.current && mathFieldRef.current.latex() !== latex) {
       mathFieldRef.current.latex(latex)
     }
   }, [latex, mathFieldRef])
+
+  if (!mathQuillLoaded || !EditableMathField) {
+    return <div>Loading MathQuill...</div>
+  }
 
   return (
     <div className="flex items-center justify-center w-full">

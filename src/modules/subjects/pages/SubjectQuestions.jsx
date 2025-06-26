@@ -61,8 +61,22 @@ export default function SubjectQuestions() {
     listKeyId: 'check-my-results-student'
   })
 
+  // MathQuill styles'ni yuklash
   useEffect(() => {
-    import('react-mathquill').then((mq) => mq.addStyles())
+    const loadMathQuillStyles = async () => {
+      try {
+        const mathQuill = await import('react-mathquill')
+        mathQuill.addStyles()
+        
+        // MathQuill'ni global o'zgaruvchiga saqlash
+        if (typeof window !== 'undefined') {
+          window.MathQuill = mathQuill
+        }
+      } catch (error) {
+        // Error handling
+      }
+    }
+    loadMathQuillStyles()
   }, [])
 
   useEffect(() => {
