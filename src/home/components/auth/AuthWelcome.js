@@ -14,7 +14,7 @@ function AuthWelcome() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-medium mb-5">{t('welcome')}!</h1>
+      <h1 className="text-2xl font-medium mb-5 text-white">{t('welcome')}!</h1>
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={() => router.push('/dashboard/student/subjects')}
