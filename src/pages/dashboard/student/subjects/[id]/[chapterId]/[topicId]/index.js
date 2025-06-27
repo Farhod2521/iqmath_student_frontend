@@ -94,7 +94,9 @@ const Index = () => {
             </button>
 
             <div className="cursor-pointer flex-1 text-center" onClick={() => setOpen(!open)}>
-              <h1 className="text-base sm:text-lg md:text-xl font-medium truncate">{topicName}</h1>
+              <h1 className="text-base sm:text-lg md:text-xl font-medium text-center break-words line-clamp-3">
+                {topicName}
+              </h1>
             </div>
 
             <button
