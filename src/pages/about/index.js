@@ -14,7 +14,6 @@ function AboutUs() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {/* <HeaderAlert /> */}
-      <HpHeader />
       <Banner />
 
       <KeyMetric />

@@ -13,7 +13,6 @@ function Faqs() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {/* <HeaderAlert /> */}
-      <HpHeader />
       <BannerFaq />
       <FAQ />
       <ScrollToTop />

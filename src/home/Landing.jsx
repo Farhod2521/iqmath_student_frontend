@@ -22,7 +22,6 @@ function Landing() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {/* <HeaderAlert /> */}
-      <HpHeader />
       <BannerHeader />
       {/* <Features />
       <DefendFocus />
