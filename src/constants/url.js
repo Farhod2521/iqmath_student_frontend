@@ -36,5 +36,6 @@ export const URLS = {
   refreshToken: '/api/v1/auth/token/refresh/',
   systemSettings: '/api/v1/management/system-settings/',
   systemFaqs: '/api/v1/management/faqs/',
-  systemBanner: '/api/v1/management/banner/'
+  systemBanner: '/api/v1/management/banner/',
+  sendMentor: '/api/v1/func_student/my-unsolved-question/create/'
 }

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { SessionProvider } from 'next-auth/react'
+import React from 'react'
 
 import reactQueryClient from '@/config/react-query'
 import '@/assets/styles/globals.css'
@@ -18,15 +19,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const [queryClient] = useState(() => reactQueryClient)
   const router = useRouter()
 
+  // Layout tanlash logikasi
   const Layout = useMemo(() => {
     const path = router.pathname
-    const isAdminRoute =
-      path.startsWith('/dashboard') &&
-      !path.endsWith('question') &&
-      !path.endsWith('diagnostics') &&
-      !path.endsWith('[test]')
-    return isAdminRoute ? LayoutAdmin : LayoutHome
+    if (path.includes('/question')) return React.Fragment;
+    if (path.startsWith('/dashboard')) return LayoutAdmin;
+    return LayoutHome;
   }, [router.pathname])
+
   return (
     <HeroUIProvider>
       <SessionProvider session={session}>
