@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
+import { motion } from 'framer-motion'
 
 import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
@@ -26,6 +27,7 @@ import ActionSolution from '../components/actions/ActionSolution'
 import ActionInfo from '../components/actions/ActionInfo'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import Calculator from '../components/calculator/Calculator'
+import SendToMentorModal from '../components/modal/SendToMentorModal'
 
 export default function SubjectQuestions() {
   const { t, i18n } = useTranslation()
@@ -49,6 +51,11 @@ export default function SubjectQuestions() {
   const [results, setResults] = useState()
   const [score, setScore] = useState()
 
+  const [mentorModalOpen, setMentorModalOpen] = useState(false)
+  const [selectedMentorQuestionId, setSelectedMentorQuestionId] = useState(null)
+  const [mentorMessage, setMentorMessage] = useState('')
+  const [sendingToMentor, setSendingToMentor] = useState(false)
+
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
     url: `${URLS.studentQuestions}${topicId}/`,
@@ -59,6 +66,10 @@ export default function SubjectQuestions() {
 
   const { mutate: checkMyResults } = usePostQuery({
     listKeyId: 'check-my-results-student'
+  })
+
+  const { mutate: sendToMentor } = usePostQuery({
+    listKeyId: 'send-to-mentor'
   })
 
   // MathQuill styles'ni yuklash
@@ -147,6 +158,43 @@ export default function SubjectQuestions() {
 
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
+
+  const handleMentorOpen = (questionId) => {
+    setSelectedMentorQuestionId(questionId)
+    setMentorMessage('')
+    setMentorModalOpen(true)
+  }
+
+  const handleSendToMentor = (questionId) => {
+    if (!mentorMessage.trim()) {
+      toast.error('Iltimos, izoh kiriting!')
+      return
+    }
+    
+    setSendingToMentor(true)
+    sendToMentor(
+      {
+        url: URLS.sendMentor,
+        attributes: {
+          question_id: questionId,
+          message: mentorMessage,
+        },
+        config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
+      },
+      {
+        onSuccess: () => {
+          toast.success('Mentorga yuborildi!')
+          setMentorMessage('')
+          setSelectedMentorQuestionId(null)
+          setSendingToMentor(false)
+        },
+        onError: () => {
+          toast.error('Xatolik yuz berdi!')
+          setSendingToMentor(false)
+        },
+      }
+    )
+  }
 
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
   return (
@@ -245,7 +293,7 @@ export default function SubjectQuestions() {
           )}
 
           {showResult && (
-            <SimpleModal>
+            <SimpleModal open={showResult} onClose={() => setShowResult(false)} classname="modal-lg">
               <div className="relative">
                 <button onClick={() => setShowResult(false)} className="absolute right-0 float-right p-[24px]">
                   <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
@@ -268,7 +316,7 @@ export default function SubjectQuestions() {
 
                 <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
-                <div className="flex pb-[24px] gap-x-[12px] text-sm">
+                <div className="flex flex-wrap justify-center gap-3 pb-[24px] text-sm">
                   <Button onPress={() => setShowMistake(true)}>{t('myResults')}</Button>
                   <Button onPress={() => setShowResult(false)}>{t('goAgain')}</Button>
                   <Button onPress={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
@@ -278,73 +326,45 @@ export default function SubjectQuestions() {
           )}
 
           {showMistake && (
-            <SimpleModal>
-              <div>
-                <div className="flex justify-between px-[16px] py-[18px]">
-                  <h3 className="text-[19px] font-semibold">{t('myResults')}</h3>
-                  <button onClick={() => setShowMistake(false)} className="rounded">
-                    <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-                  </button>
-                </div>
-
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <div className="py-[16px] px-[24px] flex justify-between items-center">
-                  <div className="flex gap-1 items-center">
-                    <div className=" w-6 h-6 flex items-center justify-center border rounded-full text-sm">
-                      {get(score, 'data.result[0].total_answers')}
-                    </div>
-                    <p>/</p>
-                    <div className=" w-6 h-6 flex items-center justify-center border rounded-full text-sm border-[#2EB14F] bg-[#EBF9EEFF]">
-                      {get(score, 'data.result[0].correct_answers')}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-1 items-center">
-                    <p>{t('totalPoints')}: </p>
-                    <div className="text-sm">{get(score, 'data.result[0].score')}</div>
-                  </div>
-                </div>
-
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <div className="py-[16px] px-[24px] max-h-[400px] overflow-y-auto">
-                  <ul className="space-y-2">
-                    {get(results, 'data.question', []).map((question, index) => (
-                      <li key={index} className={`p-3  rounded-md flex items-center gap-x-[12px] cursor-pointer `}>
-                        <div
-                          className={`min-w-10 min-h-10 flex items-center justify-center border-2  ${
-                            question?.answer === false
-                              ? 'bg-[#FFEBEA] border-[#FF3B30]'
-                              : 'border-[#2EB14F] bg-[#EBF9EEFF]'
-                          }  rounded-full text-black font-bold`}
-                        >
-                          {index + 1}
-                        </div>
-                        <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-                          <MathJax dynamic>
-                            <div> {parse(question?.question_uz || question?.question_ru || '')}</div>
-                          </MathJax>
-                        </MathJaxContext>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <div className="py-[16px] px-[16px] flex justify-end gap-[12px]">
-                  <Button
-                    className={'!bg-transparent border !text-black'}
-                    onPress={() => toast.success('Mentorga yuborildi')}
-                  >
-                    {t('sendMentor')}
-                  </Button>
-                  <Button onPress={() => router.push(`/dashboard/student/subjects/${id}/${chapterId}/${topicId}`)}>
-                    {t('repeatTopic')}
-                  </Button>
-                </div>
+            <SimpleModal open={showMistake} onClose={() => setShowMistake(false)} classname="modal-lg">
+              <div className="px-8 py-6 border-b border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900">{t('myResults')}</h3>
               </div>
+              <div className="py-6 px-8 space-y-4">
+                {get(results, 'data.question', []).map((question, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow border p-4 flex items-start gap-4">
+                    <div className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
+                      ${question?.answer === false ? 'bg-red-100 text-red-600 border-red-400' : 'bg-green-100 text-green-600 border-green-400'} border-2`}>
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 min-w-0 text-gray-800">
+                      <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
+                        <MathJax dynamic>
+                          <div className="text-gray-800 leading-relaxed"> 
+                            {parse(question?.question_uz || question?.question_ru || '')}
+                          </div>
+                        </MathJax>
+                      </MathJaxContext>
+                      {question?.answer === false && (
+                        <div className="mt-3">
+                          <Button
+                            size="sm"
+                            className="bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                            onPress={() => handleMentorOpen(question.id)}
+                          >
+                            {t('sendMentor')}
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <SendToMentorModal
+                open={mentorModalOpen}
+                onClose={() => setMentorModalOpen(false)}
+                questionId={selectedMentorQuestionId}
+              />
             </SimpleModal>
           )}
         </div>

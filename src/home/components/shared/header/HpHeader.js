@@ -94,51 +94,39 @@ const HpHeader = () => {
               </Stack>
               <div className="flex gap-2 items-center">
                 <LanguageDropdown />
-                {socialLinks.telegram && (
                   <a href={socialLinks.telegram} target="_blank">
                     <IconButton color="primary">
                       <Telegram />
                     </IconButton>
                   </a>
-                )}
-                {socialLinks.instagram && (
                   <a href={socialLinks.instagram} target="_blank" className="">
                     <IconButton color="primary">
                       <Instagram />
                     </IconButton>
                   </a>
-                )}
 
-                {socialLinks.facebook && (
                   <a href={socialLinks.facebook} target="_blank">
                     <IconButton color="primary">
                       <Facebook />
                     </IconButton>
                   </a>
-                )}
-                {socialLinks.youtube && (
                   <a href={socialLinks.youtube} target="_blank">
                     <IconButton color="primary">
                       <YouTube />
                     </IconButton>
                   </a>
-                )}
 
-                {socialLinks.twitter && (
                   <a href={socialLinks.twitter} target="_blank">
                     <IconButton color="primary">
                       <Twitter />
                     </IconButton>
                   </a>
-                )}
 
-                {socialLinks.phone && (
-                  <a href={`tel:${socialLinks.phone}`}>
+                <a href={`tel:${socialLinks.phone}`}>
                     <IconButton color="primary">
                       <Phone />
                     </IconButton>
                   </a>
-                )}
               </div>
             </>
           ) : null}

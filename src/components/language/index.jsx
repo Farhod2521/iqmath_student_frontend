@@ -21,10 +21,12 @@ const LanguageDropdown = () => {
     const lang = languages.find((l) => l.code === storedCode) || languages[0]
 
     setSelectedLanguage(lang)
-    i18n.changeLanguage(lang.code)
-    setLang(lang.code)
+    if (!isHydrated) {
+      i18n.changeLanguage(lang.code)
+      setLang(lang.code)
+    }
     setIsHydrated(true)
-  }, [i18n, setLang])
+  }, [])
 
   const handleSelect = (lang) => {
     setSelectedLanguage(lang)

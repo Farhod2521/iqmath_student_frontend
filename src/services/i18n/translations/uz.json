@@ -278,6 +278,15 @@
   "payment": "To'lov",
   "toUnlock": "Bu mavzu ochilishi uchun, oldingi mavzu topshiriqlaridan 80% dan yuqori ball to'plash kerak bo'ladi!",
   "coin": "tanga",
-  "yourcoins": "Jami tangalaringiz"
+  "yourcoins": "Jami tangalaringiz",
+  "sendToMentor": "Mentorga yuborish",
+  "mentorModalSubtitle": "Savolingiz haqida izoh bering",
+  "yourComment": "Izohingiz",
+  "mentorHelpPlaceholder": "Bu misolni tushunmadim, iltimos tushuntirib bering...",
+  "mentorReadComment": "Mentor sizga yordam berish uchun izohingizni o'qiydi",
+  "pleaseEnterComment": "Iltimos, izoh kiriting!",
+  "sentToMentor": "Mentorga yuborildi!",
+  "errorOccurred": "Xatolik yuz berdi!",
+  "sending": "Yuborilmoqda..."
 }
 
