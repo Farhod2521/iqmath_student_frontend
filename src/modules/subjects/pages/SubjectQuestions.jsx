@@ -129,9 +129,6 @@ export default function SubjectQuestions() {
         onSuccess: (res) => {
           setScore(res)
           setResults(res)
-          setTextAnswers({})
-          setCompositeAnswers({})
-          setChoiceAnswers({})
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
