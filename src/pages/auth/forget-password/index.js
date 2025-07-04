@@ -53,7 +53,7 @@ const Index = () => {
       <Header />
       <div className="flex flex-grow items-center justify-center">
         <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg  mx-auto rounded-[12px] p-6 sm:p-8 shadow-md">
-          <p className="text-xl sm:text-[26px] font-extrabold  text-center mb-[32px]">{t('resetPassword')}</p>
+          <p className="text-xl sm:text-[26px]  font-extrabold  text-center mb-[32px]">{t('resetPassword')}</p>
 
           <div className="w-full mt-4 sm:mt-6">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5  rounded-md">

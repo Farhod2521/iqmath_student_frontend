@@ -84,7 +84,7 @@ const Index = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('new_password', { required: true })}
                   placeholder={`${t('newPassword')}`}
-                  className="border placeholder:text-white border-[#EAEFF4] bg-transparent rounded-[12px] text-sm sm:text-[17px] text-black w-full px-[16px] py-[10px] min-h-[46px]"
+                  className="border  placeholder:text-white border-[#EAEFF4] bg-transparent rounded-[12px] text-sm sm:text-[17px] text-black w-full px-[16px] py-[10px] min-h-[46px]"
                 />
                 <div
                   onClick={() => setShowPassword((prev) => !prev)}
