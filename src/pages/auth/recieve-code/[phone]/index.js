@@ -130,9 +130,9 @@ const Index = () => {
       <Header />
       <div className="flex flex-grow items-center justify-center font-sf">
         <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white mx-auto rounded-lg p-6 sm:p-8 shadow-md">
-          <h3 className="font-extrabold text-[26px] text-center">Подтвердите номер телефона</h3>
+          <h3 className="font-extrabold text-[26px] text-center">{t('confirmPhoneNumber')}</h3>
           <p className="text-sm sm:text-[19px] font-medium text-center mt-[8px] mb-[32px]">
-            Мы отправили смс на номер <br />
+            {t('authSubTitle')} <br />
             {formattedPhone}
           </p>
 

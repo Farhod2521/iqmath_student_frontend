@@ -19,7 +19,7 @@ function Auth() {
   const handleTabChange = (newTab) => setTab(newTab)
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    <div className="min-h-screen  flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="w-full max-w-xl md:min-w-[550px] rounded-lg p-12 shadow-lg" style={{background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040'}}>
         {!session?.accessToken ? (
           <div>

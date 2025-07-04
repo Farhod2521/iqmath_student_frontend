@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ThemeSettings } from './theme/Theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import HpHeader from './components/shared/header/HpHeader'
@@ -17,12 +17,18 @@ import HeaderAlert from './components/shared/header/HeaderAlert'
 import BannerHeader from './components/homepage/banner/BannerHeader'
 
 function Landing() {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
   const theme = ThemeSettings()
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {/* <HeaderAlert /> */}
-      <BannerHeader />
+      <BannerHeader/>
       {/* <Features />
       <DefendFocus />
       <Leadership />

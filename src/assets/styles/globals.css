@@ -238,3 +238,12 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: inherit !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+
+.no-scrollbar::-webkit-scrollbar-track{
+  background: #f1f1f1;
+}
+

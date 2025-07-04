@@ -287,6 +287,10 @@
   "pleaseEnterComment": "Iltimos, izoh kiriting!",
   "sentToMentor": "Mentorga yuborildi!",
   "errorOccurred": "Xatolik yuz berdi!",
-  "sending": "Yuborilmoqda..."
+  "sending": "Yuborilmoqda...",
+  "confirmation": "Tasdiqlash",
+  "confirmPhoneNumber": "Telefon raqamini tasdiqlash",
+  "confirmPhoneNumberSubtitle": "Kod SMS orqali yuborildi",
+  "authCode": "SMS kodni kiriting"
 }
 

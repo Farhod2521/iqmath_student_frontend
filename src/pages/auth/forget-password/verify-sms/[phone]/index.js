@@ -127,10 +127,10 @@ const Index = () => {
     >
       <Header />
       <div className="flex flex-grow items-center justify-center font-sf">
-        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-transparent mx-auto rounded-lg p-6 sm:p-8 shadow-md">
-          <h3 className="font-extrabold text-[26px] text-center text-white">Подтвердите номер телефона</h3>
-          <p className="text-sm sm:text-[19px] text-white font-medium text-center mt-[8px] mb-[32px]">
-            Мы отправили смс на номер <br />
+        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white mx-auto rounded-lg p-6 sm:p-8 shadow-md">
+          <h3 className="font-extrabold text-[26px] text-center">{t('confirmPhoneNumber')}</h3>
+          <p className="text-sm sm:text-[19px] font-medium text-center mt-[8px] mb-[32px]">
+            {t('authSubTitle')} <br />
             {formattedPhone}
           </p>
 
@@ -161,7 +161,7 @@ const Index = () => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                  <span className="text-white text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
+                  <span className="text-black text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
                     {formattedTime}
                   </span>
                 </div>

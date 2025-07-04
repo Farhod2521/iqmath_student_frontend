@@ -287,5 +287,9 @@
   "pleaseEnterComment": "Пожалуйста, введите комментарий!",
   "sentToMentor": "Отправлено ментору!",
   "errorOccurred": "Произошла ошибка!",
-  "sending": "Отправляется..."
+  "sending": "Отправляется...",
+  "confirmation": "Подтверждение",
+  "confirmPhoneNumber": "Подтвердите номер телефона",
+  "confirmPhoneNumberSubtitle": "Код SMS отправлен на номер",
+  "authCode": "Введите код из смс"
 }
