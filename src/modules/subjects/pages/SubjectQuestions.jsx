@@ -6,7 +6,6 @@ import { toast } from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
-import { motion } from 'framer-motion'
 
 import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
@@ -27,12 +26,11 @@ import ActionSolution from '../components/actions/ActionSolution'
 import ActionInfo from '../components/actions/ActionInfo'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import Calculator from '../components/calculator/Calculator'
-import SendToMentorModal from '../components/modal/SendToMentorModal'
 
 export default function SubjectQuestions() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const { id, chapterId, topicId } = router.query
+  const { topicId } = router.query
   const { data: session } = useSession()
   const mathFieldRef = useRef(null)
   const mathFieldRefs = useRef({})
@@ -51,10 +49,6 @@ export default function SubjectQuestions() {
   const [results, setResults] = useState()
   const [score, setScore] = useState()
 
-  const [mentorModalOpen, setMentorModalOpen] = useState(false)
-  const [selectedMentorQuestionId, setSelectedMentorQuestionId] = useState(null)
-  const [mentorMessage, setMentorMessage] = useState('')
-  const [sendingToMentor, setSendingToMentor] = useState(false)
 
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
@@ -135,9 +129,6 @@ export default function SubjectQuestions() {
         onSuccess: (res) => {
           setScore(res)
           setResults(res)
-          setTextAnswers({})
-          setCompositeAnswers({})
-          setChoiceAnswers({})
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
@@ -159,41 +150,27 @@ export default function SubjectQuestions() {
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
-  const handleMentorOpen = (questionId) => {
-    setSelectedMentorQuestionId(questionId)
-    setMentorMessage('')
-    setMentorModalOpen(true)
-  }
-
-  const handleSendToMentor = (questionId) => {
-    if (!mentorMessage.trim()) {
-      toast.error('Iltimos, izoh kiriting!')
+  const handleSendAllToMentor = async () => {
+    const questions = get(results, 'data.question', [])
+    const payload = { question: questions }
+    
+    if (!session?.accessToken) {
+      toast.error('Avtorizatsiya xatosi!')
       return
     }
-    
-    setSendingToMentor(true)
-    sendToMentor(
-      {
-        url: URLS.sendMentor,
-        attributes: {
-          question_id: questionId,
-          message: mentorMessage,
-        },
-        config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
-      },
-      {
-        onSuccess: () => {
-          toast.success('Mentorga yuborildi!')
-          setMentorMessage('')
-          setSelectedMentorQuestionId(null)
-          setSendingToMentor(false)
-        },
-        onError: () => {
-          toast.error('Xatolik yuz berdi!')
-          setSendingToMentor(false)
-        },
-      }
-    )
+    try {
+      await sendToMentor({
+        url: '/api/v1/func_student/student-independent/',
+        attributes: payload,
+        config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
+      }, {
+        onSuccess: () => toast.success('Mentorga yuborildi!'),
+        onError: () => toast.error('Xatolik yuz berdi!')
+      })
+    } catch (error) {
+      console.error('Mentorga yuborishda xatolik:', error)
+      toast.error('Xatolik yuz berdi!')
+    }
   }
 
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
@@ -345,26 +322,24 @@ export default function SubjectQuestions() {
                           </div>
                         </MathJax>
                       </MathJaxContext>
-                      {question?.answer === false && (
-                        <div className="mt-3">
-                          <Button
-                            size="sm"
-                            className="bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-                            onPress={() => handleMentorOpen(question.id)}
-                          >
-                            {t('sendMentor')}
-                          </Button>
-                        </div>
-                      )}
                     </div>
                   </div>
                 ))}
               </div>
-              <SendToMentorModal
-                open={mentorModalOpen}
-                onClose={() => setMentorModalOpen(false)}
-                questionId={selectedMentorQuestionId}
-              />
+              <div className="flex justify-end px-8 pb-6 gap-3">
+                <Button
+                  className="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-600 transition-colors"
+                  onPress={() => setShowMistake(false)}
+                >
+                  {t('close')}
+                </Button>
+                <Button
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                  onPress={handleSendAllToMentor}
+                >
+                  {t('sendMentor')}
+                </Button>
+              </div>
             </SimpleModal>
           )}
         </div>

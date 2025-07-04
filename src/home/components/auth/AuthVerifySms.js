@@ -103,9 +103,9 @@ const AuthVerifySms = () => {
   const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white mx-auto rounded-lg">
-      <h3 className="font-extrabold text-[26px] text-center">Подтвердите номер телефона</h3>
-      <p className="text-sm sm:text-[19px] font-medium text-center mt-[8px] mb-[32px]">
+    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-transparent mx-auto rounded-lg">
+      <h3 className="font-extrabold text-[26px] text-center text-white">Подтвердите номер телефона</h3>
+      <p className="text-sm sm:text-[19px] text-white font-medium text-center mt-[8px] mb-[32px]">
         Мы отправили смс на номер <br />
         {formattedPhone}
       </p>
@@ -118,12 +118,12 @@ const AuthVerifySms = () => {
                 type="text"
                 onChange={(e) => setVerifyCode(e.target.value)}
                 placeholder="Код из смс"
-                className="border border-[#E9E9E9] bg-white rounded-[12px] text-black w-full px-3 min-h-[46px] focus:outline-none relative text-[17px] placeholder:text-[17px]"
+                className="border placeholder:text-white border-[#E9E9E9] bg-transparent rounded-[12px] text-white w-full px-3 min-h-[46px] focus:outline-none relative text-[17px] placeholder:text-[17px]"
               />
             </div>
 
             <div className="flex justify-center items-center">
-              <span className="text-black text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
+              <span className="text-white  text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
                 {formattedTime}
               </span>
             </div>

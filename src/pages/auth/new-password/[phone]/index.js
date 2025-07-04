@@ -52,8 +52,8 @@ const Index = () => {
     >
       <Header />
       <div className="flex flex-grow items-center justify-center font-sf">
-        <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white mx-auto rounded-[12px] p-6 sm:p-[32px] shadow-md">
-          <p className="text-xl  font-extrabold sm:text-[26px] text-center mb-6">{t('resetPassword')}</p>
+        <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-transparent mx-auto rounded-[12px] p-6 sm:p-[32px] shadow-md">
+          <p className="text-xl text-white font-extrabold sm:text-[26px] text-center mb-6">{t('resetPassword')}</p>
 
           <div className="w-full mt-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -71,7 +71,7 @@ const Index = () => {
                     maxLength="9"
                     value={phone}
                     disabled
-                    className="w-full bg-white text-sm sm:text-[17px] text-black "
+                    className="w-full bg-transparent placeholder:text-white text-sm sm:text-[17px] text-black "
                   />
                 </div>
               </div>
@@ -84,7 +84,7 @@ const Index = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('new_password', { required: true })}
                   placeholder={`${t('newPassword')}`}
-                  className="border border-[#EAEFF4] bg-white rounded-[12px] text-sm sm:text-[17px] text-black w-full px-[16px] py-[10px] min-h-[46px]"
+                  className="border  placeholder:text-white border-[#EAEFF4] bg-transparent rounded-[12px] text-sm sm:text-[17px] text-black w-full px-[16px] py-[10px] min-h-[46px]"
                 />
                 <div
                   onClick={() => setShowPassword((prev) => !prev)}
