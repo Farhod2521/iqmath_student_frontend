@@ -22,16 +22,16 @@ function BannerHeader() {
   }, [])
   return (
     <section
-      className="bg-[#ecf2ff] w-full flex justify-center items-center"
+      className="bg-[#ecf2ff] w-full  flex justify-center items-center"
       style={{
         height: 'calc(100vh - 60px)',
-        backgroundImage: `url(${data?.image || '/images/bg-banner.jpg'})`,
+        backgroundImage: `url(${data?.image })`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         filter: loading ? 'blur(10px)' : 'none'
       }}
     >
-      <div className="w-full h-full py-6 pb-24  flex justify-center items-center bg-black/30">
+      <div className="w-full h-full py-6  pb-24  flex justify-center items-center bg-black/30">
         <Auth />
       </div>
     </section>
