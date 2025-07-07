@@ -23,6 +23,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const Layout = useMemo(() => {
     const path = router.pathname
     if (path.includes('/question')) return React.Fragment;
+    if (path.includes('/diagnostics')) return React.Fragment;
     if (path.startsWith('/dashboard')) return LayoutAdmin;
     return LayoutHome;
   }, [router.pathname])
