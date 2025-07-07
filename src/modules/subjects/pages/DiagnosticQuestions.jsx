@@ -84,7 +84,7 @@ const DiagnosticQuestions = () => {
       { url: URLS.beginTest, attributes: { level: tab } },
       {
         onSuccess: (res) => {
-          setTestQuestions(res?.data)
+          setTestQuestions(res?.data?.questions)
           setShowNextModal(false)
           toast.success('Diqqat! Test boshlandi.')
         },

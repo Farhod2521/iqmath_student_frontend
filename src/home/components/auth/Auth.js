@@ -19,16 +19,16 @@ function Auth() {
   const handleTabChange = (newTab) => setTab(newTab)
 
   return (
-    <div className="min-h-screen  flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-      <div className="w-full max-w-xl md:min-w-[550px] rounded-lg p-12 shadow-lg" style={{background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040'}}>
+    <div className="min-h-screen  w-full flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <div className="w-full max-w-xl md:min-w-[550px] rounded-lg p-8 md:p-12 shadow-lg" style={{background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040'}}>
         {!session?.accessToken ? (
           <div>
             {currentTab === 'signIn' || currentTab === 'signUp' ? (
               <div>
-                <div className="flex gap-2 p-2 mb-8 rounded-md" style={{background: '#ECF2FF'}}>
+                <div className="tab-row  flex flex-col gap-2 p-2 mb-8 rounded-md" style={{background: '#ECF2FF'}}>
                   <button
                     onClick={() => handleTabChange('signIn')}
-                    className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
+                    className={`[400px]-w-1/2 w-full py-1.5 text-sm font-medium rounded-md transition ${
                       currentTab === 'signIn'
                         ? 'bg-[#5D87FF] hover:bg-[#4570EA] shadow-md text-white'
                         : 'text-[#222] hover:bg-[#ECF2FF]'
@@ -38,7 +38,7 @@ function Auth() {
                   </button>
                   <button
                     onClick={() => handleTabChange('signUp')}
-                    className={`w-1/2 py-1.5 text-sm font-medium rounded-md transition ${
+                    className={`[400px]-w-1/2 py-1.5 w-full text-sm font-medium rounded-md transition ${
                       currentTab === 'signUp'
                         ? 'bg-[#5D87FF] hover:bg-[#4570EA] text-white shadow-md'
                         : 'text-[#222] hover:bg-[#ECF2FF]'
@@ -72,6 +72,11 @@ function Auth() {
           -webkit-text-fill-color: white !important;
           transition: background-color 5000s ease-in-out 0s;
           background-color: transparent !important;
+        }
+        @media (min-width: 400px) {
+          .tab-row {
+            flex-direction: row;
+          }
         }
       `}</style>
     </div>
