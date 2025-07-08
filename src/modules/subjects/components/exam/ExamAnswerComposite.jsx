@@ -1,6 +1,6 @@
 'use client'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MathQuill'ni to'g'ridan-to'g'ri import qilish
@@ -32,7 +32,8 @@ function ExamAnswerComposite({
 }) {
   const { i18n } = useTranslation()
   const [mathQuillLoaded, setMathQuillLoaded] = useState(false)
-  const [mountedInputs, setMountedInputs] = useState(new Set())
+  const [currentQuestionId, setCurrentQuestionId] = useState(null)
+  const localMathFieldRefs = useRef({})
 
   // MathQuill yuklanganini tekshirish
   useEffect(() => {
@@ -54,7 +55,9 @@ function ExamAnswerComposite({
 
   // Question o'zgarganda ref-larni tozalash va yangilash
   useEffect(() => {
-    if (selectedQuestion?.id) {
+    if (selectedQuestion?.id && selectedQuestion?.id !== currentQuestionId) {
+      setCurrentQuestionId(selectedQuestion.id)
+      
       if (!mathFieldRefs.current) {
         mathFieldRefs.current = {}
       }
@@ -64,19 +67,21 @@ function ExamAnswerComposite({
         setActiveInputId(firstSubQuestionId)
       }
       
-      setMountedInputs(new Set())
-      
       if (!mathFieldRefs.current[selectedQuestion.id]) {
         mathFieldRefs.current[selectedQuestion.id] = {}
       }
+      
+      if (!localMathFieldRefs.current[selectedQuestion.id]) {
+        localMathFieldRefs.current[selectedQuestion.id] = {}
+      }
     }
-  }, [selectedQuestion?.id, setActiveInputId, mathFieldRefs])
+  }, [selectedQuestion?.id, currentQuestionId, setActiveInputId, mathFieldRefs])
 
   // MathQuill inputlarini har doim to'g'ri sinxronlash
   useEffect(() => {
-    if (selectedQuestion?.sub_questions && mathFieldRefs.current && mathFieldRefs.current[selectedQuestion.id]) {
+    if (selectedQuestion?.sub_questions && localMathFieldRefs.current && localMathFieldRefs.current[selectedQuestion.id]) {
       selectedQuestion.sub_questions.forEach((subQuestion) => {
-        const mathField = mathFieldRefs.current[selectedQuestion.id][subQuestion.id]
+        const mathField = localMathFieldRefs.current[selectedQuestion.id][subQuestion.id]
         const expectedValue = compositeAnswers[selectedQuestion.id]?.[subQuestion.id] || ''
         
         if (mathField && mathField.latex() !== expectedValue) {
@@ -109,11 +114,12 @@ function ExamAnswerComposite({
                   key={`${selectedQuestion.id}-${item.id}`}
                   latex={fieldValue}
                   onChange={(mathField) => {
+                    const newValue = mathField.latex()
                     setCompositeAnswers((prev) => ({
                       ...prev,
                       [selectedQuestion.id]: {
                         ...(prev[selectedQuestion.id] || {}),
-                        [item.id]: mathField.latex()
+                        [item.id]: newValue
                       }
                     }))
                   }}
@@ -129,8 +135,12 @@ function ExamAnswerComposite({
                       mathFieldRefs.current[selectedQuestion.id] = {}
                     }
                     
+                    if (!localMathFieldRefs.current[selectedQuestion.id]) {
+                      localMathFieldRefs.current[selectedQuestion.id] = {}
+                    }
+                    
                     mathFieldRefs.current[selectedQuestion.id][item.id] = mathField
-                    setMountedInputs(prev => new Set([...prev, item.id]))
+                    localMathFieldRefs.current[selectedQuestion.id][item.id] = mathField
                   }}
                   style={compositeMathStyle}
                 />
