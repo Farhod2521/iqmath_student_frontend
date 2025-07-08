@@ -154,25 +154,30 @@ export default function SubjectQuestions() {
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
   const handleSendAllToMentor = async () => {
-    const questions = get(results, 'data.question', [])
-    const payload = { question: questions }
-    
-    if (!session?.accessToken) {
-      toast.error('Avtorizatsiya xatosi!')
-      return
+    const dataToSend = get(results, 'data', null);
+    if (!dataToSend) {
+      toast.error('Yuboriladigan maʼlumot topilmadi!');
+      return;
     }
+
+    if (!session?.accessToken) {
+      toast.error('Avtorizatsiya xatosi!');
+      return;
+    }
+    
+    console.log(dataToSend)
     try {
       await sendToMentor({
         url: '/api/v1/func_student/student-independent/',
-        attributes: payload,
+        attributes: dataToSend.question, // <-- faqat shu!
         config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
       }, {
         onSuccess: () => toast.success('Mentorga yuborildi!'),
         onError: () => toast.error('Xatolik yuz berdi!')
-      })
+      });
     } catch (error) {
-      console.error('Mentorga yuborishda xatolik:', error)
-      toast.error('Xatolik yuz berdi!')
+      console.error('Mentorga yuborishda xatolik:', error);
+      toast.error('Xatolik yuz berdi!');
     }
   }
 
@@ -312,7 +317,7 @@ export default function SubjectQuestions() {
               </div>
               <div className="py-6 px-8 space-y-4">
                 {get(results, 'data.question', []).map((question, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow border p-4 flex items-start gap-4">
+                  <div key={index} className="bg-white rounded-lg   p-4 flex items-start gap-4">
                     <div className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
                       ${question?.answer === false ? 'bg-red-100 text-red-600 border-red-400' : 'bg-green-100 text-green-600 border-green-400'} border-2`}>
                       {index + 1}
