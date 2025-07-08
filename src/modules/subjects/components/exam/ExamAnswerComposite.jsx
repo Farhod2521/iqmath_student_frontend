@@ -72,6 +72,20 @@ function ExamAnswerComposite({
     }
   }, [selectedQuestion?.id, setActiveInputId, mathFieldRefs])
 
+  // MathQuill inputlarini har doim to'g'ri sinxronlash
+  useEffect(() => {
+    if (selectedQuestion?.sub_questions && mathFieldRefs.current && mathFieldRefs.current[selectedQuestion.id]) {
+      selectedQuestion.sub_questions.forEach((subQuestion) => {
+        const mathField = mathFieldRefs.current[selectedQuestion.id][subQuestion.id]
+        const expectedValue = compositeAnswers[selectedQuestion.id]?.[subQuestion.id] || ''
+        
+        if (mathField && mathField.latex() !== expectedValue) {
+          mathField.latex(expectedValue)
+        }
+      })
+    }
+  }, [selectedQuestion?.id, compositeAnswers])
+
   if (!mathQuillLoaded) {
     return <div>Loading MathQuill...</div>
   }

@@ -12,12 +12,17 @@ function ExamAnswerChoice({ selectedQuestion, setChoiceAnswers, choiceAnswers })
         name={`choice-${selectedQuestion.id}`} // name har bir savol uchun alohida bo‘lishi kerak
         value={item.id}
         checked={choiceAnswers[selectedQuestion.id] === item.id}
-        onChange={() =>
-          setChoiceAnswers((prev) => ({
-            ...prev,
-            [selectedQuestion.id]: item.id
-          }))
-        }
+        onChange={() => {
+          console.log('Choice onChange:', selectedQuestion.id, item.id)
+          setChoiceAnswers((prev) => {
+            const newState = {
+              ...prev,
+              [selectedQuestion.id]: item.id
+            }
+            console.log('New choiceAnswers:', newState)
+            return newState
+          })
+        }}
         className="w-5 h-5 accent-blue-600"
       />
       <span className="text-gray-800">

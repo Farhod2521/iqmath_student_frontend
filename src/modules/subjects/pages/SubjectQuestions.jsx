@@ -89,6 +89,9 @@ export default function SubjectQuestions() {
     if (data.length > 0) {
       setSelectedQuestion(data[selectedIndex])
     }
+    // Debug uchun log
+    console.log('selectedIndex:', selectedIndex)
+    console.log('selectedQuestion:', data[selectedIndex])
   }, [selectedIndex, questions])
 
   const handleTabChange = (level) => setTab(level)

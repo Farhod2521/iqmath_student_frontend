@@ -32,12 +32,12 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
     checkMathQuill()
   }, [])
 
-  // agar tashqaridan qiymat o'zgarsa, u holda `latex()` yangilansin
+  // MathQuill inputini har doim to'g'ri sinxronlash
   useEffect(() => {
     if (mathFieldRef.current && mathFieldRef.current.latex() !== latex) {
       mathFieldRef.current.latex(latex)
     }
-  }, [latex, mathFieldRef])
+  }, [selectedQuestion.id, latex, mathFieldRef])
 
   if (!mathQuillLoaded || !EditableMathField) {
     return <div>Loading MathQuill...</div>
@@ -46,19 +46,22 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full">
-        <EditableMathField
-          latex={latex}
-          onChange={(mathField) => {
-            setTextAnswers((prev) => ({
-              ...prev,
-              [selectedQuestion.id]: mathField.latex(),
-            }))
-          }}
-          mathquillDidMount={(mathField) => {
-            mathFieldRef.current = mathField
-          }}
-          style={textMathStyle}
-        />
+        <React.Fragment key={selectedQuestion.id}>
+          <EditableMathField
+            key={selectedQuestion.id}
+            latex={latex}
+            onChange={(mathField) => {
+              setTextAnswers((prev) => ({
+                ...prev,
+                [selectedQuestion.id]: mathField.latex(),
+              }))
+            }}
+            mathquillDidMount={(mathField) => {
+              mathFieldRef.current = mathField
+            }}
+            style={textMathStyle}
+          />
+        </React.Fragment>
       </div>
     </div>
   )

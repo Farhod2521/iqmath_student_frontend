@@ -64,6 +64,20 @@ const DiagnosticQuestions = () => {
     }
   }, [selectedIndex, testQuestions])
 
+  // Bo'sh stringlarni avtomatik tozalash
+  useEffect(() => {
+    // textAnswers dan bo'sh stringlarni o'chirish
+    const cleanTextAnswers = Object.fromEntries(
+      Object.entries(textAnswers).filter(([key, value]) => 
+        value !== undefined && value !== null && value !== "" && value.trim() !== ""
+      )
+    )
+    
+    if (JSON.stringify(cleanTextAnswers) !== JSON.stringify(textAnswers)) {
+      setTextAnswers(cleanTextAnswers)
+    }
+  }, [textAnswers])
+
   const handlePrev = () => {
     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
   }
@@ -98,6 +112,17 @@ const DiagnosticQuestions = () => {
   useEffect(() => {
     handleBeginTest()
   }, [])
+
+  // Sahifadan chiqqanda javoblarni tozalash
+  useEffect(() => {
+    return () => {
+      // Component unmount bo'lganda (sahifadan chiqqanda) javoblarni tozalash
+      setTextAnswers({})
+      setCompositeAnswers({})
+      setChoiceAnswers({})
+    }
+  }, [])
+
   // natijani ko'rish uchun post
   const { mutate: checkMyResults, isLoading: isLoadingCheck } = usePostQuery({
     listKeyId: 'check-my-results',
@@ -159,9 +184,6 @@ const DiagnosticQuestions = () => {
           setResults(res)
           setScore(res)
           setTopic(tab)
-          setTextAnswers({})
-          setCompositeAnswers({})
-          setChoiceAnswers({})
           toast.success('Siz testni yakunladingiz!')
           setShowMistake(true)
         },
@@ -176,8 +198,18 @@ const DiagnosticQuestions = () => {
   const selectedList = useMemo(() => {
     const filterData = (fields) =>
       Object.entries(fields)
-        .filter(([key, value]) => !!value)
-        .map((i) => i[0])
+        .filter(([key, value]) => {
+          // Faqat haqiqiy qiymatlarni olish
+          if (value === undefined || value === null || value === "") return false
+          // String bo'lsa, bo'sh emasligini tekshirish
+          if (typeof value === 'string' && value.trim() === "") return false
+          // Object bo'lsa, ichida qiymat borligini tekshirish
+          if (typeof value === 'object' && !Array.isArray(value)) {
+            return Object.values(value).some(v => v !== undefined && v !== null && v !== "" && (typeof v !== 'string' || v.trim() !== ""))
+          }
+          return true
+        })
+        .map(([key]) => String(key))
 
     const listText = filterData(textAnswers)
     const listChoice = filterData(choiceAnswers)
@@ -185,6 +217,17 @@ const DiagnosticQuestions = () => {
 
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
+
+  // Debug uchun - har safar state o'zgarganda
+  useEffect(() => {
+    console.log('=== DEBUG INFO ===')
+    console.log('selectedList:', selectedList)
+    console.log('textAnswers:', textAnswers)
+    console.log('choiceAnswers:', choiceAnswers)
+    console.log('compositeAnswers:', compositeAnswers)
+    console.log('selectedQuestion.id:', selectedQuestion?.id)
+    console.log('==================')
+  }, [selectedList, textAnswers, choiceAnswers, compositeAnswers, selectedQuestion?.id])
 
   if (isLoading || !testQuestions)
     return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
