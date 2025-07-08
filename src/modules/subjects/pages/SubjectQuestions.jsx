@@ -318,7 +318,12 @@ export default function SubjectQuestions() {
                       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                         <MathJax dynamic>
                           <div className="text-gray-800 leading-relaxed"> 
-                            {parse(question?.question_uz || question?.question_ru || '')}
+                            {parse(
+                              i18n.language === 'uz'
+                                ? question?.question_uz
+                                : question?.question_ru
+                              || ''
+                            )}
                           </div>
                         </MathJax>
                       </MathJaxContext>

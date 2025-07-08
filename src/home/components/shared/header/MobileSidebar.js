@@ -18,11 +18,8 @@ const MobileSidebar = () => {
   ]
   return (
     <>
-      <Box px={3}>
-        <Brand />
-      </Box>
-      <Box p={3}>
-        <Stack direction="column" spacing={2}>
+      <Box p={1}>
+        <Stack direction="column" spacing={0}>
           {navs.map((navlink, i) => (
             <Button
               key={i}

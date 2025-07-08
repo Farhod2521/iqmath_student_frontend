@@ -31,7 +31,7 @@ function BannerHeader() {
         filter: loading ? 'blur(10px)' : 'none'
       }}
     >
-      <div className="w-full h-full py-6  pb-24  flex justify-center items-center bg-black/30">
+      <div className="w-full h-full py-6 px-4  pb-24  flex justify-center items-center bg-black/30">
         <Auth />
       </div>
     </section>
