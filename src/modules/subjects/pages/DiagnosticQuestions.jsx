@@ -57,26 +57,13 @@ const DiagnosticQuestions = () => {
   useEffect(() => {
     setShowNextModal(true)
   }, [])
+  
   // next and prev uchun
   useEffect(() => {
     if (testQuestions?.length > 0) {
       setSelectedQuestion(testQuestions[selectedIndex])
     }
   }, [selectedIndex, testQuestions])
-
-  // Bo'sh stringlarni avtomatik tozalash
-  useEffect(() => {
-    // textAnswers dan bo'sh stringlarni o'chirish
-    const cleanTextAnswers = Object.fromEntries(
-      Object.entries(textAnswers).filter(([key, value]) => 
-        value !== undefined && value !== null && value !== "" && value.trim() !== ""
-      )
-    )
-    
-    if (JSON.stringify(cleanTextAnswers) !== JSON.stringify(textAnswers)) {
-      setTextAnswers(cleanTextAnswers)
-    }
-  }, [textAnswers])
 
   const handlePrev = () => {
     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
@@ -87,7 +74,6 @@ const DiagnosticQuestions = () => {
   }
 
   // testni boshlash uchun post
-
   const { mutate: beginTest, isLoading } = usePostQuery({
     listKeyId: 'begin-test',
     hideSuccessToast: true
@@ -113,16 +99,6 @@ const DiagnosticQuestions = () => {
     handleBeginTest()
   }, [])
 
-  // Sahifadan chiqqanda javoblarni tozalash
-  useEffect(() => {
-    return () => {
-      // Component unmount bo'lganda (sahifadan chiqqanda) javoblarni tozalash
-      setTextAnswers({})
-      setCompositeAnswers({})
-      setChoiceAnswers({})
-    }
-  }, [])
-
   // natijani ko'rish uchun post
   const { mutate: checkMyResults, isLoading: isLoadingCheck } = usePostQuery({
     listKeyId: 'check-my-results',
@@ -137,7 +113,7 @@ const DiagnosticQuestions = () => {
       .filter((q) => q.question_type === 'text')
       .map((q) => {
         const userAnswer = textAnswers[q.id] || ''
-        const wrapped = wrapMathAnswer(userAnswer) // optional: format like \frac etc.
+        const wrapped = wrapMathAnswer(userAnswer)
         return {
           question_id: q.id,
           [langAnswerKey]: wrapped
@@ -188,46 +164,44 @@ const DiagnosticQuestions = () => {
           setShowMistake(true)
         },
         onError: (err) => {
-          // toast.error(err?.response?.data?.message)
           toast.error("Testni to'liq bajaring!")
         }
       }
     )
   }
 
+  // To'g'rilangan selectedList hisoblash
   const selectedList = useMemo(() => {
-    const filterData = (fields) =>
-      Object.entries(fields)
-        .filter(([key, value]) => {
-          // Faqat haqiqiy qiymatlarni olish
-          if (value === undefined || value === null || value === "") return false
-          // String bo'lsa, bo'sh emasligini tekshirish
-          if (typeof value === 'string' && value.trim() === "") return false
-          // Object bo'lsa, ichida qiymat borligini tekshirish
-          if (typeof value === 'object' && !Array.isArray(value)) {
-            return Object.values(value).some(v => v !== undefined && v !== null && v !== "" && (typeof v !== 'string' || v.trim() !== ""))
-          }
-          return true
-        })
-        .map(([key]) => String(key))
+    const answeredQuestions = new Set()
 
-    const listText = filterData(textAnswers)
-    const listChoice = filterData(choiceAnswers)
-    const listComposite = filterData(compositeAnswers)
+    // Text savollar uchun
+    Object.entries(textAnswers).forEach(([questionId, answer]) => {
+      if (answer && answer.trim() !== '') {
+        answeredQuestions.add(questionId)
+      }
+    })
 
-    return [...listText, ...listChoice, ...listComposite]
+    // Choice savollar uchun
+    Object.entries(choiceAnswers).forEach(([questionId, answer]) => {
+      if (answer && answer !== null && answer !== undefined) {
+        answeredQuestions.add(questionId)
+      }
+    })
+
+    // Composite savollar uchun
+    Object.entries(compositeAnswers).forEach(([questionId, subAnswers]) => {
+      if (subAnswers && typeof subAnswers === 'object') {
+        const hasAnyAnswer = Object.values(subAnswers).some(
+          answer => answer && answer.trim() !== ''
+        )
+        if (hasAnyAnswer) {
+          answeredQuestions.add(questionId)
+        }
+      }
+    })
+
+    return Array.from(answeredQuestions)
   }, [textAnswers, choiceAnswers, compositeAnswers])
-
-  // Debug uchun - har safar state o'zgarganda
-  useEffect(() => {
-    console.log('=== DEBUG INFO ===')
-    console.log('selectedList:', selectedList)
-    console.log('textAnswers:', textAnswers)
-    console.log('choiceAnswers:', choiceAnswers)
-    console.log('compositeAnswers:', compositeAnswers)
-    console.log('selectedQuestion.id:', selectedQuestion?.id)
-    console.log('==================')
-  }, [selectedList, textAnswers, choiceAnswers, compositeAnswers, selectedQuestion?.id])
 
   if (isLoading || !testQuestions)
     return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
