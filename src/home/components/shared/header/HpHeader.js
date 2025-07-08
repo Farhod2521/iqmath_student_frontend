@@ -140,6 +140,9 @@ const HpHeader = () => {
         PaperProps={{
           sx: {
             width: 270,
+            height: 'auto',
+            paddingBottom: '20px',
+            overflowX: 'hidden',
             border: '0 !important',
             boxShadow: (theme) => theme.shadows[8]
           }

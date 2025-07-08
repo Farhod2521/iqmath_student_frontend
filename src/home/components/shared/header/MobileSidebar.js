@@ -19,14 +19,17 @@ const MobileSidebar = () => {
   return (
     <>
       <Box p={1}>
-        <Stack direction="column" spacing={0}>
+        <Stack direction="column" spacing={2}>
           {navs.map((navlink, i) => (
             <Button
               key={i}
               color="inherit"
               href={navlink.to}
               sx={{
-                justifyContent: 'start'
+                justifyContent: 'start',
+                fontSize: '1.15rem', // font size kattaroq
+                py: 1.2, // vertikal padding
+                fontWeight: i === 0 ? 600 : 400
               }}
             >
               {navlink.title}{' '}
@@ -44,19 +47,6 @@ const MobileSidebar = () => {
               ) : null}
             </Button>
           ))}
-
-          {/* <Button
-            color="inherit"
-            href="#"
-            sx={{
-              justifyContent: 'start'
-            }}
-          >
-            Support
-          </Button> */}
-          {/* <Button color="primary" variant="contained" href="/auth/login">
-            Get Started
-          </Button> */}
         </Stack>
       </Box>
     </>
