@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const { data: session } = useSession()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const {
     data: studentProfile,
     isLoading,
@@ -27,8 +27,6 @@ const Index = () => {
     enabled: !!session?.accessToken
   })
   const router = useRouter()
-
-  console.log(studentProfile)
 
   return (
     <MainWrapper title={t('profile')}>
@@ -109,26 +107,20 @@ const Index = () => {
                     />
                   </li>
                 )}
-                {get(studentProfile, 'data.class_name', '') && (
+                {(get(studentProfile, 'data.class_name_uz', '') || get(studentProfile, 'data.class_name_ru', '')) && (
                   <li>
                     <ProfileDetails
                       detailIcon={'course'}
-                      title={t('course')}
-                      // desc={get(studentProfile, 'data.class_name', '')}
-                      desc={t('matematika')}
+                      title={t('registeredClass')}
+                      desc={
+                        i18n.language === 'uz'
+                          ? get(studentProfile, 'data.class_name_uz', '')
+                          : get(studentProfile, 'data.class_name_ru', '')
+                      }
                     />
                   </li>
                 )}
               </ul>
-
-              {/* <Button
-                variant="bordered"
-                onPress={() => router.push('/dashboard/student/profile/update')}
-                className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
-              >
-                <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
-                <p className="font-medium">{t('editProfile')}</p>
-              </Button> */}
             </div>
           </div>
         </Card>
