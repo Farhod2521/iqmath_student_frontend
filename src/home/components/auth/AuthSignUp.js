@@ -82,7 +82,7 @@ function AuthSignUp() {
           disabled={isLoading}
           className={`w-[60%] border py-2 mt-2 text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
         >
-          {isLoading ? <SimpleLoader /> : t('Kirish')}
+          {isLoading ? <SimpleLoader /> : t('login')}
         </button>
       </div>
     </form>
