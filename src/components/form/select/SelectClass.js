@@ -16,7 +16,22 @@ function SelectClass({ option, onChange }) {
     url: URLS.schoolClasses
   })
 
-  const filteredCourses = get(schoolClasses, 'data', [])
+
+  console.log(schoolClasses);
+  
+  const filteredCoursesRaw = get(schoolClasses, 'data', [])
+
+  const uniqueClassesMap = {}
+  filteredCoursesRaw.forEach(item => {
+    if (!uniqueClassesMap[item.class_name]) {
+      uniqueClassesMap[item.class_name] = item
+    }
+  })
+  const filteredCourses = Object.values(uniqueClassesMap).map(item => ({
+    ...item,
+    class_uz: item.class_name + '-sinf',
+    class_ru: item.class_name + '-класс',
+  }))
 
   return (
     <div className="relative text-[#2A3547] cursor-pointer">
