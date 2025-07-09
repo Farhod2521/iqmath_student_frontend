@@ -5,14 +5,13 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 
-const Brand = () => {
+const Brand = ({ onLoad }) => {
   const router = useRouter();
 
   const systemSettings = useGetQuery({
     key: KEYS.systemSettings,
     url: URLS.systemSettings
   })
-
 
   return (
     <div className={'  '}>
@@ -22,6 +21,7 @@ const Brand = () => {
           alt="brand"
           width={34}
           height={34}
+          onLoad={onLoad} // <-- logo to'liq yuklanganda parentga xabar beradi
         />
         <h1
           className={` font-normal text-[32px] font-bicubik text-black font-myriad   ${

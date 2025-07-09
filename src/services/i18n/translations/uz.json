@@ -291,6 +291,7 @@
   "confirmation": "Tasdiqlash",
   "confirmPhoneNumber": "Telefon raqamini tasdiqlash",
   "confirmPhoneNumberSubtitle": "Kod SMS orqali yuborildi",
-  "authCode": "SMS kodni kiriting"
+  "authCode": "SMS kodni kiriting",
+  "registeredClass": "Ro‘yxatdan o‘tgan sinifi"
 }
 
