@@ -62,6 +62,7 @@ function AuthSignUp() {
     }
   }
 
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px] rounded-[4px]">
       {/* Ism */}
