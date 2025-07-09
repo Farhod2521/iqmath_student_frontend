@@ -170,25 +170,21 @@ const DiagnosticQuestions = () => {
     )
   }
 
-  // To'g'rilangan selectedList hisoblash
   const selectedList = useMemo(() => {
     const answeredQuestions = new Set()
 
-    // Text savollar uchun
     Object.entries(textAnswers).forEach(([questionId, answer]) => {
       if (answer && answer.trim() !== '') {
         answeredQuestions.add(questionId)
       }
     })
 
-    // Choice savollar uchun
     Object.entries(choiceAnswers).forEach(([questionId, answer]) => {
       if (answer && answer !== null && answer !== undefined) {
         answeredQuestions.add(questionId)
       }
     })
 
-    // Composite savollar uchun
     Object.entries(compositeAnswers).forEach(([questionId, subAnswers]) => {
       if (subAnswers && typeof subAnswers === 'object') {
         const hasAnyAnswer = Object.values(subAnswers).some(

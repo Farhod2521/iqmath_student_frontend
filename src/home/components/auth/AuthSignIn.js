@@ -58,7 +58,7 @@ function AuthSignIn() {
           className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
-          {isLoading ? <SimpleLoader /> : t('Kirish')}
+          {isLoading ? <SimpleLoader /> : t('login')}
         </button>
       </div>
     </form>

@@ -149,7 +149,7 @@ const HpHeader = () => {
         }}
       >
         <MobileSidebar />
-        <div className="flex w-full justify-start ml-6">
+        <div className="flex w-full justify-start ml-6 mb-6">
           <LanguageDropdown />
         </div>
       </Drawer>
