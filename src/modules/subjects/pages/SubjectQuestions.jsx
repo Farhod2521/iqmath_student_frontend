@@ -169,7 +169,7 @@ export default function SubjectQuestions() {
     try {
       await sendToMentor({
         url: '/api/v1/func_student/student-independent/',
-        attributes: dataToSend.question, // <-- faqat shu!
+        attributes: dataToSend, // <-- faqat shu!
         config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
       }, {
         onSuccess: () => toast.success('Mentorga yuborildi!'),
