@@ -160,6 +160,7 @@ const DiagnosticQuestions = () => {
           setResults(res)
           setScore(res)
           setTopic(tab)
+          router.push('/dashboard/student/recommendations')
           toast.success('Siz testni yakunladingiz!')
           setShowMistake(true)
         },
