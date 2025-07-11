@@ -153,5 +153,13 @@ export const texSymbols = [
   {
     icon: '+',
     data: '+'
+  },
+  {
+    icon: '∅',
+    data: '\\emptyset'
+  },
+  {
+    icon: 'empty-set',
+    data: '\\emptyset'
   }
 ]

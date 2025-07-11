@@ -68,5 +68,6 @@ export const symbolsList = [
   { icon: 'e', data: 'e' },
   { icon: 'α', data: '\\alpha' },
   { icon: 'β', data: '\\beta' },
-  { icon: 'γ', data: '\\gamma' }
+  { icon: 'γ', data: '\\gamma' },
+  { icon: '∅', data: '\\emptyset' }
 ]
