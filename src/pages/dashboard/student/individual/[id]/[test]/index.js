@@ -30,7 +30,8 @@ const mathSymbols = {
   '%': '%',
   '-': '-',
   '×': '\\times',
-  '÷': '\\div'
+  '÷': '\\div',
+  '∅': '\\emptyset'
 }
 
 const buttons = [
@@ -73,7 +74,8 @@ const buttons = [
   'i',
   '▤',
   'XY',
-  '+'
+  '+',
+  '∅'
 ]
 
 const Index = () => {

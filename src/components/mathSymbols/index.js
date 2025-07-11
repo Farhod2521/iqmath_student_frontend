@@ -18,7 +18,8 @@ const availableMathSymbols = [
   'limit',
   'matrix',
   'fraction',
-  'equation-system'
+  'equation-system',
+  'empty-set'
 ]
 
 export default function Symbols({ onClick }) {
