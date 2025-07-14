@@ -2,7 +2,7 @@ import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelectedQuestion, setSelectedIndex }) {
+function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelectedIndex }) {
   const { i18n } = useTranslation()
 
   const getQuestionStatus = (question) => {
@@ -50,7 +50,7 @@ function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelect
             className={`p-1 md:p-3 rounded-md flex items-center gap-x-[12px] cursor-pointer `}
             onClick={() => {
               setSelectedIndex(index)
-              setSelectedQuestion(question)
+              // setSelectedQuestion(question) - bu kerak emas, chunki parent component da useEffect orqali o'rnatiladi
             }}
           >
             <div
