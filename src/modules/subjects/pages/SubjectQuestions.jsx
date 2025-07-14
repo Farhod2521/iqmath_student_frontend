@@ -94,6 +94,27 @@ export default function SubjectQuestions() {
     console.log('selectedQuestion:', data[selectedIndex])
   }, [selectedIndex, questions])
 
+  // selectedQuestion o'zgarganda choiceAnswers ni to'g'ri boshqarish
+  useEffect(() => {
+    if (selectedQuestion?.question_type === 'choice') {
+      setChoiceAnswers((prev) => ({
+        ...prev,
+        [selectedQuestion.id]: prev[selectedQuestion.id] || null
+      }))
+    }
+  }, [selectedQuestion?.id]); // selectedQuestion.id ga o'zgartirish
+
+  // Savollar o'zgarganda state larni tozalash
+  useEffect(() => {
+    if (questions?.data) {
+      // Yangi savollar kelganda, eski javoblarni tozalash
+      setChoiceAnswers({})
+      setTextAnswers({})
+      setCompositeAnswers({})
+      setSelectedIndex(0)
+    }
+  }, [questions?.data])
+
   const handleTabChange = (level) => setTab(level)
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
   const handleNext = () => setSelectedIndex((prev) => Math.min(prev + 1, get(questions, 'data', []).length - 1))
@@ -111,10 +132,14 @@ export default function SubjectQuestions() {
 
     const choice_answers = qData
       .filter((q) => q.question_type === 'choice')
-      .map((q) => ({
-        question_id: q.id,
-        choices: choiceAnswers[q.id] ? [choiceAnswers[q.id]] : []
-      }))
+      .map((q) => {
+        const selectedLetter = choiceAnswers[q.id];
+        const selectedChoice = q.choices?.find(choice => choice.letter === selectedLetter);
+        return {
+          question_id: q.id,
+          choices: selectedChoice ? [selectedChoice.id] : []
+        };
+      });
 
     const composite_answers = qData
       .filter((q) => q.question_type === 'composite')
@@ -191,7 +216,6 @@ export default function SubjectQuestions() {
             questions={get(questions, 'data', [])}
             selectedList={selectedList}
             selectedQuestion={selectedQuestion}
-            setSelectedQuestion={setSelectedQuestion}
             setSelectedIndex={setSelectedIndex}
           />
         </div>
