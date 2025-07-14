@@ -2,6 +2,7 @@ export const KEYS = {
   login: 'login',
   register: 'register',
   studentProfile: 'studentProfile',
+  teacherProfile: 'teacherProfile',
   olimpiadaQuizList: 'olimpiadaQuizList',
   quizTest: 'quizTest',
   submitAnswers: 'submitAnswers',
@@ -20,14 +21,19 @@ export const KEYS = {
   afterReminder: 'afterReminder',
   schoolClasses: 'schoolClasses',
   studentSubjects: 'studentSubjects',
+  teacherSubjects: 'teacherSubjects',
+  teacherStudents: 'teacherStudents',
+  teacherGroups: 'teacherGroups',
   studentChapters: 'studentChapters',
   studentTopics: 'studentTopics',
   studentQuestions: 'studentQuestions',
   coins: 'coins',
+  teacherCoins: 'teacherCoins',
   advisedTopics: 'advisedTopics',
   levelStatistics: 'levelStatistics',
   diagnosticsTopics: 'diagnosticsTopics',
   recommendations: 'recommendations',
   systemSettings: 'systemSettings',
-  systemFaqs: 'systemFaqs'
+  systemFaqs: 'systemFaqs',
+  statistics: 'statistics'
 }

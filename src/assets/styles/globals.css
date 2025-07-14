@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Drag and Drop Styles */
+[data-drag-handle] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+[data-drag-handle]:hover {
+  background-color: #f3f4f6 !important;
+}
+
+[data-drag-handle]:active {
+  background-color: #e5e7eb !important;
+}
+
+.sortable-table-row {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 body {
