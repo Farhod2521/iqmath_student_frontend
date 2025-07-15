@@ -1,4 +1,4 @@
-import Subjects from "@/modules/subjects/pages/Subjects";
+import Subjects from "@/modules/teacher/subjects/pages/Subjects";
 import React from "react";
 
 function index() {

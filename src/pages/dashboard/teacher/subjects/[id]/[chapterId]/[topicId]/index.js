@@ -1,4 +1,3 @@
-import Dashboard from "@/components/dashboard";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";
 import useGetQuery from "@/hooks/api/useGetQuery";
@@ -29,6 +28,7 @@ import WarningModal from "@/components/modal/warning-modal";
 import RightIcon from "@/components/icons/right";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import MainWrapper from "@/layout/MainWrapper";
 const EditableMathField = dynamic(() => import("react-mathquill").then((mod) => mod.EditableMathField), { ssr: false });
 
 const Index = () => {
@@ -424,7 +424,7 @@ const Index = () => {
   };
 
   return (
-    <Dashboard headerTitle={"Предметная и тестовая часть"}>
+    <MainWrapper title="Предметная и тестовая часть">
       <section className="flex items-center space-x-[12px]">
         <button onClick={() => router.back()} className="text-[#262D33] text-sm font-semibold">
           <div className="bg-[#9AA8BC] rounded-full p-[5px] rotate-180">
@@ -1476,7 +1476,7 @@ const Index = () => {
           </div>
         </SimpleModal>
       )}
-    </Dashboard>
+    </MainWrapper>
   );
 };
 

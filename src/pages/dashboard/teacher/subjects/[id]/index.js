@@ -30,8 +30,9 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableTableRow from "@/modules/subjects/components/sortable-table-row";
+import SortableTableRow from "@/modules/teacher/subjects/components/sortable-table-row";
 import Link from "next/link";
+import MainWrapper from "@/layout/MainWrapper";
 
 const Index = () => {
   const router = useRouter();
@@ -358,14 +359,14 @@ const Index = () => {
 
   if (isLoading || isFetching) {
     return (
-      <Dashboard headerTitle={"Mavzular"}>
+      <MainWrapper title="Mavzular">
         <ContentLoader />
-      </Dashboard>
+      </MainWrapper>
     );
   }
 
   return (
-    <>
+    <MainWrapper title="Математика">
       <div className="font-sf">
         <div className="flex justify-between mb-2">
           <h2 className="font-semibold text-[22px] mb-[18px]">{t("topics")}</h2>
@@ -865,10 +866,10 @@ const Index = () => {
                 </Button>
               </div>
             </motion.div>
-          </motion.div>                                                                                                       
+          </motion.div>
         </AnimatePresence>
       )}
-    </>
+    </MainWrapper>
   );
 };
 

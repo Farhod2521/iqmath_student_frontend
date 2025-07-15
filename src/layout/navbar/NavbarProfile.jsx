@@ -5,17 +5,20 @@ import { get } from 'lodash'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
-import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from '@heroui/react'
-import { User, Avatar, AvatarIcon, Button } from '@heroui/react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@heroui/react'
+import Image from 'next/image'
 import { useUserStore } from '@/store'
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
+import { useRouter } from 'next/router'
 
 function NavbarProfile() {
   const { data: session } = useSession()
   const { t } = useTranslation()
-
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
+  const [openProfile, setOpenProfile] = useState(false)
+  const profileRef = useRef(null)
+  const router = useRouter()
 
   const {
     data: studentProfile,
@@ -36,69 +39,150 @@ function NavbarProfile() {
     }
   }, [studentProfile, setUser])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current?.contains(event.target)) {
+        setOpenProfile(false)
+      }
+    }
+
+    if (openProfile) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [openProfile])
+
+  const handleProfile = () => {
+    setOpenProfile(!openProfile)
+  }
+
   const handleLogout = async () => {
     await signOut({ callbackUrl: 'https://iq-math.uz' })
-    onClose()
     localStorage.clear()
     sessionStorage.clear()
   }
 
+  const handleLogoutClick = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsExiting(true)
+    setTimeout(() => {
+      setIsModalOpen(false)
+      setIsExiting(false)
+    }, 300)
+  }
+
   return (
     <>
-      <Dropdown classNames={{ content: 'w-[280px] rounded-md' }}>
-        <DropdownTrigger>
-          <Button isIconOnly radius="full" className="p-0 bg-transparent">
-            <Avatar icon={<AvatarIcon />} radius="full" size="sm" className="bg-transparent" />
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu disabledKeys={['peymentkey']}>
-          <DropdownSection showDivider>
-            <DropdownItem key="peymentkey" isReadOnly className="h-12 gap-2 opacity-100">
-              <div className="space-y-[4px] text-black dark:text-white">
-                <p className="text-[#8A8A8E] text-[15px]">ID: {get(studentProfile, 'data.identification', '')}</p>
-              </div>
-            </DropdownItem>
-          </DropdownSection>
-          <DropdownSection showDivider>
-            <DropdownItem isReadOnly className="h-14 gap-2 opacity-100">
-              <Link href="/dashboard/student/profile">
-                <User
-                  avatarProps={{ size: 'md', className: 'rounded-md' }}
-                  classNames={{
-                    name: 'text-black dark:text-white font-semibold',
-                    description: 'text-[#7C8FAC] dark:text-gray-200 text-sm'
-                  }}
-                  description={t('settings')}
-                  name={t('myPage')}
-                />
-              </Link>
-            </DropdownItem>
-          </DropdownSection>
+      <button onClick={handleProfile}>
+        <Image src={'/images/avatar.png'} alt={'user'} width={40} height={40} />
+      </button>
 
-          <DropdownItem onClick={onOpen} className=" py-[8px] bg-[#EDEDF2FF] text-center  text-black ">
-            {t('logout')}
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1 text-xl">{t('exitWeb')}</ModalHeader>
-              <ModalBody>
-                {/* <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2> */}
+      {openProfile && (
+        <div
+          ref={profileRef}
+          className="absolute bg-white dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px] z-10"
+        >
+          <div className="flex gap-x-[12px]">
+            <div className="space-y-[4px] text-black dark:text-white">
+              {/* <h4 className="">{get(studentProfile, 'data.full_name', 'Student')}</h4>
+              <p className="text-[17px]">
+                {get(studentProfile, 'data.class_name', 'Student')}
+              </p> */}
+              <div className="flex gap-x-[4px]">
+                <Image
+                  src={"/icons/mail.svg"}
+                  alt={"mail"}
+                  width={18}
+                  height={18}
+                />
+                <p className="text-sm text-[#7C8FAC] dark:text-gray-200">
+                  {get(studentProfile, 'data.email', 'student@example.com')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
+
+          <button
+            onClick={() => router.push("/dashboard/student/profile")}
+            className="flex gap-x-[12px] text-start cursor-pointer"
+          >
+            <div className="bg-[#ECF2FF] p-[12px] rounded-md inline-block">
+              <Image
+                src={"/icons/user-square.svg"}
+                alt={"user-square"}
+                width={20}
+                height={20}
+              />
+            </div>
+            <div>
+              <p className="text-black dark:text-white font-semibold">
+                {t("myPage")}
+              </p>
+              <p className="text-[#7C8FAC] dark:text-gray-200 text-sm">
+                {t("settings")}
+              </p>
+            </div>
+          </button>
+
+          <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
+
+          <button
+            onClick={handleLogoutClick}
+            className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200"
+          >
+            {t("logout")}
+          </button>
+        </div>
+      )}
+
+      {isModalOpen &&
+        createPortal(
+          <>
+            {/* Modal Backdrop */}
+            <div
+              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${
+                isExiting ? 'opacity-0' : 'opacity-40'
+              }`}
+              onClick={closeModal}
+            ></div>
+
+            {/* Modal Container */}
+            <div
+              className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${
+                isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
+              }`}
+            >
+              <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+                <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2>
                 <p className="text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onPress={handleLogout}>
-                  {t('yes')}
-                </Button>
-                <Button onPress={onClose}>{t('no')}</Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+                <div className="flex justify-end gap-x-[10px]">
+                  <button
+                    onClick={handleLogout}
+                    className="bg-[#5D87FF] hover:bg-[#5680f5] w-1/4 text-white py-2 rounded-[8px]"
+                  >
+                    {t('yes')}
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="bg-gray-300 hover:bg-[#dddddd] w-1/4 text-black py-2 px-4 rounded-[8px]"
+                  >
+                    {t('no')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>,
+          document.body
+        )}
     </>
   )
 }

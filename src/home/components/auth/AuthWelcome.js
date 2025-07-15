@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import SimpleLoader from '@/components/loader/simple-loader'
 
 function AuthWelcome() {
   const { t } = useTranslation()
@@ -42,7 +43,7 @@ function AuthWelcome() {
           disabled={shouldRedirect}
           className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${shouldRedirect ? 'opacity-70' : ''}`}
         >
-          {shouldRedirect ? 'Loading...' : t('enter')}
+          {shouldRedirect ? <SimpleLoader /> : t('enter')}
         </button>
         <button onClick={handleLogout} className="w-full sm:w-1/2 bg-[#EDEDF2] text-black py-3 rounded-md">
           {t('left')}
