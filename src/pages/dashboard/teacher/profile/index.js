@@ -1,48 +1,36 @@
-import ProgressCard from '@/card/progress-card'
-import ProfileDetails from '@/components/profile-details'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import useGetQuery from '@/hooks/api/useGetQuery'
-import { KEYS } from '@/constants/key'
-import { URLS } from '@/constants/url'
-import { useSession } from 'next-auth/react'
-import { get } from 'lodash'
-import { Avatar, AvatarIcon, Button, Card } from '@heroui/react'
-import MainWrapper from '@/layout/MainWrapper'
-import { useTranslation } from 'react-i18next'
+import ProgressCard from "@/card/progress-card";
+import ProfileDetails from "@/components/profile-details";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import useGetQuery from "@/hooks/api/useGetQuery";
+import { KEYS } from "@/constants/key";
+import { URLS } from "@/constants/url";
+import { useSession } from "next-auth/react";
+import { get } from "lodash";
+import { useTranslation } from "react-i18next";
+import MainWrapper from "@/layout/MainWrapper";
 
 const Index = () => {
-  const { data: session } = useSession()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation();
+  const { data: session } = useSession();
   const {
     data: teacherProfile,
     isLoading,
-    isFetching
+    isFetching,
   } = useGetQuery({
-    key: KEYS.studentProfile,
-    url: URLS.studentProfile,
+    key: KEYS.teacherProfile,
+    url: URLS.teacherProfile,
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`
+      Authorization: `Bearer ${session?.accessToken}`,
     },
-    enabled: !!session?.accessToken
-  })
-  const router = useRouter()
-
-  if (isLoading) {
-    return (
-      <MainWrapper title={t('profile')}>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
-      </MainWrapper>
-    )
-  }
-
+    enabled: !!session?.accessToken,
+  });
+  const router = useRouter();
   return (
-    <MainWrapper title={t('profile')}>
+    <MainWrapper title={`${t("profile")}`}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div className="col-span-5 border border-[#E9E9E9] rounded-[12px]">
-          <div className="flex justify-center items-center flex-col p-[20px]">
+          <div className="flex justify-center items-center flex-col  p-[20px]">
             <Image
               src={"/images/avatar-profile.png"}
               alt="avatar"
@@ -54,7 +42,7 @@ const Index = () => {
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
               {get(teacherProfile, "data.full_name", "")}
             </h3>
-            <p className="text-[#8A8A8E] text-[15px]">ID: {get(teacherProfile, "data.id", "")}</p>
+            <p className="text-[#8A8A8E] text-[15px]">ID:123023020</p>
           </div>
 
           <div className="border-t border-t-[#E9E9E9]">
@@ -63,7 +51,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"phone"}
-                    title={t('phone number')}
+                    title={"Номер телефона"}
                     desc={`+${get(teacherProfile, "data.phone", "")}`}
                   />
                 </li>
@@ -71,7 +59,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"email"}
-                    title={"Email"}
+                    title={"Email адрес"}
                     desc={get(teacherProfile, "data.email", "")}
                   />
                 </li>
@@ -79,7 +67,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"calendar"}
-                    title={t('birthday')}
+                    title={"Дата рождения"}
                     desc={get(teacherProfile, "data.brithday", "")}
                   />
                 </li>
@@ -87,7 +75,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"region"}
-                    title={t('region')}
+                    title={"Регион"}
                     desc={get(teacherProfile, "data.region", "")}
                   />
                 </li>
@@ -95,7 +83,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"region"}
-                    title={t('district')}
+                    title={"Область"}
                     desc={get(teacherProfile, "data.districts", "")}
                   />
                 </li>
@@ -103,42 +91,76 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={"address"}
-                    title={t('address')}
+                    title={"Адрес"}
                     desc={get(teacherProfile, "data.address", "")}
                   />
                 </li>
               </ul>
 
               <button
-                onClick={() => router.push("/dashboard/teacher/profile/update")}
+                onClick={() => router.push("/dashboard/teacher/profile/1")}
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
-                <p className="font-medium">{t('edit')}</p>
+                <p className="font-medium">Изменить</p>
               </button>
             </div>
           </div>
         </div>
 
         <div className="col-span-7">
-          <div className="grid grid-cols-2 gap-[24px]">
-            <ProgressCard
-              title={t('totalStudents')}
-              value={get(teacherProfile, "data.total_students", 0)}
-              icon="students"
-              color="blue"
-            />
-            <ProgressCard
-              title={t('totalSubjects')}
-              value={get(teacherProfile, "data.total_subjects", 0)}
-              icon="subjects"
-              color="green"
-            />
+          <div className="flex gap-x-[24px]">
+            <div className="space-y-[20px] w-2/3 opacity-40">
+              <div className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+                <Image
+                  src={`/images/education.png`}
+                  alt={`education`}
+                  width={71}
+                  height={71}
+                  className="absolute  top-9 right-9 lg:block hidden"
+                />
+                <p className="text-[28px] font-extrabold">6,825</p>
+                <div className="space-y-[4px]">
+                  <p className="text-[17px]">Total students</p>
+                  <div className="flex gap-x-[4px] items-center py-[3px]">
+                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
+
+                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
+                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
+                <Image
+                  src={`/images/education.png`}
+                  alt={`education`}
+                  width={71}
+                  height={71}
+                  className="absolute top-9 right-3"
+                />
+                <p className="text-[28px] font-extrabold">6,825</p>
+                <div className="space-y-[4px]">
+                  <p className="text-[17px]">Total students</p>
+                  <div className="flex gap-x-[4px] items-center py-[3px]">
+                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
+
+                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
+                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-1/3 overflow-hidden">
+              <div className="bg-[#114FFF] rounded-[12px] opacity-20">
+                <ProgressCard />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </MainWrapper>
-  )
-}
+  );
+};
 
-export default Index 
+export default Index; 

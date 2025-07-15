@@ -1,4 +1,3 @@
-import Dashboard from "@/components/dashboard";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";
 import useGetQuery from "@/hooks/api/useGetQuery";
@@ -7,7 +6,7 @@ import { get } from "lodash";
 import Button from "@/components/button";
 import usePostQuery from "@/hooks/api/usePostQuery";
 import { useState, useEffect } from "react";
-import SimpleModal from "@/components/modal/simple-modal";
+import SimpleModalTeacher from "@/components/modal/simple-modal-teacher";
 import Image from "next/image";
 import Input from "@/components/input";
 import toast from "react-hot-toast";
@@ -359,14 +358,14 @@ const Index = () => {
 
   if (isLoading || isFetching) {
     return (
-      <MainWrapper title="Mavzular">
+      <MainWrapper title={"Mavzular"}>
         <ContentLoader />
       </MainWrapper>
     );
   }
 
   return (
-    <MainWrapper title="Математика">
+    <MainWrapper title={"Mavzular"}>
       <div className="font-sf">
         <div className="flex justify-between mb-2">
           <h2 className="font-semibold text-[22px] mb-[18px]">{t("topics")}</h2>
@@ -619,8 +618,8 @@ const Index = () => {
                                       onclick={(e) => {
                                         e.stopPropagation();
                                         setOpenTopicsModal(true);
+                                        setSelectedTopic(topic);
                                         setModalTypeOfTopic("delete");
-                                        onSubmitDeleteTopic(topic.id);
                                       }}
                                       classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
                                     >
@@ -651,7 +650,7 @@ const Index = () => {
       </div>
 
       {openChapterModal && (
-        <SimpleModal>
+        <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold">
               {modalTypeOfChapter === "create"
@@ -718,7 +717,7 @@ const Index = () => {
                 : `${t("complete")}`}
             </Button>
           </div>
-        </SimpleModal>
+        </SimpleModalTeacher>
       )}
 
       {openTopicsModal && (
@@ -756,96 +755,106 @@ const Index = () => {
 
               <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
-              <div className="px-[16px] mt-[18px] mb-[9px]">
-                <label>{t("topicName")} (o&apos;zbek tilida)</label>
-                <Input
-                  value={topicName}
-                  onChange={(e) => setTopicName(e.target.value)}
-                  placeholder={t("enterTopicName")}
-                />
-              </div>
+              {modalTypeOfTopic === "delete" ? (
+                <div>
+                  <p className="px-[16px] py-[18px]">
+                    Belgilangan mavzuni o'chirganingizdan so'ng, uni tiklab bo'lmaydi.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="px-[16px] mt-[18px] mb-[9px]">
+                    <label>{t("topicName")} (o&apos;zbek tilida)</label>
+                    <Input
+                      value={topicName}
+                      onChange={(e) => setTopicName(e.target.value)}
+                      placeholder={t("enterTopicName")}
+                    />
+                  </div>
 
-              <div className="px-[16px] mt-[18px] mb-[9px]">
-                <label>{t("topicName")} (rus tilida)</label>
-                <Input
-                  value={topicNameRu}
-                  onChange={(e) => setTopicNameRu(e.target.value)}
-                  placeholder={t("enterTopicName")}
-                />
-              </div>
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
+                  <div className="px-[16px] mt-[18px] mb-[9px]">
+                    <label>{t("topicName")} (rus tilida)</label>
+                    <Input
+                      value={topicNameRu}
+                      onChange={(e) => setTopicNameRu(e.target.value)}
+                      placeholder={t("enterTopicName")}
+                    />
+                  </div>
+                  <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
 
-              <div className="px-[16px]  mb-[9px]">
-                <label>{t("videoLink")} (o&apos;zbek tilida)</label>
-                <Input
-                  value={videoLink}
-                  onChange={(e) => setVideoLink(e.target.value)}
-                  placeholder={t("enterVideoLinkName")}
-                />
-              </div>
+                  <div className="px-[16px]  mb-[9px]">
+                    <label>{t("videoLink")} (o&apos;zbek tilida)</label>
+                    <Input
+                      value={videoLink}
+                      onChange={(e) => setVideoLink(e.target.value)}
+                      placeholder={t("enterVideoLinkName")}
+                    />
+                  </div>
 
-              <div className="px-[16px] mt-[18px] mb-[9px]">
-                <label>{t("videoLink")} (rus tilida)</label>
-                <Input
-                  value={videoLinkRu}
-                  onChange={(e) => setVideoLinkRu(e.target.value)}
-                  placeholder={t("enterVideoLinkName")}
-                />
-              </div>
+                  <div className="px-[16px] mt-[18px] mb-[9px]">
+                    <label>{t("videoLink")} (rus tilida)</label>
+                    <Input
+                      value={videoLinkRu}
+                      onChange={(e) => setVideoLinkRu(e.target.value)}
+                      placeholder={t("enterVideoLinkName")}
+                    />
+                  </div>
 
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
+                  <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
 
-              <div className="px-[16px]">
-                <h3 className="text-[16px] font-normal mb-[10px]">
-                  {t("topicContent")} (o&apos;zbek tilida)
-                </h3>
-                <CKEditor
-                  initData={content}
-                  onChange={(event) => setContent(event.editor.getData())}
-                  config={{
-                    toolbar: [
-                      ["Bold", "Italic", "Strike"], // Text styling
-                      [
-                        "BulletedList",
-                        "NumberedList",
-                        "Outdent",
-                        "Indent",
-                        "Blockquote",
-                      ], // Lists and indentation
-                      ["Image", "Table", "SpecialChar"], // Media and special characters
-                      ["Link", "Unlink"], // Links
-                      ["Maximize", "Source"], // Fullscreen & Source mode
-                      ["Undo", "Redo"], // Undo/Redo
-                    ],
-                  }}
-                />
-              </div>
+                  <div className="px-[16px]">
+                    <h3 className="text-[16px] font-normal mb-[10px]">
+                      {t("topicContent")} (o&apos;zbek tilida)
+                    </h3>
+                    <CKEditor
+                      initData={content}
+                      onChange={(event) => setContent(event.editor.getData())}
+                      config={{
+                        toolbar: [
+                          ["Bold", "Italic", "Strike"], // Text styling
+                          [
+                            "BulletedList",
+                            "NumberedList",
+                            "Outdent",
+                            "Indent",
+                            "Blockquote",
+                          ], // Lists and indentation
+                          ["Image", "Table", "SpecialChar"], // Media and special characters
+                          ["Link", "Unlink"], // Links
+                          ["Maximize", "Source"], // Fullscreen & Source mode
+                          ["Undo", "Redo"], // Undo/Redo
+                        ],
+                      }}
+                    />
+                  </div>
 
-              <div className="px-[16px] mt-[15px]">
-                <h3 className="text-[16px] font-normal mb-[10px]">
-                  {t("topicContent")} (rus tilida)
-                </h3>
-                <CKEditor
-                  initData={contentRu}
-                  onChange={(event) => setContentRu(event.editor.getData())}
-                  config={{
-                    toolbar: [
-                      ["Bold", "Italic", "Strike"], // Text styling
-                      [
-                        "BulletedList",
-                        "NumberedList",
-                        "Outdent",
-                        "Indent",
-                        "Blockquote",
-                      ], // Lists and indentation
-                      ["Image", "Table", "SpecialChar"], // Media and special characters
-                      ["Link", "Unlink"], // Links
-                      ["Maximize", "Source"], // Fullscreen & Source mode
-                      ["Undo", "Redo"], // Undo/Redo
-                    ],
-                  }}
-                />
-              </div>
+                  <div className="px-[16px] mt-[15px]">
+                    <h3 className="text-[16px] font-normal mb-[10px]">
+                      {t("topicContent")} (rus tilida)
+                    </h3>
+                    <CKEditor
+                      initData={contentRu}
+                      onChange={(event) => setContentRu(event.editor.getData())}
+                      config={{
+                        toolbar: [
+                          ["Bold", "Italic", "Strike"], // Text styling
+                          [
+                            "BulletedList",
+                            "NumberedList",
+                            "Outdent",
+                            "Indent",
+                            "Blockquote",
+                          ], // Lists and indentation
+                          ["Image", "Table", "SpecialChar"], // Media and special characters
+                          ["Link", "Unlink"], // Links
+                          ["Maximize", "Source"], // Fullscreen & Source mode
+                          ["Undo", "Redo"], // Undo/Redo
+                        ],
+                      }}
+                    />
+                  </div>
+                </>
+              )}
 
               <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
 
@@ -856,13 +865,13 @@ const Index = () => {
                       ? onSubmitCreateTopic
                       : modalTypeOfTopic === "update"
                       ? onSubmitUpdateTopic
-                      : ""
+                      : () => onSubmitDeleteTopic(selectedTopic?.id)
                   }
                   classname={
                     "!py-2 hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95"
                   }
                 >
-                  {t("complete")}
+                  {modalTypeOfTopic === "delete" ? t("delete") : t("complete")}
                 </Button>
               </div>
             </motion.div>

@@ -19,7 +19,7 @@ import EditIcon from "@/components/icons/edit";
 import TrashIcon from "@/components/icons/trash";
 import useDeleteQuery from "@/hooks/api/useDeleteQuery";
 import { config } from "@/config";
-import SimpleModal from "@/components/modal/simple-modal";
+import SimpleModalTeacher from "@/components/modal/simple-modal-teacher";
 import { useTranslation } from "react-i18next";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import VideoPlayer from "@/components/video-player";
@@ -1451,7 +1451,7 @@ const Index = () => {
       )}
       {/* Testni o'chirish */}
       {deleteModal && (
-        <SimpleModal>
+        <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold">Savolni o&apos;chirish</h3>
             <button onClick={() => setDeleteModal(false)} className="rounded">
@@ -1474,7 +1474,7 @@ const Index = () => {
               O&apos;chirish
             </Button>
           </div>
-        </SimpleModal>
+        </SimpleModalTeacher>
       )}
     </MainWrapper>
   );

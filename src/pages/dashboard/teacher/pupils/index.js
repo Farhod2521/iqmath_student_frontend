@@ -3,7 +3,7 @@ import { groupsPupil } from "@/dummy-data";
 import { useState } from "react";
 
 import { useSearchParams } from "next/navigation";
-import SimpleModal from "@/components/modal/simple-modal";
+import SimpleModalTeacher from "@/components/modal/simple-modal-teacher";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -44,7 +44,7 @@ const Index = () => {
      
      <Students />
       {showModal && phone && (
-        <SimpleModal>
+        <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold"> {t("confidentiality")}</h3>
             <button onClick={closeModal} className="rounded">
@@ -73,7 +73,7 @@ const Index = () => {
               {copied ? `${t("copied")}` : `${t("copy")}`}
             </button>
           </div>
-        </SimpleModal>
+        </SimpleModalTeacher>
       )}
      </>
   );

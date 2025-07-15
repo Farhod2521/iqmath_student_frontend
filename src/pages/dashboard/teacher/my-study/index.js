@@ -10,7 +10,7 @@ import CardIcon from "@/components/icons/card";
 import ListIcon from "@/components/icons/list";
 import Button from "@/components/button";
 import { useSearchParams } from "next/navigation";
-import SimpleModal from "@/components/modal/simple-modal";
+import SimpleModalTeacher from "@/components/modal/simple-modal-teacher";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import GridExample from "@/components/grid-table";
@@ -120,7 +120,7 @@ const Index = () => {
   return (
     <>
       {showModal && phone && (
-        <SimpleModal>
+        <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold"> {t("confidentiality")}</h3>
             <button onClick={closeModal} className="rounded">
@@ -149,7 +149,7 @@ const Index = () => {
               {copied ? `${t("copied")}` : `${t("copy")}`}
             </button>
           </div>
-        </SimpleModal>
+        </SimpleModalTeacher>
       )}
       <div className=" flex items-center justify-between py-[16px]">
         <div className=" flex items-center gap-x-[12px]">
