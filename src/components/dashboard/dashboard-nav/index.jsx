@@ -10,14 +10,14 @@ const DashboardNav = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState('main')
   const { isTeacher, isLoading } = useRoleDetection()
-  
+
   // Menu configuration
   const menuConfig = createMenuConfig(t)
   const currentConfig = isTeacher ? menuConfig.teacher : menuConfig.student
 
   const handleTab = (tab) => {
     setTab(tab)
-  }
+    }
 
   // Loading state
   if (isLoading) {

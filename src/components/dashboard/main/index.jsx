@@ -8,12 +8,12 @@ const MainContent = ({ children, isSidebarOpen, setIsSidebarOpen, headTitle, tab
       }`}
     >
       <div className="sticky top-0 z-10 bg-white">
-        <MainContentHead
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          title={headTitle}
-          tab={tab}
-          handleTab={handleTab}
-        />
+      <MainContentHead
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        title={headTitle}
+        tab={tab}
+        handleTab={handleTab}
+      />
       </div>
       <div className=" w-full h-[calc(100vh-64px)] overflow-x-scroll p-8">{children}</div>
     </div>

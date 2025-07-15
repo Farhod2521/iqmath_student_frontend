@@ -45,8 +45,26 @@ export const URLS = {
   systemBanner: '/api/v1/management/banner/',
   sendMentor: '/api/v1/func_student/my-unsolved-question/create/',
   statistics: '/api/v1/management/statistics/',
+  studentStatistics: '/api/v1/func_teacher/students/',
+  studentSubjectChapters: '/api/v1/func_teacher/students/',
   // Drag & Drop API endpoints
   reorderSubjects: "/api/v1/func_teacher/subjects/reorder/",
   reorderChapters: "/api/v1/func_teacher/chapters/reorder/",
-  reorderTopics: "/api/v1/func_teacher/topics/reorder/"
+  reorderTopics: "/api/v1/func_teacher/topics/reorder/",
+
+  // Mentor project subject endpoints
+  chapters: "/api/v1/func_teacher/my-chapters/list/",
+  createChapter: "/api/v1/func_teacher/my-chapters/create/",
+  updateChapter: "/api/v1/func_teacher/my-chapters/list/",
+  deleteChapter: "/api/v1/func_teacher/my-chapters/list/",
+  topics: "/api/v1/func_teacher/my-topics/list/",
+  createTopic: "/api/v1/func_teacher/my-topics/create/",
+  updateTopic: "/api/v1/func_teacher/my-topics/list/",
+  deleteTopic: "/api/v1/func_teacher/my-topics/list/",
+  questionList: "/api/v1/func_teacher/my-question/list/",
+  createQuestion: "/api/v1/func_teacher/my-question/create/",
+  updateQuestion: "/api/v1/func_teacher/my-question/update/",
+  deleteQuestion: "/api/v1/func_teacher/my-question/delete/",
+  importExcel: "/api/v1/func_teacher/xlsx-import/"
 }
+  

@@ -35,5 +35,7 @@ export const KEYS = {
   recommendations: 'recommendations',
   systemSettings: 'systemSettings',
   systemFaqs: 'systemFaqs',
-  statistics: 'statistics'
+  statistics: 'statistics',
+  studentStatistics: 'studentStatistics',
+  studentSubjectChapters: 'studentSubjectChapters'
 }

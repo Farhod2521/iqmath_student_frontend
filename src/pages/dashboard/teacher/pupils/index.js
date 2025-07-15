@@ -1,77 +1,82 @@
+import Dashboard from "@/components/dashboard";
+import { groupsPupil } from "@/dummy-data";
+import { useState } from "react";
+
+import { useSearchParams } from "next/navigation";
+import SimpleModal from "@/components/modal/simple-modal";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
-import useGetQuery from "@/hooks/api/useGetQuery";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
-import ContentLoader from "@/components/loader/content-loader";
-import MainWrapper from '@/layout/MainWrapper'
+import Image from "next/image";
+import Students from "@/modules/students/page/Students";
 
-const PupilsPage = () => {
+const Index = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
+  const [copied, setCopied] = useState(false);
+  const searchParams = useSearchParams();
+  const phone = searchParams.get("phone");
+  const [showModal, setShowModal] = useState(!!phone);
 
-  const { data: pupils, isLoading } = useGetQuery({
-    key: KEYS.teacherStudents,
-    url: URLS.teacherStudents,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
-    },
-    enabled: !!session?.accessToken,
-  });
+  const handleCopy = () => {
+    const textToCopy = `Login: ${session.login}\nPassword: ${session.password}`;
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); 
+      })
+      .catch((err) => console.error("Failed to copy text:", err));
+  };
 
-  if (isLoading) {
-    return <ContentLoader />;
-  }
+  const closeModal = () => {
+    setTimeout(() => {
+      setShowModal(false); 
+    }, 300);
+  };
+
+  
+
+  
+  console.log(session);
 
   return (
-    <MainWrapper title={t('students')}>
-      <div className="p-6 md:p-8 font-sf">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {t('students')}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            {t('manage your students')}
-          </p>
-        </div>
+     <>
+     
+     <Students />
+      {showModal && phone && (
+        <SimpleModal>
+          <div className="flex justify-between px-[16px] py-[18px]">
+            <h3 className="text-[19px] font-semibold"> {t("confidentiality")}</h3>
+            <button onClick={closeModal} className="rounded">
+              <Image src={"/icons/close.svg"} alt="circle" width={24} height={24} />
+            </button>
+          </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          {pupils?.data?.length > 0 ? (
-            <div className="grid gap-4">
-              {pupils.data.map((pupil, index) => (
-                <div
-                  key={index}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {pupil.name || pupil.full_name || 'N/A'}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {pupil.phone || pupil.phone_number || 'N/A'}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                        {pupil.status || 'Active'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
+          <div className="px-[16px] py-[24px]">
+            <div className="flex items-center gap-x-[5px]">
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 text-[#13DEB9]"></h2>
             </div>
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-gray-500 dark:text-gray-400">
-                {t('no students found')}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    </MainWrapper>
+            <h2 className="lg:text-lg md:text-base text-sm font-semibold mb-1">{t("userLoginandPassword")}</h2>
+            <p className="md:text-base lg:text-lg text-sm  font-medium text-[#7C8FAC] mb-2">
+              {t("yourLogin")}: {session?.login}
+            </p>
+            <p className="md:text-base lg:text-lg text-sm  font-medium text-[#7C8FAC] mb-4">
+              {t("yourPassword")}: {session?.password}
+            </p>
+            <p className="text-xs sm:text-sm font-medium text-[#7C8FAC]">{t("WantchangePassword")}</p>
+          </div>
+          <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-y-2 sm:gap-y-0 gap-x-2 py-[18px]">
+            <button onClick={handleCopy} className="bg-[#5D87FF] text-white py-2 px-4 rounded w-full sm:w-auto">
+              {copied ? `${t("copied")}` : `${t("copy")}`}
+            </button>
+          </div>
+        </SimpleModal>
+      )}
+     </>
   );
 };
 
-export default PupilsPage; 
+export default Index; 

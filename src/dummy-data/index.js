@@ -37,6 +37,27 @@ export const howItWorks = [
   },
 ];
 
+export const groupsPupil = [
+  {
+    id: 1,
+    name: "A sinfi",
+    count: 25,
+    status: "active"
+  },
+  {
+    id: 2,
+    name: "B sinfi", 
+    count: 30,
+    status: "active"
+  },
+  {
+    id: 3,
+    name: "C sinfi",
+    count: 28,
+    status: "inactive"
+  }
+];
+
 export const fractionsData = [
   {
     title: "Понятие дроби:",

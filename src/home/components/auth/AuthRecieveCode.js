@@ -74,17 +74,17 @@ const AuthRecieveCode = () => {
   const onSubmit = async () => {
     setIsLoading(true)
     try {
-      const formattedPhone = `998${phoneTab.replace(/[^0-9]/g, '')}`
-      const result = await signIn('credentials', {
-        phone: formattedPhone,
-        sms_code: verifyCode,
-        redirect: false // Prevent automatic redirect
-      })
+    const formattedPhone = `998${phoneTab.replace(/[^0-9]/g, '')}`
+    const result = await signIn('credentials', {
+      phone: formattedPhone,
+      sms_code: verifyCode,
+      redirect: false // Prevent automatic redirect
+    })
 
-      if (result?.error) {
-        toast.error('Invalid credentials')
-      } else {
-        toast.success('Logged in successfully')
+    if (result?.error) {
+      toast.error('Invalid credentials')
+    } else {
+      toast.success('Logged in successfully')
         setShouldRedirect(true)
       }
     } catch (error) {
@@ -111,22 +111,22 @@ const AuthRecieveCode = () => {
       />
       <InputPassword
         value={verifyCode}
-        onChange={(e) => setVerifyCode(e.target.value)}
+                onChange={(e) => setVerifyCode(e.target.value)}
         placeholder={t('sms code')}
-      />
+              />
       <div className="flex justify-between items-center text-sm mt-2">
         <span className="text-white">{t('resend code')}</span>
         <span className="text-white">{formattedTime}</span>
-      </div>
+            </div>
       <div className="w-full flex justify-center items-center">
-        <button
-          onClick={onSubmit}
+            <button
+              onClick={onSubmit}
           disabled={isLoading || timer > 0 || shouldRedirect}
           className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading || timer > 0 || shouldRedirect ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
-        >
+            >
           {(isLoading || shouldRedirect) ? <SimpleLoader /> : t('verify')}
-        </button>
+            </button>
       </div>
     </div>
   )

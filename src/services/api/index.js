@@ -81,3 +81,4 @@ request.interceptors.response.use(
 )
 
 export { request }
+export const apiService = request;
