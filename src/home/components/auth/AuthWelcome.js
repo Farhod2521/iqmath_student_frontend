@@ -39,7 +39,7 @@ function AuthWelcome() {
 
   // Loading matnini aniqlash
   const getLoadingText = () => {
-    if (isLoading || (shouldRedirect && roleLoading)) return t('...loading') || 'Loading...'
+    if (isLoading || (shouldRedirect && roleLoading)) return <SimpleLoader   /> || 'Loading...'
     if (shouldRedirect) return t('redirecting') || 'Redirecting...'
     return t('enter')
   }
@@ -55,7 +55,6 @@ function AuthWelcome() {
         >
           {isButtonLoading ? (
             <div className="flex items-center justify-center gap-2">
-              <SimpleLoader />
               <span>{getLoadingText()}</span>
             </div>
           ) : (
