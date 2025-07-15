@@ -359,6 +359,8 @@
   "subjectMastery": "Fanlar bo'yicha o'zlashtirish",
   "subjectName": "Fan nomi",
   "chapters": "Boblar",
-  "masteredTopics": "O'zlashtirilgan mavzular"
+  "masteredTopics": "O'zlashtirilgan mavzular",
+  "checking role": "Rol tekshirilmoqda...",
+  "redirecting": "Yo'naltirilmoqda..."
 }
 

@@ -20,11 +20,18 @@ function AuthSignIn() {
   const router = useRouter()
   const { register, handleSubmit } = useForm()
   
-  const { isTeacher, isLoading: roleLoading } = useRoleDetection()
+  const { isTeacher, isLoading: roleLoading, error: roleError } = useRoleDetection()
 
   // Redirect when role is detected
   useEffect(() => {
     if (shouldRedirect && !roleLoading) {
+      if (roleError) {
+        toast.error('Role detection failed. Please try again.')
+        setShouldRedirect(false)
+        setIsLoading(false)
+        return
+      }
+      
       if (isTeacher) {
         router.push('/dashboard/teacher/statistics')
       } else {
@@ -32,7 +39,7 @@ function AuthSignIn() {
       }
       setShouldRedirect(false)
     }
-  }, [shouldRedirect, isTeacher, roleLoading, router])
+  }, [shouldRedirect, isTeacher, roleLoading, router, roleError])
 
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
@@ -41,15 +48,27 @@ function AuthSignIn() {
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
       if (result?.error) {
         toast.error(result.error)
+        setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
         toast.success('Logged in successfully')
         setShouldRedirect(true)
+        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
       toast.error('Login error')
-    } finally {
-      setIsLoading(false)
+      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
     }
+  }
+
+  // Loading holatini aniqlash - login yoki role detection davomida
+  const isButtonLoading = isLoading || shouldRedirect || roleLoading
+
+  // Loading matnini aniqlash
+  const getLoadingText = () => {
+    if (isLoading) return t('login')
+    if (shouldRedirect && roleLoading) return t('checking role') || 'Checking role...'
+    if (shouldRedirect) return t('redirecting') || 'Redirecting...'
+    return t('login')
   }
 
   return (
@@ -68,11 +87,18 @@ function AuthSignIn() {
       <div className="w-full flex justify-center items-center">
         <button
           type="submit"
-          disabled={isLoading || shouldRedirect}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading || shouldRedirect ? 'opacity-70' : ''}`}
+          disabled={isButtonLoading}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
-          {(isLoading || shouldRedirect) ? <SimpleLoader /> : t('login')}
+          {isButtonLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <SimpleLoader />
+              <span>{getLoadingText()}</span>
+            </div>
+          ) : (
+            t('login')
+          )}
         </button>
       </div>
     </form>

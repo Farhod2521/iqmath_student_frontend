@@ -41,5 +41,7 @@
   "mastery": "Mastery",
   "studentExamples": "Student Examples",
   "approved": "Approved",
-  "rejected": "Rejected"
+  "rejected": "Rejected",
+  "checking role": "Checking role...",
+  "redirecting": "Redirecting..."
 }

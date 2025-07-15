@@ -9,10 +9,10 @@ function AuthWelcome() {
   const { t } = useTranslation()
   const router = useRouter()
   const [shouldRedirect, setShouldRedirect] = useState(false)
-  
-  const { isTeacher, isLoading: roleLoading } = useRoleDetection()
+  const [isLoading, setIsLoading] = useState(false)
+  const { isTeacher, isLoading: roleLoading, role } = useRoleDetection()
 
-  // Redirect when role is detected
+  // Redirect when role is detected (faqat tugma bosilgandan keyin)
   useEffect(() => {
     if (shouldRedirect && !roleLoading) {
       if (isTeacher) {
@@ -20,11 +20,11 @@ function AuthWelcome() {
       } else {
         router.push('/dashboard/student/subjects')
       }
-      setShouldRedirect(false)
     }
   }, [shouldRedirect, isTeacher, roleLoading, router])
 
   const handleEnter = () => {
+    setIsLoading(true)
     setShouldRedirect(true)
   }
 
@@ -34,16 +34,33 @@ function AuthWelcome() {
     sessionStorage.clear()
   }
 
+  // Loading holatini aniqlash - tugma bosilgandan keyin
+  const isButtonLoading = isLoading || (shouldRedirect && roleLoading)
+
+  // Loading matnini aniqlash
+  const getLoadingText = () => {
+    if (isLoading || (shouldRedirect && roleLoading)) return t('...loading') || 'Loading...'
+    if (shouldRedirect) return t('redirecting') || 'Redirecting...'
+    return t('enter')
+  }
+
   return (
     <div className="text-center">
       <h1 className="text-2xl font-medium mb-5 text-white">{t('welcome')}!</h1>
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={handleEnter}
-          disabled={shouldRedirect}
-          className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${shouldRedirect ? 'opacity-70' : ''}`}
+          disabled={isButtonLoading}
+          className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${isButtonLoading ? 'opacity-70' : ''}`}
         >
-          {shouldRedirect ? <SimpleLoader /> : t('enter')}
+          {isButtonLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <SimpleLoader />
+              <span>{getLoadingText()}</span>
+            </div>
+          ) : (
+            t('enter')
+          )}
         </button>
         <button onClick={handleLogout} className="w-full sm:w-1/2 bg-[#EDEDF2] text-black py-3 rounded-md">
           {t('left')}

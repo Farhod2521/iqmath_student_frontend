@@ -359,5 +359,7 @@
   "subjectMastery": "Усвоение по предметам",
   "subjectName": "Название предмета",
   "chapters": "Главы",
-  "masteredTopics": "Освоенные темы"
+  "masteredTopics": "Освоенные темы",
+  "checking role": "Проверка роли...",
+  "redirecting": "Перенаправление..."
 }

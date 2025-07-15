@@ -83,14 +83,15 @@ const AuthRecieveCode = () => {
 
     if (result?.error) {
       toast.error('Invalid credentials')
+      setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
     } else {
       toast.success('Logged in successfully')
         setShouldRedirect(true)
+        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
       toast.error('Login error')
-    } finally {
-      setIsLoading(false)
+      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
     }
   }
 
@@ -101,6 +102,17 @@ const AuthRecieveCode = () => {
   const minutes = Math.floor(timer / 60)
   const seconds = timer % 60
   const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+
+  // Loading holatini aniqlash - login yoki role detection davomida
+  const isButtonLoading = isLoading || shouldRedirect || roleLoading
+
+  // Loading matnini aniqlash
+  const getLoadingText = () => {
+    if (isLoading) return t('verify')
+    if (shouldRedirect && roleLoading) return t('checking role') || 'Checking role...'
+    if (shouldRedirect) return t('redirecting') || 'Redirecting...'
+    return t('verify')
+  }
 
   return (
     <div className="space-y-4 min-h-[220px]">
@@ -121,11 +133,18 @@ const AuthRecieveCode = () => {
       <div className="w-full flex justify-center items-center">
             <button
               onClick={onSubmit}
-          disabled={isLoading || timer > 0 || shouldRedirect}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading || timer > 0 || shouldRedirect ? 'opacity-70' : ''}`}
+          disabled={isButtonLoading || timer > 0}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading || timer > 0 ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
             >
-          {(isLoading || shouldRedirect) ? <SimpleLoader /> : t('verify')}
+          {isButtonLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <SimpleLoader />
+              <span>{getLoadingText()}</span>
+            </div>
+          ) : (
+            t('verify')
+          )}
             </button>
       </div>
     </div>
