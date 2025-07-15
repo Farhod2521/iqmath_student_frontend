@@ -1,6 +1,5 @@
 import React from 'react'
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from '@heroui/table'
-import { Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue, Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
 import { useTranslation } from 'react-i18next'
 
 function MyStudyAcitve({ data }) {

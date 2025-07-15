@@ -119,7 +119,7 @@ import MainWrapper from "@/layout/MainWrapper";
     status: "Открытый",
   });
   return (
-    <MainWrapper title={t("myStudy")}>
+    <MainWrapper title={t("group")}>
       {showModal && phone && (
         <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
