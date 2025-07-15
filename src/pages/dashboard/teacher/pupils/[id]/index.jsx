@@ -1,4 +1,4 @@
-import StudentDetails from "@/modules/students/page/StudentDetails";
+import StudentDetails from "@/modules/teacher/students/page/StudentDetails";
 
 const StudentDetailsPage = () => {
   return (

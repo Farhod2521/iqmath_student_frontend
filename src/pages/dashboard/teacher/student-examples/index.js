@@ -5,7 +5,7 @@ import { request } from "@/services/api";
 import SearchInput from "@/components/search";
 import SelectBox from "@/components/select-box";
 import { useRouter } from "next/router";
-import StudentExampleTable from "@/modules/student-examples/StudentExampleTable";
+import StudentExampleTable from "@/modules/teacher/student-examples/StudentExampleTable";
 import ContentLoader from '@/components/loader/content-loader';
 
 const StudentExamples = () => {

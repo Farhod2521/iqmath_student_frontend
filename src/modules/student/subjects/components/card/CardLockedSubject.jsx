@@ -23,7 +23,7 @@ const CardLockedSubject = ({ item }) => {
 
   return (
     <Card isFooterBlurred className="border-none cursor-pointer h-[280px] w-[200px] shadow-sm" radius="sm">
-      <Image alt={label} className="object-cover" src={imageUrl} width={240} />
+      <img alt={label} className="object-cover" src={imageUrl} width={240} />
       <div className="absolute z-20 bottom-4 text-black/20 w-full flex justify-center">{label}</div>
       <CardFooter onClick={handleInitiatePayment} className="absolute bg-white/10 h-full bottom-0 z-10">
         <div className="flex items-center justify-center w-full hover:scale-110">

@@ -6,7 +6,7 @@ import { useState } from "react";
 import Dashboard from "@/components/dashboard";
 import ContentLoader from "@/components/loader/content-loader";
 import useGetQuery from "@/hooks/api/useGetQuery";
-import EyeIcon from "../../../../public/icons/eyeIcon";
+import EyeIcon from "/public/icons/eyeIcon";
 
 const StudentSubjectsList = () => {
   const router = useRouter();

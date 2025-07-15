@@ -1,5 +1,5 @@
 import MainWrapper from '@/layout/MainWrapper'
-import Recommendations from '@/modules/subjects/pages/Recommendations'
+import Recommendations from '@/modules/student/subjects/pages/Recommendations'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

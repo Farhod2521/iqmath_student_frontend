@@ -7,7 +7,7 @@ import SimpleModalTeacher from "@/components/modal/simple-modal-teacher";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Students from "@/modules/students/page/Students";
+import Students from "@/modules/teacher/students/page/Students";
 import MainWrapper from "@/layout/MainWrapper";
 const Index = () => {
   const { t } = useTranslation();

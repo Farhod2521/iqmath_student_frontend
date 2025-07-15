@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { request } from "@/services/api";
 import { useTranslation } from "react-i18next";
-import StudentExampleDetailLayout from "@/modules/student-examples/StudentExampleDetailLayout";
+import StudentExampleDetailLayout from "@/modules/teacher/student-examples/StudentExampleDetailLayout";
 import MainWrapper from "@/layout/MainWrapper";
 import ContentLoader from "@/components/loader/content-loader";
 const StudentExampleDetailPage = () => {

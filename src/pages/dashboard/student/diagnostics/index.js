@@ -1,5 +1,5 @@
-import LayoutQuestion from '@/modules/subjects/layouts/LayoutQuestion'
-import DiagnosticQuestions from '@/modules/subjects/pages/DiagnosticQuestions'
+import LayoutQuestion from '@/modules/student/subjects/layouts/LayoutQuestion'
+import DiagnosticQuestions from '@/modules/student/subjects/pages/DiagnosticQuestions'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 

@@ -34,7 +34,6 @@ const Index = () => {
         <Card className="col-span-12 sm:col-span-8 md:col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
             <Avatar size="lg" className="" icon={<AvatarIcon />} />
-
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
               {get(studentProfile, 'data.full_name', '')}
             </h3>
