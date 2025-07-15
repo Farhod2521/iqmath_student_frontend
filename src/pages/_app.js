@@ -27,6 +27,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
     // Maxsus sahifalar uchun Fragment
     if (path.includes('/question')) return React.Fragment;
     if (path.includes('/diagnostics')) return React.Fragment;
+    if (path.includes('/student-examples/')) return React.Fragment;
     
     // Dashboard sahifalari uchun LayoutAdmin (role detection bilan)
     if (path.startsWith('/dashboard')) return LayoutAdmin;

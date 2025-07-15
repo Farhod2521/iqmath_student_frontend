@@ -37,11 +37,9 @@ const LayoutAdmin = ({ children }) => {
       // Special handling for /dashboard route
       if (currentPath === '/dashboard') {
         if (isTeacher) {
-          console.log('Redirecting teacher from /dashboard to teacher dashboard')
-          router.replace('/dashboard/teacher/statistics')
+          router.replace('/dashboard/teacher/profile')
         } else {
-          console.log('Redirecting student from /dashboard to student dashboard')
-          router.replace('/dashboard/student/subjects')
+          router.replace('/dashboard/student/profile')
         }
         setHasRedirected(true)
         return
@@ -51,15 +49,13 @@ const LayoutAdmin = ({ children }) => {
       if (isTeacher) {
         // Teacher should be on teacher dashboard
         if (currentPath.startsWith('/dashboard/student/')) {
-          console.log('Redirecting teacher to teacher dashboard')
-          router.replace('/dashboard/teacher/statistics')
+          router.replace('/dashboard/teacher/profile')
           setHasRedirected(true)
         }
       } else {
         // Student should be on student dashboard
         if (currentPath.startsWith('/dashboard/teacher/')) {
-          console.log('Redirecting student to student dashboard')
-          router.replace('/dashboard/student/subjects')
+          router.replace('/dashboard/student/profile')
           setHasRedirected(true)
         }
       }
