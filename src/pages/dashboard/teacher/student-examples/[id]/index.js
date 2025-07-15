@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { request } from "@/services/api";
 import { useTranslation } from "react-i18next";
 import StudentExampleDetailLayout from "@/modules/student-examples/StudentExampleDetailLayout";
-
+import MainWrapper from "@/layout/MainWrapper";
 const StudentExampleDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -51,12 +51,14 @@ const StudentExampleDetailPage = () => {
   const questions = data.question_json || [];
 
   return (
+    <MainWrapper title={t("studentExampleDetail")}>
     <StudentExampleDetailLayout
       questions={questions}
       selectedIdx={selectedIdx}
       setSelectedIdx={setSelectedIdx}
       i18n={i18n}
     />
+    </MainWrapper>
   );
 };
 

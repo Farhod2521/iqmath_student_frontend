@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Students from "@/modules/students/page/Students";
-
+import MainWrapper from "@/layout/MainWrapper";
 const Index = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -40,7 +40,7 @@ const Index = () => {
   console.log(session);
 
   return (
-     <>
+     <MainWrapper title={t("pupils")}>
      
      <Students />
       {showModal && phone && (
@@ -75,7 +75,7 @@ const Index = () => {
           </div>
         </SimpleModalTeacher>
       )}
-     </>
+     </MainWrapper>
   );
 };
 

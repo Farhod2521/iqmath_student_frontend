@@ -15,7 +15,8 @@ import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import GridExample from "@/components/grid-table";
 import Image from "next/image";
-const Index = () => {
+import MainWrapper from "@/layout/MainWrapper";
+  const Index = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const [copied, setCopied] = useState(false);
@@ -118,7 +119,7 @@ const Index = () => {
     status: "Открытый",
   });
   return (
-    <>
+    <MainWrapper title={t("myStudy")}>
       {showModal && phone && (
         <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
@@ -209,7 +210,7 @@ const Index = () => {
           <GridExample colDefs={colDefs} rowData={rowData} />
         </div>
       )}
-    </>
+    </MainWrapper>
   );
 };
 
