@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Students from '@/modules/teacher/students/page/Students'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { t } = useTranslation()
