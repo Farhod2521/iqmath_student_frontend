@@ -21,14 +21,14 @@ const ChatBox = ({ chat, messages, onSendMessage }) => {
     <div className="h-[80vh] flex flex-col w-full border-l bg-white border border-[#E9E9E9] rounded-[12px]">
       <div className="flex items-center justify-between px-4 py-3 border-b">
         <div>
-          <h3 className="font-semibold text-gray-900">{chat.name}</h3>
+          <h3 className="font-semibold text-gray-900">{chat?.name}</h3>
           <p className="text-sm text-green-500">Online</p>
         </div>
       </div>
       <div className="h-[60vh] flex-1 overflow-y-auto custom-scroll p-4 space-y-6 bg-[#F9F9F9]">
         <div className="text-center text-xs text-gray-400 mb-4">Сегодня</div>
 
-        {messages.map((msg) =>
+        {messages?.map((msg) =>
           msg.fromMe ? (
             <div key={msg.id} className="flex justify-end">
               <div className="flex items-end gap-3 max-w-[75%]">
