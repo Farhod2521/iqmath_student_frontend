@@ -37,5 +37,11 @@
   "selectTypeOfPassport": "Select an identity document",
   "certificate": "certificate",
   "enter details of passport": "Enter details of passport",
-  "address": "Address"
+  "address": "Address",
+  "mastery": "Mastery",
+  "studentExamples": "Student Examples",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "checking role": "Checking role...",
+  "redirecting": "Redirecting..."
 }

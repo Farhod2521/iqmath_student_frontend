@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import useGetQuery from '@/hooks/api/useGetQuery'
-import MainWrapper from '@/layout/MainWrapper'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import RightIcon from '@/components/icons/right'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -51,7 +51,7 @@ const SubjectsPage = () => {
   const topics = topic?.data || []
 
   return (
-    <MainWrapper title={t('subjects')}>
+    <LayoutAdmin title={t('subjects')}>
       <div className="font-sf">
         <StudentBreadcrumbs mainLink="/dashboard/student/subjects" />
         <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -102,7 +102,7 @@ const SubjectsPage = () => {
           )}
         </div>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

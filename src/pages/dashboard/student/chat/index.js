@@ -3,8 +3,8 @@ import Image from 'next/image'
 import ChatBox from './ChatBox'
 import { Card } from '@heroui/react'
 import { Tabs, Tab } from '@heroui/react'
-import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 const Index = () => {
   const { t } = useTranslation()
   const chats = [
@@ -72,7 +72,7 @@ const Index = () => {
 
   // headerTitle={"Чат"}
   return (
-    <MainWrapper title={t('chat')}>
+    <LayoutAdmin title={t('chat')}>
       <div className="flex gap-2">
         <Card className="border border-[#E9E9E9] rounded-[12px] py-[16px] px-[24px] w-[400px]">
           <h2>Сообщение</h2>
@@ -166,7 +166,7 @@ const Index = () => {
           )}
         </Card>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 const Dashboard = ({ children, headerTitle, tab, handleTab }) => {
   const router = useRouter();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(null); // Boshlang‘ich holat yo‘q
+  const [isSidebarOpen, setIsSidebarOpen] = useState(null); // Boshlang'ich holat yo'q
 
   useEffect(() => {
     setIsSidebarOpen(window.innerWidth > 1024); // Sahifa yuklanganda aniqlash
@@ -42,9 +42,9 @@ const Dashboard = ({ children, headerTitle, tab, handleTab }) => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >
-          <div className="p-[30px] border-b border-b-[#E9E9E9] dark:border-b-[#2A3447FF] ">
+          {/* <div className="p-[30px] border-b border-b-[#E9E9E9] dark:border-b-[#2A3447FF] ">
             <Brand />
-          </div>
+          </div> */}
           <DashboardNav />
         </Sidebar>
 

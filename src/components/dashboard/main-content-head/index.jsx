@@ -8,7 +8,7 @@ import storage from '@/services/storage'
 import { get, isEmpty } from 'lodash'
 import { useRouter } from 'next/router'
 import LanguageDropdown from '@/components/language'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'next-themes'
 
@@ -17,14 +17,11 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   // const [tab, setTab] = useState("active");
   const [openProfile, setOpenProfile] = useState(false)
   const router = useRouter()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isExiting, setIsExiting] = useState(false)
   const { theme } = useTheme()
   const profileRef = useRef(null)
   const { t } = useTranslation()
 
   const [accessToken, setAccessToken] = useState('')
-  const [showModal, setShowModal] = useState(false)
 
   const {
     data: studentProfile,
@@ -69,27 +66,6 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [openProfile])
-
-  const handleLogout = async () => {
-    await signOut({
-      callbackUrl: 'https://iq-math.uz'
-    })
-
-    localStorage.clear()
-    sessionStorage.clear()
-  }
-
-  const handleLogoutClick = () => {
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsExiting(true)
-    setTimeout(() => {
-      setIsModalOpen(false)
-      setIsExiting(false)
-    }, 300)
-  }
 
   return (
     <div className="border-b">
@@ -148,35 +124,6 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
             <Image src={'/images/avatar.png'} alt={'user'} width={40} height={40} />
           </button>
 
-          {/* <div className="hidden lg:flex items-center gap-x-[10px]">
-          {isEmpty(get(networkings, "data", []))
-            ? ""
-            : get(networkings, "data", []).map((networking, index) => (
-                <div key={get(networking, "id") || index}>
-                  {get(networking, "name") === "telegram" ? (
-                    <a href={get(networking, "link")} target="_blank">
-                      <TelegramIcon className="text-black dark:text-white hover:text-[#5d87ff]" />
-                    </a>
-                  ) : get(networking, "name") === "instagram" ? (
-                    <a href={get(networking, "link")} target="_blank">
-                      <InstagramIcon className="text-black dark:text-white hover:text-[#5d87ff]" />
-                    </a>
-                  ) : (
-                    <a href="tel: +998 78 888 08 00" className="text-sm">
-                      {" "}
-                      <PhoneIcon className="text-black dark:text-white hover:text-[#5d87ff]" />{" "}
-                    </a>
-                  )}
-                </div>
-              ))}
-        </div> */}
-
-          {/* <ThemeChanger /> */}
-
-          {/* <button onClick={handleProfile}>
-          <Image src={"/images/user.png"} alt={"user"} width={42} height={42} />
-        </button> */}
-
           {openProfile && (
             <div
               ref={profileRef}
@@ -206,46 +153,12 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
               <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
 
               <button
-                onClick={handleLogoutClick}
+                onClick={() => router.push('/dashboard/student/profile')}
                 className=" py-[8px] w-full bg-[#EDEDF2FF] text-black rounded-md hover:bg-[#dddddd] transform duration-200"
               >
-                {t('logout')}
+                {t('profile')}
               </button>
             </div>
-          )}
-
-          {isModalOpen && (
-            <>
-              <div
-                className={`fixed inset-0 bg-black bg-opacity-40 z-50 transition-opacity duration-300 ${
-                  isExiting ? 'opacity-0' : 'opacity-40'
-                }`}
-              ></div>
-              <div
-                className={`fixed inset-0 flex items-center justify-center z-50 transition-all duration-300 ${
-                  isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
-                }`}
-              >
-                <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
-                  <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2>
-                  <p className="text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
-                  <div className="flex justify-end gap-x-[10px]">
-                    <button
-                      onClick={handleLogout}
-                      className="bg-[#5D87FF] hover:bg-[#5680f5] w-1/4 text-white py-2  rounded-[8px]"
-                    >
-                      {t('yes')}
-                    </button>
-                    <button
-                      onClick={closeModal}
-                      className="bg-gray-300 hover:bg-[#dddddd] w-1/4 text-black py-2 px-4 rounded-[8px]"
-                    >
-                      {t('no')}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </>
           )}
         </div>
       </div>

@@ -37,6 +37,102 @@ export const howItWorks = [
   },
 ];
 
+export const groupsPupil = [
+  {
+    id: "group1",
+    title: "5 группа",
+    items: [
+      { id: "1", name: "Dilnoza Abdullaeva" },
+      { id: "2", name: "Rustam Sayfullaev" },
+      { id: "3", name: "Farhod Hasanov" },
+      { id: "4", name: "Shukhrat Tashmuhamedov" },
+      { id: "5", name: "Orifjon Abdullayev" },
+    ],
+  },
+  {
+    id: "group2",
+    title: "Frontend Developers",
+    items: [
+      { id: "6", name: "Ali Valiyev" },
+      { id: "7", name: "Bekzod Karimov" },
+      { id: "8", name: "Madina Saidova" },
+      { id: "9", name: "Ibrohim Shamsiddinov" },
+      { id: "10", name: "Otabek Murodov" },
+      { id: "11", name: "Orifjon Abdullayev" },
+      { id: "27", name: "Olimjon Hamidov" },
+      { id: "28", name: "Sabrina Qodirova" },
+      { id: "29", name: "Javlonbek Rashidov" },
+      { id: "30", name: "Nigora Fayzullayeva" },
+      { id: "31", name: "Bobur Shamsiyev" },
+      { id: "27", name: "Olimjon Hamidov" },
+      { id: "28", name: "Sabrina Qodirova" },
+      { id: "29", name: "Javlonbek Rashidov" },
+      { id: "30", name: "Nigora Fayzullayeva" },
+      { id: "31", name: "Bobur Shamsiyev" },
+      { id: "12", name: "Azizbek Nuriddinov" },
+      { id: "13", name: "Shahzod Tursunov" },
+      { id: "14", name: "Malika Ergasheva" },
+      { id: "15", name: "Zafar Shodmonov" },
+      { id: "16", name: "Umar Ismoilov" },
+    ],
+  },
+  {
+    id: "group3",
+    title: "Backend Engineers",
+    items: [
+      { id: "12", name: "Azizbek Nuriddinov" },
+      { id: "13", name: "Shahzod Tursunov" },
+      { id: "14", name: "Malika Ergasheva" },
+      { id: "15", name: "Zafar Shodmonov" },
+      { id: "16", name: "Umar Ismoilov" },
+    ],
+  },
+  {
+    id: "group4",
+    title: "UI/UX Designers",
+    items: [
+      { id: "17", name: "Diyorbek Yusupov" },
+      { id: "18", name: "Kamila Tojiboyeva" },
+      { id: "19", name: "Jasmina Saidova" },
+      { id: "20", name: "Temur Abdunazarov" },
+      { id: "21", name: "Gulbahor Rustamova" },
+    ],
+  },
+  {
+    id: "group5",
+    title: "QA Testers",
+    items: [
+      { id: "22", name: "Sanjar Yuldashev" },
+      { id: "23", name: "Muhammadamin Usmonov" },
+      { id: "24", name: "Laylo Safarova" },
+      { id: "25", name: "Azamat Hakimov" },
+      { id: "26", name: "Sarvinoz Yuldosheva" },
+    ],
+  },
+  {
+    id: "group6",
+    title: "Project Managers",
+    items: [
+      { id: "27", name: "Olimjon Hamidov" },
+      { id: "28", name: "Sabrina Qodirova" },
+      { id: "29", name: "Javlonbek Rashidov" },
+      { id: "30", name: "Nigora Fayzullayeva" },
+      { id: "31", name: "Bobur Shamsiyev" },
+    ],
+  },
+  {
+    id: "group7",
+    title: "DevOps Engineers",
+    items: [
+      { id: "32", name: "Shohruh Saydullayev" },
+      { id: "33", name: "Asadbek Turgunov" },
+      { id: "34", name: "Ravshanbek Toshmatov" },
+      { id: "35", name: "Munisa Jalilova" },
+      { id: "36", name: "Akbarjon Ergashev" },
+    ],
+  },
+];
+
 export const fractionsData = [
   {
     title: "Понятие дроби:",

@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
-import MainWrapper from '@/layout/MainWrapper'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import RightIcon from '@/components/icons/right'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -20,7 +20,11 @@ const Index = () => {
   const topic = useTopicStore((state) => state.topic)
 
   const { t, i18n } = useTranslation()
-  const { data: advisedTopics, isLoading, isFetching } = useGetQuery({
+  const {
+    data: advisedTopics,
+    isLoading,
+    isFetching
+  } = useGetQuery({
     key: KEYS.advisedTopics,
     url: URLS.advisedTopics,
     headers: {
@@ -51,7 +55,7 @@ const Index = () => {
   }
 
   return (
-    <MainWrapper title={t('subjects')}>
+    <LayoutAdmin title={t('subjects')}>
       <div className="font-sf">
         <BaseBreadcrumbs data={breadcrumbs} />
         <h1 className="font-semibold text-[20px] mb-[18px]">{t('needToStudy')}</h1>
@@ -69,9 +73,7 @@ const Index = () => {
                     className="p-[12px] pl-[24px] border-b hover:bg-[#F0F9FF] hover:cursor-pointer border-[#E9E9E9] bg-white last:border-b-0"
                   >
                     <div className="flex justify-between">
-                      <div className="uppercase">
-                        {i18n.language === 'uz' ? item.name_uz : item.name_ru}
-                      </div>
+                      <div className="uppercase">{i18n.language === 'uz' ? item.name_uz : item.name_ru}</div>
                       {/* <div style={{ minWidth: 40 }} className="flex justify-center items-center">
                         <RightIcon />
                       </div> */}
@@ -90,7 +92,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

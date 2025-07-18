@@ -8,12 +8,12 @@ import { Popover, PopoverTrigger, PopoverContent } from '@heroui/react'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
-import MainWrapper from '@/layout/MainWrapper'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import RightIcon from '@/components/icons/right'
 import CoinsIcon from '@/components/icons/coins'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -55,9 +55,8 @@ const SubjectsPage = () => {
   const chapters = chapter?.data || []
   const topics = topic?.data || []
 
-
   return (
-    <MainWrapper title={t('subjects')}>
+    <LayoutAdmin title={t('subjects')}>
       <div className="font-sf">
         <StudentBreadcrumbs mainLink="/dashboard/student/subjects" />
         <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -93,7 +92,9 @@ const SubjectsPage = () => {
                         className="flex flex-col gap-1 cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="uppercase break-words">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
+                          <span className="uppercase break-words">
+                            {i18n.language === 'uz' ? topic.name_uz : topic.name_ru}
+                          </span>
                           {(typeof topic.score === 'number' || topic.score === null) && (
                             <div className="flex items-center gap-1 min-w-[120px]">
                               <div className="w-[80px] h-1.5 bg-gray-200 rounded">
@@ -102,7 +103,9 @@ const SubjectsPage = () => {
                                   style={{ width: `${topic.score === null ? 0 : topic.score}%` }}
                                 ></div>
                               </div>
-                              <span className="text-xs text-gray-600 font-medium min-w-[24px]">{topic.score === null ? 0 : topic.score}%</span>
+                              <span className="text-xs text-gray-600 font-medium min-w-[24px]">
+                                {topic.score === null ? 0 : topic.score}%
+                              </span>
                             </div>
                           )}
                         </div>
@@ -142,7 +145,7 @@ const SubjectsPage = () => {
           )}
         </div>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

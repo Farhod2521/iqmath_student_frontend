@@ -6,7 +6,7 @@ const SimpleLoader = ({ classNames = "" }) => {
   return (
     <div className={clsx("flex   justify-center items-center", classNames)}>
       <div className="animate-spin">
-        <SpinnerIcon width={30} height={30} />
+        <SpinnerIcon width={30} height={30} color="white" />
       </div>
     </div>
   );

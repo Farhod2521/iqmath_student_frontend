@@ -9,7 +9,7 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
 
-const LayoutAdmin = ({ children }) => {
+const LayoutAdmin = ({ children, title }) => {
   const router = useRouter()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
@@ -52,7 +52,7 @@ const LayoutAdmin = ({ children }) => {
     <ThemeProvider defaultTheme="light" attribute="class">
       <div className="relative flex min-h-screen dark:bg-[#202936] bg-white transition-all">
         <Sidebar />
-        <Main>{children}</Main>
+        <Main title={title}>{children}</Main>
       </div>
     </ThemeProvider>
   )

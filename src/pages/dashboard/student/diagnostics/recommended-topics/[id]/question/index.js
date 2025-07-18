@@ -1,5 +1,5 @@
-import LayoutQuestion from '@/modules/subjects/layouts/LayoutQuestion'
-import RecommendQuestions from '@/modules/subjects/pages/RecommendQuestions'
+import LayoutQuestion from '@/modules/student/subjects/layouts/LayoutQuestion'
+import RecommendQuestions from '@/modules/student/subjects/pages/RecommendQuestions'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 

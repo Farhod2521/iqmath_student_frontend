@@ -15,7 +15,9 @@ function Landing() {
         }
       `}</style>
       {/* <HeaderAlert /> */}
-      <BannerHeader/>
+
+      <BannerHeader />
+
       {/* <Features />
       <DefendFocus />
       <Leadership />

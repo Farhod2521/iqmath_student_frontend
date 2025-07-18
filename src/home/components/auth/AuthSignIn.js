@@ -4,38 +4,71 @@ import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [shouldRedirect, setShouldRedirect] = useState(false)
 
   const { setTab } = useAuthTabStore.getState()
-
   const { t } = useTranslation()
   const router = useRouter()
-
   const { register, handleSubmit } = useForm()
+  
+  const { isTeacher, isLoading: roleLoading, error: roleError } = useRoleDetection()
+
+  // Redirect when role is detected
+  useEffect(() => {
+    if (shouldRedirect && !roleLoading) {
+      if (roleError) {
+        toast.error('Role detection failed. Please try again.')
+        setShouldRedirect(false)
+        setIsLoading(false)
+        return
+      }
+      
+      if (isTeacher) {
+        router.push('/dashboard/teacher/statistics')
+      } else {
+        router.push('/dashboard/student/subjects')
+      }
+      setShouldRedirect(false)
+    }
+  }, [shouldRedirect, isTeacher, roleLoading, router, roleError])
 
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
     try {
       const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
-
       if (result?.error) {
         toast.error(result.error)
+        setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
-        router.push('/dashboard/student/subjects')
         toast.success('Logged in successfully')
+        setShouldRedirect(true)
+        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
-    } finally {
-      setIsLoading(false)
+      toast.error('Login error')
+      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
     }
+  }
+
+  // Loading holatini aniqlash - login yoki role detection davomida
+  const isButtonLoading = isLoading || shouldRedirect || roleLoading
+
+  // Loading matnini aniqlash
+  const getLoadingText = () => {
+    if (isLoading) return t('login')
+    if (shouldRedirect && roleLoading) return t('checking role') || 'Checking role...'
+    if (shouldRedirect) return t('redirecting') || 'Redirecting...'
+    return t('login')
   }
 
   return (
@@ -54,11 +87,18 @@ function AuthSignIn() {
       <div className="w-full flex justify-center items-center">
         <button
           type="submit"
-          disabled={isLoading}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
+          disabled={isButtonLoading}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
-          {isLoading ? <SimpleLoader /> : t('login')}
+          {isButtonLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <SimpleLoader />
+              <span>{getLoadingText()}</span>
+            </div>
+          ) : (
+            t('login')
+          )}
         </button>
       </div>
     </form>

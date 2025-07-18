@@ -2,7 +2,7 @@ import EmptyPage from '@/components/empty-page'
 import GridExample from '@/components/grid-table'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
 import MyStudyAcitve from '@/features/my-study/MyStudyAcitve'
-import MainWrapper from '@/layout/MainWrapper'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useMyStudyStore } from '@/store'
 import { useTranslation } from 'react-i18next'
 
@@ -51,14 +51,14 @@ const Index = () => {
   ]
 
   return (
-    <MainWrapper title={t('myLearning')}>
+    <LayoutAdmin title={t('myLearning')}>
       {tab === 'active' ? (
         <MyStudyAcitve data={rowData} />
       ) : (
         <EmptyPage title={"Muzlatilgan darslar ro'yxati"}></EmptyPage>
       )}
       {/* {tab === 'active' ? <GridExample rowData={rowData} colDefs={colDefs} /> : <p>Muzlatilgan darslar ro'yxati</p>} */}
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 
