@@ -21,20 +21,20 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const router = useRouter()
 
   // Layout tanlash logikasi - Role-based
-  const Layout = useMemo(() => {
-    const path = router.pathname
-    
-    // Maxsus sahifalar uchun Fragment
-    if (path.includes('/question')) return React.Fragment;
-    if (path.includes('/diagnostics')) return React.Fragment;
-    if (path.includes('/student-examples/')) return React.Fragment;
-    
-    // Dashboard sahifalari uchun LayoutAdmin (role detection bilan)
-    if (path.startsWith('/dashboard')) return LayoutAdmin;
-    
-    // Bosh sahifa uchun LayoutHome
-    return LayoutHome;
-  }, [router.pathname])
+  // const Layout = useMemo(() => {
+  //   const path = router.pathname
+
+  //   // Maxsus sahifalar uchun Fragment
+  //   if (path.includes('/question')) return React.Fragment
+  //   if (path.includes('/diagnostics')) return React.Fragment
+  //   if (path.includes('/student-examples/')) return React.Fragment
+
+  //   // Dashboard sahifalari uchun LayoutAdmin (role detection bilan)
+  //   if (path.startsWith('/dashboard')) return LayoutAdmin
+
+  //   // Bosh sahifa uchun LayoutHome
+  //   return LayoutHome
+  // }, [router.pathname])
 
   return (
     <HeroUIProvider>
@@ -42,10 +42,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps?.dehydratedState}>
             <UserProfileProvider>
-              <Layout>
-                <Component {...pageProps} />
-                <Toaster />
-              </Layout>
+              <Component {...pageProps} />
+              <Toaster />
             </UserProfileProvider>
           </Hydrate>
         </QueryClientProvider>

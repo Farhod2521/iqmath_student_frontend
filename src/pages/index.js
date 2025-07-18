@@ -1,14 +1,19 @@
 import Landing from '@/home/Landing'
-import { useEffect } from 'react';
+import LayoutHome from '@/home/Layout'
+import { useEffect } from 'react'
 
 export default function LandingPage() {
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = prev;
-    };
-  }, []);
+      document.body.style.overflow = prev
+    }
+  }, [])
 
-  return <Landing />
+  return (
+    <LayoutHome>
+      <Landing />
+    </LayoutHome>
+  )
 }

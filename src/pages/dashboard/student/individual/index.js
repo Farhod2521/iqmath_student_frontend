@@ -1,16 +1,16 @@
 import GridExample from '@/components/grid-table'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
 import Individual from '@/features/individual/Individual'
-import MainWrapper from '@/layout/MainWrapper'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
   return (
-    <MainWrapper title={t('independent')}>
+    <LayoutAdmin title={t('independent')}>
       <Individual data={i18n.language === 'uz' ? rowDataUz : rowData} />
       {/* <GridExample rowData={rowData} colDefs={colDefs} /> */}
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

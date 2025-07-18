@@ -1,20 +1,20 @@
-import { useState } from "react";
-import RightIcon from "@/components/icons/right";
-import Input from "@/components/input";
-import Button from "@/components/button";
-import Image from "next/image";
-import TrashIcon from "@/components/icons/trash";
-import ImageUploader from "@/components/image-uploader";
-import AnimateUp from "@/components/motion-animation";
-import MainWrapper from "@/layout/MainWrapper";
+import { useState } from 'react'
+import RightIcon from '@/components/icons/right'
+import Input from '@/components/input'
+import Button from '@/components/button'
+import Image from 'next/image'
+import TrashIcon from '@/components/icons/trash'
+import ImageUploader from '@/components/image-uploader'
+import AnimateUp from '@/components/motion-animation'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
-  const [showDropdownMain, setShowDropdownMain] = useState(false);
-  const [showDropdownMail, setShowDropdownMail] = useState(false);
-  const [showDropdownPassword, setShowDropdownPassword] = useState(false);
-  const [showDropdownAccount, setShowDropdownAccount] = useState(false);
+  const [showDropdownMain, setShowDropdownMain] = useState(false)
+  const [showDropdownMail, setShowDropdownMail] = useState(false)
+  const [showDropdownPassword, setShowDropdownPassword] = useState(false)
+  const [showDropdownAccount, setShowDropdownAccount] = useState(false)
   return (
-    <MainWrapper title={"Личные данные"}>
+    <LayoutAdmin title={'Личные данные'}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-6 space-y-[12px]">
           {/* Main infos */}
@@ -26,9 +26,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Основные данные</h4>
               <button>
                 <RightIcon
-                  classname={`${
-                    !showDropdownMain ? "rotate-90" : "-rotate-90"
-                  } transition-all duration-200`}
+                  classname={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -44,7 +42,7 @@ const Index = () => {
                       Полное имя <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="text" value={"Dilshod Suyunov"} />
+                    <Input type="text" value={'Dilshod Suyunov'} />
                   </div>
 
                   <div>
@@ -52,7 +50,7 @@ const Index = () => {
                       Номер телефона <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="text" value={"+998 93 233 33 53"} />
+                    <Input type="text" value={'+998 93 233 33 53'} />
                   </div>
 
                   <div>
@@ -60,7 +58,7 @@ const Index = () => {
                       Дата рождение <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="text" value={"12/02/2002"} />
+                    <Input type="text" value={'12/02/2002'} />
                   </div>
 
                   <Button disabled={true}>Сохранить</Button>
@@ -77,9 +75,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Email</h4>
               <button>
                 <RightIcon
-                  classname={`${
-                    !showDropdownMail ? "rotate-90" : "-rotate-90"
-                  } transition-all duration-200`}
+                  classname={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -95,7 +91,7 @@ const Index = () => {
                       Новый email <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="email" value={"dilshod@gmail.com"} />
+                    <Input type="email" value={'dilshod@gmail.com'} />
                   </div>
 
                   <Button disabled={true}>Сохранить</Button>
@@ -113,9 +109,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Пароль</h4>
               <button>
                 <RightIcon
-                  classname={`${
-                    !showDropdownPassword ? "rotate-90" : "-rotate-90"
-                  } transition-all duration-200`}
+                  classname={`${!showDropdownPassword ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -131,7 +125,7 @@ const Index = () => {
                       Текущий пароль <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="password" value={"123456"} />
+                    <Input type="password" value={'123456'} />
                   </div>
 
                   <div>
@@ -139,7 +133,7 @@ const Index = () => {
                       Новый пароль <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="password" value={"123456"} />
+                    <Input type="password" value={'123456'} />
                   </div>
 
                   <div>
@@ -147,7 +141,7 @@ const Index = () => {
                       Подтвердите новый пароль <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="password" value={"123456"} />
+                    <Input type="password" value={'123456'} />
                   </div>
 
                   <Button disabled={true}>Сохранить</Button>
@@ -165,9 +159,7 @@ const Index = () => {
               <h4 className="font-medium text-[17px]">Учетная запись</h4>
               <button>
                 <RightIcon
-                  classname={`${
-                    !showDropdownAccount ? "rotate-90" : "-rotate-90"
-                  } transition-all duration-200`}
+                  classname={`${!showDropdownAccount ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
                   color="#BCBFC2"
                 />
               </button>
@@ -180,7 +172,7 @@ const Index = () => {
                 <div className="flex justify-between gap-[8px] flex-wrap">
                   <div className="flex items-center  gap-x-[15px] ">
                     <Image
-                      src={"/images/avatar-profile.png"}
+                      src={'/images/avatar-profile.png'}
                       alt="avatar"
                       width={50}
                       height={50}
@@ -188,9 +180,7 @@ const Index = () => {
                     />
 
                     <div>
-                      <h3 className="text-[17px] font-semibold  ">
-                        Dilshod Suyunov
-                      </h3>
+                      <h3 className="text-[17px] font-semibold  ">Dilshod Suyunov</h3>
                       <p className="text-[#8A8A8E] text-[15px]">ID:123023020</p>
                     </div>
                   </div>
@@ -198,8 +188,8 @@ const Index = () => {
                   <Button
                     px="px-[15px]"
                     py="py-[11px]"
-                    border={"border border-[#FF3B30]"}
-                    classname={"flex bg-transparent !text-black gap-x-[8px]"}
+                    border={'border border-[#FF3B30]'}
+                    classname={'flex bg-transparent !text-black gap-x-[8px]'}
                   >
                     <TrashIcon color="#FF3B30" />
                     <p>Удалить аккаунт</p>
@@ -216,15 +206,11 @@ const Index = () => {
       </div>
       {/* Save or exit section */}
       <div className="fixed bottom-0 left-0 w-full bg-white shadow-md border-t border-t-[#E9E9E9] p-4 flex justify-end gap-2">
-        <button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">
-          Отменить изменения
-        </button>
-        <button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">
-          Сохранить изменения
-        </button>
+        <button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">Отменить изменения</button>
+        <button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">Сохранить изменения</button>
       </div>
-    </MainWrapper>
-  );
-};
+    </LayoutAdmin>
+  )
+}
 
-export default Index; 
+export default Index

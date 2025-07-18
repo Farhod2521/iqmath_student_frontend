@@ -12,9 +12,9 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { get } from 'lodash'
-import MainWrapper from '@/layout/MainWrapper'
 import { Card } from '@heroui/react'
 import { useScoreStore } from '@/store'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 const items = [
   { img: 't-shirt', title: 'Футболка с принтом', coin: '50' },
   { img: 'phone', title: 'Смартфон', coin: '50' },
@@ -45,7 +45,7 @@ const Index = () => {
   console.log(scoreData)
   // headerTitle={"Баллы"}
   return (
-    <MainWrapper title={t('points')}>
+    <LayoutAdmin title={t('points')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
@@ -167,7 +167,7 @@ const Index = () => {
           </div>
         </>
       )}
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

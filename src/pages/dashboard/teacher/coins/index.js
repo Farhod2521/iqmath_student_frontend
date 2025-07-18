@@ -1,12 +1,12 @@
-import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
 import { Card, CardBody, CardHeader } from '@heroui/react'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { t } = useTranslation()
 
   return (
-    <MainWrapper title={t('points')}>
+    <LayoutAdmin title={t('points')}>
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">{t('points')}</h2>
@@ -16,8 +16,8 @@ const Index = () => {
           {/* Bu yerda o'qituvchi ballari va reytingi bo'ladi */}
         </CardBody>
       </Card>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 
-export default Index 
+export default Index

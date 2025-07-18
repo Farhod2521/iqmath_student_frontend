@@ -13,10 +13,10 @@ import { KEYS } from '@/constants/key'
 import RightIcon from '@/components/icons/right'
 import VideoPlayer from '@/components/video-player'
 import ContentLoader from '@/components/loader/content-loader'
-import MainWrapper from '@/layout/MainWrapper'
 import { Button } from '@heroui/react'
 import parse from 'html-react-parser'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -80,7 +80,7 @@ const Index = () => {
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
   return (
-    <MainWrapper title={t('subjects')}>
+    <LayoutAdmin title={t('subjects')}>
       <StudentBreadcrumbs selectTitle={topicName} mainLink="/dashboard/student/subjects" />
       <div className="font-sf container mx-auto px-0 sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E9E9E9] rounded-xl mx-auto max-w-4xl relative">
@@ -168,7 +168,7 @@ const Index = () => {
           {showPlayer && <VideoPlayer url={videoUrl} title={topicName} onClose={() => setShowPlayer(false)} />}
         </div>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

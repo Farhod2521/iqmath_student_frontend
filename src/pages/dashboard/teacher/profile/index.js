@@ -1,38 +1,38 @@
-import ProgressCard from "@/card/progress-card";
-import ProfileDetails from "@/components/profile-details";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import useGetQuery from "@/hooks/api/useGetQuery";
-import { KEYS } from "@/constants/key";
-import { URLS } from "@/constants/url";
-import { useSession } from "next-auth/react";
-import { get } from "lodash";
-import { useTranslation } from "react-i18next";
-import MainWrapper from "@/layout/MainWrapper";
+import ProgressCard from '@/card/progress-card'
+import ProfileDetails from '@/components/profile-details'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import { useSession } from 'next-auth/react'
+import { get } from 'lodash'
+import { useTranslation } from 'react-i18next'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
-  const { t } = useTranslation();
-  const { data: session } = useSession();
+  const { t } = useTranslation()
+  const { data: session } = useSession()
   const {
     data: teacherProfile,
     isLoading,
-    isFetching,
+    isFetching
   } = useGetQuery({
     key: KEYS.teacherProfile,
     url: URLS.teacherProfile,
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`,
+      Authorization: `Bearer ${session?.accessToken}`
     },
-    enabled: !!session?.accessToken,
-  });
-  const router = useRouter();
+    enabled: !!session?.accessToken
+  })
+  const router = useRouter()
   return (
-    <MainWrapper title={`${t("profile")}`}>
+    <LayoutAdmin title={`${t('profile')}`}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div className="col-span-5 border border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
             <Image
-              src={"/images/avatar-profile.png"}
+              src={'/images/avatar-profile.png'}
               alt="avatar"
               width={100}
               height={100}
@@ -40,7 +40,7 @@ const Index = () => {
             />
 
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
-              {get(teacherProfile, "data.full_name", "")}
+              {get(teacherProfile, 'data.full_name', '')}
             </h3>
             <p className="text-[#8A8A8E] text-[15px]">ID:123023020</p>
           </div>
@@ -50,55 +50,55 @@ const Index = () => {
               <ul>
                 <li>
                   <ProfileDetails
-                    detailIcon={"phone"}
-                    title={"Номер телефона"}
-                    desc={`+${get(teacherProfile, "data.phone", "")}`}
+                    detailIcon={'phone'}
+                    title={'Номер телефона'}
+                    desc={`+${get(teacherProfile, 'data.phone', '')}`}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
-                    detailIcon={"email"}
-                    title={"Email адрес"}
-                    desc={get(teacherProfile, "data.email", "")}
+                    detailIcon={'email'}
+                    title={'Email адрес'}
+                    desc={get(teacherProfile, 'data.email', '')}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
-                    detailIcon={"calendar"}
-                    title={"Дата рождения"}
-                    desc={get(teacherProfile, "data.brithday", "")}
+                    detailIcon={'calendar'}
+                    title={'Дата рождения'}
+                    desc={get(teacherProfile, 'data.brithday', '')}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
-                    detailIcon={"region"}
-                    title={"Регион"}
-                    desc={get(teacherProfile, "data.region", "")}
+                    detailIcon={'region'}
+                    title={'Регион'}
+                    desc={get(teacherProfile, 'data.region', '')}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
-                    detailIcon={"region"}
-                    title={"Область"}
-                    desc={get(teacherProfile, "data.districts", "")}
+                    detailIcon={'region'}
+                    title={'Область'}
+                    desc={get(teacherProfile, 'data.districts', '')}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
-                    detailIcon={"address"}
-                    title={"Адрес"}
-                    desc={get(teacherProfile, "data.address", "")}
+                    detailIcon={'address'}
+                    title={'Адрес'}
+                    desc={get(teacherProfile, 'data.address', '')}
                   />
                 </li>
               </ul>
 
               <button
-                onClick={() => router.push("/dashboard/teacher/profile/1")}
+                onClick={() => router.push('/dashboard/teacher/profile/1')}
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
@@ -159,8 +159,8 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </MainWrapper>
-  );
-};
+    </LayoutAdmin>
+  )
+}
 
-export default Index; 
+export default Index

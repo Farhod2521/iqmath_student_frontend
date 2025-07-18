@@ -1,4 +1,4 @@
-import MainWrapper from '@/layout/MainWrapper'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 import Recommendations from '@/modules/student/subjects/pages/Recommendations'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next'
 function Index() {
   const { t } = useTranslation()
   return (
-    <MainWrapper title={t('recommended')}>
+    <LayoutAdmin title={t('recommended')}>
       <Recommendations />
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 

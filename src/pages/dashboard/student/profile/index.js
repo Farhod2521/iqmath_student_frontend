@@ -8,8 +8,8 @@ import { URLS } from '@/constants/url'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import { Avatar, AvatarIcon, Button, Card } from '@heroui/react'
-import MainWrapper from '@/layout/MainWrapper'
 import { useTranslation } from 'react-i18next'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -29,7 +29,7 @@ const Index = () => {
   const router = useRouter()
 
   return (
-    <MainWrapper title={t('profile')}>
+    <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
         <Card className="col-span-12 sm:col-span-8 md:col-span-5 border p-4 border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
@@ -172,7 +172,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </MainWrapper>
+    </LayoutAdmin>
   )
 }
 
