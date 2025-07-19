@@ -18,7 +18,7 @@ import toast from 'react-hot-toast'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
-  const { setTab, setPhoneTab } = useAuthTabStore((state) => state)
+  const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup } = useAuthTabStore((state) => state)
   const router = useRouter()
 
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
@@ -42,6 +42,16 @@ function AuthSignUp() {
         {
           onSuccess: (data) => {
             toast.success(t('authSuccess'))
+            
+            // Login/parol ma'lumotlarini ko'rsatish
+            if (data?.data?.login && data?.data?.password) {
+              setLoginCredentials({
+                login: data.data.login,
+                password: data.data.password
+              })
+              setShowCredentialsPopup(true)
+            }
+            
             setPhoneTab(phone)
             setTab('verifySms') 
           },

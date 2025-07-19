@@ -43,5 +43,15 @@
   "approved": "Approved",
   "rejected": "Rejected",
   "checking role": "Checking role...",
-  "redirecting": "Redirecting..."
+  "redirecting": "Redirecting...",
+  "userLoginandPassword": "Your login and password",
+  "copy": "Copy",
+  "yourLogin": "Login",
+  "yourPassword": "Password",
+  "got it": "Got it",
+  "copied": "Copied!",
+  "yourCredentials": "Your credentials",
+  "credentialsMessage": "Registration successful. Please save the following information:",
+  "saveCredentialsWarning": "Please save this information in a secure place. You will need it to log into the system.",
+  "gotIt": "Got it"
 }

@@ -9,6 +9,7 @@ import AuthForgetPassword from './AuthForgetPassword'
 import AuthRecieveCode from './AuthRecieveCode'
 import AuthVerifySms from './AuthVerifySms'
 import AuthNewPassword from './AuthNewPassword'
+import CredentialsPopup from '@/components/modal/CredentialsPopup'
 
 function Auth() {
   const { t } = useTranslation()
@@ -67,6 +68,10 @@ function Auth() {
           <AuthWelcome />
         )}
       </div>
+      
+      {/* Login/parol ko'rsatadigan popup */}
+      <CredentialsPopup />
+      
       <style jsx global>{`
         input:-webkit-autofill,
         input:-webkit-autofill:focus,
