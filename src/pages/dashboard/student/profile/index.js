@@ -102,7 +102,7 @@ const Index = () => {
                     <ProfileDetails
                       detailIcon={'education'}
                       title={'Учреждение'}
-                      desc={`${get(studentProfile, 'data.academy_or_school_name', '')}-maktab`}
+                      desc={`${get(studentProfile, 'data.academy_or_school_name', '')}`}
                     />
                   </li>
                 )}
@@ -113,13 +113,21 @@ const Index = () => {
                       title={t('registeredClass')}
                       desc={
                         i18n.language === 'uz'
-                          ? get(studentProfile, 'data.class_name_uz', '')
-                          : get(studentProfile, 'data.class_name_ru', '')
+                          ? get(studentProfile, 'data.class_name_uz', '').split(' ')[0]  
+                          : get(studentProfile, 'data.class_name_ru', '').split(' ')[0]  
                       }
                     />
                   </li>
                 )}
               </ul>
+
+              <button
+                onClick={() => router.push('/dashboard/student/profile/update')}
+                className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
+              >
+                <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
+                <p className="font-medium">{t('edit')}</p>
+              </button>
             </div>
           </div>
         </Card>

@@ -27,11 +27,11 @@ const Pagination = ({ pageCount, onPageChange, currentPage }) => {
       marginPagesDisplayed={1}
       pageRangeDisplayed={3}
       onPageChange={onPageChange}
-      containerClassName="flex items-center space-x-2 "
-      pageClassName="px-[13px] py-[4px]  border rounded-full cursor-pointer text-[17px] text-gray-600"
+      containerClassName="pagination flex items-center space-x-2"
+      pageClassName=" border rounded-full cursor-pointer text-[17px] text-gray-600 flex items-center justify-center min-w-[40px] min-h-[40px] select-none w-[40px] h-[40px] pointer-events-auto"
       activeClassName="bg-gray-200 font-bold text-black"
-      previousClassName="p-[7px] border rounded-full cursor-pointer"
-      nextClassName="p-[7px] border rounded-full cursor-pointer"
+      previousClassName="p-[7px] border rounded-full cursor-pointer flex items-center justify-center min-w-[40px] min-h-[40px] select-none w-[40px] h-[40px] pointer-events-auto"
+      nextClassName="p-[7px] border rounded-full cursor-pointer flex items-center justify-center min-w-[40px] min-h-[40px] select-none w-[40px] h-[40px] pointer-events-auto"
       disabledClassName="opacity-50 cursor-not-allowed"
       forcePage={currentPage}
     />

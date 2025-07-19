@@ -14,8 +14,11 @@ import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'react-hook-form'
 import { Button, Card } from '@heroui/react'
+import LayoutAdmin from '@/layout/LayoutAdmin'
+import { useTranslation } from 'react-i18next'
 
 const Index = () => {
+  const { t } = useTranslation()
   const { data: session } = useSession()
   const [showDropdownMain, setShowDropdownMain] = useState(false)
   const [showDropdownMail, setShowDropdownMail] = useState(false)
@@ -80,7 +83,7 @@ const Index = () => {
   }
   // headerTitle={"Личные данные"}
   return (
-    <>
+    <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-12 lg:col-span-6 space-y-[12px]">
           {/* Main infos */}
@@ -266,7 +269,7 @@ const Index = () => {
         <Button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">Отменить изменения</Button>
         <Button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">Сохранить изменения</Button>
       </div>
-    </>
+    </LayoutAdmin>
   )
 }
 

@@ -275,3 +275,36 @@ input:-webkit-autofill:active {
 body.landing-no-scroll {
   overflow: hidden !important;
 }
+
+/* Pagination button clickable area fix */
+.pagination li {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+.pagination li a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.pagination li:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.pagination li.active {
+  background-color: #e5e7eb !important;
+  font-weight: bold !important;
+}

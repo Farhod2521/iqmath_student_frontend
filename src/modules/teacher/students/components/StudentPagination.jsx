@@ -24,8 +24,6 @@ function StudentPagination({ pagination, onPageChange, onPageSizeChange, isLoadi
           onChange={handlePageSizeChange}
           disabled={isLoading}
         >
-          <option value={10}>Показать по  10</option>
-          <option value={50}>Показать по 50</option>
           <option value={100}>Показать по 100</option>
           <option value={200}>Показать по 200</option>
           <option value={300}>Показать по 300</option>

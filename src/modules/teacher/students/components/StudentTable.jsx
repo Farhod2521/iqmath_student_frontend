@@ -38,6 +38,11 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       field: "class_name_uz",
       maxWidth: 150,
       cellClass: "text-center",
+      cellRenderer: (params) => {
+        const classText = params.value || '';
+        const classNumber = classText.split(' ')[0];
+        return classNumber;
+      },
     },
     {
       headerName: "Телефон",

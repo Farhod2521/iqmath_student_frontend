@@ -18,7 +18,7 @@ import toast from 'react-hot-toast'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
-  const { setTab, setPhoneTab } = useAuthTabStore.getState()
+  const { setTab, setPhoneTab } = useAuthTabStore((state) => state)
   const router = useRouter()
 
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
@@ -42,8 +42,8 @@ function AuthSignUp() {
         {
           onSuccess: (data) => {
             toast.success(t('authSuccess'))
-            setTab('receiveCode')
             setPhoneTab(phone)
+            setTab('verifySms') 
           },
           onError: (error) => {
             if (error.response?.data?.errors) {

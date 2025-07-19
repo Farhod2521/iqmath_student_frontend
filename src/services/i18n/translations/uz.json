@@ -361,6 +361,10 @@
   "chapters": "Boblar",
   "masteredTopics": "O'zlashtirilgan mavzular",
   "checking role": "Rol tekshirilmoqda...",
-  "redirecting": "Yo'naltirilmoqda..."
+  "redirecting": "Yo'naltirilmoqda...",
+  "enter sms code": "SMS kodni kiriting",
+  "sms code": "SMS kod",
+  "confirmPhoneNumber": "Telefon raqamni tasdiqlash",
+  "confirmPhoneNumberSubtitle": "Kod SMS orqali yuborildi"
 }
 

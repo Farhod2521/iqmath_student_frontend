@@ -100,7 +100,16 @@ export const getMenuItems = (t) => [
     label: t('profile'),
     icon: <LuUser size={26} />,
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.TEACHER],
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
+    key: 'profile',
+    path: '/dashboard/teacher/profile',
+    label: t('profile'),
+    icon: <LuUser size={26} />,
+    disabled: false,
+    roles: [RolesList.TEACHER],
     type: MenuType.LINK
   },
   {

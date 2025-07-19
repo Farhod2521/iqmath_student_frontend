@@ -45,7 +45,7 @@ export const URLS = {
   systemBanner: '/api/v1/management/banner/',
   sendMentor: '/api/v1/func_student/my-unsolved-question/create/',
   statistics: '/api/v1/management/statistics/',
-  studentStatistics: '/api/v1/func_teacher/students/',
+  studentStatistics: 'api/v1/func_student/student-statistics/',
   studentSubjectChapters: '/api/v1/func_teacher/students/',
   // Drag & Drop API endpoints
   reorderSubjects: "/api/v1/func_teacher/subjects/reorder/",

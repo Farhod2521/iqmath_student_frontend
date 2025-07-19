@@ -179,13 +179,7 @@ const Index = () => {
         </div>
 
         <div className="flex items-center gap-x-[12px]">
-          <div onClick={() => handleTab('card')} className={'cursor-pointer'}>
-            <CardIcon color={tab === 'card' ? '#007AFF' : '#59626B'} />
-          </div>
-
-          <div onClick={() => handleTab('list')} className={'cursor-pointer ml-[16px] mr-[40px]'}>
-            <ListIcon color={tab === 'list' ? '#007AFF' : '#59626B'} />
-          </div>
+        
 
           <Button>Добавить группу</Button>
         </div>
