@@ -8,11 +8,14 @@ import NavbarProfile from './NavbarProfile'
 import NavbarStudy from './NavbarStudy'
 import NavbarCoins from './NavbarCoins'
 import LanguageDropdown from '@/components/language'
+import NavbarBackTeacher from './NavbarBackTeacher'
 
 const Navbar = ({ title }) => {
   const router = useRouter()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
+
+  const oldToken = sessionStorage.getItem('old_token')
 
   return (
     <div className="border-b bg-white">
@@ -27,6 +30,7 @@ const Navbar = ({ title }) => {
           {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
         </div>
         <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap ">
+          {oldToken && <NavbarBackTeacher />}
           <NavbarCoins />
           <NavbarPoints />
           <LanguageDropdown />
