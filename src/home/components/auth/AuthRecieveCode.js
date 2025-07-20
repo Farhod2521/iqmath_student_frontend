@@ -22,16 +22,16 @@ const AuthRecieveCode = () => {
   const { setTab, phoneTab } = useAuthTabStore((state) => state)
   const { t } = useTranslation()
   const router = useRouter()
-  
+
   const { isTeacher, isLoading: roleLoading } = useRoleDetection()
 
   // Redirect when role is detected
   useEffect(() => {
     if (shouldRedirect && !roleLoading) {
       if (isTeacher) {
-        router.push('/dashboard/teacher/statistics')
+        router.push(`/dashboard/teacher/statistics?phone=${phoneTab}`)
       } else {
-        router.push('/dashboard/student/subjects')
+        router.push(`/dashboard/student/subjects?phone${phoneTab}`)
       }
       setShouldRedirect(false)
     }
@@ -74,18 +74,18 @@ const AuthRecieveCode = () => {
   const onSubmit = async () => {
     setIsLoading(true)
     try {
-    const formattedPhone = `998${phoneTab.replace(/[^0-9]/g, '')}`
-    const result = await signIn('credentials', {
-      phone: formattedPhone,
-      sms_code: verifyCode,
-      redirect: false // Prevent automatic redirect
-    })
+      const formattedPhone = `998${phoneTab.replace(/[^0-9]/g, '')}`
+      const result = await signIn('credentials', {
+        phone: formattedPhone,
+        sms_code: verifyCode,
+        redirect: false // Prevent automatic redirect
+      })
 
-    if (result?.error) {
-      toast.error('Invalid credentials')
-      setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
-    } else {
-      toast.success('Logged in successfully')
+      if (result?.error) {
+        toast.error('Invalid credentials')
+        setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
+      } else {
+        toast.success('Logged in successfully')
         setShouldRedirect(true)
         // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
@@ -116,18 +116,10 @@ const AuthRecieveCode = () => {
 
   return (
     <div className="space-y-4 min-h-[220px]">
-      <InputPhone
-        value={phoneTab}
-        disabled={true}
-        placeholder={t('phone number')}
-      />
-      <InputPassword
-        value={verifyCode}
-        onChange={(e) => setVerifyCode(e.target.value)}
-        placeholder={t('sms code')}
-      />
+      <InputPhone value={phoneTab} disabled={true} placeholder={t('phone number')} />
+      <InputPassword value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} placeholder={t('sms code')} />
       <div className="flex justify-between items-center text-sm mt-2">
-        <span 
+        <span
           className={`text-white ${timer === 0 ? 'cursor-pointer hover:text-[#5D87FF]' : 'opacity-50'}`}
           onClick={() => {
             if (timer === 0) {
@@ -156,7 +148,9 @@ const AuthRecieveCode = () => {
         <button
           onClick={onSubmit}
           disabled={isButtonLoading || !verifyCode.trim()}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading || !verifyCode.trim() ? 'opacity-70' : ''}`}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
+            isButtonLoading || !verifyCode.trim() ? 'opacity-70' : ''
+          }`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
           {isButtonLoading ? (

@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import SimpleModal from '@/components/modal/simple-modal'
+import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 const ModalConfidentiality = () => {
   const { t } = useTranslation()
@@ -12,7 +13,7 @@ const ModalConfidentiality = () => {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
   const phone = searchParams.get('phone')
-
+  console.log('phone', phone)
   const [copied, setCopied] = useState(false)
   const [showModal, setShowModal] = useState(true)
 
@@ -34,11 +35,11 @@ const ModalConfidentiality = () => {
 
   if (phone && showModal) {
     return (
-      <SimpleModal>
+      <SimpleModal open={showModal}>
         <div className="flex justify-between px-4 py-4">
           <h3 className="text-[19px] font-semibold">{t('confidentiality')}</h3>
           <button onClick={closeModal}>
-            <Image src="/icons/close.svg" alt="close" width={24} height={24} />
+            <IoIosCloseCircleOutline size={24} />
           </button>
         </div>
 
