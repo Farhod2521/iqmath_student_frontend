@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import AuthSignIn from './AuthSignIn'
@@ -9,14 +9,23 @@ import AuthForgetPassword from './AuthForgetPassword'
 import AuthRecieveCode from './AuthRecieveCode'
 import AuthVerifySms from './AuthVerifySms'
 import AuthNewPassword from './AuthNewPassword'
+import CredentialsPopup from '@/components/modal/CredentialsPopup'
 
 function Auth() {
   const { t } = useTranslation()
   const { data: session } = useSession()
 
   const { currentTab } = useAuthTabStore((state) => state)
-  const { setTab } = useAuthTabStore.getState()
+  const { setTab, resetAuth } = useAuthTabStore.getState()
   const handleTabChange = (newTab) => setTab(newTab)
+
+  // Reset auth tab to signIn when user first visits
+  useEffect(() => {
+    // Faqat currentTab undefined, null yoki '' bo'lsa, reset qil
+    if (!session?.accessToken && (!currentTab || currentTab === '')) {
+      resetAuth()
+    }
+  }, [session?.accessToken, currentTab, resetAuth])
 
   return (
     <div className="min-h-screen  w-full flex items-center justify-center relative" style={{backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
@@ -59,6 +68,10 @@ function Auth() {
           <AuthWelcome />
         )}
       </div>
+      
+      {/* Login/parol ko'rsatadigan popup */}
+      <CredentialsPopup />
+      
       <style jsx global>{`
         input:-webkit-autofill,
         input:-webkit-autofill:focus,

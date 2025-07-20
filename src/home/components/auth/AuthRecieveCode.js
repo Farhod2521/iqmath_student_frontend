@@ -10,16 +10,16 @@ import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 const AuthRecieveCode = () => {
   const [timer, setTimer] = useState(120)
-  const [phoneTab, setPhoneTab] = useState('')
   const [verifyCode, setVerifyCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
-  const { setTab } = useAuthTabStore.getState()
+  const { setTab, phoneTab } = useAuthTabStore((state) => state)
   const { t } = useTranslation()
   const router = useRouter()
   
@@ -118,25 +118,47 @@ const AuthRecieveCode = () => {
     <div className="space-y-4 min-h-[220px]">
       <InputPhone
         value={phoneTab}
-        onChange={(e) => setPhoneTab(e.target.value)}
+        disabled={true}
         placeholder={t('phone number')}
       />
       <InputPassword
         value={verifyCode}
-                onChange={(e) => setVerifyCode(e.target.value)}
+        onChange={(e) => setVerifyCode(e.target.value)}
         placeholder={t('sms code')}
-              />
+      />
       <div className="flex justify-between items-center text-sm mt-2">
-        <span className="text-white">{t('resend code')}</span>
+        <span 
+          className={`text-white ${timer === 0 ? 'cursor-pointer hover:text-[#5D87FF]' : 'opacity-50'}`}
+          onClick={() => {
+            if (timer === 0) {
+              resendSMSCode(
+                { url: URLS.resendSMSCode, attributes: { phone: `998${phoneTab.replace(/[^0-9]/g, '')}` } },
+                {
+                  onSuccess: () => {
+                    toast.success('SMS kod qayta yuborildi')
+                    setTimer(120)
+                    localStorage.setItem('timer', 120)
+                    localStorage.setItem('timerTimestamp', Date.now().toString())
+                  },
+                  onError: () => {
+                    toast.error('SMS kod yuborishda xatolik')
+                  }
+                }
+              )
+            }
+          }}
+        >
+          {t('resend code')}
+        </span>
         <span className="text-white">{formattedTime}</span>
-            </div>
+      </div>
       <div className="w-full flex justify-center items-center">
-            <button
-              onClick={onSubmit}
-          disabled={isButtonLoading || timer > 0}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading || timer > 0 ? 'opacity-70' : ''}`}
+        <button
+          onClick={onSubmit}
+          disabled={isButtonLoading || !verifyCode.trim()}
+          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isButtonLoading || !verifyCode.trim() ? 'opacity-70' : ''}`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
-            >
+        >
           {isButtonLoading ? (
             <div className="flex items-center justify-center gap-2">
               <SimpleLoader />
@@ -145,7 +167,7 @@ const AuthRecieveCode = () => {
           ) : (
             t('verify')
           )}
-            </button>
+        </button>
       </div>
     </div>
   )

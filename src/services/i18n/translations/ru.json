@@ -59,7 +59,7 @@
   "copy": "Копирование",
   "got it": "Понятно",
   "successRegister": "Вы успешно зарегистрировались.",
-  "userLoginandPassword": "Ваш логин и пароль для входа",
+  "userLoginandPassword": "Ваш логин и пароль",
   "myPage": "Моя страница",
   "region": "Регион",
   "district": "Район/Город",
@@ -361,5 +361,15 @@
   "chapters": "Главы",
   "masteredTopics": "Освоенные темы",
   "checking role": "Проверка роли...",
-  "redirecting": "Перенаправление..."
+  "redirecting": "Перенаправление...",
+  "userLoginandPassword": "Ваш логин и пароль",
+  "copy": "Копировать",
+  "yourLogin": "Логин",
+  "yourPassword": "Пароль",
+  "got it": "Понятно",
+  "copied": "Скопировано!",
+  "yourCredentials": "Ваши данные",
+  "credentialsMessage": "Регистрация прошла успешно. Сохраните следующие данные:",
+  "saveCredentialsWarning": "Сохраните эти данные в безопасном месте. Они понадобятся вам для входа в систему.",
+  "gotIt": "Понятно"
 }

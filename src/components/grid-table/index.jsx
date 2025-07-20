@@ -34,17 +34,19 @@ const GridExample = ({ rowData = [], colDefs = [] }) => {
       <div className="flex justify-between items-center mt-[36px]">
         <div className="relative inline-block">
           <select
-            className="appearance-none bg-white border border-gray-300 rounded-[8px] px-[16px] py-[9px] w-36 text-black text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="appearance-none bg-white border border-gray-300 rounded-[8px] px-[16px] py-[9px] w-40 text-black text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
             value={pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
               setCurrentPage(0);
             }}
           >
-            <option value={5}>Показать по 5</option>
-            <option value={10}>Показать по 10</option>
-            <option value={20}>Показать по 20</option>
-            <option value={50}>Показать по 50</option>
+            <option value={100}>Показать по 100</option>
+            <option value={200}>Показать по 200</option>
+            <option value={300}>Показать по 300</option>
+            <option value={400}>Показать по 400</option>
+            <option value={500}>Показать по 500</option>
+            <option value={1000}>Показать по 1000</option>
           </select>
           <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none rotate-90 ">
             <svg

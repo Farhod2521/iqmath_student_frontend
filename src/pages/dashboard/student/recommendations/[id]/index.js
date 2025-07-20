@@ -83,7 +83,7 @@ const SubjectsPage = () => {
                       onClick={() =>
                         router.push(`/dashboard/student/recommendations/${selectedChapterId}/${topic.id}/question`)
                       }
-                      className="flex cursor-pointer justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
+                      className="flex cursor-pointer items-center  justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
                     >
                       <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
                       <div className="flex min-w-10 items-center justify-center">

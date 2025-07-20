@@ -26,7 +26,7 @@ const CardSubject = ({ item, onClick }) => {
             e.target.src = '/images/education.png' // Fallback image
           }}
         />
-        <div className="justify-center text-white py-3 text-center bg-[#5d87ff] absolute bottom-0 w-full z-10 rounded-sm">
+        <div className="justify-center text-white  py-3 text-center bg-[#5d87ff] absolute bottom-0 w-full z-10 rounded-sm">
           {label}
         </div>
       </Card>

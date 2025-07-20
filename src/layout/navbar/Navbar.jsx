@@ -7,6 +7,7 @@ import NavbarPoints from './NavbarPoints'
 import NavbarProfile from './NavbarProfile'
 import NavbarStudy from './NavbarStudy'
 import NavbarCoins from './NavbarCoins'
+import LanguageDropdown from '@/components/language'
 
 const Navbar = ({ title }) => {
   const router = useRouter()
@@ -28,7 +29,7 @@ const Navbar = ({ title }) => {
         <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap ">
           <NavbarCoins />
           <NavbarPoints />
-          <NavbarLangue />
+          <LanguageDropdown />
           <NavbarProfile />
         </div>
       </div>

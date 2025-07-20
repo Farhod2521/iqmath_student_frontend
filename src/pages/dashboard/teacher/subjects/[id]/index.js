@@ -543,6 +543,7 @@ const Index = () => {
                                 className="group border-b hover:bg-gray-50 transition-all"
                               >
                                 <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
+                                
                                 <td
                                   className="p-[12px] text-left text-[15px] w-[50%] font-medium transition-all cursor-pointer hover:underline"
                                   onClick={(e) => {
