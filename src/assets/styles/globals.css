@@ -247,9 +247,6 @@ img {
   margin: 0 auto;
 }
 
-
-
-
 input:-webkit-autofill,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:hover,
@@ -262,15 +259,13 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.no-scrollbar::-webkit-scrollbar{
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-.no-scrollbar::-webkit-scrollbar-track{
+.no-scrollbar::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-
-
 
 body.landing-no-scroll {
   overflow: hidden !important;

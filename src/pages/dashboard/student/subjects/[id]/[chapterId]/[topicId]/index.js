@@ -13,10 +13,11 @@ import { KEYS } from '@/constants/key'
 import RightIcon from '@/components/icons/right'
 import VideoPlayer from '@/components/video-player'
 import ContentLoader from '@/components/loader/content-loader'
-import { Button } from '@heroui/react'
+
 import parse from 'html-react-parser'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import { Button } from '@heroui/react'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -147,11 +148,16 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-x-2">
-              <Button onPress={() => setShowPlayer(true)} className="rounded-md text-sm sm:text-base px-4 py-2">
+              <Button
+                variant="bordered"
+                type="button"
+                onPress={() => setShowPlayer(true)}
+                className="rounded-md text-sm sm:text-base px-4 py-2"
+              >
                 {t('watch')}
               </Button>
               <Link href={`/dashboard/student/subjects/${id}/${chapterId}/${selectedTopic?.id}/question`}>
-                <Button className="px-4 py-2 rounded-md text-sm sm:text-base" color="primary">
+                <Button variant="flat" className="px-4 py-2 rounded-md text-sm sm:text-base" color="primary">
                   {t('examples')}
                 </Button>
               </Link>
