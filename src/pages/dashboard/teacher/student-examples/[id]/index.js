@@ -44,14 +44,14 @@ const StudentExampleDetailPage = () => {
   const questions = data.question_json || []
 
   return (
-    <LayoutAdmin title={t('studentExampleDetail')}>
-      <StudentExampleDetailLayout
-        questions={questions}
-        selectedIdx={selectedIdx}
-        setSelectedIdx={setSelectedIdx}
-        i18n={i18n}
-      />
-    </LayoutAdmin>
+    // <LayoutAdmin title={t('studentExampleDetail')}>
+    <StudentExampleDetailLayout
+      questions={questions}
+      selectedIdx={selectedIdx}
+      setSelectedIdx={setSelectedIdx}
+      i18n={i18n}
+    />
+    // </LayoutAdmin>/
   )
 }
 

@@ -7,7 +7,7 @@ import { request } from '@/services/api'
 function Students() {
   const [isLoadingData, setIsLoadingData] = useState(false)
   const [filterData, setFilterData] = useState({})
-  const [pagination, setPagination] = useState({ current: 1, limit: 10, total: 0, totalPages: 0 })
+  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
   const [data, setData] = useState([])
 
   const getData = useCallback(

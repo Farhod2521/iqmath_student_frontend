@@ -1,19 +1,19 @@
-import Pagination from "@/components/pagination";
-import React from "react";
+import Pagination from '@/components/pagination'
+import React from 'react'
 
 function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, isLoading }) {
-  const { current, limit, total, totalPages } = pagination;
-  
+  const { current, limit, total, totalPages } = pagination
+
   const handlePageChange = ({ selected }) => {
-    onPageChange(selected);
-  };
+    onPageChange(selected)
+  }
 
   const handlePageSizeChange = (e) => {
-    onPageSizeChange(Number(e.target.value));
-  };
+    onPageSizeChange(Number(e.target.value))
+  }
 
-  const startItem = (current - 1) * limit + 1;
-  const endItem = Math.min(current * limit, total);
+  const startItem = (current - 1) * limit + 1
+  const endItem = Math.min(current * limit, total)
 
   return (
     <div className="flex justify-between items-center mt-[36px]">
@@ -24,8 +24,6 @@ function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, 
           onChange={handlePageSizeChange}
           disabled={isLoading}
         >
-          <option value={10}>Показать по  10</option>
-          <option value={50}>Показать по 50</option>
           <option value={100}>Показать по 100</option>
           <option value={200}>Показать по 200</option>
           <option value={300}>Показать по 300</option>
@@ -39,7 +37,7 @@ function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, 
               fillRule="evenodd"
               clipRule="evenodd"
               d="M11.6169 10L7.1678 5.0814C6.94407 4.83401 6.94407 4.43292 7.1678 4.18554C7.39153 3.93815 7.75428 3.93815 7.97801 4.18554L12.8322 9.55207C13.0559 9.79945 13.0559 10.2005 12.8322 10.4479L7.97801 15.8145C7.75428 16.0618 7.39153 16.0618 7.1678 15.8145C6.94407 15.5671 6.94407 15.166 7.1678 14.9186L11.6169 10Z"
-              fill={"#000"}
+              fill={'#000'}
             />
           </svg>
         </div>
@@ -58,7 +56,7 @@ function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, 
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-export default StudentExamplePagination; 
+export default StudentExamplePagination
