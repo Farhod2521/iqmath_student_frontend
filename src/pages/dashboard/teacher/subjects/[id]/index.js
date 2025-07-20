@@ -28,6 +28,7 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-ki
 import SortableTableRow from '@/modules/teacher/subjects/components/sortable-table-row'
 import Link from 'next/link'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
 
 const Index = () => {
   const router = useRouter()
@@ -362,255 +363,262 @@ const Index = () => {
 
   return (
     <LayoutAdmin title={'Mavzular'}>
-      <div className="font-sf">
-        <div className="flex justify-between mb-2">
-          <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
-          <Button
-            classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
-            onclick={() => {
-              setOpenChapterModal(true)
-              setNewChapter('')
-              setNewChapterRu('')
-              setModalTypeOfChapter('create')
-            }}
-          >
-            {t('createChapter')}
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-12 gap-[24px]">
-          <div className="lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] rounded-[12px]">
-            <DndContext collisionDetection={closestCenter} onDragEnd={handleChaptersDragEnd}>
-              <table className="w-full table-auto border-collapse">
-                <thead>
-                  <tr className="border-b border-b-[#E9E9E9] p-[12px]">
-                    <th className="p-[12px] text-center">
-                      <button
-                        onClick={() => setIsChaptersDragEnabled((prev) => !prev)}
-                        className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
-                        title="Tartiblash"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                          <path d="m15 5 4 4" />
-                        </svg>
-                      </button>
-                    </th>
-                    <th className="p-[12px] text-center">#</th>
-                    <th className="p-[12px] text-left">{t('title')}</th>
-                    <th className="p-[12px] text-right">{t('action')}</th>
-                  </tr>
-                </thead>
-                <SortableContext
-                  items={chapters}
-                  strategy={verticalListSortingStrategy}
-                  disabled={!isChaptersDragEnabled}
-                >
-                  <tbody>
-                    {chapters.map((chapter, index) => {
-                      const isActive = selectedId === get(chapter, 'id')
-
-                      return (
-                        <SortableTableRow
-                          key={chapter.id}
-                          id={chapter.id}
-                          showDragHandle={isChaptersDragEnabled}
-                          onClick={() => setSelectedId(get(chapter, 'id'))}
-                          isActive={isActive}
-                          className="group border-b"
-                        >
-                          <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
-                          <td className="p-[12px] text-left w-[60%] text-[15px] font-medium transition-all">
-                            {i18n.language === 'uz' ? get(chapter, 'name_uz') : get(chapter, 'name_ru')}
-                          </td>
-                          <td className="p-[12px] text-right rounded-br-[12px]">
-                            <div className="flex justify-end gap-1">
-                              <Button
-                                onclick={(e) => {
-                                  e.stopPropagation()
-                                  setOpenTopicsModal(true)
-                                  setTopicName('')
-                                  setTopicNameRu('')
-                                  setContent('')
-                                  setContentRu('')
-                                  setVideoLink('')
-                                  setSelectedId(get(chapter, 'id'))
-                                }}
-                                py="py-[8px] text-sm"
-                                classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
-                              >
-                                {t('createTopic')}
-                              </Button>
-                              <Button
-                                onclick={(e) => {
-                                  e.stopPropagation()
-                                  setOpenChapterModal(true)
-                                  setSelectedId(get(chapter, 'id'))
-                                  setNewChapter(get(chapter, 'name_uz'))
-                                  setNewChapterRu(get(chapter, 'name_ru'))
-                                  setModalTypeOfChapter('update')
-                                }}
-                                py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
-                              >
-                                <EditIcon color="white" />
-                              </Button>
-                              <Button
-                                onclick={(e) => {
-                                  e.stopPropagation()
-                                  setOpenChapterModal(true)
-                                  setSelectedId(get(chapter, 'id'))
-                                  setModalTypeOfChapter('delete')
-                                }}
-                                classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
-                              >
-                                <TrashIcon color="white" />
-                              </Button>
-                            </div>
-                          </td>
-                        </SortableTableRow>
-                      )
-                    })}
-                  </tbody>
-                </SortableContext>
-              </table>
-            </DndContext>
+      <MathJaxContext
+        config={{
+          loader: { load: ['input/tex', 'output/chtml'] }
+        }}
+      >
+        <div className="font-sf">
+          <div className="flex justify-between mb-2">
+            <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
+            <Button
+              classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
+              onclick={() => {
+                setOpenChapterModal(true)
+                setNewChapter('')
+                setNewChapterRu('')
+                setModalTypeOfChapter('create')
+              }}
+            >
+              {t('createChapter')}
+            </Button>
           </div>
 
-          {selectedId && (
-            <div
-              className={`lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] ${
-                topics.length > 0 ? 'border-[#E9E9E9]' : 'border-[#FF9500] bg-[#FFF4E5]'
-              } rounded-[12px]`}
-            >
-              {isLoadingTopics || isFetchingTopics ? (
-                <ContentLoader />
-              ) : (
-                <div>
-                  {topics.length > 0 ? (
-                    <DndContext collisionDetection={closestCenter} onDragEnd={handleTopicsDragEnd}>
-                      <table className="w-full table-auto border-collapse">
-                        <thead>
-                          <tr className="border-b border-b-[#E9E9E9] p-[12px]">
-                            <th className="p-[12px] text-center">
-                              <button
-                                onClick={() => setIsTopicsDragEnabled((prev) => !prev)}
-                                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
-                                title="Tartiblash"
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="20"
-                                  height="20"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                >
-                                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                  <path d="m15 5 4 4" />
-                                </svg>
-                              </button>
-                            </th>
-                            <th className="p-[12px] text-center">#</th>
-                            <th className="p-[12px] text-left">{t('title')}</th>
-                            <th className="p-[12px] text-center">{t('questionCount')}</th>
-                            <th className="p-[12px] text-left">{t('action')}</th>
-                          </tr>
-                        </thead>
-                        <SortableContext
-                          items={topics}
-                          strategy={verticalListSortingStrategy}
-                          disabled={!isTopicsDragEnabled}
+          <div className="grid grid-cols-12 gap-[24px]">
+            <div className="lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] rounded-[12px]">
+              <DndContext collisionDetection={closestCenter} onDragEnd={handleChaptersDragEnd}>
+                <table className="w-full table-auto border-collapse">
+                  <thead>
+                    <tr className="border-b border-b-[#E9E9E9] p-[12px]">
+                      <th className="p-[12px] text-center">
+                        <button
+                          onClick={() => setIsChaptersDragEnabled((prev) => !prev)}
+                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                          title="Tartiblash"
                         >
-                          <tbody>
-                            {topics.map((topic, index) => (
-                              <SortableTableRow
-                                key={topic.id}
-                                id={topic.id}
-                                showDragHandle={isTopicsDragEnabled}
-                                className="group border-b hover:bg-gray-50 transition-all"
-                              >
-                                <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
-                                
-                                <td
-                                  className="p-[12px] text-left text-[15px] w-[50%] font-medium transition-all cursor-pointer hover:underline"
-                                  onClick={(e) => {
-                                    e.stopPropagation
-                                    router.push(`/dashboard/teacher/subjects/${id}/${selectedId}/${topic.id}`)
-                                  }}
-                                >
-                                  {i18n.language === 'uz' ? topic.name_uz : topic.name_ru}
-                                </td>
-                                <td className="p-3 align-middle">
-                                  <span className="flex items-center gap-1">
-                                    <QuestionCountIcon size={16} color="#FF9500" />
-                                    {topic.question_count}
-                                  </span>
-                                </td>
-                                <td className="p-3 text-right align-middle">
-                                  <div className="flex items-center justify-end gap-1">
-                                    <Button
-                                      onclick={(e) => {
-                                        e.stopPropagation()
-                                        setOpenTopicsModal(true)
-                                        setSelectedTopic(topic)
-                                        setTopicName(topic.name_uz)
-                                        setTopicNameRu(topic.name_ru)
-                                        setContent(topic.content_uz)
-                                        setContentRu(topic.content_ru)
-                                        setVideoLink(topic.video_url_uz)
-                                        setVideoLinkRu(topic.video_url_ru)
-                                        setModalTypeOfTopic('update')
-                                      }}
-                                      py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] border"
-                                    >
-                                      <EditIcon color="white" />
-                                    </Button>
-                                    <Button
-                                      onclick={(e) => {
-                                        e.stopPropagation()
-                                        setOpenTopicsModal(true)
-                                        setSelectedTopic(topic)
-                                        setModalTypeOfTopic('delete')
-                                      }}
-                                      classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
-                                    >
-                                      <TrashIcon color="white" />
-                                    </Button>
-                                  </div>
-                                </td>
-                              </SortableTableRow>
-                            ))}
-                          </tbody>
-                        </SortableContext>
-                      </table>
-                    </DndContext>
-                  ) : (
-                    <div className="flex items-center justify-center h-[200px] gap-2">
-                      <InfoCircleIcon />
-                      <h3 className="text-[16px] font-normal text-[#8E8E93]">{/* {t("noTopics")} */}</h3>
-                      <p className="">Bu bobda mavzular mavjud emas</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                            <path d="m15 5 4 4" />
+                          </svg>
+                        </button>
+                      </th>
+                      <th className="p-[12px] text-center">#</th>
+                      <th className="p-[12px] text-left">{t('title')}</th>
+                      <th className="p-[12px] text-right">{t('action')}</th>
+                    </tr>
+                  </thead>
+                  <SortableContext
+                    items={chapters}
+                    strategy={verticalListSortingStrategy}
+                    disabled={!isChaptersDragEnabled}
+                  >
+                    <tbody>
+                      {chapters.map((chapter, index) => {
+                        const isActive = selectedId === get(chapter, 'id')
 
+                        return (
+                          <SortableTableRow
+                            key={chapter.id}
+                            id={chapter.id}
+                            showDragHandle={isChaptersDragEnabled}
+                            onClick={() => setSelectedId(get(chapter, 'id'))}
+                            isActive={isActive}
+                            className="group border-b"
+                          >
+                            <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
+                            <td className="p-[12px] text-left w-[60%] text-[15px] font-medium transition-all">
+                              <MathJax dynamic>
+                                {i18n.language === 'uz' ? get(chapter, 'name_uz') : get(chapter, 'name_ru')}
+                              </MathJax>
+                            </td>
+                            <td className="p-[12px] text-right rounded-br-[12px]">
+                              <div className="flex justify-end gap-1">
+                                <Button
+                                  onclick={(e) => {
+                                    e.stopPropagation()
+                                    setOpenTopicsModal(true)
+                                    setTopicName('')
+                                    setTopicNameRu('')
+                                    setContent('')
+                                    setContentRu('')
+                                    setVideoLink('')
+                                    setSelectedId(get(chapter, 'id'))
+                                  }}
+                                  py="py-[8px] text-sm"
+                                  classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
+                                >
+                                  {t('createTopic')}
+                                </Button>
+                                <Button
+                                  onclick={(e) => {
+                                    e.stopPropagation()
+                                    setOpenChapterModal(true)
+                                    setSelectedId(get(chapter, 'id'))
+                                    setNewChapter(get(chapter, 'name_uz'))
+                                    setNewChapterRu(get(chapter, 'name_ru'))
+                                    setModalTypeOfChapter('update')
+                                  }}
+                                  py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
+                                >
+                                  <EditIcon color="white" />
+                                </Button>
+                                <Button
+                                  onclick={(e) => {
+                                    e.stopPropagation()
+                                    setOpenChapterModal(true)
+                                    setSelectedId(get(chapter, 'id'))
+                                    setModalTypeOfChapter('delete')
+                                  }}
+                                  classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
+                                >
+                                  <TrashIcon color="white" />
+                                </Button>
+                              </div>
+                            </td>
+                          </SortableTableRow>
+                        )
+                      })}
+                    </tbody>
+                  </SortableContext>
+                </table>
+              </DndContext>
+            </div>
+
+            {selectedId && (
+              <div
+                className={`lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] ${
+                  topics.length > 0 ? 'border-[#E9E9E9]' : 'border-[#FF9500] bg-[#FFF4E5]'
+                } rounded-[12px]`}
+              >
+                {isLoadingTopics || isFetchingTopics ? (
+                  <ContentLoader />
+                ) : (
+                  <div>
+                    {topics.length > 0 ? (
+                      <DndContext collisionDetection={closestCenter} onDragEnd={handleTopicsDragEnd}>
+                        <table className="w-full table-auto border-collapse">
+                          <thead>
+                            <tr className="border-b border-b-[#E9E9E9] p-[12px]">
+                              <th className="p-[12px] text-center">
+                                <button
+                                  onClick={() => setIsTopicsDragEnabled((prev) => !prev)}
+                                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                                  title="Tartiblash"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                    <path d="m15 5 4 4" />
+                                  </svg>
+                                </button>
+                              </th>
+                              <th className="p-[12px] text-center">#</th>
+                              <th className="p-[12px] text-left">{t('title')}</th>
+                              <th className="p-[12px] text-center">{t('questionCount')}</th>
+                              <th className="p-[12px] text-left">{t('action')}</th>
+                            </tr>
+                          </thead>
+                          <SortableContext
+                            items={topics}
+                            strategy={verticalListSortingStrategy}
+                            disabled={!isTopicsDragEnabled}
+                          >
+                            <tbody>
+                              {topics.map((topic, index) => (
+                                <SortableTableRow
+                                  key={topic.id}
+                                  id={topic.id}
+                                  showDragHandle={isTopicsDragEnabled}
+                                  className="group border-b hover:bg-gray-50 transition-all"
+                                >
+                                  <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
+
+                                  <td
+                                    className="p-[12px] text-left text-[15px] w-[50%] font-medium transition-all cursor-pointer hover:underline"
+                                    onClick={(e) => {
+                                      e.stopPropagation
+                                      router.push(`/dashboard/teacher/subjects/${id}/${selectedId}/${topic.id}`)
+                                    }}
+                                  >
+                                    <MathJax dynamic>{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</MathJax>
+                                  </td>
+                                  <td className="p-3 align-middle">
+                                    <span className="flex items-center gap-1">
+                                      <QuestionCountIcon size={16} color="#FF9500" />
+                                      {topic.question_count}
+                                    </span>
+                                  </td>
+                                  <td className="p-3 text-right align-middle">
+                                    <div className="flex items-center justify-end gap-1">
+                                      <Button
+                                        onclick={(e) => {
+                                          e.stopPropagation()
+                                          setOpenTopicsModal(true)
+                                          setSelectedTopic(topic)
+                                          setTopicName(topic.name_uz)
+                                          setTopicNameRu(topic.name_ru)
+                                          setContent(topic.content_uz)
+                                          setContentRu(topic.content_ru)
+                                          setVideoLink(topic.video_url_uz)
+                                          setVideoLinkRu(topic.video_url_ru)
+                                          setModalTypeOfTopic('update')
+                                        }}
+                                        py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] border"
+                                      >
+                                        <EditIcon color="white" />
+                                      </Button>
+                                      <Button
+                                        onclick={(e) => {
+                                          e.stopPropagation()
+                                          setOpenTopicsModal(true)
+                                          setSelectedTopic(topic)
+                                          setModalTypeOfTopic('delete')
+                                        }}
+                                        classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
+                                      >
+                                        <TrashIcon color="white" />
+                                      </Button>
+                                    </div>
+                                  </td>
+                                </SortableTableRow>
+                              ))}
+                            </tbody>
+                          </SortableContext>
+                        </table>
+                      </DndContext>
+                    ) : (
+                      <div className="flex items-center justify-center h-[200px] gap-2">
+                        <InfoCircleIcon />
+                        <h3 className="text-[16px] font-normal text-[#8E8E93]">{/* {t("noTopics")} */}</h3>
+                        <p className="">Bu bobda mavzular mavjud emas</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </MathJaxContext>
       {openChapterModal && (
         <SimpleModalTeacher>
           <div className="flex justify-between px-[16px] py-[18px]">
