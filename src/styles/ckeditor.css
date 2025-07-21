@@ -1,0 +1,252 @@
+/* CKEditor balandlik sozlamalari - Mentor bilan bir xil */
+.ck-editor__editable,
+.ck.ck-editor__main > .ck-editor__editable,
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused),
+.ck.ck-editor__main > .ck-editor__editable.ck-focused {
+  min-height: 200px !important;
+  height: 200px !important;
+  max-height: none !important;
+}
+
+/* CKEditor container balandlik */
+.ck.ck-editor {
+  min-height: 250px !important;
+  height: auto !important;
+}
+
+.ck.ck-editor__main {
+  min-height: 200px !important;
+  height: auto !important;
+}
+
+/* CKEditor wrapper balandlik */
+.ck-editor-wrapper {
+  min-height: 200px !important;
+  height: auto !important;
+}
+
+/* Barcha CKEditor elementlari uchun */
+.ck.ck-editor__editable_inline {
+  min-height: 200px !important;
+  height: 200px !important;
+}
+
+/* CKEditor content area */
+.ck-content {
+  min-height: 200px !important;
+  height: 200px !important;
+}
+
+/* Toolbar elementlari to'liq ko'rinsin */
+.ck.ck-toolbar {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+}
+
+.ck.ck-toolbar__items {
+  flex-wrap: nowrap !important;
+  min-width: max-content !important;
+}
+
+.ck.ck-toolbar__group {
+  flex-shrink: 0 !important;
+}
+
+/* Toolbar scroll qilish */
+.ck.ck-toolbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+.ck.ck-toolbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.ck.ck-toolbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ck.ck-toolbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
+/* CKEditor border va border-radius */
+.ck.ck-editor__editable {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+}
+
+.ck.ck-editor__editable:focus {
+  border-color: #2F66FF !important;
+  box-shadow: 0 0 0 2px rgba(47, 102, 255, 0.2) !important;
+}
+
+/* CKEditor toolbar styling */
+.ck.ck-toolbar {
+  border: 1px solid #ccc !important;
+  border-bottom: none !important;
+  border-radius: 4px 4px 0 0 !important;
+  background: #f8f9fa !important;
+}
+
+/* CKEditor button styling */
+.ck.ck-button {
+  border-radius: 3px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ck.ck-button:hover {
+  background-color: #e9ecef !important;
+}
+
+.ck.ck-button.ck-on {
+  background-color: #2F66FF !important;
+  color: white !important;
+}
+
+/* ==========================================================================
+   IMAGE STYLES
+   ========================================================================== */
+
+/* Image container */
+.ck.ck-image {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Image caption */
+.ck.ck-image__caption {
+  text-align: center !important;
+  font-style: italic !important;
+  color: #666 !important;
+  font-size: 14px !important;
+  margin-top: 8px !important;
+}
+
+/* Image upload form */
+.ck.ck-image-upload-form {
+  padding: 16px !important;
+  border: 2px dashed #ccc !important;
+  border-radius: 8px !important;
+  text-align: center !important;
+  background: #f8f9fa !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Image upload form hover */
+.ck.ck-image-upload-form:hover {
+  border-color: #2F66FF !important;
+  background: #f0f4ff !important;
+  transform: scale(1.02) !important;
+}
+
+/* ==========================================================================
+   SOURCE EDITING STYLES
+   ========================================================================== */
+
+/* Source editing area */
+.ck.ck-source-editing-area {
+  font-family: 'Courier New', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  background-color: #f8f9fa !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+  color: #333 !important;
+}
+
+/* ==========================================================================
+   MAXIMIZE STYLES
+   ========================================================================== */
+
+/* Maximized editor */
+.ck.ck-editor__editable.ck-maximized {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  background: white !important;
+}
+
+/* ==========================================================================
+   LOADING STATES
+   ========================================================================== */
+
+/* Editor wrapper */
+.ck-editor-wrapper {
+  min-height: 200px !important;
+  height: auto !important;
+  position: relative !important;
+}
+
+/* Loading state */
+.ck-editor-loading {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 200px !important;
+  background: #f8f9fa !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .ck.ck-toolbar {
+    padding: 8px !important;
+  }
+  
+  .ck.ck-button {
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+  }
+  
+  .ck.ck-editor__editable {
+    padding: 8px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
+/* Custom height classes */
+.ck-editor-height-small {
+  min-height: 150px !important;
+  height: 150px !important;
+}
+
+.ck-editor-height-medium {
+  min-height: 200px !important;
+  height: 200px !important;
+}
+
+.ck-editor-height-large {
+  min-height: 300px !important;
+  height: 300px !important;
+}
+
+/* Custom theme classes */
+.ck-editor-theme-light {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+}
+
+.ck-editor-theme-dark {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+} 

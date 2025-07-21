@@ -6,6 +6,7 @@ import React from 'react'
 
 import reactQueryClient from '@/config/react-query'
 import '@/assets/styles/globals.css'
+import '@/styles/ckeditor.css'
 import '@/services/i18n' // i18n'ni faqat import qilish kifoya!
 
 import { UserProfileProvider } from '@/context/responseProvider'

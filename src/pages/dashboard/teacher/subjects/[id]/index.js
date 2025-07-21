@@ -11,7 +11,7 @@ import Image from 'next/image'
 import Input from '@/components/input'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
-import { CKEditor } from 'ckeditor4-react'
+import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useQueryClient } from '@tanstack/react-query'
 import EditIcon from '@/components/icons/edit'
@@ -29,6 +29,43 @@ import SortableTableRow from '@/modules/teacher/subjects/components/sortable-tab
 import Link from 'next/link'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
+
+// ClientOnly helper
+function ClientOnly({ children }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return children;
+}
+
+const CKEditor = dynamic(() => import("@ckeditor/ckeditor5-react").then(mod => mod.CKEditor), { ssr: false });
+let ClassicEditor;
+if (typeof window !== "undefined") {
+  ClassicEditor = require("@ckeditor/ckeditor5-build-classic");
+}
+
+const mentorCKEditorConfig = {
+  toolbar: {
+    items: [
+      'bold', 'italic', 'strikethrough',
+      '|',
+      'bulletedList', 'numberedList', 'outdent', 'indent', 'blockQuote',
+      '|',
+      'imageUpload', 'table', 'specialCharacters',
+      '|',
+      'link', 'unlink',
+      '|',
+      'maximize',
+      '|',
+      'undo', 'redo'
+    ],
+    shouldNotGroupWhenFull: false,
+    removeItems: []
+  },
+  removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload'],
+  height: '200px',
+  minHeight: '200px',
+};
 
 const Index = () => {
   const router = useRouter()
@@ -754,38 +791,40 @@ const Index = () => {
 
                   <div className="px-[16px]">
                     <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (o&apos;zbek tilida)</h3>
-                    <CKEditor
-                      initData={content}
-                      onChange={(event) => setContent(event.editor.getData())}
-                      config={{
-                        toolbar: [
-                          ['Bold', 'Italic', 'Strike'], // Text styling
-                          ['BulletedList', 'NumberedList', 'Outdent', 'Indent', 'Blockquote'], // Lists and indentation
-                          ['Image', 'Table', 'SpecialChar'], // Media and special characters
-                          ['Link', 'Unlink'], // Links
-                          ['Maximize', 'Source'], // Fullscreen & Source mode
-                          ['Undo', 'Redo'] // Undo/Redo
-                        ]
-                      }}
-                    />
+                    <ClientOnly>
+                      {ClassicEditor && (
+                        <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
+                                                  <CKEditor
+                          editor={ClassicEditor}
+                          data={content}
+                          onChange={(event, editor) => {
+                            const data = editor.getData();  
+                            setContent(data);
+                          }}
+                          config={mentorCKEditorConfig}
+                        />
+                        </div>
+                      )}
+                    </ClientOnly>
                   </div>
 
                   <div className="px-[16px] mt-[15px]">
                     <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (rus tilida)</h3>
-                    <CKEditor
-                      initData={contentRu}
-                      onChange={(event) => setContentRu(event.editor.getData())}
-                      config={{
-                        toolbar: [
-                          ['Bold', 'Italic', 'Strike'], // Text styling
-                          ['BulletedList', 'NumberedList', 'Outdent', 'Indent', 'Blockquote'], // Lists and indentation
-                          ['Image', 'Table', 'SpecialChar'], // Media and special characters
-                          ['Link', 'Unlink'], // Links
-                          ['Maximize', 'Source'], // Fullscreen & Source mode
-                          ['Undo', 'Redo'] // Undo/Redo
-                        ]
-                      }}
-                    />
+                    <ClientOnly>
+                      {ClassicEditor && (
+                        <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
+                                                  <CKEditor
+                          editor={ClassicEditor}
+                          data={contentRu}
+                          onChange={(event, editor) => {
+                            const data = editor.getData();
+                            setContentRu(data);
+                          }}
+                          config={mentorCKEditorConfig}
+                        />
+                        </div>
+                      )}
+                    </ClientOnly>
                   </div>
                 </>
               )}
