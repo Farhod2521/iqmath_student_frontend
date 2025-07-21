@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { AgGridReact } from "ag-grid-react";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import ContentLoader from "@/components/loader/content-loader";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import StudentExamplePagination from "./StudentExamplePagination";
@@ -10,6 +11,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange, isLoading, actionLoading, onViewDetails }) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const formatDate = (dateString) => {
     // "2025 M06 30 20:28" formatini parse qilish
@@ -50,11 +52,11 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
   const getStatusText = (status) => {
     switch (status) {
       case 'kutmoqda':
-        return 'Kutmoqda';
+        return t('waiting');
       case 'tasdiqlangan':
-        return 'Tasdiqlangan';
+        return t('approved');
       case 'rad etilgan':
-        return 'Rad etilgan';
+        return t('rejected');
       default:
         return status;
     }
@@ -62,14 +64,14 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
 
   const colDefs = [
     {
-      headerName: "№",
+      headerName: t("number"),
       valueGetter: "node.rowIndex + 1",
       maxWidth: 70,
       sortable: false,
       checkboxSelection: true,
     },
     {
-      headerName: "O'quvchi",
+      headerName: t("student"),
       field: "student_name",
       flex: 1.5,
       cellRenderer: (params) => (
@@ -80,13 +82,13 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       ),
     },
     {
-      headerName: "Sinf",
+      headerName: t("class"),
       field: "class_name",
       maxWidth: 200,
       cellClass: "text-center",
     },
     {
-      headerName: "Yuborilgan vaqti",
+      headerName: t("submittedTime"),
       field: "formatted_date",
       maxWidth: 180,
       cellClass: "text-center",
@@ -95,7 +97,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       },
     },
     {
-      headerName: "Holat",
+      headerName: t("status"),
       field: "status",
       maxWidth: 120,
       cellRenderer: (params) => (
@@ -117,7 +119,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
               onClick={() => onViewDetails(params.data.id, params.data.student_name)}
               className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-lg text-sm"
             >
-              Batafsil
+              {t("details")}
             </button>
           </div>
         );
@@ -130,7 +132,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       <div style={{ width: "100%", height: "auto" }} className="relative">
         {isLoading && (
           <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-            <ContentLoader classNames="!min-h-[400px]" />
+            <ContentLoader classNames="!min-h-[400px] !w-full" />
           </div>
         )}
         <AgGridReact

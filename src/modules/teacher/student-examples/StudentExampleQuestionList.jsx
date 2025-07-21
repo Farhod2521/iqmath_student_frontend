@@ -23,20 +23,34 @@ const StudentExampleQuestionList = ({ questions, selectedIdx, setSelectedIdx, i1
             style={{ transition: 'all 0.2s', padding: '0' }}
             onMouseEnter={e => {
               if (selectedIdx !== idx) {
-                e.currentTarget.querySelector('.num-circle').classList.add('border-[#037AFF]', 'text-[#037AFF]');
-                e.currentTarget.querySelector('.num-circle').classList.remove('border-[#E9E9E9]', 'text-black');
+                const circle = e.currentTarget.querySelector('.num-circle');
+                // Hato misollar uchun hover effect'ni o'chirib qo'yamiz
+                if (q.answer === false) {
+                  // Hato misollar hover bo'lganda ham qizil rangda qoladi
+                  return;
+                }
+                // Boshqa misollar uchun normal hover effect
+                circle.classList.add('border-[#037AFF]', 'text-[#037AFF]');
+                circle.classList.remove('border-[#E9E9E9]', 'text-black');
               }
             }}
             onMouseLeave={e => {
               if (selectedIdx !== idx) {
-                e.currentTarget.querySelector('.num-circle').classList.remove('border-[#037AFF]', 'text-[#037AFF]');
-                e.currentTarget.querySelector('.num-circle').classList.add('border-[#E9E9E9]', 'text-black');
+                const circle = e.currentTarget.querySelector('.num-circle');
+                // Hato misollar uchun hover effect'ni o'chirib qo'yamiz
+                if (q.answer === false) {
+                  // Hato misollar hover bo'lganda ham qizil rangda qoladi
+                  return;
+                }
+                // Boshqa misollar uchun normal hover effect
+                circle.classList.remove('border-[#037AFF]', 'text-[#037AFF]');
+                circle.classList.add('border-[#E9E9E9]', 'text-black');
               }
             }}
           >
             <div className="relative flex flex-col items-center">
               <div
-                className={`num-circle w-[40px] h-[40px] flex items-center justify-center border-2 rounded-full font-bold text-base ${circleClass} group-hover:border-blue-500 group-hover:text-blue-500`}
+                className={`num-circle w-[40px] h-[40px] flex items-center justify-center border-2 rounded-full font-bold text-base ${circleClass}`}
                 style={{ transition: 'all 0.2s' }}
               >
                 {q.index}

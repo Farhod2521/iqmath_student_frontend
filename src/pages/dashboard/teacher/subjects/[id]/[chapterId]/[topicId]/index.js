@@ -46,7 +46,6 @@ if (typeof window !== "undefined") {
 
 const EditableMathField = dynamic(() => import("react-mathquill").then((mod) => mod.EditableMathField), { ssr: false });
 
-// Mentor bilan bir xil CKEditor konfiguratsiyasi - To'liq toolbar
 const mentorCKEditorConfig = {
   toolbar: [
     'bold', 'italic', 'strikethrough',
