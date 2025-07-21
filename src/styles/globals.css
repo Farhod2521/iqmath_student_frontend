@@ -1,0 +1,52 @@
+/* AgGrid Table Styles */
+.custom-grid {
+  --ag-row-height: 60px;
+  --ag-header-height: 50px;
+  --ag-cell-horizontal-padding: 16px;
+  --ag-cell-vertical-padding: 12px;
+  --ag-row-hover-color: #f8f9fa;
+  --ag-selected-row-background-color: #e3f2fd;
+  --ag-font-size: 14px;
+  --ag-font-family: inherit;
+}
+
+.custom-grid .ag-root-wrapper {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom-grid .ag-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.custom-grid .ag-header-cell {
+  font-weight: 600;
+  color: #374151;
+  padding: 12px 16px;
+}
+
+.custom-grid .ag-row {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.custom-grid .ag-row:hover {
+  background-color: #f8f9fa;
+}
+
+.custom-grid .ag-cell {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.custom-grid .ag-cell-wrapper {
+  width: 100%;
+}
+
+/* Table container height optimization */
+.ag-grid-container {
+  min-height: 150px;
+  max-height: 400px;
+} 

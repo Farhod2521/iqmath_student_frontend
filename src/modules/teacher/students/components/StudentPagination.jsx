@@ -1,7 +1,9 @@
 import Pagination from "@/components/pagination";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 function StudentPagination({ pagination, onPageChange, onPageSizeChange, isLoading }) {
+  const { t } = useTranslation();
   const { current, limit, total, totalPages } = pagination;
   
   const handlePageChange = ({ selected }) => {
@@ -24,12 +26,12 @@ function StudentPagination({ pagination, onPageChange, onPageSizeChange, isLoadi
           onChange={handlePageSizeChange}
           disabled={isLoading}
         >
-          <option value={100}>Показать по 100</option>
-          <option value={200}>Показать по 200</option>
-          <option value={300}>Показать по 300</option>
-          <option value={400}>Показать по 400</option>
-          <option value={500}>Показать по 500</option>
-          <option value={1000}>Показать по 1000</option>
+          <option value={100}>{t("showBy100")}</option>
+          <option value={200}>{t("showBy200")}</option>
+          <option value={300}>{t("showBy300")}</option>
+          <option value={400}>{t("showBy400")}</option>
+          <option value={500}>{t("showBy500")}</option>
+          <option value={1000}>{t("showBy1000")}</option>
         </select>
         <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none rotate-90 ">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,7 +54,7 @@ function StudentPagination({ pagination, onPageChange, onPageSizeChange, isLoadi
 
       <div>
         <p className="text-[15px] text-[#8a8a8e]">
-          {total > 0 ? `Показаны ${startItem}-${endItem} из ${total} элементов` : 'Нет данных'}
+          {total > 0 ? `${t("showing")} ${startItem}-${endItem} ${t("of")} ${total} ${t("elements")}` : t("noData")}
         </p>
       </div>
     </div>

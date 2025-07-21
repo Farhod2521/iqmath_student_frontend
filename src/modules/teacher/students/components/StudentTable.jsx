@@ -3,6 +3,7 @@ import React from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
+import { useTranslation } from 'react-i18next'
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import StudentPagination from './StudentPagination'
@@ -12,6 +13,7 @@ ModuleRegistry.registerModules([AllCommunityModule])
 
 function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoading }) {
   const router = useRouter()
+  const { t } = useTranslation()
 
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
@@ -34,7 +36,7 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       checkboxSelection: true
     },
     {
-      headerName: 'Ученик',
+      headerName: t('student'),
       field: 'full_name',
       flex: 1.5,
       onCellClicked: (params) => {
@@ -48,7 +50,7 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       )
     },
     {
-      headerName: 'Класс',
+      headerName: t('class'),
       field: 'class_name_uz',
       maxWidth: 150,
       cellClass: 'text-center',
@@ -59,12 +61,12 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       }
     },
     {
-      headerName: 'Телефон',
+      headerName: t('phone'),
       field: 'phone',
       flex: 1
     },
     {
-      headerName: 'Регион',
+      headerName: t('region'),
       field: 'region',
       flex: 1
     },
@@ -74,17 +76,11 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       flex: 2,
       cellRenderer: (p) => (
         <div className="flex gap-2 justify-end">
-          {/* <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-lg text-sm">
-            Отправить смс
-          </button>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm">
-            Назначить задание
-          </button> */}
           <button
             onClick={() => handleSignAsStudent(p.data)}
             className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
           >
-            Войти как студент
+            {t('loginAsStudent')}
           </button>
         </div>
       )

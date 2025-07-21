@@ -27,7 +27,7 @@ const StudentExampleDetailPage = () => {
       setData(res.data)
       setSelectedIdx(0)
     } catch (e) {
-      setError("Ma'lumotlarni yuklashda xatolik yuz berdi")
+      setError(t("loadingError"))
     } finally {
       setLoading(false)
     }
