@@ -13,7 +13,8 @@ import { FiLayers } from 'react-icons/fi'
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 export const RolesList = {
   STUDENT: 'student',
-  TEACHER: 'teacher'
+  TEACHER: 'teacher',
+  ADMIN: 'admin'
 }
 
 export const getMenuItems = (t) => [
@@ -24,7 +25,7 @@ export const getMenuItems = (t) => [
     label: t('subjects'),
     icon: <LuBookText size={26} />,
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -50,7 +51,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/statistics',
     label: t('statistics'),
     icon: <BsBarChart size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -58,7 +59,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/pupils',
     label: t('students'),
     icon: <PiUsers size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -66,7 +67,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/subjects',
     label: t('subjects'),
     icon: <PiBooksLight size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -74,7 +75,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/my-study',
     label: t('groups'),
     icon: <PiGraduationCap size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -82,7 +83,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/individual',
     label: t('independent'),
     icon: <GoChecklist size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -90,7 +91,7 @@ export const getMenuItems = (t) => [
     path: '/dashboard/teacher/student-examples',
     label: t('studentExamples'),
     icon: <FiLayers size={26} />,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
@@ -109,7 +110,7 @@ export const getMenuItems = (t) => [
     label: t('profile'),
     icon: <LuUser size={26} />,
     disabled: false,
-    roles: [RolesList.TEACHER],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
