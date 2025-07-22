@@ -28,7 +28,7 @@ build:
 
     # Faqat kerakli fayllarni ajratish
     - mkdir deploy
-    - cp -r .next public package.json package-lock.json .env deploy/
+    - cp -r .next public package.json package-lock.json .env node_modules deploy/
 
   artifacts:
     paths:
@@ -50,7 +50,6 @@ deploy:
         [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
         nvm use 20
         cd /var/www/iqmath_student
-        npm install --prefer-offline --no-audit --progress=false
         pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
       '"
