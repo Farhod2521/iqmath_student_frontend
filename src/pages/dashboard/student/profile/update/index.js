@@ -63,10 +63,6 @@ const Index = () => {
     listKeyId: 'change-password'
   })
 
-
-
-
-
   const handleProfileUpdate = () => {
     const formData = new FormData()
     formData.append('full_name', fullName)

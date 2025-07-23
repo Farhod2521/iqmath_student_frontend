@@ -33,6 +33,7 @@ export const URLS = {
   studentCheckAnswer: '/api/v1/func_student/my-check-answer/',
   coins: '/api/v1/func_student/my-score/',
   teacherCoins: '/api/v1/func_teacher/my-score/',
+  subscription: '/api/v1/payments/subscription/trial_days/',
   advisedTopics: '/api/v1/func_student/my-diagnost-detail/',
   levelStatistics: '/api/v1/func_student/my-diagnost-level/',
   profileUpdate: '/api/v1/auth/student/profile-update/',

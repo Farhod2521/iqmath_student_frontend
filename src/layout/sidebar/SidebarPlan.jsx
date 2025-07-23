@@ -39,9 +39,12 @@ function SidebarPlan() {
         <p className="text-[24px] font-semibold my-[12px]">
           {data.payment_amount} {t('sum')}
         </p>
-        <p className="text-[15px] font-medium">
-          {t('nextCharge')} {data.end_date}
-        </p>
+
+        {data.is_paid || data.days_until_next_payment > 0 ? (
+          <p className="text-[15px] font-medium">
+            {t('nextCharge')} {data.end_date}
+          </p>
+        ) : null}
         {data.is_paid ? (
           <p className="text-[15px] font-medium my-[12px]">
             {t('daysTrialPayment', { day: data.days_until_next_payment })}

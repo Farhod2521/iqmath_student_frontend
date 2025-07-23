@@ -29,6 +29,7 @@ export const KEYS = {
   studentQuestions: 'studentQuestions',
   coins: 'coins',
   teacherCoins: 'teacherCoins',
+  subscription: 'subscription',
   advisedTopics: 'advisedTopics',
   levelStatistics: 'levelStatistics',
   diagnosticsTopics: 'diagnosticsTopics',
