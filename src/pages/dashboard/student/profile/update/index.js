@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import RightIcon from '@/components/icons/right'
 import Input from '@/components/input'
-// import Button from '@/components/button'
 import Image from 'next/image'
 import TrashIcon from '@/components/icons/trash'
 import ImageUploader from '@/components/image-uploader'
@@ -28,11 +27,17 @@ const Index = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [birthDate, setBirthDate] = useState('')
   const [newEmail, setNewEmail] = useState('')
+  
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const {
     data: studentProfile,
-    isLoading,
-    isFetching
+    isLoading
   } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
@@ -42,51 +47,153 @@ const Index = () => {
     enabled: !!session?.accessToken
   })
 
+  useEffect(() => {
+    if (studentProfile?.data) {
+      setFullName(studentProfile.data.full_name || '')
+      setPhoneNumber(studentProfile.data.phone || '')
+      setBirthDate(studentProfile.data.birthday || '')
+    }
+  }, [studentProfile])
+
   const { mutate: profileUpdate } = usePostQuery({
     listKeyId: 'profile-update'
   })
 
-  const handleProfileUpdate = async () => {
-    try {
-      const formData = new FormData()
-      formData.append('fullName', fullName)
-      formData.append('phoneNumber', phoneNumber)
-      formData.append('birthDate', birthDate)
-      formData.append('student_id', get(studentProfile, 'data.id'))
-      // Agar image ham bo'lsa: formData.append('image', selectedFile);
+  const { mutate: changePassword, isLoading: isChangingPassword } = usePostQuery({
+    listKeyId: 'change-password'
+  })
 
-      const response = await axios.post('https://backend.iq-math.uz/api/v1/auth/student/profile-update/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+
+
+
+
+  const handleProfileUpdate = () => {
+    const formData = new FormData()
+    formData.append('full_name', fullName)
+    formData.append('phone', phoneNumber)
+    formData.append('birthday', birthDate)
+    formData.append('student_id', get(studentProfile, 'data.id'))
+    // Agar image ham bo'lsa: formData.append('image', selectedFile);
+
+    profileUpdate(
+      {
+        url: URLS.profileUpdate,
+        attributes: formData,
+        config: {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
-      })
-    } catch (error) {
-      console.error('Catch Error:', error.response?.data || error.message)
-    }
-  }
-
-  const handleMainDataSubmit = () => {
-    const data = {
-      full_name: fullName, // inputdagi qiymatlar
-      phone: phoneNumber,
-      birthday: birthDate,
-      student_id: get(studentProfile, 'data.id')
-    }
-    handleProfileUpdate(data)
+      },
+      {
+        onSuccess: (data) => {
+          toast.success('Profil muvaffaqiyatli yangilandi')
+        },
+        onError: (error) => {
+          toast.error(error.response?.data?.error || 'Profil yangilashda xatolik yuz berdi')
+        }
+      }
+    )
   }
 
   const handleEmailSubmit = () => {
-    const data = {
-      email: newEmail
-    }
-    handleProfileUpdate(data)
+    const formData = new FormData()
+    formData.append('email', newEmail)
+
+    profileUpdate(
+      {
+        url: URLS.profileUpdate,
+        attributes: formData
+      },
+      {
+        onSuccess: (data) => {
+          toast.success('Email muvaffaqiyatli yangilandi')
+          setNewEmail('')
+          setShowDropdownMail(false)
+        },
+        onError: (error) => {
+          toast.error(error.response?.data?.error || 'Email yangilashda xatolik yuz berdi')
+        }
+      }
+    )
   }
-  // headerTitle={"Личные данные"}
+
+  const handlePasswordChange = () => {
+    if (!currentPassword) {
+      toast.error('Joriy parolni kiriting')
+      return
+    }
+    
+    if (!newPassword) {
+      toast.error('Yangi parolni kiriting')
+      return
+    }
+    
+    if (newPassword.length < 6) {
+      toast.error('Yangi parol kamida 6 ta belgi bo\'lishi kerak')
+      return
+    }
+    
+    if (newPassword !== confirmPassword) {
+      toast.error('Yangi parollar mos kelmadi')
+      return
+    }
+
+    const studentPhone = get(studentProfile, 'data.phone', '')
+    if (!studentPhone) {
+      toast.error('Telefon raqam topilmadi')
+      return
+    }
+
+    const sessionPassword = session?.password
+    if (!sessionPassword) {
+      toast.error('Sessiya ma\'lumotlari topilmadi')
+      return
+    }
+
+    if (currentPassword !== sessionPassword) {
+      toast.error('Joriy parol noto\'g\'ri')
+      return
+    }
+
+    const resetFormData = new FormData()
+    resetFormData.append('phone', studentPhone)
+    resetFormData.append('new_password', newPassword)
+
+    changePassword(
+      {
+        url: URLS.newPassword,
+        attributes: resetFormData
+      },
+      {
+        onSuccess: (data) => {
+          toast.success('Parol muvaffaqiyatli o\'zgartirildi')
+          setCurrentPassword('')
+          setNewPassword('')
+          setConfirmPassword('')
+          setShowDropdownPassword(false)
+        },
+        onError: (error) => {
+          toast.error(error.response?.data?.error || 'Yangi parol o\'rnatishda xatolik yuz berdi')
+        }
+      }
+    )
+  }
+
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*'
+    let password = ''
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    setNewPassword(password)
+    setConfirmPassword(password)
+  }
+
   return (
     <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-12 lg:col-span-6 space-y-[12px]">
-          {/* Main infos */}
           <Card className="border py-[17px] shadow-sm px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMain(!showDropdownMain)}
@@ -137,7 +244,6 @@ const Index = () => {
               </AnimateUp>
             )}
           </Card>
-          {/* Email */}
           <Card className="border py-[17px] shadow-sm  px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMail(!showDropdownMail)}
@@ -162,17 +268,16 @@ const Index = () => {
                       Новый email-адрес <span className="text-[#FF3B30] ">*</span>
                     </p>
 
-                    <Input type="email" placeholder={'E-mail'} />
+                    <Input type="email" placeholder={'E-mail'} value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
                   </div>
 
-                  <Button color="primary" isDisabled>
+                  <Button color="primary" onPress={handleEmailSubmit}>
                     Сохранить
                   </Button>
                 </form>
               </AnimateUp>
             )}
           </Card>
-          {/* Password */}
           <Card className="border py-[17px] shadow-sm px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownPassword(!showDropdownPassword)}
@@ -195,24 +300,99 @@ const Index = () => {
                   <form className="space-y-[24px]">
                     <div>
                       <p className="text-[15px] mb-[8px]">
+                        Текущий пароль
+                        <span className="text-[#FF3B30] ">*</span>
+                      </p>
+                      <div className="relative">
+                        <Input 
+                          type={showCurrentPassword ? "text" : "password"} 
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                          placeholder="Введите текущий пароль"
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        >
+                          {showCurrentPassword ? (
+                            <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
+                          ) : (
+                            <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-[15px] mb-[8px]">
                         Новый пароль
                         <span className="text-[#FF3B30] ">*</span>
                       </p>
-                      <Input type="password" />
+                      <div className="relative">
+                        <Input 
+                          type={showNewPassword ? "text" : "password"} 
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="Введите новый пароль"
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                        >
+                          {showNewPassword ? (
+                            <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
+                          ) : (
+                            <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-[15px] mb-[8px]">
+                        Подтвердите новый пароль
+                        <span className="text-[#FF3B30] ">*</span>
+                      </p>
+                      <div className="relative">
+                        <Input 
+                          type={showConfirmPassword ? "text" : "password"} 
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="Повторите новый пароль"
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                          {showConfirmPassword ? (
+                            <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
+                          ) : (
+                            <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     <div className="flex gap-[12px] flex-wrap">
-                      <Button color="primary" isDisabled>
+                      <Button 
+                        color="primary" 
+                        onPress={handlePasswordChange}
+                        isLoading={isChangingPassword}
+                      >
                         Сохранить
                       </Button>
-                      <Button>Сгенерировать новый</Button>
+                      <Button onPress={generatePassword}>
+                        Сгенерировать новый
+                      </Button>
                     </div>
                   </form>
                 </div>
               </AnimateUp>
             )}
           </Card>
-          {/* Account Delete */}
           <Card className="border py-[17px]  shadow-sm  px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownAccount(!showDropdownAccount)}
@@ -264,11 +444,7 @@ const Index = () => {
           <ImageUploader />
         </div>
       </div>
-      {/* Save or exit section */}
-      <div className="fixed bottom-0 left-0 w-full bg-white shadow-md border-t border-t-[#E9E9E9] p-4 flex justify-end gap-2">
-        <Button className="py-[13px] px-[16px] bg-[#EDEDF2] text-black rounded-[10px]">Отменить изменения</Button>
-        <Button className="py-[13px] px-[16px] bg-[#5D87FF]  text-white rounded-[10px]">Сохранить изменения</Button>
-      </div>
+            
     </LayoutAdmin>
   )
 }

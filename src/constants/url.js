@@ -37,6 +37,7 @@ export const URLS = {
   levelStatistics: '/api/v1/func_student/my-diagnost-level/',
   profileUpdate: '/api/v1/auth/student/profile-update/',
   teacherProfileUpdate: '/api/v1/auth/teacher/profile-update/',
+  changePassword: '/api/v1/auth/student/change-password/',
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',

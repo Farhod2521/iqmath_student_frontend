@@ -22,6 +22,7 @@ import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
 import ExamAnswerText from '../components/exam/ExamAnswerText'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import ActionInfo from '../components/actions/ActionInfo'
+import ActionSolution from '../components/actions/ActionSolution'
 import Calculator from '../components/calculator/Calculator'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 
@@ -65,6 +66,16 @@ const DiagnosticQuestions = () => {
     }
   }, [selectedIndex, testQuestions])
 
+  // selectedQuestion o'zgarganda choiceAnswers ni to'g'ri boshqarish
+  useEffect(() => {
+    if (selectedQuestion?.question_type === 'choice') {
+      setChoiceAnswers((prev) => ({
+        ...prev,
+        [selectedQuestion.id]: prev[selectedQuestion.id] || null
+      }))
+    }
+  }, [selectedQuestion?.id]) // selectedQuestion.id ga o'zgartirish
+
   const handlePrev = () => {
     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
   }
@@ -86,6 +97,11 @@ const DiagnosticQuestions = () => {
         onSuccess: (res) => {
           setTestQuestions(res?.data?.questions)
           setShowNextModal(false)
+          // Yangi test boshlanganda state'larni tozalash
+          setChoiceAnswers({})
+          setTextAnswers({})
+          setCompositeAnswers({})
+          setSelectedIndex(0)
           toast.success('Diqqat! Test boshlandi.')
         },
         onError: (err) => {
@@ -113,35 +129,66 @@ const DiagnosticQuestions = () => {
       .filter((q) => q.question_type === 'text')
       .map((q) => {
         const userAnswer = textAnswers[q.id] || ''
+        if (userAnswer.trim() === '') {
+          return null // Bo'sh javoblarni o'tkazib yuborish
+        }
         const wrapped = wrapMathAnswer(userAnswer)
         return {
           question_id: q.id,
           [langAnswerKey]: wrapped
         }
       })
+      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
 
     const choice_answers = testQuestions
       .filter((q) => q.question_type === 'choice')
       .map((q) => {
-        const selected = choiceAnswers[q.id]
+        const selectedLetter = choiceAnswers[q.id]
+        if (!selectedLetter) {
+          return null // Tanlanmagan variantlarni o'tkazib yuborish
+        }
+        const selectedChoice = q.choices?.find(choice => choice.letter === selectedLetter)
         return {
           question_id: q.id,
-          choices: selected ? [selected] : []
+          choices: selectedChoice ? [selectedChoice.id] : []
         }
       })
+      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
 
     const composite_answers = testQuestions
       .filter((q) => q.question_type === 'composite')
       .map((q) => {
         const userSubAnswers = compositeAnswers[q.id] || {}
         const sub_answers = q.sub_questions.map((sub) => {
-          return wrapPlainMath(userSubAnswers[sub.id] || '')
+          const answer = userSubAnswers[sub.id] || ''
+          return answer.trim() !== '' ? wrapPlainMath(answer) : ''
         })
+        
+        // Agar barcha javoblar bo'sh bo'lsa, bu savolni o'tkazib yuborish
+        const hasAnyAnswer = sub_answers.some(answer => answer.trim() !== '')
+        if (!hasAnyAnswer) {
+          return null
+        }
+        
         return {
           question_id: q.id,
           answers: sub_answers
         }
       })
+      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
+
+    // Debug uchun console.log
+    console.log('=== DIAGNOSTIC TEST DATA ===')
+    console.log('text_answers:', text_answers)
+    console.log('choice_answers:', choice_answers)
+    console.log('composite_answers:', composite_answers)
+    console.log('choiceAnswers state:', choiceAnswers)
+    console.log('testQuestions:', testQuestions)
+    console.log('Total answers to send:', {
+      text_count: text_answers.length,
+      choice_count: choice_answers.length,
+      composite_count: composite_answers.length
+    })
 
     checkMyResults(
       {
@@ -259,31 +306,28 @@ const DiagnosticQuestions = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex gap-4">
               <Button
-                color="primary"
                 onPress={handlePrev}
-                isDisabled={selectedIndex === 0}
-                className={`px-4 py-2 rounded-md`}
+                disabled={selectedIndex === 0}
+                className={`px-4 py-2 rounded-md ${
+                  selectedIndex === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-500 text-white'
+                }`}
               >
                 {t('back')}
               </Button>
 
               {selectedIndex === testQuestions.length - 1 ? (
-                <Button
-                  color="primary"
-                  className="rounded-md"
-                  onPress={() => {
-                    handleCheckMyResults()
-                  }}
-                >
+                <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
                   {t('check')}
                 </Button>
               ) : (
-                <Button className="rounded-md" color="primary" onPress={handleNext}>
+                <Button className="px-4 py-2 rounded-md bg-blue-500 text-white" onPress={handleNext}>
                   {t('next')}
                 </Button>
               )}
             </div>
+
             <div className="flex gap-3 items-center">
+              <ActionSolution selectedQuestion={selectedQuestion} />
               <ActionInfo />
               {['composite', 'text'].includes(selectedQuestion?.question_type) && (
                 <ActionCalculator setShowCalculator={setShowCalculator} />
