@@ -37,7 +37,13 @@ const LayoutAdmin = ({ children, title }) => {
   }, [router.pathname, setIsSidebarOpen])
 
   const { setScoreData } = useScoreStore()
-  const { data: score, isLoading } = useGetQuery({ key: KEYS.coins, url: URLS.coins })
+  
+  // O'qituvchi rejimida ekanligini tekshiramiz
+  const isTeacherMode = typeof window !== 'undefined' ? sessionStorage.getItem('is_teacher_mode') === 'true' : false
+  
+  // O'qituvchi rejimida bo'lsa, o'quvchi endpoint'ini ishlatamiz
+  const coinsUrl = isTeacherMode ? URLS.coins : URLS.coins
+  const { data: score, isLoading } = useGetQuery({ key: KEYS.coins, url: coinsUrl })
 
   useEffect(() => {
     if (score) {

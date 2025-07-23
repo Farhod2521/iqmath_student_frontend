@@ -18,14 +18,25 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
       .then((res) => {
-        const oldAccessTeken = sessionStorage.getItem('access_token')
-        sessionStorage.setItem('access_token', res.data?.access_token)
-        sessionStorage.setItem('old_token', oldAccessTeken)
-        router.push('/dashboard/student/subjects')
+        const oldAccessToken = sessionStorage.getItem('access_token');
+        // Yangi tokenni o‘quvchi tokeni sifatida saqlaymiz
+        sessionStorage.setItem('access_token', res.data?.access_token);
+        // O‘qituvchi tokenini vaqtincha saqlaymiz
+        sessionStorage.setItem('old_token', oldAccessToken);
+
+        // User-store ni vaqtincha student qilib o‘zgartiramiz
+        const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}');
+        if (currentUser.user) {
+          currentUser.user.role = 'student';
+          localStorage.setItem('user-store', JSON.stringify(currentUser));
+        }
+
+        // O‘quvchi sahifasiga yo‘naltiramiz
+        router.push('/dashboard/student/subjects');
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   const colDefs = [
