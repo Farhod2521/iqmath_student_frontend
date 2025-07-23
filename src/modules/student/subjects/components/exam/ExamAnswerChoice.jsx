@@ -23,15 +23,10 @@ function ExamAnswerChoice({ selectedQuestion, setChoiceAnswers, choiceAnswers })
               value={item.letter}
               checked={choiceAnswers[selectedQuestion.id] === item.letter}
               onChange={() => {
-                console.log('Choice onChange:', selectedQuestion.id, item.letter)
-                setChoiceAnswers((prev) => {
-                  const newState = {
-                    ...prev,
-                    [selectedQuestion.id]: item.letter
-                  }
-                  console.log('New choiceAnswers:', newState)
-                  return newState
-                })
+                setChoiceAnswers((prev) => ({
+                  ...prev,
+                  [selectedQuestion.id]: item.letter
+                }))
               }}
               className="w-5 h-5 accent-blue-600"
             />
