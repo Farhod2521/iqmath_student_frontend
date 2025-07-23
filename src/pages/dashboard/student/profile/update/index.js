@@ -35,14 +35,6 @@ const Index = () => {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  useEffect(() => {
-    if (studentProfile?.data) {
-      setFullName(studentProfile.data.full_name || '')
-      setPhoneNumber(studentProfile.data.phone || '')
-      setBirthDate(studentProfile.data.birthday || '')
-    }
-  }, [studentProfile])
-
   const {
     data: studentProfile,
     isLoading
@@ -54,6 +46,14 @@ const Index = () => {
     },
     enabled: !!session?.accessToken
   })
+
+  useEffect(() => {
+    if (studentProfile?.data) {
+      setFullName(studentProfile.data.full_name || '')
+      setPhoneNumber(studentProfile.data.phone || '')
+      setBirthDate(studentProfile.data.birthday || '')
+    }
+  }, [studentProfile])
 
   const { mutate: profileUpdate } = usePostQuery({
     listKeyId: 'profile-update'
