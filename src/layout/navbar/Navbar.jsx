@@ -9,9 +9,11 @@ import NavbarStudy from './NavbarStudy'
 import NavbarCoins from './NavbarCoins'
 import LanguageDropdown from '@/components/language'
 import NavbarBackTeacher from './NavbarBackTeacher'
+import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 const Navbar = ({ title }) => {
   const router = useRouter()
+  const { role: currentRole } = useRoleDetection()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
 
@@ -31,8 +33,13 @@ const Navbar = ({ title }) => {
         </div>
         <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap ">
           {oldToken && <NavbarBackTeacher />}
-          <NavbarCoins />
-          <NavbarPoints />
+
+          {(currentRole !== 'teacher' && currentRole !== 'mentor') && (
+            <>
+              <NavbarCoins />
+              <NavbarPoints />
+            </>
+          )}
           <LanguageDropdown />
           <NavbarProfile />
         </div>

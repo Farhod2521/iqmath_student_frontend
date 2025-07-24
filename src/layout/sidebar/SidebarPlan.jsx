@@ -4,9 +4,11 @@ import { Button } from '@heroui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 function SidebarPlan() {
   const { t } = useTranslation()
+  const { role: currentRole } = useRoleDetection()
   const router = useRouter()
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
@@ -28,6 +30,11 @@ function SidebarPlan() {
         console.log(error)
       })
   }, [])
+
+  // Mentor uchun tarif rejasi kartini yashirish
+  if (currentRole === 'teacher' || currentRole === 'mentor') {
+    return null
+  }
 
   return (
     <div className="border-t px-[24px] py-[24px] !text-white">
@@ -72,7 +79,7 @@ function SidebarPlan() {
             className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
           >
             {t('subjects')}
-          </Button>
+          </Button> 
         )}
       </div>
     </div>

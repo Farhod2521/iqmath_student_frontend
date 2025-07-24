@@ -19,13 +19,15 @@ function Sidebar() {
 
       <div
         className={`fixed left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 
-        transition-transform duration-300 z-50 w-[300px] overflow-y-auto ${
+        transition-transform duration-300 z-50 w-[300px] flex flex-col ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <SidebarLogo />
-        <SidebarMenu />
-        <SidebarPlan />
+        <div className="flex-1 overflow-y-auto">
+          <SidebarLogo />
+          <SidebarMenu />
+          <SidebarPlan />
+        </div>
         <SidebarFooter />
       </div>
     </>
