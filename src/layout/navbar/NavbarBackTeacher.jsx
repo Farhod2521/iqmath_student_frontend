@@ -7,10 +7,21 @@ function NavbarBackTeacher() {
   const router = useRouter()
 
   const handleBackAsTeacher = () => {
-    const oldToken = sessionStorage.getItem('old_token')
-    sessionStorage.setItem('access_token', oldToken)
-    sessionStorage.removeItem('old_token')
-    router.push('/dashboard/teacher/statistics')
+    const oldToken = sessionStorage.getItem('old_token');
+    if (oldToken) {
+      // O‘qituvchi tokenini tiklaymiz
+      sessionStorage.setItem('access_token', oldToken);
+      sessionStorage.removeItem('old_token');
+
+      // User-store ni teacher qilib o‘zgartiramiz
+      const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}');
+      if (currentUser.user) {
+        currentUser.user.role = 'teacher';
+        localStorage.setItem('user-store', JSON.stringify(currentUser));
+      }
+    }
+    // O‘qituvchi sahifasiga yo‘naltiramiz
+    router.push('/dashboard/teacher/pupils');
   }
 
   return (

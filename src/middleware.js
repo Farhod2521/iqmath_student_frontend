@@ -4,7 +4,7 @@ export function middleware(req) {
   const token =
     req.cookies.get('next-auth.session-token')?.value || req.cookies.get('__Secure-next-auth.session-token')?.value
 
-  const protectedRoutes = ['/dashboard'] // Himoyalanadigan sahifalar
+  const protectedRoutes = ['/dashboard'] 
 
   const isProtected = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))
 
@@ -16,5 +16,5 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'] // Himoyalanadigan sahifalar
+  matcher: ['/dashboard/:path*'] 
 }
