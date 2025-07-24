@@ -53,5 +53,11 @@
   "yourCredentials": "Your credentials",
   "credentialsMessage": "Registration successful. Please save the following information:",
   "saveCredentialsWarning": "Please save this information in a secure place. You will need it to log into the system.",
-  "gotIt": "Got it"
+  "gotIt": "Got it",
+  "resultSummary": "Result Summary",
+  "totalAnswers": "Total Answers",
+  "correctAnswers": "Correct Answers",
+  "studentAnswer": "Student Answer",
+  "correctAnswerLabel": "Correct Answer",
+  "correctAnswer": "Correct Answer"
 }

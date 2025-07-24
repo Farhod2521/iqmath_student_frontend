@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 const StudentExampleDetailLayout = ({
   questions,
+  result,
   selectedIdx,
   setSelectedIdx,
   i18n,
@@ -41,7 +42,7 @@ const StudentExampleDetailLayout = ({
             />
           </div>
           <div className="w-full md:w-1/2 flex items-center justify-center">
-            <StudentExampleAnswerPanel selected={selected} i18n={i18n} />
+            <StudentExampleAnswerPanel selected={selected} result={result} i18n={i18n} />
           </div>
         </div>
       </div>
