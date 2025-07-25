@@ -2,7 +2,7 @@ import { MathJax, MathJaxContext } from "better-react-mathjax";
 import parse from "html-react-parser";
 
 const StudentExampleQuestionList = ({ questions, selectedIdx, setSelectedIdx, i18n }) => (
-  <div className="border-r border-r-[#F2F2F7] bg-white max-h-[80vh] overflow-y-auto py-8 px-4">
+  <div className="w-full border-r border-r-[#F2F2F7] bg-white max-h-[80vh] overflow-y-auto py-8 px-4">
     <ul className="flex flex-col">
       {questions.map((q, idx) => {
         let circleClass = '';

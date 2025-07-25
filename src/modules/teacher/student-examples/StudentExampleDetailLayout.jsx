@@ -32,8 +32,8 @@ const StudentExampleDetailLayout = ({
             </button>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row h-[calc(100vh-80px)] bg-white">
-          <div className="w-full md:w-1/2 flex items-center justify-center">
+        <div className="flex flex-row h-[calc(100vh-80px)] bg-white">
+          <div className="w-1/2 flex-shrink-0 flex items-center">
             <StudentExampleQuestionList
               questions={questions}
               selectedIdx={selectedIdx}
@@ -41,7 +41,7 @@ const StudentExampleDetailLayout = ({
               i18n={i18n}
             />
           </div>
-          <div className="w-full md:w-1/2 flex items-center justify-center">
+          <div className="w-1/2 flex-shrink-0 flex items-center justify-center">
             <StudentExampleAnswerPanel selected={selected} result={result} i18n={i18n} />
           </div>
         </div>
