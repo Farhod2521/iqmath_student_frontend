@@ -2,25 +2,38 @@ import { Button } from '@heroui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { IoMdArrowRoundBack } from 'react-icons/io'
+import { useUserStore } from '@/store/userStore'
+import { useSession } from 'next-auth/react'
 
 function NavbarBackTeacher() {
   const router = useRouter()
+  const { setRole } = useUserStore()
+  const { data: session } = useSession()
 
   const handleBackAsTeacher = () => {
     const oldToken = sessionStorage.getItem('old_token');
+    
     if (oldToken) {
-      // O‘qituvchi tokenini tiklaymiz
+      // O'qituvchi tokenini tiklaymiz
       sessionStorage.setItem('access_token', oldToken);
       sessionStorage.removeItem('old_token');
 
-      // User-store ni teacher qilib o‘zgartiramiz
+      // User-store ni teacher qilib o'zgartiramiz
       const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}');
       if (currentUser.user) {
         currentUser.user.role = 'teacher';
         localStorage.setItem('user-store', JSON.stringify(currentUser));
       }
+      
+      // Role'ni yangilash
+      setRole('teacher');
+    } else {
+      // Agar old_token yo'q bo'lsa, NextAuth session'dan token'ni olishni sinab ko'ramiz
+      if (session?.accessToken) {
+        sessionStorage.setItem('access_token', session.accessToken);
+      }
     }
-    // O‘qituvchi sahifasiga yo‘naltiramiz
+    // O'qituvchi sahifasiga yo'naltiramiz  
     router.push('/dashboard/teacher/pupils');
   }
 
@@ -35,6 +48,7 @@ function NavbarBackTeacher() {
       <p className="text-sm sm:text-md font-medium hidden sm:block">Qaytish</p>
     </Button>
   )
+  
 }
 
 export default NavbarBackTeacher

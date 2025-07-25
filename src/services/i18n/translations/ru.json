@@ -408,5 +408,6 @@
   "region": "Регион",
   "loginAsStudent": "Войти как студент",
   "resultSummary": "Сводка результатов",
-  "totalAnswers": "Всего ответов"
+  "totalAnswers": "Всего ответов",
+  "lastLoginTime": "Время последнего входа"
 }
