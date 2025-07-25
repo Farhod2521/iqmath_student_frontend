@@ -56,7 +56,8 @@ const StudentExamples = () => {
                 topic: i18n.language === 'ru' ? request.topics_name_ru[0] : request.topics_name_uz[0],
                 created_at: request.created_at,
                 status: request.status,
-                formatted_date: formatDate(request.created_at)
+                formatted_date: formatDate(request.created_at),
+                has_answers: request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0
               })
             })
           })

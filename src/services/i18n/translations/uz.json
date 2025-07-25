@@ -412,6 +412,12 @@
   "exportAllStudentsSuccess": "Barcha o'quvchilar ma'lumotlari Excel faylida muvaffaqiyatli yuklandi!",
   "resultSummary": "Natija xulosasi",
   "totalAnswers": "Jami javoblar",
-  "lastLoginTime": "Oxirgi kirish vaqti"
+  "lastLoginTime": "Oxirgi kirish vaqti",
+  "comment": "Izoh",
+  "submitComment": "Tekshirildi",
+  "commentPlaceholder": "O'quvchi ishiga izoh yozing...",
+  "commentRequired": "Iltimos, izoh yozing",
+  "commentSuccess": "Izoh muvaffaqiyatli yuborildi",
+  "commentError": "Izoh yuborishda xatolik yuz berdi"
 }
 

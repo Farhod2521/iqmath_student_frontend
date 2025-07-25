@@ -53,6 +53,8 @@ const StudentExampleDetailPage = () => {
       selectedIdx={selectedIdx}
       setSelectedIdx={setSelectedIdx}
       i18n={i18n}
+      helpRequestId={id} // API uchun help_request_id
+      currentStatus={data.status} // Joriy holat
     />
     // </LayoutAdmin>/
   )
