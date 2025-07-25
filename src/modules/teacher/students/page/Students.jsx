@@ -4,7 +4,7 @@ import StudentFilter from '../components/StudentFilter'
 import StudentTable from '../components/StudentTable'
 import ContentLoader from '@/components/loader/content-loader'
 import { request } from '@/services/api'
-import { exportToExcel, formatStudentsForExcel } from '@/utils/excelExport'
+
 import toast from 'react-hot-toast'
 
 function Students() {
@@ -60,29 +60,29 @@ function Students() {
     setIsExportingAll(true)
     
     try {
-      // Barcha o'quvchilar ma'lumotlarini olish (pagination siz)
+      // Backend'dan to'g'ridan-to'g'ri Excel faylini yuklab olish
       const response = await request.get('/api/v1/auth/student/student_list/', {
         params: {
-          size: 10000, // Katta raqam beramiz, barcha ma'lumotlarni olish uchun
+          export: 'excel',
           ...filterData
-        }
+        },
+        responseType: 'blob' // Excel faylini blob sifatida olish
       })
       
-      const allStudents = response.data.results || []
+      // Excel faylini yuklab olish
+      const blob = new Blob([response.data], { 
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+      })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `o'quvchilar_${new Date().toISOString().split('T')[0]}.xlsx`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
       
-      if (allStudents.length === 0) {
-        toast.error(t('noDataToExport'))
-        return
-      }
-      
-      const formattedData = formatStudentsForExcel(allStudents)
-      const success = exportToExcel(formattedData, `barcha_o'quvchilar_${new Date().toISOString().split('T')[0]}.xlsx`)
-      
-      if (success) {
-        toast.success(t('exportAllStudentsSuccess'))
-      } else {
-        toast.error(t('exportError'))
-      }
+      toast.success(t('exportAllStudentsSuccess'))
     } catch (error) {
       console.error("Export xatosi:", error)
       toast.error(t('exportError'))

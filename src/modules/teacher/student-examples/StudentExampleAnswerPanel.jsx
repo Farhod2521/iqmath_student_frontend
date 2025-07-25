@@ -7,7 +7,7 @@ const cleanText = (text) =>
     ?.replace(/(<br\s*\/?>|;|\s)+$/g, '') // oxiridagi <br>, ; yoki bo'sh joylarni olib tashlaydi
     ?.replace(/^\s+/, ''); // boshidagi bo'sh joylarni olib tashlaydi
 
-const StudentExampleAnswerPanel = ({ selected, i18n }) => {
+const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
   const { t } = useTranslation();
   
   // O'quvchi javobining to'g'ri yoki noto'g'ri bo'lishiga qarab rang belgilash
@@ -64,10 +64,10 @@ const StudentExampleAnswerPanel = ({ selected, i18n }) => {
             {t("correctAnswerLabel")}
           </div>
           <div className="bg-green-50 rounded-lg px-6 py-4 text-base font-mono text-green-700 min-h-[48px] flex items-center flex-1">
-            {selected.correct_answer ? (
+            {selected.system_response ? (
               <span className="w-full flex items-center">
                 <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
-                  <MathJax dynamic>{selected.correct_answer}</MathJax>
+                  <MathJax dynamic>{selected.system_response}</MathJax>
                 </MathJaxContext>
               </span>
             ) : (

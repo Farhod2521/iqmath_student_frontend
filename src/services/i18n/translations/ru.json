@@ -406,5 +406,7 @@
   "noData": "Нет данных",
   "phone": "Телефон",
   "region": "Регион",
-  "loginAsStudent": "Войти как студент"
+  "loginAsStudent": "Войти как студент",
+  "resultSummary": "Сводка результатов",
+  "totalAnswers": "Всего ответов"
 }

@@ -41,12 +41,14 @@ const StudentExampleDetailPage = () => {
   }
   if (!data) return null
 
-  const questions = data.question_json || []
+  const questions = data.question_json?.question || []
+  const result = data.result_json || []
 
   return (
     // <LayoutAdmin title={t('studentExampleDetail')}>
     <StudentExampleDetailLayout
       questions={questions}
+      result={result}
       selectedIdx={selectedIdx}
       setSelectedIdx={setSelectedIdx}
       i18n={i18n}

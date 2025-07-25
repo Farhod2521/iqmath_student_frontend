@@ -409,6 +409,8 @@
   "exportSuccess": "Excel fayli muvaffaqiyatli yuklandi!",
   "exportError": "Excel export xatosi yuz berdi!",
   "noDataToExport": "Export qilish uchun ma'lumot mavjud emas!",
-  "exportAllStudentsSuccess": "Barcha o'quvchilar ma'lumotlari Excel faylida muvaffaqiyatli yuklandi!"
+  "exportAllStudentsSuccess": "Barcha o'quvchilar ma'lumotlari Excel faylida muvaffaqiyatli yuklandi!",
+  "resultSummary": "Natija xulosasi",
+  "totalAnswers": "Jami javoblar"
 }
 

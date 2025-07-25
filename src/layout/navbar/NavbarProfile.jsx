@@ -10,10 +10,12 @@ import { useUserStore } from '@/store'
 import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
+import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 function NavbarProfile() {
   const { data: session } = useSession()
   const { t } = useTranslation()
+  const { role: currentRole } = useRoleDetection()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [openProfile, setOpenProfile] = useState(false)
@@ -112,7 +114,14 @@ function NavbarProfile() {
           <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
 
           <button
-            onClick={() => router.push("/dashboard/student/profile")}
+            onClick={() => {
+              // Foydalanuvchi rolini tekshirib, to'g'ri sahifaga yo'naltiramiz
+              if (currentRole === 'teacher' || currentRole === 'mentor') {
+                router.push("/dashboard/teacher/profile")
+              } else {
+                router.push("/dashboard/student/profile")
+              }
+            }}
             className="flex gap-x-[12px] text-start cursor-pointer"
           >
             <div className="bg-[#ECF2FF] p-[12px] rounded-md inline-block">

@@ -1,4 +1,3 @@
-import ProgressCard from '@/card/progress-card'
 import ProfileDetails from '@/components/profile-details'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -104,57 +103,6 @@ const Index = () => {
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
                 <p className="font-medium">Изменить</p>
               </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-7">
-          <div className="flex gap-x-[24px]">
-            <div className="space-y-[20px] w-2/3 opacity-40">
-              <div className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
-                <Image
-                  src={`/images/education.png`}
-                  alt={`education`}
-                  width={71}
-                  height={71}
-                  className="absolute  top-9 right-9 lg:block hidden"
-                />
-                <p className="text-[28px] font-extrabold">6,825</p>
-                <div className="space-y-[4px]">
-                  <p className="text-[17px]">Total students</p>
-                  <div className="flex gap-x-[4px] items-center py-[3px]">
-                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
-
-                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
-                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative border border-[#E9E9E9] rounded-[12px] py-[12px] px-[16px] space-y-[12px]">
-                <Image
-                  src={`/images/education.png`}
-                  alt={`education`}
-                  width={71}
-                  height={71}
-                  className="absolute top-9 right-3"
-                />
-                <p className="text-[28px] font-extrabold">6,825</p>
-                <div className="space-y-[4px]">
-                  <p className="text-[17px]">Total students</p>
-                  <div className="flex gap-x-[4px] items-center py-[3px]">
-                    <Image src={`/icons/arrow-up.svg`} alt={`arrow-up`} width={20} height={20} />
-
-                    <p className="text-[17px] text-[#2EB14F] font-medium">+14%</p>
-                    <p className="text-[15px] font-medium text-[#8A8A8E]">Больше в этом месяце</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-1/3 overflow-hidden">
-              <div className="bg-[#114FFF] rounded-[12px] opacity-20">
-                <ProgressCard />
-              </div>
             </div>
           </div>
         </div>

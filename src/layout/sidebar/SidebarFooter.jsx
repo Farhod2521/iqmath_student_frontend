@@ -33,15 +33,13 @@ function SidebarFooter() {
   }
 
   return (
-    <div>
-      <div className="w-full px-[24px] mb-6">
-        <button
-          onClick={handleLogoutClick}
-          className=" text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] rounded-md  transform duration-200"
-        >
-          {t('logout')}
-        </button>
-      </div>
+    <div className="p-[24px]">
+      <button
+        onClick={handleLogoutClick}
+        className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] rounded-md transform duration-200"
+      >
+        {t('logout')}
+      </button>
 
       {isModalOpen &&
         createPortal(
