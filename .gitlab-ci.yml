@@ -50,6 +50,7 @@ deploy:
         [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
         nvm use 20
         cd /var/www/iqmath_student
+        rm -rf node_modules package-lock.json
         npm install --prefer-offline --no-audit --progress=false
         pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
