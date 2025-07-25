@@ -29,10 +29,10 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
   );
 
   return (
-    <div className="w-full max-w-xl flex flex-col items-center justify-center h-full">
+    <div className="w-full max-w-md flex flex-col items-center justify-center h-full px-4">
       <div className="w-full">
         {/* Savol matni */}
-        <div className="mb-8 text-gray-900 text-lg font-semibold text-center">
+        <div className="mb-6 text-gray-900 text-base font-semibold text-center">
           <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
             <span className="text-gray-900 text-[15px] leading-snug text-center break-words w-full flex justify-center items-center">
               <MathJax dynamic>
@@ -46,7 +46,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
           <div className="text-gray-500 text-base font-medium min-w-max">
             {t("studentAnswer")}
           </div>
-          <div className={`rounded-lg px-6 py-4 text-base font-mono min-h-[48px] flex items-center flex-1 ${getAnswerColor()}`}>
+          <div className={`rounded-lg px-4 py-3 text-sm font-mono min-h-[40px] flex items-center flex-1 ${getAnswerColor()}`}>
             {selected.answer_text ? (
               <span className="w-full flex items-center">
                 <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
@@ -63,7 +63,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
           <div className={`text-gray-500 text-base  font-medium min-w-max ${i18n.language === "uz" ? "me-6" : ""}`} >
             {t("correctAnswerLabel")}
           </div>
-          <div className="bg-green-50 rounded-lg px-6 py-4 text-base font-mono text-green-700 min-h-[48px] flex items-center flex-1">
+          <div className="bg-green-50 rounded-lg px-4 py-3 text-sm font-mono text-green-700 min-h-[40px] flex items-center flex-1">
             {selected.system_response ? (
               <span className="w-full flex items-center">
                 <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>

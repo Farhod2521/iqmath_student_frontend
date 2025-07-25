@@ -15,6 +15,7 @@ export const useRoleDetection = () => {
     url: URLS.studentProfile,
     headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken && status === 'authenticated',
+    showErrorMsg: false // Error toast'ni o'chirib qo'yamiz
   })
 
   useEffect(() => {

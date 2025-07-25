@@ -41,7 +41,8 @@ const StudentExampleDetailPage = () => {
   }
   if (!data) return null
 
-  const questions = data.question_json?.question || []
+  // Handle both data structures: question_json as array or question_json.question as array
+  const questions = Array.isArray(data.question_json) ? data.question_json : (data.question_json?.question || [])
   const result = data.result_json || []
 
   return (
