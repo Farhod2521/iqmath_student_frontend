@@ -408,5 +408,12 @@
   "region": "Регион",
   "loginAsStudent": "Войти как студент",
   "resultSummary": "Сводка результатов",
-  "totalAnswers": "Всего ответов"
+  "totalAnswers": "Всего ответов",
+  "lastLoginTime": "Время последнего входа",
+  "comment": "Замечание",
+  "submitComment": "Проверено",
+  "commentPlaceholder": "Напишите замечание к работе ученика...",
+  "commentRequired": "Пожалуйста, напишите комментарий",
+  "commentSuccess": "Комментарий успешно отправлен",
+  "commentError": "Ошибка при отправке комментария"
 }

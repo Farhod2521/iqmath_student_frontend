@@ -60,16 +60,15 @@ function Students() {
     setIsExportingAll(true)
     
     try {
-      // Backend'dan to'g'ridan-to'g'ri Excel faylini yuklab olish
+
       const response = await request.get('/api/v1/auth/student/student_list/', {
         params: {
           export: 'excel',
           ...filterData
         },
-        responseType: 'blob' // Excel faylini blob sifatida olish
+        responseType: 'blob' 
       })
       
-      // Excel faylini yuklab olish
       const blob = new Blob([response.data], { 
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
       })

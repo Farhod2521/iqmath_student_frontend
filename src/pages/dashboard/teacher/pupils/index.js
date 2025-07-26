@@ -7,7 +7,7 @@ const Index = () => {
   const { t } = useTranslation()
 
   return (
-    <LayoutAdmin title={t('pupils')}>
+    <LayoutAdmin title={t('students')}>
       <ModalConfidentiality />
       <Students />
     </LayoutAdmin>

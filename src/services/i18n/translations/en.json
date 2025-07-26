@@ -59,5 +59,12 @@
   "correctAnswers": "Correct Answers",
   "studentAnswer": "Student Answer",
   "correctAnswerLabel": "Correct Answer",
-  "correctAnswer": "Correct Answer"
+  "correctAnswer": "Correct Answer",
+  "lastLoginTime": "Last login time",
+  "comment": "Comment",
+  "submitComment": "Reviewed",
+  "commentPlaceholder": "Write a comment about the student's work...",
+  "commentRequired": "Please write a comment",
+  "commentSuccess": "Comment sent successfully",
+  "commentError": "Error sending comment"
 }

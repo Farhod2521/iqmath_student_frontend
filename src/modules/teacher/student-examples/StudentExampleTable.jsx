@@ -44,8 +44,10 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       case 'rad etilgan':
         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      case 'javob berilgan':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
     }
   };
 
@@ -57,6 +59,8 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
         return t('approved');
       case 'rad etilgan':
         return t('rejected');
+      case 'javob berilgan':
+        return 'Javob berilgan';
       default:
         return status;
     }
@@ -75,9 +79,12 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       field: "student_name",
       flex: 1.5,
       cellRenderer: (params) => (
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className={`flex items-center gap-2 cursor-pointer ${params.data.has_answers ? 'text-green-600' : ''}`}>
           <Image src={"/icons/pupil.svg"} alt="pupil" width={23} height={22} />
-          <span className="font-medium">{params.value}</span>
+          <span className={`font-medium ${params.data.has_answers ? 'text-green-600' : ''}`}>{params.value}</span>
+          {params.data.has_answers && (
+            <div className="w-2 h-2 bg-green-500 rounded-full ml-1"></div>
+          )}
         </div>
       ),
     },

@@ -4,6 +4,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
 import { useTranslation } from 'react-i18next'
+import { useSession } from 'next-auth/react'
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import StudentPagination from './StudentPagination'
@@ -14,24 +15,35 @@ ModuleRegistry.registerModules([AllCommunityModule])
 function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoading }) {
   const router = useRouter()
   const { t } = useTranslation()
+  const { data: session } = useSession()
 
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
       .then((res) => {
-        const oldAccessToken = sessionStorage.getItem('access_token');
-        // Yangi tokenni o‘quvchi tokeni sifatida saqlaymiz
+        // Avval current token'ni saqlaymiz - sessionStorage yoki NextAuth session'dan
+        let currentAccessToken = sessionStorage.getItem('access_token');
+        if (!currentAccessToken && session?.accessToken) {
+          currentAccessToken = session.accessToken;
+        }
+        
+        if (!currentAccessToken) {
+          return;
+        }
+        
+        // Yangi tokenni o'quvchi tokeni sifatida saqlaymiz
         sessionStorage.setItem('access_token', res.data?.access_token);
-        // O‘qituvchi tokenini vaqtincha saqlaymiz
-        sessionStorage.setItem('old_token', oldAccessToken);
+        
+        // O'qituvchi tokenini vaqtincha saqlaymiz
+        sessionStorage.setItem('old_token', currentAccessToken);
 
-        // User-store ni vaqtincha student qilib o‘zgartiramiz
+        // User-store ni vaqtincha student qilib o'zgartiramiz
         const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}');
         if (currentUser.user) {
           currentUser.user.role = 'student';
           localStorage.setItem('user-store', JSON.stringify(currentUser));
         }
 
-        // O‘quvchi sahifasiga yo‘naltiramiz
+        // O'quvchi sahifasiga yo'naltiramiz
         router.push('/dashboard/student/subjects');
       })
       .catch((err) => {
@@ -80,6 +92,17 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       headerName: t('region'),
       field: 'region',
       flex: 1
+    },
+    {
+      headerName: t('lastLoginTime') || 'Oxirgi kirish',
+      field: 'last_login_time',
+      flex: 1,
+      cellRenderer: (params) => {
+        if (!params.value) {
+          return <span className="text-gray-400">-</span>
+        }
+        return <span>{params.value}</span>
+      }
     },
     {
       headerName: '',
