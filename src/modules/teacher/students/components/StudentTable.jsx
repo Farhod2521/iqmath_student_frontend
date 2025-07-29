@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import StudentPagination from './StudentPagination'
 import { postLoginAsStudent } from '@/services/controllers'
+import StudentRewardModal from './StudentRewardModal'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -16,6 +17,8 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
   const router = useRouter()
   const { t } = useTranslation()
   const { data: session } = useSession()
+  const [selectedStudent, setSelectedStudent] = useState(null)
+  const [isRewardModalOpen, setIsRewardModalOpen] = useState(false)
 
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
@@ -49,6 +52,16 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  const handleGiveReward = (student) => {
+    setSelectedStudent(student)
+    setIsRewardModalOpen(true)
+  }
+
+  const handleRewardSuccess = () => {
+    // Refresh data if needed
+    // You can add a callback prop to refresh the student list
   }
 
   const colDefs = [
@@ -111,6 +124,16 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       cellRenderer: (p) => (
         <div className="flex gap-2 justify-end">
           <button
+            onClick={() => handleGiveReward(p.data)}
+            className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
+            title={t('giveReward')}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+            {t('reward')}
+          </button>
+          <button
             onClick={() => handleSignAsStudent(p.data)}
             className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
           >
@@ -122,28 +145,38 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
   ]
 
   return (
-    <div className="flex flex-col">
-      <div style={{ width: '100%', height: 'auto' }} className="relative">
-        {isLoading && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-            <ContentLoader classNames="!min-h-[400px]" />
-          </div>
-        )}
-        <AgGridReact
-          rowData={data}
-          columnDefs={colDefs}
-          domLayout="autoHeight"
-          className="custom-grid"
-          pagination={false}
+    <>
+      <div className="flex flex-col">
+        <div style={{ width: '100%', height: 'auto' }} className="relative">
+          {isLoading && (
+            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+              <ContentLoader classNames="!min-h-[400px]" />
+            </div>
+          )}
+          <AgGridReact
+            rowData={data}
+            columnDefs={colDefs}
+            domLayout="autoHeight"
+            className="custom-grid"
+            pagination={false}
+          />
+        </div>
+        <StudentPagination
+          pagination={pagination}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          isLoading={isLoading}
         />
       </div>
-      <StudentPagination
-        pagination={pagination}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-        isLoading={isLoading}
+
+      {/* Reward Modal */}
+      <StudentRewardModal
+        isOpen={isRewardModalOpen}
+        onClose={() => setIsRewardModalOpen(false)}
+        student={selectedStudent}
+        onSuccess={handleRewardSuccess}
       />
-    </div>
+    </>
   )
 }
 
