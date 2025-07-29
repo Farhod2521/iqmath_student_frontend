@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import StudentExampleDetailLayout from '@/modules/teacher/student-examples/StudentExampleDetailLayout'
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+
 const StudentExampleDetailPage = () => {
   const router = useRouter()
   const { id } = router.query
@@ -41,14 +42,32 @@ const StudentExampleDetailPage = () => {
   }
   if (!data) return null
 
-  // Handle both data structures: question_json as array or question_json.question as array
-  const questions = Array.isArray(data.question_json) ? data.question_json : (data.question_json?.question || [])
-  const result = data.result_json || []
+  // Yangi API strukturasi bilan ishlash
+  let questions = []
+  let result = []
+
+  if (data.question_json) {
+    // Yangi strukturani tekshirish
+    if (data.question_json.question && Array.isArray(data.question_json.question)) {
+      // Yangi struktura: question_json.question array
+      questions = data.question_json.question
+      result = data.question_json.result || []
+    } else if (Array.isArray(data.question_json)) {
+      // Eski struktura: question_json to'g'ridan-to'g'ri array
+      questions = data.question_json
+      result = data.result_json || []
+    }
+  }
+
+  // Savollarni index bilan boyitish
+  const questionsWithIndex = questions.map((q, index) => ({
+    ...q,
+    index: index + 1
+  }))
 
   return (
-    // <LayoutAdmin title={t('studentExampleDetail')}>
     <StudentExampleDetailLayout
-      questions={questions}
+      questions={questionsWithIndex}
       result={result}
       selectedIdx={selectedIdx}
       setSelectedIdx={setSelectedIdx}
@@ -56,7 +75,6 @@ const StudentExampleDetailPage = () => {
       helpRequestId={id} // API uchun help_request_id
       currentStatus={data.status} // Joriy holat
     />
-    // </LayoutAdmin>/
   )
 }
 
