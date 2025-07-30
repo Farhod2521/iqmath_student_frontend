@@ -137,7 +137,10 @@ const Index = () => {
 
           {/* Video Section */}
           <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6 gap-4">
-            <div className="flex gap-x-4 items-center">
+            <div 
+              className="flex gap-x-4 items-center cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setShowPlayer(true)}
+            >
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#EDEDF2] flex items-center justify-center rounded-lg">
                 <Image src="/icons/play.svg" alt="play" width={20} height={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>

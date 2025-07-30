@@ -18,7 +18,7 @@ const StudentExamples = () => {
   const [actionLoading, setActionLoading] = useState({})
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
-  const [pagination, setPagination] = useState({ current: 1, limit: 10, total: 0, totalPages: 0 })
+  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
 
   const handleTab = (tab) => {
     setActiveTab(tab)
@@ -37,7 +37,7 @@ const StudentExamples = () => {
 
   // API dan ma'lumotlarni olish
   const fetchData = useCallback(
-    async (page = 1, limit = 10) => {
+    async (page = 1, limit = 100) => {
       try {
         setLoading(true)
         setError(null)
@@ -76,7 +76,11 @@ const StudentExamples = () => {
           return matchesSearch && matchesStatus
         })
 
-        setData(filteredData)
+        const startIndex = (page - 1) * limit
+        const endIndex = startIndex + limit
+        const paginatedData = filteredData.slice(startIndex, endIndex)
+
+        setData(paginatedData)
         setPagination({
           current: page,
           limit,
@@ -100,10 +104,12 @@ const StudentExamples = () => {
 
   const handlePageChange = (newPage) => {
     setPagination((prev) => ({ ...prev, current: newPage + 1 }))
+    fetchData(newPage + 1, pagination.limit)
   }
 
   const handlePageSizeChange = (newPageSize) => {
     setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
+    fetchData(1, newPageSize)
   }
 
   const handleViewDetails = (requestId, studentName) => {

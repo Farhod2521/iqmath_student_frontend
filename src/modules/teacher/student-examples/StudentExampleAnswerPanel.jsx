@@ -36,7 +36,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
     const studentAnswers = selected.sub_answers || [];
     const correctAnswers = Array.isArray(selected.system_response) ? selected.system_response : [];
 
-    return (
+  return (
       <div className="space-y-3">
         {studentAnswers.map((studentAnswer, index) => (
           <div key={index} className="flex items-center gap-x-4">
@@ -46,10 +46,10 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
             <div className={`rounded-lg px-4 py-2 text-sm font-mono min-h-[35px] flex items-center flex-1 ${getAnswerColor()}`}>
               {studentAnswer ? (
                 <span className="w-full flex items-center">
-                  <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
+          <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
                     <MathJax dynamic>{studentAnswer}</MathJax>
                   </MathJaxContext>
-                </span>
+            </span>
               ) : (
                 <span className="italic text-gray-400 w-full">-</span>
               )}
@@ -76,7 +76,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
                 <span className="w-full flex items-center">
                   <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
                     <MathJax dynamic>{correctAnswer}</MathJax>
-                  </MathJaxContext>
+          </MathJaxContext>
                 </span>
               ) : (
                 <span className="italic text-gray-400 w-full">{t("correctAnswer")}</span>
@@ -84,47 +84,47 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
     );
   };
 
   // Text savollar uchun oddiy javob ko'rsatish
   const renderTextAnswer = () => (
-    <div className="mb-4 flex items-center gap-x-4">
-      <div className="text-gray-500 text-base font-medium min-w-max">
-        {t("studentAnswer")}
-      </div>
-      <div className={`rounded-lg px-4 py-3 text-sm font-mono min-h-[40px] flex items-center flex-1 ${getAnswerColor()}`}>
-        {selected.answer_text ? (
-          <span className="w-full flex items-center">
-            <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
-              <MathJax dynamic>{selected.answer_text}</MathJax>
-            </MathJaxContext>
-          </span>
-        ) : (
-          <span className="italic text-gray-400 w-full">-</span>
-        )}
-      </div>
-    </div>
+        <div className="mb-4 flex items-center gap-x-4">
+          <div className="text-gray-500 text-base font-medium min-w-max">
+            {t("studentAnswer")}
+          </div>
+          <div className={`rounded-lg px-4 py-3 text-sm font-mono min-h-[40px] flex items-center flex-1 ${getAnswerColor()}`}>
+            {selected.answer_text ? (
+              <span className="w-full flex items-center">
+                <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
+                  <MathJax dynamic>{selected.answer_text}</MathJax>
+                </MathJaxContext>
+              </span>
+            ) : (
+              <span className="italic text-gray-400 w-full">-</span>
+            )}
+          </div>
+        </div>
   );
 
   // Text savollar uchun to'g'ri javob ko'rsatish
   const renderTextCorrectAnswer = () => (
-    <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-4">
       <div className={`text-gray-500 text-base font-medium min-w-max ${i18n.language === "uz" ? "me-6" : ""}`}>
-        {t("correctAnswerLabel")}
-      </div>
-      <div className="bg-green-50 rounded-lg px-4 py-3 text-sm font-mono text-green-700 min-h-[40px] flex items-center flex-1">
-        {selected.system_response ? (
-          <span className="w-full flex items-center">
-            <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
-              <MathJax dynamic>{selected.system_response}</MathJax>
-            </MathJaxContext>
-          </span>
-        ) : (
+            {t("correctAnswerLabel")}
+          </div>
+          <div className="bg-green-50 rounded-lg px-4 py-3 text-sm font-mono text-green-700 min-h-[40px] flex items-center flex-1">
+            {selected.system_response ? (
+              <span className="w-full flex items-center">
+                <MathJaxContext config={{ loader: { load: ["input/tex", "output/chtml"] } }}>
+                  <MathJax dynamic>{selected.system_response}</MathJax>
+                </MathJaxContext>
+              </span>
+            ) : (
           <span className="italic text-gray-400 w-full">{t("correctAnswer")}</span>
-        )}
-      </div>
+            )}
+          </div>
     </div>
   );
 

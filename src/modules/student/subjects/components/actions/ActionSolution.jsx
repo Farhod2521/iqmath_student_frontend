@@ -10,10 +10,24 @@ function ActionSolution({ selectedQuestion }) {
   const { t, i18n } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState('')
+  const [error, setError] = useState('')
 
   const handleSolution = () => {
-    onOpen()
+    if (!selectedQuestion?.id) {
+      console.error('selectedQuestion.id mavjud emas:', selectedQuestion)
+      return
+    }
+    
     setIsLoading(true)
+    setError('')
+    setData('')
+    
+    console.log('API chaqiruvi:', {
+      question_id: selectedQuestion.id,
+      lang: i18n.language,
+      question_type: selectedQuestion.question_type
+    })
+    
     request
       .post('/api/v1/func_teacher/openai/process/', {
         question_id: selectedQuestion.id,
@@ -21,20 +35,44 @@ function ActionSolution({ selectedQuestion }) {
         question_type: selectedQuestion.question_type
       })
       .then((res) => {
-        setData(res.data.ai_response)
+        console.log('API javobi:', res.data)
+        if (res.data?.ai_response) {
+          setData(res.data.ai_response)
+          onOpen() // Faqat yechim kelganda modal ochiladi
+        } else {
+          setError('Yechim topilmadi')
+        }
       })
       .catch((err) => {
-        console.log(err)
+        console.error('API xatosi:', err)
+        setError(err.response?.data?.message || 'Yechimni olishda xatolik yuz berdi')
       })
       .finally(() => setIsLoading(false))
   }
 
   return (
     <>
-      <Button className="px-8 rounded-md bg-[#EDEDF2] !text-black mx-4" onPress={handleSolution}>
-        {t('showSolution')}
+      <Button 
+        className="px-8 rounded-md bg-[#EDEDF2] !text-black mx-4" 
+        onPress={handleSolution}
+        isLoading={isLoading}
+        disabled={isLoading}
+      >
+        {isLoading ? t('loading') : t('showSolution')}
       </Button>
-      <Modal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal 
+        size="3xl" 
+        isOpen={isOpen} 
+        onOpenChange={onOpenChange} 
+        backdrop="blur"
+        classNames={{
+          backdrop: "bg-black/50 backdrop-blur-sm",
+          base: "bg-white border border-gray-200 shadow-xl",
+          header: "bg-white",
+          body: "bg-white",
+          footer: "bg-white"
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -56,9 +94,19 @@ function ActionSolution({ selectedQuestion }) {
                     <div className="py-4 w-full flex justify-center">
                       <Spinner />
                     </div>
-                  ) : (
+                  ) : error ? (
+                    <div className="py-4 px-4">
+                      <Alert color="danger">
+                        <p className="text-red-600">{error}</p>
+                      </Alert>
+                    </div>
+                  ) : data ? (
                     <div className="py-4 px-4">
                       <MathJax dynamic>{data}</MathJax>
+                    </div>
+                  ) : (
+                    <div className="py-4 px-4">
+                      <p className="text-gray-500 text-center">Yechim mavjud emas</p>
                     </div>
                   )}
                 </MathJaxContext>

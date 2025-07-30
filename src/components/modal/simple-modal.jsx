@@ -15,9 +15,9 @@ const SimpleModal = ({ children, classname, open, onClose }) => {
     : 'max-w-sm';
 
   return (
-    <AnimatePresence>
+    <AnimatePresence >
       <motion.div
-        className={`fixed inset-0 flex items-center justify-center z-[1000] bg-black bg-opacity-60 ${classname || ''}`}
+        className={`fixed inset-0 min-h-screen  top-[-32px] flex items-center  justify-center  bg-black bg-opacity-60 ${classname || ''}`}
         onClick={handleBackdropClick}
       >
         <motion.div

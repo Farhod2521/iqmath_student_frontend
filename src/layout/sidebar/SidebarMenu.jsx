@@ -28,7 +28,7 @@ const SidebarMenu = () => {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
             if (type === MenuType.GROUP) {
-              return <div key={key || idx} className="border-t mt-2 pb-2" />
+              return <div key={key || idx} className="border-t mb-2 pb-2" />
             }
             if (type === MenuType.LINK) {
               const isActive = router.pathname === path || router.pathname.endsWith(path)
