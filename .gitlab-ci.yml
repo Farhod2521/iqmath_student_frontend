@@ -13,7 +13,6 @@ variables:
   NEXT_TELEMETRY_DISABLED: '1'
 
 before_script:
-  - npm install -g pnpm
   - apt-get update -y && apt-get install -y sshpass rsync openssh-client
   - mkdir -p ~/.ssh
   - ssh-keyscan -H "$SERVER_URL" >> ~/.ssh/known_hosts
@@ -58,6 +57,6 @@ deploy:
         cd /var/www/iqmath_student
         rm -rf node_modules package-lock.json
         pnpm install --prefer-offline --no-audit --progress=false
-        pm2 restart iqmath_student || pm2 start pnpm --name \"iqmath_student\" -- run start
+        pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
       '"
