@@ -60,13 +60,3 @@ deploy:
         pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
       '"
-
-cleanup:
-  stage: cleanup
-  tags:
-    - iqmath
-  script:
-    - cd $CI_PROJECT_DIR
-    - rm -rf .next node_modules .turbo .cache dist build tmp .tmp deploy
-    - echo "Cleanup tugadi."
-  when: always
