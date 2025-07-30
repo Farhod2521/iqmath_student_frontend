@@ -124,7 +124,10 @@ const Subjects = () => {
                           className="group border-b hover:bg-gray-50 transition-all"
                         >
                           <td className="p-[12px] text-center">{index + 1}</td>
-                          <td className="p-[12px] text-left text-[15px] w-[60%] font-medium transition-all">
+                          <td 
+                            className="p-[12px] text-left text-[15px] w-[60%] font-medium transition-all cursor-pointer hover:text-gray-700 hover:underline"
+                            onClick={() => router.push(`/dashboard/teacher/subjects/${get(item, 'id')}`)}
+                          >
                             {i18n.language === 'uz' ? get(item, 'name_uz') : get(item, 'name_ru')}
                           </td>
                           <td className="p-[12px] text-left text-sm">{get(item, 'class_name')} sinf</td>
