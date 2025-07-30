@@ -7,11 +7,13 @@ stages:
 cache:
   paths:
     - node_modules/
+    - .pnpm-store/
 
 variables:
   NEXT_TELEMETRY_DISABLED: '1'
 
 before_script:
+  - npm install -g pnpm
   - apt-get update -y && apt-get install -y sshpass rsync openssh-client
   - mkdir -p ~/.ssh
   - ssh-keyscan -H "$SERVER_URL" >> ~/.ssh/known_hosts
@@ -25,8 +27,8 @@ build:
     - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
 
     # Paketlar va build
-    - npm install --prefer-offline --no-audit --progress=false
-    - npm run build
+    - pnpm install --prefer-offline --no-frozen-lockfile
+    - pnpm run build
 
     # Faqat kerakli fayllarni ajratish
     - mkdir deploy
@@ -55,7 +57,7 @@ deploy:
         nvm use 20
         cd /var/www/iqmath_student
         rm -rf node_modules package-lock.json
-        npm install --prefer-offline --no-audit --progress=false
-        pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
+        pnpm install --prefer-offline --no-audit --progress=false
+        pm2 restart iqmath_student || pm2 start pnpm --name \"iqmath_student\" -- run start
         pm2 save
       '"
