@@ -8,7 +8,6 @@ stages:
 cache:
   paths:
     - node_modules/
-    - .pnpm-store/
 
 variables:
   NEXT_TELEMETRY_DISABLED: '1'
@@ -32,7 +31,7 @@ build:
 
     # Faqat kerakli fayllarni ajratish
     - mkdir deploy
-    - cp -r .next public package.json package-lock.json .env deploy/
+    - cp -r .next public package.json pnpm-lock.yaml .env deploy/
 
   artifacts:
     paths:
@@ -57,7 +56,7 @@ deploy:
         nvm use 20
         cd /var/www/iqmath_student
         rm -rf node_modules package-lock.json
-        pnpm install --prefer-offline --no-audit --progress=false
+        pnpm install
         pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
         pm2 save
       '"
