@@ -67,7 +67,6 @@ cleanup:
   tags:
     - iqmath
   script:
-    - echo "🧹 Cleanup: Build folder va keraksiz fayllarni o'chirish..."
     - cd $CI_PROJECT_DIR
     - rm -rf .next node_modules .turbo .cache dist build tmp .tmp deploy
     - echo "Cleanup tugadi."
