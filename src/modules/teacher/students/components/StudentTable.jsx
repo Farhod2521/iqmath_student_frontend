@@ -146,28 +146,28 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
 
   return (
     <>
-      <div className="flex flex-col">
-        <div style={{ width: '100%', height: 'auto' }} className="relative">
-          {isLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-              <ContentLoader classNames="!min-h-[400px]" />
-            </div>
-          )}
-          <AgGridReact
-            rowData={data}
-            columnDefs={colDefs}
-            domLayout="autoHeight"
-            className="custom-grid"
-            pagination={false}
-          />
-        </div>
-        <StudentPagination
-          pagination={pagination}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-          isLoading={isLoading}
+    <div className="flex flex-col">
+      <div style={{ width: '100%', height: 'auto' }} className="relative">
+        {isLoading && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+            <ContentLoader classNames="!min-h-[400px]" />
+          </div>
+        )}
+        <AgGridReact
+          rowData={data}
+          columnDefs={colDefs}
+          domLayout="autoHeight"
+          className="custom-grid"
+          pagination={false}
         />
       </div>
+      <StudentPagination
+        pagination={pagination}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
+        isLoading={isLoading}
+      />
+    </div>
 
       {/* Reward Modal */}
       <StudentRewardModal
