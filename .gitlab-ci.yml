@@ -18,6 +18,8 @@ before_script:
 
 build:
   stage: build
+  tags:
+    - iqmath
   script:
     # ENV fayl
     - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
@@ -36,6 +38,8 @@ build:
 
 deploy:
   stage: deploy
+  tags:
+    - iqmath
   only:
     - master
   script:
