@@ -42,7 +42,7 @@ function AuthSignUp() {
         {
           onSuccess: (data) => {
             toast.success(t('authSuccess'))
-            
+
             // Login/parol ma'lumotlarini ko'rsatish
             if (data?.data?.login && data?.data?.password) {
               setLoginCredentials({
@@ -51,9 +51,9 @@ function AuthSignUp() {
               })
               setShowCredentialsPopup(true)
             }
-            
+
             setPhoneTab(phone)
-            setTab('verifySms') 
+            setTab('receiveCode')
           },
           onError: (error) => {
             if (error.response?.data?.errors) {
@@ -72,7 +72,6 @@ function AuthSignUp() {
     }
   }
 
-  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px] rounded-[4px]">
       {/* Ism */}
@@ -88,10 +87,12 @@ function AuthSignUp() {
       {/* <UserAgreement /> */}
 
       <div className="w-full flex justify-center items-center">
-      <button
+        <button
           type="submit"
           disabled={isLoading}
-          className={`w-[60%] border py-2 mt-2 text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${isLoading ? 'opacity-70' : ''}`}
+          className={`w-[60%] border py-2 mt-2 text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
+            isLoading ? 'opacity-70' : ''
+          }`}
         >
           {isLoading ? <SimpleLoader /> : t('login')}
         </button>

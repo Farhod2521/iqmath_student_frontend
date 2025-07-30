@@ -42,5 +42,8 @@ export const KEYS = {
   // Teacher subjects keys
   chapters: 'chapters',
   topics: 'topics',
-  questionList: 'questionList'
+  questionList: 'questionList',
+  // Teacher reward keys
+  teacherReward: 'teacherReward',
+  teacherRewardList: 'teacherRewardList'
 }

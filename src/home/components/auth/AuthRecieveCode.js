@@ -26,16 +26,16 @@ const AuthRecieveCode = () => {
   const { isTeacher, isLoading: roleLoading } = useRoleDetection()
 
   // Redirect when role is detected
-  useEffect(() => {
-    if (shouldRedirect && !roleLoading) {
-      if (isTeacher) {
-        router.push(`/dashboard/teacher/statistics?phone=${phoneTab}`)
-      } else {
-        router.push(`/dashboard/student/subjects?phone${phoneTab}`)
-      }
-      setShouldRedirect(false)
-    }
-  }, [shouldRedirect, isTeacher, roleLoading, router])
+  // useEffect(() => {
+  //   if (shouldRedirect && !roleLoading) {
+  //     if (isTeacher) {
+  //       router.push(`/dashboard/teacher/statistics?phone=${phoneTab}`)
+  //     } else {
+  //       router.push(`/dashboard/student/subjects?phone${phoneTab}`)
+  //     }
+  //     setShouldRedirect(false)
+  //   }
+  // }, [shouldRedirect, isTeacher, roleLoading, router])
 
   useEffect(() => {
     // Get saved timestamp from localStorage
@@ -86,7 +86,8 @@ const AuthRecieveCode = () => {
         setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
         toast.success('Logged in successfully')
-        setShouldRedirect(true)
+        // setShouldRedirect(true)
+        router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
         // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
