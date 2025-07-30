@@ -97,17 +97,19 @@ function NavbarProfile() {
               <p className="text-[17px]">
                 {get(studentProfile, 'data.class_name', 'Student')}
               </p> */}
-              <div className="flex gap-x-[4px]">
-                <Image
-                  src={"/icons/mail.svg"}
-                  alt={"mail"}
-                  width={18}
-                  height={18}
-                />
-                <p className="text-sm text-[#7C8FAC] dark:text-gray-200">
-                  {get(studentProfile, 'data.email', 'student@example.com')}
-                </p>
-              </div>
+              {get(studentProfile, 'data.email') && (
+                <div className="flex gap-x-[4px]">
+                  <Image
+                    src={"/icons/mail.svg"}
+                    alt={"mail"}
+                    width={18}
+                    height={18}
+                  />
+                  <p className="text-sm text-[#7C8FAC] dark:text-gray-200">
+                    {get(studentProfile, 'data.email')}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -146,7 +148,7 @@ function NavbarProfile() {
 
           <button
             onClick={handleLogoutClick}
-            className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200"
+            className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200 hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
           >
             {t("logout")}
           </button>

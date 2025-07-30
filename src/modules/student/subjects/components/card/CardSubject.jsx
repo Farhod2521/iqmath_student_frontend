@@ -16,7 +16,7 @@ const CardSubject = ({ item, onClick }) => {
 
   return (
     <div onClick={onClick}>
-      <Card onPress={() => console.log('LOG')} className="border-none cursor-pointer h-[280px] w-[200px]" radius="sm">
+      <Card onPress={() => console.log('LOG')} className=" border-none cursor-pointer h-[280px] w-[200px] shadow-[0px_3px_17px_-5px_#00000038]" radius="sm">
         <img 
           alt={label} 
           className="object-cover" 
@@ -26,7 +26,7 @@ const CardSubject = ({ item, onClick }) => {
             e.target.src = '/images/education.png' // Fallback image
           }}
         />
-        <div className="justify-center text-white  py-3 text-center bg-[#5d87ff] absolute bottom-0 w-full z-10 rounded-sm">
+        <div className="justify-center text-white py-3 text-center bg-[#5d87ff] hover:bg-[#4463bb] absolute bottom-0 w-full z-10 rounded-sm transition-all duration-200">
           {label}
         </div>
       </Card>
