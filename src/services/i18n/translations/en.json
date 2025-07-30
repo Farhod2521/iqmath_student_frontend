@@ -87,5 +87,6 @@
   "errorLoadingRewards": "Error loading rewards",
   "date": "Date",
   "days": "days",
-  "close": "Close"
+  "close": "Close",
+  "loading": "Loading..."
 }
