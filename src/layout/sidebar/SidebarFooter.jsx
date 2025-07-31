@@ -3,19 +3,26 @@ import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 
 import { signOut } from 'next-auth/react'
+import { useUserStore } from '@/store/userStore'
 
 function SidebarFooter() {
   const { t } = useTranslation()
+  const { setUser, setRole } = useUserStore()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const handleLogout = async () => {
+    // Clear user store
+    setUser(null)
+    setRole(null)
+    
+    // Clear all storage
+    localStorage.clear()
+    sessionStorage.clear()
+    
     await signOut({
       callbackUrl: 'https://iq.iq-math.uz' // Redirect to iq-math.uz after sign out
     })
-
-    localStorage.clear()
-    sessionStorage.clear()
   }
 
   // Function to handle showing the modal
@@ -33,10 +40,10 @@ function SidebarFooter() {
   }
 
   return (
-    <div className="p-[24px] pr-10">
+    <div className="px-[24px] py-[16px] ">
       <button
         onClick={handleLogoutClick}
-        className="text-black py-[9px] w-full  text-[15px] bg-[#EDEDF2] rounded-md transform  hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
+        className="text-black py-3 w-full text-[15px] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
       >
         {t('logout')}
       </button>

@@ -63,9 +63,16 @@ function NavbarProfile() {
   }
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: 'https://iq-math.uz' })
+    // Clear user store
+    const { setUser, setRole } = useUserStore.getState()
+    setUser(null)
+    setRole(null)
+    
+    // Clear all storage
     localStorage.clear()
     sessionStorage.clear()
+    
+    await signOut({ callbackUrl: 'https://iq-math.uz' })
   }
 
   const handleLogoutClick = () => {

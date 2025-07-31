@@ -6,10 +6,12 @@ function Main({ children, title }) {
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   return (
     <div
-      className={`transition-all bg-white duration-300 flex-1 font-sf  ${isSidebarOpen ? 'lg:ml-[300px]' : 'lg:ml-0'}`}
+      className={`transition-all bg-white duration-300 flex-1 font-sf flex flex-col ${isSidebarOpen ? 'lg:ml-[300px]' : 'lg:ml-0'}`}
     >
-      <Navbar title={title} />
-      <div className="p-4 md:p-8">{children}</div>
+      <div className="flex-shrink-0">
+        <Navbar title={title} />
+      </div>
+      <div className="flex-1 p-4 md:p-8">{children}</div>
     </div>
   )
 }
