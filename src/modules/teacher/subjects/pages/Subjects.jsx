@@ -79,7 +79,7 @@ const Subjects = () => {
         <ContentLoader />
       ) : (
         <div>
-          <div className="text-[22px] font-semibold">{t('subjectsInArea')}</div>
+          <div className="text-[16px] uppercase font-semibold">{t('subjectsInArea')}</div>
           <div className="mt-[24px] flex gap-x-[24px]">
             <div className="border border-[#E9E9E9] rounded-[12px] w-full">
               <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

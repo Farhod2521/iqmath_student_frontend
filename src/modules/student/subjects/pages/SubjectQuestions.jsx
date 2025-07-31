@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { get } from 'lodash'
@@ -118,6 +118,69 @@ export default function SubjectQuestions() {
   const handleTabChange = (level) => setTab(level)
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
   const handleNext = () => setSelectedIndex((prev) => Math.min(prev + 1, get(questions, 'data', []).length - 1))
+
+  // Keyboard event'larini qo'shamiz
+  const handleKeyDown = useCallback((event) => {
+    console.log('Keyboard pressed:', event.key, event.keyCode)
+    
+    // Back button uchun: 1 + up arrow yoki 1 + left arrow, Page Up, Backspace, Arrow Left
+    if ((event.key === '1' && (event.keyCode === 38 || event.keyCode === 37)) || 
+        event.key === 'PageUp' || 
+        event.key === 'Backspace' ||
+        event.key === 'ArrowLeft') {
+      console.log('Back button triggered')
+      event.preventDefault()
+      if (selectedIndex > 0) {
+        handlePrev()
+      }
+    }
+    // Next button uchun: Enter, Page Down, Arrow Right - faqat javob berilgandan keyin
+    else if (event.key === 'Enter' || 
+             event.key === 'PageDown' || 
+             event.key === 'ArrowRight') {
+      console.log('Next button triggered')
+      event.preventDefault()
+      
+      // Javob berilganligini tekshirish
+      const currentQuestion = get(questions, 'data', [])[selectedIndex]
+      let hasAnswer = false
+      
+      if (currentQuestion) {
+        if (currentQuestion.question_type === 'choice') {
+          hasAnswer = choiceAnswers[currentQuestion.id] !== null && 
+                     choiceAnswers[currentQuestion.id] !== undefined
+        } else if (currentQuestion.question_type === 'text') {
+          hasAnswer = textAnswers[currentQuestion.id] && 
+                     textAnswers[currentQuestion.id].trim() !== ''
+        } else if (currentQuestion.question_type === 'composite') {
+          const compositeAnswer = compositeAnswers[currentQuestion.id]
+          hasAnswer = compositeAnswer && 
+                     Object.values(compositeAnswer).some(answer => 
+                       answer && answer.trim() !== ''
+                     )
+        }
+      }
+      
+      if (hasAnswer) {
+        if (selectedIndex < get(questions, 'data', []).length - 1) {
+          handleNext()
+        } else {
+          // handleCheckMyResults ni keyinroq chaqiramiz
+          console.log('Should call handleCheckMyResults')
+        }
+      } else {
+        console.log('No answer provided, cannot proceed')
+      }
+    }
+  }, [selectedIndex, questions, handleNext, handlePrev, choiceAnswers, textAnswers, compositeAnswers])
+
+  useEffect(() => {
+    // window object'ga event listener qo'shamiz - capture phase'da
+    window.addEventListener('keydown', handleKeyDown, true)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true)
+    }
+  }, [handleKeyDown])
 
   const handleCheckMyResults = () => {
     const langKey = i18n.language === 'uz' ? 'answer_uz' : 'answer_ru'

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useTopicStore } from '@/store'
 
 import { useRouter } from 'next/router'
@@ -83,6 +83,69 @@ const DiagnosticQuestions = () => {
   const handleNext = () => {
     setSelectedIndex((prev) => (prev < testQuestions.length - 1 ? prev + 1 : prev))
   }
+
+  // Keyboard event'larini qo'shamiz
+  const handleKeyDown = useCallback((event) => {
+    console.log('Diagnostic - Keyboard pressed:', event.key, event.keyCode)
+    
+    // Back button uchun: 1 + up arrow yoki 1 + left arrow, Page Up, Backspace, Arrow Left
+    if ((event.key === '1' && (event.keyCode === 38 || event.keyCode === 37)) || 
+        event.key === 'PageUp' || 
+        event.key === 'Backspace' ||
+        event.key === 'ArrowLeft') {
+      console.log('Diagnostic - Back button triggered')
+      event.preventDefault()
+      if (selectedIndex > 0) {
+        handlePrev()
+      }
+    }
+    // Next button uchun: Enter, Page Down, Arrow Right - faqat javob berilgandan keyin
+    else if (event.key === 'Enter' || 
+             event.key === 'PageDown' || 
+             event.key === 'ArrowRight') {
+      console.log('Diagnostic - Next button triggered')
+      event.preventDefault()
+      
+      // Javob berilganligini tekshirish
+      const currentQuestion = testQuestions[selectedIndex]
+      let hasAnswer = false
+      
+      if (currentQuestion) {
+        if (currentQuestion.question_type === 'choice') {
+          hasAnswer = choiceAnswers[currentQuestion.id] !== null && 
+                     choiceAnswers[currentQuestion.id] !== undefined
+        } else if (currentQuestion.question_type === 'text') {
+          hasAnswer = textAnswers[currentQuestion.id] && 
+                     textAnswers[currentQuestion.id].trim() !== ''
+        } else if (currentQuestion.question_type === 'composite') {
+          const compositeAnswer = compositeAnswers[currentQuestion.id]
+          hasAnswer = compositeAnswer && 
+                     Object.values(compositeAnswer).some(answer => 
+                       answer && answer.trim() !== ''
+                     )
+        }
+      }
+      
+      if (hasAnswer) {
+        if (selectedIndex < testQuestions.length - 1) {
+          handleNext()
+        } else {
+          // handleCheckMyResults ni keyinroq chaqiramiz
+          console.log('Diagnostic - Should call handleCheckMyResults')
+        }
+      } else {
+        console.log('Diagnostic - No answer provided, cannot proceed')
+      }
+    }
+  }, [selectedIndex, testQuestions, handleNext, handlePrev, choiceAnswers, textAnswers, compositeAnswers])
+
+  useEffect(() => {
+    // window object'ga event listener qo'shamiz
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleKeyDown])
 
   // testni boshlash uchun post
   const { mutate: beginTest, isLoading } = usePostQuery({

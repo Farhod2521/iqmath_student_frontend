@@ -407,7 +407,7 @@ const Index = () => {
       >
         <div className="font-sf">
           <div className="flex justify-between mb-2">
-            <h2 className="font-semibold text-[22px] mb-[18px]">{t('topics')}</h2>
+            <h2 className="font-semibold text-[16px] uppercase mb-[18px]">{t('topics')}</h2>
             <Button
               classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
               onclick={() => {
