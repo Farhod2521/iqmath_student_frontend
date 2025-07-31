@@ -2,6 +2,7 @@ import SidebarTitle from '@/components/title/sidebar-title'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
 
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
@@ -10,16 +11,30 @@ const SidebarMenu = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const { user } = useUserStore()
+  const [hasScrollbar, setHasScrollbar] = useState(false)
+
+  useEffect(() => {
+    const checkScrollbar = () => {
+      const menuContainer = document.querySelector('.sidebar-menu')
+      if (menuContainer) {
+        setHasScrollbar(menuContainer.scrollHeight > menuContainer.clientHeight)
+      }
+    }
+
+    checkScrollbar()
+    window.addEventListener('resize', checkScrollbar)
+    return () => window.removeEventListener('resize', checkScrollbar)
+  }, [])
 
   // Menu itemlarni filterlab olamiz
   const menuItems = getMenuItems(t).filter((item) => {
-    // "recommended" itemi faqat user.has_diagnost true bo‘lsa chiqadi
+    // "recommended" itemi faqat user.has_diagnost true bo'lsa chiqadi
     if (item.key === 'recommended' && !user?.has_diagnost) return false
     return true
   })
 
   return (
-    <div className="font-sf min-h-[calc(100vh-450px)]">
+    <div className={`font-sf overflow-y-auto sidebar-menu ${hasScrollbar ? 'pr-[32px]' : ''}`}>
       <ul className="space-y-[8px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(user?.role))
