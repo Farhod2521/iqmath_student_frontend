@@ -2,7 +2,7 @@ import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelectedIndex }) {
+function ExamQuestionList({ questions, selectedList, allQuestionsList, selectedQuestion, setSelectedIndex }) {
   const { i18n } = useTranslation()
 
   const getQuestionStatus = (question) => {
@@ -14,12 +14,17 @@ function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelect
     }
     
     // Javob berilgan savol
-    if (selectedList.includes(questionId)) {
+    if (selectedList && selectedList.includes(questionId)) {
       return 'answered'
     }
     
-    // Javob berilmagan savol
-    return 'unanswered'
+    // Javob berilmagan savol (agar savol ko'rilgan bo'lsa)
+    if (allQuestionsList && allQuestionsList.includes(questionId)) {
+      return 'unanswered'
+    }
+    
+    // Hech qachon ko'rilmagan savol
+    return 'unseen'
   }
 
   const getQuestionStyle = (status) => {
@@ -30,8 +35,10 @@ function ExamQuestionList({ questions, selectedList, selectedQuestion, setSelect
         return 'border-[#037AFF]'
       case 'unanswered':
         return 'border-[#ff0a04]'
+      case 'unseen':
+        return 'border-gray-300'
       default:
-        return 'border-[#ff0a04]'
+        return 'border-gray-300'
     }
   }
 

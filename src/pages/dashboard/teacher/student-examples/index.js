@@ -57,7 +57,9 @@ const StudentExamples = () => {
                 created_at: request.created_at,
                 status: request.status,
                 formatted_date: formatDate(request.created_at),
-                has_answers: request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0
+                has_answers: request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0,
+                // Teacher ma'lumotlari - API response strukturasiga mos
+                teacher: request.teacher
               })
             })
           })

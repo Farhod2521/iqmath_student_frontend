@@ -4,19 +4,27 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import SidebarTitle from '@/components/title/sidebar-title'
+import { useUserStore } from '@/store/userStore'
 
 const ProfileSection = ({ menuItems, onTabChange }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { setUser, setRole } = useUserStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
 
   const handleLogout = async () => {
+    // Clear user store
+    setUser(null)
+    setRole(null)
+    
+    // Clear all storage
+    localStorage.clear()
+    sessionStorage.clear()
+    
     await signOut({
       callbackUrl: 'https://iq.iq-math.uz'
     })
-    localStorage.clear()
-    sessionStorage.clear()
   }
 
   const handleLogoutClick = () => {

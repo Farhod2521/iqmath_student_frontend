@@ -36,6 +36,24 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     return dateString;
   };
 
+  const formatTeacherDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      
+      // Yil, oy, kun, soat, daqiqa formatini olish
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${year}.${month}.${day} ${hours}:${minutes}`;
+    } catch (error) {
+      // Agar xatolik bo'lsa, asl qiymatni qaytarish
+      return dateString;
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'kutmoqda':
@@ -114,9 +132,63 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       ),
     },
     {
+      headerName: "Javob bergan o'qituvchi",
+      field: "teacher.full_name",
+      maxWidth: 180,
+      cellRenderer: (params) => {
+        if (!params.value) {
+          return <span className="text-gray-400 italic text-xs">-</span>
+        }
+        return (
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-gray-700 text-sm">{params.value}</span>
+          </div>
+        )
+      },
+    },
+    {
+      headerName: "Javob berilgan vaqti",
+      field: "teacher.reviewed_at",
+      maxWidth: 150,
+      cellRenderer: (params) => {
+        if (!params.value) {
+          return <span className="text-gray-400 italic text-xs">-</span>
+        }
+        return (
+          <span className="text-xs text-gray-600">
+            {formatTeacherDate(params.value)}
+          </span>
+        )
+      },
+    },
+    {
+      headerName: "Izoh",
+      field: "teacher.commit",
+      maxWidth: 150,
+      cellRenderer: (params) => {
+        if (!params.value) {
+          return <span className="text-gray-400 italic text-xs">-</span>
+        }
+        
+        // Uzun matnni qisqartirish
+        const truncatedText = params.value.length > 50 
+          ? params.value.substring(0, 20) + '...' 
+          : params.value
+        
+        return (
+          <div 
+            className="text-xs text-gray-700  px-2 py-1 "
+            title={params.value.length > 50 ? params.value : ''}
+          >
+            {truncatedText}
+          </div>
+        )
+      },
+    },
+    {
       headerName: "",
       field: "actions",
-      flex: 2,
+      maxWidth: 100,
       cellRenderer: (params) => {
         const isLoading = actionLoading[params.data.id];
         
@@ -124,7 +196,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
           <div className="flex gap-2 justify-end">
             <button 
               onClick={() => onViewDetails(params.data.id, params.data.student_name)}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-lg text-sm"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded-lg text-xs"
             >
               {t("details")}
             </button>

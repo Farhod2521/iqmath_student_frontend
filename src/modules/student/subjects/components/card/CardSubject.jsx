@@ -15,18 +15,18 @@ const CardSubject = ({ item, onClick }) => {
   
 
   return (
-    <div onClick={onClick}>
-      <Card onPress={() => console.log('LOG')} className=" border-none cursor-pointer h-[280px] w-[200px] shadow-[0px_3px_17px_-5px_#00000038]" radius="sm">
+    <div onClick={onClick} className="group cursor-pointer">
+      <Card onPress={() => console.log('LOG')} className="border-none cursor-pointer h-[280px] w-[200px] shadow-[0px_3px_17px_-5px_#00000038] group-hover:shadow-[0px_6px_25px_-8px_#00000050] transition-all duration-300" radius="sm">
         <img 
           alt={label} 
-          className="object-cover" 
+          className="object-cover  transition-transform duration-300" 
           src={imageUrl} 
           width={240}
           onError={(e) => {
             e.target.src = '/images/education.png' // Fallback image
           }}
         />
-        <div className="justify-center text-white py-3 text-center bg-[#5d87ff] hover:bg-[#4463bb] absolute bottom-0 w-full z-10 rounded-sm transition-all duration-200">
+        <div className="justify-center text-white py-3 text-center bg-[#5d87ff] group-hover:bg-[#4463bb] absolute bottom-0 w-full z-10 rounded-sm transition-all duration-200">
           {label}
         </div>
       </Card>

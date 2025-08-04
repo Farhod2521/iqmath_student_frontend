@@ -23,12 +23,17 @@ function Sidebar() {
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex-1 overflow-y-auto">
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto sidebar-content">
           <SidebarLogo />
           <SidebarMenu />
           <SidebarPlan />
         </div>
+        
+        {/* Fixed footer area */}
+        <div className="flex-shrink-0 bg-white dark:bg-[#202936] border-t border-[#EAEFF4]">
         <SidebarFooter />
+        </div>
       </div>
     </>
   )

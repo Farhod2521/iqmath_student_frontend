@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useTopicStore } from '@/store'
 
 import { useRouter } from 'next/router'
@@ -83,6 +83,55 @@ const DiagnosticQuestions = () => {
   const handleNext = () => {
     setSelectedIndex((prev) => (prev < testQuestions.length - 1 ? prev + 1 : prev))
   }
+
+  // Klaviatura eventlari
+  const handleKeyDown = useCallback((event) => {
+    // Input field'larda event'larni to'xtatish
+    const target = event.target
+    if (target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.contentEditable === 'true' ||
+        target.closest('.mathquill-editable') ||
+        target.closest('.mq-editable-field')) {
+      return
+    }
+    
+    // Modifier key'lar bosilganda event'larni to'xtatish
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+      return
+    }
+    
+    // Orqaga: Page Up, Backspace, Arrow Left, Arrow Up
+    if (event.key === 'PageUp' || 
+        event.key === 'Backspace' ||
+        event.key === 'ArrowLeft' ||
+        event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (selectedIndex > 0) {
+        handlePrev()
+      }
+    }
+    // Oldinga: Enter, Page Down, Arrow Right, Arrow Down
+    else if (event.key === 'Enter' || 
+             event.key === 'PageDown' || 
+             event.key === 'ArrowRight' ||
+             event.key === 'ArrowDown') {
+      event.preventDefault()
+      
+      if (selectedIndex < testQuestions.length - 1) {
+        handleNext()
+      } else {
+        handleCheckMyResults()
+      }
+    }
+  }, [selectedIndex, testQuestions])
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown, true)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true)
+    }
+  }, [handleKeyDown])
 
   // testni boshlash uchun post
   const { mutate: beginTest, isLoading } = usePostQuery({
@@ -247,6 +296,11 @@ const DiagnosticQuestions = () => {
     return Array.from(answeredQuestions)
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
+  // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
+  const allQuestionsList = useMemo(() => {
+    return testQuestions ? testQuestions.map(q => String(q.id)) : []
+  }, [testQuestions])
+
   if (isLoading || !testQuestions)
     return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
 
@@ -259,6 +313,7 @@ const DiagnosticQuestions = () => {
           <ExamQuestionList
             questions={testQuestions || []}
             selectedList={selectedList}
+            allQuestionsList={allQuestionsList}
             selectedQuestion={selectedQuestion}
             setSelectedQuestion={setSelectedQuestion}
             setSelectedIndex={setSelectedIndex}
