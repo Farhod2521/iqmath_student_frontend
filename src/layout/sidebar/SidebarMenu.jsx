@@ -34,7 +34,7 @@ const SidebarMenu = () => {
   })
 
   return (
-    <div className={`font-sf overflow-y-auto sidebar-menu ${hasScrollbar ? 'pr-[32px]' : ''}`}>
+    <div className={`font-sf overflow-y-auto sidebar-menu mb-[16px] ${hasScrollbar ? 'pr-[32px]' : ''}`}>
       <ul className="space-y-[8px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(user?.role))

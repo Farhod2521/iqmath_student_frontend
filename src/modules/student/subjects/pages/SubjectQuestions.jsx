@@ -119,63 +119,49 @@ export default function SubjectQuestions() {
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
   const handleNext = () => setSelectedIndex((prev) => Math.min(prev + 1, get(questions, 'data', []).length - 1))
 
-  // Keyboard event'larini qo'shamiz
+  // Klaviatura eventlari
   const handleKeyDown = useCallback((event) => {
-    console.log('Keyboard pressed:', event.key, event.keyCode)
+    // Input field'larda event'larni to'xtatish
+    const target = event.target
+    if (target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.contentEditable === 'true' ||
+        target.closest('.mathquill-editable') ||
+        target.closest('.mq-editable-field')) {
+      return
+    }
     
-    // Back button uchun: 1 + up arrow yoki 1 + left arrow, Page Up, Backspace, Arrow Left
-    if ((event.key === '1' && (event.keyCode === 38 || event.keyCode === 37)) || 
-        event.key === 'PageUp' || 
+    // Modifier key'lar bosilganda event'larni to'xtatish
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+      return
+    }
+    
+    // Orqaga: Page Up, Backspace, Arrow Left, Arrow Up
+    if (event.key === 'PageUp' || 
         event.key === 'Backspace' ||
-        event.key === 'ArrowLeft') {
-      console.log('Back button triggered')
+        event.key === 'ArrowLeft' ||
+        event.key === 'ArrowUp') {
       event.preventDefault()
       if (selectedIndex > 0) {
         handlePrev()
       }
     }
-    // Next button uchun: Enter, Page Down, Arrow Right - faqat javob berilgandan keyin
+    // Oldinga: Enter, Page Down, Arrow Right, Arrow Down
     else if (event.key === 'Enter' || 
              event.key === 'PageDown' || 
-             event.key === 'ArrowRight') {
-      console.log('Next button triggered')
+             event.key === 'ArrowRight' ||
+             event.key === 'ArrowDown') {
       event.preventDefault()
       
-      // Javob berilganligini tekshirish
-      const currentQuestion = get(questions, 'data', [])[selectedIndex]
-      let hasAnswer = false
-      
-      if (currentQuestion) {
-        if (currentQuestion.question_type === 'choice') {
-          hasAnswer = choiceAnswers[currentQuestion.id] !== null && 
-                     choiceAnswers[currentQuestion.id] !== undefined
-        } else if (currentQuestion.question_type === 'text') {
-          hasAnswer = textAnswers[currentQuestion.id] && 
-                     textAnswers[currentQuestion.id].trim() !== ''
-        } else if (currentQuestion.question_type === 'composite') {
-          const compositeAnswer = compositeAnswers[currentQuestion.id]
-          hasAnswer = compositeAnswer && 
-                     Object.values(compositeAnswer).some(answer => 
-                       answer && answer.trim() !== ''
-                     )
-        }
-      }
-      
-      if (hasAnswer) {
-        if (selectedIndex < get(questions, 'data', []).length - 1) {
-          handleNext()
-        } else {
-          // handleCheckMyResults ni keyinroq chaqiramiz
-          console.log('Should call handleCheckMyResults')
-        }
+      if (selectedIndex < get(questions, 'data', []).length - 1) {
+        handleNext()
       } else {
-        console.log('No answer provided, cannot proceed')
+        handleCheckMyResults()
       }
     }
-  }, [selectedIndex, questions, handleNext, handlePrev, choiceAnswers, textAnswers, compositeAnswers])
+  }, [selectedIndex, questions, choiceAnswers, textAnswers, compositeAnswers])
 
   useEffect(() => {
-    // window object'ga event listener qo'shamiz - capture phase'da
     window.addEventListener('keydown', handleKeyDown, true)
     return () => {
       window.removeEventListener('keydown', handleKeyDown, true)
@@ -231,7 +217,14 @@ export default function SubjectQuestions() {
   const selectedList = useMemo(() => {
     const filterData = (fields) =>
       Object.entries(fields)
-        .filter(([key, value]) => !!value)
+        .filter(([key, value]) => {
+          // Javob berilgan yoki bo'sh bo'lmagan qiymatlar
+          if (typeof value === 'object' && value !== null) {
+            // Composite answers uchun
+            return Object.values(value).some(v => v && v.trim() !== '')
+          }
+          return value !== null && value !== undefined && value !== ''
+        })
         .map((i) => i[0])
 
     const listText = filterData(textAnswers)
@@ -240,6 +233,12 @@ export default function SubjectQuestions() {
 
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
+
+  // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
+  const allQuestionsList = useMemo(() => {
+    const questionsData = get(questions, 'data', [])
+    return questionsData.map(q => String(q.id))
+  }, [questions])
 
   const handleSendAllToMentor = async () => {
     const dataToSend = get(results, 'data', null);
@@ -278,6 +277,7 @@ export default function SubjectQuestions() {
           <ExamQuestionList
             questions={get(questions, 'data', [])}
             selectedList={selectedList}
+            allQuestionsList={allQuestionsList}
             selectedQuestion={selectedQuestion}
             setSelectedIndex={setSelectedIndex}
           />

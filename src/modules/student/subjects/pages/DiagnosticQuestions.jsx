@@ -84,66 +84,52 @@ const DiagnosticQuestions = () => {
     setSelectedIndex((prev) => (prev < testQuestions.length - 1 ? prev + 1 : prev))
   }
 
-  // Keyboard event'larini qo'shamiz
+  // Klaviatura eventlari
   const handleKeyDown = useCallback((event) => {
-    console.log('Diagnostic - Keyboard pressed:', event.key, event.keyCode)
+    // Input field'larda event'larni to'xtatish
+    const target = event.target
+    if (target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.contentEditable === 'true' ||
+        target.closest('.mathquill-editable') ||
+        target.closest('.mq-editable-field')) {
+      return
+    }
     
-    // Back button uchun: 1 + up arrow yoki 1 + left arrow, Page Up, Backspace, Arrow Left
-    if ((event.key === '1' && (event.keyCode === 38 || event.keyCode === 37)) || 
-        event.key === 'PageUp' || 
+    // Modifier key'lar bosilganda event'larni to'xtatish
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+      return
+    }
+    
+    // Orqaga: Page Up, Backspace, Arrow Left, Arrow Up
+    if (event.key === 'PageUp' || 
         event.key === 'Backspace' ||
-        event.key === 'ArrowLeft') {
-      console.log('Diagnostic - Back button triggered')
+        event.key === 'ArrowLeft' ||
+        event.key === 'ArrowUp') {
       event.preventDefault()
       if (selectedIndex > 0) {
         handlePrev()
       }
     }
-    // Next button uchun: Enter, Page Down, Arrow Right - faqat javob berilgandan keyin
+    // Oldinga: Enter, Page Down, Arrow Right, Arrow Down
     else if (event.key === 'Enter' || 
              event.key === 'PageDown' || 
-             event.key === 'ArrowRight') {
-      console.log('Diagnostic - Next button triggered')
+             event.key === 'ArrowRight' ||
+             event.key === 'ArrowDown') {
       event.preventDefault()
       
-      // Javob berilganligini tekshirish
-      const currentQuestion = testQuestions[selectedIndex]
-      let hasAnswer = false
-      
-      if (currentQuestion) {
-        if (currentQuestion.question_type === 'choice') {
-          hasAnswer = choiceAnswers[currentQuestion.id] !== null && 
-                     choiceAnswers[currentQuestion.id] !== undefined
-        } else if (currentQuestion.question_type === 'text') {
-          hasAnswer = textAnswers[currentQuestion.id] && 
-                     textAnswers[currentQuestion.id].trim() !== ''
-        } else if (currentQuestion.question_type === 'composite') {
-          const compositeAnswer = compositeAnswers[currentQuestion.id]
-          hasAnswer = compositeAnswer && 
-                     Object.values(compositeAnswer).some(answer => 
-                       answer && answer.trim() !== ''
-                     )
-        }
-      }
-      
-      if (hasAnswer) {
-        if (selectedIndex < testQuestions.length - 1) {
-          handleNext()
-        } else {
-          // handleCheckMyResults ni keyinroq chaqiramiz
-          console.log('Diagnostic - Should call handleCheckMyResults')
-        }
+      if (selectedIndex < testQuestions.length - 1) {
+        handleNext()
       } else {
-        console.log('Diagnostic - No answer provided, cannot proceed')
+        handleCheckMyResults()
       }
     }
-  }, [selectedIndex, testQuestions, handleNext, handlePrev, choiceAnswers, textAnswers, compositeAnswers])
+  }, [selectedIndex, testQuestions])
 
   useEffect(() => {
-    // window object'ga event listener qo'shamiz
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown, true)
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keydown', handleKeyDown, true)
     }
   }, [handleKeyDown])
 
@@ -310,6 +296,11 @@ const DiagnosticQuestions = () => {
     return Array.from(answeredQuestions)
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
+  // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
+  const allQuestionsList = useMemo(() => {
+    return testQuestions ? testQuestions.map(q => String(q.id)) : []
+  }, [testQuestions])
+
   if (isLoading || !testQuestions)
     return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
 
@@ -322,6 +313,7 @@ const DiagnosticQuestions = () => {
           <ExamQuestionList
             questions={testQuestions || []}
             selectedList={selectedList}
+            allQuestionsList={allQuestionsList}
             selectedQuestion={selectedQuestion}
             setSelectedQuestion={setSelectedQuestion}
             setSelectedIndex={setSelectedIndex}
