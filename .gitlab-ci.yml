@@ -1,62 +1,62 @@
-image: node:20
+# image: node:20
 
-stages:
-  - build
-  - deploy
-  - cleanup
+# stages:
+#   - build
+#   - deploy
+#   - cleanup
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
-variables:
-  NEXT_TELEMETRY_DISABLED: '1'
+# variables:
+#   NEXT_TELEMETRY_DISABLED: '1'
 
-before_script:
-  - apt-get update -y && apt-get install -y sshpass rsync openssh-client
-  - mkdir -p ~/.ssh
-  - ssh-keyscan -H "$SERVER_URL" >> ~/.ssh/known_hosts
+# before_script:
+#   - apt-get update -y && apt-get install -y sshpass rsync openssh-client
+#   - mkdir -p ~/.ssh
+#   - ssh-keyscan -H "$SERVER_URL" >> ~/.ssh/known_hosts
 
-build:
-  stage: build
-  tags:
-    - iqmath
-  script:
-    # ENV fayl
-    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+# build:
+#   stage: build
+#   tags:
+#     - iqmath
+#   script:
+#     # ENV fayl
+#     - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
 
-    # Paketlar va build
-    - pnpm install --prefer-offline --no-frozen-lockfile
-    - pnpm run build
+#     # Paketlar va build
+#     - pnpm install --prefer-offline --no-frozen-lockfile
+#     - pnpm run build
 
-    # Faqat kerakli fayllarni ajratish
-    - mkdir deploy
-    - cp -r .next public package.json pnpm-lock.yaml .env deploy/
+#     # Faqat kerakli fayllarni ajratish
+#     - mkdir deploy
+#     - cp -r .next public package.json pnpm-lock.yaml .env deploy/
 
-  artifacts:
-    paths:
-      - deploy/
+#   artifacts:
+#     paths:
+#       - deploy/
 
-deploy:
-  stage: deploy
-  tags:
-    - iqmath
-  only:
-    - master
-  script:
-    - echo "🚀 Faqat kerakli fayllar rsync bilan yuborilmoqda..."
-    - sshpass -p "$SERVER_PASSWORD" rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" deploy/ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
+# deploy:
+#   stage: deploy
+#   tags:
+#     - iqmath
+#   only:
+#     - master
+#   script:
+#     - echo "🚀 Faqat kerakli fayllar rsync bilan yuborilmoqda..."
+#     - sshpass -p "$SERVER_PASSWORD" rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" deploy/ "$SERVER_LOGIN@$SERVER_URL:/var/www/iqmath_student"
 
-    - echo "🔁 Serverda ishga tushirish..."
-    - |
-      sshpass -p "$SERVER_PASSWORD" \
-      ssh -o StrictHostKeyChecking=no "$SERVER_LOGIN@$SERVER_URL" "bash -lc '
-        export NVM_DIR=\"\$HOME/.nvm\"
-        [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
-        nvm use 20
-        cd /var/www/iqmath_student
-        rm -rf node_modules package-lock.json
-        pnpm install
-        pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
-        pm2 save
-      '"
+#     - echo "🔁 Serverda ishga tushirish..."
+#     - |
+#       sshpass -p "$SERVER_PASSWORD" \
+#       ssh -o StrictHostKeyChecking=no "$SERVER_LOGIN@$SERVER_URL" "bash -lc '
+#         export NVM_DIR=\"\$HOME/.nvm\"
+#         [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
+#         nvm use 20
+#         cd /var/www/iqmath_student
+#         rm -rf node_modules package-lock.json
+#         pnpm install
+#         pm2 restart iqmath_student || pm2 start npm --name \"iqmath_student\" -- run start
+#         pm2 save
+#       '"
