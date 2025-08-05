@@ -7,15 +7,19 @@ import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useUserStore } from '@/store'
+import { useAuthTabStore } from '@/store'
 import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import { useQueryClient } from '@tanstack/react-query'
 
 function NavbarProfile() {
   const { data: session } = useSession()
   const { t } = useTranslation()
   const { role: currentRole } = useRoleDetection()
+  const { resetAuth, clearCredentials } = useAuthTabStore()
+  const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [openProfile, setOpenProfile] = useState(false)
@@ -63,14 +67,22 @@ function NavbarProfile() {
   }
 
   const handleLogout = async () => {
-    // Clear user store
+    // Clear user store first
     const { setUser, setRole } = useUserStore.getState()
     setUser(null)
     setRole(null)
     
+    // Clear auth tab store
+    resetAuth()
+    clearCredentials()
+    
     // Clear all storage
     localStorage.clear()
     sessionStorage.clear()
+    
+    // Clear React Query cache
+    queryClient.clear()
+    queryClient.removeQueries()
     
     await signOut({ callbackUrl: 'https://iq-math.uz' })
   }

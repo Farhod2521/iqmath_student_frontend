@@ -2,6 +2,8 @@ import axios from 'axios'
 import { config } from '../../config/index'
 import { signOut, getSession } from 'next-auth/react'
 import { URLS } from '../../constants/url'
+import { useUserStore } from '@/store/userStore'
+import { useAuthTabStore } from '@/store'
 
 const request = axios.create({
   baseURL: config.API_URL,
@@ -41,8 +43,22 @@ request.interceptors.response.use(
     // Agar 401 bo'lsa, refresh token ham eskirgan, sign out qilamiz
     if (status === 401) {
       if (typeof window !== 'undefined') {
+        // Clear all stores
+        const { setUser, setRole } = useUserStore.getState()
+        const { resetAuth, clearCredentials } = useAuthTabStore.getState()
+        
+        setUser(null)
+        setRole(null)
+        resetAuth()
+        clearCredentials()
+        
         localStorage.clear()
         sessionStorage.clear()
+        
+        // Clear React Query cache if available
+        if (typeof window !== 'undefined' && window.__REACT_QUERY_CACHE__) {
+          window.__REACT_QUERY_CACHE__.clear()
+        }
       }
       signOut({ callbackUrl: '/' })
       return Promise.reject(error)
@@ -68,8 +84,22 @@ request.interceptors.response.use(
         // Agar refresh ham eskirgan bo'lsa (401), sign out qilamiz
         if (refreshError?.response?.status === 401) {
           if (typeof window !== 'undefined') {
+            // Clear all stores
+            const { setUser, setRole } = useUserStore.getState()
+            const { resetAuth, clearCredentials } = useAuthTabStore.getState()
+            
+            setUser(null)
+            setRole(null)
+            resetAuth()
+            clearCredentials()
+            
             localStorage.clear()
             sessionStorage.clear()
+            
+            // Clear React Query cache if available
+            if (typeof window !== 'undefined' && window.__REACT_QUERY_CACHE__) {
+              window.__REACT_QUERY_CACHE__.clear()
+            }
           }
           signOut({ callbackUrl: '/' })
         }

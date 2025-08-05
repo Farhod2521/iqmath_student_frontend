@@ -38,6 +38,7 @@ function AuthSignIn() {
         router.push('/dashboard/student/subjects')
       }
       setShouldRedirect(false)
+      setIsLoading(false) // Loading'ni to'xtatamiz
     }
   }, [shouldRedirect, isTeacher, roleLoading, router, roleError])
 

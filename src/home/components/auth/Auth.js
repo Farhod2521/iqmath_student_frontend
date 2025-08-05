@@ -62,6 +62,7 @@ function Auth() {
             {currentTab === 'receiveCode' ? <AuthRecieveCode /> : null}
             {currentTab === 'verifySms' ? <AuthVerifySms /> : null}
             {currentTab === 'newPassword' ? <AuthNewPassword /> : null}
+            {currentTab === 'welcome' ? <AuthWelcome /> : null}
           </div>
         
       </div>

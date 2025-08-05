@@ -5,22 +5,34 @@ import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import SidebarTitle from '@/components/title/sidebar-title'
 import { useUserStore } from '@/store/userStore'
+import { useAuthTabStore } from '@/store'
+import { useQueryClient } from '@tanstack/react-query'
 
 const ProfileSection = ({ menuItems, onTabChange }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const { setUser, setRole } = useUserStore()
+  const { resetAuth, clearCredentials } = useAuthTabStore()
+  const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
 
   const handleLogout = async () => {
-    // Clear user store
+    // Clear user store first
     setUser(null)
     setRole(null)
+    
+    // Clear auth tab store
+    resetAuth()
+    clearCredentials()
     
     // Clear all storage
     localStorage.clear()
     sessionStorage.clear()
+    
+    // Clear React Query cache
+    queryClient.clear()
+    queryClient.removeQueries()
     
     await signOut({
       callbackUrl: 'https://iq.iq-math.uz'

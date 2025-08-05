@@ -10,6 +10,15 @@ export const useRoleDetection = () => {
   const { data: session, status } = useSession()
   const [timeoutError, setTimeoutError] = useState(false)
 
+  // Clear role and user when session is unauthenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      setRole(null)
+      setUser(null)
+      setTimeoutError(false)
+    }
+  }, [status, setRole, setUser])
+
   const { data: studentProfile, isLoading: studentLoading, error } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
@@ -30,19 +39,19 @@ export const useRoleDetection = () => {
 
   // Timeout mechanism to prevent infinite loading
   useEffect(() => {
-    if (session?.accessToken && !role && !studentLoading) {
+    if (session?.accessToken && !role && !studentLoading && status === 'authenticated') {
       const timeout = setTimeout(() => {
         setTimeoutError(true)
       }, 10000) // 10 seconds timeout
 
       return () => clearTimeout(timeout)
     }
-  }, [session?.accessToken, role, studentLoading])
+  }, [session?.accessToken, role, studentLoading, status])
 
   // Loading holatini yaxshilash
   // Session loading yoki student profile loading bo'lsa loading ko'rsatamiz
   // Timeout error bo'lsa loading'ni to'xtatamiz
-  const isLoading = (status === 'loading' || (studentLoading && !role && session?.accessToken)) && !timeoutError
+  const isLoading = (status === 'loading' || (studentLoading && !role && session?.accessToken && status === 'authenticated')) && !timeoutError
   const isTeacher = role === 'teacher' || role === 'mentor' || role === 'Teacher' || role === 'Mentor'
 
   return {
