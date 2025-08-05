@@ -17,14 +17,20 @@ const CredentialsPopup = () => {
     clearCredentials()
   }
 
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose()
+    }
+  }
+
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
     toast.success(t('copied'))
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{ zIndex: 999999, position: 'fixed' }} onClick={handleBackdropClick}>
+      <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl" style={{ zIndex: 1000000, position: 'relative' }}>
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-gray-900">{t('yourCredentials')}</h3>
           <button

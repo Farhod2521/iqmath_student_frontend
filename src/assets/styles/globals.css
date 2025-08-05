@@ -303,3 +303,27 @@ body.landing-no-scroll {
   background-color: #e5e7eb !important;
   font-weight: bold !important;
 }
+
+/* Modal z-index fixes */
+.modal-overlay {
+  z-index: 9999 !important;
+}
+
+.modal-content {
+  z-index: 10000 !important;
+}
+
+/* Ensure modals are always on top */
+.fixed.inset-0 {
+  z-index: 9999 !important;
+}
+
+/* Specific modal fixes */
+[class*="z-50"] {
+  z-index: 9999 !important;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden !important;
+}

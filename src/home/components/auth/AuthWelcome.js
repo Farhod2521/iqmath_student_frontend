@@ -4,10 +4,14 @@ import { signOut } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 import SimpleLoader from '@/components/loader/simple-loader'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAuthTabStore } from '@/store'
 
 function AuthWelcome() {
   const { t } = useTranslation()
   const router = useRouter()
+  const queryClient = useQueryClient()
+  const { resetAuth, clearCredentials } = useAuthTabStore()
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { isTeacher, isLoading: roleLoading, role } = useRoleDetection()
@@ -29,9 +33,19 @@ function AuthWelcome() {
   }
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/' })
+    // Clear auth tab store
+    resetAuth()
+    clearCredentials()
+    
+    // Clear React Query cache
+    queryClient.clear()
+    queryClient.removeQueries()
+    
+    // Clear all storage
     localStorage.clear()
     sessionStorage.clear()
+    
+    await signOut({ callbackUrl: '/' })
   }
 
   // Loading holatini aniqlash - tugma bosilgandan keyin
