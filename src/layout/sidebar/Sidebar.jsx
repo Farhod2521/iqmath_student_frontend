@@ -24,15 +24,18 @@ function Sidebar() {
         }`}
       >
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto sidebar-content">
+        <div className="flex-1 overflow-y-auto border-none sidebar-content">
           <SidebarLogo />
           <SidebarMenu />
-          <SidebarPlan />
         </div>
         
         {/* Fixed footer area */}
-        <div className="flex-shrink-0 bg-white dark:bg-[#202936] border-t border-[#EAEFF4]">
+        <div>
+        <SidebarPlan />
+  <div className="flex-shrink-0 border-t border-[#EAEFF4]  dark:bg-[#202936]">
         <SidebarFooter />
+
+  </div>
         </div>
       </div>
     </>

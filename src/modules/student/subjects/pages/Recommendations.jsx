@@ -6,7 +6,7 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 
 import ContentLoader from '@/components/loader/content-loader'
-import CardSubject from '../components/card/CardSubject'
+import CardSubjectWithProgress from '../components/card/CardSubjectWithProgress'
 import { groupSubjectsByType } from '../utils/groupSubjectsByType'
 import { useRouter } from 'next/router'
 import { get } from 'lodash'
@@ -38,7 +38,7 @@ const Recommendations = () => {
           <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
           <div className="flex flex-wrap gap-4 mb-4">
             {data.map((item, index) => (
-              <CardSubject
+              <CardSubjectWithProgress
                 onClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}
                 key={index}
                 item={item}

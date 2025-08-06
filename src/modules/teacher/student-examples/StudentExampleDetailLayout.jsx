@@ -88,7 +88,8 @@ const StudentExampleDetailLayout = ({
             </button>
           </div>
         </div>
-        <div className="flex flex-row h-[calc(100vh-80px)] bg-white">
+        {/* Desktop Layout - hozirgi holatida */}
+        <div className="hidden md:flex flex-row h-[calc(100vh-80px)] bg-white">
           <div className="w-1/2 flex-shrink-0 flex items-center">
             <StudentExampleQuestionList
               questions={questions}
@@ -98,6 +99,42 @@ const StudentExampleDetailLayout = ({
             />
           </div>
           <div className="w-1/2 flex-shrink-0 flex items-center justify-center">
+            <StudentExampleAnswerPanel selected={selected} result={result} i18n={i18n} />
+          </div>
+        </div>
+
+        {/* Mobile Layout - savollar raqamlari tepada, savol matni pastda */}
+        <div className="md:hidden bg-white h-[calc(100vh-80px)]">
+          {/* Questions Numbers - Tepada */}
+          <div className="p-4 border-b border-gray-200">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {questions.map((q, idx) => {
+                let circleClass = '';
+                if (selectedIdx === idx) {
+                  circleClass = 'border-white shadow-md bg-[#037AFF] text-white';
+                } else if (q.answer === true) {
+                  circleClass = 'border-[#2EB14F] bg-[#EBF9EEFF] text-[#2EB14F]';
+                } else if (q.answer === false) {
+                  circleClass = 'border-[#FF3B30] bg-[#FFEBEA] text-[#FF3B30]';
+                } else {
+                  circleClass = 'border-[#E9E9E9] bg-white';
+                }
+                
+                return (
+                  <button
+                    key={q.index}
+                    onClick={() => setSelectedIdx(idx)}
+                    className={`w-[40px] h-[40px] flex items-center justify-center border-2 rounded-full font-bold text-base ${circleClass} transition-all duration-200 hover:scale-105`}
+                  >
+                    {q.index}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Answer Panel - Pastda */}
+          <div className="p-4 flex-1 overflow-y-auto flex items-center justify-center">
             <StudentExampleAnswerPanel selected={selected} result={result} i18n={i18n} />
           </div>
         </div>

@@ -88,20 +88,27 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: t("number"),
       valueGetter: "node.rowIndex + 1",
-      maxWidth: 70,
+      width: 80,
+      minWidth: 60,
+      maxWidth: 100,
+      flex: 0.5,
       sortable: false,
       checkboxSelection: true,
+      resizable: false,
     },
     {
       headerName: t("student"),
       field: "student_name",
+      width: 200,
+      minWidth: 150,
+      maxWidth: 300,
       flex: 1.5,
       cellRenderer: (params) => (
         <div className={`flex items-center gap-2 cursor-pointer ${params.data.has_answers ? 'text-green-600' : ''}`}>
           <Image src={"/icons/pupil.svg"} alt="pupil" width={23} height={22} />
           <span className={`font-medium ${params.data.has_answers ? 'text-green-600' : ''}`}>{params.value}</span>
           {params.data.has_answers && (
-            <div className="w-2 h-2 bg-green-500 rounded-full ml-1"></div>
+            <div className="w-2 h-2 bg-green-500 rounded-full ml-1 flex-shrink-0"></div>
           )}
         </div>
       ),
@@ -109,13 +116,19 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: t("class"),
       field: "class_name",
+      width: 180,
+      minWidth: 120,
       maxWidth: 200,
+      flex: 1,
       cellClass: "text-center",
     },
     {
       headerName: t("submittedTime"),
       field: "formatted_date",
-      maxWidth: 180,
+      width: 180,
+      minWidth: 130,
+      maxWidth: 220,
+      flex: 1.2,
       cellClass: "text-center",
       cellRenderer: (params) => {
         return formatDate(params.value);
@@ -124,7 +137,10 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: t("status"),
       field: "status",
-      maxWidth: 120,
+      width: 140,
+      minWidth: 100,
+      maxWidth: 160,
+      flex: 0.8,
       cellRenderer: (params) => (
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(params.value)}`}>
           {getStatusText(params.value)}
@@ -134,7 +150,10 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: "Javob bergan o'qituvchi",
       field: "teacher.full_name",
-      maxWidth: 180,
+      width: 200,
+      minWidth: 150,
+      maxWidth: 280,
+      flex: 1.3,
       cellRenderer: (params) => {
         if (!params.value) {
           return <span className="text-gray-400 italic text-xs">-</span>
@@ -149,7 +168,10 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: "Javob berilgan vaqti",
       field: "teacher.reviewed_at",
-      maxWidth: 150,
+      width: 160,
+      minWidth: 120,
+      maxWidth: 180,
+      flex: 1,
       cellRenderer: (params) => {
         if (!params.value) {
           return <span className="text-gray-400 italic text-xs">-</span>
@@ -164,21 +186,24 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: "Izoh",
       field: "teacher.commit",
-      maxWidth: 150,
+      width: 180,
+      minWidth: 120,
+      maxWidth: 250,
+      flex: 1.1,
       cellRenderer: (params) => {
         if (!params.value) {
           return <span className="text-gray-400 italic text-xs">-</span>
         }
         
         // Uzun matnni qisqartirish
-        const truncatedText = params.value.length > 50 
-          ? params.value.substring(0, 20) + '...' 
+        const truncatedText = params.value.length > 30 
+          ? params.value.substring(0, 25) + '...' 
           : params.value
         
         return (
           <div 
-            className="text-xs text-gray-700  px-2 py-1 "
-            title={params.value.length > 50 ? params.value : ''}
+            className="text-xs text-gray-700 px-2 py-1"
+            title={params.value.length > 30 ? params.value : ''}
           >
             {truncatedText}
           </div>
@@ -188,7 +213,11 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     {
       headerName: "",
       field: "actions",
-      maxWidth: 100,
+      width: 120,
+      minWidth: 80,
+      maxWidth: 140,
+      flex: 0.6,
+      resizable: false,
       cellRenderer: (params) => {
         const isLoading = actionLoading[params.data.id];
         
@@ -196,7 +225,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
           <div className="flex gap-2 justify-end">
             <button 
               onClick={() => onViewDetails(params.data.id, params.data.student_name)}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded-lg text-xs"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap"
             >
               {t("details")}
             </button>
@@ -220,6 +249,16 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
           domLayout="autoHeight"
           className="custom-grid"
           pagination={false}
+          defaultColDef={{
+            resizable: true,
+            sortable: true,
+            filter: true,
+            suppressSizeToFit: false,
+            flex: 1,
+          }}
+          suppressColumnVirtualisation={false}
+          suppressRowVirtualisation={false}
+          suppressCellFocus={true}
         />
       </div>
       <StudentExamplePagination

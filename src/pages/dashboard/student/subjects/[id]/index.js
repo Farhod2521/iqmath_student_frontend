@@ -68,6 +68,9 @@ const SubjectsPage = () => {
 
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
+              <div className="md:hidden bg-gray-50 px-4 py-3 border-b border-gray-200">
+                <h3 className="text-sm font-medium text-gray-700 uppercase">{t('chapter')}</h3>
+              </div>
               <ul>
                 {chapters.map((chapter) => (
                   <li
@@ -85,6 +88,9 @@ const SubjectsPage = () => {
 
             {selectedChapterId && (
               <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
+                <div className="md:hidden bg-gray-50 px-4 py-3 border-b border-gray-200">
+                  <h3 className="text-sm font-medium text-gray-700 uppercase">{t('topic')}</h3>
+                </div>
                 {isLoadingTopic || isFetchingTopic ? (
                   <ContentLoader />
                 ) : topics.length > 0 ? (

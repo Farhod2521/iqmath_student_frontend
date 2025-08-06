@@ -8,21 +8,17 @@ import StudentExampleTable from '@/modules/teacher/student-examples/StudentExamp
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
+
 const StudentExamples = () => {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('all')
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null)  
   const [actionLoading, setActionLoading] = useState({})
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
-
-  const handleTab = (tab) => {
-    setActiveTab(tab)
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -121,6 +117,8 @@ const StudentExamples = () => {
     })
   }
 
+
+
   const statusOptions = [
     { value: '', label: 'Hammasi' },
     { value: 'kutmoqda', label: t('pending') },
@@ -168,7 +166,7 @@ const StudentExamples = () => {
   return (
     <LayoutAdmin title={t('studentExamples')}>
       <div className="space-y-6">
-        {/* Filters */}
+        {/* Filters - pupils sahifasidagidek */}
         <div className="flex items-center justify-between py-[16px]">
           <div className="flex items-center gap-x-[12px]">
             <SearchInput
@@ -186,10 +184,12 @@ const StudentExamples = () => {
               className="w-40"
             />
           </div>
+          
+
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-gray-800 ">
+        <div className="bg-white dark:bg-gray-800">
           {data.length === 0 ? (
             <div className="text-center py-12">
               <div className="mx-auto h-12 w-12 text-gray-400">
