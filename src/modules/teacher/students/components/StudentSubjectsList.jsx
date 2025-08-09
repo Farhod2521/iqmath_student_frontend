@@ -70,10 +70,10 @@ const StudentSubjectsList = () => {
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: `${subject.mastery_percent}%` }}
+                      style={{ width: `${(subject.mastery_percent === null || subject.mastery_percent === undefined) ? 0 : subject.mastery_percent}%` }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">{subject.mastery_percent}%</span>
+                  <span className="font-semibold text-sm">{(subject.mastery_percent === null || subject.mastery_percent === undefined) ? 0 : subject.mastery_percent}%</span>
                 </div>
               </td>
               <td className="p-4 text-center">
@@ -113,10 +113,10 @@ const StudentSubjectsList = () => {
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: `${subject.mastery_percent}%` }}
+                      style={{ width: `${(subject.mastery_percent === null || subject.mastery_percent === undefined) ? 0 : subject.mastery_percent}%` }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">{subject.mastery_percent}%</span>
+                  <span className="font-semibold text-sm">{(subject.mastery_percent === null || subject.mastery_percent === undefined) ? 0 : subject.mastery_percent}%</span>
                 </div>
               </td>
               <td className="p-4 text-center">
