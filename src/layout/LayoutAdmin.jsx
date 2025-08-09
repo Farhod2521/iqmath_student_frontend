@@ -16,12 +16,11 @@ const LayoutAdmin = ({ children, title }) => {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    // Faqat bir marta ishga tushadi
     const updateSidebarState = () => {
       setIsSidebarOpen(window.innerWidth > 1024)
     }
 
-    updateSidebarState() // dastlabki holat
+    updateSidebarState() 
     window.addEventListener('resize', updateSidebarState)
 
     setIsMounted(true)
@@ -30,7 +29,6 @@ const LayoutAdmin = ({ children, title }) => {
   }, [setIsSidebarOpen])
 
   useEffect(() => {
-    // Route o'zgarsa va kichik ekran bo‘lsa, sidebar yopiladi
     if (window.innerWidth < 1024) {
       setIsSidebarOpen(false)
     }
@@ -38,10 +36,8 @@ const LayoutAdmin = ({ children, title }) => {
 
   const { setScoreData } = useScoreStore()
   
-  // O'qituvchi rejimida ekanligini tekshiramiz
   const isTeacherMode = typeof window !== 'undefined' ? sessionStorage.getItem('is_teacher_mode') === 'true' : false
   
-  // O'qituvchi rejimida bo'lsa, o'quvchi endpoint'ini ishlatamiz
   const coinsUrl = isTeacherMode ? URLS.coins : URLS.coins
   const { data: score, isLoading } = useGetQuery({ key: KEYS.coins, url: coinsUrl })
 
@@ -52,7 +48,7 @@ const LayoutAdmin = ({ children, title }) => {
     }
   }, [score, isLoading, setScoreData])
 
-  if (!isMounted) return null // SSR bilan muammoni oldini olish
+  if (!isMounted) return null
 
   return (
     <ThemeProvider defaultTheme="light" attribute="class">

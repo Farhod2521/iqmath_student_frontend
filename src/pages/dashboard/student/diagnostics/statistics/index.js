@@ -43,12 +43,12 @@ const Index = () => {
                     <div
                       className="bg-[#FF9500] h-full transition-all duration-300 rounded-full"
                       style={{
-                        width: `${get(item, 'score', '') === null ? 0 : get(item, 'score', '')}%`
+                        width: `${get(item, 'score') === null || get(item, 'score') === undefined ? 0 : get(item, 'score', 0)}%`
                       }}
                     ></div>
                   </div>
                   <p className="text-[17px] font-medium text-gray-700">
-                    {get(item, 'score', '') === null ? 0 : get(item, 'score', '')}%
+                    {get(item, 'score') === null || get(item, 'score') === undefined ? 0 : get(item, 'score', 0)}%
                   </p>
                 </div>
 

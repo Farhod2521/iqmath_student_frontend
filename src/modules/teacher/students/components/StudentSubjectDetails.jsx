@@ -100,11 +100,11 @@ const StudentSubjectDetails = () => {
                                                 <div className="flex items-center gap-2">
                                                     <div className=" min-w-[120px] bg-gray-200 rounded-full h-1.5">
                                                         <div 
-                                                            className={`h-1.5   rounded-full ${topic.score_percent >= 80 ? 'bg-green-500' : topic.score_percent >= 50 ? 'bg-yellow-400' : 'bg-red-500'}`}
-                                                            style={{ width: `${topic.score_percent}%` }}
+                                                            className={`h-1.5   rounded-full ${(topic.score_percent === null || topic.score_percent === undefined) ? 'bg-gray-400' : topic.score_percent >= 80 ? 'bg-green-500' : topic.score_percent >= 50 ? 'bg-yellow-400' : 'bg-red-500'}`}
+                                                            style={{ width: `${(topic.score_percent === null || topic.score_percent === undefined) ? 0 : topic.score_percent}%` }}
                                                         ></div>
                                                     </div>
-                                                    <span className="font-semibold text-xs text-gray-500">{topic.score_percent}%</span>
+                                                    <span className="font-semibold text-xs text-gray-500">{(topic.score_percent === null || topic.score_percent === undefined) ? 0 : topic.score_percent}%</span>
                                                 </div>
                                             </td>
                                         </tr>

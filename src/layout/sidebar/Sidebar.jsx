@@ -18,7 +18,7 @@ function Sidebar() {
       ></div>
 
       <div
-        className={`fixed left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 
+        className={`fixed p-0 left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 
         transition-transform duration-300 z-50 w-[300px] flex flex-col ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
