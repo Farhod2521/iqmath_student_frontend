@@ -1,22 +1,44 @@
 import SearchInput from "@/components/search";
 import SelectBox from "@/components/select-box";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useTranslation } from "react-i18next";
 import StudentRewardHistory from "./StudentRewardHistory";
+import { debounce } from "lodash";
 
-
-
-function StudentFilter({ studentsData = [], onExportAll, isExportingAll = false }) {
+const StudentFilter = memo(({ 
+  onFilterChange,
+  isExportingAll = false,
+  onExportStart,
+  onExportEnd,
+  studentsData = []
+}) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [classValue, setClassValue] = useState("");
+  const [subjectValue, setSubjectValue] = useState(""); // Fan uchun state
   const [statusValue, setStatusValue] = useState("");
   const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Debounce funksiyasini ref bilan saqlaymiz
+  const debouncedSearchRef = useRef(null);
 
+  // Sinf raqamlari (5-11)
   const classOptions = [
-    { value: "a", label: "A" },
-    { value: "b", label: "B" },
-    { value: "c", label: "C" },
+    { value: "5", label: "5-sinf" },
+    { value: "6", label: "6-sinf" },
+    { value: "7", label: "7-sinf" },
+    { value: "8", label: "8-sinf" },
+    { value: "9", label: "9-sinf" },
+    { value: "10", label: "10-sinf" },
+    { value: "11", label: "11-sinf" },
+  ];
+
+  // Fanlar ro'yxati
+  const subjectOptions = [
+    { value: "Algebra", label: "Algebra" },
+    { value: "Matematika", label: "Matematika" },
+    { value: "Geometriya", label: "Geometriya" },
   ];
 
   const statusOptions = [
@@ -24,27 +46,134 @@ function StudentFilter({ studentsData = [], onExportAll, isExportingAll = false 
     { value: "inactive", label: "Nofaol" },
   ];
 
+  // Debounced search function - faqat bir marta yaratiladi
+  useEffect(() => {
+    debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal) => {
+      const filterData = {
+        search: searchTerm,
+        class_num: classVal,
+        subject_name: subjectVal, // subject_name parametri sifatida yuboramiz
+        status: statusVal
+      };
+      onFilterChange(filterData);
+      setIsLoading(false);
+    }, 500);
 
+    return () => {
+      if (debouncedSearchRef.current) {
+        debouncedSearchRef.current.cancel();
+      }
+    };
+  }, [onFilterChange]);
+
+  // Search input o'zgarishini kuzatish - focus'ni buzmaslik uchun
+  const handleSearchChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setSearch(newValue);
+    setIsLoading(true);
+    
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue);
+    }
+  }, [classValue, subjectValue, statusValue]);
+
+  // Class o'zgarishini kuzatish
+  const handleClassChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setClassValue(newValue);
+    setIsLoading(true);
+    
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current(search, newValue, subjectValue, statusValue);
+    }
+  }, [search, subjectValue, statusValue]);
+
+  // Subject o'zgarishini kuzatish
+  const handleSubjectChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setSubjectValue(newValue);
+    setIsLoading(true);
+    
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current(search, classValue, newValue, statusValue);
+    }
+  }, [search, classValue, statusValue]);
+
+  const handleStatusChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setStatusValue(newValue);
+    setIsLoading(true);
+    
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current(search, classValue, subjectValue, newValue);
+    }
+  }, [search, classValue, subjectValue]);
+
+  // Clear filters function
+  const handleClearFilters = useCallback(() => {
+    setSearch("");
+    setClassValue("");
+    setSubjectValue("");
+    setStatusValue("");
+    
+    // Clear filters immediately
+    onFilterChange({
+      search: "",
+      class_num: "",
+      subject_name: "",
+      status: ""
+    });
+  }, [onFilterChange]);
+
+  // Export function
+  const handleExport = useCallback(() => {
+    onExportStart();
+  }, [onExportStart]);
 
   return (
     <>
     <div className="flex items-center justify-between py-[16px]">
       <div className="flex items-center gap-x-[12px]">
-        <SearchInput placeholder="Поиск" value={search} onChange={(e) => setSearch(e.target.value)} className="w-80" />
+        <SearchInput 
+          placeholder={t('searchStudents')} 
+          value={search} 
+          onChange={handleSearchChange} 
+          className="w-80"
+        />
         <SelectBox
-          label="Класс"
+          label={t('class')}
           options={classOptions}
           value={classValue}
-          onChange={(e) => setClassValue(e.target.value)}
+          onChange={handleClassChange}
           className="w-40"
         />
         <SelectBox
-          label="Статус"
-          options={statusOptions}
-          value={statusValue}
-          onChange={(e) => setStatusValue(e.target.value)}
+          label={t('subject')}
+          options={subjectOptions}
+          value={subjectValue}
+          onChange={handleSubjectChange}
           className="w-40"
         />
+        {/* <SelectBox
+          label={t('status')}
+          options={statusOptions}
+          value={statusValue}
+          onChange={handleStatusChange}
+          className="w-40"
+        /> */}
+        
+        {/* Clear filters button */}
+        {(search || classValue || subjectValue || statusValue) && (
+          <button
+            onClick={handleClearFilters}
+            className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            {t('clearFilters')}
+          </button>
+        )}
       </div>
       
       <div className="flex items-center gap-x-[12px]">
@@ -61,8 +190,8 @@ function StudentFilter({ studentsData = [], onExportAll, isExportingAll = false 
           
         {/* Excel export tugmasi */}
         <button
-          onClick={onExportAll}
-          disabled={isExportingAll}
+          onClick={handleExport}
+          disabled={isExportingAll || isLoading}
           className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-md"
         >
           {isExportingAll ? (
@@ -82,6 +211,20 @@ function StudentFilter({ studentsData = [], onExportAll, isExportingAll = false 
       </div>
     </div>
 
+    {/* Search results info */}
+    {search && (
+      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-blue-800 text-sm">
+          {t('searchResultsFor')}: <span className="font-semibold">"{search}"</span>
+          {studentsData.length > 0 && (
+            <span className="ml-2 text-blue-600">
+              ({studentsData.length} {t('studentsFound')})
+            </span>
+          )}
+        </p>
+      </div>
+    )}
+
       {/* Reward History Modal */}
       <StudentRewardHistory
         isOpen={isRewardHistoryOpen}
@@ -89,6 +232,8 @@ function StudentFilter({ studentsData = [], onExportAll, isExportingAll = false 
       />
     </>
   );
-}
+});
+
+StudentFilter.displayName = 'StudentFilter';
 
 export default StudentFilter; 

@@ -1,10 +1,12 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
+import { request } from '@/services/api'
+import toast from 'react-hot-toast'
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import StudentPagination from './StudentPagination'
@@ -13,12 +15,133 @@ import StudentRewardModal from './StudentRewardModal'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
-function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoading }) {
+function StudentTable({ 
+  filterData = {}, 
+  isExportingAll, 
+  onExportStart, 
+  onExportEnd,
+  onStudentsDataChange
+}) {
   const router = useRouter()
   const { t } = useTranslation()
   const { data: session } = useSession()
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false)
+  const [isLoadingData, setIsLoadingData] = useState(false)
+  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
+  const [data, setData] = useState([])
+
+  // API so'rovini bajarish
+  const getData = useCallback(
+    (page = 1, limit = 10, filters = {}) => {
+      setIsLoadingData(true)
+      
+      const params = {
+        page,
+        size: limit,
+        ...filters
+      }
+
+      // Bo'sh qiymatlarni olib tashlash
+      Object.keys(params).forEach(key => {
+        if (params[key] === '' || params[key] === null || params[key] === undefined) {
+          delete params[key]
+        }
+      })
+
+      // API so'rovini yuborish
+      request
+        .get('/api/v1/auth/student/student_list/', {
+          params
+        })
+        .then((res) => {
+          const newData = res.data.results || []
+          setData(newData)
+          setPagination({
+            current: page,
+            limit,
+            total: res.data.total || 0,
+            totalPages: res.data.total_pages || 0
+          })
+          // Parent komponentga data'ni yuboramiz
+          if (onStudentsDataChange) {
+            onStudentsDataChange(newData)
+          }
+        })
+        .catch((error) => {
+          console.error('O\'quvchilar ma\'lumotlarini olishda xatolik:', error)
+          setData([])
+          if (onStudentsDataChange) {
+            onStudentsDataChange([])
+          }
+          toast.error(t('errorLoadingStudents'))
+        })
+        .finally(() => setIsLoadingData(false))
+    },
+    [t, onStudentsDataChange]
+  )
+
+  // Filter o'zgarishini kuzatish
+  useEffect(() => {
+    setPagination(prev => ({ ...prev, current: 1 })) // Sahifani 1-ga qaytarish
+    getData(1, pagination.limit, filterData)
+  }, [filterData, getData, pagination.limit])
+
+  // Pagination o'zgarishini kuzatish
+  useEffect(() => {
+    if (pagination.current > 1) {
+      getData(pagination.current, pagination.limit, filterData)
+    }
+  }, [pagination.current, pagination.limit, filterData, getData])
+
+  // Export funksiyasi
+  const handleExportAllStudents = useCallback(async () => {
+    onExportStart()
+    
+    try {
+      const exportParams = {
+        export: 'excel',
+        ...filterData
+      }
+
+      Object.keys(exportParams).forEach(key => {
+        if (exportParams[key] === '' || exportParams[key] === null || exportParams[key] === undefined) {
+          delete exportParams[key]
+        }
+      })
+
+      const response = await request.get('/api/v1/auth/student/student_list/', {
+        params: exportParams,
+        responseType: 'blob' 
+      })
+      
+      const blob = new Blob([response.data], { 
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+      })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `o'quvchilar_${new Date().toISOString().split('T')[0]}.xlsx`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      
+      toast.success(t('exportAllStudentsSuccess'))
+    } catch (error) {
+      console.error("Export xatosi:", error)
+      toast.error(t('exportError'))
+    } finally {
+      onExportEnd()
+    }
+  }, [filterData, t, onExportStart, onExportEnd])
+
+  // Export tugmasini bosish
+  useEffect(() => {
+    if (isExportingAll) {
+      handleExportAllStudents()
+    }
+  }, [isExportingAll, handleExportAllStudents])
 
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
@@ -61,8 +184,16 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
 
   const handleRewardSuccess = () => {
     // Refresh data if needed
-    // You can add a callback prop to refresh the student list
+    getData(pagination.current, pagination.limit, filterData)
   }
+
+  const handlePageChange = useCallback((newPage) => {
+    setPagination((prev) => ({ ...prev, current: newPage + 1 }))
+  }, [])
+
+  const handlePageSizeChange = useCallback((newPageSize) => {
+    setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
+  }, [])
 
   const colDefs = [
     {
@@ -98,7 +229,7 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
     },
     {
       headerName: t('phone'),
-      field: 'phone',
+      field: 'phone_number',
       flex: 1
     },
     {
@@ -144,11 +275,15 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
     }
   ]
 
+  if (isLoadingData && data.length === 0) {
+    return <ContentLoader />
+  }
+
   return (
     <>
     <div className="flex flex-col">
       <div style={{ width: '100%', height: 'auto' }} className="relative">
-        {isLoading && (
+        {isLoadingData && (
           <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
             <ContentLoader classNames="!min-h-[400px]" />
           </div>
@@ -163,9 +298,9 @@ function StudentTable({ data, pagination, onPageChange, onPageSizeChange, isLoad
       </div>
       <StudentPagination
         pagination={pagination}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-        isLoading={isLoading}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        isLoading={isLoadingData}
       />
     </div>
 

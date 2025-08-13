@@ -1,112 +1,48 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import StudentFilter from '../components/StudentFilter'
 import StudentTable from '../components/StudentTable'
-import ContentLoader from '@/components/loader/content-loader'
-import { request } from '@/services/api'
-
-import toast from 'react-hot-toast'
 
 function Students() {
   const { t } = useTranslation()
-  const [isLoadingData, setIsLoadingData] = useState(false)
-  const [isExportingAll, setIsExportingAll] = useState(false)
   const [filterData, setFilterData] = useState({})
-  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
-  const [data, setData] = useState([])
+  const [isExportingAll, setIsExportingAll] = useState(false)
+  const [studentsData, setStudentsData] = useState([]) // Qo'shamiz
 
-  const getData = useCallback(
-    (page = 1, limit = 10) => {
-      setIsLoadingData(true)
-      request
-        .get('/api/v1/auth/student/student_list/', {
-          params: {
-            page,
-            size: limit,
-            ...filterData
-          }
-        })
-        .then((res) => {
-          setData(res.data.results || [])
-          setPagination({
-            current: page,
-            limit,
-            total: res.data.total || 0,
-            totalPages: res.data.total_pages || 0
-          })
-        })
-        .catch((error) => {
-          setData([])
-        })
-        .finally(() => setIsLoadingData(false))
-    },
-    [filterData]
-  )
+  // Filter o'zgarishini kuzatish - faqat state'ni yangilaymiz
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilterData(newFilters)
+  }, [])
 
-  useEffect(() => {
-    getData(pagination.current, pagination.limit)
-  }, [getData, pagination.current, pagination.limit])
-
-  const handlePageChange = (newPage) => {
-    setPagination((prev) => ({ ...prev, current: newPage + 1 }))
-  }
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
-  }
-
-  // Barcha o'quvchilar ma'lumotlarini export qilish
-  const handleExportAllStudents = async () => {
+  // Export holatini boshqarish
+  const handleExportStart = useCallback(() => {
     setIsExportingAll(true)
-    
-    try {
+  }, [])
 
-      const response = await request.get('/api/v1/auth/student/student_list/', {
-        params: {
-          export: 'excel',
-          ...filterData
-        },
-        responseType: 'blob' 
-      })
-      
-      const blob = new Blob([response.data], { 
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-      })
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `o'quvchilar_${new Date().toISOString().split('T')[0]}.xlsx`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
-      
-      toast.success(t('exportAllStudentsSuccess'))
-    } catch (error) {
-      console.error("Export xatosi:", error)
-      toast.error(t('exportError'))
-    } finally {
-      setIsExportingAll(false)
-    }
-  }
+  const handleExportEnd = useCallback(() => {
+    setIsExportingAll(false)
+  }, [])
 
-  if (isLoadingData && data.length === 0) {
-    return <ContentLoader />
-  }
+  // Students data'ni olish uchun callback
+  const handleStudentsDataChange = useCallback((data) => {
+    setStudentsData(data)
+  }, [])
 
   return (
     <div>
       <StudentFilter 
-        studentsData={data} 
-        onExportAll={handleExportAllStudents}
+        onFilterChange={handleFilterChange}
         isExportingAll={isExportingAll}
+        onExportStart={handleExportStart}
+        onExportEnd={handleExportEnd}
+        studentsData={studentsData}
       />
       <StudentTable
-        data={data}
-        pagination={pagination}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        isLoading={isLoadingData}
+        filterData={filterData}
+        isExportingAll={isExportingAll}
+        onExportStart={handleExportStart}
+        onExportEnd={handleExportEnd}
+        onStudentsDataChange={handleStudentsDataChange}
       />
     </div>
   )
