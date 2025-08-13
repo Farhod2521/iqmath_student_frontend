@@ -128,5 +128,13 @@
   "showing": "Showing",
   "of": "of",
   "elements": "elements",
-  "noData": "No data"
+  "noData": "No data",
+  "chapter": "Chapter",
+  "topic": "Topic",
+  "select": "Select",
+  "topicsList": "Topics list",
+  "toUnlock": "To unlock this topic, you need to complete previous topics first",
+  "noTopicsInThisSection": "No topics in this section",
+  "noTopicsInThisSectionMessage": "No topics have been added to this chapter yet",
+  "subjects": "Subjects"
 }
