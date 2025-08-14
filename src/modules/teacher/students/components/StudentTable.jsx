@@ -31,7 +31,6 @@ function StudentTable({
   const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
   const [data, setData] = useState([])
 
-  // API so'rovini bajarish
   const getData = useCallback(
     (page = 1, limit = 10, filters = {}) => {
       setIsLoadingData(true)
@@ -42,14 +41,12 @@ function StudentTable({
         ...filters
       }
 
-      // Bo'sh qiymatlarni olib tashlash
       Object.keys(params).forEach(key => {
         if (params[key] === '' || params[key] === null || params[key] === undefined) {
           delete params[key]
         }
       })
 
-      // API so'rovini yuborish
       request
         .get('/api/v1/auth/student/student_list/', {
           params
@@ -63,7 +60,6 @@ function StudentTable({
             total: res.data.total || 0,
             totalPages: res.data.total_pages || 0
           })
-          // Parent komponentga data'ni yuboramiz
           if (onStudentsDataChange) {
             onStudentsDataChange(newData)
           }
@@ -81,20 +77,17 @@ function StudentTable({
     [t, onStudentsDataChange]
   )
 
-  // Filter o'zgarishini kuzatish
   useEffect(() => {
-    setPagination(prev => ({ ...prev, current: 1 })) // Sahifani 1-ga qaytarish
+    setPagination(prev => ({ ...prev, current: 1 })) 
     getData(1, pagination.limit, filterData)
   }, [filterData, getData, pagination.limit])
 
-  // Pagination o'zgarishini kuzatish
   useEffect(() => {
     if (pagination.current > 1) {
       getData(pagination.current, pagination.limit, filterData)
     }
   }, [pagination.current, pagination.limit, filterData, getData])
 
-  // Export funksiyasi
   const handleExportAllStudents = useCallback(async () => {
     onExportStart()
     
@@ -136,7 +129,6 @@ function StudentTable({
     }
   }, [filterData, t, onExportStart, onExportEnd])
 
-  // Export tugmasini bosish
   useEffect(() => {
     if (isExportingAll) {
       handleExportAllStudents()
@@ -232,11 +224,11 @@ function StudentTable({
       field: 'phone',
       flex: 1
     },
-    {
-      headerName: t('region'),
-      field: 'region',
-      flex: 1
-    },
+    // {
+    //   headerName: t('region'),
+    //   field: 'region',
+    //   flex: 1
+    // },
     {
       headerName: t('lastLoginTime') || 'Oxirgi kirish',
       field: 'last_login_time',
