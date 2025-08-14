@@ -2,17 +2,11 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useTopicStore } from '@/store'
 
 import { useRouter } from 'next/router'
-import parse from 'html-react-parser'
-import Image from 'next/image'
-import SimpleModal from '@/components/modal/simple-modal'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { get } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { Button } from '@heroui/react'
 import ModalLevel from '../components/modal/ModalLevel'
 import ExamQuestionList from '../components/exam/ExamQuestionList'
@@ -24,6 +18,7 @@ import ActionCalculator from '../components/actions/ActionCalculator'
 import ActionInfo from '../components/actions/ActionInfo'
 import ActionSolution from '../components/actions/ActionSolution'
 import Calculator from '../components/calculator/Calculator'
+import DiagnosticResultModal from '../components/modal/DiagnosticResultModal'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 
 const DiagnosticQuestions = () => {
@@ -37,7 +32,7 @@ const DiagnosticQuestions = () => {
   const router = useRouter()
   const [testQuestions, setTestQuestions] = useState()
   const [showCalculator, setShowCalculator] = useState(false)
-  const [showMistake, setShowMistake] = useState(false)
+  const [showDiagnosticResult, setShowDiagnosticResult] = useState(false)
   const [results, setResults] = useState()
   const [score, setScore] = useState()
   const [activeInputId, setActiveInputId] = useState(null)
@@ -178,31 +173,23 @@ const DiagnosticQuestions = () => {
       .filter((q) => q.question_type === 'text')
       .map((q) => {
         const userAnswer = textAnswers[q.id] || ''
-        if (userAnswer.trim() === '') {
-          return null // Bo'sh javoblarni o'tkazib yuborish
-        }
         const wrapped = wrapMathAnswer(userAnswer)
         return {
           question_id: q.id,
           [langAnswerKey]: wrapped
         }
       })
-      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
 
     const choice_answers = testQuestions
       .filter((q) => q.question_type === 'choice')
       .map((q) => {
         const selectedLetter = choiceAnswers[q.id]
-        if (!selectedLetter) {
-          return null // Tanlanmagan variantlarni o'tkazib yuborish
-        }
         const selectedChoice = q.choices?.find(choice => choice.letter === selectedLetter)
         return {
           question_id: q.id,
           choices: selectedChoice ? [selectedChoice.id] : []
         }
       })
-      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
 
     const composite_answers = testQuestions
       .filter((q) => q.question_type === 'composite')
@@ -210,21 +197,14 @@ const DiagnosticQuestions = () => {
         const userSubAnswers = compositeAnswers[q.id] || {}
         const sub_answers = q.sub_questions.map((sub) => {
           const answer = userSubAnswers[sub.id] || ''
-          return answer.trim() !== '' ? wrapPlainMath(answer) : ''
+          return wrapPlainMath(answer)
         })
-        
-        // Agar barcha javoblar bo'sh bo'lsa, bu savolni o'tkazib yuborish
-        const hasAnyAnswer = sub_answers.some(answer => answer.trim() !== '')
-        if (!hasAnyAnswer) {
-          return null
-        }
         
         return {
           question_id: q.id,
           answers: sub_answers
         }
       })
-      .filter(answer => answer !== null) // null qiymatlarni olib tashlash
 
     // Debug uchun console.log
     console.log('=== DIAGNOSTIC TEST DATA ===')
@@ -256,15 +236,25 @@ const DiagnosticQuestions = () => {
           setResults(res)
           setScore(res)
           setTopic(tab)
-          router.push('/dashboard/student/recommendations')
+          setShowDiagnosticResult(true)
           toast.success('Siz testni yakunladingiz!')
-          setShowMistake(true)
         },
         onError: (err) => {
           toast.error("Testni to'liq bajaring!")
         }
       }
     )
+  }
+
+  const handleRetakeTest = () => {
+    setShowDiagnosticResult(false)
+    setChoiceAnswers({})
+    setTextAnswers({})
+    setCompositeAnswers({})
+    setSelectedIndex(0)
+    setResults(null)
+    setScore(null)
+    handleBeginTest()
   }
 
   const selectedList = useMemo(() => {
@@ -400,77 +390,16 @@ const DiagnosticQuestions = () => {
               activeInputId={activeInputId}
             />
           )}
-          {showMistake && (
-            <SimpleModal>
-              <div>
-                <div className="flex justify-between px-[16px] py-[18px]">
-                  <h3 className="text-[19px] font-semibold">{t('myResults')}</h3>
-                  <button onClick={() => setShowMistake(false)} className="rounded">
-                    <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-                  </button>
-                </div>
 
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <div className="py-[16px] px-[24px] flex justify-between items-center">
-                  <div className="flex gap-1 items-center">
-                    <div className=" w-6 h-6 flex items-center justify-center border rounded-full text-sm">
-                      {get(score, 'data.result[0].total_answers')}
-                    </div>
-                    <p>/</p>
-                    <div className=" w-6 h-6 flex items-center justify-center border rounded-full text-sm border-[#2EB14F] bg-[#EBF9EEFF]">
-                      {get(score, 'data.result[0].correct_answers')}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-1 items-center">
-                    <p>{t('totalPoints')}: </p>
-                    <div className="text-sm">{get(score, 'data.result[0].score')}</div>
-                  </div>
-                </div>
-
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <div className="py-[16px] px-[24px] max-h-[400px] overflow-y-auto">
-                  <ul className="space-y-2">
-                    {get(results, 'data.question', []).map((question, index) => (
-                      <li key={index} className={`p-3  rounded-md flex items-center gap-x-[12px] cursor-pointer `}>
-                        <div
-                          className={`min-w-10 min-h-10 flex items-center justify-center border-2  ${
-                            question?.answer === false
-                              ? 'bg-[#FFEBEA] border-[#FF3B30]'
-                              : 'border-[#2EB14F] bg-[#EBF9EEFF]'
-                          }  rounded-full text-black font-bold`}
-                        >
-                          {index + 1}
-                        </div>
-                        <MathJaxContext
-                          config={{
-                            loader: {
-                              load: ['input/tex', 'output/chtml']
-                            }
-                          }}
-                        >
-                          <MathJax dynamic>
-                            <div>{parse(question.question_uz || question.question_ru || '')}</div>
-                          </MathJax>
-                        </MathJaxContext>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-                <Link
-                  href={`/dashboard/student/recommendations`}
-                  className="flex items-center justify-center py-[16px]"
-                >
-                  <Button color="primary">{t('recommendation')}</Button>
-                </Link>
-              </div>
-            </SimpleModal>
-          )}
+          <DiagnosticResultModal
+            isOpen={showDiagnosticResult}
+            onClose={() => setShowDiagnosticResult(false)}
+            results={results}
+            score={score}
+            onRetake={handleRetakeTest}
+            showRetakeButton={true}
+            subjectId={tab}
+          />
         </div>
       </div>
     </div>
