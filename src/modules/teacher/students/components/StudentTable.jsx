@@ -218,18 +218,18 @@ function StudentTable({
     },
     {
       headerName: t('class'),
-      field: 'class_name_uz',
+      field: 'class_num',
       maxWidth: 150,
       cellClass: 'text-center',
       cellRenderer: (params) => {
         const classText = params.value || ''
         const classNumber = classText.split(' ')[0]
-        return classNumber
+        return classNumber + '-' + t('class')
       }
     },
     {
       headerName: t('phone'),
-      field: 'phone_number',
+      field: 'phone',
       flex: 1
     },
     {
