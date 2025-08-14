@@ -172,18 +172,13 @@
   "title": "Nomi",
   "subjectsInArea": "Sohangizdagi fanlar",
   "action": "Amal",
-<<<<<<< src/services/i18n/translations/uz.json
-  "class": "Sinf",
-  "subject": "Fan",
   "class5": "5-sinf",
-  "class6": "6-sinf", 
+  "class6": "6-sinf",
   "class7": "7-sinf",
   "class8": "8-sinf",
   "class9": "9-sinf",
   "class10": "10-sinf",
   "class11": "11-sinf",
-=======
->>>>>>> src/services/i18n/translations/uz.json
   "topics": "Mavzular",
   "departments": "Bo‘limlar",
   "createChapter": "Bob yaratish",
