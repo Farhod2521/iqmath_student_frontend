@@ -27,7 +27,7 @@
   "resultsDesc": "500 ta eng yuqori ball to'plagan ishtirokchi ikkinchi bosqichga o'tadi. Agar siz ulardan biri bo'lsangiz, yaqinda ushbu sahifada 'Siz ikkinchi bosqichga o'tdingiz!' degan xabarni ko'rishingiz mumkin. Xabar shuningdek, sizning telefoningizga SMS tarzida yuboriladi.",
   "totalScore": "Sizning to'plagan balingiz",
   "score": "ball",
-  "login": "Tizimga kirish",
+  "login": "Tizimga kirish",  
   "sign in": "Ro'yxatdan o'tish",
   "phone number": "Telefon raqam",
   "password": "Parol",
@@ -98,6 +98,13 @@
   "aboutOlympics": "Olimpiada haqida",
   "faq": "Savollarga javoblar",
   "aboutus": "Biz haqimizda",
+  "notYetSolved": "boshlash",
+  "retakeDiagnostic": "Diagnostikani qayta topshirish",
+  "chooseLevelForRetake": "Qayta topshirish uchun darajani tanlang",
+  "retakeTest": "Testni qayta topshirish",
+  "backToDiagnostics": "Diagnostikaga qaytish",
+  "test": "Test",
+  "retake": "Qayta topshirish",
   "giveReward": "Mukofot berish",
   "reward": "Mukofot",
   "rewardType": "Mukofot turi",
@@ -445,6 +452,12 @@
   "solutionPreparing": "Yechim tayyorlanmoqda...",
   "solutionPreparingNote": "Bu biroz vaqt olishi mumkin",
   "chapter": "Bob",
-  "topic": "Mavzu"
+  "topic": "Mavzu",
+  "retakeDiagnostic": "Diagnostikani qayta topshirish",
+  "chooseLevelForRetake": "Qayta topshirish uchun darajani tanlang",
+  "retakeTest": "Qayta topshirish",
+  "backToDiagnostics": "Diagnostikaga qaytish",
+  "test": "Test",
+  "retake": "Qayta topshirish"
 }
 

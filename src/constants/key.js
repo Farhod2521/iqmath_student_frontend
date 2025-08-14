@@ -33,6 +33,7 @@ export const KEYS = {
   advisedTopics: 'advisedTopics',
   levelStatistics: 'levelStatistics',
   diagnosticsTopics: 'diagnosticsTopics',
+  diagnosticSubjects: 'diagnosticSubjects',
   recommendations: 'recommendations',
   systemSettings: 'systemSettings',
   systemFaqs: 'systemFaqs',

@@ -88,5 +88,12 @@
   "date": "Date",
   "days": "days",
   "close": "Close",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "diagnostics": "Diagnostics",
+  "retakeDiagnostic": "Retake Diagnostic",
+  "chooseLevelForRetake": "Choose level for retake",
+  "retakeTest": "Retake Test",
+  "backToDiagnostics": "Back to Diagnostics",
+  "test": "Test",
+  "retake": "Retake"
 }
