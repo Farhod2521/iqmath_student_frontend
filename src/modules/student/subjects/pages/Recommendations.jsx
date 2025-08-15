@@ -39,7 +39,7 @@ const Recommendations = () => {
           <div className="flex flex-wrap gap-4 mb-4">
             {data.map((item, index) => (
               <CardSubjectWithProgress
-                onClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
+                onDiagnosticsClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
                 onRecommendationsClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}
                 key={index}
                 item={item}

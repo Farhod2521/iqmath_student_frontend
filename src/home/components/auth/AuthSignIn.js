@@ -60,7 +60,7 @@ function AuthSignIn() {
       }
     } catch (error) {
       toast.error('Login error')
-      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
+      setIsLoading(false) // Xatolik bo'lsagina loading'nit  o'xtatamiz
     }
   }
 

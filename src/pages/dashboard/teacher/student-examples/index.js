@@ -5,6 +5,7 @@ import SearchInput from '@/components/search'
 import SelectBox from '@/components/select-box'
 import { useRouter } from 'next/router'
 import StudentExampleTable from '@/modules/teacher/student-examples/StudentExampleTable'
+import CommentModal from '@/modules/teacher/student-examples/CommentModal'
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
@@ -19,6 +20,9 @@ const StudentExamples = () => {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
+  const [showCommentModal, setShowCommentModal] = useState(false)
+  const [selectedComment, setSelectedComment] = useState('')
+  const [selectedStudentName, setSelectedStudentName] = useState('')
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -115,6 +119,12 @@ const StudentExamples = () => {
       pathname: `/dashboard/teacher/student-examples/${requestId}`,
       query: { student_name: studentName }
     })
+  }
+
+  const handleShowComment = (comment, studentName) => {
+    setSelectedComment(comment)
+    setSelectedStudentName(studentName)
+    setShowCommentModal(true)
   }
 
 
@@ -216,10 +226,19 @@ const StudentExamples = () => {
               isLoading={loading}
               actionLoading={actionLoading}
               onViewDetails={handleViewDetails}
+              context={{ onShowComment: handleShowComment }}
             />
           )}
         </div>
       </div>
+
+      {/* Comment Modal */}
+      <CommentModal
+        isOpen={showCommentModal}
+        onClose={() => setShowCommentModal(false)}
+        comment={selectedComment}
+        studentName={selectedStudentName}
+      />
     </LayoutAdmin>
   )
 }

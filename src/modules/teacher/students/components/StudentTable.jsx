@@ -237,7 +237,7 @@ function StudentTable({
         if (!params.value) {
           return <span className="text-gray-400">-</span>
         }
-        return <span>{params.value}</span>
+        return <span>{params.value.replaceAll('/' , '.')}</span>
       }
     },
     {
@@ -267,33 +267,34 @@ function StudentTable({
     }
   ]
 
-  if (isLoadingData && data.length === 0) {
-    return <ContentLoader />
-  }
+  // Loading holatida bo'sh loader ko'rsatmaymiz, chunki table o'rniga overlay ishlatamiz
 
   return (
     <>
     <div className="flex flex-col">
-      <div style={{ width: '100%', height: 'auto' }} className="relative">
-        {isLoadingData && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-            <ContentLoader classNames="!min-h-[400px]" />
-          </div>
-        )}
-        <AgGridReact
-          rowData={data}
-          columnDefs={colDefs}
-          domLayout="autoHeight"
-          className="custom-grid"
-          pagination={false}
+      {isLoadingData ? (
+        <div className="relative">
+          <ContentLoader classNames="!min-h-[400px] !w-full" />
+        </div>
+      ) : (
+        <div style={{ width: '100%', height: 'auto' }} className="relative">
+          <AgGridReact
+            rowData={data}
+            columnDefs={colDefs}
+            domLayout="autoHeight"
+            className="custom-grid"
+            pagination={false}
+          />
+        </div>
+      )}
+      {!isLoadingData && (
+        <StudentPagination
+          pagination={pagination}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          isLoading={isLoadingData}
         />
-      </div>
-      <StudentPagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        isLoading={isLoadingData}
-      />
+      )}
     </div>
 
       {/* Reward Modal */}
