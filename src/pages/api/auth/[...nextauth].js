@@ -46,7 +46,8 @@ export default NextAuth({
             phone,
             login: data.login || phone, // Assuming `login` exists in response
             password: data.password || password, // Assuming `password` exists in response
-            id: data.id
+            id: data.id,
+            role: data.role || 'student' // Role ni qo'shamiz, default student
           }
         } catch (error) {
           console.error('Login Error:', error.message)
@@ -64,6 +65,7 @@ export default NextAuth({
         token.login = user.login
         token.password = user.password
         token.id = user.id
+        token.role = user.role // Role ni JWT ga qo'shamiz
       }
       return token
     },
@@ -77,6 +79,7 @@ export default NextAuth({
       session.login = token.login
       session.password = token.password
       session.id = token.id
+      session.role = token.role // Role ni session ga qo'shamiz
       return session
     },
     async redirect({ url, baseUrl }) {
