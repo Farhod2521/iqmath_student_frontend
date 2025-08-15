@@ -32,10 +32,8 @@ const DiagnosticSubjects = () => {
   }, [subjects, i18n.language])
 
   const handleSubjectClick = (subject) => {
-    // Faqat yangi diagnostika uchun test sahifasiga o'tkazish
-    if (!subject.has_taken_diagnostic) {
+    console.log("salom")
       router.push(`/dashboard/student/diagnostics/test/${subject.id}`)
-    }
   }
 
   const handleGoToRecommendations = (subject) => {
@@ -55,7 +53,7 @@ const DiagnosticSubjects = () => {
             <div className="flex flex-wrap gap-4 mb-4">
               {data.map((item, index) => (
                 <CardSubjectWithProgress
-                  onClick={() => handleSubjectClick(item)}
+                  onDiagnosticsClick={() => handleSubjectClick(item)}
                   onRecommendationsClick={() => handleGoToRecommendations(item)}
                   key={index}
                   item={item}

@@ -389,9 +389,20 @@ export default function SubjectQuestions() {
                 <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
                 <div className="flex flex-wrap justify-center gap-3 pb-[24px] text-sm">
-                  <Button onPress={() => setShowMistake(true)}>{t('myResults')}</Button>
-                  <Button onPress={() => setShowResult(false)}>{t('goAgain')}</Button>
-                  <Button onPress={() => router.push('/dashboard/student/subjects')}>{t('toHomePage')}</Button>
+                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => setShowMistake(true)}>{t('myResults')}</Button>
+                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => setShowResult(false)}>{t('retakeTest')}</Button>
+                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => {
+                    const scorePercentage = get(score, 'data.result[0].score', 0)
+                    if (scorePercentage >= 80) {
+                      // 80% dan ko'p ball olsa keyingi mavzuga o'tish
+                      router.push(`/dashboard/student/subjects/${router.query.id}/${router.query.chapterId}/${parseInt(router.query.topicId) + 1}`)
+                    } else {
+                      // 80% dan kam ball olsa bosh sahifaga qaytish
+                      router.push('/dashboard/student/subjects')
+                    }
+                  }}>
+                    {get(score, 'data.result[0].score', 0) >= 80 ? t('nextTopic') : t('toHomePage')}
+                  </Button>
                 </div>
               </div>
             </SimpleModal>
@@ -434,7 +445,7 @@ export default function SubjectQuestions() {
                   {t('close')}
                 </Button>
                 <Button
-                  className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                  className="px-4 bg-[#007AFF] py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
                   onPress={handleSendAllToMentor}
                 >
                   {t('sendMentor')}

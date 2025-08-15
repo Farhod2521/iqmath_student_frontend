@@ -2,9 +2,9 @@ import InputPassword from '@/components/form/input/InputPassword'
 import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
@@ -13,35 +13,15 @@ import { useRoleDetection } from '@/hooks/useRoleDetection'
 function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [shouldRedirect, setShouldRedirect] = useState(false)
-
+  const [shouldRedirect, _] = useState(false)
+  const { data: session } = useSession()
   const { setTab } = useAuthTabStore.getState()
   const { t } = useTranslation()
   const router = useRouter()
   const { register, handleSubmit } = useForm()
 
-  const { isTeacher, isLoading: roleLoading, error: roleError } = useRoleDetection()
+  const { isLoading: roleLoading } = useRoleDetection()
 
-  // // Redirect when role is detected
-  // useEffect(() => {
-  //   if (shouldRedirect && !roleLoading) {
-  //     if (roleError) {
-  //       toast.error('Role detection failed. Please try again.')
-  //       setShouldRedirect(false)
-  //       setIsLoading(false)
-  //       return
-  //     }
-
-  //     if (isTeacher) {
-  //       router.push('/dashboard/teacher/statistics')
-  //     } else {
-  //       router.push('/dashboard/student/subjects')
-  //     }
-
-  //     setShouldRedirect(false)
-  //     setIsLoading(false) // Loading'ni to'xtatamiz
-  //   }
-  // }, [shouldRedirect, isTeacher, roleLoading])
 
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
@@ -55,12 +35,17 @@ function AuthSignIn() {
       } else {
         toast.success('Logged in successfully')
         // setShouldRedirect(true)
-        router.push('/dashboard/student/subjects')
+        
+        if(session.role === 'student'){
+          router.push('/dashboard/student/subjects')
+        }else{
+          router.push('/dashboard/teacher/statistics')
+        }
         // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
       toast.error('Login error')
-      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
+      setIsLoading(false) // Xatolik bo'lsagina loading'nit  o'xtatamiz
     }
   }
 

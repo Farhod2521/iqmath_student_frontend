@@ -3,7 +3,7 @@ import { Card, Progress } from '@heroui/react'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
 
-const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDiagnosticStatus = false, isDiagnostic = false }) => {
+const CardSubjectWithProgress = ({ item,  onRecommendationsClick, onDiagnosticsClick, showDiagnosticStatus = false, isDiagnostic = false }) => {
   const { t, i18n } = useTranslation()
 
   const imageUrl =
@@ -15,23 +15,20 @@ const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDi
   
   const hasTakenDiagnostic = get(item, 'has_taken_diagnostic', false) || get(item, 'has_taken_diagnostic ', false)
 
-  // Diagnostika sahifasida maxsus onClick logikasi
   const handleCardClick = () => {
+    console.log("SALOM")
     if (isDiagnostic) {
-      // Diagnostika sahifasida faqat yangi diagnostika uchun ishlaydi
-      if (!hasTakenDiagnostic) {
-        onClick()
-      }
-    } else {
-      // Tavsiyalar sahifasida oddiy ishlaydi
-      onClick()
+      console.log("salom")
+      onDiagnosticsClick()
+    } else {  
+      onRecommendationsClick()
     }
   }
 
   return (
     <div 
-      onClick={handleCardClick} 
-      className={`group ${isDiagnostic && hasTakenDiagnostic ? 'cursor-default' : 'cursor-pointer'}`}
+    onClick={handleCardClick} 
+      className={`group cursor-pointer`}
     >
       <Card className="border-none h-[280px] w-[200px] shadow-[0px_3px_17px_-5px_#00000038] group-hover:shadow-[0px_6px_25px_-8px_#00000050] transition-all duration-300" radius="sm">
         <div className="relative">
@@ -76,7 +73,7 @@ const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDi
                     <button 
                       onClick={(e) => {
                         e.stopPropagation()
-                        onClick()
+                        onDiagnosticsClick()
                       }}
                       className="text-sm font-medium hover:underline cursor-pointer"
                     >
@@ -115,7 +112,7 @@ const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDi
                         className="p-1 hover:bg-gray-100 rounded transition-colors duration-200"
                         onClick={(e) => {
                           e.stopPropagation() 
-                          onClick() 
+                          onDiagnosticsClick() 
                         }}
                         title="Qayta topshirish"
                       >
@@ -158,7 +155,7 @@ const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDi
                     onClick={(e) => {
                       e.stopPropagation()
                       // Qayta topshirish tugmasi diagnostika testlariga o'tadi
-                      onClick()
+                      onDiagnosticsClick()
                     }}
                     title="Qayta topshirish"
                   >
@@ -175,7 +172,7 @@ const CardSubjectWithProgress = ({ item, onClick, onRecommendationsClick, showDi
                     className="p-1 hover:bg-gray-100 rounded transition-colors duration-200"
                     onClick={(e) => {
                       e.stopPropagation() 
-                      onClick() 
+                      onRecommendationsClick() 
                     }}
                     title="Tavsiyalarga o'tish"
                   >
