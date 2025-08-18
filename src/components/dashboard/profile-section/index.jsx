@@ -4,38 +4,16 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import SidebarTitle from '@/components/title/sidebar-title'
-import { useUserStore } from '@/store/userStore'
-import { useAuthTabStore } from '@/store'
-import { useQueryClient } from '@tanstack/react-query'
 
 const ProfileSection = ({ menuItems, onTabChange }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { setUser, setRole } = useUserStore()
-  const { resetAuth, clearCredentials } = useAuthTabStore()
-  const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
 
   const handleLogout = async () => {
-    // Clear user store first
-    setUser(null)
-    setRole(null)
-    
-    // Clear auth tab store
-    resetAuth()
-    clearCredentials()
-    
-    // Clear all storage
-    localStorage.clear()
-    sessionStorage.clear()
-    
-    // Clear React Query cache
-    queryClient.clear()
-    queryClient.removeQueries()
-    
     await signOut({
-      callbackUrl: 'https://iq.iq-math.uz'
+      callbackUrl: '/'
     })
   }
 
@@ -99,7 +77,7 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
             </button>
           </div>
         </div>
-        
+
         <button
           onClick={handleLogoutClick}
           className="text-black py-[9px] mx-[24px] text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200"
@@ -149,4 +127,4 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
   )
 }
 
-export default ProfileSection 
+export default ProfileSection

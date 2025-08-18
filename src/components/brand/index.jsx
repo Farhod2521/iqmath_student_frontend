@@ -1,18 +1,12 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useAuthTabStore } from '@/store'
 
 const Brand = ({ onLoad }) => {
-  const router = useRouter();
-  const { isTeacher } = useRoleDetection();
-  const { setTab } = useAuthTabStore();
-  const [imageError, setImageError] = useState(false);
+  const router = useRouter()
+  const [imageError, setImageError] = useState(false)
 
   const systemSettings = useGetQuery({
     key: KEYS.systemSettings,
@@ -20,30 +14,22 @@ const Brand = ({ onLoad }) => {
   })
 
   const handleLogoClick = (e) => {
-    e.preventDefault();
-    // Agar dashboard sahifasida bo'lsak, welcome tab'ga o'tkazamiz
-    if (router.pathname.includes('/dashboard')) {
-      setTab('welcome');
-      router.push('/');
-    } else {
-      // Agar boshqa sahifada bo'lsak, welcome tab'ga o'tkazamiz
-      setTab('welcome');
-      router.push('/');
-    }
-  };
+    e.preventDefault()
+    router.push('/')
+  }
 
   const handleImageError = () => {
-    setImageError(true);
-  };
+    setImageError(true)
+  }
 
   const handleImageLoad = () => {
-    setImageError(false);
-    if (onLoad) onLoad();
-  };
+    setImageError(false)
+    if (onLoad) onLoad()
+  }
 
-  const fallbackImage = '/icons/brand.svg';
-  
-  const imageSrc = systemSettings?.data?.data[0]?.logo || fallbackImage;
+  const fallbackImage = '/icons/brand.svg'
+
+  const imageSrc = systemSettings?.data?.data[0]?.logo || fallbackImage
 
   return (
     <div className={'  '}>

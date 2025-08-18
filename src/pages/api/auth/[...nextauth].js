@@ -45,7 +45,6 @@ export default NextAuth({
             refreshToken: data.refresh_token,
             phone,
             login: data.login || phone, // Assuming `login` exists in response
-            password: data.password || password, // Assuming `password` exists in response
             id: data.id,
             role: data.role || 'student' // Role ni qo'shamiz, default student
           }

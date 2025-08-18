@@ -2,7 +2,7 @@ import InputPassword from '@/components/form/input/InputPassword'
 import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
-import { signIn, useSession } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -13,50 +13,35 @@ import { useRoleDetection } from '@/hooks/useRoleDetection'
 function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [shouldRedirect, _] = useState(false)
-  const { data: session } = useSession()
   const { setTab } = useAuthTabStore.getState()
   const { t } = useTranslation()
   const router = useRouter()
   const { register, handleSubmit } = useForm()
-
-  const { isLoading: roleLoading } = useRoleDetection()
-
 
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
     try {
       const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
-      console.log('result', result)
-      if (result?.error) {
-        toast.error(result.error)
-        setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
-      } else {
-        toast.success('Logged in successfully')
-        // setShouldRedirect(true)
-        
-        if(session.role === 'student'){
-          router.push('/dashboard/student/subjects')
-        }else{
+      if (result?.ok) {
+        const session = await getSession()
+        if (session?.role === 'teacher') {
           router.push('/dashboard/teacher/statistics')
+        } else {
+          router.push('/dashboard/student/subjects')
         }
-        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
+        toast.success('Logged in successfully')
       }
     } catch (error) {
       toast.error('Login error')
-      setIsLoading(false) // Xatolik bo'lsagina loading'nit  o'xtatamiz
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  // Loading holatini aniqlash - login yoki role detection davomida
-  const isButtonLoading = isLoading || shouldRedirect || roleLoading
-
   // Loading matnini aniqlash
   const getLoadingText = () => {
-    if (isLoading) return t('login')
-    if (shouldRedirect && roleLoading) return t('checking role') || 'Checking role...'
-    if (shouldRedirect) return t('redirecting') || 'Redirecting...'
+    if (isLoading) return t('checking role') || 'Checking role...'
     return t('login')
   }
 
@@ -79,13 +64,13 @@ function AuthSignIn() {
       <div className="w-full flex justify-center items-center">
         <button
           type="submit"
-          disabled={isButtonLoading}
+          disabled={isLoading}
           className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
-            isButtonLoading ? 'opacity-70' : ''
+            isLoading ? 'opacity-70' : ''
           }`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
-          {isButtonLoading ? (
+          {isLoading ? (
             <div className="flex items-center justify-center gap-2">
               <SimpleLoader />
               <span>{getLoadingText()}</span>

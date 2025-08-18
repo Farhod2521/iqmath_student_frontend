@@ -18,7 +18,7 @@ function NavbarProfile() {
   const { data: session } = useSession()
   const { t } = useTranslation()
   const { role: currentRole } = useRoleDetection()
-  const { resetAuth, clearCredentials } = useAuthTabStore()
+  const { clearCredentials } = useAuthTabStore()
   const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
@@ -67,24 +67,9 @@ function NavbarProfile() {
   }
 
   const handleLogout = async () => {
-    // Clear user store first
-    const { setUser, setRole } = useUserStore.getState()
-    setUser(null)
-    setRole(null)
-    
-    // Clear auth tab store
-    resetAuth()
-    clearCredentials()
-    
-    // Clear all storage
-    localStorage.clear()
-    sessionStorage.clear()
-    
-    // Clear React Query cache
-    queryClient.clear()
-    queryClient.removeQueries()
-    
-    await signOut({ callbackUrl: 'https://iq-math.uz' })
+    await signOut({
+      callbackUrl: '/'
+    })
   }
 
   const handleLogoutClick = () => {
@@ -118,15 +103,8 @@ function NavbarProfile() {
               </p> */}
               {get(studentProfile, 'data.email') && (
                 <div className="flex gap-x-[4px]">
-                  <Image
-                    src={"/icons/mail.svg"}
-                    alt={"mail"}
-                    width={18}
-                    height={18}
-                  />
-                  <p className="text-sm text-[#7C8FAC] dark:text-gray-200">
-                    {get(studentProfile, 'data.email')}
-                  </p>
+                  <Image src={'/icons/mail.svg'} alt={'mail'} width={18} height={18} />
+                  <p className="text-sm text-[#7C8FAC] dark:text-gray-200">{get(studentProfile, 'data.email')}</p>
                 </div>
               )}
             </div>
@@ -138,28 +116,19 @@ function NavbarProfile() {
             onClick={() => {
               // Foydalanuvchi rolini tekshirib, to'g'ri sahifaga yo'naltiramiz
               if (currentRole === 'teacher' || currentRole === 'mentor') {
-                router.push("/dashboard/teacher/profile")
+                router.push('/dashboard/teacher/profile')
               } else {
-                router.push("/dashboard/student/profile")
+                router.push('/dashboard/student/profile')
               }
             }}
             className="flex gap-x-[12px] text-start cursor-pointer"
           >
             <div className="bg-[#ECF2FF] p-[12px] rounded-md inline-block">
-              <Image
-                src={"/icons/user-square.svg"}
-                alt={"user-square"}
-                width={20}
-                height={20}
-              />
+              <Image src={'/icons/user-square.svg'} alt={'user-square'} width={20} height={20} />
             </div>
             <div>
-              <p className="text-black dark:text-white font-semibold">
-                {t("myPage")}
-              </p>
-              <p className="text-[#7C8FAC] dark:text-gray-200 text-sm">
-                {t("settings")}
-              </p>
+              <p className="text-black dark:text-white font-semibold">{t('myPage')}</p>
+              <p className="text-[#7C8FAC] dark:text-gray-200 text-sm">{t('settings')}</p>
             </div>
           </button>
 
@@ -169,7 +138,7 @@ function NavbarProfile() {
             onClick={handleLogoutClick}
             className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200 hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
           >
-            {t("logout")}
+            {t('logout')}
           </button>
         </div>
       )}

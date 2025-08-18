@@ -7,108 +7,80 @@ import { useAuthTabStore } from '@/store'
 
 const request = axios.create({
   baseURL: config.API_URL,
-  params: {},
   headers: {
-    common: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    }
+    Accept: 'application/json',
+    'Content-Type': 'application/json; charset=utf-8'
   }
 })
 
+// Helper function to clear user data
+const clearUserData = () => {
+  if (typeof window === 'undefined') return
+
+  const { setUser, setRole } = useUserStore.getState()
+  const { clearCredentials } = useAuthTabStore.getState()
+
+  setUser(null)
+  setRole(null)
+  clearCredentials()
+
+  localStorage.clear()
+  sessionStorage.clear()
+}
+
 request.interceptors.request.use(
   async (axiosConfig) => {
-    // Avval sessionStorage'dan access_token olib ko'ramiz
-    const accessToken = sessionStorage.getItem('access_token');
-    if (accessToken) {
-      axiosConfig.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      // Agar yo'q bo'lsa, NextAuth sessionidan olamiz
-      const session = await getSession();
-      if (session?.accessToken) {
-        axiosConfig.headers.Authorization = `Bearer ${session.accessToken}`;
-      }
+    const session = await getSession()
+    if (session?.accessToken) {
+      axiosConfig.headers.Authorization = `Bearer ${session.accessToken}`
     }
-    return axiosConfig;
+    return axiosConfig
   },
   (error) => Promise.reject(error)
 )
 
 request.interceptors.response.use(
-  (response) => {
-    return response
-  },
+  (response) => response,
   async (error) => {
     const { status, config: originalRequest } = error?.response || {}
-    // Agar 401 bo'lsa, refresh token ham eskirgan, sign out qilamiz
+
+    // Handle 401 - Unauthorized
     if (status === 401) {
-      if (typeof window !== 'undefined') {
-        // Clear all stores
-        const { setUser, setRole } = useUserStore.getState()
-        const { resetAuth, clearCredentials } = useAuthTabStore.getState()
-        
-        setUser(null)
-        setRole(null)
-        resetAuth()
-        clearCredentials()
-        
-        localStorage.clear()
-        sessionStorage.clear()
-        
-        // Clear React Query cache if available
-        if (typeof window !== 'undefined' && window.__REACT_QUERY_CACHE__) {
-          window.__REACT_QUERY_CACHE__.clear()
-        }
-      }
+      clearUserData()
       signOut({ callbackUrl: '/' })
       return Promise.reject(error)
     }
-    // Agar 403 bo'lsa, access token eskirgan, refresh token orqali yangilashga harakat qilamiz
+
+    // Handle 403 - Token refresh
     if (status === 403 && !originalRequest._retry) {
       originalRequest._retry = true
+
       try {
-        // Refresh tokenni NextAuth sessionidan olamiz
         const session = await getSession()
-        const refreshToken = session?.refreshToken
-        if (!refreshToken) throw new Error('No refresh token')
-        const res = await axios.post(config.API_URL + URLS.refreshToken, {
-          refresh: refreshToken
+        if (!session?.refreshToken) {
+          throw new Error('No refresh token')
+        }
+
+        const response = await axios.post(`${config.API_URL}${URLS.refreshToken}`, {
+          refresh: session.refreshToken
         })
-        const { access, refresh } = res.data
-        // Tokenlarni yangilash: access token sessionStorage'ga, refresh token NextAuth sessionida yangilanadi
-        sessionStorage.setItem('access_token', access)
-        // So'rovni yangi access token bilan qayta yuboramiz
-        originalRequest.headers['Authorization'] = `Bearer ${access}`
+
+        const { access } = response.data
+        originalRequest.headers.Authorization = `Bearer ${access}`
+
         return request(originalRequest)
       } catch (refreshError) {
-        // Agar refresh ham eskirgan bo'lsa (401), sign out qilamiz
         if (refreshError?.response?.status === 401) {
-          if (typeof window !== 'undefined') {
-            // Clear all stores
-            const { setUser, setRole } = useUserStore.getState()
-            const { resetAuth, clearCredentials } = useAuthTabStore.getState()
-            
-            setUser(null)
-            setRole(null)
-            resetAuth()
-            clearCredentials()
-            
-            localStorage.clear()
-            sessionStorage.clear()
-            
-            // Clear React Query cache if available
-            if (typeof window !== 'undefined' && window.__REACT_QUERY_CACHE__) {
-              window.__REACT_QUERY_CACHE__.clear()
-            }
-          }
+          clearUserData()
           signOut({ callbackUrl: '/' })
         }
         return Promise.reject(refreshError)
       }
     }
+
     return Promise.reject(error)
   }
 )
 
 export { request }
-export const apiService = request;
+export const apiService = request

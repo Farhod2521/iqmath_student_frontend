@@ -10,8 +10,7 @@ export const useAuthTabStore = create(
         setPhoneTab: (phoneTab) => set({ phoneTab }),
         currentTab: 'signIn', // boshlang'ich holat
         setTab: (tab) => set({ currentTab: tab }), // tabni o'zgartirish
-        resetAuth: () => set({ currentTab: 'signIn', phoneTab: '' }), // auth holatini tozalash
-        
+
         // Login/parol ma'lumotlari
         loginCredentials: null,
         setLoginCredentials: (credentials) => set({ loginCredentials: credentials }),
@@ -22,9 +21,9 @@ export const useAuthTabStore = create(
       {
         name: 'auth-tab-storage', // localStorage key nomi
         getStorage: () => localStorage, // localStorage dan foydalanish
-        partialize: (state) => ({ 
-          currentTab: state.currentTab, 
-          phoneTab: state.phoneTab 
+        partialize: (state) => ({
+          currentTab: state.currentTab,
+          phoneTab: state.phoneTab
         }) // Faqat bu ma'lumotlarni saqlaymiz
       }
     ),
