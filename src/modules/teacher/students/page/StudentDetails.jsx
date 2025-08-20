@@ -38,8 +38,6 @@ const StudentDetails = () => {
     )
   }
 
-  // console.log("Student Diagnostics Data:", studentData.student_diagnost);
-
   return (
     <div className="p-6 space-y-6">
       {/* Main Info and Payment Stats */}
@@ -162,7 +160,7 @@ const StudentDetails = () => {
         onClose={() => setIsRewardModalOpen(false)}
         student={{ id: id, full_name: studentData.full_name }}
         onSuccess={() => {
-          // Refresh student data if needed
+          // Refresh student data if needed - TODO: implement this  
         }}
       />
     </div>

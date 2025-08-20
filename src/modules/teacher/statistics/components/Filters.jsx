@@ -7,8 +7,6 @@ const Filters = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
 
-  // You can lift state up or use context for global filter/search
-
   return (
     <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
       <input

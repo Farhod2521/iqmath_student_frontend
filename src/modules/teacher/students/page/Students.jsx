@@ -7,14 +7,12 @@ function Students() {
   const { t } = useTranslation()
   const [filterData, setFilterData] = useState({})
   const [isExportingAll, setIsExportingAll] = useState(false)
-  const [studentsData, setStudentsData] = useState([]) // Qo'shamiz
+  const [studentsData, setStudentsData] = useState([])
 
-  // Filter o'zgarishini kuzatish - faqat state'ni yangilaymiz
   const handleFilterChange = useCallback((newFilters) => {
     setFilterData(newFilters)
   }, [])
 
-  // Export holatini boshqarish
   const handleExportStart = useCallback(() => {
     setIsExportingAll(true)
   }, [])
@@ -23,7 +21,6 @@ function Students() {
     setIsExportingAll(false)
   }, [])
 
-  // Students data'ni olish uchun callback
   const handleStudentsDataChange = useCallback((data) => {
     setStudentsData(data)
   }, [])

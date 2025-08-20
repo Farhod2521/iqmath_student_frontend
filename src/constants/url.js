@@ -70,6 +70,16 @@ export const URLS = {
   createQuestion: "/api/v1/func_teacher/my-question/create/",
   updateQuestion: "/api/v1/func_teacher/my-question/update/",
   deleteQuestion: "/api/v1/func_teacher/my-question/delete/",
-  importExcel: "/api/v1/func_teacher/xlsx-import/"
+  importExcel: "/api/v1/func_teacher/xlsx-import/",
+  
+  // Friends API endpoints
+  friends: "/api/v1/func_student/friends/",
+  friendInvites: "/api/v1/func_student/friend-invites/",
+  sendFriendInvite: "/api/v1/func_student/send-friend-invite/",
+  acceptFriendInvite: "/api/v1/func_student/accept-friend-invite/",
+  rejectFriendInvite: "/api/v1/func_student/reject-friend-invite/",
+  removeFriend: "/api/v1/func_student/remove-friend/",
+  generateInviteLink: "/api/v1/func_student/generate-invite-link/",
+  myReferrals: "/api/v1/func_student/my-referrals/"
 }
   

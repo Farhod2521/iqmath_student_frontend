@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useRouter } from 'next/router'
 import AuthSignIn from './AuthSignIn'
 import AuthSignUp from './AuthSignUp'
 import AuthWelcome from './AuthWelcome'
@@ -13,7 +14,7 @@ import { getSession } from 'next-auth/react'
 
 function Auth() {
   const { t } = useTranslation()
-
+  const router = useRouter()
   const { currentTab } = useAuthTabStore((state) => state)
   const { setTab } = useAuthTabStore.getState()
   const handleTabChange = (newTab) => setTab(newTab)
@@ -23,13 +24,17 @@ function Auth() {
     if (!!session) {
       setTab('welcome')
     } else {
-      setTab('signIn')
+      if (router.query.referral_code) {
+        setTab('signUp')
+      } else {
+        setTab('signIn')
+      }
     }
   }
 
   useEffect(() => {
     getAuth()
-  }, [])
+  }, [router.query])
 
   return (
     <div

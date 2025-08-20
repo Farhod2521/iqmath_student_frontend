@@ -10,10 +10,10 @@ import { Button } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
   const { data: session } = useSession()
-  const { data: levelStatistics, isLoading } = useGetQuery({
+  const { data: levelStatistics } = useGetQuery({
     key: KEYS.levelStatistics,
     url: URLS.levelStatistics,
     headers: {
@@ -21,7 +21,7 @@ const Index = () => {
     },
     enabled: !!session?.accessToken
   })
-  // headerTitle={}
+
   return (
     <LayoutAdmin title={t('diagnostics')}>
       <div className="grid grid-cols-12 gap-[24px] rounded-[12px]">

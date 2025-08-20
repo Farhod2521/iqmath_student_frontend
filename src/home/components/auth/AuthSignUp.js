@@ -30,6 +30,8 @@ function AuthSignUp() {
     listKeyId: KEYS.register
   })
 
+
+
   const onSubmit = async ({ full_name, phone }) => {
     setIsLoading(true)
     try {
@@ -37,6 +39,10 @@ function AuthSignUp() {
       formData.append('full_name', full_name)
       formData.append('phone', `${String(998) + String(phone)}`)
       formData.append('class_name', selectedOptionCourse?.value)
+      if (router.query.referral_code) {
+        console.log("Bor")
+        formData.append('referral_code', router.query.referral_code)
+      }
       registerRequest(
         { url: URLS.register, attributes: formData },
         {

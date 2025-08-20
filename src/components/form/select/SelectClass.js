@@ -17,7 +17,7 @@ function SelectClass({ option, onChange }) {
   })
 
 
-  console.log(schoolClasses);
+  
   
   const filteredCoursesRaw = get(schoolClasses, 'data', [])
 

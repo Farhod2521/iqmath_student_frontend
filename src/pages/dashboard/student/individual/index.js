@@ -1,5 +1,4 @@
-import GridExample from '@/components/grid-table'
-import ButtonCellRenderer from '@/components/grid-table/buttonCell'
+
 import Individual from '@/features/individual/Individual'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
@@ -9,10 +8,9 @@ const Index = () => {
   return (
     <LayoutAdmin title={t('independent')}>
       <Individual data={i18n.language === 'uz' ? rowDataUz : rowData} />
-      {/* <GridExample rowData={rowData} colDefs={colDefs} /> */}
     </LayoutAdmin>
   )
-}
+} 
 
 export default Index
 

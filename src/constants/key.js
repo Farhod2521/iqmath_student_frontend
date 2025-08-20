@@ -46,5 +46,11 @@ export const KEYS = {
   questionList: 'questionList',
   // Teacher reward keys
   teacherReward: 'teacherReward',
-  teacherRewardList: 'teacherRewardList'
+  teacherRewardList: 'teacherRewardList',
+  
+  // Friends keys
+  friends: 'friends',
+  friendInvites: 'friend-invites',
+  inviteLink: 'invite-link',
+  myReferrals: 'my-referrals'
 }

@@ -1,23 +1,20 @@
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
-import { useSettingsStore, useTopicStore } from '@/store'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
-import RightIcon from '@/components/icons/right'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
 const Index = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  const [selectedTopic, setSelectedTopic] = useState(null)
-  const topic = useTopicStore((state) => state.topic)
+  const [_, setSelectedTopic] = useState(null)
 
   const { t, i18n } = useTranslation()
   const {
@@ -35,15 +32,6 @@ const Index = () => {
       level: 1
     }
   })
-
-  // const { data: topics } = useGetQuery({
-  //   key: [KEYS.diagnosticsTopics, selectedTopic],
-  //   url: selectedTopic ? `${URLS.diagnosticsTopics}${selectedTopic}/` : null,
-  //   headers: {
-  //     Authorization: `Bearer ${session?.accessToken}`
-  //   },
-  //   enabled: !!selectedTopic && !!session?.accessToken
-  // })
 
   const breadcrumbs = [
     { link: '/dashboard/student/subjects', title: t('main') },
@@ -74,9 +62,6 @@ const Index = () => {
                   >
                     <div className="flex justify-between">
                       <div className="uppercase">{i18n.language === 'uz' ? item.name_uz : item.name_ru}</div>
-                      {/* <div style={{ minWidth: 40 }} className="flex justify-center items-center">
-                        <RightIcon />
-                      </div> */}
                     </div>
                   </li>
                 ))}
