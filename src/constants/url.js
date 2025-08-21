@@ -80,6 +80,8 @@ export const URLS = {
   rejectFriendInvite: "/api/v1/func_student/reject-friend-invite/",
   removeFriend: "/api/v1/func_student/remove-friend/",
   generateInviteLink: "/api/v1/func_student/generate-invite-link/",
-  myReferrals: "/api/v1/func_student/my-referrals/"
+  myReferrals: "/api/v1/func_student/my-referrals/",
+  products: "/api/v1/management/products/",
+  exchangeProduct: "/api/v1/func_student/my-products/exchange/"
 }
   

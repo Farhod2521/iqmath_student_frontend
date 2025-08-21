@@ -52,5 +52,7 @@ export const KEYS = {
   friends: 'friends',
   friendInvites: 'friend-invites',
   inviteLink: 'invite-link',
-  myReferrals: 'my-referrals'
+  myReferrals: 'my-referrals',
+  products: 'products',
+  exchangeProduct: 'exchange-product'
 }

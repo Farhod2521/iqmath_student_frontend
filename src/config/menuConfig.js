@@ -6,6 +6,7 @@ import CoinsIcon from '@/components/icons/coins'
 import TeacherPupilIcon from '@/components/icons/teacher-pupil'
 import GraduationHatIcon from '@/components/icons/graduation-hat.js'
 import StudentExamplesIcon from '@/components/icons/student-examples.js'
+import ProductsIcon from '@/components/icons/products'
 import Image from 'next/image'
 
 export const createMenuConfig = (t) => ({
@@ -31,6 +32,26 @@ export const createMenuConfig = (t) => ({
         label: t('recommendation'),
         icon: <IndividualIcon />,
         activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
+      },
+      {
+        key: 'products',
+        label: t('products'),
+        icon: <ProductsIcon />,
+        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />,
+        children: [
+          {
+            key: 'all-products',
+            path: '/dashboard/student/products',
+            label: t('allProducts'),
+            icon: <ProductsIcon />
+          },
+          {
+            key: 'purchased-products',
+            path: '/dashboard/student/purchased-products',
+            label: t('purchasedProducts'),
+            icon: <ProductsIcon />
+          }
+        ]
       }
     ],
     account: [
