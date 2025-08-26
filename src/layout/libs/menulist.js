@@ -154,6 +154,14 @@ export const getMenuItems = (t) => [
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
+  },
+  {
+    key: 'parents',
+    path: '/dashboard/teacher/parents',
+    label: t('parents'),
+    icon: <LuUsers size={26} />,
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    type: MenuType.LINK
   }
 ]
 

@@ -114,6 +114,13 @@ export const createMenuConfig = (t) => ({
         label: t('studentExamples'),
         icon: <StudentExamplesIcon />,
         activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
+      },
+      {
+        key: 'parents',
+        path: '/dashboard/teacher/parents',
+        label: t('parents'),
+        icon: <Image src="/icons/pupil.svg" alt="parents" width={28} height={28} />,
+        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
       }
     ],
     account: [
