@@ -230,6 +230,17 @@ function StudentTable({
     //   flex: 1
     // },
     {
+      headerName: t('register_date') || 'Ro`yxatdan o`tish',
+      field: 'student_date',
+      flex: 1,
+      cellRenderer: (params) => {
+        if (!params.value) {
+          return <span className="text-gray-400">-</span>
+        }
+        return <span>{params.value.replaceAll('-' , '.')}</span>
+      }
+    },
+    {
       headerName: t('lastLoginTime') || 'Oxirgi kirish',
       field: 'last_login_time',
       flex: 1,

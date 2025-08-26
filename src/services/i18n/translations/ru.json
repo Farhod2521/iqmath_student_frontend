@@ -503,5 +503,6 @@
   "confirmPurchase": "Подтвердить покупку",
   "confirmPurchaseMessage": "Вы уверены, что хотите купить этот товар?",
   "purchaseWarning": "Это действие нельзя отменить!",
-  "cancel": "Отмена"
-} 
+  "cancel": "Отмена",
+  "register_date": "Дата регистрации"
+}

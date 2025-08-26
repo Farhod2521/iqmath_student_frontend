@@ -504,5 +504,6 @@
   "confirmPurchase": "Ha, sotib olaman",
   "confirmPurchaseMessage": "Ushbu mahsulotni sotib olishni xohlaysizmi?",
   "purchaseWarning": "Bu amalni qaytarib bo'lmaydi!",
-  "cancel": "Bekor qilish"
+  "cancel": "Bekor qilish",
+  "register_date": "Ro`yxatdan o`tish sanasi"
 }
