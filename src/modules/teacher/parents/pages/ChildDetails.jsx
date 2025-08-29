@@ -3,22 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { AgGridReact } from 'ag-grid-react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
-import ContentLoader from '@/components/loader/content-loader'
-
-// Import icons
-import ArrowBackIcon from '@/components/icons/children/arrow-back'
-import LocationIcon from '@/components/icons/children/location'
-import PhoneIcon from '@/components/icons/children/phone'
-import MailIcon from '@/components/icons/children/mail'
-import CalendarIcon from '@/components/icons/children/calendar'
-import BookIcon from '@/components/icons/children/book'
-import TrophyIcon from '@/components/icons/children/trophy'
-import CoinsIcon from '@/components/icons/children/coins'
-import StatsIcon from '@/components/icons/children/stats'
-import SchoolIcon from '@/components/icons/children/school'
-import HomeIcon from '@/components/icons/children/home'
-import TrendingUpIcon from '@/components/icons/children/trending-up'
-import BarChartIcon from '@/components/icons/children/bar-chart'
+import { Book } from 'lucide-react'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -32,7 +17,7 @@ const mockChildDetails = {
   district: "Chirchiq tumani",
   phone: "+998 90 123 45 67",
   email: "azizov.aziz@example.com",
-  birthday: "15.03.2010",
+  birthday: "15.03.2010", 
   address: "Chirchiq shahri, O'zbekiston ko'chasi, 45-uy",
   registrationDate: "15.01.2024",
   lastLogin: "2024-01-15 14:30:25",
@@ -237,7 +222,7 @@ const ChildDetails = () => {
                   flex: 1,
                   cellRenderer: (params) => (
                     <div className="flex items-center gap-2">
-                      <BookIcon />
+                      <Book />
                       <span className="font-medium">{params.value}</span>
                     </div>
                   ),
