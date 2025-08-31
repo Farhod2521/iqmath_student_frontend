@@ -16,16 +16,13 @@ const MyChildren = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    // API dan farzandlar ma'lumotlarini olish
     const fetchMyChildren = async () => {
       try {
         setLoading(true)
         
-        // Session dan children ma'lumotlarini olamiz (API response dan keladi)
         if (session?.children && Array.isArray(session.children)) {
           setChildren(session.children)
         } else {
-          // Fallback: Mock data (API tayyor bo'lmagan holatda)
           const mockData = [
             {
               id: 204,
@@ -81,7 +78,6 @@ const MyChildren = () => {
 
   return (
     <div>
-      <div className="text-[16px] uppercase font-semibold mb-[24px]">{t('myChildren')}</div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {children.map((child) => (  
