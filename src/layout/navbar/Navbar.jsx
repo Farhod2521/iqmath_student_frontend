@@ -34,7 +34,7 @@ const Navbar = ({ title }) => {
         <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap ">
           {oldToken && <NavbarBackTeacher />}
 
-          {(currentRole !== 'teacher' && currentRole !== 'mentor') && (
+          {(currentRole !== 'teacher' && currentRole !== 'parent') && (
             <>
               <NavbarCoins />
               <NavbarPoints />

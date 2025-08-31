@@ -132,5 +132,25 @@ export const createMenuConfig = (t) => ({
         activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
       }
     ]
+  },
+  parent: {
+    main: [
+      {
+        key: 'my-children',
+        path: '/dashboard/parent/my-children',
+        label: t('myChildren'),
+        icon: <Image src="/icons/pupil.svg" alt="my-children" width={28} height={28} />,
+        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
+      }
+    ],
+    account: [
+      {
+        key: 'parent-profile',
+        path: '/dashboard/parent/profile',
+        label: t('profile'),
+        icon: <PupilProfileIcon />,
+        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
+      }
+    ]
   }
 }) 

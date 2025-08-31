@@ -54,5 +54,10 @@ export const KEYS = {
   inviteLink: 'invite-link',
   myReferrals: 'my-referrals',
   products: 'products',
-  exchangeProduct: 'exchange-product'
+  exchangeProduct: 'exchange-product',
+  
+  // Parents Management keys
+  parentsList: 'parentsList',
+  studentsList: 'studentsList',
+  createParent: 'createParent'
 }

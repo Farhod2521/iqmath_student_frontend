@@ -8,7 +8,6 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
@@ -27,6 +26,8 @@ function AuthSignIn() {
         const session = await getSession()
         if (session?.role === 'teacher') {
           router.push('/dashboard/teacher/statistics')
+        } else if (session?.role === 'parent') {
+          router.push('/dashboard/parent/my-children')
         } else {
           router.push('/dashboard/student/subjects')
         }

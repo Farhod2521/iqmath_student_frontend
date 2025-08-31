@@ -32,7 +32,7 @@ function SidebarPlan() {
   }, [])
 
   // Mentor uchun tarif rejasi kartini yashirish
-  if (currentRole === 'teacher' || currentRole === 'mentor') {
+  if (currentRole === 'teacher' || currentRole === 'parent') {
     return null
   }
 

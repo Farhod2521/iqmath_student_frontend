@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 import { useUserStore } from '@/store'
-import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
+import { getMenuItemClasses, getMenuItems, MenuType, RolesList } from '../libs/menulist'
+import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 const SidebarMenu = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const { user } = useUserStore()
+  const { role } = useRoleDetection()
   const [hasScrollbar, setHasScrollbar] = useState(false)
   const [expandedMenus, setExpandedMenus] = useState({})
 
@@ -28,8 +30,17 @@ const SidebarMenu = () => {
     return () => window.removeEventListener('resize', checkScrollbar)
   }, [])
 
+  // Role ga qarab menu itemlarni filterlash
   const menuItems = getMenuItems(t).filter((item) => {
+    // Recommended menu faqat diagnostika o'tgan userlar uchun
     if (item.key === 'recommended' && !user?.has_diagnost) return false
+    
+    // Agar role bo'lsa va item da roles array bo'lsa, role check qilamiz
+    if (role && item.roles && Array.isArray(item.roles)) {
+      return item.roles.includes(role)
+    }
+    
+    // Agar role yo'q yoki item da roles yo'q bo'lsa, default true qaytaramiz
     return true
   })
 
@@ -47,7 +58,7 @@ const SidebarMenu = () => {
       <ul className="space-y-[8px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(user?.role))
-          .map(({ key, path, label, icon, disabled, type, children }, idx) => {
+          .map(({ key, path, label, icon, disabled, type, children, activePatterns }, idx) => {
             if (type === MenuType.TITLE) {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
@@ -55,7 +66,11 @@ const SidebarMenu = () => {
               return <div key={key || idx} className="border-t mb-2 pb-2" />
             }
             if (type === MenuType.LINK) {
-              const isActive = router.pathname === path || router.pathname.endsWith(path)
+              // Check if current path matches any active patterns
+              let isActive = router.pathname === path || router.pathname.endsWith(path)
+              if (activePatterns && activePatterns.length > 0) {
+                isActive = isActive || activePatterns.some(pattern => router.pathname.startsWith(pattern))
+              }
               
               if (children) {
                 const isExpanded = isMenuExpanded(key)

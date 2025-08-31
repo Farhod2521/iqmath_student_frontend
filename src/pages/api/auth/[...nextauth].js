@@ -16,6 +16,9 @@ export default NextAuth({
           const formData = new FormData()
           let url = 'https://api.iqmath.uz/api/v1/auth/student/login/'
 
+          // Phone formatini debug qilish
+          console.log("Login attempt with phone:", phone, "password:", password ? "***" : "not provided");
+
           if (sms_code) {
             formData.append('phone', phone)
             formData.append('sms_code', sms_code)
@@ -34,7 +37,8 @@ export default NextAuth({
           })
 
           const data = await response.json()
-          // console.log("Response Data:", data); // Debugging response
+          console.log("API Response Status:", response.status);
+          console.log("API Response Data:", data); // Debugging response
 
           if (!response.ok) {
             throw new Error(data.message || 'Login failed')
@@ -65,6 +69,8 @@ export default NextAuth({
         token.password = user.password
         token.id = user.id
         token.role = user.role // Role ni JWT ga qo'shamiz
+        token.full_name = user.full_name
+        token.children = user.children // Parent uchun farzandlar ma'lumotlari
       }
       return token
     },
@@ -79,6 +85,8 @@ export default NextAuth({
       session.password = token.password
       session.id = token.id
       session.role = token.role // Role ni session ga qo'shamiz
+      session.full_name = token.full_name
+      session.children = token.children // Parent uchun farzandlar ma'lumotlari
       return session
     },
     async redirect({ url, baseUrl }) {

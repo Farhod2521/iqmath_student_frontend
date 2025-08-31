@@ -23,7 +23,7 @@ export const useRoleDetection = () => {
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
     headers: { Authorization: `Bearer ${session?.accessToken}` },
-    enabled: !!session?.accessToken && status === 'authenticated',
+    enabled: !!session?.accessToken && status === 'authenticated' && session?.role !== 'parent',
     showErrorMsg: false // Error toast'ni o'chirib qo'yamiz
   })
 
@@ -34,8 +34,23 @@ export const useRoleDetection = () => {
       const apiRole = studentProfile.data.role || studentProfile.role
       setRole(apiRole)
       setTimeoutError(false) // Reset timeout error on success
+    } else if (session?.role) {
+      // Agar API dan profile kelmasa, session dan role olish (parent role uchun)
+      setRole(session.role)
+      setTimeoutError(false)
+      
+      // Parent role uchun session dan user ma'lumotlarini set qilish
+      if (session.role === 'parent') {
+        setUser({
+          id: session.id,
+          full_name: session.full_name,
+          phone: session.phone,
+          role: session.role,
+          children: session.children || []
+        })
+      }
     }
-  }, [studentProfile, setUser, setRole])
+  }, [studentProfile, session?.role, setUser, setRole])
 
   // Timeout mechanism to prevent infinite loading
   useEffect(() => {
@@ -53,10 +68,12 @@ export const useRoleDetection = () => {
   // Timeout error bo'lsa loading'ni to'xtatamiz
   const isLoading = (status === 'loading' || (studentLoading && !role && session?.accessToken && status === 'authenticated')) && !timeoutError
   const isTeacher = role === 'teacher' || role === 'mentor' || role === 'Teacher' || role === 'Mentor'
+  const isParent = role === 'parent' || role === 'Parent'
 
   return {
     role,
     isTeacher,
+    isParent,
     isLoading,
     studentProfile,
     error: error || timeoutError

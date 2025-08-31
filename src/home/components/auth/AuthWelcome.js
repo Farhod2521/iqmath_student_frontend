@@ -15,6 +15,8 @@ function AuthWelcome() {
       const session = await getSession()
       if (session?.role === 'teacher') {
         router.push('/dashboard/teacher/statistics')
+      } else if (session?.role === 'parent') {
+        router.push('/dashboard/parent/my-children')
       } else {
         router.push('/dashboard/student/subjects')
       }
