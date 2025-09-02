@@ -32,7 +32,13 @@ const ModalConfidentiality = () => {
 
   const closeModal = () => {
     setShowModal(false)
-    router.push('/dashboard/student/diagnostics')
+    if(session?.role === 'student') {
+      router.push('/dashboard/student/diagnostics')
+    } else if(session?.role === 'parent') {
+      router.push('/dashboard/parent/my-children')
+    } else {
+      router.push('/dashboard/student/diagnostics')
+    }
   }
 
   if (phone && showModal) {

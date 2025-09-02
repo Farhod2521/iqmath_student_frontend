@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
 import AddChildModal from '@/modules/parent/children/components/AddChildModal.jsx'
+import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality.jsx'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import ContentLoader from '@/components/loader/content-loader'
 
@@ -131,6 +132,9 @@ const MyChildren = () => {
           onClose={() => setIsAddModalOpen(false)}
           onSuccess={handleAddChildSuccess}
         />
+
+        {/* Login/parol ko'rsatadigan modal */}
+        <ModalConfidentiality />
       </div>
     </LayoutAdmin>
   )

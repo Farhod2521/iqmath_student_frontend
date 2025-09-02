@@ -88,11 +88,17 @@ const AuthRecieveCode = () => {
       } else {
         toast.success('Logged in successfully')
         // setShouldRedirect(true)
-        router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
+
+        if(selectedRole?.value === 'student') {
+          router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
+        }else if(selectedRole?.value === 'parent') {
+          router.push(`/dashboard/parent/my-children?phone=${phoneTab}`)
+        } 
+        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
       toast.error('Login error')
-      setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
+      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
     }
   }
 
