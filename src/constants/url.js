@@ -45,6 +45,10 @@ export const URLS = {
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',
+  // Parent management endpoints
+  parentCreate: '/api/v1/auth/parent/create/',
+  parentProfile: '/api/v1/auth/parent/profile/',
+  parentProfileUpdate: '/api/v1/auth/parent/profile-update/',
   systemSettings: '/api/v1/management/system-settings/',
   systemFaqs: '/api/v1/management/faqs/',
   systemBanner: '/api/v1/management/banner/',

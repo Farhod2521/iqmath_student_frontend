@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import InputText from '@/components/form/input/InputText'
 import InputPhone from '@/components/form/input/InputPhone'
 import SelectClass from '@/components/form/select/SelectClass'
+import SelectRole from '@/components/form/select/SelectRole'
 import { useAuthTabStore } from '@/store'
 import { URLS } from '@/constants/url'
 import SimpleLoader from '@/components/loader/simple-loader'
@@ -18,10 +19,11 @@ import toast from 'react-hot-toast'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
-  const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup } = useAuthTabStore((state) => state)
+  const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup, setSelectedRole } = useAuthTabStore((state) => state)
   const router = useRouter()
 
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
+  const [selectedRole, setSelectedRoleLocal] = useState(null)
 
   const { register, handleSubmit } = useForm()
   const [isLoading, setIsLoading] = useState(false)
@@ -33,12 +35,27 @@ function AuthSignUp() {
 
 
   const onSubmit = async ({ full_name, phone }) => {
+    if (!selectedRole) {
+      toast.error('Foydalanuvchi turini tanlang')
+      return
+    }
+
+    if (selectedRole.value === 'student' && !selectedOptionCourse) {
+      toast.error('Sinfni tanlang')
+      return
+    }
+
     setIsLoading(true)
     try {
       let formData = new FormData()
       formData.append('full_name', full_name)
       formData.append('phone', `${String(998) + String(phone)}`)
-      formData.append('class_name', selectedOptionCourse?.value)
+      formData.append('role', selectedRole.value)
+      
+      if (selectedRole.value === 'student') {
+        formData.append('class_name', selectedOptionCourse?.value)
+      }
+      
       if (router.query.referral_code) {
         console.log("Bor")
         formData.append('referral_code', router.query.referral_code)
@@ -56,6 +73,15 @@ function AuthSignUp() {
                 password: data.data.password
               })
               setShowCredentialsPopup(true)
+            } else {
+              // Try alternative response structures
+              if (data?.login && data?.password) {
+                setLoginCredentials({
+                  login: data.login,
+                  password: data.password
+                })
+                setShowCredentialsPopup(true)
+              }
             }
 
             setPhoneTab(phone)
@@ -88,7 +114,22 @@ function AuthSignUp() {
         {...register('phone', { required: true })}
         onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ''))}
       />
-      <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
+      
+      {/* Foydalanuvchi turi */}
+      <SelectRole
+        value={selectedRole}
+        onChange={(role) => {
+          setSelectedRoleLocal(role)
+          setSelectedRole(role)
+        }}
+      />
+
+      {/* O'quvchi uchun sinf tanlash */}
+      {selectedRole?.value === 'student' && (
+        <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
+      )}
+
+     
 
       {/* <UserAgreement /> */}
 

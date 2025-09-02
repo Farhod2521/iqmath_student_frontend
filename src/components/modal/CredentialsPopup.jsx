@@ -2,11 +2,16 @@ import React from 'react'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { useAuthTabStore } from '@/store'
+import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 
 const CredentialsPopup = () => {
   const { t } = useTranslation()
   const { loginCredentials, showCredentialsPopup, setShowCredentialsPopup, clearCredentials } = useAuthTabStore()
+  const { data: session } = useSession()
+
+  // Use password from session if not available in loginCredentials
+  const displayPassword = loginCredentials?.password || session?.password || 'Parol topilmadi'
 
   if (!showCredentialsPopup || !loginCredentials) {
     return null
@@ -67,11 +72,11 @@ const CredentialsPopup = () => {
             <div className="border-2 border-gray-100 rounded-lg p-4 bg-gray-50">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-1">{t('password')}</p>
-                  <p className="text-lg font-mono text-gray-900 bg-white px-3 py-2 rounded border">{loginCredentials.password}</p>
+                  <p className="text-sm font-semibold text-gray-700 mb-1">{t('yourPassword')}</p>
+                  <p className="text-lg font-mono text-gray-900 bg-white px-3 py-2 rounded border">{displayPassword}</p>
                 </div>
                 <button
-                  onClick={() => handleCopy(loginCredentials.password)}
+                  onClick={() => handleCopy(displayPassword)}
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
                 >
                   {t('copy')}

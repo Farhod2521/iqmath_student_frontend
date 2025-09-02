@@ -20,7 +20,7 @@ function AuthSignIn() {
   const onSubmit = async ({ phone, password }) => {
     setIsLoading(true)
     try {
-      const formattedPhone = `+998${phone.replace(/[^0-9]/g, '')}`
+      const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
       if (result?.ok) {
         const session = await getSession()

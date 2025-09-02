@@ -12,12 +12,9 @@ export default NextAuth({
       credentials: {},
       async authorize(credentials) {
         try {
-          const { phone, password, sms_code = null } = credentials
+          const { phone, password, sms_code = null, role } = credentials
           const formData = new FormData()
           let url = 'https://api.iqmath.uz/api/v1/auth/student/login/'
-
-          // Phone formatini debug qilish
-          console.log("Login attempt with phone:", phone, "password:", password ? "***" : "not provided");
 
           if (sms_code) {
             formData.append('phone', phone)
@@ -37,18 +34,20 @@ export default NextAuth({
           })
 
           const data = await response.json()
-          console.log("API Response Status:", response.status);
-          console.log("API Response Data:", data); // Debugging response
 
           if (!response.ok) {
             throw new Error(data.message || 'Login failed')
           }
+
+          // Get password from API response if using sms_code
+          const userPassword = sms_code ? data.password : password
 
           return {
             token: data.access_token,
             refreshToken: data.refresh_token,
             phone,
             login: data.login || phone, // Assuming `login` exists in response
+            password: userPassword, // Use password from API response or credentials
             id: data.id,
             role: data.role || 'student' // Role ni qo'shamiz, default student
           }

@@ -8,6 +8,8 @@ export const useAuthTabStore = create(
       (set) => ({
         phoneTab: '',
         setPhoneTab: (phoneTab) => set({ phoneTab }),
+        selectedRole: null,
+        setSelectedRole: (role) => set({ selectedRole: role }),
         currentTab: 'signIn', // boshlang'ich holat
         setTab: (tab) => set({ currentTab: tab }), // tabni o'zgartirish
 

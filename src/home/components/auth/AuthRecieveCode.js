@@ -19,7 +19,7 @@ const AuthRecieveCode = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
-  const { setTab, phoneTab } = useAuthTabStore((state) => state)
+  const { setTab, phoneTab, selectedRole } = useAuthTabStore((state) => state)
   const { t } = useTranslation()
   const router = useRouter()
 
@@ -78,6 +78,7 @@ const AuthRecieveCode = () => {
       const result = await signIn('credentials', {
         phone: formattedPhone,
         sms_code: verifyCode,
+        role: selectedRole?.value || 'student',
         redirect: false // Prevent automatic redirect
       })
 
@@ -88,11 +89,10 @@ const AuthRecieveCode = () => {
         toast.success('Logged in successfully')
         // setShouldRedirect(true)
         router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
-        // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
       toast.error('Login error')
-      setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
+      setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
     }
   }
 

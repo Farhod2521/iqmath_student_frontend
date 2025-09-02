@@ -6,7 +6,6 @@ import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
 import { PiBooksLight } from 'react-icons/pi'
 import { PiUsers } from 'react-icons/pi'
-import { LiaLayerGroupSolid } from 'react-icons/lia'
 import { PiGraduationCap } from 'react-icons/pi'
 import { FiLayers } from 'react-icons/fi'
 import { LuUsers } from 'react-icons/lu'
@@ -157,14 +156,14 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
-  {
-    key: 'parents-management',
-    path: '/dashboard/teacher/parents-management',
-    label: t('parentsManagement'),
-    icon: <LuUsers size={26} />,
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'parents-management',
+  //   path: '/dashboard/teacher/parents-management',
+  //   label: t('parentsManagement'),
+  //   icon: <LuUsers size={26} />,
+  //   roles: [RolesList.TEACHER, RolesList.ADMIN],
+  //   type: MenuType.LINK
+  // },
   
   // Parent role menu items
   { label: t('main'), roles: [ RolesList.PARENT], type: MenuType.TITLE },

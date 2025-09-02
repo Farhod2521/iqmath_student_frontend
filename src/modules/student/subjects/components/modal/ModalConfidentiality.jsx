@@ -13,12 +13,14 @@ const ModalConfidentiality = () => {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
   const phone = searchParams.get('phone')
-  console.log('phone', phone)
   const [copied, setCopied] = useState(false)
   const [showModal, setShowModal] = useState(true)
 
+  // Use password from session or show fallback message
+  const displayPassword = session?.password || 'Parol topilmadi'
+
   const handleCopy = () => {
-    const text = `Login: ${session?.login}\nPassword: ${session?.password}`
+    const text = `Login: ${session?.login}\nPassword: ${displayPassword}`
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -51,7 +53,7 @@ const ModalConfidentiality = () => {
             {t('yourLogin')}: {session?.login}
           </p>
           <p className="text-sm font-medium text-[#7C8FAC] mb-4">
-            {t('yourPassword')}: {session?.password}
+            {t('yourPassword')}: {displayPassword}
           </p>
           <p className="text-xs font-medium text-[#7C8FAC]">{t('WantchangePassword')}</p>
         </div>

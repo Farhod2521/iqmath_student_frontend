@@ -49,14 +49,21 @@ const ParentsManagement = () => {
         formattedPhone = `998${formattedPhone}`
       }
       
+      // Students array'dan faqat ID'larni olamiz
+      const studentIds = parentData.students.map(student => student.value || student.id || student)
+      
       const payload = {
         full_name: parentData.full_name,
         phone: formattedPhone,
         password: parentData.password,
-        students: parentData.students
+        students: studentIds
       }
 
-      const response = await request.post('/api/v1/auth/parent/create/', payload)
+      console.log('Creating parent with payload:', payload)
+
+      const response = await request.post("/api/v1/auth/parent/create/", payload)
+      
+      console.log('API Response:', response)
       
       if (response.status === 201) {
         const newParent = {
@@ -76,7 +83,22 @@ const ParentsManagement = () => {
       }
     } catch (error) {
       console.error('Error creating parent:', error)
-      const errorMessage = error?.response?.data?.message || t('errorCreatingParent')
+      console.error('Error response:', error?.response)
+      console.error('Error status:', error?.response?.status)
+      console.error('Error data:', error?.response?.data)
+      
+      let errorMessage = t('errorCreatingParent')
+      
+      if (error?.response?.status === 403) {
+        errorMessage = 'Sizda ota-ona yaratish huquqi yo\'q'
+      } else if (error?.response?.status === 400) {
+        errorMessage = error?.response?.data?.message || 'Noto\'g\'ri ma\'lumotlar'
+      } else if (error?.response?.status === 401) {
+        errorMessage = 'Avtorizatsiya muammosi'
+      } else if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message
+      }
+      
       toast.error(errorMessage)
     } finally {
       setIsCreating(false)
