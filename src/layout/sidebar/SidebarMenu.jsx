@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 import { useUserStore } from '@/store'
-import { getMenuItemClasses, getMenuItems, MenuType, RolesList } from '../libs/menulist'
+import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 const SidebarMenu = () => {

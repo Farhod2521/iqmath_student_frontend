@@ -12,12 +12,13 @@ import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
+
 export const RolesList = {
   STUDENT: 'student',
   TEACHER: 'teacher',
   ADMIN: 'admin',
-  PARENT: 'parent'
-  
+  PARENT: 'parent',
+  TUTOR: 'tutor'
 }
 
 export const getMenuItems = (t) => [
@@ -144,7 +145,7 @@ export const getMenuItems = (t) => [
     label: t('profile'),
     icon: <LuUser size={26} />,
     disabled: false,
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.TUTOR],
     type: MenuType.LINK
   },
   {
@@ -164,9 +165,9 @@ export const getMenuItems = (t) => [
   //   roles: [RolesList.TEACHER, RolesList.ADMIN],
   //   type: MenuType.LINK
   // },
-  
+
   // Parent role menu items
-  { label: t('main'), roles: [ RolesList.PARENT], type: MenuType.TITLE },
+  { label: t('main'), roles: [RolesList.PARENT], type: MenuType.TITLE },
   {
     key: 'my-children',
     path: '/dashboard/parent/my-children',
@@ -174,7 +175,7 @@ export const getMenuItems = (t) => [
     icon: <LuUsers size={26} />,
     roles: [RolesList.PARENT],
     type: MenuType.LINK,
-    activePatterns: ['/dashboard/parent/my-children']  // Bu path bilan boshlanadigan barcha routelar
+    activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
   },
   {
     key: 'parent-profile',

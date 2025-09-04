@@ -315,7 +315,6 @@ const Index = () => {
 
   const onSubmitEditCreatedQuestion = (id) => {
     const formData = new FormData()
-    console.log('questionText', questionText)
     formData.append('topic', topicId)
     formData.append('question_text_uz', questionText)
     formData.append('question_text_ru', questionTextRu)
@@ -350,7 +349,6 @@ const Index = () => {
       })
       // ko'p inputli
     } else if (questionType === 'composite') {
-      console.log('compositeQuestions', compositeQuestions)
       compositeQuestions.forEach((question, index) => {
         formData.append(`sub_questions[${index}][text1_uz]`, question.text1_uz)
         formData.append(`sub_questions[${index}][text1_ru]`, question.text1_ru)
@@ -361,9 +359,6 @@ const Index = () => {
       })
     }
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1])
-    }
     changeCreatedQuestion(
       {
         url: `${URLS.updateQuestion}${selectedQuestion.id}/`,
@@ -385,6 +380,7 @@ const Index = () => {
           toast.success('Mavzu muvaqqiyatli yaratildi')
         },
         onError: (error) => {
+          console.log(error)
           toast.error(error.response?.data.error)
         }
       }

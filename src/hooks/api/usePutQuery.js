@@ -2,12 +2,13 @@ import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from "@/services/api";
 import { toast } from "react-hot-toast";
+import { useTranslation } from 'react-i18next'
 
 const putRequest = (url, attributes) => request.put(url, attributes);
 
 const usePutQuery = ({ hideSuccessToast = false, listKeyId = null }) => {
   const queryClient = useQueryClient();
-
+  const { t } = useTranslation()
   const { mutate, isLoading, isError, error, isFetching } = useMutation(
     ({ url, attributes }) => putRequest(url, attributes),
     {

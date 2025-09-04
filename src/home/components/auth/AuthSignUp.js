@@ -57,7 +57,6 @@ function AuthSignUp() {
       }
       
       if (router.query.referral_code) {
-        console.log("Bor")
         formData.append('referral_code', router.query.referral_code)
       }
       registerRequest(

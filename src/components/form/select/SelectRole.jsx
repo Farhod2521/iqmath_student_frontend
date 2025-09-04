@@ -17,8 +17,9 @@ const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanla
   }, [])
 
   const options = [
-    { value: 'student', label: 'O\'quvchi' },
-    { value: 'parent', label: 'Ota-ona' }
+    { value: 'student', label: "O'quvchi" },
+    { value: 'parent', label: 'Ota-ona' },
+    { value: 'tutor', label: "O'qituvchi" }
   ]
 
   const handleSelect = (option) => {
