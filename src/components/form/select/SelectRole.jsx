@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import RightIcon from "@/components/icons/right"
+import { motion } from 'framer-motion'
 
 const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanlang" }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -28,41 +28,42 @@ const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanla
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative text-[#2A3547] cursor-pointer" ref={dropdownRef}>
       <div
-        className="w-full bg-white border border-gray-300 text-gray-800 text-sm rounded-xl px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
+        className="w-full text-left px-[16px] py-[10px] border border-[#EAEFF4] rounded-[12px] bg-white focus:outline-none flex items-center justify-between"
       >
-        <span className={value ? "text-gray-800" : "text-gray-500"}>
-          {value ? value.label : placeholder}
-        </span>
+        <span>{value?.label || placeholder}</span>
+        <svg
+          className={`w-5 h-5 transform ${isOpen ? 'rotate-180' : ''}`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+        </svg>
       </div>
 
-      {/* Right icon */}
-      <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-        <RightIcon classname={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-270' : 'rotate-90'}`} />
-      </div>
-
-      {/* Dropdown */}
+      {/* Dropdown options */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-          <div className="py-1">
+        <motion.div
+          initial={{ opacity: 0, translateY: '0px' }}
+          animate={{ opacity: 1, translateY: '0px' }}
+          transition={{ duration: 0.3 }}
+        >
+          <ul className="absolute w-full top-12 bg-white border border-gray-300 rounded-md shadow-md z-50">
             {options.map((option, index) => (
-              <div
+              <li
                 key={index}
-                className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${
-                  value?.value === option.value ? "bg-blue-50 text-blue-600" : "text-gray-800"
-                }`}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleSelect(option)}
               >
                 {option.label}
-                {value?.value === option.value && (
-                  <span className="ml-2 text-blue-600">✓</span>
-                )}
-              </div>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </motion.div>
       )}
     </div>
   )

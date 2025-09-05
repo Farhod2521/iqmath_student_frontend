@@ -1,13 +1,15 @@
 import React from 'react'
-import { useSettingStore } from '@/store'
+import { useSettingStore, useCouponStore } from '@/store'
 import SidebarMenu from './SidebarMenu'
 import SidebarLogo from './SidebarLogo'
 import SidebarPlan from './SidebarPlan'
 import SidebarFooter from './SidebarFooter'
+import CouponModal from './CouponModal'
 
 function Sidebar() {
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
+  const { isCouponModalOpen, originalPrice, closeCouponModal, applyCoupon } = useCouponStore()
   return (
     <>
       <div
@@ -38,6 +40,14 @@ function Sidebar() {
   </div>
         </div>
       </div>
+      
+      {/* Coupon Modal - Butun ekranda ko'rinishi uchun sidebar tashqarisida */}
+      <CouponModal
+        isOpen={isCouponModalOpen}
+        onClose={closeCouponModal}
+        onApplyCoupon={applyCoupon}
+        originalPrice={originalPrice}
+      />
     </>
   )
 }

@@ -3,12 +3,11 @@ import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'
 import Sidebar from './sidebar/Sidebar'
 import Main from './Main'
-import { useScoreStore, useSettingStore, useCouponStore } from '@/store'
+import { useScoreStore, useSettingStore } from '@/store'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
-import CouponModal from '@/modules/student/products/components/CouponModal'
 
 const LayoutAdmin = ({ children, title }) => {
   const router = useRouter()
@@ -36,7 +35,6 @@ const LayoutAdmin = ({ children, title }) => {
   }, [router.pathname, setIsSidebarOpen])
 
   const { setScoreData } = useScoreStore()
-  const { isCouponModalOpen, originalPrice, closeCouponModal, applyCoupon } = useCouponStore()
   
   const isTeacherMode = typeof window !== 'undefined' ? sessionStorage.getItem('is_teacher_mode') === 'true' : false
   
@@ -57,14 +55,6 @@ const LayoutAdmin = ({ children, title }) => {
       <div className="relative flex min-h-screen dark:bg-[#202936] bg-white transition-all">
         <Sidebar />
         <Main title={title}>{children}</Main>
-        
-        {/* Global Promokod Modal */}
-        <CouponModal
-          isOpen={isCouponModalOpen}
-          onClose={closeCouponModal}
-          onApplyCoupon={applyCoupon}
-          originalPrice={originalPrice}
-        />
       </div>
     </ThemeProvider>
   )

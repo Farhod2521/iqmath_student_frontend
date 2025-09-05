@@ -638,6 +638,6 @@
   "discount": "Chegirma",
   "originalPrice": "Asl narx",
   "finalPrice": "Yakuniy narx",
-  "skip": "O'tkazib yuborish",
+  "skip": "Promokod yo'q, o'tkazib yuborish",
   "applyCoupon": "Promokodni qo'llash"
 }
