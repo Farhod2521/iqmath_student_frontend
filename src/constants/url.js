@@ -86,6 +86,7 @@ export const URLS = {
   generateInviteLink: "/api/v1/func_student/generate-invite-link/",
   myReferrals: "/api/v1/func_student/my-referrals/",
   products: "/api/v1/management/products/",
-  exchangeProduct: "/api/v1/func_student/my-products/exchange/"
+  exchangeProduct: "/api/v1/func_student/my-products/exchange/",
+  checkCoupon: "/api/v1/payments/check-coupon/"
 }
   

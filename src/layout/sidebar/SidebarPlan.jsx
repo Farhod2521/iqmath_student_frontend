@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import { useCouponStore } from '@/store'
 
 function SidebarPlan() {
   const { t } = useTranslation()
@@ -12,12 +13,28 @@ function SidebarPlan() {
   const router = useRouter()
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
+  const { openCouponModal } = useCouponStore()
 
   const [isPlaymentLoadinng, setIsPaymetLoading] = useState(false)
+  
   const handleInitiatePayment = () => {
+    // Global promokod modalini ochish
+    openCouponModal(data.payment_amount)
+  }
+
+  const proceedToPayment = (couponData = null) => {
     setIsPaymetLoading(true)
     getPaymentInitiate()
-      .then((res) => window.open(res.data.data.checkout_url, '_blank'))
+      .then((res) => {
+        let checkoutUrl = res.data.data.checkout_url
+        // Agar promokod qo'llanilgan bo'lsa, URL'ga promokod parametrini qo'shish
+        if (couponData && couponData.code) {
+          const url = new URL(checkoutUrl)
+          url.searchParams.set('coupon_code', couponData.code)
+          checkoutUrl = url.toString()
+        }
+        window.open(checkoutUrl, '_blank')
+      })
       .finally(() => setIsPaymetLoading(false))
   }
 
@@ -69,8 +86,9 @@ function SidebarPlan() {
             onPress={handleInitiatePayment}
             variant="bordered"
             className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
+            isLoading={isPlaymentLoadinng}
           >
-            {t('payment')}
+            {isPlaymentLoadinng ? t('loading') : t('payment')}
           </Button>
         ) : (
           <Button
@@ -82,6 +100,7 @@ function SidebarPlan() {
           </Button> 
         )}
       </div>
+
     </div>
   )
 }
