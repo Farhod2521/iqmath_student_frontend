@@ -196,6 +196,13 @@ export default function SubjectQuestions() {
         question_id: q.id,
         answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
+
+    // Debug uchun ma'lumotlarni ko'rsatish
+    console.log('=== SENDING DATA TO SERVER ===')
+    console.log('text_answers:', JSON.stringify(text_answers, null, 2))
+    console.log('choice_answers:', JSON.stringify(choice_answers, null, 2))
+    console.log('composite_answers:', JSON.stringify(composite_answers, null, 2))
+
     checkMyResults(
       {
         url: URLS.studentCheckAnswer,
@@ -209,7 +216,14 @@ export default function SubjectQuestions() {
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
-        onError: () => toast.error("Testni to'liq bajaring")
+        onError: (error) => {
+          console.error('=== SERVER ERROR ===')
+          console.error('Error:', error)
+          console.error('Response:', error?.response)
+          console.error('Data:', error?.response?.data)
+          console.error('Message:', error?.response?.data?.message)
+          toast.error("Testni to'liq bajaring")
+        }
       }
     )
   }

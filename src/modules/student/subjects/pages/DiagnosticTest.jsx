@@ -25,10 +25,6 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
   })
 
   const handleBeginTest = () => {
-    console.log('=== BUTTON CLICKED ===')
-    console.log('Subject ID:', subjectId)
-    console.log('Level:', tab)
-    console.log('Session:', session)
     
     beginTest(
       {
@@ -43,9 +39,6 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
       },
       {
         onSuccess: (res) => {
-          console.log('=== TEST SUCCESS RESPONSE ===')
-          console.log('Full response:', res)
-          console.log('Response data:', res?.data)
           
           // API response strukturini tekshirish
           let questions = []

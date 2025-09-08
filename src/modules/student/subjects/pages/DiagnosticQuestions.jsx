@@ -206,18 +206,6 @@ const DiagnosticQuestions = () => {
         }
       })
 
-    // Debug uchun console.log
-    console.log('=== DIAGNOSTIC TEST DATA ===')
-    console.log('text_answers:', text_answers)
-    console.log('choice_answers:', choice_answers)
-    console.log('composite_answers:', composite_answers)
-    console.log('choiceAnswers state:', choiceAnswers)
-    console.log('testQuestions:', testQuestions)
-    console.log('Total answers to send:', {
-      text_count: text_answers.length,
-      choice_count: choice_answers.length,
-      composite_count: composite_answers.length
-    })
 
     checkMyResults(
       {
