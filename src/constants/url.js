@@ -87,6 +87,7 @@ export const URLS = {
   myReferrals: "/api/v1/func_student/my-referrals/",
   products: "/api/v1/management/products/",
   exchangeProduct: "/api/v1/func_student/my-products/exchange/",
+  purchasedProducts: "/api/v1/func_student/my-products/exchange/list/",
   checkCoupon: "/api/v1/payments/check-coupon/"
 }
   

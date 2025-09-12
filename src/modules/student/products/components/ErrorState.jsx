@@ -1,0 +1,19 @@
+import React from 'react'
+
+const ErrorState = () => {
+  return (
+    <div className="p-6">
+      <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">❌</div>
+          <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">Xatolik</h2>
+          <p className="text-[#5A6A85] dark:text-gray-400">
+            Ma'lumotlarni yuklashda xatolik yuz berdi
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ErrorState
