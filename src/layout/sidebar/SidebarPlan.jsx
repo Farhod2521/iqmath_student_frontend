@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useCouponStore } from '@/store'
+import { useCouponStore, usePricingModalStore } from '@/store'
 
 function SidebarPlan() {
   const { t } = useTranslation()
@@ -13,12 +13,12 @@ function SidebarPlan() {
   const router = useRouter()
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
-  const { openCouponModal } = useCouponStore()
+  const { openPricingModal } = usePricingModalStore()
 
   
   const handleInitiatePayment = () => {
-    // Global promokod modalini ochish
-    openCouponModal(data.payment_amount)
+    // Tariflar tanlash modalini ochish
+    openPricingModal(data.payment_amount)
   }
 
 

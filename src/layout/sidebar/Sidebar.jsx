@@ -1,15 +1,17 @@
 import React from 'react'
-import { useSettingStore, useCouponStore } from '@/store'
+import { useSettingStore, useCouponStore, usePricingModalStore } from '@/store'
 import SidebarMenu from './SidebarMenu'
 import SidebarLogo from './SidebarLogo'
 import SidebarPlan from './SidebarPlan'
 import SidebarFooter from './SidebarFooter'
 import CouponModal from './CouponModal'
+import PricingModal from '@/modules/student/payment/components/PricingModal'
 
 function Sidebar() {
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
   const { isCouponModalOpen, originalPrice, closeCouponModal, applyCoupon } = useCouponStore()
+  const { isPricingModalOpen, originalPrice: pricingOriginalPrice, closePricingModal } = usePricingModalStore()
   return (
     <>
       <div
@@ -47,6 +49,13 @@ function Sidebar() {
         onClose={closeCouponModal}
         onApplyCoupon={applyCoupon}
         originalPrice={originalPrice}
+      />
+      
+      {/* Pricing Modal - Butun ekranda ko'rinishi uchun sidebar tashqarisida */}
+      <PricingModal
+        isOpen={isPricingModalOpen}
+        onClose={closePricingModal}
+        originalPrice={pricingOriginalPrice}
       />
     </>
   )
