@@ -17,7 +17,6 @@ function SidebarPlan() {
 
   
   const handleInitiatePayment = () => {
-    // Tariflar tanlash modalini ochish
     openPricingModal(data.payment_amount)
   }
 
@@ -28,11 +27,9 @@ function SidebarPlan() {
         setData((prev) => ({ ...prev, ...res?.data }));
       })
       .catch((error) => {
-        console.log(error)
       })
   }, [])
 
-  // Mentor uchun tarif rejasi kartini yashirish
   if (currentRole === 'teacher' || currentRole === 'parent') {
     return null
   }

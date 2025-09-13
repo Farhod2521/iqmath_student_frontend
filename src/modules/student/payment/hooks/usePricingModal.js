@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { getPaymentInitiate } from '@/services/controllers'
+import { useGetPlans } from '@/hooks'
 import toast from 'react-hot-toast'
 
 export const usePricingModal = () => {
@@ -13,9 +14,16 @@ export const usePricingModal = () => {
   const [couponCode, setCouponCode] = useState('')
   const [couponData, setCouponData] = useState(null)
 
+  const { data: plansData, isLoading: isLoadingPlans, error: plansError } = useGetPlans();
+
   const { mutate: checkCoupon, isLoading: isCheckingCoupon } = useMutation({
-    mutationFn: (code) => 
-      request.post(URLS.checkCoupon, { code }),
+    mutationFn: ({ code, subscriptionId }) => {
+      const payload = { 
+        code: code,
+        subscription_id: subscriptionId
+      }
+      return request.post(URLS.checkCoupon, payload)
+    },
     onSuccess: (response) => {
       const data = response.data
       if (data.active) {
@@ -27,7 +35,7 @@ export const usePricingModal = () => {
       }
     },
     onError: (error) => {
-      const errorMessage = error?.response?.data?.message || t('couponCheckError')
+      const errorMessage = error?.response?.data?.error || error?.response?.data?.message || t('couponCheckError')
       toast.error(errorMessage)
       setCouponData(null)
     }
@@ -52,42 +60,68 @@ export const usePricingModal = () => {
       toast.error(t('enterCouponCode'))
       return
     }
-    checkCoupon(couponCode.trim())
+    
+    if (!selectedPlan) {
+      toast.error('Avval tarif rejasini tanlang')
+      return
+    }
+    
+    const payload = {
+      code: couponCode.trim(),
+      subscriptionId: selectedPlan.id
+    }
+    
+    
+    
+    checkCoupon(payload)
   }
 
   const handleSkipCoupon = () => {
+    if (!selectedPlan) {
+      toast.error('Tarif rejasi tanlanmagan')
+      return
+    }
     proceedToPayment(null)
   }
 
   const handleApplyCoupon = () => {
+    if (!selectedPlan) {
+      toast.error('Tarif rejasi tanlanmagan')
+      return
+    }
+    
     if (couponData) {
       proceedToPayment(couponData)
+    } else {
+      toast.error('Kupon ma\'lumotlari topilmadi')
     }
   }
 
   const proceedToPayment = (couponData = null) => {
-    getPaymentInitiate()
+    if (!selectedPlan) {
+      toast.error('Tarif rejasi tanlanmagan')
+      return
+    }
+
+    // Kupon kodi mavjud bo'lsa, uni API ga yuborish
+    const couponCode = couponData?.code || null
+    
+    getPaymentInitiate(selectedPlan.id, couponCode)
       .then((res) => {
-        let checkoutUrl = res.data.data.checkout_url
+        // API dan kelayotgan checkout_url allaqachon tayyor
+        let checkoutUrl = res.data.payment_data?.data?.checkout_url
         
-        if (couponData && couponData.code) {
-          const url = new URL(checkoutUrl)
-          url.searchParams.set('coupon_code', couponData.code)
-          url.searchParams.set('plan_id', selectedPlan.id)
-          url.searchParams.set('plan_price', selectedPlan.price)
-          checkoutUrl = url.toString()
-        } else {
-          const url = new URL(checkoutUrl)
-          url.searchParams.set('plan_id', selectedPlan.id)
-          url.searchParams.set('plan_price', selectedPlan.price)
-          checkoutUrl = url.toString()
+        if (!checkoutUrl) {
+          throw new Error('Checkout URL topilmadi')
         }
         
+        // To'lov sahifasiga yo'naltirish
         window.open(checkoutUrl, '_blank')
         return true
       })
       .catch((error) => {
-        toast.error(t('paymentError'))
+        const errorMessage = error?.response?.data?.error || error?.message || 'To\'lov tizimida xatolik yuz berdi'
+        toast.error(errorMessage)
         return false
       })
   }
@@ -99,18 +133,39 @@ export const usePricingModal = () => {
     setCouponData(null)
   }
 
+  
+  const plans = plansData?.data?.map(plan => {
+    
+    const originalPrice = plan.discount_percent > 0 
+      ? Math.round(plan.sale_price / (1 - plan.discount_percent / 100))
+      : plan.sale_price
+
+    return {
+      id: plan.id,
+      name: plan.get_months_display,
+      duration: plan.get_months_display,
+      price: plan.sale_price,
+      originalPrice: originalPrice,
+      discount: plan.discount_percent,
+      months: plan.months,
+    }
+  }) || []
+
   return {
-    // State
+    
     selectedPlan,
     activeTab,
     couponCode,
     couponData,
     isCheckingCoupon,
+    plans,
+    isLoadingPlans,
+    plansError,
     
-    // Setters
+    
     setCouponCode,
     
-    // Handlers
+    
     handleSelectPlan,
     handleNext,
     handleBack,

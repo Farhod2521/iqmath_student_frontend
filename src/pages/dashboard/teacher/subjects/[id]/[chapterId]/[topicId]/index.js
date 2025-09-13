@@ -17,7 +17,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import usePutQuery from '@/hooks/api/usePutQuery'
 import EditIcon from '@/components/icons/edit'
 import TrashIcon from '@/components/icons/trash'
-import useDeleteQuery from '@/hooks/api/useDeleteQuery'
+import useDeleteQuestion from '@/hooks/api/useDeleteQuestion'
 import { config } from '@/config'
 import SimpleModal from '@/components/modal/simple-modal'
 import { useTranslation } from 'react-i18next'
@@ -387,13 +387,27 @@ const Index = () => {
     )
   }
 
-  const { mutate: deleteQuestion } = useDeleteQuery({
-    listKeyId: 'delete-question'
+  const { mutate: deleteQuestion, isLoading: isDeleting } = useDeleteQuestion(() => {
+    setDeleteModal(false)
   })
 
   const onSubmitDeleteQuestion = (id) => {
-    deleteQuestion(`${config.API_URL}${URLS.deleteQuestion}${id}/`)
-    setDeleteModal(false)
+    if (!id) {
+      toast.error('Savol ID topilmadi')
+      return
+    }
+    
+    if (!session?.accessToken) {
+      toast.error('Avtorizatsiya tokeni topilmadi')
+      return
+    }
+    
+    deleteQuestion(
+      `${config.API_URL}${URLS.deleteQuestion}${id}/`,
+      {
+        headers: { Authorization: `Bearer ${session?.accessToken}` }
+      }
+    )
   }
 
   const filteredQuestions = get(questionList, 'data', []).filter((item) =>
@@ -1506,7 +1520,7 @@ const Index = () => {
       )}
       {/* Testni o'chirish */}
       {deleteModal && (
-        <SimpleModal>
+        <SimpleModal open={deleteModal} onClose={() => setDeleteModal(false)}>
           <div className="flex justify-between px-[16px] py-[18px]">
             <h3 className="text-[19px] font-semibold">Savolni o&apos;chirish</h3>
             <button onClick={() => setDeleteModal(false)} className="rounded">
@@ -1525,8 +1539,14 @@ const Index = () => {
 
           <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
           <div className="px-[16px] py-[12px] flex items-center justify-center">
-            <Button classname={'!py-2'} onclick={() => onSubmitDeleteQuestion(selectedQuestion?.id)}>
-              O&apos;chirish
+            <Button 
+              classname={'!py-2'} 
+              disabled={isDeleting}
+              onclick={() => {
+                onSubmitDeleteQuestion(selectedQuestion?.id)
+              }}
+            >
+              {isDeleting ? 'O\'chirilmoqda...' : 'O\'chirish'}
             </Button>
           </div>
         </SimpleModal>

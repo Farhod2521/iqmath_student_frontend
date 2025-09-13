@@ -17,7 +17,7 @@ const CouponSection = ({
     <div className="max-w-lg mx-auto">
       {/* Selected Plan Info */}
       {selectedPlan && (
-        <div className="bg-[#F8F9FA] dark:bg-[#2A3447] rounded-xl p-6 mb-8">
+        <div className="bg-white dark:bg-[#2A3447] border border-[#EAEFF4] dark:border-[#2A3447] rounded-[12px] p-6 mb-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white">
@@ -40,18 +40,18 @@ const CouponSection = ({
       )}
 
       {/* Coupon Input */}
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex gap-3">
           <input
             type="text"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
             placeholder="Kupon kodini kiriting"
-            className="flex-1 px-6 py-4 text-lg border border-[#EAEFF4] dark:border-[#2A3447] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5D87FF] dark:bg-[#2A3447] dark:text-white"
+            className="flex-1 px-4 py-3 text-base border border-[#EAEFF4] dark:border-[#2A3447] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#5D87FF] dark:bg-[#2A3447] dark:text-white"
             disabled={isCheckingCoupon}
           />
           <Button
-            classname="px-8 py-4 text-lg bg-[#5D87FF] hover:bg-[#4570EA] text-white rounded-xl"
+            classname="px-6 py-3 text-base rounded-[8px]"
             onclick={onCheckCoupon}
             disabled={isCheckingCoupon || !couponCode.trim()}
           >
@@ -66,7 +66,7 @@ const CouponSection = ({
 
       {/* Coupon Result */}
       {couponData && (
-        <div className="mb-8 p-6 bg-[#E6FFFA] dark:bg-[#1B3C48] rounded-xl border border-[#13DEB9]/30 dark:border-[#13DEB9]/30">
+        <div className="mb-6 p-6 bg-[#E6FFFA] dark:bg-[#1B3C48] rounded-[12px] border border-[#13DEB9]/30 dark:border-[#13DEB9]/30">
           <div className="flex items-center gap-3 mb-4">
             <FaTag className="text-[#13DEB9] dark:text-[#13DEB9] text-xl" />
             <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">
@@ -84,10 +84,28 @@ const CouponSection = ({
                 {couponData.discount_percent}%
               </span>
             </div>
+            <div className="flex justify-between">
+              <span className="text-[#2A3547] dark:text-white">Asl narx:</span>
+              <span className="text-[#5A6A85] dark:text-gray-400 line-through">
+                {couponData.original_price?.toLocaleString()} so'm
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#2A3547] dark:text-white">Sotuv narxi:</span>
+              <span className="text-[#2A3547] dark:text-white">
+                {couponData.price?.toLocaleString()} so'm
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#2A3547] dark:text-white">Qo'shimcha chegirma:</span>
+              <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9]">
+                -{couponData.saved_amount?.toLocaleString()} so'm
+              </span>
+            </div>
             <div className="flex justify-between border-t border-[#13DEB9]/30 dark:border-[#13DEB9]/30 pt-3">
               <span className="text-[#2A3547] dark:text-white font-semibold text-lg">Yakuniy narx:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-xl">
-                {couponData.discounted_price?.toLocaleString()} so'm
+                {couponData.sale_price?.toLocaleString()} so'm
               </span>
             </div>
           </div>
@@ -97,23 +115,25 @@ const CouponSection = ({
       {/* Actions */}
       <div className="flex gap-4">
         <Button
-          classname="flex-1 py-4 text-lg bg-gray-400 hover:bg-gray-600 text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-xl"
+          classname="flex-1 py-3 text-base bg-gray-400 hover:bg-gray-600 text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-[8px]"
           onclick={onBack}
         >
           Orqaga
         </Button>
-        <Button
-          classname="flex-1 py-4 text-lg bg-[#5D87FF] hover:bg-[#4570EA] text-white rounded-xl"
-          onclick={onSkipCoupon}
-        >
-          O'tkazib yuborish
-        </Button>
-        {couponData && (
+        
+        {couponData ? (
           <Button
-            classname="flex-1 py-4 text-lg bg-green-500 hover:bg-green-600 text-white rounded-xl"
+            classname="flex-1 py-3 text-base bg-green-500 hover:bg-green-600 text-white rounded-[8px]"
             onclick={onApplyCoupon}
           >
             To'lovga o'tish
+          </Button>
+        ) : (
+          <Button
+            classname="flex-1 py-3 text-base rounded-[8px]"
+            onclick={onSkipCoupon}
+          >
+            O'tkazib yuborish
           </Button>
         )}
       </div>
