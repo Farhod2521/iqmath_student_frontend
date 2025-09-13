@@ -43,26 +43,31 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
 
   const handleApplyCoupon = () => {
     if (couponData) {
-      // To'lovga o'tish
       proceedToPayment(couponData)
     }
   }
 
   const handleSkipCoupon = () => {
-    // Promokodsiz to'lovga o'tish
     proceedToPayment(null)
   }
 
   const proceedToPayment = (couponData = null) => {
-    getPaymentInitiate()
+    const couponCode = couponData?.code || null
+    getPaymentInitiate(null, couponCode)
       .then((res) => {
-        let checkoutUrl = res.data.data.checkout_url
-        // Agar promokod qo'llanilgan bo'lsa, URL'ga promokod parametrini qo'shish
+        
+        let checkoutUrl = res.data.payment_data?.data?.checkout_url
+        
+        if (!checkoutUrl) {
+          throw new Error('Checkout URL topilmadi')
+        }
+        
         if (couponData && couponData.code) {
           const url = new URL(checkoutUrl)
           url.searchParams.set('coupon_code', couponData.code)
           checkoutUrl = url.toString()
         }
+        
         window.open(checkoutUrl, '_blank')
         onClose()
       })
@@ -76,7 +81,6 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-lg w-full p-8 mx-4 relative">
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#EAEFF4] dark:bg-[#2A3447] hover:bg-[#DFE5EF] dark:hover:bg-[#333F55] transition-colors"
@@ -84,7 +88,6 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
           <FaTimes className="text-[#5A6A85] dark:text-[#7C8FAC] text-sm" />
         </button>
         
-        {/* Header */}
         <div className="text-center mb-8">
           {/* <div className="mx-auto w-20 h-20 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-6">
             <FaTag className="text-blue-600 dark:text-blue-400 text-4xl" />

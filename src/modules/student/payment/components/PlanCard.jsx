@@ -15,34 +15,48 @@ const PlanCard = ({
       }`}
       onClick={() => onSelect(plan)}
     >
-      <div className="p-6">
+      <div className="p-4">
         {/* Plan Header */}
-        <div className="text-center mb-6">
-          <h3 className="text-xl font-bold text-[#2A3547] dark:text-white mb-2">
+        <div className="text-center mb-4">
+          <h3 className="text-lg font-bold text-[#2A3547] dark:text-white mb-1">
             {plan.name}
           </h3>
-       
         </div>
 
         {/* Price */}
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="text-3xl font-bold text-[#2A3547] dark:text-white">
+        <div className="text-center mb-4">
+          <div className="flex items-center justify-center gap-1 mb-1">
+            <span className="text-2xl font-bold text-[#2A3547] dark:text-white">
               {plan.price.toLocaleString()}
             </span>
-            <span className="text-[#5A6A85] dark:text-gray-400">so'm</span>
+            <span className="text-sm text-[#5A6A85] dark:text-gray-400">so'm</span>
           </div>
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-sm text-[#5A6A85] dark:text-gray-400 line-through">
-              {plan.originalPrice.toLocaleString()}
-            </span>
-            <span className="bg-[#13DEB9] text-white px-2 py-1 rounded-full text-xs font-semibold">
-              -{plan.discount}%
-            </span>
-          </div>
+          {plan.discount > 0 && (
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-xs text-[#5A6A85] dark:text-gray-400 line-through">
+                {plan.originalPrice.toLocaleString()}
+              </span>
+              <span className="bg-[#13DEB9] text-white px-1.5 py-0.5 rounded-full text-xs font-semibold">
+                -{plan.discount}%
+              </span>
+            </div>
+          )}
         </div>
 
-    
+        {/* Features */}
+        {plan.features && plan.features.length > 0 && (
+          <div className="mb-4">
+            <ul className="space-y-1">
+              {plan.features.map((feature, index) => (
+                <li key={index} className="flex items-center gap-1.5 text-xs text-[#5A6A85] dark:text-gray-400">
+                  <div className="w-1 h-1 bg-[#5D87FF] rounded-full"></div>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
       </div>
     </div>
   )

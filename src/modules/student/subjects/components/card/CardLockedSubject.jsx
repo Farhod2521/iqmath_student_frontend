@@ -12,8 +12,14 @@ const CardLockedSubject = ({ item }) => {
   const [isPlaymentLoadinng, setIsPaymetLoading] = useState(false)
   const handleInitiatePayment = () => {
     setIsPaymetLoading(true)
-    getPaymentInitiate()
-      .then((res) => window.open(res.data.data.checkout_url, '_blank'))
+    // CardLockedSubject da subscription_id yo'q, shuning uchun null yuboramiz
+    getPaymentInitiate(null,null)
+      .then((res) => {
+        // API dan kelayotgan checkout_url allaqachon tayyor
+        const checkoutUrl = res.data.data.checkout_url
+        // To'lov sahifasiga yo'naltirish
+        window.open(checkoutUrl, '_blank')
+      })
       .finally(() => setIsPaymetLoading(false))
   }
 
