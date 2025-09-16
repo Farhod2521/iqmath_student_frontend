@@ -33,10 +33,10 @@ function AuthSignIn() {
         } else {
           router.push('/dashboard/student/subjects')
         }
-        toast.success('Logged in successfully')
+        toast.success(t('loggedInSuccessfully'))
       }
     } catch (error) {
-      toast.error('Login error')
+      toast.error(t('loginError'))
     } finally {
       setIsLoading(false)
     }

@@ -83,10 +83,10 @@ const AuthRecieveCode = () => {
       })
 
       if (result?.error) {
-        toast.error('Invalid credentials')
+        toast.error(t('invalidCredentials'))
         setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
-        toast.success('Logged in successfully')
+        toast.success(t('loggedInSuccessfully'))
         // setShouldRedirect(true)
 
         if(selectedRole?.value === 'student') {
@@ -97,7 +97,7 @@ const AuthRecieveCode = () => {
         // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
-      toast.error('Login error')
+      toast.error(t('loginError'))
       setIsLoading(false) // Xatolik bo'lsagina loading'ni to'xtatamiz
     }
   }

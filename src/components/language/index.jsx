@@ -44,7 +44,7 @@ const LanguageDropdown = () => {
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-1 bg-white text-black border rounded-md py-1 px-3 hover:bg-[#5d87ff] hover:text-white transition active:scale-90"
       >
-        <CiGlobe size={24} />
+        <CiGlobe color='#5d87ff' size={24} />
         <span className="uppercase text-sm">{selectedLanguage.code}</span>
       </button>
 

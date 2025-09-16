@@ -27,7 +27,7 @@ export const getMenuItems = (t) => [
     key: 'main',
     path: '/dashboard/student/subjects',
     label: t('subjects'),
-    icon: <LuBookText size={26} />,
+    icon: (isActive) => <LuBookText color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.ADMIN],
     type: MenuType.LINK
@@ -36,7 +36,7 @@ export const getMenuItems = (t) => [
     key: 'diagnostics',
     path: '/dashboard/student/diagnostics',
     label: t('diagnostics'),
-    icon: <TbCheckbox size={26} />,
+    icon: (isActive) => <TbCheckbox color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -45,7 +45,7 @@ export const getMenuItems = (t) => [
     key: 'recommended', // Diqqat: bu yerda "recommended" bo'lishi kerak
     path: '/dashboard/student/recommendations',
     label: t('recommended'),
-    icon: <BiDirections size={26} />,
+    icon: (isActive) => <BiDirections color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -54,7 +54,7 @@ export const getMenuItems = (t) => [
     key: 'friends',
     path: '/dashboard/student/friends',
     label: t('friends'),
-    icon: <LuUsers size={26} />,
+    icon: (isActive) => <LuUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -62,7 +62,7 @@ export const getMenuItems = (t) => [
   {
     key: 'products',
     label: t('products'),
-    icon: <LuShoppingBag size={26} />,
+    icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK,
@@ -71,13 +71,13 @@ export const getMenuItems = (t) => [
         key: 'all-products',
         path: '/dashboard/student/products',
         label: t('allProducts'),
-        icon: <LuShoppingBag size={20} />
+        icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={20} />
       },
       {
         key: 'purchased-products',
         path: '/dashboard/student/purchased-products',
         label: t('purchasedProducts'),
-        icon: <LuShoppingBag size={20} />
+        icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={20} />
       }
     ]
   },
@@ -85,7 +85,7 @@ export const getMenuItems = (t) => [
     key: 'statistics',
     path: '/dashboard/teacher/statistics',
     label: t('statistics'),
-    icon: <BsBarChart size={26} />,
+    icon: (isActive) => <BsBarChart color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -93,7 +93,7 @@ export const getMenuItems = (t) => [
     key: 'pupils',
     path: '/dashboard/teacher/pupils',
     label: t('students'),
-    icon: <PiUsers size={26} />,
+    icon: (isActive) => <PiUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -101,7 +101,7 @@ export const getMenuItems = (t) => [
     key: 'subjects',
     path: '/dashboard/teacher/subjects',
     label: t('subjects'),
-    icon: <PiBooksLight size={26} />,
+    icon: (isActive) => <PiBooksLight color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -109,7 +109,7 @@ export const getMenuItems = (t) => [
     key: 'my-study',
     path: '/dashboard/teacher/my-study',
     label: t('groups'),
-    icon: <PiGraduationCap size={26} />,
+    icon: (isActive) => <PiGraduationCap color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -117,7 +117,7 @@ export const getMenuItems = (t) => [
     key: 'individual',
     path: '/dashboard/teacher/individual',
     label: t('independent'),
-    icon: <GoChecklist size={26} />,
+    icon: (isActive) => <GoChecklist color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -125,7 +125,7 @@ export const getMenuItems = (t) => [
     key: 'student-examples',
     path: '/dashboard/teacher/student-examples',
     label: t('studentExamples'),
-    icon: <FiLayers size={26} />,
+    icon: (isActive) => <FiLayers color={isActive ? 'white' : '#5d87ff'}  size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -134,7 +134,7 @@ export const getMenuItems = (t) => [
     key: 'profile',
     path: '/dashboard/student/profile',
     label: t('profile'),
-    icon: <LuUser size={26} />,
+    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -143,7 +143,7 @@ export const getMenuItems = (t) => [
     key: 'profile',
     path: '/dashboard/teacher/profile',
     label: t('profile'),
-    icon: <LuUser size={26} />,
+    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.TUTOR],
     type: MenuType.LINK
@@ -152,7 +152,7 @@ export const getMenuItems = (t) => [
     key: 'coins',
     path: '/dashboard/student/coins',
     label: t('points'),
-    icon: <FaCoins size={26} />,
+    icon: (isActive) => <FaCoins color={isActive ? 'white' : '#5d87ff'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -172,7 +172,7 @@ export const getMenuItems = (t) => [
     key: 'my-children',
     path: '/dashboard/parent/my-children',
     label: t('myChildren'),
-    icon: <LuUsers size={26} />,
+    icon: (isActive) => <LuUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
     roles: [RolesList.PARENT],
     type: MenuType.LINK,
     activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
@@ -181,7 +181,7 @@ export const getMenuItems = (t) => [
     key: 'parent-profile',
     path: '/dashboard/parent/profile',
     label: t('profile'),
-    icon: <LuUser size={26} />,
+    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'}  size={26} />,
     roles: [RolesList.PARENT],
     type: MenuType.LINK
   }

@@ -140,10 +140,21 @@ export const usePricingModal = () => {
       ? Math.round(plan.sale_price / (1 - plan.discount_percent / 100))
       : plan.sale_price
 
+    // Tarif nomini tarjima qilish
+    const getTranslatedName = (months) => {
+      switch(months) {
+        case 1: return t('oneMonth')
+        case 3: return t('threeMonths')
+        case 6: return t('sixMonths')
+        case 12: return t('oneYear')
+        default: return `${months} ${t('months')}`
+      }
+    }
+
     return {
       id: plan.id,
-      name: plan.get_months_display,
-      duration: plan.get_months_display,
+      name: getTranslatedName(plan.months),
+      duration: getTranslatedName(plan.months),
       price: plan.sale_price,
       originalPrice: originalPrice,
       discount: plan.discount_percent,

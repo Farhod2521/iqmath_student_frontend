@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaTag, FaSpinner } from 'react-icons/fa'
 import Button from '@/components/button'
 
@@ -13,6 +14,7 @@ const CouponSection = ({
   onSkipCoupon,
   onApplyCoupon
 }) => {
+  const { t } = useTranslation()
   return (
     <div className="max-w-lg mx-auto">
       {/* Selected Plan Info */}
@@ -29,10 +31,10 @@ const CouponSection = ({
             </div>
             <div className="text-right">
               <div className="text-xl font-bold text-[#2A3547] dark:text-white">
-                {selectedPlan.price.toLocaleString()} so'm
+                {selectedPlan.price.toLocaleString()} {t('sum')}
               </div>
               <div className="text-sm text-[#5A6A85] dark:text-gray-400 line-through">
-                {selectedPlan.originalPrice.toLocaleString()} so'm
+                {selectedPlan.originalPrice.toLocaleString()} {t('sum')}
               </div>
             </div>
           </div>
@@ -46,7 +48,7 @@ const CouponSection = ({
             type="text"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-            placeholder="Kupon kodini kiriting"
+            placeholder={t('enterCouponCode')}
             className="flex-1 px-4 py-3 text-base border border-[#EAEFF4] dark:border-[#2A3447] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#5D87FF] dark:bg-[#2A3447] dark:text-white"
             disabled={isCheckingCoupon}
           />
@@ -58,7 +60,7 @@ const CouponSection = ({
             {isCheckingCoupon ? (
               <FaSpinner className="animate-spin" />
             ) : (
-              'Tekshirish'
+              t('checkCoupon')
             )}
           </Button>
         </div>
@@ -70,42 +72,42 @@ const CouponSection = ({
           <div className="flex items-center gap-3 mb-4">
             <FaTag className="text-[#13DEB9] dark:text-[#13DEB9] text-xl" />
             <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">
-              Kupon qo'llanildi!
+              {t('couponApplied')}
             </span>
           </div>
           <div className="space-y-3 text-base">
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">Kupon:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('couponCode')}:</span>
               <span className="font-mono font-bold text-[#5D87FF] text-lg">{couponData.code}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">Chegirma:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('discount')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-lg">
                 {couponData.discount_percent}%
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">Asl narx:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
               <span className="text-[#5A6A85] dark:text-gray-400 line-through">
-                {couponData.original_price?.toLocaleString()} so'm
+                {couponData.original_price?.toLocaleString()} {t('sum')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">Sotuv narxi:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('finalPrice')}:</span>
               <span className="text-[#2A3547] dark:text-white">
-                {couponData.price?.toLocaleString()} so'm
+                {couponData.price?.toLocaleString()} {t('sum')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">Qo'shimcha chegirma:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('discount')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9]">
-                -{couponData.saved_amount?.toLocaleString()} so'm
+                -{couponData.saved_amount?.toLocaleString()} {t('sum')}
               </span>
             </div>
             <div className="flex justify-between border-t border-[#13DEB9]/30 dark:border-[#13DEB9]/30 pt-3">
-              <span className="text-[#2A3547] dark:text-white font-semibold text-lg">Yakuniy narx:</span>
+              <span className="text-[#2A3547] dark:text-white font-semibold text-lg">{t('finalPrice')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-xl">
-                {couponData.sale_price?.toLocaleString()} so'm
+                {couponData.sale_price?.toLocaleString()} {t('sum')}
               </span>
             </div>
           </div>
@@ -118,7 +120,7 @@ const CouponSection = ({
           classname="flex-1 py-3 text-base bg-gray-400 hover:bg-gray-600 text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-[8px]"
           onclick={onBack}
         >
-          Orqaga
+          {t('back')}
         </Button>
         
         {couponData ? (
@@ -126,14 +128,14 @@ const CouponSection = ({
             classname="flex-1 py-3 text-base bg-green-500 hover:bg-green-600 text-white rounded-[8px]"
             onclick={onApplyCoupon}
           >
-            To'lovga o'tish
+            {t('proceedToPayment')}
           </Button>
         ) : (
           <Button
             classname="flex-1 py-3 text-base rounded-[8px]"
             onclick={onSkipCoupon}
           >
-            O'tkazib yuborish
+            {t('skipCoupon')}
           </Button>
         )}
       </div>
