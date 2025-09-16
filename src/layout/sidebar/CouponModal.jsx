@@ -100,7 +100,6 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
           </p>
         </div>
 
-        {/* Coupon Input */}
         <div className="mb-8">
           <div className="flex gap-3">
             <input
@@ -125,7 +124,6 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
           </div>
         </div>
 
-        {/* Coupon Result */}
         {couponData && (
           <div className="mb-8 p-6 bg-[#E6FFFA] dark:bg-[#1B3C48] rounded-xl border border-[#13DEB9]/30 dark:border-[#13DEB9]/30">
             <div className="flex items-center gap-3 mb-4">
@@ -161,7 +159,6 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
           </div>
         )}
 
-        {/* Actions */}
         <div className="flex gap-4">
           <Button
             classname="flex-1 py-4 text-lg bg-gray-400 hover:bg-gray-600 text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-xl"

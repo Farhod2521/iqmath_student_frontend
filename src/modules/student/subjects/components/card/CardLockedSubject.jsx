@@ -36,7 +36,8 @@ const CardLockedSubject = ({ item }) => {
           {isPlaymentLoadinng ? (
             <FaSpinner spin size={40} className="text-black/40" />
           ) : (
-            <FaLock size={40} className="text-black/40" />
+            // <FaLock size={40} className="text-black/40" />
+            <img src="/icons/qulf.svg" alt="lock" width={40} height={40} />
           )}
         </div>
       </CardFooter>

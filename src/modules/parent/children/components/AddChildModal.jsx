@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
 import usePostQuery from '@/hooks/api/usePostQuery'
+import { request } from '@/services/api'
+import toast from 'react-hot-toast'
 
 const AddChildModal = ({ isOpen, onClose, onSuccess }) => {
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
   const [step, setStep] = useState('phone')
   const [error, setError] = useState('')
+  const [isVerifying, setIsVerifying] = useState(false)
 
   // API hooks
   const addChildMutation = usePostQuery({
-    hideSuccessToast: true,
-    hideErrorToast: true
-  })
-
-  const confirmChildMutation = usePostQuery({
     hideSuccessToast: true,
     hideErrorToast: true
   })
@@ -44,34 +42,37 @@ const AddChildModal = ({ isOpen, onClose, onSuccess }) => {
     })
   }
 
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
     if (!code || code.length < 4) {
       setError('Kodni to\'g\'ri kiriting')
       return
     }
 
     setError('')
+    setIsVerifying(true)
 
-    // API so'rov yuborish
-    confirmChildMutation.mutate({
-      url: 'https://api.iqmath.uz/api/v1/auth/parent/confirm-child/',
-      attributes: {
+    try {
+      // To'g'ridan-to'g'ri request service'ini ishlatamiz
+      const response = await request.post('https://api.iqmath.uz/api/v1/auth/parent/confirm-child/', {
         phone: `998${phone}`,
         code: code
-      }
-    }, {
-      onSuccess: () => {
-        onSuccess()
-        onClose()
-        setPhone('')
-        setCode('')
-        setStep('phone')
-      },
-      onError: (error) => {
-        const errorMessage = error?.response?.data?.message || 'Kod noto\'g\'ri'
-        setError(errorMessage)
-      }
-    })
+      })
+
+      // Muvaffaqiyatli bo'lsa
+      toast.success('Farzand muvaffaqiyatli qo\'shildi!')
+      onSuccess()
+      onClose()
+      setPhone('')
+      setCode('')
+      setStep('phone')
+      setError('')
+      
+    } catch (error) {
+      const errorMessage = error?.response?.data?.detail || error?.response?.data?.message || 'Kod noto\'g\'ri'
+      setError(errorMessage)
+    } finally {
+      setIsVerifying(false)
+    }
   }
 
   const handleClose = () => {
@@ -79,6 +80,7 @@ const AddChildModal = ({ isOpen, onClose, onSuccess }) => {
     setCode('')
     setStep('phone')
     setError('')
+    setIsVerifying(false)
     onClose()
   }
 
@@ -156,9 +158,10 @@ const AddChildModal = ({ isOpen, onClose, onSuccess }) => {
             <div className="flex gap-2">
               <button
                 onClick={handleVerifyCode}
+                disabled={isVerifying}
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:bg-gray-400"
               >
-                Tasdiqlash
+                {isVerifying ? 'Tasdiqlanmoqda...' : 'Tasdiqlash'}
               </button>
               <button
                 onClick={() => setStep('phone')}

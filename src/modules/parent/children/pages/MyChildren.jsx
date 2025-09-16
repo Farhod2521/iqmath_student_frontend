@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import { useQueryClient } from '@tanstack/react-query'
 
 import AddChildModal from '@/modules/parent/children/components/AddChildModal.jsx'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality.jsx'
@@ -10,8 +11,9 @@ import ContentLoader from '@/components/loader/content-loader'
 const MyChildren = () => {
   const { t } = useTranslation()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const queryClient = useQueryClient()
 
-  const { data: childrenData, isLoading, refetch } = useGetQuery({
+  const { data: childrenData, isLoading } = useGetQuery({
     key: 'parent-children',
     url: 'https://api.iqmath.uz/api/v1/auth/parent/confirm-child/list/',
     showErrorMsg: true
@@ -33,7 +35,8 @@ const MyChildren = () => {
   console.log('Processed children:', children)
 
   const handleAddChildSuccess = () => {
-    refetch() // Refresh the children list
+    // Query'ni invalidate qilish orqali ma'lumotlarni yangilash
+    queryClient.invalidateQueries(['parent-children'])
   }
 
   if (isLoading) {

@@ -86,8 +86,8 @@ function NavbarProfile() {
 
   return (
     <>
-      <button onClick={handleProfile}>
-        <Image src={'/images/avatar1.png'} alt={'user'} width={35} height={35} />
+      <button className='border border-[#E9E9E9] rounded-[50%]' onClick={handleProfile}>
+        <Image src={'/icons/avatar.png'} alt={'user'} width={35} height={35} />
       </button>
 
       {openProfile && (
