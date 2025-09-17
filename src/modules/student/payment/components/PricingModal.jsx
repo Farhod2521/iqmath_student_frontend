@@ -1,9 +1,11 @@
   import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Button from '@/components/button'
 import { usePricingModal } from '../hooks/usePricingModal'
 import { ModalHeader, PlanGrid, CouponSection } from './index'
 
 const PricingModal = ({ isOpen, onClose, originalPrice }) => {
+  const { t } = useTranslation()
   const {
     selectedPlan,
     activeTab,
@@ -48,7 +50,7 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
               ) : plansError ? (
                 <div className="text-center py-12">
                   <p className="text-red-500 dark:text-red-400">
-                    Tariflar yuklanmadi. Qaytadan urinib ko'ring.
+                    {t('plansError')}
                   </p>
                 </div>
               ) : (
@@ -65,10 +67,10 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
                         classname="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-12 py-4 text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
                         onclick={handleNext}
                       >
-                        Davom etish - {selectedPlan.price.toLocaleString()} so'm
+                        {t('proceedToPayment')} - {selectedPlan.price.toLocaleString()} {t('sum')}
                       </Button>
                       <p className="text-sm text-[#5A6A85] dark:text-gray-400 mt-3">
-                        Keyingi bosqichda kupon kodi kiritishingiz mumkin
+                        {t('nextStep')}
                       </p>
                     </div>
                   )}

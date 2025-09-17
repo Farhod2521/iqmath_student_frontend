@@ -33,7 +33,7 @@ function SidebarFooter() {
     <div className="px-[24px] py-[16px] ">
       <button
         onClick={handleLogoutClick}
-        className="text-black py-3 w-full text-[15px] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
+        className="text-black py-3 w-full border border-[#5d87ff] text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
       >
         {t('logout')}
       </button>

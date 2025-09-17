@@ -1,18 +1,21 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 
 const ModalHeader = ({ 
   activeTab, 
   onClose 
 }) => {
+  const { t } = useTranslation()
+  
   const getTitle = () => {
-    return activeTab === 'plans' ? 'Tarif Rejasini Tanlang' : 'Kupon Kodi'
+    return activeTab === 'plans' ? t('selectPlan') : t('coupons')
   }
 
   const getSubtitle = () => {
     return activeTab === 'plans' 
-      ? 'O\'zingizga mos tarifni tanlang' 
-      : 'Kupon kodi kiriting (ixtiyoriy)'
+      ? t('selectPlan') 
+      : t('enterCouponCode')
   }
 
   return (

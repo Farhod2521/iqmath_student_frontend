@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Button from '@/components/button'
 
 const PlanCard = ({ 
@@ -6,6 +7,7 @@ const PlanCard = ({
   isSelected, 
   onSelect 
 }) => {
+  const { t } = useTranslation()
   return (
     <div
       className={`relative bg-white dark:bg-[#202936] rounded-xl border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${
@@ -29,7 +31,7 @@ const PlanCard = ({
             <span className="text-2xl font-bold text-[#2A3547] dark:text-white">
               {plan.price.toLocaleString()}
             </span>
-            <span className="text-sm text-[#5A6A85] dark:text-gray-400">so'm</span>
+            <span className="text-sm text-[#5A6A85] dark:text-gray-400">{t('sum')}</span>
           </div>
           {plan.discount > 0 && (
             <div className="flex items-center justify-center gap-1">

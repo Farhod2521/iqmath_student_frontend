@@ -24,24 +24,32 @@ function AuthSignUp() {
 
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
   const [selectedRole, setSelectedRoleLocal] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit } = useForm()
-  const [isLoading, setIsLoading] = useState(false)
 
   const { mutate: registerRequest } = usePostQuery({
     listKeyId: KEYS.register
   })
 
+  // Function to translate error messages
+  const translateErrorMessage = (errorMessage) => {
+    if (errorMessage.includes('Bu telefon raqam allaqachon ro\'yxatdan o\'tgan')) {
+      return t('phoneAlreadyRegistered')
+    }
+    return errorMessage // Return original message if no translation found
+  }
+
 
 
   const onSubmit = async ({ full_name, phone }) => {
     if (!selectedRole) {
-      toast.error('Foydalanuvchi turini tanlang')
+      toast.error(t('userTypeRequired'))
       return
     }
 
     if (selectedRole.value === 'student' && !selectedOptionCourse) {
-      toast.error('Sinfni tanlang')
+      toast.error(t('classRequired'))
       return
     }
 
@@ -89,7 +97,9 @@ function AuthSignUp() {
           onError: (error) => {
             if (error.response?.data?.errors) {
               const errors = error.response.data.errors
-              toast.error(Object.values(errors).flat().join('\n'))
+              const errorMessages = Object.values(errors).flat()
+              const translatedMessages = errorMessages.map(msg => translateErrorMessage(msg))
+              toast.error(translatedMessages.join('\n'))
             } else {
               console.log('error occured')
             }

@@ -80,15 +80,24 @@ function NavbarProfile() {
     setIsExiting(true)
     setTimeout(() => {
       setIsModalOpen(false)
-      setIsExiting(false)
+      setIsExiting(false) 
     }, 300)
   }
 
   return (
     <>
-      <button className='border border-[#E9E9E9] rounded-[50%]' onClick={handleProfile}>
-        <Image src={'/icons/avatar.png'} alt={'user'} width={35} height={35} />
-      </button>
+   <button
+  className="w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center"
+  onClick={handleProfile}
+>
+  <Image
+    src="/icons/avatar.png"
+    alt="user"
+    width={28}
+    height={28}
+    className="rounded-full"
+  />
+</button>
 
       {openProfile && (
         <div
@@ -136,7 +145,7 @@ function NavbarProfile() {
 
           <button
             onClick={handleLogoutClick}
-            className="text-black py-[9px] w-full text-[15px] bg-[#EDEDF2] mb-4 rounded-md transform duration-200 hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
+            className="text-black py-3 w-full border border-[#5d87ff] text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
           >
             {t('logout')}
           </button>

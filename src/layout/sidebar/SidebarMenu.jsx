@@ -84,7 +84,7 @@ const SidebarMenu = () => {
                       className={`${getMenuItemClasses(hasActiveChild, disabled)} cursor-pointer`}
                       onClick={() => toggleMenu(key)}
                     >
-                      {icon}
+                      {typeof icon === 'function' ? icon(hasActiveChild) : icon}
                       <p className="flex-1">{label}</p>
                       <ChevronDownIcon 
                         className={`w-5 h-5 transition-transform duration-200 ${
@@ -101,7 +101,7 @@ const SidebarMenu = () => {
                             <li key={child.key}>
                               <Link href={child.path}>
                                 <div className={getMenuItemClasses(isChildActive, false)}>
-                                  {child.icon}
+                                  {typeof child.icon === 'function' ? child.icon(isChildActive) : child.icon}
                                   <p className="text-sm">{child.label}</p>
                                 </div>
                               </Link>
@@ -118,7 +118,7 @@ const SidebarMenu = () => {
                 <li key={key} className="cursor-pointer my-[16px] mx-[24px]">
                   <Link href={disabled ? '#' : path}>
                     <div className={getMenuItemClasses(isActive, disabled)}>
-                      {icon}
+                      {typeof icon === 'function' ? icon(isActive) : icon}
                       <p>{label}</p>
                     </div>
                   </Link>

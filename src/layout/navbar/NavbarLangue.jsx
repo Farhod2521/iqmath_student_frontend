@@ -51,7 +51,7 @@ const NavbarLangue = () => {
         onClick={toggleDropdown}
         className="bg-white  hover:bg-[#5d87ff]  text-black hover:text-white py-1 px-2 sm:px-3 h-8 sm:h-9  rounded-md border transform duration-200 active:scale-90 scale-100 flex items-center gap-x-[5px]"
       >
-        <CiGlobe size={24} />
+        <CiGlobe  text='#5d87ff' size={24} />
         <p className="uppercase text-sm">{selectedLanguage?.code}</p>
       </button>
 
