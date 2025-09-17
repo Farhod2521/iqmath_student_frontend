@@ -1,3 +1,9 @@
+/* Menu Icon Hover Effects */
+.group:hover svg {
+  color: white !important;
+  transition: color 0.3s ease;
+}
+
 /* AgGrid Table Styles */
 
 .custom-grid {

@@ -265,5 +265,16 @@
   "invalidCredentials": "Invalid credentials",
   "loginError": "Login error",
   "loggedInSuccessfully": "Logged in successfully",
-  "verify": "Verify"
+  "verify": "Verify",
+  "student": "Student",
+  "parent": "Parent",
+  "tutor": "Teacher",
+  "selectUserType": "Please select user type",
+  "class5": "5th Grade",
+  "class6": "6th Grade",
+  "class7": "7th Grade",
+  "class8": "8th Grade",
+  "class9": "9th Grade",
+  "class10": "10th Grade",
+  "class11": "11th Grade"
 }

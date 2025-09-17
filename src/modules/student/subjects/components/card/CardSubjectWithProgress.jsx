@@ -15,6 +15,11 @@ const CardSubjectWithProgress = ({ item,  onRecommendationsClick, onDiagnosticsC
   
   const hasTakenDiagnostic = get(item, 'has_taken_diagnostic', false) || get(item, 'has_taken_diagnostic ', false)
 
+  // Agar has_taken_diagnostic false bo'lsa va bu recommendations sahifasi bo'lsa, card yaratmaslik
+  if (!isDiagnostic && !hasTakenDiagnostic) {
+    return null
+  }
+
   const handleCardClick = () => {
     console.log("SALOM")
     if (isDiagnostic) {

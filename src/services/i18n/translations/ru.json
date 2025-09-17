@@ -611,5 +611,16 @@
   "invalidCredentials": "Неверные данные",
   "loginError": "Ошибка входа",
   "loggedInSuccessfully": "Успешно вошли",
-  "verify": "Подтвердить"
+  "verify": "Подтвердить",
+  "student": "Ученик",
+  "parent": "Родитель",
+  "tutor": "Учитель",
+  "selectUserType": "Выберите тип пользователя",
+  "class5": "5-й класс",
+  "class6": "6-й класс",
+  "class7": "7-й класс",
+  "class8": "8-й класс",
+  "class9": "9-й класс",
+  "class10": "10-й класс",
+  "class11": "11-й класс"
 }

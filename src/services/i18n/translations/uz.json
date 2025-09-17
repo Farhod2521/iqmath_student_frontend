@@ -715,5 +715,16 @@
   "invalidCredentials": "Noto'g'ri ma'lumotlar",
   "loginError": "Kirishda xatolik",
   "loggedInSuccessfully": "Muvaffaqiyatli kirdingiz",
-  "verify": "Tasdiqlash"
+  "verify": "Tasdiqlash",
+  "student": "O'quvchi",
+  "parent": "Ota-ona",
+  "tutor": "O'qituvchi",
+  "selectUserType": "Foydalanuvchi turini tanlang",
+  "class5": "5-sinf",
+  "class6": "6-sinf",
+  "class7": "7-sinf",
+  "class8": "8-sinf",
+  "class9": "9-sinf",
+  "class10": "10-sinf",
+  "class11": "11-sinf"
 }
