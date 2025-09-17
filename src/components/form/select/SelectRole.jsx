@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
-const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanlang" }) => {
+const SelectRole = ({ value, onChange, placeholder }) => {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -17,9 +19,9 @@ const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanla
   }, [])
 
   const options = [
-    { value: 'student', label: "O'quvchi" },
-    { value: 'parent', label: 'Ota-ona' },
-    { value: 'tutor', label: "O'qituvchi" }
+    { value: 'student', label: t('student') },
+    { value: 'parent', label: t('parent') },
+    { value: 'tutor', label: t('tutor') }
   ]
 
   const handleSelect = (option) => {
@@ -33,7 +35,7 @@ const SelectRole = ({ value, onChange, placeholder = "Foydalanuvchi turini tanla
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left px-[16px] py-[10px] border border-[#EAEFF4] rounded-[12px] bg-white focus:outline-none flex items-center justify-between"
       >
-        <span>{value?.label || placeholder}</span>
+        <span>{value?.label || placeholder || t('selectUserType')}</span>
         <svg
           className={`w-5 h-5 transform ${isOpen ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"

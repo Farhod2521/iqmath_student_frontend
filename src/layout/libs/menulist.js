@@ -27,7 +27,7 @@ export const getMenuItems = (t) => [
     key: 'main',
     path: '/dashboard/student/subjects',
     label: t('subjects'),
-    icon: (isActive) => <LuBookText color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuBookText className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.ADMIN],
     type: MenuType.LINK
@@ -36,7 +36,7 @@ export const getMenuItems = (t) => [
     key: 'diagnostics',
     path: '/dashboard/student/diagnostics',
     label: t('diagnostics'),
-    icon: (isActive) => <TbCheckbox color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <TbCheckbox className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -45,7 +45,7 @@ export const getMenuItems = (t) => [
     key: 'recommended', // Diqqat: bu yerda "recommended" bo'lishi kerak
     path: '/dashboard/student/recommendations',
     label: t('recommended'),
-    icon: (isActive) => <BiDirections color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <BiDirections className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -54,7 +54,7 @@ export const getMenuItems = (t) => [
     key: 'friends',
     path: '/dashboard/student/friends',
     label: t('friends'),
-    icon: (isActive) => <LuUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -62,7 +62,7 @@ export const getMenuItems = (t) => [
   {
     key: 'products',
     label: t('products'),
-    icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuShoppingBag className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK,
@@ -71,13 +71,13 @@ export const getMenuItems = (t) => [
         key: 'all-products',
         path: '/dashboard/student/products',
         label: t('allProducts'),
-        icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={20} />
+        icon: (isActive) => <LuShoppingBag className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={20} />
       },
       {
         key: 'purchased-products',
         path: '/dashboard/student/purchased-products',
         label: t('purchasedProducts'),
-        icon: (isActive) => <LuShoppingBag color={isActive ? 'white' : '#5d87ff'} size={20} />
+        icon: (isActive) => <LuShoppingBag className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={20} />
       }
     ]
   },
@@ -85,7 +85,7 @@ export const getMenuItems = (t) => [
     key: 'statistics',
     path: '/dashboard/teacher/statistics',
     label: t('statistics'),
-    icon: (isActive) => <BsBarChart color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <BsBarChart className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -93,7 +93,7 @@ export const getMenuItems = (t) => [
     key: 'pupils',
     path: '/dashboard/teacher/pupils',
     label: t('students'),
-    icon: (isActive) => <PiUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <PiUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />, 
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -101,7 +101,7 @@ export const getMenuItems = (t) => [
     key: 'subjects',
     path: '/dashboard/teacher/subjects',
     label: t('subjects'),
-    icon: (isActive) => <PiBooksLight color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <PiBooksLight className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -109,7 +109,7 @@ export const getMenuItems = (t) => [
     key: 'my-study',
     path: '/dashboard/teacher/my-study',
     label: t('groups'),
-    icon: (isActive) => <PiGraduationCap color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <PiGraduationCap className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -117,7 +117,7 @@ export const getMenuItems = (t) => [
     key: 'individual',
     path: '/dashboard/teacher/individual',
     label: t('independent'),
-    icon: (isActive) => <GoChecklist color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <GoChecklist className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -125,7 +125,7 @@ export const getMenuItems = (t) => [
     key: 'student-examples',
     path: '/dashboard/teacher/student-examples',
     label: t('studentExamples'),
-    icon: (isActive) => <FiLayers color={isActive ? 'white' : '#5d87ff'}  size={26} />,
+    icon: (isActive) => <FiLayers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
@@ -134,7 +134,7 @@ export const getMenuItems = (t) => [
     key: 'profile',
     path: '/dashboard/student/profile',
     label: t('profile'),
-    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -143,7 +143,7 @@ export const getMenuItems = (t) => [
     key: 'profile',
     path: '/dashboard/teacher/profile',
     label: t('profile'),
-    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.TUTOR],
     type: MenuType.LINK
@@ -152,7 +152,7 @@ export const getMenuItems = (t) => [
     key: 'coins',
     path: '/dashboard/student/coins',
     label: t('points'),
-    icon: (isActive) => <FaCoins color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <FaCoins className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
@@ -172,7 +172,7 @@ export const getMenuItems = (t) => [
     key: 'my-children',
     path: '/dashboard/parent/my-children',
     label: t('myChildren'),
-    icon: (isActive) => <LuUsers color={isActive ? 'white' : '#5d87ff'} size={26} />,
+    icon: (isActive) => <LuUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.PARENT],
     type: MenuType.LINK,
     activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
@@ -181,7 +181,7 @@ export const getMenuItems = (t) => [
     key: 'parent-profile',
     path: '/dashboard/parent/profile',
     label: t('profile'),
-    icon: (isActive) => <LuUser color={isActive ? 'white' : '#5d87ff'}  size={26} />,
+    icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.PARENT],
     type: MenuType.LINK
   }
@@ -189,7 +189,7 @@ export const getMenuItems = (t) => [
 
 export const getMenuItemClasses = (isActive, disabled) => {
   const base =
-    'flex gap-x-[10px] items-center py-[10px] px-[12px] rounded-[8px] transition-all duration-300 font-medium text-[15px]'
+    'flex gap-x-[10px] items-center py-[10px] px-[12px] rounded-[8px] transition-all duration-300 font-medium text-[15px] group'
   const active = 'bg-[#5D87FF] text-white'
   const inactive = 'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#4463bb] hover:text-white dark:hover:bg-[#4463bb] dark:text-white'
   const disabledCls = 'opacity-50 cursor-not-allowed pointer-events-none'
