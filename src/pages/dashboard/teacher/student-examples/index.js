@@ -36,7 +36,7 @@ const StudentExamples = () => {
   }
 
   // API dan ma'lumotlarni olish
-  const fetchData = useCallback(
+  const fetchData = 
     async (page = 1, limit = 100) => {
       try {
         setLoading(true)
@@ -96,13 +96,11 @@ const StudentExamples = () => {
       } finally {
         setLoading(false)
       }
-    },
-    [search, statusFilter, i18n.language]
-  )
+    }
 
   useEffect(() => {
-    fetchData(pagination.current, pagination.limit)
-  }, [fetchData, pagination.current, pagination.limit])
+    fetchData(1, 100)
+  }, [])
 
   const handlePageChange = (newPage) => {
     setPagination((prev) => ({ ...prev, current: newPage + 1 }))

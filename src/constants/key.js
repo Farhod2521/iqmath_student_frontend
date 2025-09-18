@@ -59,5 +59,8 @@ export const KEYS = {
   // Parents Management keys
   parentsList: 'parentsList',
   studentsList: 'studentsList',
-  createParent: 'createParent'
+  createParent: 'createParent',
+  
+  // Mentor requests keys
+  mentorRequests: 'mentorRequests'
 }

@@ -10,6 +10,7 @@ import { PiGraduationCap } from 'react-icons/pi'
 import { FiLayers } from 'react-icons/fi'
 import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
+import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -57,6 +58,15 @@ export const getMenuItems = (t) => [
     icon: (isActive) => <LuUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
     roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
+    key: 'chat',
+    path: '/dashboard/student/chat',
+    label: t('chat'),
+    icon: (isActive) => <HiChatBubbleLeftRight className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
+    disabled: false,
+    roles: [RolesList.STUDENT, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {

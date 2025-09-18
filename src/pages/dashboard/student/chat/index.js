@@ -1,231 +1,192 @@
-import { useState } from 'react'
-import Image from 'next/image'
-import { Card } from '@heroui/react'
-import { Tabs, Tab } from '@heroui/react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSession } from 'next-auth/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
-const Index = () => {
-  const { t } = useTranslation()
-  const chats = [
-    {
-      id: 1,
-      name: 'Savlat Sultanov',
-      message: 'Hey, check my design update last night...',
-      time: 'Сегодня',
-      avatar: '/images/avatar-profile.png'
-    },
-    {
-      id: 2,
-      name: 'Alex Johnson',
-      message: "Let's schedule our meeting...",
-      time: 'Вчера',
-      avatar: '/images/avatar-profile.png'
-    }
-  ]
+import useGetQuery from '@/hooks/api/useGetQuery'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import { toast } from 'react-hot-toast'
+import dayjs from 'dayjs'
 
-  const [activeTab, setActiveTab] = useState('all')
-  const [selectedChat, setSelectedChat] = useState(chats[0])
+const ChatPage = () => {
+  const { t, i18n } = useTranslation()
+  const { data: session } = useSession()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
 
-  const [userMessages, setUserMessages] = useState({
-    1: [{ id: 1, text: 'Salom Savlat!', fromMe: false, time: '22:00' }],
-    2: [{ id: 1, text: 'Salom Alex!', fromMe: false, time: '22:05' }]
+  // Mentorga yuborilgan murojaatlarni olish
+  const { data: mentorRequests, isLoading, refetch } = useGetQuery({
+    key: KEYS.mentorRequests,
+    url: '/api/v1/func_student/my-unsolved-question/list/',
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    enabled: !!session?.accessToken
   })
 
-  const handleChatClick = (chat) => {
-    setSelectedChat(chat)
+  const formatDate = (dateString) => {
+    return dayjs(dateString).format('DD MMMM YYYY, HH:mm')
   }
 
-  const handleSendMessage = (userId, messageText) => {
-    if (!messageText.trim()) return
-
-    const newMessage = {
-      id: Date.now(),
-      text: messageText,
-      fromMe: true,
-      time: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'answered':
+        return 'bg-green-100 text-green-800'
+      case 'rejected':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-
-    setUserMessages((prev) => ({
-      ...prev,
-      [userId]: [...(prev[userId] || []), newMessage]
-    }))
   }
 
-  const MessageItem = ({ chat, onClick, isActive }) => (
-    <div
-      className={`flex items-start space-x-3 py-4 px-2 cursor-pointer rounded-lg transition duration-200 ease-in-out
-        ${isActive ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-      onClick={onClick}
-    >
-      <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full object-cover bg-black" />
-      <div className="truncate flex-1">
-        <h4 className="font-semibold">{chat.name}</h4>
-        <p className="text-sm text-gray-500 truncate">{chat.message}</p>
-      </div>
-      <div className="ml-auto text-xs text-gray-400 whitespace-nowrap">{chat.time}</div>
-    </div>
-  )
-
-  const ChatBox = ({ chat, messages, onSendMessage }) => {
-    const [newMessage, setNewMessage] = useState('')
-
-    const handleSend = () => {
-      if (!newMessage.trim()) return
-      onSendMessage(newMessage)
-      setNewMessage('')
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'pending':
+        return t('pending', 'Kutilmoqda')
+      case 'answered':
+        return t('answered', 'Javob berilgan')
+      case 'rejected':
+        return t('rejected', 'Rad etilgan')
+      default:
+        return status
     }
+  }
 
+  const filteredRequests = mentorRequests?.data?.results?.filter(request => {
+    const matchesSearch = searchTerm === '' || 
+      request.message?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.subject_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    
+    const matchesStatus = statusFilter === '' || request.status === statusFilter
+    
+    return matchesSearch && matchesStatus
+  }) || []
+
+  if (isLoading) {
     return (
-      <div className="h-[80vh] flex flex-col w-full border-l bg-white border border-[#E9E9E9] rounded-[12px]">
-        <div className="flex items-center justify-between px-4 py-3 border-b">
-          <div>
-            <h3 className="font-semibold text-gray-900">{chat?.name}</h3>
-            <p className="text-sm text-green-500">Online</p>
-          </div>
+      <LayoutAdmin title={t('chat', 'Chat')}>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
-        <div className="h-[60vh] flex-1 overflow-y-auto custom-scroll p-4 space-y-6 bg-[#F9F9F9]">
-          <div className="text-center text-xs text-gray-400 mb-4">Сегодня</div>
-
-          {messages?.map((msg) =>
-            msg.fromMe ? (
-              <div key={msg.id} className="flex justify-end">
-                <div className="flex items-end gap-3 max-w-[75%]">
-                  <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
-                  <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
-                </div>
-              </div>
-            ) : (
-              <div key={msg.id} className="flex items-start gap-3 max-w-[75%]">
-                <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
-                <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
-              </div>
-            )
-          )}
-        </div>
-
-        <div className="border-t p-4 flex items-center gap-3 bg-white">
-          <input
-            type="text"
-            placeholder="Введите сообщение"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 p-3 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button 
-            onClick={handleSend}
-            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-          </button>
-        </div>
-      </div>
+      </LayoutAdmin>
     )
   }
 
-  // headerTitle={"Чат"}
   return (
-    <LayoutAdmin title={t('chat')}>
-      <div className="flex gap-2">
-        <Card className="border border-[#E9E9E9] rounded-[12px] py-[16px] px-[24px] w-[400px]">
-          <h2>Сообщение</h2>
-          <Tabs
-            aria-label="Options"
-            fullWidth
-            className="mt-4 rounded-md"
-            classNames={{
-              tabList: '',
-              cursor: 'bg-white',
-              tab: '',
-              tabContent: ''
-            }}
-          >
-            <Tab key="all" title="Все">
-              {chats.map((chat) => (
-                <MessageItem
-                  key={chat.id}
-                  chat={chat}
-                  onClick={() => handleChatClick(chat)}
-                  isActive={selectedChat?.id === chat.id}
-                />
-              ))}
-            </Tab>
-            <Tab key="unread" title="Непрочитанные">
-              {chats.slice(0, 1).map((chat) => (
-                <MessageItem
-                  key={chat.id}
-                  chat={chat}
-                  onClick={() => handleChatClick(chat)}
-                  isActive={selectedChat?.id === chat.id}
-                />
-              ))}
-            </Tab>
-          </Tabs>
-          {/* <div className="flex bg-[#f4f4f4] rounded-xl p-1 w-fit mt-[12px]">
-            <button
-              onClick={() => setActiveTab('all')}
-              className={`px-6 py-2 rounded-xl text-sm font-medium transition w-[150px]
-                ${activeTab === 'all' ? 'bg-white shadow text-black' : 'text-gray-500'}`}
-            >
-              Все
-            </button>
-            <button
-              onClick={() => setActiveTab('unread')}
-              className={`px-6 py-2 rounded-xl text-sm font-medium transition w-[150px]
-                ${activeTab === 'unread' ? 'bg-white shadow text-black' : 'text-gray-500'}`}
-            >
-              Непрочитанные
-            </button>
+    <LayoutAdmin title={t('chat', 'Chat')}>
+      <div className="space-y-6">
+   
+        {/* Filters */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {t('search', 'Qidirish')}
+              </label>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder={t('searchRequests', 'Murojaatlarni qidirish...')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {t('status', 'Holat')}
+              </label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              >
+                <option value="">{t('allStatuses', 'Barcha holatlar')}</option>
+                <option value="pending">{t('pending', 'Kutilmoqda')}</option>
+                <option value="answered">{t('answered', 'Javob berilgan')}</option>
+                <option value="rejected">{t('rejected', 'Rad etilgan')}</option>
+              </select>
+            </div>
+          </div>
           </div>
 
-          <div className="h-[60vh] overflow-y-auto pr-2 mt-[16px] space-y-4 custom-scroll">
-            {activeTab === 'all' && (
-              <div>
-                {chats.map((chat) => (
-                  <MessageItem
-                    key={chat.id}
-                    chat={chat}
-                    onClick={() => handleChatClick(chat)}
-                    isActive={selectedChat?.id === chat.id}
-                  />
-                ))}
+        {/* Requests List */}
+        <div className="space-y-4">
+          {filteredRequests.length === 0 ? (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
+              <div className="text-gray-500 dark:text-gray-400">
+                <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <p className="text-lg font-medium mb-2">
+                  {t('noRequests', 'Hozircha murojaatlar yo\'q')}
+                </p>
+                <p className="text-sm">
+                  {t('noRequestsDescription', 'Mentorga murojaat yuborganingizda bu yerda ko\'rinadi')}
+                </p>
               </div>
-            )}
-
-            {activeTab === 'unread' && (
-              <div>
-                {chats.slice(0, 1).map((chat) => (
-                  <MessageItem
-                    key={chat.id}
-                    chat={chat}
-                    onClick={() => handleChatClick(chat)}
-                    isActive={selectedChat?.id === chat.id}
-                  />
-                ))}
-              </div>
-            )}
-          </div> */}
-        </Card>
-
-        <Card className="w-full">
-          {selectedChat ? (
-            <ChatBox
-              chat={selectedChat}
-              messages={userMessages[selectedChat.id] || []}
-              onSendMessage={(msgText) => handleSendMessage(selectedChat.id, msgText)}
-            />
+            </div>
           ) : (
-            <div className="flex items-center justify-center h-full text-gray-400">Выберите чат слева</div>
+            filteredRequests.map((request) => (
+              <div key={request.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {request.subject_name || t('subject', 'Fan')}
+                      </h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
+                        {getStatusText(request.status)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {formatDate(request.created_at)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {t('message', 'Xabar')}:
+                  </h4>
+                  <p className="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 p-3 rounded-md">
+                    {request.message || t('noMessage', 'Xabar yo\'q')}
+                  </p>
+                </div>
+
+                {request.teacher_response && (
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      {t('mentorResponse', 'Mentor javobi')}:
+                    </h4>
+                    <p className="text-gray-900 dark:text-white bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md border-l-4 border-blue-500">
+                      {request.teacher_response}
+                    </p>
+              </div>
+            )}
+
+                {request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0 && (
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      {t('attachedQuestions', 'Biriktirilgan savollar')}:
+                    </h4>
+                    <div className="space-y-2">
+                      {request.question_json.map((question, index) => (
+                        <div key={index} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-md">
+                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                            {question.question_text || `Savol ${index + 1}`}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
           )}
-        </Card>
+        </div>
       </div>
     </LayoutAdmin>
   )
 }
 
-export default Index
+export default ChatPage

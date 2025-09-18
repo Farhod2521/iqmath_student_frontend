@@ -52,6 +52,13 @@ export const createMenuConfig = (t) => ({
             icon: <ProductsIcon />
           }
         ]
+      },
+      {
+        key: 'chat',
+        path: '/dashboard/student/chat',
+        label: t('chat', 'Chat'),
+        icon: <Image src="/icons/chat.svg" alt="chat" width={24} height={24} />,
+        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
       }
     ],
     account: [
