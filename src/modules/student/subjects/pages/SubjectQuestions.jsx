@@ -13,6 +13,7 @@ import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
 
 import SimpleModal from '@/components/modal/simple-modal'
+import SuccessPopup from '@/components/modal/SuccessPopup'
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import ModalLevel from '../components/modal/ModalLevel'
@@ -41,6 +42,7 @@ export default function SubjectQuestions() {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const [showMistake, setShowMistake] = useState(false)
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
   const [activeInputId, setActiveInputId] = useState(null)
 
   const [textAnswers, setTextAnswers] = useState({})
@@ -273,7 +275,11 @@ export default function SubjectQuestions() {
         attributes: dataToSend, 
         config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
       }, {
-        onSuccess: () => toast.success('Mentorga yuborildi!'),
+        onSuccess: () => {
+          setShowMistake(false)
+          setShowResult(false)
+          setShowSuccessPopup(true)
+        },
         onError: () => toast.error('Xatolik yuz berdi!')
       });
     } catch (error) {
@@ -469,6 +475,12 @@ export default function SubjectQuestions() {
           )}
         </div>
       </div>
+      
+      {/* Success Popup */}
+      <SuccessPopup 
+        open={showSuccessPopup} 
+        onClose={() => setShowSuccessPopup(false)} 
+      />
     </div>
   )
 }

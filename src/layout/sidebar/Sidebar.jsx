@@ -23,23 +23,20 @@ function Sidebar() {
 
       <div
         className={`fixed p-0 left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 
-        transition-transform duration-300 z-50 w-[300px] flex flex-col ${
+        transition-transform duration-300 z-50 w-[300px] ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto border-none sidebar-content">
-          <SidebarLogo />
-          <SidebarMenu />
-        </div>
-        
-        {/* Fixed footer area */}
-        <div>
-        <SidebarPlan />
-  <div className="flex-shrink-0 border-t border-[#EAEFF4]  dark:bg-[#202936]">
-        <SidebarFooter />
-
-  </div>
+        {/* All content in one scrollable container */}
+        <div className="h-full overflow-y-auto flex flex-col">
+          <div className="flex-1">
+            <SidebarLogo />
+            <SidebarMenu />
+          </div>
+          <SidebarPlan />
+          <div className="flex-shrink-0 border-t border-[#EAEFF4] dark:bg-[#202936]">
+            <SidebarFooter />
+          </div>
         </div>
       </div>
       

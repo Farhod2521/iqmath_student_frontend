@@ -9,6 +9,7 @@ import NavbarStudy from './NavbarStudy'
 import NavbarCoins from './NavbarCoins'
 import LanguageDropdown from '@/components/language'
 import NavbarBackTeacher from './NavbarBackTeacher'
+import NavbarNotification from './NavbarNotification'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 
 const Navbar = ({ title }) => {
@@ -40,6 +41,14 @@ const Navbar = ({ title }) => {
               <NavbarPoints />
             </>
           )}
+
+          {/* Mentor notification bell - faqat teacher role uchun */}
+          {currentRole === 'teacher' && (
+            <div className='flex mr-2'>
+              <NavbarNotification />
+            </div>
+          )
+          }
           <LanguageDropdown />
           <NavbarProfile />
         </div>

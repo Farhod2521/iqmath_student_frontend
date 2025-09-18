@@ -89,6 +89,9 @@ export const URLS = {
   exchangeProduct: "/api/v1/func_student/my-products/exchange/",
   purchasedProducts: "/api/v1/func_student/my-products/exchange/list/",
   checkCoupon: "/api/v1/payments/check-coupon/",
-  paymentPlans: "/api/v1/payments/plans/"
+  paymentPlans: "/api/v1/payments/plans/",
+  
+  // Mentor requests endpoints
+  mentorRequestsList: "/api/v1/func_student/my-unsolved-question/list/"
 }
   

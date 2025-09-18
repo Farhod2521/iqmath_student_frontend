@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import ContentLoader from "@/components/loader/content-loader";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import StudentExamplePagination from "./StudentExamplePagination";
+import { FaTelegram } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -85,6 +87,19 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       default:
         return status;
     }
+  };
+
+  const handleTelegramClick = (studentId, studentName) => {
+    // Telegram bot linkini yaratish
+    const botUsername = 'iqmath_mentor_bot' // Bot username
+    const startParam = `start_${studentId}` // Student ID bilan start parametri
+    const telegramUrl = `https://t.me/${botUsername}?start=${startParam}`
+    
+    // Yangi tab da ochish
+    window.open(telegramUrl, '_blank')
+    
+    // Toast xabar
+    toast.success(`${studentName} bilan Telegram orqali bog'lanish uchun bot ochildi`)
   };
 
   const colDefs = [
@@ -220,6 +235,28 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       },
     },
     {
+      headerName: "Telegram",
+      field: "telegram",
+      width: 100,
+      minWidth: 80,
+      maxWidth: 120,
+      flex: 0.5,
+      resizable: false,
+      cellRenderer: (params) => {
+        return (
+          <div className="flex justify-center">
+            <button
+              onClick={() => handleTelegramClick(params.data.student_id, params.data.student_name)}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg flex justify-center text-xs transition-colors duration-200"
+              title="Telegram orqali bog'lanish"
+            >
+              <FaTelegram className="w-5 h-5 text-blue-500 ml-2" />
+            </button>
+          </div>
+        );
+      },
+    },
+    {
       headerName: "",
       field: "actions",
       width: 120,
@@ -244,35 +281,72 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     },
   ];
 
+  // Debug uchun
+  console.log('StudentExampleTable - data:', data)
+  console.log('StudentExampleTable - colDefs:', colDefs)
+  console.log('StudentExampleTable - isLoading:', isLoading)
+
   return (
     <div className="flex flex-col">
-      <div style={{ width: "100%", height: "auto" }} className="relative">
-        {isLoading && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-            <ContentLoader classNames="!min-h-[400px] !w-full" />
-          </div>
-        )}
-        <AgGridReact
-          rowData={data}
-          columnDefs={colDefs}
-          domLayout="autoHeight"
-          className="custom-grid"
-          pagination={false}
-          context={context}
-          defaultColDef={{
-            resizable: true,
-            sortable: true,
-            filter: true,
-            suppressSizeToFit: false,
-            flex: 1,
-          }}
-          suppressColumnVirtualisation={false}
-          suppressRowVirtualisation={false}
-          suppressCellFocus={true}
-          onGridReady={(params) => {
-            params.api.setGridOption('context', context)
-          }}
-        />
+      <style jsx global>{`
+        .custom-grid {
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .custom-grid .ag-header {
+          background-color: #f9fafb;
+          border-bottom: 2px solid #e5e7eb;
+        }
+        .custom-grid .ag-header-cell {
+          background-color: #f9fafb !important;
+          border-right: 1px solid #e5e7eb;
+          font-weight: 600;
+          color: #374151;
+        }
+        .custom-grid .ag-row {
+          border-bottom: 1px solid #f3f4f6;
+        }
+        .custom-grid .ag-row:hover {
+          background-color: #f8fafc;
+        }
+        .custom-grid .ag-cell {
+          border-right: 1px solid #f3f4f6;
+          padding: 8px 12px;
+        }
+      `}</style>
+      <div className="w-full">
+        <div className="relative">
+          {isLoading && (
+            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+              <ContentLoader classNames="!min-h-[400px] !w-full" />
+            </div>
+          )}
+          <AgGridReact
+            rowData={data}
+            columnDefs={colDefs}
+            domLayout="autoHeight"
+            className="custom-grid"
+            pagination={false}
+            context={context}
+            defaultColDef={{
+              resizable: true,
+              sortable: true,
+              filter: true,
+              suppressSizeToFit: false,
+              flex: 1,
+            }}
+            suppressColumnVirtualisation={false}
+            suppressRowVirtualisation={false}
+            suppressCellFocus={true}
+            suppressHorizontalScroll={false}
+            onGridReady={(params) => {
+              params.api.setGridOption('context', context)
+              // Auto size columns
+              params.api.autoSizeAllColumns()
+            }}
+          />
+        </div>
       </div>
       <StudentExamplePagination
         pagination={pagination}
