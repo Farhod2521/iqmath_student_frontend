@@ -24,6 +24,7 @@ function NavbarProfile() {
   const [isExiting, setIsExiting] = useState(false)
   const [openProfile, setOpenProfile] = useState(false)
   const profileRef = useRef(null)
+  const buttonRef = useRef(null)
   const router = useRouter()
 
   const {
@@ -48,7 +49,12 @@ function NavbarProfile() {
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (profileRef.current && !profileRef.current?.contains(event.target)) {
+      if (
+        profileRef.current && 
+        !profileRef.current?.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current?.contains(event.target)
+      ) {
         setOpenProfile(false)
       }
     }
@@ -63,7 +69,7 @@ function NavbarProfile() {
   }, [openProfile])
 
   const handleProfile = () => {
-    setOpenProfile(!openProfile)
+    setOpenProfile(prev => !prev)
   }
 
   const handleLogout = async () => {
@@ -87,7 +93,8 @@ function NavbarProfile() {
   return (
     <>
       <button
-        className="w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center"
+        ref={buttonRef}
+        className="group w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
         onClick={handleProfile}
       >
         <Image
@@ -95,7 +102,7 @@ function NavbarProfile() {
           alt="user"
           width={28}
           height={28}
-          className="rounded-full"
+          className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
         />
       </button>
 
