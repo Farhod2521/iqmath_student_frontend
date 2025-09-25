@@ -38,8 +38,7 @@ function Auth() {
 
   return (
     <div
-      className="min-h-screen  w-full flex items-center justify-center relative"
-      style={{ backgroundImage: 'url(/your-bg-image.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      className="min-h-screen w-full flex items-center justify-center relative"
     >
       <div
         className="w-full max-w-xl md:min-w-[550px] rounded-lg p-8 md:p-12 shadow-lg"

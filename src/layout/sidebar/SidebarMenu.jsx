@@ -8,15 +8,16 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import { useSession } from 'next-auth/react'
 
 const SidebarMenu = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { user } = useUserStore()
+  const { user, role: userRole } = useUserStore()
   const { role } = useRoleDetection()
   const [hasScrollbar, setHasScrollbar] = useState(false)
   const [expandedMenus, setExpandedMenus] = useState({})
-
+  const { data: session } = useSession()
   useEffect(() => {
     const checkScrollbar = () => {
       const menuContainer = document.querySelector('.sidebar-menu')
@@ -25,6 +26,7 @@ const SidebarMenu = () => {
       }
     }
 
+    console.log(userRole)
     checkScrollbar()
     window.addEventListener('resize', checkScrollbar)
     return () => window.removeEventListener('resize', checkScrollbar)
@@ -37,7 +39,7 @@ const SidebarMenu = () => {
     
     // Agar role bo'lsa va item da roles array bo'lsa, role check qilamiz
     if (role && item.roles && Array.isArray(item.roles)) {
-      return item.roles.includes(role)
+      return item.roles.includes(userRole)
     }
     
     // Agar role yo'q yoki item da roles yo'q bo'lsa, default true qaytaramiz
@@ -57,7 +59,7 @@ const SidebarMenu = () => {
     <div className={`font-sf overflow-y-auto sidebar-menu mb-[16px] ${hasScrollbar ? 'pr-[32px]' : ''}`}>
       <ul className="space-y-[8px]">
         {menuItems
-          .filter((item) => !item.roles || item.roles.includes(user?.role))
+          .filter((item) => !item.roles || item.roles.includes(userRole))
           .map(({ key, path, label, icon, disabled, type, children, activePatterns }, idx) => {
             if (type === MenuType.TITLE) {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>

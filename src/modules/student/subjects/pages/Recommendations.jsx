@@ -31,23 +31,36 @@ const Recommendations = () => {
 
   if (isLoading || isFetching) return <ContentLoader />
 
+  const filteredData = subjectsData.filter(({ data }) => {
+    const hasDiagnostic = data && data.length > 0 && data.some(item => {
+      // To'g'ri field nomi - oxirida bo'sh joy bor
+      return item['has_taken_diagnostic '] === true
+    })
+    return hasDiagnostic
+  })
+
   return (
     <div>
-      {subjectsData.map(({ type, data }, idx) => (
-        <section key={idx} className="pb-4">
-          <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
-          <div className="flex flex-wrap gap-4 mb-4">
-            {data.map((item, index) => (
-              <CardSubjectWithProgress
-                onDiagnosticsClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
-                onRecommendationsClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}
-                key={index}
-                item={item}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+      {filteredData.map(({ type, data }, idx) => {
+        // Faqat diagnostic o'tgan fanlarni filter qilish
+        const diagnosticPassedSubjects = data.filter(item => item['has_taken_diagnostic '] === true)
+        
+        return (
+          <section key={idx} className="pb-4">
+            <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
+            <div className="flex flex-wrap gap-4 mb-4">
+              {diagnosticPassedSubjects.map((item, index) => (
+                <CardSubjectWithProgress
+                  onDiagnosticsClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
+                  onRecommendationsClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}
+                  key={index}
+                  item={item}
+                />
+              ))}
+            </div>
+          </section>
+        )
+      })}
     </div>
   )
 }

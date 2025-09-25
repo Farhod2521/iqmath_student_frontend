@@ -295,5 +295,18 @@
   "class8": "8th Grade",
   "class9": "9th Grade",
   "class10": "10th Grade",
-  "class11": "11th Grade"
+  "class11": "11th Grade",
+  "inviteStudent": "Invite Student",
+  "noInvitedStudents": "No invited students available!",
+  "inviteStudentsDescription": "Invite your students and register them",
+  "referralLink": "Referral link",
+  "promoCode": "Promo code",
+  "chapter": "Chapter",
+  "topic": "Topic",
+  "showing": "Showing",
+  "of": "of",
+  "first": "First",
+  "previous": "Previous",
+  "next": "Next",
+  "last": "Last"
 }
