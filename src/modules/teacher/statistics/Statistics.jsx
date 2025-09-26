@@ -32,18 +32,18 @@ const Statistics = () => {
     <div className="p-6 md:p-8 font-sf">
     
       
-      <Filters />
+      {/* <Filters /> */}
       <StatsCards data={statisticsData?.data} isLoading={isLoading} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <BarChart />
-        <LineChart />
-        <PieChart />
-        <HeatmapChart />
+        {/* <BarChart /> */}
+        {/* <LineChart /> */}
+        {/* <PieChart /> */}
+        {/* <HeatmapChart /> */}
       </div>
-      <ProgressBlock />
+      {/* <ProgressBlock /> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <Leaderboard />
-        <RecentActivity />
+        {/* <Leaderboard /> */}
+        {/* <RecentActivity /> */}
       </div>
     </div>
   );
