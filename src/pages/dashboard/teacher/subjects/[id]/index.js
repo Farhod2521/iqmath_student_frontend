@@ -72,7 +72,6 @@ const Index = () => {
   const router = useRouter()
   const { t, i18n } = useTranslation()
   const { id } = router.query
-  const [dataChapter, setDataChapter] = useState([])
   const { data: session } = useSession()
   const [newChapter, setNewChapter] = useState('')
   const [newChapterRu, setNewChapterRu] = useState('')
@@ -288,14 +287,33 @@ const Index = () => {
   }
 
   // Bob o'chirish
+  const onSubmitDeleteChapter = async () => {
+    try {
+      const response = await axios.delete(
+        `${config.API_URL}${URLS.deleteChapter}${selectedId}/`,
+        {
+          headers: { 
+            Authorization: `Bearer ${session?.accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-  const { mutate: deleteChapter } = useDeleteQuery({
-    listKeyId: 'delete-chapter'
-  })
-
-  const onSubmitDeleteChapter = () => {
-    deleteChapter(`${config.API_URL}${URLS.deleteChapter}${selectedId}/`)
-    setOpenChapterModal(false)
+      if (response.status === 204) {
+        setOpenChapterModal(false)
+        
+        // Immediate state update - o'chirilgan bobni darhol olib tashlash
+        setChapters(prevChapters => prevChapters.filter(chapter => chapter.id !== selectedId))
+        
+        // Cache invalidation
+        await queryClient.invalidateQueries([KEYS.chapters])
+        
+        toast.success("Bob muvaqqiyatli o'chirildi")
+      }
+    } catch (error) {
+      console.error('Delete chapter error:', error)
+      toast.error(error.response?.data?.error || "Bobni o'chirishda xatolik yuz berdi")
+    }
   }
 
   // Mavzu yaratish
@@ -328,6 +346,11 @@ const Index = () => {
         setVideoLinkRu('')
         setContent('')
         setContentRu('')
+        
+        // Immediate state update - yangi mavzuni darhol qo'shish
+        if (response.data?.data) {
+          setTopics(prevTopics => [...prevTopics, response.data.data])
+        }
         
         // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
@@ -392,12 +415,38 @@ const Index = () => {
         setContent('')
         setContentRu('')
         
-        // Force refetch - barcha topics queries ni yangilash
+        // Immediate state update - o'zgartirilgan mavzuni darhol yangilash
+        if (response.data?.data) {
+          setTopics(prevTopics => 
+            prevTopics.map(topic => 
+              topic.id === selectedTopic?.id ? response.data.data : topic
+            )
+          )
+        }
+        
+        // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
         await queryClient.invalidateQueries([KEYS.topics])
+        await queryClient.refetchQueries([KEYS.topics, selectedId])
         
-        // Qo'shimcha refetch
-        queryClient.refetchQueries([KEYS.topics, selectedId])
+        // Manual API call agar refetch ishlamasa
+        try {
+          const manualResponse = await axios.get(
+            `${config.API_URL}${URLS.topics}${selectedId}/`,
+            {
+              headers: { 
+                Authorization: `Bearer ${session?.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+          
+          if (manualResponse.data?.data) {
+            setTopics(manualResponse.data.data)
+          }
+        } catch (manualError) {
+          console.error('Manual API error:', manualError)
+        }
         
         toast.success("Mavzu muvaqqiyatli o'zgartirildi")
       }
@@ -423,12 +472,32 @@ const Index = () => {
       if (response.status === 204) {
         setOpenTopicsModal(false)
         
-        // Force refetch - barcha topics queries ni yangilash
+        // Immediate state update - o'chirilgan mavzuni darhol olib tashlash
+        setTopics(prevTopics => prevTopics.filter(topic => topic.id !== id))
+        
+        // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
         await queryClient.invalidateQueries([KEYS.topics])
+        await queryClient.refetchQueries([KEYS.topics, selectedId])
         
-        // Qo'shimcha refetch
-        queryClient.refetchQueries([KEYS.topics, selectedId])
+        // Manual API call agar refetch ishlamasa
+        try {
+          const manualResponse = await axios.get(
+            `${config.API_URL}${URLS.topics}${selectedId}/`,
+            {
+              headers: { 
+                Authorization: `Bearer ${session?.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+          
+          if (manualResponse.data?.data) {
+            setTopics(manualResponse.data.data)
+          }
+        } catch (manualError) {
+          console.error('Manual API error:', manualError)
+        }
         
         toast.success("Mavzu muvaqqiyatli o'chirildi")
       }
@@ -537,7 +606,9 @@ const Index = () => {
                                     setContent('')
                                     setContentRu('')
                                     setVideoLink('')
+                                    setVideoLinkRu('')
                                     setSelectedId(get(chapter, 'id'))
+                                    setModalTypeOfTopic('create')
                                   }}
                                   py="py-[8px] text-sm"
                                   classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
