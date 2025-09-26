@@ -21,7 +21,7 @@ import Calculator from '../components/calculator/Calculator'
 import DiagnosticResultModal from '../components/modal/DiagnosticResultModal'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 
-const DiagnosticQuestions = () => {
+const DiagnosticQuestions = ({ subjectId }) => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
   const mathFieldRef = useRef(null)
@@ -136,7 +136,16 @@ const DiagnosticQuestions = () => {
 
   const handleBeginTest = () => {
     beginTest(
-      { url: URLS.beginTest, attributes: { level: tab } },
+      { 
+        url: URLS.beginTest, 
+        attributes: { 
+          level: tab,
+          subject_id: parseInt(subjectId)
+        },
+        config: {
+          headers: { Authorization: `Bearer ${session?.accessToken}` }
+        }
+      },
       {
         onSuccess: (res) => {
           setTestQuestions(res?.data?.questions)

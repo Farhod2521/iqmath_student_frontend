@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useTranslation } from "react-i18next";
 import StudentRewardHistory from "./StudentRewardHistory";
 import { debounce } from "lodash";
+import { URLS } from "@/constants/url";
 
 const StudentFilter = memo(({ 
   onFilterChange,
@@ -17,6 +18,7 @@ const StudentFilter = memo(({
   const [classValue, setClassValue] = useState("");
   const [subjectValue, setSubjectValue] = useState(""); // Fan uchun state
   const [statusValue, setStatusValue] = useState("");
+  const [roleValue, setRoleValue] = useState(""); // Role uchun state
   const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -46,14 +48,24 @@ const StudentFilter = memo(({
     { value: "inactive", label: "Nofaol" },
   ];
 
+  // Role options
+  const roleOptions = [
+    { value: "student", label: "O'quvchi" },
+    { value: "teacher", label: "O'qituvchi" },
+    { value: "parent", label: "Ota-ona" },
+    { value: "tutor", label: "Tutor" },
+    { value: "all", label: "Barchasi" },
+  ];
+
   // Debounced search function - faqat bir marta yaratiladi
   useEffect(() => {
-    debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal) => {
+    debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal, roleVal) => {
       const filterData = {
         search: searchTerm,
         class_num: classVal,
         subject_name: subjectVal, // subject_name parametri sifatida yuboramiz
-        status: statusVal
+        status: statusVal,
+        role: roleVal
       };
       onFilterChange(filterData);
       setIsLoading(false);
@@ -73,7 +85,7 @@ const StudentFilter = memo(({
     setIsLoading(true);
     
     if (debouncedSearchRef.current) {
-      debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue);
+      debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue, roleValue);
     }
   }, [classValue, subjectValue, statusValue]);
 
@@ -84,7 +96,7 @@ const StudentFilter = memo(({
     setIsLoading(true);
     
     if (debouncedSearchRef.current) {
-      debouncedSearchRef.current(search, newValue, subjectValue, statusValue);
+      debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue);
     }
   }, [search, subjectValue, statusValue]);
 
@@ -95,7 +107,7 @@ const StudentFilter = memo(({
     setIsLoading(true);
     
     if (debouncedSearchRef.current) {
-      debouncedSearchRef.current(search, classValue, newValue, statusValue);
+      debouncedSearchRef.current(search, classValue, newValue, statusValue, roleValue);
     }
   }, [search, classValue, statusValue]);
 
@@ -105,9 +117,20 @@ const StudentFilter = memo(({
     setIsLoading(true);
     
     if (debouncedSearchRef.current) {
-      debouncedSearchRef.current(search, classValue, subjectValue, newValue);
+      debouncedSearchRef.current(search, classValue, subjectValue, newValue, roleValue);
     }
   }, [search, classValue, subjectValue]);
+
+  // Role o'zgarishini kuzatish
+  const handleRoleChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setRoleValue(newValue);
+    setIsLoading(true);
+    
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current(search, classValue, subjectValue, statusValue, newValue);
+    }
+  }, [search, classValue, subjectValue, statusValue]);
 
   // Clear filters function
   const handleClearFilters = useCallback(() => {
@@ -115,20 +138,39 @@ const StudentFilter = memo(({
     setClassValue("");
     setSubjectValue("");
     setStatusValue("");
+    setRoleValue("");
     
     // Clear filters immediately
     onFilterChange({
       search: "",
       class_num: "",
       subject_name: "",
-      status: ""
+      status: "",
+      role: ""
     });
   }, [onFilterChange]);
 
   // Export function
   const handleExport = useCallback(() => {
     onExportStart();
-  }, [onExportStart]);
+    
+    // Excel export uchun API so'rov
+    const exportParams = {
+      role: roleValue || 'all',
+      export: 'excel'
+    };
+    
+    // URL yaratish
+    const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams).toString()}`;
+    
+    // Excel faylni yuklab olish
+    window.open(exportUrl, '_blank');
+    
+    // Export tugashini bildirish
+    setTimeout(() => {
+      onExportEnd();
+    }, 1000);
+  }, [onExportStart, onExportEnd, roleValue]);
 
   return (
     <>
@@ -154,6 +196,13 @@ const StudentFilter = memo(({
           onChange={handleSubjectChange}
           className="w-40"
         />
+        <SelectBox
+          label={t('role')}
+          options={roleOptions}
+          value={roleValue}
+          onChange={handleRoleChange}
+          className="w-40"
+        />
         {/* <SelectBox
           label={t('status')}
           options={statusOptions}
@@ -163,7 +212,7 @@ const StudentFilter = memo(({
         /> */}
         
         {/* Clear filters button */}
-        {(search || classValue || subjectValue || statusValue) && (
+        {(search || classValue || subjectValue || statusValue || roleValue) && (
           <button
             onClick={handleClearFilters}
             className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"

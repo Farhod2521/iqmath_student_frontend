@@ -42,11 +42,11 @@ const defaultLinks = {
 }
 
 const socialIcons = [
-  { key: 'telegram', Icon: Telegram },
-  { key: 'instagram', Icon: Instagram },
-  { key: 'facebook', Icon: Facebook },
-  { key: 'youtube', Icon: YouTube },
-  { key: 'twitter', Icon: Twitter }
+  { key: 'telegram', Icon: Telegram  , width: 20, height: 20},
+  { key: 'instagram', Icon: Instagram, width: 20, height: 20},
+  { key: 'facebook', Icon: Facebook, width: 20, height: 20},
+  { key: 'youtube', Icon: YouTube, width: 20, height: 20},
+  { key: 'twitter', Icon: Twitter, width: 20, height: 20}
 ]
 
 const HpHeader = () => {
@@ -95,22 +95,23 @@ const HpHeader = () => {
                 <Navigations />
               </Stack>
               <div className="flex gap-2 items-center">
-                <LanguageDropdown />
                 {socialIcons.map(
-                  ({ key, Icon }) =>
+                  ({ key, Icon, width, height }) =>
                     socialLinks[key] && (
                       <a key={key} href={socialLinks[key]} target="_blank" rel="noopener noreferrer">
                         <IconButton color="primary">
-                          <Icon />
+                          <Icon width={width} height={height} />
                         </IconButton>
                       </a>
                     )
                 )}
                 <a href={`tel:${socialLinks.phone}`}>
                   <IconButton color="primary">
-                    <Phone />
+                    <Phone width={20} height={20} />
                   </IconButton>
                 </a>
+                <LanguageDropdown />
+
               </div>
             </>
           )}

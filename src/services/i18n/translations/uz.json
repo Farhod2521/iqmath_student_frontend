@@ -751,5 +751,6 @@
   "first": "Birinchi",
   "previous": "Oldingi",
   "next": "Keyingi",
-  "last": "Oxirgi"
+  "last": "Oxirgi",
+  "invalidLogin": "Telefon raqam yoki parol noto'g'ri"
 }

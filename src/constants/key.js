@@ -24,6 +24,8 @@ export const KEYS = {
   teacherSubjects: 'teacherSubjects',
   teacherStudents: 'teacherStudents',
   teacherGroups: 'teacherGroups',
+  // Student list keys
+  studentList: 'studentList',
   studentChapters: 'studentChapters',
   studentTopics: 'studentTopics',
   studentQuestions: 'studentQuestions',

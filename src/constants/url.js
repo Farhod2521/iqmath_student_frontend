@@ -25,6 +25,8 @@ export const URLS = {
   teacherSubjects: '/api/v1/func_teacher/my-subjects/',
   teacherStudents: '/api/v1/func_teacher/my-students/',
   teacherGroups: '/api/v1/func_teacher/my-groups/',
+  // Student list endpoints
+  studentList: '/api/v1/auth/student/student_list/',
   beginTest: '/api/v1/func_student/my-generate-test/',
   checkMyResults: '/api/v1/func_student/my-generate-check-answer/',
   studentChapters: '/api/v1/func_student/my-chapter/',

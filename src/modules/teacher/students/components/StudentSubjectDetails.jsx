@@ -48,7 +48,7 @@ const StudentSubjectDetails = () => {
     };
 
     if (isLoading || isFetching) {
-        return <Dashboard><ContentLoader /></Dashboard>;
+        return <div><ContentLoader /></div>;
     }
     
     return (

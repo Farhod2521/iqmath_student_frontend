@@ -1,4 +1,3 @@
-import Dashboard from '@/components/dashboard'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import useGetQuery from '@/hooks/api/useGetQuery'
@@ -32,9 +31,9 @@ const StudentDetails = () => {
 
   if (isLoading || isFetching) {
     return (
-      <Dashboard>
+      <div>
         <ContentLoader />
-      </Dashboard>
+      </div>
     )
   }
 

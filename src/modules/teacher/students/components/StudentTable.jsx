@@ -6,6 +6,7 @@ import ContentLoader from '@/components/loader/content-loader'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { request } from '@/services/api'
+import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
@@ -48,7 +49,7 @@ function StudentTable({
       })
 
       request
-        .get('/api/v1/auth/student/student_list/', {
+        .get(URLS.studentList, {
           params
         })
         .then((res) => {
