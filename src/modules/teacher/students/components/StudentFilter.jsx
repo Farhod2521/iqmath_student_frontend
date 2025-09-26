@@ -197,7 +197,7 @@ const StudentFilter = memo(({
           className="w-40"
         />
         <SelectBox
-          label={t('role')}
+          label={t('all')}
           options={roleOptions}
           value={roleValue}
           onChange={handleRoleChange}

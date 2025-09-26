@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import EditIcon from '@/components/icons/edit'
 import TrashIcon from '@/components/icons/trash'
 import usePutQuery from '@/hooks/api/usePutQuery'
@@ -298,16 +299,11 @@ const Index = () => {
   }
 
   // Mavzu yaratish
-
-  const { mutate: createTopic } = usePostQuery({
-    key: 'create-topic'
-  })
-
-  const onSubmitCreateTopic = () => {
-    createTopic(
-      {
-        url: URLS.createTopic,
-        attributes: {
+  const onSubmitCreateTopic = async () => {
+    try {
+      const response = await axios.post(
+        `${config.API_URL}${URLS.createTopic}`,
+        {
           chapter: selectedId,
           name_uz: topicName,
           name_ru: topicNameRu,
@@ -316,39 +312,61 @@ const Index = () => {
           content_uz: content,
           content_ru: contentRu
         },
-        config: {
-          headers: { Authorization: `Bearer ${session?.accessToken}` }
+        {
+          headers: { 
+            Authorization: `Bearer ${session?.accessToken}`,
+            'Content-Type': 'application/json'
+          }
         }
-      },
-      {
-        onSuccess: () => {
-          setOpenTopicsModal(false) // Modalni yopish
-          setTopicName('') // Inputlarni tozalash
-          setVideoLink('')
-          setTopicNameRu('')
-          setVideoLinkRu('')
-          setContent('')
-          setContentRu('')
-          queryClient.invalidateQueries([KEYS.topics]) // Queryni yangilash
-          toast.success('Mavzu muvaqqiyatli yaratildi')
-        },
-        onError: (error) => {
-          toast.error(error.response?.data.error)
+      )
+
+      if (response.status === 201) {
+        setOpenTopicsModal(false) // Modalni yopish
+        setTopicName('') // Inputlarni tozalash
+        setVideoLink('')
+        setTopicNameRu('')
+        setVideoLinkRu('')
+        setContent('')
+        setContentRu('')
+        
+        // Cache invalidation
+        await queryClient.invalidateQueries([KEYS.topics, selectedId])
+        await queryClient.invalidateQueries([KEYS.topics])
+        await queryClient.refetchQueries([KEYS.topics, selectedId])
+        
+        // Manual API call agar refetch ishlamasa
+        try {
+          const manualResponse = await axios.get(
+            `${config.API_URL}${URLS.topics}${selectedId}/`,
+            {
+              headers: { 
+                Authorization: `Bearer ${session?.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+          
+          if (manualResponse.data?.data) {
+            setTopics(manualResponse.data.data)
+          }
+        } catch (manualError) {
+          console.error('Manual API error:', manualError)
         }
+        
+        toast.success('Mavzu muvaqqiyatli yaratildi')
       }
-    )
+    } catch (error) {
+      console.error('Create topic error:', error)
+      toast.error(error.response?.data?.error || 'Xatolik yuz berdi')
+    }
   }
 
   // Mavzu o'zgartirish
-  const { mutate: updateTopic } = usePutQuery({
-    listKeyId: 'update-topic'
-  })
-
-  const onSubmitUpdateTopic = () => {
-    updateTopic(
-      {
-        url: `${URLS.updateTopic}${selectedTopic?.id}/`,
-        attributes: {
+  const onSubmitUpdateTopic = async () => {
+    try {
+      const response = await axios.put(
+        `${config.API_URL}${URLS.updateTopic}${selectedTopic?.id}/`,
+        {
           chapter: selectedId,
           name_uz: topicName,
           name_ru: topicNameRu,
@@ -357,37 +375,67 @@ const Index = () => {
           content_uz: content,
           content_ru: contentRu
         },
-        config: {
-          headers: { Authorization: `Bearer ${session?.accessToken}` }
+        {
+          headers: { 
+            Authorization: `Bearer ${session?.accessToken}`,
+            'Content-Type': 'application/json'
+          }
         }
-      },
-      {
-        onSuccess: () => {
-          setOpenTopicsModal(false) // Modalni yopish
-          setTopicName('') // Inputlarni tozalash
-          setTopicNameRu('')
-          setVideoLink('')
-          setVideoLinkRu('')
-          setContent('')
-          setContentRu('')
-          queryClient.invalidateQueries([KEYS.topics]) // Queryni yangilash
-          toast.success("Mavzu muvaqqiyatli o'zgartirildi")
-        },
-        onError: (error) => {
-          toast.error(error.response?.data.error)
-        }
+      )
+
+      if (response.status === 200) {
+        setOpenTopicsModal(false) // Modalni yopish
+        setTopicName('') // Inputlarni tozalash
+        setTopicNameRu('')
+        setVideoLink('')
+        setVideoLinkRu('')
+        setContent('')
+        setContentRu('')
+        
+        // Force refetch - barcha topics queries ni yangilash
+        await queryClient.invalidateQueries([KEYS.topics, selectedId])
+        await queryClient.invalidateQueries([KEYS.topics])
+        
+        // Qo'shimcha refetch
+        queryClient.refetchQueries([KEYS.topics, selectedId])
+        
+        toast.success("Mavzu muvaqqiyatli o'zgartirildi")
       }
-    )
+    } catch (error) {
+      console.error('Update topic error:', error)
+      toast.error(error.response?.data?.error || 'Xatolik yuz berdi')
+    }
   }
 
   // Mavzu o'chirish
-  const { mutate: deleteTopic } = useDeleteQuery({
-    listKeyId: 'delete-topic'
-  })
+  const onSubmitDeleteTopic = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${config.API_URL}${URLS.deleteTopic}${id}/`,
+        {
+          headers: { 
+            Authorization: `Bearer ${session?.accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-  const onSubmitDeleteTopic = (id) => {
-    deleteTopic(`${config.API_URL}${URLS.deleteTopic}${id}/`)
-    setOpenTopicsModal(false)
+      if (response.status === 204) {
+        setOpenTopicsModal(false)
+        
+        // Force refetch - barcha topics queries ni yangilash
+        await queryClient.invalidateQueries([KEYS.topics, selectedId])
+        await queryClient.invalidateQueries([KEYS.topics])
+        
+        // Qo'shimcha refetch
+        queryClient.refetchQueries([KEYS.topics, selectedId])
+        
+        toast.success("Mavzu muvaqqiyatli o'chirildi")
+      }
+    } catch (error) {
+      console.error('Delete topic error:', error)
+      toast.error(error.response?.data?.error || "Mavzuni o'chirishda xatolik yuz berdi")
+    }
   }
 
   if (isLoading || isFetching) {
