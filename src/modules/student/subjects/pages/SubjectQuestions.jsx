@@ -60,6 +60,7 @@ export default function SubjectQuestions() {
     enabled: !!topicId && !!session?.accessToken
   })
 
+
   const { mutate: checkMyResults } = usePostQuery({
     listKeyId: 'check-my-results-student'
   })
@@ -68,35 +69,39 @@ export default function SubjectQuestions() {
     listKeyId: 'send-to-mentor'
   })
 
-  // MathQuill styles'ni yuklash
   useEffect(() => {
     const loadMathQuillStyles = async () => {
       try {
         const mathQuill = await import('react-mathquill')
         mathQuill.addStyles()
         
-        // MathQuill'ni global o'zgaruvchiga saqlash
         if (typeof window !== 'undefined') {
           window.MathQuill = mathQuill
         }
       } catch (error) {
-        // Error handling
+        console.error('MathQuill yuklanmadi:', error)
       }
     }
     loadMathQuillStyles()
   }, [])
 
   useEffect(() => {
-    const data = get(questions, 'data', [])
-    if (data.length > 0) {
+    let data = []
+    if (questions?.data?.questions) {
+      data = questions.data.questions
+    } else if (questions?.questions) {
+      data = questions.questions
+    } else if (questions?.data) {
+      data = questions.data
+    } else if (Array.isArray(questions)) {
+      data = questions
+    }
+    
+    if (data.length > 0 && selectedIndex < data.length) {
       setSelectedQuestion(data[selectedIndex])
     }
-    // Debug uchun log
-    console.log('selectedIndex:', selectedIndex)
-    console.log('selectedQuestion:', data[selectedIndex])
   }, [selectedIndex, questions])
 
-  // selectedQuestion o'zgarganda choiceAnswers ni to'g'ri boshqarish
   useEffect(() => {
     if (selectedQuestion?.question_type === 'choice') {
       setChoiceAnswers((prev) => ({
@@ -104,26 +109,51 @@ export default function SubjectQuestions() {
         [selectedQuestion.id]: prev[selectedQuestion.id] || null
       }))
     }
-  }, [selectedQuestion?.id]); // selectedQuestion.id ga o'zgartirish
+  }, [selectedQuestion?.id])
 
-  // Savollar o'zgarganda state larni tozalash
   useEffect(() => {
-    if (questions?.data) {
-      // Yangi savollar kelganda, eski javoblarni tozalash
+    let data = []
+    if (questions?.data?.questions) {
+      data = questions.data.questions
+    } else if (questions?.questions) {
+      data = questions.questions
+    } else if (questions?.data) {
+      data = questions.data
+    } else if (Array.isArray(questions)) {
+      data = questions
+    }
+    
+    if (data.length > 0) {
       setChoiceAnswers({})
       setTextAnswers({})
       setCompositeAnswers({})
       setSelectedIndex(0)
     }
-  }, [questions?.data])
+  }, [questions])
 
   const handleTabChange = (level) => setTab(level)
+  
+  const getQuestionsData = () => {
+    if (questions?.data?.questions) {
+      return questions.data.questions
+    } else if (questions?.questions) {
+      return questions.questions
+    } else if (questions?.data) {
+      return questions.data
+    } else if (Array.isArray(questions)) {
+      return questions
+    }
+    return []
+  }
+  
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
-  const handleNext = () => setSelectedIndex((prev) => Math.min(prev + 1, get(questions, 'data', []).length - 1))
+  const handleNext = () => {
+    const questionsData = getQuestionsData()
+    const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
+    setSelectedIndex((prev) => Math.min(prev + 1, maxIndex))
+  }
 
-  // Klaviatura eventlari
   const handleKeyDown = useCallback((event) => {
-    // Input field'larda event'larni to'xtatish
     const target = event.target
     if (target.tagName === 'INPUT' || 
         target.tagName === 'TEXTAREA' || 
@@ -133,12 +163,10 @@ export default function SubjectQuestions() {
       return
     }
     
-    // Modifier key'lar bosilganda event'larni to'xtatish
     if (event.ctrlKey || event.altKey || event.metaKey) {
       return
     }
     
-    // Orqaga: Page Up, Backspace, Arrow Left, Arrow Up
     if (event.key === 'PageUp' || 
         event.key === 'Backspace' ||
         event.key === 'ArrowLeft' ||
@@ -148,14 +176,15 @@ export default function SubjectQuestions() {
         handlePrev()
       }
     }
-    // Oldinga: Enter, Page Down, Arrow Right, Arrow Down
     else if (event.key === 'Enter' || 
              event.key === 'PageDown' || 
              event.key === 'ArrowRight' ||
              event.key === 'ArrowDown') {
       event.preventDefault()
       
-      if (selectedIndex < get(questions, 'data', []).length - 1) {
+      const questionsData = getQuestionsData()
+      const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
+      if (selectedIndex < maxIndex) {
         handleNext()
       } else {
         handleCheckMyResults()
@@ -172,7 +201,12 @@ export default function SubjectQuestions() {
 
   const handleCheckMyResults = () => {
     const langKey = i18n.language === 'uz' ? 'answer_uz' : 'answer_ru'
-    const qData = get(questions, 'data', [])
+    const qData = getQuestionsData()
+    
+    if (!Array.isArray(qData)) {
+      toast.error('Savollar ma\'lumotlari topilmadi!')
+      return
+    }
 
     const text_answers = qData
       .filter((q) => q.question_type === 'text')
@@ -199,7 +233,6 @@ export default function SubjectQuestions() {
         answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
 
-    // Debug uchun ma'lumotlarni ko'rsatish
     console.log('=== SENDING DATA TO SERVER ===')
     console.log('text_answers:', JSON.stringify(text_answers, null, 2))
     console.log('choice_answers:', JSON.stringify(choice_answers, null, 2))
@@ -234,9 +267,7 @@ export default function SubjectQuestions() {
     const filterData = (fields) =>
       Object.entries(fields)
         .filter(([key, value]) => {
-          // Javob berilgan yoki bo'sh bo'lmagan qiymatlar
           if (typeof value === 'object' && value !== null) {
-            // Composite answers uchun
             return Object.values(value).some(v => v && v.trim() !== '')
           }
           return value !== null && value !== undefined && value !== ''
@@ -250,9 +281,11 @@ export default function SubjectQuestions() {
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
 
-  // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
   const allQuestionsList = useMemo(() => {
-    const questionsData = get(questions, 'data', [])
+    const questionsData = getQuestionsData()
+    if (!Array.isArray(questionsData)) {
+      return []
+    }
     return questionsData.map(q => String(q.id))
   }, [questions])
 
@@ -295,7 +328,7 @@ export default function SubjectQuestions() {
       <div className="grid grid-cols-1 md:grid-cols-12 p-4 md:p-[24px] gap-6">
         <div className="md:col-span-6 md:overflow-y-auto md:max-h-[80vh] border-r border-r-[#F2F2F7]">
           <ExamQuestionList
-            questions={get(questions, 'data', [])}
+            questions={Array.isArray(getQuestionsData()) ? getQuestionsData() : []}
             selectedList={selectedList}
             allQuestionsList={allQuestionsList}
             selectedQuestion={selectedQuestion}
@@ -353,7 +386,11 @@ export default function SubjectQuestions() {
                 {t('back')}
               </Button>
 
-              {selectedIndex === get(questions, 'data', []).length - 1 ? (
+              {(() => {
+                const questionsData = getQuestionsData()
+                const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
+                return selectedIndex === maxIndex
+              })() ? (
                 <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
                   {t('check')}
                 </Button>
@@ -413,11 +450,9 @@ export default function SubjectQuestions() {
                   <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => setShowResult(false)}>{t('retakeTest')}</Button>
                   <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => {
                     const scorePercentage = get(score, 'data.result[0].score', 0)
-                    if (scorePercentage >= 80) {
-                      // 80% dan ko'p ball olsa keyingi mavzuga o'tish
+                    if (scorePercentage >= 80) {        
                       router.push(`/dashboard/student/subjects/${router.query.id}/${router.query.chapterId}/${parseInt(router.query.topicId) + 1}`)
                     } else {
-                      // 80% dan kam ball olsa bosh sahifaga qaytish
                       router.push('/dashboard/student/subjects')
                     }
                   }}>
@@ -476,7 +511,6 @@ export default function SubjectQuestions() {
         </div>
       </div>
       
-      {/* Success Popup */}
       <SuccessPopup 
         open={showSuccessPopup} 
         onClose={() => setShowSuccessPopup(false)} 

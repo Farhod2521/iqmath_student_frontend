@@ -15,7 +15,6 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false)
   const { mutate, isLoading } = usePostQuery({})
 
-  console.log(session)
   useEffect(() => {
     if (open) setMessage('')
   }, [open])
@@ -36,14 +35,10 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
       },
       {
         onSuccess: () => {
-          console.log('Success callback called')
           setMessage('')
-          // Barcha modallar yopilsin
           onClose()
-          // Success popup ni keyinroq ko'rsatamiz
           setTimeout(() => {
             setShowSuccessPopup(true)
-            console.log('showSuccessPopup set to true')
           }, 300)
         },
         onError: () => {
@@ -57,7 +52,6 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
     <>
       <SimpleModal open={open} onClose={onClose}>
         <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl p-0">
-          {/* Header */}
           <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
             <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +63,6 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
               <p className="text-xs text-gray-500">{t('mentorModalSubtitle', 'Savolingiz haqida izoh bering')}</p>
             </div>
           </div>
-          {/* Content */}
           <div className="px-6 py-5">
             <label className="block text-sm font-medium text-gray-700 mb-2">{t('yourComment', 'Izohingiz')}</label>
             <textarea
@@ -82,7 +75,6 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
               {t('mentorReadComment', "Mentor sizga yordam berish uchun izohingizni o'qiydi")}
             </p>
           </div>
-          {/* Footer */}
           <div className="px-6 py-4 bg-gray-50 rounded-b-xl flex justify-end gap-3">
             <Button
               onPress={onClose}
@@ -112,7 +104,6 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
         </div>
       </SimpleModal>
       
-      {/* Success Popup */}
       <SuccessPopup
         open={showSuccessPopup} 
         onClose={() => setShowSuccessPopup(false)} 

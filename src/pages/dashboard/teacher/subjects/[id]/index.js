@@ -453,7 +453,7 @@ const Index = () => {
     } catch (error) {
       console.error('Update topic error:', error)
       toast.error(error.response?.data?.error || 'Xatolik yuz berdi')
-    }
+    } 
   }
 
   // Mavzu o'chirish

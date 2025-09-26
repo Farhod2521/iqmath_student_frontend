@@ -12,7 +12,7 @@ const useGetQuery = ({
   showErrorMsg = false,
   enabled = true
 }) => {
-  const { t } = useTranslation() // Ensure translations work here
+  const { t } = useTranslation()
 
   const { isLoading, isError, data, error, isFetching } = useQuery(
     [key, params],
