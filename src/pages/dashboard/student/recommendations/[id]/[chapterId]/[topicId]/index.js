@@ -3,8 +3,8 @@ import TopicDetail from '@/components/topic/TopicDetail'
 const Index = () => {
   return (
     <TopicDetail 
-      basePath="/dashboard/student/subjects"
-      title="subjects"
+      basePath="/dashboard/student/recommendations"
+      title="recommended"
     />
   )
 }
