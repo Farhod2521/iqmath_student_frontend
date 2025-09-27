@@ -1,13 +1,5 @@
 import React from "react";
-import Filters from "./components/Filters";
 import StatsCards from "./components/StatsCards";
-import LineChart from "./components/LineChart";
-import PieChart from "./components/PieChart";
-import HeatmapChart from "./components/HeatmapChart";
-import ProgressBlock from "./components/ProgressBlock";
-import Leaderboard from "./components/Leaderboard";
-import RecentActivity from "./components/RecentActivity";
-import BarChart from "./components/BarChart";
 import useGetQuery from "@/hooks/api/useGetQuery";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";

@@ -183,26 +183,31 @@ const StudentFilter = memo(({
           className="w-80"
         />
         <SelectBox
-          label={t('class')}
-          options={classOptions}
-          value={classValue}
-          onChange={handleClassChange}
-          className="w-40"
-        />
-        <SelectBox
-          label={t('subject')}
-          options={subjectOptions}
-          value={subjectValue}
-          onChange={handleSubjectChange}
-          className="w-40"
-        />
-        <SelectBox
           label={t('all')}
           options={roleOptions}
           value={roleValue}
           onChange={handleRoleChange}
           className="w-40"
         />
+        {/* Faqat "O'quvchi" tanlanganda sinf va fan filtrlari ko'rinadi */}
+        {roleValue === 'student' && (
+          <>
+            <SelectBox
+              label={t('class')}
+              options={classOptions}
+              value={classValue}
+              onChange={handleClassChange}
+              className="w-40"
+            />
+            <SelectBox
+              label={t('subject')}
+              options={subjectOptions}
+              value={subjectValue}
+              onChange={handleSubjectChange}
+              className="w-40"
+            />
+          </>
+        )}
         {/* <SelectBox
           label={t('status')}
           options={statusOptions}

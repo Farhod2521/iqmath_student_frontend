@@ -188,96 +188,108 @@ function StudentTable({
     setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
   }, [])
 
-  const colDefs = [
-    {
-      headerName: 'ID',
-      field: 'id',
-      maxWidth: 80,
-      checkboxSelection: true
-    },
-    {
-      headerName: t('student'),
-      field: 'full_name',
-      flex: 1.5,
-      onCellClicked: (params) => {
-        router.push(`/dashboard/teacher/pupils/${params.data.id}`)
+  const colDefs = useMemo(() => {
+    const baseColumns = [
+      {
+        headerName: 'ID',
+        field: 'id',
+        maxWidth: 80,
+        checkboxSelection: true
       },
-      cellRenderer: (params) => (
-        <div className="flex items-center gap-2 cursor-pointer">
-          <Image src={'/icons/pupil.svg'} alt="pupil" width={23} height={22} />
-          <span className="font-medium">{params.value}</span>
-        </div>
-      )
-    },
-    {
-      headerName: t('class'),
-      field: 'class_num',
-      maxWidth: 150,
-      cellClass: 'text-center',
-      cellRenderer: (params) => {
-        const classText = params.value || ''
-        const classNumber = classText.split(' ')[0]
-        return classNumber + '-' + t('class')
+      {
+        headerName: t('student'),
+        field: 'full_name',
+        flex: 1.5,
+        onCellClicked: (params) => {
+          router.push(`/dashboard/teacher/pupils/${params.data.id}`)
+        },
+        cellRenderer: (params) => (
+          <div className="flex items-center gap-2 cursor-pointer">
+            <Image src={'/icons/pupil.svg'} alt="pupil" width={23} height={22} />
+            <span className="font-medium">{params.value}</span>
+          </div>
+        )
       }
-    },
-    {
-      headerName: t('phone'),
-      field: 'phone',
-      flex: 1
-    },
-    // {
-    //   headerName: t('region'),
-    //   field: 'region',
-    //   flex: 1
-    // },
-    {
-      headerName: t('register_date') || 'Ro`yxatdan o`tish',
-      field: 'student_date',
-      flex: 1,
-      cellRenderer: (params) => {
-        if (!params.value) {
-          return <span className="text-gray-400">-</span>
+    ]
+
+    // Faqat "student" roli tanlanganda sinf ustunini qo'shish
+    if (filterData.role === 'student') {
+      baseColumns.push({
+        headerName: t('class'),
+        field: 'class_num',
+        maxWidth: 150,
+        cellClass: 'text-center',
+        cellRenderer: (params) => {
+          const classText = params.value || ''
+          const classNumber = classText.split(' ')[0]
+          return classNumber + '-' + t('class')
         }
-        return <span>{params.value.replaceAll('-' , '.')}</span>
-      }
-    },
-    {
-      headerName: t('lastLoginTime') || 'Oxirgi kirish',
-      field: 'last_login_time',
-      flex: 1,
-      cellRenderer: (params) => {
-        if (!params.value) {
-          return <span className="text-gray-400">-</span>
-        }
-        return <span>{params.value.replaceAll('/' , '.')}</span>
-      }
-    },
-    {
-      headerName: '',
-      field: 'actions',
-      flex: 2,
-      cellRenderer: (p) => (
-        <div className="flex gap-2 justify-end">
-          <button
-            onClick={() => handleGiveReward(p.data)}
-            className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
-            title={t('giveReward')}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-            </svg>
-            {t('reward')}
-          </button>
-          <button
-            onClick={() => handleSignAsStudent(p.data)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
-          >
-            {t('loginAsStudent')}
-          </button>
-        </div>
-      )
+      })
     }
-  ]
+
+    // Qolgan ustunlarni qo'shish
+    baseColumns.push(
+      {
+        headerName: t('phone'),
+        field: 'phone',
+        flex: 1
+      },
+      // {
+      //   headerName: t('region'),
+      //   field: 'region',
+      //   flex: 1
+      // },
+      {
+        headerName: t('register_date') || 'Ro`yxatdan o`tish',
+        field: 'student_date',
+        flex: 1,
+        cellRenderer: (params) => {
+          if (!params.value) {
+            return <span className="text-gray-400">-</span>
+          }
+          return <span>{params.value.replaceAll('-' , '.')}</span>
+        }
+      },
+      {
+        headerName: t('lastLoginTime') || 'Oxirgi kirish',
+        field: 'last_login_time',
+        flex: 1,
+        cellRenderer: (params) => {
+          if (!params.value) {
+            return <span className="text-gray-400">-</span>
+          }
+          return <span>{params.value.replaceAll('/' , '.')}</span>
+        }
+      },
+      {
+        headerName: '',
+        field: 'actions',
+        flex: 2,
+        cellRenderer: (p) => (
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => handleGiveReward(p.data)}
+              className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
+              title={t('giveReward')}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+              </svg>
+              {t('reward')}
+            </button>
+            <button
+              onClick={() => handleSignAsStudent(p.data)}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
+            >
+              {t('loginAsStudent')}
+            </button>
+          </div>
+        )
+      }
+    )
+
+    return baseColumns
+  }, [filterData.role, t, router, handleGiveReward, handleSignAsStudent])
 
   // Loading holatida bo'sh loader ko'rsatmaymiz, chunki table o'rniga overlay ishlatamiz
 
