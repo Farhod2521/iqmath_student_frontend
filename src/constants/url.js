@@ -44,6 +44,10 @@ export const URLS = {
   teacherReward: '/api/v1/func_teacher/teacher/reward/',
   teacherRewardList: '/api/v1/func_teacher/teacher/reward/list/',
   changePassword: '/api/v1/auth/student/change-password/',
+  // New profile update APIs
+  updateProfile: '/api/v1/auth/user/update-profile/',
+  changePasswordNew: '/api/v1/auth/user/change-password/',
+  verifyPhoneChange: '/api/v1/auth/user/verify-phone-change/',
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',

@@ -13,11 +13,11 @@ const Index = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
   const {
-    data: teacherProfile,
+    data: tutorProfile,
     isLoading,
     isFetching
   } = useGetQuery({
-    key: KEYS.teacherProfile,
+    key: KEYS.teacherProfile, // Tutor ham teacher API'sini ishlatadi
     url: URLS.teacherProfile,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
@@ -39,9 +39,9 @@ const Index = () => {
             />
 
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
-              {get(teacherProfile, 'data.full_name', '')}
+              {get(tutorProfile, 'data.full_name', '')}
             </h3>
-            <p className="text-[#8A8A8E] text-[15px]">ID:123023020</p>
+            <p className="text-[#8A8A8E] text-[15px]">ID: {get(tutorProfile, 'data.id', '')}</p>
           </div>
 
           <div className="border-t border-t-[#E9E9E9]">
@@ -50,58 +50,34 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'phone'}
-                    title={'Номер телефона'}
-                    desc={`+${get(teacherProfile, 'data.phone', '')}`}
+                    title={'Telefon raqam'}
+                    desc={`+${get(tutorProfile, 'data.phone', '')}`}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
                     detailIcon={'email'}
-                    title={'Email адрес'}
-                    desc={get(teacherProfile, 'data.email', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'calendar'}
-                    title={'Дата рождения'}
-                    desc={get(teacherProfile, 'data.brithday', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'region'}
-                    title={'Регион'}
-                    desc={get(teacherProfile, 'data.region', '')}
-                  />
-                </li>
-
-                <li>
-                  <ProfileDetails
-                    detailIcon={'region'}
-                    title={'Область'}
-                    desc={get(teacherProfile, 'data.districts', '')}
+                    title={'Email'}
+                    desc={get(tutorProfile, 'data.email', '')}
                   />
                 </li>
 
                 <li>
                   <ProfileDetails
                     detailIcon={'address'}
-                    title={'Адрес'}
-                    desc={get(teacherProfile, 'data.address', '')}
+                    title={'Manzil'}
+                    desc={get(tutorProfile, 'data.address', '')}
                   />
                 </li>
               </ul>
 
               <button
-                onClick={() => router.push(`/dashboard/teacher/profile/${get(session, 'id', '')}`)}
+                onClick={() => router.push(`/dashboard/tutor/profile/${get(session, 'user.id', '')}`)}
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
                 <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
-                <p className="font-medium">Изменить</p>
+                <p className="font-medium">O'zgartirish</p>
               </button>
             </div>
           </div>

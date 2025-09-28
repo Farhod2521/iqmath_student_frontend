@@ -8,7 +8,6 @@ import ImageUploader from '@/components/image-uploader'
 import AnimateUp from '@/components/motion-animation'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import usePostQuery from '@/hooks/api/usePostQuery'
-import usePutQuery from '@/hooks/api/usePutQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import useGetQuery from '@/hooks/api/useGetQuery'
@@ -44,7 +43,7 @@ const Index = () => {
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
   const {
-    data: teacherProfile,
+    data: tutorProfile,
     isLoading
   } = useGetQuery({
     key: KEYS.teacherProfile,
@@ -56,13 +55,13 @@ const Index = () => {
   })
 
   useEffect(() => {
-    if (teacherProfile?.data) {
-      setFullName(teacherProfile.data.full_name || '')
-      setPhoneNumber(teacherProfile.data.phone || '')
-      setEmail(teacherProfile.data.email || '')
-      setAddress(teacherProfile.data.address || '')
+    if (tutorProfile?.data) {
+      setFullName(tutorProfile.data.full_name || '')
+      setPhoneNumber(tutorProfile.data.phone || '')
+      setEmail(tutorProfile.data.email || '')
+      setAddress(tutorProfile.data.address || '')
     }
-  }, [teacherProfile])
+  }, [tutorProfile])
 
   const { mutate: profileUpdate } = usePostQuery({
     listKeyId: 'profile-update'
@@ -77,8 +76,6 @@ const Index = () => {
   })
 
   const handleProfileUpdate = () => {
-    console.log('handleProfileUpdate called', { fullName, email, address, phoneNumber })
-    
     const updateData = {
       full_name: fullName,
       email: email,
@@ -86,7 +83,7 @@ const Index = () => {
     }
 
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
-    if (phoneNumber !== get(teacherProfile, 'data.phone', '')) {
+    if (phoneNumber !== get(tutorProfile, 'data.phone', '')) {
       if (!currentPassword) {
         toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
         return
@@ -95,16 +92,10 @@ const Index = () => {
       updateData.password = currentPassword
     }
 
-    console.log('Sending profile update request:', {
-      url: URLS.updateProfile,
-      data: updateData,
-      token: session?.accessToken
-    })
-
     profileUpdate(
       {
         url: URLS.updateProfile,
-        data: updateData,
+        attributes: updateData,
         config: {
           headers: {
             'Authorization': `Bearer ${session?.accessToken}`,
@@ -115,7 +106,7 @@ const Index = () => {
       {
         onSuccess: (data) => {
           toast.success('Profil muvaffaqiyatli yangilandi')
-          if (phoneNumber !== get(teacherProfile, 'data.phone', '')) {
+          if (phoneNumber !== get(tutorProfile, 'data.phone', '')) {
             setShowPhoneVerification(true)
             setNewPhone(phoneNumber)
           }
@@ -129,15 +120,15 @@ const Index = () => {
 
   const handleEmailSubmit = () => {
     const updateData = {
-      full_name: get(teacherProfile, 'data.full_name', ''),
+      full_name: get(tutorProfile, 'data.full_name', ''),
       email: email,
-      address: get(teacherProfile, 'data.address', '')
+      address: get(tutorProfile, 'data.address', '')
     }
 
     profileUpdate(
       {
         url: URLS.updateProfile,
-        data: updateData,
+        attributes: updateData,
         config: {
           headers: {
             'Authorization': `Bearer ${session?.accessToken}`,
@@ -186,7 +177,7 @@ const Index = () => {
     changePassword(
       {
         url: URLS.changePasswordNew,
-        data: passwordData,
+        attributes: passwordData,
         config: {
           headers: {
             'Authorization': `Bearer ${session?.accessToken}`,
@@ -279,7 +270,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-[24px]">
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       To'liq ism <span className="text-[#FF3B30]">*</span>
@@ -316,7 +307,7 @@ const Index = () => {
                     />
                   </div>
 
-                  {phoneNumber !== get(teacherProfile, 'data.phone', '') && (
+                  {phoneNumber !== get(tutorProfile, 'data.phone', '') && (
                     <div>
                       <p className="text-[15px] mb-[8px]">
                         Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
@@ -343,15 +334,9 @@ const Index = () => {
                     </div>
                   )}
 
-                  <button 
-                    onClick={() => {
-                      console.log('Saqlash button clicked - Asosiy ma\'lumotlar')
-                      handleProfileUpdate()
-                    }} 
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors text-sm"
-                  >
+                  <Button onPress={handleProfileUpdate} color="primary">
                     Saqlash
-                  </button>
+                  </Button>
                 </form>
               </AnimateUp>
             )}
@@ -376,7 +361,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-[24px]">
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       Email <span className="text-[#FF3B30]">*</span>
@@ -389,15 +374,9 @@ const Index = () => {
                     />
                   </div>
 
-                  <button 
-                    onClick={() => {
-                      console.log('Saqlash button clicked - Email')
-                      handleEmailSubmit()
-                    }} 
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors text-sm"
-                  >
+                  <Button onPress={handleEmailSubmit} color="primary">
                     Saqlash
-                  </button>
+                  </Button>
                 </form>
               </AnimateUp>
             )}
@@ -422,7 +401,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-[24px]">
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       Joriy parol <span className="text-[#FF3B30]">*</span>
@@ -498,16 +477,13 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <button 
-                    onClick={() => {
-                      console.log('Saqlash button clicked - Parol')
-                      handlePasswordChange()
-                    }} 
-                    disabled={isChangingPassword}
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  <Button 
+                    onPress={handlePasswordChange} 
+                    isLoading={isChangingPassword}
+                    color="primary"
                   >
-                    {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
-                    </button>
+                    Saqlash
+                  </Button>
                 </form>
               </AnimateUp>
             )}
@@ -544,10 +520,10 @@ const Index = () => {
 
                     <div>
                       <h3 className="text-[17px] font-semibold">
-                        {get(teacherProfile, 'data.full_name', '')}
+                        {get(tutorProfile, 'data.full_name', '')}
                       </h3>
                       <p className="text-[#8A8A8E] text-[15px]">
-                        ID: {get(teacherProfile, 'data.id', '')}
+                        ID: {get(tutorProfile, 'data.id', '')}
                       </p>
                     </div>
                   </div>
@@ -611,7 +587,7 @@ const Index = () => {
               </Button>
             </div>
           </div>
-      </div>
+        </div>
       )}
     </LayoutAdmin>
   )

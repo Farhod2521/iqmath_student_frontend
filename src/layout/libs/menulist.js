@@ -164,7 +164,7 @@ export const getMenuItems = (t) => [
     label: t('profile'),
     icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     disabled: false,
-    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.TUTOR],
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -202,6 +202,24 @@ export const getMenuItems = (t) => [
     label: t('profile'),
     icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.PARENT],
+    type: MenuType.LINK
+  },
+
+  // Tutor role menu items
+  // {
+  //   key: 'tutor-referal',
+  //   path: '/dashboard/tutor/referal',
+  //   label: t('referal'),
+  //   icon: (isActive) => <LuUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
+  //   roles: [RolesList.TUTOR],
+  //   type: MenuType.LINK
+  // },
+  {
+    key: 'tutor-profile',
+    path: '/dashboard/tutor/profile',
+    label: t('profile'),
+    icon: (isActive) => <LuUser className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
+    roles: [RolesList.TUTOR],
     type: MenuType.LINK
   }
 ]
