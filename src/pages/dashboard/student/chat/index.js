@@ -45,12 +45,12 @@ const ChatPage = () => {
     <LayoutAdmin title={t('chat', 'Chat')}>
       <div className="space-y-6">
         {/* Filters */}
-        <ChatFilters
+        {/* <ChatFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
-        />
+        /> */}
 
         {/* Requests List */}
         <ChatRequestList

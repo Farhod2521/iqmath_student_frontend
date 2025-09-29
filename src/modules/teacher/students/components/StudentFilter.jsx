@@ -15,10 +15,10 @@ const StudentFilter = memo(({
 }) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
-  const [classValue, setClassValue] = useState("");
-  const [subjectValue, setSubjectValue] = useState(""); // Fan uchun state
+  const [classValue, setClassValue] = useState(""); // Default: "Hammasi" (empty value)
+  const [subjectValue, setSubjectValue] = useState(""); // Default: "Hammasi" (empty value)
   const [statusValue, setStatusValue] = useState("");
-  const [roleValue, setRoleValue] = useState(""); // Role uchun state
+  const [roleValue, setRoleValue] = useState(""); // Default: "Hammasi"
   const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -27,6 +27,7 @@ const StudentFilter = memo(({
 
   // Sinf raqamlari (5-11)
   const classOptions = [
+    { value: "", label: "Hammasi" },
     { value: "5", label: "5-sinf" },
     { value: "6", label: "6-sinf" },
     { value: "7", label: "7-sinf" },
@@ -38,6 +39,7 @@ const StudentFilter = memo(({
 
   // Fanlar ro'yxati
   const subjectOptions = [
+    { value: "", label: "Hammasi" },
     { value: "Algebra", label: "Algebra" },
     { value: "Matematika", label: "Matematika" },
     { value: "Geometriya", label: "Geometriya" },
@@ -50,11 +52,11 @@ const StudentFilter = memo(({
 
   // Role options
   const roleOptions = [
+    { value: "", label: "Hammasi" },
     { value: "student", label: "O'quvchi" },
     { value: "teacher", label: "O'qituvchi" },
     { value: "parent", label: "Ota-ona" },
     { value: "tutor", label: "Tutor" },
-    { value: "all", label: "Barchasi" },
   ];
 
   // Debounced search function - faqat bir marta yaratiladi
@@ -87,7 +89,7 @@ const StudentFilter = memo(({
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue, roleValue);
     }
-  }, [classValue, subjectValue, statusValue]);
+  }, [classValue, subjectValue, statusValue, roleValue]);
 
   // Class o'zgarishini kuzatish
   const handleClassChange = useCallback((e) => {
@@ -98,7 +100,7 @@ const StudentFilter = memo(({
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue);
     }
-  }, [search, subjectValue, statusValue]);
+  }, [search, subjectValue, statusValue, roleValue]);
 
   // Subject o'zgarishini kuzatish
   const handleSubjectChange = useCallback((e) => {
@@ -109,7 +111,7 @@ const StudentFilter = memo(({
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current(search, classValue, newValue, statusValue, roleValue);
     }
-  }, [search, classValue, statusValue]);
+  }, [search, classValue, statusValue, roleValue]);
 
   const handleStatusChange = useCallback((e) => {
     const newValue = e.target.value;
@@ -119,7 +121,7 @@ const StudentFilter = memo(({
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current(search, classValue, subjectValue, newValue, roleValue);
     }
-  }, [search, classValue, subjectValue]);
+  }, [search, classValue, subjectValue, roleValue]);
 
   // Role o'zgarishini kuzatish
   const handleRoleChange = useCallback((e) => {
@@ -130,15 +132,15 @@ const StudentFilter = memo(({
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current(search, classValue, subjectValue, statusValue, newValue);
     }
-  }, [search, classValue, subjectValue, statusValue]);
+  }, [search, classValue, subjectValue, statusValue, roleValue]);
 
   // Clear filters function
   const handleClearFilters = useCallback(() => {
     setSearch("");
-    setClassValue("");
-    setSubjectValue("");
+    setClassValue(""); // "Hammasi" ga qaytaradi
+    setSubjectValue(""); // "Hammasi" ga qaytaradi
     setStatusValue("");
-    setRoleValue("");
+    setRoleValue(""); // "Hammasi" ga qaytaradi
     
     // Clear filters immediately
     onFilterChange({
@@ -156,7 +158,7 @@ const StudentFilter = memo(({
     
     // Excel export uchun API so'rov
     const exportParams = {
-      role: roleValue || 'all',
+      role: roleValue || '',
       export: 'excel'
     };
     
@@ -216,8 +218,8 @@ const StudentFilter = memo(({
           className="w-40"
         /> */}
         
-        {/* Clear filters button */}
-        {(search || classValue || subjectValue || statusValue || roleValue) && (
+        {/* Clear filters button - faqat filter qilinganida ko'rinadi */}
+        {(search || statusValue) && (
           <button
             onClick={handleClearFilters}
             className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"

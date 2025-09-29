@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react'
 import RightIcon from '@/components/icons/right'
 import Input from '@/components/input'
-import Button from '@/components/button'
 import Image from 'next/image'
 import TrashIcon from '@/components/icons/trash'
 import ImageUploader from '@/components/image-uploader'
 import AnimateUp from '@/components/motion-animation'
-import LayoutAdmin from '@/layout/LayoutAdmin'
 import usePostQuery from '@/hooks/api/usePostQuery'
-import usePutQuery from '@/hooks/api/usePutQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
+import { Button, Card } from '@heroui/react'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
 
 const Index = () => {
@@ -43,11 +42,11 @@ const Index = () => {
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
   const {
-    data: teacherProfile,
+    data: parentProfile,
     isLoading
   } = useGetQuery({
-    key: KEYS.teacherProfile,
-    url: URLS.teacherProfile,
+    key: KEYS.parentProfile,
+    url: URLS.parentProfile,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
@@ -55,13 +54,13 @@ const Index = () => {
   })
 
   useEffect(() => {
-    if (teacherProfile?.data) {
-      setFullName(teacherProfile.data.full_name || '')
-      setPhoneNumber(teacherProfile.data.phone || '')
-      setEmail(teacherProfile.data.email || '')
-      setAddress(teacherProfile.data.address || '')
+    if (parentProfile?.data) {
+      setFullName(parentProfile.data.full_name || '')
+      setPhoneNumber(parentProfile.data.phone || '')
+      setEmail(parentProfile.data.email || '')
+      setAddress(parentProfile.data.address || '')
     }
-  }, [teacherProfile])
+  }, [parentProfile])
 
   const { mutate: profileUpdate } = usePostQuery({
     listKeyId: 'profile-update'
@@ -85,7 +84,7 @@ const Index = () => {
     }
 
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
-    if (phoneNumber !== get(teacherProfile, 'data.phone', '')) {
+    if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
       if (!currentPassword) {
         toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
         return
@@ -115,7 +114,7 @@ const Index = () => {
         onSuccess: (data) => {
           console.log('Profile update success:', data)
           toast.success('Profil muvaffaqiyatli yangilandi')
-          if (phoneNumber !== get(teacherProfile, 'data.phone', '')) {
+          if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
             setShowPhoneVerification(true)
             setNewPhone(phoneNumber)
           }
@@ -127,7 +126,6 @@ const Index = () => {
       }
     )
   }
-
 
   const handlePasswordChange = () => {
     if (!currentPassword) {
@@ -295,7 +293,7 @@ const Index = () => {
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       Manzil
-                    </p>  
+                    </p>
                     <Input 
                       type="text" 
                       value={address} 
@@ -304,7 +302,7 @@ const Index = () => {
                     />
                   </div>
 
-                  {phoneNumber !== get(teacherProfile, 'data.phone', '') && (
+                  {phoneNumber !== get(parentProfile, 'data.phone', '') && (
                     <div>
                       <p className="text-[15px] mb-[8px]">
                         Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
@@ -332,11 +330,12 @@ const Index = () => {
                   )}
 
                   <button 
+                    type="button"
                     onClick={() => {
                       console.log('Saqlash button clicked - Asosiy ma\'lumotlar')
                       handleProfileUpdate()
                     }} 
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors text-sm"
+                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
                     Saqlash
                   </button>
@@ -344,7 +343,6 @@ const Index = () => {
               </AnimateUp>
             )}
           </div>
-
 
           {/* Parol */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
@@ -442,6 +440,7 @@ const Index = () => {
                   </div>
 
                   <button 
+                    type="button"
                     onClick={() => {
                       console.log('Saqlash button clicked - Parol')
                       handlePasswordChange()
@@ -450,7 +449,7 @@ const Index = () => {
                     className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
                     {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
-                    </button>
+                  </button>
                 </form>
               </AnimateUp>
             )}
@@ -487,10 +486,10 @@ const Index = () => {
 
                     <div>
                       <h3 className="text-[17px] font-semibold">
-                        {get(teacherProfile, 'data.full_name', '')}
+                        {get(parentProfile, 'data.full_name', '')}
                       </h3>
                       <p className="text-[#8A8A8E] text-[15px]">
-                        ID: {get(teacherProfile, 'data.id', '')}
+                        ID: {get(parentProfile, 'data.id', '')}
                       </p>
                     </div>
                   </div>
@@ -533,28 +532,29 @@ const Index = () => {
             </div>
             
             <div className="flex gap-2">
-              <Button
-                color="primary"
-                onPress={handlePhoneVerification}
-                isLoading={isVerifyingPhone}
-                className="flex-1"
+              <button
+                onClick={() => {
+                  console.log('Tasdiqlash button clicked')
+                  handlePhoneVerification()
+                }}
+                disabled={isVerifyingPhone}
+                className="flex-1 bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
               >
-                Tasdiqlash
-              </Button>
-              <Button
-                variant="bordered"
-                onPress={() => {
+                {isVerifyingPhone ? 'Tasdiqlanmoqda...' : 'Tasdiqlash'}
+              </button>
+              <button
+                onClick={() => {
                   setShowPhoneVerification(false)
                   setSmsCode('')
                   setNewPhone('')
                 }}
-                className="flex-1"
+                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm border border-gray-500"
               >
                 Bekor qilish
-              </Button>
+              </button>
             </div>
           </div>
-      </div>
+        </div>
       )}
     </LayoutAdmin>
   )

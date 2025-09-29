@@ -33,6 +33,7 @@ function Sidebar() {
             <SidebarLogo />
             <SidebarMenu />
           </div>
+          
           <SidebarPlan />
           <div className="flex-shrink-0 border-t border-[#EAEFF4] dark:bg-[#202936]">
             <SidebarFooter />

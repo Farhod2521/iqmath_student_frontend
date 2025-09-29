@@ -30,7 +30,7 @@ function SidebarPlan() {
       })
   }, [])
 
-  if (currentRole === 'teacher' || currentRole === 'parent') {
+  if (currentRole === 'teacher' || currentRole === 'parent' || currentRole === 'tutor') {
     return null
   }
 

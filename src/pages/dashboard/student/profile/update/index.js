@@ -270,7 +270,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]">
+                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       To'liq ism <span className="text-[#FF3B30]">*</span>
@@ -334,53 +334,67 @@ const Index = () => {
                     </div>
                   )}
 
-                  <Button onPress={handleProfileUpdate} color="primary">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      console.log('Saqlash button clicked - Asosiy')
+                      handleProfileUpdate()
+                    }} 
+                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
+                  >
                     Saqlash
-                  </Button>
+                  </button>
                 </form>
               </AnimateUp>
             )}
           </div>
 
           {/* Email */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
-            <div
-              onClick={() => setShowDropdownMail(!showDropdownMail)}
-              className="flex justify-between items-center cursor-pointer"
-            >
-              <h4 className="font-medium text-[17px]">Email o'zgartirish</h4>
-              <button>
-                <RightIcon
-                  className={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
-                  color="#BCBFC2"
-                />
-              </button>
-            </div>
-
-            {showDropdownMail && (
-              <AnimateUp>
-                <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
-
-                <form className="space-y-[24px]">
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Email <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <Input 
-                      type="email" 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="email@example.com"
+              {/* <div className="border py-[17px] px-[24px] rounded-[12px]">
+                <div
+                  onClick={() => setShowDropdownMail(!showDropdownMail)}
+                  className="flex justify-between items-center cursor-pointer"
+                >
+                  <h4 className="font-medium text-[17px]">Email o'zgartirish</h4>
+                  <button>
+                    <RightIcon
+                      className={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
+                      color="#BCBFC2"
                     />
-                  </div>
+                  </button>
+                </div>
 
-                  <Button onPress={handleEmailSubmit} color="primary">
-                    Saqlash
-                  </Button>
-                </form>
-              </AnimateUp>
-            )}
-          </div>
+                {showDropdownMail && (
+                  <AnimateUp>
+                    <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
+
+                    <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
+                      <div>
+                        <p className="text-[15px] mb-[8px]">
+                          Email <span className="text-[#FF3B30]">*</span>
+                        </p>
+                        <Input 
+                          type="email" 
+                          value={email} 
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="email@example.com"
+                        />
+                      </div>
+
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          console.log('Saqlash button clicked - Email')
+                          handleEmailSubmit()
+                        }} 
+                        className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
+                      >
+                        Saqlash
+                      </button>
+                    </form>
+                  </AnimateUp>
+                )}
+              </div> */}
 
           {/* Parol */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
@@ -401,7 +415,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]">
+                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       Joriy parol <span className="text-[#FF3B30]">*</span>
@@ -477,13 +491,17 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <Button 
-                    onPress={handlePasswordChange} 
-                    isLoading={isChangingPassword}
-                    color="primary"
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      console.log('Saqlash button clicked - Parol')
+                      handlePasswordChange()
+                    }} 
+                    disabled={isChangingPassword}
+                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
-                    Saqlash
-                  </Button>
+                    {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
+                  </button>
                 </form>
               </AnimateUp>
             )}
@@ -566,25 +584,26 @@ const Index = () => {
             </div>
             
             <div className="flex gap-2">
-              <Button
-                color="primary"
-                onPress={handlePhoneVerification}
-                isLoading={isVerifyingPhone}
-                className="flex-1"
+              <button
+                onClick={() => {
+                  console.log('Tasdiqlash button clicked')
+                  handlePhoneVerification()
+                }}
+                disabled={isVerifyingPhone}
+                className="flex-1 bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
               >
-                Tasdiqlash
-              </Button>
-              <Button
-                variant="bordered"
-                onPress={() => {
+                {isVerifyingPhone ? 'Tasdiqlanmoqda...' : 'Tasdiqlash'}
+              </button>
+              <button
+                onClick={() => {
                   setShowPhoneVerification(false)
                   setSmsCode('')
                   setNewPhone('')
                 }}
-                className="flex-1"
+                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm border border-gray-500"
               >
                 Bekor qilish
-              </Button>
+              </button>
             </div>
           </div>
         </div>

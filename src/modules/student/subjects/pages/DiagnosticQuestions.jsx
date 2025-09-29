@@ -135,6 +135,12 @@ const DiagnosticQuestions = ({ subjectId }) => {
   })
 
   const handleBeginTest = () => {
+    // subjectId null bo'lsa kutish
+    if (!subjectId) {
+      console.log('SubjectId is null, waiting...')
+      return
+    }
+
     beginTest(
       { 
         url: URLS.beginTest, 
@@ -165,8 +171,10 @@ const DiagnosticQuestions = ({ subjectId }) => {
   }
 
   useEffect(() => {
-    handleBeginTest()
-  }, [])
+    if (subjectId) {
+      handleBeginTest()
+    }
+  }, [subjectId])
 
   // natijani ko'rish uchun post
   const { mutate: checkMyResults, isLoading: isLoadingCheck } = usePostQuery({
