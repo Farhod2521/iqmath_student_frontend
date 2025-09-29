@@ -48,6 +48,8 @@ export const URLS = {
   updateProfile: '/api/v1/auth/user/update-profile/',
   changePasswordNew: '/api/v1/auth/user/change-password/',
   verifyPhoneChange: '/api/v1/auth/user/verify-phone-change/',
+  // Tutor coupon URLs
+  tutorCoupons: '/api/v1/tutor/tutor/coupons/',
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',

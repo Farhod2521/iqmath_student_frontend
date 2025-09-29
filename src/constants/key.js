@@ -64,5 +64,8 @@ export const KEYS = {
   createParent: 'createParent',
   
   // Mentor requests keys
-  mentorRequests: 'mentorRequests'
+  mentorRequests: 'mentorRequests',
+  
+  // Tutor coupon keys
+  tutorCoupons: 'tutorCoupons'
 }

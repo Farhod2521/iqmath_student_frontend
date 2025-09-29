@@ -206,14 +206,14 @@ export const getMenuItems = (t) => [
   },
 
   // Tutor role menu items
-  // {
-  //   key: 'tutor-referal',
-  //   path: '/dashboard/tutor/referal',
-  //   label: t('referal'),
-  //   icon: (isActive) => <LuUsers className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
-  //   roles: [RolesList.TUTOR],
-  //   type: MenuType.LINK
-  // },
+  {
+    key: 'tutor-coupons',
+    path: '/dashboard/tutor/coupons',
+    label: 'Kuponlar',
+    icon: (isActive) => <LuShoppingBag className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
+    roles: [RolesList.TUTOR],
+    type: MenuType.LINK
+  },
   {
     key: 'tutor-profile',
     path: '/dashboard/tutor/profile',
