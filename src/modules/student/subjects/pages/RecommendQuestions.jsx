@@ -280,7 +280,7 @@ export default function RecommendQuestions() {
               )}
             </div>
             <div className="flex gap-3 items-center">
-              <ActionSolution selectedQuestion={selectedQuestion} />
+              {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>}
               <ActionInfo />
               <ActionCalculator setShowCalculator={setShowCalculator} />
             </div>

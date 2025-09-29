@@ -290,37 +290,39 @@ export default function SubjectQuestions() {
   }, [questions])
 
   const handleSendAllToMentor = async () => {
-    const dataToSend = get(results, 'data', null);
+    const dataToSend = get(results, 'data', null)
     if (!dataToSend) {
-      toast.error('Yuboriladigan maʼlumot topilmadi!');
-      return;
+      toast.error('Yuboriladigan maʼlumot topilmadi!')
+      return
     }
 
     if (!session?.accessToken) {
-      toast.error('Avtorizatsiya xatosi!');
-      return;
+      toast.error('Avtorizatsiya xatosi!')
+      return
     }
-    
+
     console.log(dataToSend)
     try {
-      await sendToMentor({
-        url: '/api/v1/func_student/student-independent/',
-        attributes: dataToSend, 
-        config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
-      }, {
-        onSuccess: () => {
-          setShowMistake(false)
-          setShowResult(false)
-          setShowSuccessPopup(true)
+      await sendToMentor(
+        {
+          url: '/api/v1/func_student/student-independent/',
+          attributes: dataToSend,
+          config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
         },
-        onError: () => toast.error('Xatolik yuz berdi!')
-      });
+        {
+          onSuccess: () => {
+            setShowMistake(false)
+            setShowResult(false)
+            setShowSuccessPopup(true)
+          },
+          onError: () => toast.error('Xatolik yuz berdi!')
+        }
+      )
     } catch (error) {
-      console.error('Mentorga yuborishda xatolik:', error);
-      toast.error('Xatolik yuz berdi!');
+      console.error('Mentorga yuborishda xatolik:', error)
+      toast.error('Xatolik yuz berdi!')
     }
   }
-
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
   return (
     <div className="font-sf">
@@ -402,7 +404,8 @@ export default function SubjectQuestions() {
             </div>
 
             <div className="flex gap-3 items-center">
-              <ActionSolution selectedQuestion={selectedQuestion} />
+              {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>}
+              {/* */}
               <ActionInfo />
               {['composite', 'text'].includes(selectedQuestion?.question_type) && (
                 <ActionCalculator setShowCalculator={setShowCalculator} />
@@ -446,16 +449,33 @@ export default function SubjectQuestions() {
                 <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
                 <div className="flex flex-wrap justify-center gap-3 pb-[24px] text-sm">
-                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => setShowMistake(true)}>{t('myResults')}</Button>
-                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => setShowResult(false)}>{t('retakeTest')}</Button>
-                  <Button className='bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md' onPress={() => {
-                    const scorePercentage = get(score, 'data.result[0].score', 0)
-                    if (scorePercentage >= 80) {        
-                      router.push(`/dashboard/student/subjects/${router.query.id}/${router.query.chapterId}/${parseInt(router.query.topicId) + 1}`)
-                    } else {
-                      router.push('/dashboard/student/subjects')
-                    }
-                  }}>
+                  <Button
+                    className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md"
+                    onPress={() => setShowMistake(true)}
+                  >
+                    {t('myResults')}
+                  </Button>
+                  <Button
+                    className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md"
+                    onPress={() => setShowResult(false)}
+                  >
+                    {t('retakeTest')}
+                  </Button>
+                  <Button
+                    className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md"
+                    onPress={() => {
+                      const scorePercentage = get(score, 'data.result[0].score', 0)
+                      if (scorePercentage >= 80) {
+                        router.push(
+                          `/dashboard/student/subjects/${router.query.id}/${router.query.chapterId}/${
+                            parseInt(router.query.topicId) + 1
+                          }`
+                        )
+                      } else {
+                        router.push('/dashboard/student/subjects')
+                      }
+                    }}
+                  >
                     {get(score, 'data.result[0].score', 0) >= 80 ? t('nextTopic') : t('toHomePage')}
                   </Button>
                 </div>
@@ -471,20 +491,21 @@ export default function SubjectQuestions() {
               <div className="py-6 px-8 space-y-4">
                 {get(results, 'data.question', []).map((question, index) => (
                   <div key={index} className="bg-white rounded-lg   p-4 flex items-start gap-4">
-                    <div className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
-                      ${question?.answer === false ? 'bg-red-100 text-red-600 border-red-400' : 'bg-green-100 text-green-600 border-green-400'} border-2`}>
+                    <div
+                      className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
+                      ${
+                        question?.answer === false
+                          ? 'bg-red-100 text-red-600 border-red-400'
+                          : 'bg-green-100 text-green-600 border-green-400'
+                      } border-2`}
+                    >
                       {index + 1}
                     </div>
                     <div className="flex-1 min-w-0 text-gray-800">
                       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                         <MathJax dynamic>
-                          <div className="text-gray-800 leading-relaxed"> 
-                            {parse(
-                              i18n.language === 'uz'
-                                ? question?.question_uz
-                                : question?.question_ru
-                              || ''
-                            )}
+                          <div className="text-gray-800 leading-relaxed">
+                            {parse(i18n.language === 'uz' ? question?.question_uz : question?.question_ru || '')}
                           </div>
                         </MathJax>
                       </MathJaxContext>
@@ -510,11 +531,8 @@ export default function SubjectQuestions() {
           )}
         </div>
       </div>
-      
-      <SuccessPopup 
-        open={showSuccessPopup} 
-        onClose={() => setShowSuccessPopup(false)} 
-      />
+
+      <SuccessPopup open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </div>
   )
 }

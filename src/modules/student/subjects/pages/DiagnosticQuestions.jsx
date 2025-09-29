@@ -377,7 +377,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
             </div>
 
             <div className="flex gap-3 items-center">
-              <ActionSolution selectedQuestion={selectedQuestion} />
+              {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>}
               <ActionInfo />
               {['composite', 'text'].includes(selectedQuestion?.question_type) && (
                 <ActionCalculator setShowCalculator={setShowCalculator} />

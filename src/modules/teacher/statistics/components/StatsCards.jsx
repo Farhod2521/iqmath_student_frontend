@@ -7,102 +7,102 @@ const StatsCards = ({ data }) => {
 
   const stats = [
     {
-      key: "totalTeachers",
+      key: 'totalTeachers',
       value: data?.total_teachers || 0,
-      icon: "/icons/teachers-new.svg",
-      badge: { value: t("teachers"), color: "bg-[#E9F9EC] text-[#13DEB9]" },
+      icon: '/icons/teachers-new.svg',
+      badge: { value: t('teachers'), color: 'bg-[#E9F9EC] text-[#13DEB9]' }
     },
     {
-      key: "totalStudents", 
+      key: 'totalStudents',
       value: data?.total_students || 0,
-      icon: "/icons/students-new.svg",
-      badge: { value: t("students"), color: "bg-[#E6F4FF] text-[#5D87FF]" },
+      icon: '/icons/students-new.svg',
+      badge: { value: t('students'), color: 'bg-[#E6F4FF] text-[#5D87FF]' }
     },
     {
-      key: "totalParents",
+      key: 'totalParents',
       value: data?.total_parents || 0,
-      icon: "/icons/parents-new.svg",
-      badge: { value: t("parents"), color: "bg-[#FFF2E6] text-[#FF8A00]" },
+      icon: '/icons/parents-new.svg',
+      badge: { value: t('parents'), color: 'bg-[#FFF2E6] text-[#FF8A00]' }
     },
     {
-      key: "totalTutors",
+      key: 'totalTutors',
       value: data?.total_tutors || 0,
-      icon: "/icons/tutors-new.svg",
-      badge: { value: t("tutors"), color: "bg-[#F3E8FF] text-[#8B5CF6]" },
+      icon: '/icons/tutors-new.svg',
+      badge: { value: t('tutors'), color: 'bg-[#F3E8FF] text-[#8B5CF6]' }
     },
     {
-      key: "totalAmount",
+      key: 'totalAmount',
       value: `${data?.total_amount?.toLocaleString() || 0} so'm`,
-      icon: "/icons/wallet-new.svg",
-      badge: { value: t("totalRevenue"), color: "bg-[#E9F9EC] text-[#13DEB9]" },
+      icon: '/icons/wallet-new.svg',
+      badge: { value: t('totalRevenue'), color: 'bg-[#E9F9EC] text-[#13DEB9]' }
     },
     {
-      key: "year2025",
+      key: 'year2025',
       value: `${data?.year_2025?.toLocaleString() || 0} so'm`,
-      icon: "/icons/calendar-new.svg",
-      badge: { value: t("year2025"), color: "bg-[#E6F4FF] text-[#5D87FF]" },
+      icon: '/icons/calendar-new.svg',
+      badge: { value: t('year2025'), color: 'bg-[#E6F4FF] text-[#5D87FF]' }
     },
     {
-      key: "activeSubscribers",
-      value: data?.active_subscribers || 0,
-      icon: "/icons/active-users-new.svg",
-      badge: { value: t("activeSubscribers"), color: "bg-[#E9F9EC] text-[#13DEB9]" },
-    },
-    {
-      key: "mostSoldPlan",
-      value: data?.most_sold_plan || "N/A",
-      icon: "/icons/award-new.svg",
-      badge: { value: t("mostSold"), color: "bg-[#FFF2E6] text-[#FF8A00]" },
-    },
-    {
-      key: "totalPayments",
-      value: data?.total_payments || 0,
-      icon: "/icons/payment-card.svg",
-      badge: { value: t("totalPayments"), color: "bg-[#E6F4FF] text-[#5D87FF]" },
-    },
-    {
-      key: "successfulPayments",
-      value: data?.successful_payments || 0,
-      icon: "/icons/successful-new.svg",
-      badge: { value: t("successful"), color: "bg-[#E9F9EC] text-[#13DEB9]" },
-    },
-    {
-      key: "pendingPayments",
-      value: data?.pending_payments || 0,
-      icon: "/icons/payment-card.svg",
-      badge: { value: t("pending"), color: "bg-[#FFF2E6] text-[#FF8A00]" },
-    },
-    {
-      key: "failedPayments",
-      value: data?.failed_payments || 0,
-      icon: "/icons/failed-new.svg",
-      badge: { value: t("failed"), color: "bg-[#FFE6E6] text-[#FF4444]" },
-    },
-    {
-      key: "studentCashback",
+      key: 'studentCashback',
       value: `${data?.total_student_cashback || 0} so'm`,
-      icon: "/icons/coins-stack.svg",
-      badge: { value: t("studentCashback"), color: "bg-[#E9F9EC] text-[#13DEB9]" },
+      icon: '/icons/coins-stack.svg',
+      badge: { value: t('studentCashback'), color: 'bg-[#E9F9EC] text-[#13DEB9]' }
     },
     {
-      key: "teacherCashback",
+      key: 'teacherCashback',
       value: `${data?.total_teacher_cashback || 0} so'm`,
-      icon: "/icons/coins-single.svg",
-      badge: { value: t("teacherCashback"), color: "bg-[#E6F4FF] text-[#5D87FF]" },
+      icon: '/icons/coins-single.svg',
+      badge: { value: t('teacherCashback'), color: 'bg-[#E6F4FF] text-[#5D87FF]' }
     },
     {
-      key: "topCouponType",
-      value: data?.top_coupon_type || "N/A",
-      icon: "/icons/clock-orange.svg",
-      badge: { value: t("mostUsed"), color: "bg-[#F3E8FF] text-[#8B5CF6]" },
+      key: 'activeSubscribers',
+      value: data?.active_subscribers || 0,
+      icon: '/icons/active-users-new.svg',
+      badge: { value: t('activeSubscribers'), color: 'bg-[#E9F9EC] text-[#13DEB9]' }
     },
     {
-      key: "studentsDueWithin5Days",
+      key: 'mostSoldPlan',
+      value: data?.most_sold_plan || 'N/A',
+      icon: '/icons/award-new.svg',
+      badge: { value: t('mostSold'), color: 'bg-[#FFF2E6] text-[#FF8A00]' }
+    },
+    {
+      key: 'topCouponType',
+      value: data?.top_coupon_type || 'N/A',
+      icon: '/icons/clock-orange.svg',
+      badge: { value: t('mostUsed'), color: 'bg-[#F3E8FF] text-[#8B5CF6]' }
+    },
+    {
+      key: 'studentsDueWithin5Days',
       value: data?.students_due_within_5_days || 0,
-      icon: "/icons/clock-gray.svg",
-      badge: { value: t("dueIn5Days"), color: "bg-[#FFF2E6] text-[#FF8A00]" },
+      icon: '/icons/clock-gray.svg',
+      badge: { value: t('dueIn5Days'), color: 'bg-[#FFF2E6] text-[#FF8A00]' }
     },
-  ];
+    // {
+    //   key: 'totalPayments',
+    //   value: data?.total_payments || 0,
+    //   icon: '/icons/payment-card.svg',
+    //   badge: { value: t('totalPayments'), color: 'bg-[#E6F4FF] text-[#5D87FF]' }
+    // },
+    {
+      key: 'successfulPayments',
+      value: data?.successful_payments || 0,
+      icon: '/icons/successful-new.svg',
+      badge: { value: t('successful'), color: 'bg-[#E9F9EC] text-[#13DEB9]' }
+    }
+    // {
+    //   key: "pendingPayments",
+    //   value: data?.pending_payments || 0,
+    //   icon: "/icons/payment-card.svg",
+    //   badge: { value: t("pending"), color: "bg-[#FFF2E6] text-[#FF8A00]" },
+    // },
+    // {
+    //   key: "failedPayments",
+    //   value: data?.failed_payments || 0,
+    //   icon: "/icons/failed-new.svg",
+    //   badge: { value: t("failed"), color: "bg-[#FFE6E6] text-[#FF4444]" },
+    // },
+  ]
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-8">
