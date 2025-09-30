@@ -37,8 +37,6 @@ const CouponCard = ({ coupon, onEdit, onDelete, isDeleting }) => {
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">ID:</span>
-              <span className="text-sm font-medium text-gray-700">{coupon.id}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500">Holat:</span>

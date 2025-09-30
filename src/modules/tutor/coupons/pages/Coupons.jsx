@@ -56,6 +56,17 @@ const Coupons = () => {
   }, [couponsData])
 
   const handleCreateCoupon = (couponCode) => {
+    // Validation
+    if (!couponCode.trim()) {
+      toast.error('Kupon kodi kiriting')
+      return
+    }
+
+    if (couponCode.trim().length < 3) {
+      toast.error('Kupon kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+      return
+    }
+
     createCoupon(
       {
         url: URLS.tutorCoupons,
@@ -71,7 +82,9 @@ const Coupons = () => {
         onSuccess: (data) => {
           toast.success('Kupon muvaffaqiyatli yaratildi')
           setIsOpen(false)
-          refetchCoupons()
+          if (refetchCoupons && typeof refetchCoupons === 'function') {
+            refetchCoupons()
+          }
         },
         onError: (error) => {
           const errorMessage = error.response?.data?.error || 
@@ -100,7 +113,9 @@ const Coupons = () => {
           toast.success('Kupon muvaffaqiyatli yangilandi')
           setEditingCoupon(null)
           setIsEditOpen(false)
-          refetchCoupons()
+          if (refetchCoupons && typeof refetchCoupons === 'function') {
+            refetchCoupons()
+          }
         },
         onError: (error) => {
           const errorMessage = error.response?.data?.error || 
@@ -126,7 +141,12 @@ const Coupons = () => {
         {
           onSuccess: (data) => {
             toast.success('Kupon muvaffaqiyatli o\'chirildi')
-            refetchCoupons()
+            // Update local state immediately for better UX
+            setCoupons(prev => prev.filter(coupon => coupon.id !== couponId))
+            // Also refetch to ensure data consistency
+            if (refetchCoupons && typeof refetchCoupons === 'function') {
+              refetchCoupons()
+            }
           },
           onError: (error) => {
             const errorMessage = error.response?.data?.error || 
@@ -137,6 +157,7 @@ const Coupons = () => {
         }
       )
     }
+
   }
 
   const handleEditCoupon = (coupon) => {

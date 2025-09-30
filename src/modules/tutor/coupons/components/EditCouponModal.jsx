@@ -49,11 +49,15 @@ const EditCouponModal = ({ isOpen, onClose, onUpdate, coupon, isLoading }) => {
             placeholder="Masalan: IQMATH50"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-            className="w-full [&>div]:border [&>div]:border-gray-300 [&>div]:focus-within:border-[#5d87ff]"
+            className="w-full"
             variant="bordered"
             size="lg"
             isRequired
             errorMessage={!couponCode.trim() && "Kupon kodi kiritilishi shart"}
+            classNames={{
+              input: "text-[15px] !outline-none",
+              inputWrapper: "border border-[#E9E9E9] rounded-[10px] bg-white hover:border-[#5d87ff] focus-within:border-[#5d87ff]"
+            }}
           />
         </div>
 
