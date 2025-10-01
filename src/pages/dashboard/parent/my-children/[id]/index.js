@@ -1,10 +1,10 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
-import ChildDetail from '@/modules/parent/children/pages/ChildDetail'
+import StudentDetails from '@/modules/teacher/students/page/StudentDetails'
 
 export default function ChildDetailPage() {
   return (
     <LayoutAdmin title="Farzand ma'lumotlari">
-      <ChildDetail />
+      <StudentDetails />
     </LayoutAdmin>
   )
 }

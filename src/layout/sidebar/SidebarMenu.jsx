@@ -8,7 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useSession } from 'next-auth/react'
+
 
 const SidebarMenu = () => {
   const { t } = useTranslation()
@@ -17,7 +17,7 @@ const SidebarMenu = () => {
   const { role } = useRoleDetection()
   const [hasScrollbar, setHasScrollbar] = useState(false)
   const [expandedMenus, setExpandedMenus] = useState({})
-  const { data: session } = useSession()
+
   useEffect(() => {
     const checkScrollbar = () => {
       const menuContainer = document.querySelector('.sidebar-menu')
@@ -26,28 +26,22 @@ const SidebarMenu = () => {
       }
     }
 
-    console.log(userRole)
     checkScrollbar()
     window.addEventListener('resize', checkScrollbar)
     return () => window.removeEventListener('resize', checkScrollbar)
   }, [])
 
-  // Role ga qarab menu itemlarni filterlash
   const menuItems = getMenuItems(t).filter((item) => {
-    // Recommended menu faqat diagnostika o'tgan userlar uchun
     if (item.key === 'recommended' && !user?.has_diagnost) return false
-    
-    // Agar role bo'lsa va item da roles array bo'lsa, role check qilamiz
     if (role && item.roles && Array.isArray(item.roles)) {
       return item.roles.includes(userRole)
     }
-    
-    // Agar role yo'q yoki item da roles yo'q bo'lsa, default true qaytaramiz
+
     return true
   })
 
   const toggleMenu = (key) => {
-    setExpandedMenus(prev => ({
+    setExpandedMenus((prev) => ({
       ...prev,
       [key]: !prev[key]
     }))
@@ -71,30 +65,28 @@ const SidebarMenu = () => {
               // Check if current path matches any active patterns
               let isActive = router.pathname === path || router.pathname.endsWith(path)
               if (activePatterns && activePatterns.length > 0) {
-                isActive = isActive || activePatterns.some(pattern => router.pathname.startsWith(pattern))
+                isActive = isActive || activePatterns.some((pattern) => router.pathname.startsWith(pattern))
               }
-              
+
               if (children) {
                 const isExpanded = isMenuExpanded(key)
-                const hasActiveChild = children.some(child => 
-                  router.pathname === child.path || router.pathname.endsWith(child.path)
+                const hasActiveChild = children.some(
+                  (child) => router.pathname === child.path || router.pathname.endsWith(child.path)
                 )
-                
+
                 return (
                   <li key={key} className="my-[16px] mx-[24px]">
-                    <div 
+                    <div
                       className={`${getMenuItemClasses(hasActiveChild, disabled)} cursor-pointer`}
                       onClick={() => toggleMenu(key)}
                     >
                       {typeof icon === 'function' ? icon(hasActiveChild) : icon}
                       <p className="flex-1">{label}</p>
-                      <ChevronDownIcon 
-                        className={`w-5 h-5 transition-transform duration-200 ${
-                          isExpanded ? 'rotate-180' : ''
-                        }`}
+                      <ChevronDownIcon
+                        className={`w-5 h-5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
                       />
                     </div>
-                    
+
                     {isExpanded && (
                       <ul className="mt-2 ml-6 space-y-1">
                         {children.map((child) => {
@@ -115,7 +107,7 @@ const SidebarMenu = () => {
                   </li>
                 )
               }
-              
+
               return (
                 <li key={key} className="cursor-pointer my-[16px] mx-[24px]">
                   <Link href={disabled ? '#' : path}>
