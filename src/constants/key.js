@@ -67,5 +67,8 @@ export const KEYS = {
   mentorRequests: 'mentorRequests',
   
   // Tutor coupon keys
-  tutorCoupons: 'tutorCoupons'
+  tutorCoupons: 'tutorCoupons',
+  
+  // Tutor referral keys
+  tutorReferrals: 'tutorReferrals'
 }

@@ -11,6 +11,7 @@ import { FiLayers } from 'react-icons/fi'
 import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
+import { PiShareNetwork } from 'react-icons/pi'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -211,6 +212,14 @@ export const getMenuItems = (t) => [
     path: '/dashboard/tutor/coupons',
     label: 'Kuponlar',
     icon: (isActive) => <LuShoppingBag className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
+    roles: [RolesList.TUTOR],
+    type: MenuType.LINK
+  },
+  {
+    key: 'tutor-referrals',
+    path: '/dashboard/tutor/referrals',
+    label: 'Referrallar',
+    icon: (isActive) => <PiShareNetwork className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'} size={26} />,
     roles: [RolesList.TUTOR],
     type: MenuType.LINK
   },

@@ -11,66 +11,65 @@ import { Button } from '@heroui/react'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
-import CouponCard from '../components/CouponCard'
-import CreateCouponModal from '../components/CreateCouponModal'
-import EditCouponModal from '../components/EditCouponModal'
+import ReferralCard from '../components/ReferralCard'
+import CreateReferralModal from '../components/CreateReferralModal'
+import EditReferralModal from '../components/EditReferralModal'
 import EmptyState from '../components/EmptyState'
 
-const Coupons = () => {
+const Referrals = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
-  const [coupons, setCoupons] = useState([])
-  const [editingCoupon, setEditingCoupon] = useState(null)
+  const [referrals, setReferrals] = useState([])
+  const [editingReferral, setEditingReferral] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
 
   const {
-    data: couponsData,
-    isLoading: isCouponsLoading,
-    refetch: refetchCoupons
+    data: referralsData,
+    isLoading: isReferralsLoading,
+    refetch: refetchReferrals
   } = useGetQuery({
-    key: KEYS.tutorCoupons,
-    url: URLS.tutorCoupons,
+    key: KEYS.tutorReferrals,
+    url: URLS.tutorReferrals,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
     enabled: !!session?.accessToken
   })
 
-  const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
-    listKeyId: 'create-coupon'
+  const { mutate: createReferral, isLoading: isCreating } = usePostQuery({
+    listKeyId: 'create-referral'
   })
 
-  const { mutate: updateCoupon, isLoading: isUpdating } = usePutQuery({
-    listKeyId: 'update-coupon'
+  const { mutate: updateReferral, isLoading: isUpdating } = usePutQuery({
+    listKeyId: 'update-referral'
   })
 
-  const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
-    listKeyId: 'delete-coupon'
+  const { mutate: deleteReferral, isLoading: isDeleting } = useDeleteQuery({
+    listKeyId: 'delete-referral'
   })
 
   useEffect(() => {
-    if (couponsData?.data) {
-      setCoupons(couponsData.data)
+    if (referralsData?.data) {
+      setReferrals(referralsData.data)
     }
-  }, [couponsData])
+  }, [referralsData])
 
-  const handleCreateCoupon = (couponCode) => {
-    // Validation
-    if (!couponCode.trim()) {
-      toast.error('Kupon kodi kiriting')
+  const handleCreateReferral = (referralCode) => {
+    if (!referralCode.trim()) {
+      toast.error('Referral kodi kiriting')
       return
     }
 
-    if (couponCode.trim().length < 3) {
-      toast.error('Kupon kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+    if (referralCode.trim().length < 3) {
+      toast.error('Referral kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
       return
     }
 
-    createCoupon(
+    createReferral(
       {
-        url: URLS.tutorCoupons,
-        attributes: { code: couponCode.trim().toUpperCase() },
+        url: URLS.tutorReferrals,
+        attributes: { code: referralCode.trim().toUpperCase() },
         config: {
           headers: {
             'Authorization': `Bearer ${session?.accessToken}`,
@@ -80,27 +79,37 @@ const Coupons = () => {
       },
       {
         onSuccess: (data) => {
-          toast.success('Kupon muvaffaqiyatli yaratildi')
+          toast.success('Referral muvaffaqiyatli yaratildi')
           setIsOpen(false)
-          if (refetchCoupons && typeof refetchCoupons === 'function') {
-            refetchCoupons()
+          if (refetchReferrals && typeof refetchReferrals === 'function') {
+            refetchReferrals()
           }
         },
         onError: (error) => {
           const errorMessage = error.response?.data?.error || 
                              error.response?.data?.message || 
-                             'Kupon yaratishda xatolik yuz berdi'
+                             'Referral yaratishda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
     )
   }
 
-  const handleUpdateCoupon = (couponCode) => {
-    updateCoupon(
+  const handleUpdateReferral = (referralCode) => {
+    if (!referralCode.trim()) {
+      toast.error('Referral kodi kiriting')
+      return
+    }
+
+    if (referralCode.trim().length < 3) {
+      toast.error('Referral kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+      return
+    }
+
+    updateReferral(
       {
-        url: `${URLS.tutorCoupons}${editingCoupon.id}/`,
-        data: { code: couponCode.trim().toUpperCase() },
+        url: `${URLS.tutorReferrals}${editingReferral.id}/`,
+        data: { code: referralCode.trim().toUpperCase() },
         config: {
           headers: {
             'Authorization': `Bearer ${session?.accessToken}`,
@@ -110,28 +119,28 @@ const Coupons = () => {
       },
       {
         onSuccess: (data) => {
-          toast.success('Kupon muvaffaqiyatli yangilandi')
-          setEditingCoupon(null)
+          toast.success('Referral muvaffaqiyatli yangilandi')
+          setEditingReferral(null)
           setIsEditOpen(false)
-          if (refetchCoupons && typeof refetchCoupons === 'function') {
-            refetchCoupons()
+          if (refetchReferrals && typeof refetchReferrals === 'function') {
+            refetchReferrals()
           }
         },
         onError: (error) => {
           const errorMessage = error.response?.data?.error || 
                              error.response?.data?.message || 
-                             'Kupon yangilashda xatolik yuz berdi'
+                             'Referral yangilashda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
     )
   }
 
-  const handleDeleteCoupon = (couponId) => {
-    if (window.confirm('Bu kuponi o\'chirishni xohlaysizmi?')) {
-      deleteCoupon(
+  const handleDeleteReferral = (referralId) => {
+    if (window.confirm('Bu referralni o\'chirishni xohlaysizmi?')) {
+      deleteReferral(
         {
-          url: `${URLS.tutorCoupons}${couponId}/`,
+          url: `${URLS.tutorReferrals}${referralId}/`,
           config: {
             headers: {
               'Authorization': `Bearer ${session?.accessToken}`
@@ -140,37 +149,34 @@ const Coupons = () => {
         },
         {
           onSuccess: (data) => {
-            toast.success('Kupon muvaffaqiyatli o\'chirildi')
-            // Update local state immediately for better UX
-            setCoupons(prev => prev.filter(coupon => coupon.id !== couponId))
-            // Also refetch to ensure data consistency
-            if (refetchCoupons && typeof refetchCoupons === 'function') {
-              refetchCoupons()
+            toast.success('Referral muvaffaqiyatli o\'chirildi')
+            setReferrals(prev => prev.filter(referral => referral.id !== referralId))
+            if (refetchReferrals && typeof refetchReferrals === 'function') {
+              refetchReferrals()
             }
           },
           onError: (error) => {
             const errorMessage = error.response?.data?.error || 
                                error.response?.data?.message || 
-                               'Kupon o\'chirishda xatolik yuz berdi'
+                               'Referral o\'chirishda xatolik yuz berdi'
             toast.error(errorMessage)
           }
         }
       )
     }
-
   }
 
-  const handleEditCoupon = (coupon) => {
-    setEditingCoupon(coupon)
+  const handleEditReferral = (referral) => {
+    setEditingReferral(referral)
     setIsEditOpen(true)
   }
 
   const handleAddNew = () => {
-    setEditingCoupon(null)
+    setEditingReferral(null)
     setIsOpen(true)
   }
 
-  if (isCouponsLoading) {
+  if (isReferralsLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -188,18 +194,18 @@ const Coupons = () => {
             className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
           >
             <PlusIcon className="w-5 h-5" />
-            Yangi kupon
+            Yangi referral
           </Button>
         </div>
 
-        {coupons.length > 0 ? (
+        {referrals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {coupons.map((coupon) => (
-              <CouponCard
-                key={coupon.id}
-                coupon={coupon}
-                onEdit={handleEditCoupon}
-                onDelete={handleDeleteCoupon}
+            {referrals.map((referral) => (
+              <ReferralCard
+                key={referral.id}
+                referral={referral}
+                onEdit={handleEditReferral}
+                onDelete={handleDeleteReferral}
                 isDeleting={isDeleting}
               />
             ))}
@@ -209,22 +215,22 @@ const Coupons = () => {
         )}
       </div>
 
-      <CreateCouponModal
+      <CreateReferralModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onCreate={handleCreateCoupon}
+        onCreate={handleCreateReferral}
         isLoading={isCreating}
       />
 
-      <EditCouponModal
+      <EditReferralModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
-        onUpdate={handleUpdateCoupon}
-        coupon={editingCoupon}
+        onUpdate={handleUpdateReferral}
+        referral={editingReferral}
         isLoading={isUpdating}
       />
     </div>
   )
 }
 
-export default Coupons
+export default Referrals

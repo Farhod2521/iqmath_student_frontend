@@ -100,6 +100,9 @@ export const URLS = {
   paymentPlans: "/api/v1/payments/plans/",
   
   // Mentor requests endpoints
-  mentorRequestsList: "/api/v1/func_student/my-unsolved-question/list/"
-}
+  mentorRequestsList: "/api/v1/func_student/my-unsolved-question/list/",
   
+  // Tutor referrals endpoints
+  tutorCoupons: "/api/v1/tutor/tutor/coupons/",
+  tutorReferrals: "/api/v1/tutor/tutor/referrals/"
+}

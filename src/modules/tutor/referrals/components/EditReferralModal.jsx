@@ -1,24 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '@heroui/react'
 import toast from 'react-hot-toast'
 
-const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
-  const [couponCode, setCouponCode] = useState('')
+const EditReferralModal = ({ isOpen, onClose, onUpdate, referral, isLoading }) => {
+  const [referralCode, setReferralCode] = useState('')
+
+  useEffect(() => {
+    if (referral) {
+      setReferralCode(referral.code)
+    }
+  }, [referral])
 
   const handleSubmit = () => {
-    if (!couponCode.trim()) {
+    if (!referralCode.trim()) {
+      toast.error('Referral kodi kiriting')
       return
     }
 
-    if (couponCode.trim().length < 3) {
+    if (referralCode.trim().length < 3) {
+      toast.error('Referral kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
       return
     }
 
-    onCreate(couponCode)
+    onUpdate(referralCode)
   }
 
   const handleClose = () => {
-    setCouponCode('')
+    setReferralCode('')
     onClose()
   }
 
@@ -29,21 +37,20 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
       <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-md w-full p-6">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-[#2A3547] dark:text-white mb-2">
-            Yangi kupon yaratish
+            Referralni tahrirlash
           </h2>
         </div>
 
         <div className="mb-6">
-       
           <Input
-            placeholder="Masalan: IQMATH50"
-            value={couponCode}
-            onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+            placeholder="Masalan: REFERAL123"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
             className="w-full"
             variant="bordered"
             size="lg"
             isRequired
-            errorMessage={!couponCode.trim() && "Kupon kodi kiritilishi shart"}
+            errorMessage={!referralCode.trim() && "Referral kodi kiritilishi shart"}
             classNames={{
               input: "text-[15px] !outline-none",
               inputWrapper: "border border-[#E9E9E9] rounded-[10px] bg-white hover:border-[#5d87ff] focus-within:border-[#5d87ff]"
@@ -62,16 +69,16 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={!couponCode.trim() || isLoading}
+            disabled={!referralCode.trim() || isLoading}
             className="flex-1 py-4 text-lg bg-[#5D87FF] hover:bg-[#4570EA] disabled:bg-gray-400 text-white rounded-xl font-medium transition-colors flex items-center justify-center"
           >
             {isLoading ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Yaratilmoqda...
+                Saqlanmoqda...
               </>
             ) : (
-              'Yaratish'
+              'Saqlash'
             )}
           </button>
         </div>
@@ -80,4 +87,4 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
   )
 }
 
-export default CreateCouponModal
+export default EditReferralModal
