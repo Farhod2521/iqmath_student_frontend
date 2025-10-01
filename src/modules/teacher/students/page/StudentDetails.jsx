@@ -51,7 +51,7 @@ const StudentDetails = () => {
           <div className="flex flex-col items-center text-center">
             <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} className="rounded-full mb-4" />
             <h1 className="text-xl font-bold">{studentData.full_name}</h1>
-            {user?.role === RolesList.TUTOR || user?.role === RolesList.ADMIN ? (
+            {user?.role === RolesList.TEACHER || user?.role === RolesList.ADMIN ? (
               <button
                 onClick={() => setIsRewardModalOpen(true)}
                 className="mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"

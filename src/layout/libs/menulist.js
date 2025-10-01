@@ -302,27 +302,27 @@ export const getMenuItems = (t) => [
   {
     key: 'tutor-coupons',
     path: '/dashboard/tutor/coupons',
-    label: 'Kuponlar',
+    label: 'Kuponli foydalanuvchilar',
     icon: (isActive) => (
       <LuShoppingBag
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR],
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
     key: 'tutor-referrals',
     path: '/dashboard/tutor/referrals',
-    label: 'Referrallar',
+    label: 'Havola orqali qo‘shilganlar',
     icon: (isActive) => (
       <PiShareNetwork
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR],
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {

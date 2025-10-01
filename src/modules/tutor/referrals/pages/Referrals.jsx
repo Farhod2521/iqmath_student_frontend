@@ -221,14 +221,6 @@ const Referrals = () => {
         onCreate={handleCreateReferral}
         isLoading={isCreating}
       />
-
-      <EditReferralModal
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        onUpdate={handleUpdateReferral}
-        referral={editingReferral}
-        isLoading={isUpdating}
-      />
     </div>
   )
 }

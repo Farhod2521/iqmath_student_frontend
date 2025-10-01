@@ -65,44 +65,44 @@ export const URLS = {
   studentStatistics: 'api/v1/func_student/student-statistics/',
   studentSubjectChapters: '/api/v1/func_student/students/',
   // Drag & Drop API endpoints
-  reorderSubjects: "/api/v1/func_teacher/subjects/reorder/",
-  reorderChapters: "/api/v1/func_teacher/chapters/reorder/",
-  reorderTopics: "/api/v1/func_teacher/topics/reorder/",
+  reorderSubjects: '/api/v1/func_teacher/subjects/reorder/',
+  reorderChapters: '/api/v1/func_teacher/chapters/reorder/',
+  reorderTopics: '/api/v1/func_teacher/topics/reorder/',
 
   // Mentor project subject endpoints
-  chapters: "/api/v1/func_teacher/my-chapters/list/",
-  createChapter: "/api/v1/func_teacher/my-chapters/create/",
-  updateChapter: "/api/v1/func_teacher/my-chapters/list/",
-  deleteChapter: "/api/v1/func_teacher/my-chapters/list/",
-  topics: "/api/v1/func_teacher/my-topics/list/",
-  createTopic: "/api/v1/func_teacher/my-topics/create/",
-  updateTopic: "/api/v1/func_teacher/my-topics/list/",
-  deleteTopic: "/api/v1/func_teacher/my-topics/list/",
-  questionList: "/api/v1/func_teacher/my-question/list/",
-  createQuestion: "/api/v1/func_teacher/my-question/create/",
-  updateQuestion: "/api/v1/func_teacher/my-question/update/",
-  deleteQuestion: "/api/v1/func_teacher/my-question/delete/",
-  importExcel: "/api/v1/func_teacher/xlsx-import/",
-  
+  chapters: '/api/v1/func_teacher/my-chapters/list/',
+  createChapter: '/api/v1/func_teacher/my-chapters/create/',
+  updateChapter: '/api/v1/func_teacher/my-chapters/list/',
+  deleteChapter: '/api/v1/func_teacher/my-chapters/list/',
+  topics: '/api/v1/func_teacher/my-topics/list/',
+  createTopic: '/api/v1/func_teacher/my-topics/create/',
+  updateTopic: '/api/v1/func_teacher/my-topics/list/',
+  deleteTopic: '/api/v1/func_teacher/my-topics/list/',
+  questionList: '/api/v1/func_teacher/my-question/list/',
+  createQuestion: '/api/v1/func_teacher/my-question/create/',
+  updateQuestion: '/api/v1/func_teacher/my-question/update/',
+  deleteQuestion: '/api/v1/func_teacher/my-question/delete/',
+  importExcel: '/api/v1/func_teacher/xlsx-import/',
+
   // Friends API endpoints
-  friends: "/api/v1/func_student/friends/",
-  friendInvites: "/api/v1/func_student/friend-invites/",
-  sendFriendInvite: "/api/v1/func_student/send-friend-invite/",
-  acceptFriendInvite: "/api/v1/func_student/accept-friend-invite/",
-  rejectFriendInvite: "/api/v1/func_student/reject-friend-invite/",
-  removeFriend: "/api/v1/func_student/remove-friend/",
-  generateInviteLink: "/api/v1/func_student/generate-invite-link/",
-  myReferrals: "/api/v1/func_student/my-referrals/",
-  products: "/api/v1/management/products/",
-  exchangeProduct: "/api/v1/func_student/my-products/exchange/",
-  purchasedProducts: "/api/v1/func_student/my-products/exchange/list/",
-  checkCoupon: "/api/v1/payments/check-coupon/",
-  paymentPlans: "/api/v1/payments/plans/",
-  
+  friends: '/api/v1/func_student/friends/',
+  friendInvites: '/api/v1/func_student/friend-invites/',
+  sendFriendInvite: '/api/v1/func_student/send-friend-invite/',
+  acceptFriendInvite: '/api/v1/func_student/accept-friend-invite/',
+  rejectFriendInvite: '/api/v1/func_student/reject-friend-invite/',
+  removeFriend: '/api/v1/func_student/remove-friend/',
+  generateInviteLink: '/api/v1/func_student/generate-invite-link/',
+  myReferrals: '/api/v1/func_student/my-referrals/',
+  products: '/api/v1/management/products/',
+  exchangeProduct: '/api/v1/func_student/my-products/exchange/',
+  purchasedProducts: '/api/v1/func_student/my-products/exchange/list/',
+  checkCoupon: '/api/v1/payments/check-coupon/',
+  paymentPlans: '/api/v1/payments/plans/',
+
   // Mentor requests endpoints
-  mentorRequestsList: "/api/v1/func_student/my-unsolved-question/list/",
-  
+  mentorRequestsList: '/api/v1/func_student/my-unsolved-question/list/',
+
   // Tutor referrals endpoints
-  tutorCoupons: "/api/v1/tutor/tutor/coupons/",
-  tutorReferrals: "/api/v1/tutor/tutor/referrals/"
+  tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',
+  tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/'
 }

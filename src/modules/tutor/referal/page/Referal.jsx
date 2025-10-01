@@ -1,11 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, Button } from '@heroui/react'
-import { 
-  UserPlus, 
-  Link,
-  Gift
-} from 'lucide-react'
+import { UserPlus, Link, Gift } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ContentLoader from '@/components/loader/content-loader'
 import useGetQuery from '@/hooks/api/useGetQuery'
@@ -15,7 +11,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import CreateReferalModal from '../components/CreateReferalModal'
 import { useUserStore } from '@/store'
-  
+
 ModuleRegistry.registerModules([AllCommunityModule])
 
 const Referal = () => {
@@ -24,7 +20,7 @@ const Referal = () => {
   const [copied, setCopied] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const {
-    data: referralsData,  
+    data: referralsData,
     isLoading: isLoadingReferrals,
     isFetching: isFetchingReferrals
   } = useGetQuery({
@@ -33,17 +29,21 @@ const Referal = () => {
   })
   const user = useUserStore()
 
-  const data = referralsData?.data?.map((item, index) => ({
-    ...item,
-    index: index + 1
-  })) || []
+  const data =
+    referralsData?.data?.map((item, index) => ({
+      ...item,
+      index: index + 1
+    })) || []
+
+  const linktext = useMemo(() => {
+    return `https://iqmath.uz/?referral_code=${user.user.identification}`
+  }, [user])
 
   useEffect(() => {
-    console.log('User:', user)
     if (user?.user?.identification) {
-      setInviteLink(`https://iqmath.uz/?referral_code=${user.user.identification}`)
+      setInviteLink(linktext)
     }
-  }, [user?.user?.identification, user])  
+  }, [user?.user?.identification, user])
 
   const handleCopyLink = async () => {
     try {
@@ -64,15 +64,14 @@ const Referal = () => {
           text: t('inviteMessage'),
           url: inviteLink
         })
-      } catch (err) {
-      }
+      } catch (err) {}
     } else {
       handleCopyLink()
     }
   }
 
   const formatDate = (dateString) => {
-     return dateString.slice(0, 10)
+    return dateString.slice(0, 10)
   }
 
   const colDefs = [
@@ -90,10 +89,9 @@ const Referal = () => {
       flex: 2,
       cellRenderer: (params) => (
         <div className="flex items-center gap-3">
-         
           <span className="font-medium text-[15px]">{params.value || '-'}</span>
         </div>
-      ) 
+      )
     },
     {
       headerName: t('referredOn'),
@@ -115,7 +113,7 @@ const Referal = () => {
           className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2"
         >
           <UserPlus size={20} />
-          {t('inviteStudent', 'O\'quvchi taklif qilish')}
+          {t('inviteStudent', "O'quvchi taklif qilish")}
         </Button>
       </div>
 
@@ -126,24 +124,24 @@ const Referal = () => {
           </div>
         ) : (
           <>
-            {(!data || data.length === 0) ? (
+            {!data || data.length === 0 ? (
               <Card className="border-none shadow-sm bg-white rounded-xl">
                 <div className="text-center py-16 px-6">
                   {/* Icon */}
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <UserPlus size={40} className="text-gray-400" />
                   </div>
-                  
+
                   {/* Main Message */}
                   <h3 className="text-xl font-bold text-black mb-3">
-                    {t('noInvitedStudents', 'Taklif qilingan o\'quvchilar mavjud emas!')}
+                    {t('noInvitedStudents', "Taklif qilingan o'quvchilar mavjud emas!")}
                   </h3>
-                  
+
                   {/* Description */}
                   <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
-                    {t('inviteStudentsDescription', 'O\'quvchilaringizni taklif qiling va ularni ro\'yxatdan o\'tkazing')}
+                    {t('inviteStudentsDescription', "O'quvchilaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
                   </p>
-                  
+
                   {/* Action Buttons */}
                   <div className="flex gap-4 justify-center">
                     <Button
@@ -153,7 +151,7 @@ const Referal = () => {
                       <Link size={20} />
                       {t('referralLink', 'Referal link')}
                     </Button>
-                    
+
                     <Button
                       onClick={() => setIsModalOpen(true)}
                       className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2"
@@ -184,14 +182,14 @@ const Referal = () => {
         )}
       </div>
 
-      <CreateReferalModal 
-        isModalOpen={isModalOpen} 
-        setIsModalOpen={setIsModalOpen} 
-        inviteLink={inviteLink} 
-        handleCopyLink={handleCopyLink} 
-        handleShare={handleShare} 
-        copied={copied} 
-        setCopied={setCopied} 
+      <CreateReferalModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        inviteLink={inviteLink}
+        handleCopyLink={handleCopyLink}
+        handleShare={handleShare}
+        copied={copied}
+        setCopied={setCopied}
       />
     </div>
   )
