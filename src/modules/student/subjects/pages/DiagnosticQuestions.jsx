@@ -142,9 +142,9 @@ const DiagnosticQuestions = ({ subjectId }) => {
     }
 
     beginTest(
-      { 
-        url: URLS.beginTest, 
-        attributes: { 
+      {
+        url: URLS.beginTest,
+        attributes: {
           level: tab,
           subject_id: parseInt(subjectId)
         },
@@ -154,6 +154,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
       },
       {
         onSuccess: (res) => {
+          console.log('RES', res)
           setTestQuestions(res?.data?.questions)
           setShowNextModal(false)
           // Yangi test boshlanganda state'larni tozalash
@@ -201,7 +202,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
       .filter((q) => q.question_type === 'choice')
       .map((q) => {
         const selectedLetter = choiceAnswers[q.id]
-        const selectedChoice = q.choices?.find(choice => choice.letter === selectedLetter)
+        const selectedChoice = q.choices?.find((choice) => choice.letter === selectedLetter)
         return {
           question_id: q.id,
           choices: selectedChoice ? [selectedChoice.id] : []
@@ -216,13 +217,12 @@ const DiagnosticQuestions = ({ subjectId }) => {
           const answer = userSubAnswers[sub.id] || ''
           return wrapPlainMath(answer)
         })
-        
+
         return {
           question_id: q.id,
           answers: sub_answers
         }
       })
-
 
     checkMyResults(
       {
@@ -279,9 +279,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
 
     Object.entries(compositeAnswers).forEach(([questionId, subAnswers]) => {
       if (subAnswers && typeof subAnswers === 'object') {
-        const hasAnyAnswer = Object.values(subAnswers).some(
-          answer => answer && answer.trim() !== ''
-        )
+        const hasAnyAnswer = Object.values(subAnswers).some((answer) => answer && answer.trim() !== '')
         if (hasAnyAnswer) {
           answeredQuestions.add(questionId)
         }
@@ -293,7 +291,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
 
   // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
   const allQuestionsList = useMemo(() => {
-    return testQuestions ? testQuestions.map(q => String(q.id)) : []
+    return testQuestions ? testQuestions.map((q) => String(q.id)) : []
   }, [testQuestions])
 
   if (isLoading || !testQuestions)
@@ -377,7 +375,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
             </div>
 
             <div className="flex gap-3 items-center">
-              {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>}
+              {/* {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>} */}
               <ActionInfo />
               {['composite', 'text'].includes(selectedQuestion?.question_type) && (
                 <ActionCalculator setShowCalculator={setShowCalculator} />
