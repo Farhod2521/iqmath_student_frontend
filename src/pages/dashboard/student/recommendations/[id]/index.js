@@ -57,9 +57,9 @@ const SubjectsPage = () => {
         <div className="grid grid-cols-12 gap-4 md:gap-6">
           <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
             <ul>
-              {chapters.map((chapter) => (
+              {chapters.map((chapter, idx) => (
                 <li
-                  key={chapter.id}
+                  key={idx}
                   onClick={() => setSelectedChapterId(chapter.id)}
                   className={`cursor-pointer border-b border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
                     selectedChapterId === chapter.id ? 'bg-blue-50' : 'bg-white'
@@ -79,6 +79,7 @@ const SubjectsPage = () => {
                 <ul>
                   {topics.map((topic, index) => (
                     <li
+                      key={index}
                       // key={index}
                       // onClick={() =>
                       //   router.push(`/dashboard/student/recommendations/${id}/${selectedChapterId}/${topic.id}`)

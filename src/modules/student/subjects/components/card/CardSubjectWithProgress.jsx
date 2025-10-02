@@ -21,11 +21,9 @@ const CardSubjectWithProgress = ({ item,  onRecommendationsClick, onDiagnosticsC
   }
 
   const handleCardClick = () => {
-    console.log("SALOM")
     if (isDiagnostic) {
-      console.log("salom")
       onDiagnosticsClick()
-    } else {  
+    } else {
       onRecommendationsClick()
     }
   }

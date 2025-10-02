@@ -26,30 +26,21 @@ const Recommendations = () => {
 
   const subjectsData = useMemo(() => {
     if (!recommendations?.data) return []
-    return groupSubjectsByType(recommendations.data, i18n.language)
+    const fitlerData = recommendations?.data.filter((i) => i.has_taken_diagnostic) || []
+    return groupSubjectsByType(fitlerData, i18n.language)
   }, [recommendations, i18n.language])
 
   if (isLoading || isFetching) return <ContentLoader />
-
-  const filteredData = subjectsData.filter(({ data }) => {
-    const hasDiagnostic = data && data.length > 0 && data.some(item => {
-      // To'g'ri field nomi - oxirida bo'sh joy bor
-      return item['has_taken_diagnostic '] === true
-    })
-    return hasDiagnostic
-  })
-
+  // dashboard/student/recommendations/1
+  // dashboard/student/recommendations/1
   return (
     <div>
-      {filteredData.map(({ type, data }, idx) => {
-        // Faqat diagnostic o'tgan fanlarni filter qilish
-        const diagnosticPassedSubjects = data.filter(item => item['has_taken_diagnostic '] === true)
-        
+      {subjectsData.map(({ type, data }, idx) => {
         return (
           <section key={idx} className="pb-4">
             <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
             <div className="flex flex-wrap gap-4 mb-4">
-              {diagnosticPassedSubjects.map((item, index) => (
+              {data.map((item, index) => (
                 <CardSubjectWithProgress
                   onDiagnosticsClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
                   onRecommendationsClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}
