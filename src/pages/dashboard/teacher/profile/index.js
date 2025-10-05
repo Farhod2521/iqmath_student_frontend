@@ -30,14 +30,15 @@ const Index = () => {
       <div className="grid grid-cols-12 gap-x-[24px]">
         <div className="col-span-5 border border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
-            <Image
-              src={'/images/avatar-profile.png'}
-              alt="avatar"
-              width={100}
-              height={100}
-              className="rounded-full bg-black"
-            />
-
+            <div className="group w-[100px] h-[100px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200">
+              <Image
+                src="/icons/avatar.png"
+                alt="user"
+                width={80}
+                height={80}
+                className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
+              />
+            </div>
             <h3 className="text-[17px] font-semibold mt-[16px] mb-[6px]">
               {get(teacherProfile, 'data.full_name', '')}
             </h3>

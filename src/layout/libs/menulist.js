@@ -81,20 +81,20 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
-  {
-    key: 'referal',
-    path: '/dashboard/tutor/referal',
-    label: t('referal'),
-    icon: (isActive) => (
-      <LuUsers
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'referal',
+  //   path: '/dashboard/tutor/referal',
+  //   label: t('referal'),
+  //   icon: (isActive) => (
+  //     <LuUsers
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   disabled: false,
+  //   roles: [RolesList.TUTOR, RolesList.ADMIN],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'chat',
     path: '/dashboard/student/chat',

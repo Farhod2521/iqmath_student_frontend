@@ -29,7 +29,7 @@ function AuthSignIn() {
         } else if (session?.role === 'parent') {
           router.push('/dashboard/parent/my-children')
         } else if (session?.role === 'tutor') {
-          router.push('/dashboard/tutor/referal')
+          router.push('/dashboard/tutor/referrals')
         } else {
           router.push('/dashboard/student/subjects')
         }

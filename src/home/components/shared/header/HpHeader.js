@@ -111,7 +111,6 @@ const HpHeader = () => {
                   </IconButton>
                 </a>
                 <LanguageDropdown />
-
               </div>
             </>
           )}

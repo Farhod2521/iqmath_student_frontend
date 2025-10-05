@@ -36,7 +36,7 @@ const Referal = () => {
     })) || []
 
   const linktext = useMemo(() => {
-    return `https://iqmath.uz/?referral_code=${user.user.identification}`
+    return `https://iqmath.uz/?referral_code=${user?.user?.identification}`
   }, [user])
 
   useEffect(() => {
@@ -101,11 +101,53 @@ const Referal = () => {
     }
   ]
 
-  if (isLoadingReferrals || isFetchingReferrals) return <ContentLoader />
+  if (isLoadingReferrals || isFetchingReferrals)
+    return (
+      <div className="relative">
+        <ContentLoader classNames="!min-h-[400px] !w-full" />
+      </div>
+    )
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-none shadow-sm bg-white rounded-xl">
+          <div className="text-center py-16 px-6">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <UserPlus size={40} className="text-gray-400" />
+            </div>
+            <h3 className="text-xl font-bold text-black mb-3">
+              {t('noInvitedStudents', "Taklif qilingan o'quvchilar mavjud emas!")}
+            </h3>
+            <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
+              {t('inviteStudentsDescription', "O'quvchilaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button
+                onPress={() => setIsModalOpen(true)}
+                className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+              >
+                <Link size={20} />
+                {t('referralLink', 'Referal link')}
+              </Button>
+            </div>
+          </div>
+        </Card>
+        <CreateReferalModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          inviteLink={inviteLink}
+          handleCopyLink={handleCopyLink}
+          handleShare={handleShare}
+          copied={copied}
+          setCopied={setCopied}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header with Invite Button */}
       <div className="flex items-center justify-between">
         <div></div>
         <Button
@@ -116,70 +158,21 @@ const Referal = () => {
           {t('inviteStudent', "O'quvchi taklif qilish")}
         </Button>
       </div>
-
       <div className="flex flex-col">
-        {isLoadingReferrals ? (
-          <div className="relative">
-            <ContentLoader classNames="!min-h-[400px] !w-full" />
-          </div>
-        ) : (
-          <>
-            {!data || data.length === 0 ? (
-              <Card className="border-none shadow-sm bg-white rounded-xl">
-                <div className="text-center py-16 px-6">
-                  {/* Icon */}
-                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <UserPlus size={40} className="text-gray-400" />
-                  </div>
-
-                  {/* Main Message */}
-                  <h3 className="text-xl font-bold text-black mb-3">
-                    {t('noInvitedStudents', "Taklif qilingan o'quvchilar mavjud emas!")}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
-                    {t('inviteStudentsDescription', "O'quvchilaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
-                  </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-4 justify-center">
-                    <Button
-                      onClick={() => setIsModalOpen(true)}
-                      className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2"
-                    >
-                      <Link size={20} />
-                      {t('referralLink', 'Referal link')}
-                    </Button>
-
-                    <Button
-                      onClick={() => setIsModalOpen(true)}
-                      className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2"
-                    >
-                      <Gift size={20} />
-                      {t('promoCode', 'Promo kod')}
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ) : (
-              <div style={{ width: '100%', height: 'auto' }} className="relative">
-                <AgGridReact
-                  rowData={data}
-                  columnDefs={colDefs}
-                  domLayout="autoHeight"
-                  className="custom-grid"
-                  pagination={false}
-                  defaultColDef={{
-                    sortable: true,
-                    filter: true,
-                    resizable: true
-                  }}
-                />
-              </div>
-            )}
-          </>
-        )}
+        <div style={{ width: '100%', height: 'auto' }} className="relative">
+          <AgGridReact
+            rowData={data}
+            columnDefs={colDefs}
+            domLayout="autoHeight"
+            className="custom-grid"
+            pagination={false}
+            defaultColDef={{
+              sortable: true,
+              filter: true,
+              resizable: true
+            }}
+          />
+        </div>
       </div>
 
       <CreateReferalModal

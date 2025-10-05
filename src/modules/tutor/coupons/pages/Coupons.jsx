@@ -29,13 +29,18 @@ const Coupons = () => {
     isLoading: isCouponsLoading,
     refetch: refetchCoupons
   } = useGetQuery({
-    key: KEYS.tutorCoupons,
-    url: URLS.tutorCoupons,
+    key: KEYS.myCuponers,
+    url: URLS.myCuponers,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
     enabled: !!session?.accessToken
   })
+  const data =
+    couponsData?.data?.map((item, index) => ({
+      ...item,
+      index: index + 1
+    })) || []
 
   const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
     listKeyId: 'create-coupon'
@@ -63,7 +68,7 @@ const Coupons = () => {
     }
 
     if (couponCode.trim().length < 3) {
-      toast.error('Kupon kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+      toast.error("Kupon kodi kamida 3 ta belgidan iborat bo'lishi kerak")
       return
     }
 
@@ -73,7 +78,7 @@ const Coupons = () => {
         attributes: { code: couponCode.trim().toUpperCase() },
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -87,9 +92,8 @@ const Coupons = () => {
           }
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.error || 
-                             error.response?.data?.message || 
-                             'Kupon yaratishda xatolik yuz berdi'
+          const errorMessage =
+            error.response?.data?.error || error.response?.data?.message || 'Kupon yaratishda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
@@ -103,7 +107,7 @@ const Coupons = () => {
         data: { code: couponCode.trim().toUpperCase() },
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -118,9 +122,8 @@ const Coupons = () => {
           }
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.error || 
-                             error.response?.data?.message || 
-                             'Kupon yangilashda xatolik yuz berdi'
+          const errorMessage =
+            error.response?.data?.error || error.response?.data?.message || 'Kupon yangilashda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
@@ -128,36 +131,34 @@ const Coupons = () => {
   }
 
   const handleDeleteCoupon = (couponId) => {
-    if (window.confirm('Bu kuponi o\'chirishni xohlaysizmi?')) {
+    if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
         {
           url: `${URLS.tutorCoupons}${couponId}/`,
           config: {
             headers: {
-              'Authorization': `Bearer ${session?.accessToken}`
+              Authorization: `Bearer ${session?.accessToken}`
             }
           }
         },
         {
           onSuccess: (data) => {
-            toast.success('Kupon muvaffaqiyatli o\'chirildi')
+            toast.success("Kupon muvaffaqiyatli o'chirildi")
             // Update local state immediately for better UX
-            setCoupons(prev => prev.filter(coupon => coupon.id !== couponId))
+            setCoupons((prev) => prev.filter((coupon) => coupon.id !== couponId))
             // Also refetch to ensure data consistency
             if (refetchCoupons && typeof refetchCoupons === 'function') {
               refetchCoupons()
             }
           },
           onError: (error) => {
-            const errorMessage = error.response?.data?.error || 
-                               error.response?.data?.message || 
-                               'Kupon o\'chirishda xatolik yuz berdi'
+            const errorMessage =
+              error.response?.data?.error || error.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
             toast.error(errorMessage)
           }
         }
       )
     }
-
   }
 
   const handleEditCoupon = (coupon) => {
@@ -169,6 +170,33 @@ const Coupons = () => {
     setEditingCoupon(null)
     setIsOpen(true)
   }
+
+  const colDefs = [
+    {
+      headerName: '№',
+      field: 'index',
+      maxWidth: 80,
+      cellClass: 'text-center',
+      sortable: false,
+      filter: false
+    },
+    {
+      headerName: t('fullName'),
+      field: 'full_name',
+      flex: 2,
+      cellRenderer: (params) => (
+        <div className="flex items-center gap-3">
+          <span className="font-medium text-[15px]">{params.value || '-'}</span>
+        </div>
+      )
+    },
+    {
+      headerName: t('referredOn'),
+      field: 'referred_at',
+      flex: 1.5,
+      cellRenderer: (params) => formatDate(params.value)
+    }
+  ]
 
   if (isCouponsLoading) {
     return (
@@ -193,16 +221,19 @@ const Coupons = () => {
         </div>
 
         {coupons.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {coupons.map((coupon) => (
-              <CouponCard
-                key={coupon.id}
-                coupon={coupon}
-                onEdit={handleEditCoupon}
-                onDelete={handleDeleteCoupon}
-                isDeleting={isDeleting}
-              />
-            ))}
+          <div style={{ width: '100%', height: 'auto' }} className="relative">
+            <AgGridReact
+              rowData={data}
+              columnDefs={colDefs}
+              domLayout="autoHeight"
+              className="custom-grid"
+              pagination={false}
+              defaultColDef={{
+                sortable: true,
+                filter: true,
+                resizable: true
+              }}
+            />
           </div>
         ) : (
           <EmptyState onAddNew={handleAddNew} />

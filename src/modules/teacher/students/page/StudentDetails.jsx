@@ -21,7 +21,7 @@ const StudentDetails = () => {
   const { t } = useTranslation()
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false)
 
-  console.log(user)
+
 
   const { data, isLoading, isFetching } = useGetQuery({
     key: [KEYS.studentStatistics, id],

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
 import RightIcon from '@/components/icons/right'
 import Input from '@/components/input'
-import Button from '@/components/button'
 import Image from 'next/image'
 import TrashIcon from '@/components/icons/trash'
 import ImageUploader from '@/components/image-uploader'
 import AnimateUp from '@/components/motion-animation'
-import LayoutAdmin from '@/layout/LayoutAdmin'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
@@ -14,22 +12,23 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
+import { Button, Card } from '@heroui/react'
+import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
   const [showDropdownMain, setShowDropdownMain] = useState(false)
-  const [showDropdownMail, setShowDropdownMail] = useState(false)
   const [showDropdownPassword, setShowDropdownPassword] = useState(false)
   const [showDropdownAccount, setShowDropdownAccount] = useState(false)
-  
+
   // Form states - faqat API'da mavjud bo'lgan fieldlar
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  
+
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -42,12 +41,9 @@ const Index = () => {
   const [smsCode, setSmsCode] = useState('')
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
-  const {
-    data: tutorProfile,
-    isLoading
-  } = useGetQuery({
-    key: KEYS.teacherProfile,
-    url: URLS.teacherProfile,
+  const { data: parentProfile, isLoading } = useGetQuery({
+    key: KEYS.parentProfile,
+    url: URLS.parentProfile,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
@@ -55,13 +51,13 @@ const Index = () => {
   })
 
   useEffect(() => {
-    if (tutorProfile?.data) {
-      setFullName(tutorProfile.data.full_name || '')
-      setPhoneNumber(tutorProfile.data.phone || '')
-      setEmail(tutorProfile.data.email || '')
-      setAddress(tutorProfile.data.address || '')
+    if (parentProfile?.data) {
+      setFullName(parentProfile.data.full_name || '')
+      setPhoneNumber(parentProfile.data.phone || '')
+      setEmail(parentProfile.data.email || '')
+      setAddress(parentProfile.data.address || '')
     }
-  }, [tutorProfile])
+  }, [parentProfile])
 
   const { mutate: profileUpdate } = usePostQuery({
     listKeyId: 'profile-update'
@@ -76,6 +72,8 @@ const Index = () => {
   })
 
   const handleProfileUpdate = () => {
+    console.log('handleProfileUpdate called', { fullName, email, address, phoneNumber })
+
     const updateData = {
       full_name: fullName,
       email: email,
@@ -83,66 +81,44 @@ const Index = () => {
     }
 
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
-    if (phoneNumber !== get(tutorProfile, 'data.phone', '')) {
+    if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
       if (!currentPassword) {
-        toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
+        toast.error("Telefon raqamni o'zgartirish uchun joriy parolni kiriting")
         return
       }
       updateData.phone = phoneNumber
       updateData.password = currentPassword
     }
 
+    console.log('Sending profile update request:', {
+      url: URLS.updateProfile,
+      data: updateData,
+      token: session?.accessToken
+    })
+
     profileUpdate(
       {
         url: URLS.updateProfile,
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
       },
       {
         onSuccess: (data) => {
+          console.log('Profile update success:', data)
           toast.success('Profil muvaffaqiyatli yangilandi')
-          if (phoneNumber !== get(tutorProfile, 'data.phone', '')) {
+          if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
             setShowPhoneVerification(true)
             setNewPhone(phoneNumber)
           }
         },
         onError: (error) => {
+          console.log('Profile update error:', error)
           toast.error(error.response?.data?.error || 'Profil yangilashda xatolik yuz berdi')
-        }
-      }
-    )
-  }
-
-  const handleEmailSubmit = () => {
-    const updateData = {
-      full_name: get(tutorProfile, 'data.full_name', ''),
-      email: email,
-      address: get(tutorProfile, 'data.address', '')
-    }
-
-    profileUpdate(
-      {
-        url: URLS.updateProfile,
-        attributes: updateData,
-        config: {
-          headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      },
-      {
-        onSuccess: (data) => {
-          toast.success('Email muvaffaqiyatli yangilandi')
-          setShowDropdownMail(false)
-        },
-        onError: (error) => {
-          toast.error(error.response?.data?.error || 'Email yangilashda xatolik yuz berdi')
         }
       }
     )
@@ -153,17 +129,17 @@ const Index = () => {
       toast.error('Joriy parolni kiriting')
       return
     }
-    
+
     if (!newPassword) {
       toast.error('Yangi parolni kiriting')
       return
     }
-    
+
     if (newPassword.length < 6) {
-      toast.error('Yangi parol kamida 6 ta belgi bo\'lishi kerak')
+      toast.error("Yangi parol kamida 6 ta belgi bo'lishi kerak")
       return
     }
-    
+
     if (newPassword !== confirmPassword) {
       toast.error('Yangi parollar mos kelmadi')
       return
@@ -180,21 +156,23 @@ const Index = () => {
         attributes: passwordData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
       },
       {
         onSuccess: (data) => {
-          toast.success('Parol muvaffaqiyatli o\'zgartirildi')
+          console.log('Password change success:', data)
+          toast.success("Parol muvaffaqiyatli o'zgartirildi")
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
           setShowDropdownPassword(false)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'Parol o\'zgartirishda xatolik yuz berdi')
+          console.log('Password change error:', error)
+          toast.error(error.response?.data?.error || "Parol o'zgartirishda xatolik yuz berdi")
         }
       }
     )
@@ -217,13 +195,14 @@ const Index = () => {
         attributes: verificationData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
       },
       {
         onSuccess: (data) => {
+          console.log('Phone verification success:', data)
           toast.success('Telefon raqam muvaffaqiyatli tasdiqlandi')
           setSmsCode('')
           setNewPhone('')
@@ -231,7 +210,8 @@ const Index = () => {
           setPhoneNumber(newPhone)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'SMS kod noto\'g\'ri')
+          console.log('Phone verification error:', error)
+          toast.error(error.response?.data?.error || "SMS kod noto'g'ri")
         }
       }
     )
@@ -270,7 +250,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]">
+                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       To'liq ism <span className="text-[#FF3B30]">*</span>
@@ -296,6 +276,18 @@ const Index = () => {
                   </div>
 
                   <div>
+                    <p className="text-[15px] mb-[8px]">
+                      Email <span className="text-[#FF3B30]">*</span>
+                    </p>
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="email@example.com"
+                    />
+                  </div>
+
+                  <div>
                     <p className="text-[15px] mb-[8px]">Manzil</p>
                     <Input
                       type="text"
@@ -305,7 +297,7 @@ const Index = () => {
                     />
                   </div>
 
-                  {phoneNumber !== get(tutorProfile, 'data.phone', '') && (
+                  {phoneNumber !== get(parentProfile, 'data.phone', '') && (
                     <div>
                       <p className="text-[15px] mb-[8px]">
                         Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
@@ -332,49 +324,16 @@ const Index = () => {
                     </div>
                   )}
 
-                  <Button onPress={handleProfileUpdate} color="primary">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      console.log("Saqlash button clicked - Asosiy ma'lumotlar")
+                      handleProfileUpdate()
+                    }}
+                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
+                  >
                     Saqlash
-                  </Button>
-                </form>
-              </AnimateUp>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
-            <div
-              onClick={() => setShowDropdownMail(!showDropdownMail)}
-              className="flex justify-between items-center cursor-pointer"
-            >
-              <h4 className="font-medium text-[17px]">Email o'zgartirish</h4>
-              <button>
-                <RightIcon
-                  className={`${!showDropdownMail ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
-                  color="#BCBFC2"
-                />
-              </button>
-            </div>
-
-            {showDropdownMail && (
-              <AnimateUp>
-                <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
-
-                <form className="space-y-[24px]">
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Email <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <Input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="email@example.com"
-                    />
-                  </div>
-
-                  <Button onPress={handleEmailSubmit} color="primary">
-                    Saqlash
-                  </Button>
+                  </button>
                 </form>
               </AnimateUp>
             )}
@@ -399,7 +358,7 @@ const Index = () => {
               <AnimateUp>
                 <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
 
-                <form className="space-y-[24px]">
+                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <p className="text-[15px] mb-[8px]">
                       Joriy parol <span className="text-[#FF3B30]">*</span>
@@ -475,9 +434,17 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <Button onPress={handlePasswordChange} isLoading={isChangingPassword} color="primary">
-                    Saqlash
-                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      console.log('Saqlash button clicked - Parol')
+                      handlePasswordChange()
+                    }}
+                    disabled={isChangingPassword}
+                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
+                  >
+                    {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
+                  </button>
                 </form>
               </AnimateUp>
             )}
@@ -513,9 +480,10 @@ const Index = () => {
                         className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
                       />
                     </div>
+
                     <div>
-                      <h3 className="text-[17px] font-semibold">{get(tutorProfile, 'data.full_name', '')}</h3>
-                      <p className="text-[#8A8A8E] text-[15px]">ID: {get(tutorProfile, 'data.id', '')}</p>
+                      <h3 className="text-[17px] font-semibold">{get(parentProfile, 'data.full_name', '')}</h3>
+                      <p className="text-[#8A8A8E] text-[15px]">ID: {get(parentProfile, 'data.id', '')}</p>
                     </div>
                   </div>
 
@@ -557,20 +525,26 @@ const Index = () => {
             </div>
 
             <div className="flex gap-2">
-              <Button color="primary" onPress={handlePhoneVerification} isLoading={isVerifyingPhone} className="flex-1">
-                Tasdiqlash
-              </Button>
-              <Button
-                variant="bordered"
-                onPress={() => {
+              <button
+                onClick={() => {
+                  console.log('Tasdiqlash button clicked')
+                  handlePhoneVerification()
+                }}
+                disabled={isVerifyingPhone}
+                className="flex-1 bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
+              >
+                {isVerifyingPhone ? 'Tasdiqlanmoqda...' : 'Tasdiqlash'}
+              </button>
+              <button
+                onClick={() => {
                   setShowPhoneVerification(false)
                   setSmsCode('')
                   setNewPhone('')
                 }}
-                className="flex-1"
+                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm border border-gray-500"
               >
                 Bekor qilish
-              </Button>
+              </button>
             </div>
           </div>
         </div>

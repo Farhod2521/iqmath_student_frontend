@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Input } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
 import toast from 'react-hot-toast'
 
 const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
@@ -28,13 +28,10 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-md w-full p-6">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-[#2A3547] dark:text-white mb-2">
-            Yangi kupon yaratish
-          </h2>
+          <h2 className="text-2xl font-bold text-[#2A3547] dark:text-white mb-2">Yangi kupon yaratish</h2>
         </div>
 
         <div className="mb-6">
-       
           <Input
             placeholder="Masalan: IQMATH50"
             value={couponCode}
@@ -43,27 +40,26 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
             variant="bordered"
             size="lg"
             isRequired
-            errorMessage={!couponCode.trim() && "Kupon kodi kiritilishi shart"}
+            errorMessage={!couponCode.trim() && 'Kupon kodi kiritilishi shart'}
             classNames={{
-              input: "text-[15px] !outline-none",
-              inputWrapper: "border border-[#E9E9E9] rounded-[10px] bg-white hover:border-[#5d87ff] focus-within:border-[#5d87ff]"
+              input: 'text-[15px] !outline-none',
+              inputWrapper:
+                'border border-[#E9E9E9] rounded-[10px] bg-white hover:border-[#5d87ff] focus-within:border-[#5d87ff]'
             }}
           />
         </div>
 
         <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="flex-1 py-4 text-lg bg-gray-400 hover:bg-gray-600 text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-xl font-medium transition-colors"
+          <Button
+            className="bg-red-500 w-full text-white hover:bg-red-600 transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+            onPress={handleClose}
           >
             Bekor qilish
-          </button>
-          <button
-            type="button"
-            onClick={handleSubmit}
+          </Button>
+          <Button
+            className="bg-[#5d87ff] w-full text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+            onPress={handleSubmit}
             disabled={!couponCode.trim() || isLoading}
-            className="flex-1 py-4 text-lg bg-[#5D87FF] hover:bg-[#4570EA] disabled:bg-gray-400 text-white rounded-xl font-medium transition-colors flex items-center justify-center"
           >
             {isLoading ? (
               <>
@@ -73,7 +69,7 @@ const CreateCouponModal = ({ isOpen, onClose, onCreate, isLoading }) => {
             ) : (
               'Yaratish'
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

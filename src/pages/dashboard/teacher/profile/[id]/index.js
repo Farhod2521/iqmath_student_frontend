@@ -260,9 +260,9 @@ const Index = () => {
                     <p className="text-[15px] mb-[8px]">
                       To'liq ism <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="text" 
-                      value={fullName} 
+                    <Input
+                      type="text"
+                      value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="To'liq ismingizni kiriting"
                     />
@@ -272,9 +272,9 @@ const Index = () => {
                     <p className="text-[15px] mb-[8px]">
                       Telefon raqam <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="text" 
-                      value={phoneNumber} 
+                    <Input
+                      type="text"
+                      value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       placeholder="+998901234567"
                     />
@@ -284,21 +284,19 @@ const Index = () => {
                     <p className="text-[15px] mb-[8px]">
                       Email <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="email" 
-                      value={email} 
+                    <Input
+                      type="email"
+                      value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="email@example.com"
                     />
                   </div>
 
                   <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Manzil
-                    </p>  
-                    <Input 
-                      type="text" 
-                      value={address} 
+                    <p className="text-[15px] mb-[8px]">Manzil</p>
+                    <Input
+                      type="text"
+                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder="Manzilingizni kiriting"
                     />
@@ -310,8 +308,8 @@ const Index = () => {
                         Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
                       </p>
                       <div className="relative">
-                        <Input 
-                          type={showCurrentPassword ? "text" : "password"} 
+                        <Input
+                          type={showCurrentPassword ? 'text' : 'password'}
                           value={currentPassword}
                           onChange={(e) => setCurrentPassword(e.target.value)}
                           placeholder="Joriy parolingizni kiriting"
@@ -331,11 +329,11 @@ const Index = () => {
                     </div>
                   )}
 
-                  <button 
+                  <button
                     onClick={() => {
-                      console.log('Saqlash button clicked - Asosiy ma\'lumotlar')
+                      console.log("Saqlash button clicked - Asosiy ma'lumotlar")
                       handleProfileUpdate()
-                    }} 
+                    }}
                     className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors text-sm"
                   >
                     Saqlash
@@ -344,7 +342,6 @@ const Index = () => {
               </AnimateUp>
             )}
           </div>
-
 
           {/* Parol */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
@@ -371,8 +368,8 @@ const Index = () => {
                       Joriy parol <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showCurrentPassword ? "text" : "password"} 
+                      <Input
+                        type={showCurrentPassword ? 'text' : 'password'}
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         placeholder="Joriy parolingizni kiriting"
@@ -396,8 +393,8 @@ const Index = () => {
                       Yangi parol <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showNewPassword ? "text" : "password"} 
+                      <Input
+                        type={showNewPassword ? 'text' : 'password'}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="Yangi parolni kiriting"
@@ -421,8 +418,8 @@ const Index = () => {
                       Yangi parolni tasdiqlang <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showConfirmPassword ? "text" : "password"} 
+                      <Input
+                        type={showConfirmPassword ? 'text' : 'password'}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Yangi parolni qayta kiriting"
@@ -441,16 +438,16 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <button 
+                  <button
                     onClick={() => {
                       console.log('Saqlash button clicked - Parol')
                       handlePasswordChange()
-                    }} 
+                    }}
                     disabled={isChangingPassword}
                     className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
                     {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
-                    </button>
+                  </button>
                 </form>
               </AnimateUp>
             )}
@@ -477,21 +474,19 @@ const Index = () => {
 
                 <div className="flex justify-between gap-[8px] flex-wrap">
                   <div className="flex items-center gap-x-[15px]">
-                    <Image
-                      src={'/images/avatar-profile.png'}
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                      className="rounded-full bg-black"
-                    />
+                    <div className="group w-[50px] h-[50px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200">
+                      <Image
+                        src="/icons/avatar.png"
+                        alt="user"
+                        width={40}
+                        height={40}
+                        className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
+                      />
+                    </div>
 
                     <div>
-                      <h3 className="text-[17px] font-semibold">
-                        {get(teacherProfile, 'data.full_name', '')}
-                      </h3>
-                      <p className="text-[#8A8A8E] text-[15px]">
-                        ID: {get(teacherProfile, 'data.id', '')}
-                      </p>
+                      <h3 className="text-[17px] font-semibold">{get(teacherProfile, 'data.full_name', '')}</h3>
+                      <p className="text-[#8A8A8E] text-[15px]">ID: {get(teacherProfile, 'data.id', '')}</p>
                     </div>
                   </div>
 
@@ -521,7 +516,7 @@ const Index = () => {
             <p className="text-gray-600 mb-4">
               {newPhone} raqamiga SMS kod yuborildi. Tasdiqlash uchun kodni kiriting.
             </p>
-            
+
             <div className="mb-4">
               <Input
                 type="text"
@@ -531,14 +526,9 @@ const Index = () => {
                 className="w-full"
               />
             </div>
-            
+
             <div className="flex gap-2">
-              <Button
-                color="primary"
-                onPress={handlePhoneVerification}
-                isLoading={isVerifyingPhone}
-                className="flex-1"
-              >
+              <Button color="primary" onPress={handlePhoneVerification} isLoading={isVerifyingPhone} className="flex-1">
                 Tasdiqlash
               </Button>
               <Button
@@ -554,7 +544,7 @@ const Index = () => {
               </Button>
             </div>
           </div>
-      </div>
+        </div>
       )}
     </LayoutAdmin>
   )

@@ -30,9 +30,11 @@ export const symbolsList = [
   { icon: 'a', data: 'a' },
   { icon: 'b', data: 'b' },
   { icon: 'n', data: 'n' },
-  { icon: '²', data: '^2' },
-  { icon: '³', data: '^3' },
-  { icon: 'ⁿ', data: '^{n}' },
+  { icon: 'x²', data: '^2' },
+  { icon: 'x³', data: '^3' },
+  { icon: 'xⁿ', data: '^{n}' },
+  { icon: 'xₙ', data: '_{✀}' }, // pastga yozish (subscript),
+  { icon: 'x₂', data: '_2' }, // pastki 2
   { icon: '|', data: '|' },
   { icon: '√', data: '\\sqrt{✀}' },
   { icon: '∛', data: '\\sqrt[3]{✀}' },
@@ -69,5 +71,20 @@ export const symbolsList = [
   { icon: 'α', data: '\\alpha' },
   { icon: 'β', data: '\\beta' },
   { icon: 'γ', data: '\\gamma' },
-  { icon: '∅', data: '\\emptyset' }
+  { icon: '∅', data: '\\emptyset' },
+  { icon: '△', data: '\\triangle' }, // uchburchak
+  { icon: '◻', data: '\\square' }, // kvadrat
+  { icon: '▱', data: '\\parallelogram' }, // parallelogram (ko'pincha \mathrm{parallelogram} deb yoziladi)
+  { icon: '○', data: '\\bigcirc' }, // doira
+  { icon: '⦛', data: '\\angle' }, // burchak
+  { icon: '∟', data: '\\angle' }, // to'g'ri burchak (ko'pincha \\angle yoki \\measuredangle ishlatiladi)
+  { icon: '∠ABC', data: '\\angle ABC' }, // A B C uchburchak burchagi
+  { icon: '∥', data: '\\parallel' }, // parallel chiziqlar
+  { icon: '⊥', data: '\\perp' }, // perpendikulyar
+  { icon: '≅', data: '\\cong' }, // kongruent
+  { icon: '≈', data: '\\approx' }, // taxminiy teng
+  { icon: '≡', data: '\\equiv' }, // identik teng
+  { icon: '∆', data: '\\Delta' }, // delta (uchburchak yoki farq belgisi)
+  { icon: 'πr²', data: '\\pi r^{2}' }, // doira yuzasi
+  { icon: '2πr', data: '2\\pi r' }
 ]
