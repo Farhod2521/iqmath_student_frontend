@@ -5,7 +5,7 @@ import StudentTable from '../components/StudentTable'
 
 function Students() {
   const { t } = useTranslation()
-  const [filterData, setFilterData] = useState({})
+  const [filterData, setFilterData] = useState({ status: 'active', role: 'student' })
   const [isExportingAll, setIsExportingAll] = useState(false)
   const [studentsData, setStudentsData] = useState([])
 

@@ -197,7 +197,7 @@ function StudentTable({
         checkboxSelection: true
       },
       {
-        headerName: t('student'),
+        headerName: t('user'),
         field: 'full_name',
         flex: 1.5,
         onCellClicked: (params) => {
@@ -225,6 +225,12 @@ function StudentTable({
           return classNumber + '-' + t('class')
         }
       })
+      baseColumns.push({
+        headerName: t('class'),
+        field: 'subject_name_uz',
+        maxWidth: 150,
+        cellClass: 'text-center'
+      })
     }
 
     // Qolgan ustunlarni qo'shish
@@ -234,20 +240,23 @@ function StudentTable({
         field: 'phone',
         flex: 1
       },
-      // {
-      //   headerName: t('region'),
-      //   field: 'region',
-      //   flex: 1
-      // },
+      {
+        headerName: t('status'),
+        field: 'status',
+        flex: 1,
+        cellRenderer: (params) => {
+          return params ? <span>Faol</span> : <span>Faol emas</span>
+        }
+      },
       {
         headerName: t('register_date') || 'Ro`yxatdan o`tish',
-        field: 'student_date',
+        field: 'registration_date',
         flex: 1,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
           }
-          return <span>{params.value.replaceAll('-' , '.')}</span>
+          return <span>{params.value.replaceAll('-', '.')}</span>
         }
       },
       {
@@ -258,7 +267,7 @@ function StudentTable({
           if (!params.value) {
             return <span className="text-gray-400">-</span>
           }
-          return <span>{params.value.replaceAll('/' , '.')}</span>
+          return <span>{params.value.replaceAll('/', '.')}</span>
         }
       },
       {
@@ -273,7 +282,12 @@ function StudentTable({
               title={t('giveReward')}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                />
               </svg>
               {t('reward')}
             </button>

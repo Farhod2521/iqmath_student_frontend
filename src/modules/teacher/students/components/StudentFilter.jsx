@@ -13,42 +13,42 @@ const StudentFilter = memo(({
   onExportEnd,
   studentsData = []
 }) => {
-  const { t } = useTranslation();
-  const [search, setSearch] = useState("");
-  const [classValue, setClassValue] = useState(""); // Default: "Hammasi" (empty value)
-  const [subjectValue, setSubjectValue] = useState(""); // Default: "Hammasi" (empty value)
-  const [statusValue, setStatusValue] = useState("");
-  const [roleValue, setRoleValue] = useState(""); // Default: "Hammasi"
-  const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
+  const { t } = useTranslation()
+  const [search, setSearch] = useState('')
+  const [classValue, setClassValue] = useState('') // Default: "Hammasi" (empty value)
+  const [subjectValue, setSubjectValue] = useState('') // Default: "Hammasi" (empty value)
+  const [statusValue, setStatusValue] = useState('active')
+  const [roleValue, setRoleValue] = useState('student') // Default: "Hammasi"
+  const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
   // Debounce funksiyasini ref bilan saqlaymiz
-  const debouncedSearchRef = useRef(null);
+  const debouncedSearchRef = useRef(null)
 
   // Sinf raqamlari (5-11)
   const classOptions = [
-    { value: "", label: "Hammasi" },
-    { value: "5", label: "5-sinf" },
-    { value: "6", label: "6-sinf" },
-    { value: "7", label: "7-sinf" },
-    { value: "8", label: "8-sinf" },
-    { value: "9", label: "9-sinf" },
-    { value: "10", label: "10-sinf" },
-    { value: "11", label: "11-sinf" },
-  ];
+    { value: '', label: 'Hammasi' },
+    { value: '5', label: '5-sinf' },
+    { value: '6', label: '6-sinf' },
+    { value: '7', label: '7-sinf' },
+    { value: '8', label: '8-sinf' },
+    { value: '9', label: '9-sinf' },
+    { value: '10', label: '10-sinf' },
+    { value: '11', label: '11-sinf' }
+  ]
 
   // Fanlar ro'yxati
   const subjectOptions = [
-    { value: "", label: "Hammasi" },
-    { value: "Algebra", label: "Algebra" },
-    { value: "Matematika", label: "Matematika" },
-    { value: "Geometriya", label: "Geometriya" },
-  ];
+    { value: '', label: 'Hammasi' },
+    { value: 'Algebra', label: 'Algebra' },
+    { value: 'Matematika', label: 'Matematika' },
+    { value: 'Geometriya', label: 'Geometriya' }
+  ]
 
   const statusOptions = [
     { value: 'all', label: 'Hammasi' },
     { value: 'active', label: 'Faol' },
-    { value: 'inactive', label: 'Nofaol' }
+    { value: 'inactive', label: 'Faol emas' }
   ]
 
   // Role options

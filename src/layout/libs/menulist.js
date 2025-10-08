@@ -162,7 +162,7 @@ export const getMenuItems = (t) => [
   {
     key: 'pupils',
     path: '/dashboard/teacher/pupils',
-    label: t('students'),
+    label: t('users'),
     icon: (isActive) => (
       <PiUsers
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}

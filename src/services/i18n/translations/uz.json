@@ -752,5 +752,7 @@
   "first": "Birinchi",
   "previous": "Oldingi",
   "last": "Oxirgi",
-  "invalidLogin": "Telefon raqam yoki parol noto'g'ri"
+  "invalidLogin": "Telefon raqam yoki parol noto'g'ri",
+  "users": "Foydalanuvchilar",
+  "user": "Foydalanuvchi"
 }
