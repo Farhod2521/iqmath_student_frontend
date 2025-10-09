@@ -12,6 +12,7 @@ import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { PiShareNetwork } from 'react-icons/pi'
+import { RiCoupon5Line } from 'react-icons/ri'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -81,20 +82,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
-  // {
-  //   key: 'referal',
-  //   path: '/dashboard/tutor/referal',
-  //   label: t('referal'),
-  //   icon: (isActive) => (
-  //     <LuUsers
-  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-  //       size={26}
-  //     />
-  //   ),
-  //   disabled: false,
-  //   roles: [RolesList.TUTOR, RolesList.ADMIN],
-  //   type: MenuType.LINK
-  // },
+
   {
     key: 'chat',
     path: '/dashboard/student/chat',
@@ -299,6 +287,20 @@ export const getMenuItems = (t) => [
   },
 
   // Tutor role menu items
+
+  {
+    key: 'tutor-referrals',
+    path: '/dashboard/tutor/referrals',
+    label: 'Havola orqali qo‘shilganlar',
+    icon: (isActive) => (
+      <PiShareNetwork
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    type: MenuType.LINK
+  },
   {
     key: 'tutor-coupons',
     path: '/dashboard/tutor/coupons',
@@ -312,16 +314,18 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
+
   {
-    key: 'tutor-referrals',
-    path: '/dashboard/tutor/referrals',
-    label: 'Havola orqali qo‘shilganlar',
+    key: 'referal',
+    path: '/dashboard/tutor/coupon',
+    label: 'Kuponlar',
     icon: (isActive) => (
-      <PiShareNetwork
+      <RiCoupon5Line
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />
     ),
+    disabled: false,
     roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },

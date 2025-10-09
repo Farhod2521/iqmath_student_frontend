@@ -49,7 +49,6 @@ export const URLS = {
   changePasswordNew: '/api/v1/auth/user/change-password/',
   verifyPhoneChange: '/api/v1/auth/user/verify-phone-change/',
   // Tutor coupon URLs
-  tutorCoupons: '/api/v1/tutor/tutor/coupons/',
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
   recommendations: '/api/v1/func_student/my-diagnost-subjects/',
   refreshToken: '/api/v1/auth/token/refresh/',
@@ -93,7 +92,7 @@ export const URLS = {
   removeFriend: '/api/v1/func_student/remove-friend/',
   generateInviteLink: '/api/v1/func_student/generate-invite-link/',
   myReferrals: '/api/v1/tutor/tutor/referral-transactions/',
-  myCuponers: '/api/v1/tutor/tutor/coupon-transactions/',
+  myCuponers: '/api/v1/tutor/tutor/coupons/',
   products: '/api/v1/management/products/',
   exchangeProduct: '/api/v1/func_student/my-products/exchange/',
   purchasedProducts: '/api/v1/func_student/my-products/exchange/list/',

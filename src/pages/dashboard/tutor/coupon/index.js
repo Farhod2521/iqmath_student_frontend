@@ -1,9 +1,9 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
-import Coupons from '@/modules/tutor/coupons/pages/Coupons'
+import Coupons from '@/modules/tutor/coupon/pages/Coupons'
 
 const Index = () => {
   return (
-    <LayoutAdmin title="Kuponli foydalanuvchilar">
+    <LayoutAdmin title="Kuponlar">
       <Coupons />
     </LayoutAdmin>
   )

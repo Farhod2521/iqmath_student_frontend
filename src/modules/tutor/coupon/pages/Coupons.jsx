@@ -12,12 +12,7 @@ import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
 import CouponCard from '../components/CouponCard'
-import CreateCouponModal from '../components/CreateCouponModal'
-import EditCouponModal from '../components/EditCouponModal'
 import EmptyState from '../components/EmptyState'
-import { AgGridReact } from 'ag-grid-react'
-
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 
 const Coupons = () => {
   const { t } = useTranslation()
@@ -32,8 +27,8 @@ const Coupons = () => {
     isLoading: isCouponsLoading,
     refetch: refetchCoupons
   } = useGetQuery({
-    key: KEYS.tutorCoupons,
-    url: URLS.tutorCoupons,
+    key: KEYS.myCuponers,
+    url: URLS.myCuponers,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
@@ -46,11 +41,8 @@ const Coupons = () => {
     })) || []
 
   const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
-    listKeyId: 'create-coupon'
-  })
-
-  const { mutate: updateCoupon, isLoading: isUpdating } = usePutQuery({
-    listKeyId: 'update-coupon'
+    listKeyId: 'create-coupon',
+    hideSuccessToast: true
   })
 
   const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
@@ -66,11 +58,10 @@ const Coupons = () => {
   const handleCreateCoupon = () => {
     createCoupon(
       {
-        url: URLS.tutorCoupons,
+        url: URLS.myCuponers,
         config: {
           headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${session?.accessToken}`
           }
         }
       },
@@ -78,45 +69,52 @@ const Coupons = () => {
         onSuccess: (data) => {
           toast.success('Kupon muvaffaqiyatli yaratildi')
           setIsOpen(false)
-          if (refetchCoupons && typeof refetchCoupons === 'function') {
-            refetchCoupons()
-          }
-        },
-        onError: (error) => {
-          const errorMessage =
-            error.response?.data?.error || error.response?.data?.message || 'Kupon yaratishda xatolik yuz berdi'
-          toast.error(errorMessage)
+          refetchCoupons()
         }
       }
     )
   }
 
-  const colDefs = [
-    {
-      headerName: '№',
-      field: 'index',
-      maxWidth: 80,
-      cellClass: 'text-center',
-      sortable: false,
-      filter: false
-    },
-    {
-      headerName: t('fullName'),
-      field: 'full_name',
-      flex: 2,
-      cellRenderer: (params) => (
-        <div className="flex items-center gap-3">
-          <span className="font-medium text-[15px]">{params.value || '-'}</span>
-        </div>
+  const handleDeleteCoupon = (couponId) => {
+    if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
+      deleteCoupon(
+        {
+          url: `${URLS.myCuponers}${couponId}/`,
+          config: {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`
+            }
+          }
+        },
+        {
+          onSuccess: (data) => {
+            toast.success("Kupon muvaffaqiyatli o'chirildi")
+            // Update local state immediately for better UX
+            setCoupons((prev) => prev.filter((coupon) => coupon.id !== couponId))
+            // Also refetch to ensure data consistency
+            if (refetchCoupons && typeof refetchCoupons === 'function') {
+              refetchCoupons()
+            }
+          },
+          onError: (error) => {
+            const errorMessage =
+              error.response?.data?.error || error.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
+            toast.error(errorMessage)
+          }
+        }
       )
-    },
-    {
-      headerName: t('referredOn'),
-      field: 'referred_at',
-      flex: 1.5,
-      cellRenderer: (params) => formatDate(params.value)
     }
-  ]
+  }
+
+  const handleEditCoupon = (coupon) => {
+    setEditingCoupon(coupon)
+    setIsEditOpen(true)
+  }
+
+  const handleAddNew = () => {
+    setEditingCoupon(null)
+    setIsOpen(true)
+  }
 
   if (isCouponsLoading) {
     return (
@@ -129,23 +127,31 @@ const Coupons = () => {
   return (
     <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
       <div className="col-span-12">
+        <div className="flex justify-between items-center mb-6">
+          <div></div>
+          <Button
+            onPress={handleCreateCoupon}
+            className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+          >
+            <PlusIcon className="w-5 h-5" />
+            Yangi kupon
+          </Button>
+        </div>
+
         {coupons.length > 0 ? (
-          <div style={{ width: '100%', height: 'auto' }} className="relative">
-            <AgGridReact
-              rowData={data}
-              columnDefs={colDefs}
-              domLayout="autoHeight"
-              className="custom-grid"
-              pagination={false}
-              defaultColDef={{
-                sortable: true,
-                filter: true,
-                resizable: true
-              }}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {coupons.map((coupon) => (
+              <CouponCard
+                key={coupon.id}
+                coupon={coupon}
+                onEdit={handleEditCoupon}
+                onDelete={handleDeleteCoupon}
+                isDeleting={isDeleting}
+              />
+            ))}
           </div>
         ) : (
-          <EmptyState onAddNew={handleCreateCoupon} />
+          <EmptyState />
         )}
       </div>
     </div>

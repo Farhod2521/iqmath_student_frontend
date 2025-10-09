@@ -49,7 +49,7 @@ export const KEYS = {
   // Teacher reward keys
   teacherReward: 'teacherReward',
   teacherRewardList: 'teacherRewardList',
-  
+
   // Friends keys
   friends: 'friends',
   friendInvites: 'friend-invites',
@@ -57,18 +57,19 @@ export const KEYS = {
   myReferrals: 'my-referrals',
   products: 'products',
   exchangeProduct: 'exchange-product',
-  
+
   // Parents Management keys
   parentsList: 'parentsList',
   studentsList: 'studentsList',
   createParent: 'createParent',
-  
+
   // Mentor requests keys
   mentorRequests: 'mentorRequests',
-  
+
   // Tutor coupon keys
   tutorCoupons: 'tutorCoupons',
-  
+
   // Tutor referral keys
-  tutorReferrals: 'tutorReferrals'
+  tutorReferrals: 'tutorReferrals',
+  myCuponers: 'myCuponers'
 }
