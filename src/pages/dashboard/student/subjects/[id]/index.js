@@ -94,11 +94,24 @@ const SubjectsPage = () => {
                   <li
                     key={idx}
                     onClick={() => setSelectedChapterId(chapter.id)}
-                    className={`cursor-pointer border-b border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
+                    className={`cursor-pointer border-b  border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
                       selectedChapterId === chapter.id ? 'bg-blue-50' : 'bg-white'
                     }`}
                   >
-                    <MathJax>{i18n.language === 'uz' ? chapter.name_uz : chapter.name_ru}</MathJax>
+                    <div className="flex gap-2 justify-between">
+                      <MathJax>{i18n.language === 'uz' ? chapter?.name_uz : chapter?.name_ru}</MathJax>
+                      <div className="flex items-center gap-1 min-w-[120px]">
+                        <div className="w-[80px] h-1.5 bg-gray-200 rounded">
+                          <div
+                            className="h-1.5 bg-green-500 rounded"
+                            style={{ width: `${chapter?.progress === null ? 0 : chapter?.progress}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-xs text-gray-600 font-medium min-w-[24px]">
+                          {chapter?.progress === null ? 0 : chapter?.progress}%
+                        </span>
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>

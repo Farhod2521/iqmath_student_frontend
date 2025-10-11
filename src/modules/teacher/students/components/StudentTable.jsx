@@ -194,7 +194,12 @@ function StudentTable({
         headerName: 'ID',
         field: 'id',
         maxWidth: 80,
-        checkboxSelection: true
+        checkboxSelection: true,
+        valueGetter: (params) => {
+          const current = pagination.current ?? 1
+          const pageSize = pagination.limit ?? 10
+          return (current - 1) * pageSize + params?.node.rowIndex + 1
+        }
       },
       {
         headerName: t('user'),
@@ -226,7 +231,7 @@ function StudentTable({
         }
       })
       baseColumns.push({
-        headerName: t('class'),
+        headerName: t('subject'),
         field: 'subject_name_uz',
         maxWidth: 150,
         cellClass: 'text-center'
@@ -249,7 +254,7 @@ function StudentTable({
         }
       },
       {
-        headerName: t('register_date') || 'Ro`yxatdan o`tish',
+        headerName: t('register_date') || "Ro'yxatdan o'tish",
         field: 'registration_date',
         flex: 1,
         cellRenderer: (params) => {

@@ -27,7 +27,7 @@ const useGetQuery = ({
       onError: (error) => {
         if (showErrorMsg) {
           const errorMessage = error?.response?.data?.message || t('ERROR')
-          toast.error(errorMessage)
+          console.log(errorMessage)
         }
       },
       enabled

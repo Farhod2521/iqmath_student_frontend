@@ -35,11 +35,10 @@ const Index = () => {
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
-    enabled: !!session?.accessToken
+    enabled: !!session?.accessToken && false
   })
 
-  console.log(scoreData)
-  // headerTitle={"Баллы"}
+
   return (
     <LayoutAdmin title={t('points')}>
       <div className="grid grid-cols-12 gap-x-[24px]">

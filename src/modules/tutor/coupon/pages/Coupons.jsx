@@ -13,6 +13,8 @@ import toast from 'react-hot-toast'
 
 import CouponCard from '../components/CouponCard'
 import EmptyState from '../components/EmptyState'
+import { useQuery } from '@tanstack/react-query'
+import { request } from '@/services/api'
 
 const Coupons = () => {
   const { t } = useTranslation()
@@ -26,19 +28,18 @@ const Coupons = () => {
     data: couponsData,
     isLoading: isCouponsLoading,
     refetch: refetchCoupons
-  } = useGetQuery({
-    key: KEYS.myCuponers,
-    url: URLS.myCuponers,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
-    enabled: !!session?.accessToken
-  })
-  const data =
-    couponsData?.data?.map((item, index) => ({
-      ...item,
-      index: index + 1
-    })) || []
+  } = useQuery(
+    [KEYS.myCuponers],
+    () =>
+      request.get(URLS.myCuponers, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`
+        }
+      }),
+    {
+      enabled: !!session?.accessToken
+    }
+  )
 
   const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
     listKeyId: 'create-coupon',
@@ -67,7 +68,7 @@ const Coupons = () => {
       },
       {
         onSuccess: (data) => {
-          toast.success('Kupon muvaffaqiyatli yaratildi')
+          toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
           setIsOpen(false)
           refetchCoupons()
         }
@@ -139,7 +140,7 @@ const Coupons = () => {
         </div>
 
         {coupons.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
             {coupons.map((coupon) => (
               <CouponCard
                 key={coupon.id}
@@ -151,7 +152,7 @@ const Coupons = () => {
             ))}
           </div>
         ) : (
-          <EmptyState />
+          <EmptyState onAddNew={handleCreateCoupon} />
         )}
       </div>
     </div>

@@ -11,6 +11,7 @@ import LanguageDropdown from '@/components/language'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'next-themes'
+import { useRoleDetection } from '@/hooks'
 
 const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   const { data: session } = useSession()
@@ -20,7 +21,7 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   const { theme } = useTheme()
   const profileRef = useRef(null)
   const { t } = useTranslation()
-
+  const { role } = useRoleDetection()
   const [accessToken, setAccessToken] = useState('')
 
   const {
