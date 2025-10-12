@@ -1,31 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
-import usePutQuery from '@/hooks/api/usePutQuery'
-import useDeleteQuery from '@/hooks/api/useDeleteQuery'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
-import { Button } from '@heroui/react'
-import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
-import CouponCard from '../components/CouponCard'
-import CreateCouponModal from '../components/CreateCouponModal'
-import EditCouponModal from '../components/EditCouponModal'
 import EmptyState from '../components/EmptyState'
 import { AgGridReact } from 'ag-grid-react'
+import StudentPagination from '@/modules/teacher/students/components/StudentPagination'
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
+ModuleRegistry.registerModules([AllCommunityModule])
 
 const Coupons = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
   const [coupons, setCoupons] = useState([])
-  const [editingCoupon, setEditingCoupon] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
 
   const {
     data: couponsData,
@@ -39,22 +33,9 @@ const Coupons = () => {
     },
     enabled: !!session?.accessToken
   })
-  const data =
-    couponsData?.data?.map((item, index) => ({
-      ...item,
-      index: index + 1
-    })) || []
 
   const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
     listKeyId: 'create-coupon'
-  })
-
-  const { mutate: updateCoupon, isLoading: isUpdating } = usePutQuery({
-    listKeyId: 'update-coupon'
-  })
-
-  const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
-    listKeyId: 'delete-coupon'
   })
 
   useEffect(() => {
@@ -91,32 +72,71 @@ const Coupons = () => {
     )
   }
 
+  const data = useMemo(() => couponsData?.data, [couponsData])
+
+  const formatDate = (dateString) => {
+    function normalizeIsoMs(str) {
+      return str.replace(/(\.\d{3})\d+/, '$1')
+    }
+
+    const d = new Date(normalizeIsoMs(dateString))
+
+    const datePart = new Intl.DateTimeFormat('uz-UZ', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).format(d)
+
+    return datePart
+  }
+
   const colDefs = [
     {
       headerName: '№',
-      field: 'index',
+      field: 'id',
       maxWidth: 80,
-      cellClass: 'text-center',
-      sortable: false,
-      filter: false
+      checkboxSelection: true,
+      valueGetter: (params) => {
+        const current = pagination.current ?? 1
+        const pageSize = pagination.limit ?? 10
+        return (current - 1) * pageSize + params?.node.rowIndex + 1
+      }
     },
     {
-      headerName: t('fullName'),
-      field: 'full_name',
-      flex: 2,
-      cellRenderer: (params) => (
-        <div className="flex items-center gap-3">
-          <span className="font-medium text-[15px]">{params.value || '-'}</span>
-        </div>
-      )
+      headerName: "O'quvchi",
+      field: 'student_name',
+      flex: 1
     },
     {
-      headerName: t('referredOn'),
-      field: 'referred_at',
-      flex: 1.5,
+      headerName: 'Kupon',
+      field: 'coupon_code',
+      flex: 1
+    },
+    {
+      headerName: "To'lov",
+      field: 'payment_amount',
+      flex: 1
+    },
+    {
+      headerName: 'Cashback',
+      field: 'cashback_amount',
+      flex: 1
+    },
+    {
+      headerName: 'Sana',
+      field: 'used_at',
+      flex: 1,
       cellRenderer: (params) => formatDate(params.value)
     }
   ]
+
+  const handlePageChange = useCallback((newPage) => {
+    setPagination((prev) => ({ ...prev, current: newPage + 1 }))
+  }, [])
+
+  const handlePageSizeChange = useCallback((newPageSize) => {
+    setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
+  }, [])
 
   if (isCouponsLoading) {
     return (
@@ -129,21 +149,19 @@ const Coupons = () => {
   return (
     <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
       <div className="col-span-12">
-        {coupons.length > 0 ? (
-          <div style={{ width: '100%', height: 'auto' }} className="relative">
-            <AgGridReact
-              rowData={data}
-              columnDefs={colDefs}
-              domLayout="autoHeight"
-              className="custom-grid"
-              pagination={false}
-              defaultColDef={{
-                sortable: true,
-                filter: true,
-                resizable: true
-              }}
-            />
-          </div>
+        {data.length > 0 ? (
+          <>
+            <div style={{ width: '100%', height: 'auto' }} className="relative">
+              <AgGridReact
+                loading={isCouponsLoading}
+                rowData={data}
+                columnDefs={colDefs}
+                domLayout="autoHeight"
+                className="custom-grid"
+                pagination={false}
+              />
+            </div>
+          </>
         ) : (
           <EmptyState onAddNew={handleCreateCoupon} />
         )}

@@ -1,9 +1,14 @@
+'use client'
+
 import LanguageDropdown from '@/components/language'
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
 import { Button } from '@heroui/react'
 import Image from 'next/image'
 import React from 'react'
 
 function LayoutQuestion({ children, title = '', subtitle = '', onClick = () => {} }) {
+  useKeyboardShortcut('Escape', onClick)
+  useKeyboardShortcut('Esc', onClick)
   return (
     <div className="font-sf">
       <div className="flex justify-between pl-6 pr-4 py-3 border-b border-gray-100 items-center">

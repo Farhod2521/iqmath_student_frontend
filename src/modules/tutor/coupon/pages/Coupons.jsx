@@ -112,11 +112,6 @@ const Coupons = () => {
     setIsEditOpen(true)
   }
 
-  const handleAddNew = () => {
-    setEditingCoupon(null)
-    setIsOpen(true)
-  }
-
   if (isCouponsLoading) {
     return (
       <div className="flex justify-center items-center h-64">

@@ -19,6 +19,8 @@ const Referal = () => {
   const [inviteLink, setInviteLink] = useState('')
   const [copied, setCopied] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
+
   const {
     data: referralsData,
     isLoading: isLoadingReferrals,
@@ -28,12 +30,6 @@ const Referal = () => {
     url: URLS.myReferrals
   })
   const user = useUserStore()
-
-  const data =
-    referralsData?.data?.map((item, index) => ({
-      ...item,
-      index: index + 1
-    })) || []
 
   const linktext = useMemo(() => {
     return `https://iqmath.uz/?referral_code=${user?.user?.identification}`
@@ -70,22 +66,22 @@ const Referal = () => {
     }
   }
 
-  const formatDate = (dateString) => {
-    return dateString.slice(0, 10)
-  }
-
   const colDefs = [
     {
       headerName: '№',
-      field: 'index',
+      field: 'id',
       maxWidth: 80,
-      cellClass: 'text-center',
-      sortable: false,
-      filter: false
+      checkboxSelection: true,
+      valueGetter: (params) => {
+        const current = pagination.current ?? 1
+        const pageSize = pagination.limit ?? 10
+        return (current - 1) * pageSize + params?.node.rowIndex + 1
+      }
     },
+
     {
       headerName: t('fullName'),
-      field: 'full_name',
+      field: 'student_name',
       flex: 2,
       cellRenderer: (params) => (
         <div className="flex items-center gap-3">
@@ -94,12 +90,18 @@ const Referal = () => {
       )
     },
     {
-      headerName: t('referredOn'),
-      field: 'referred_at',
-      flex: 1.5,
-      cellRenderer: (params) => formatDate(params.value)
+      headerName: "To'lov",
+      field: 'bonus_amount',
+      flex: 1.5
+    },
+    {
+      headerName: 'Sana',
+      field: 'used_at',
+      flex: 1.5
     }
   ]
+
+  const data = useMemo(() => referralsData?.data || [], [referralsData])
 
   if (isLoadingReferrals || isFetchingReferrals)
     return (

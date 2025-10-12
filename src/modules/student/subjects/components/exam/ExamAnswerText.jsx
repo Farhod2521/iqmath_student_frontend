@@ -14,7 +14,7 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
   const [mathQuillLoaded, setMathQuillLoaded] = useState(false)
   const [currentQuestionId, setCurrentQuestionId] = useState(null)
   const localMathFieldRef = useRef(null)
-  
+
   const currentAnswer = textAnswers[selectedQuestion?.id] || ''
 
   // MathQuill yuklanganini tekshirish
@@ -35,12 +35,10 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
     checkMathQuill()
   }, [])
 
-  // Savol o'zgarganda MathQuill inputini yangilash
+  // Savol o'zgarganda MathQuill inputini tozalash
   useEffect(() => {
     if (selectedQuestion?.id !== currentQuestionId) {
-      setCurrentQuestionId(selectedQuestion?.id)
-      
-      // Yangi savol uchun MathQuill inputini tozalash
+      setCurrentQuestionId(selectedQuestion?.id ?? null)
       if (localMathFieldRef.current) {
         localMathFieldRef.current.latex('')
       }
@@ -52,12 +50,25 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
     if (localMathFieldRef.current && selectedQuestion?.id) {
       const expectedValue = currentAnswer
       const currentValue = localMathFieldRef.current.latex()
-      
       if (currentValue !== expectedValue) {
         localMathFieldRef.current.latex(expectedValue)
       }
     }
   }, [selectedQuestion?.id, currentAnswer])
+
+  // 🔎 Fokus: birinchi renderda va har safar savol almashganda
+  useEffect(() => {
+    if (!mathQuillLoaded) return
+    if (!localMathFieldRef.current) return
+
+    const raf = requestAnimationFrame(() => {
+      try {
+        localMathFieldRef.current.focus()
+      } catch {}
+    })
+
+    return () => cancelAnimationFrame(raf)
+  }, [mathQuillLoaded, selectedQuestion?.id])
 
   if (!mathQuillLoaded || !EditableMathField) {
     return <div>Loading MathQuill...</div>
@@ -74,7 +85,7 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
               const newValue = mathField.latex()
               setTextAnswers((prev) => ({
                 ...prev,
-                [selectedQuestion.id]: newValue,
+                [selectedQuestion.id]: newValue
               }))
             }}
             mathquillDidMount={(mathField) => {
@@ -82,6 +93,12 @@ function ExamAnswerText({ setTextAnswers, textAnswers, selectedQuestion, mathFie
               if (mathFieldRef) {
                 mathFieldRef.current = mathField
               }
+              // mount paytida ham fokus beramiz
+              setTimeout(() => {
+                try {
+                  mathField.focus()
+                } catch {}
+              }, 0)
             }}
             style={textMathStyle}
           />

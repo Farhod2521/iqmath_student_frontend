@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { get } from 'lodash'
@@ -27,6 +27,7 @@ import ActionSolution from '../components/actions/ActionSolution'
 import ActionInfo from '../components/actions/ActionInfo'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import Calculator from '../components/calculator/Calculator'
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
 
 export default function SubjectQuestions() {
   const { t, i18n } = useTranslation()
@@ -51,7 +52,6 @@ export default function SubjectQuestions() {
   const [results, setResults] = useState()
   const [score, setScore] = useState()
 
-
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
     url: `${URLS.studentQuestions}${topicId}/`,
@@ -59,7 +59,6 @@ export default function SubjectQuestions() {
     headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
     enabled: !!topicId && !!session?.accessToken
   })
-
 
   const { mutate: checkMyResults } = usePostQuery({
     listKeyId: 'check-my-results-student'
@@ -74,7 +73,7 @@ export default function SubjectQuestions() {
       try {
         const mathQuill = await import('react-mathquill')
         mathQuill.addStyles()
-        
+
         if (typeof window !== 'undefined') {
           window.MathQuill = mathQuill
         }
@@ -96,7 +95,7 @@ export default function SubjectQuestions() {
     } else if (Array.isArray(questions)) {
       data = questions
     }
-    
+
     if (data.length > 0 && selectedIndex < data.length) {
       setSelectedQuestion(data[selectedIndex])
     }
@@ -122,7 +121,7 @@ export default function SubjectQuestions() {
     } else if (Array.isArray(questions)) {
       data = questions
     }
-    
+
     if (data.length > 0) {
       setChoiceAnswers({})
       setTextAnswers({})
@@ -132,7 +131,7 @@ export default function SubjectQuestions() {
   }, [questions])
 
   const handleTabChange = (level) => setTab(level)
-  
+
   const getQuestionsData = () => {
     if (questions?.data?.questions) {
       return questions.data.questions
@@ -145,7 +144,7 @@ export default function SubjectQuestions() {
     }
     return []
   }
-  
+
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
   const handleNext = () => {
     const questionsData = getQuestionsData()
@@ -153,58 +152,12 @@ export default function SubjectQuestions() {
     setSelectedIndex((prev) => Math.min(prev + 1, maxIndex))
   }
 
-  const handleKeyDown = useCallback((event) => {
-    const target = event.target
-    if (target.tagName === 'INPUT' || 
-        target.tagName === 'TEXTAREA' || 
-        target.contentEditable === 'true' ||
-        target.closest('.mathquill-editable') ||
-        target.closest('.mq-editable-field')) {
-      return
-    }
-    
-    if (event.ctrlKey || event.altKey || event.metaKey) {
-      return
-    }
-    
-    if (event.key === 'PageUp' || 
-        event.key === 'Backspace' ||
-        event.key === 'ArrowLeft' ||
-        event.key === 'ArrowUp') {
-      event.preventDefault()
-      if (selectedIndex > 0) {
-        handlePrev()
-      }
-    }
-    else if (event.key === 'Enter' || 
-             event.key === 'PageDown' || 
-             event.key === 'ArrowRight' ||
-             event.key === 'ArrowDown') {
-      event.preventDefault()
-      
-      const questionsData = getQuestionsData()
-      const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
-      if (selectedIndex < maxIndex) {
-        handleNext()
-      } else {
-        handleCheckMyResults()
-      }
-    }
-  }, [selectedIndex, questions, choiceAnswers, textAnswers, compositeAnswers])
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown, true)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown, true)
-    }
-  }, [handleKeyDown])
-
   const handleCheckMyResults = () => {
     const langKey = i18n.language === 'uz' ? 'answer_uz' : 'answer_ru'
     const qData = getQuestionsData()
-    
+
     if (!Array.isArray(qData)) {
-      toast.error('Savollar ma\'lumotlari topilmadi!')
+      toast.error("Savollar ma'lumotlari topilmadi!")
       return
     }
 
@@ -218,13 +171,13 @@ export default function SubjectQuestions() {
     const choice_answers = qData
       .filter((q) => q.question_type === 'choice')
       .map((q) => {
-        const selectedLetter = choiceAnswers[q.id];
-        const selectedChoice = q.choices?.find(choice => choice.letter === selectedLetter);
+        const selectedLetter = choiceAnswers[q.id]
+        const selectedChoice = q.choices?.find((choice) => choice.letter === selectedLetter)
         return {
           question_id: q.id,
           choices: selectedChoice ? [selectedChoice.id] : []
-        };
-      });
+        }
+      })
 
     const composite_answers = qData
       .filter((q) => q.question_type === 'composite')
@@ -232,11 +185,6 @@ export default function SubjectQuestions() {
         question_id: q.id,
         answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
-
-    console.log('=== SENDING DATA TO SERVER ===')
-    console.log('text_answers:', JSON.stringify(text_answers, null, 2))
-    console.log('choice_answers:', JSON.stringify(choice_answers, null, 2))
-    console.log('composite_answers:', JSON.stringify(composite_answers, null, 2))
 
     checkMyResults(
       {
@@ -252,11 +200,6 @@ export default function SubjectQuestions() {
           toast.success('Siz testni yakunladingiz!')
         },
         onError: (error) => {
-          console.error('=== SERVER ERROR ===')
-          console.error('Error:', error)
-          console.error('Response:', error?.response)
-          console.error('Data:', error?.response?.data)
-          console.error('Message:', error?.response?.data?.message)
           toast.error("Testni to'liq bajaring")
         }
       }
@@ -268,7 +211,7 @@ export default function SubjectQuestions() {
       Object.entries(fields)
         .filter(([key, value]) => {
           if (typeof value === 'object' && value !== null) {
-            return Object.values(value).some(v => v && v.trim() !== '')
+            return Object.values(value).some((v) => v && v.trim() !== '')
           }
           return value !== null && value !== undefined && value !== ''
         })
@@ -286,7 +229,7 @@ export default function SubjectQuestions() {
     if (!Array.isArray(questionsData)) {
       return []
     }
-    return questionsData.map(q => String(q.id))
+    return questionsData.map((q) => String(q.id))
   }, [questions])
 
   const handleSendAllToMentor = async () => {
@@ -301,7 +244,6 @@ export default function SubjectQuestions() {
       return
     }
 
-    console.log(dataToSend)
     try {
       await sendToMentor(
         {
@@ -319,10 +261,31 @@ export default function SubjectQuestions() {
         }
       )
     } catch (error) {
-      console.error('Mentorga yuborishda xatolik:', error)
       toast.error('Xatolik yuz berdi!')
     }
   }
+
+  const isEndQuestion = useMemo(() => {
+    const questionsData = getQuestionsData()
+    const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
+    return selectedIndex === maxIndex
+  }, [selectedIndex])
+
+  const handleNextEnter = () => {
+    if (isEndQuestion) {
+      handleCheckMyResults()
+    } else {
+      handleNext()
+    }
+  }
+
+  useKeyboardShortcut('k', () => setShowCalculator((prev) => !prev), { mod: true })
+  useKeyboardShortcut('ArrowUp', handlePrev)
+  useKeyboardShortcut('ArrowLeft', handlePrev)
+  useKeyboardShortcut('ArrowDown', handleNextEnter)
+  useKeyboardShortcut('ArrowRight', handleNextEnter)
+  useKeyboardShortcut('Enter', handleNextEnter)
+
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
   return (
     <div className="font-sf">
@@ -388,11 +351,7 @@ export default function SubjectQuestions() {
                 {t('back')}
               </Button>
 
-              {(() => {
-                const questionsData = getQuestionsData()
-                const maxIndex = Array.isArray(questionsData) ? questionsData.length - 1 : 0
-                return selectedIndex === maxIndex
-              })() ? (
+              {isEndQuestion ? (
                 <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
                   {t('check')}
                 </Button>

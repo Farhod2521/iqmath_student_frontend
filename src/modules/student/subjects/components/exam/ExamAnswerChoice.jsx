@@ -1,5 +1,5 @@
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 function ExamAnswerChoice({ selectedQuestion, setChoiceAnswers, choiceAnswers }) {
@@ -7,6 +7,13 @@ function ExamAnswerChoice({ selectedQuestion, setChoiceAnswers, choiceAnswers })
 
   // Har bir savol uchun unique key yaratish
   const questionKey = `question-${selectedQuestion?.id || 'default'}`
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [selectedQuestion?.id])
 
   return (
     <div key={questionKey} className="space-y-3">
@@ -18,6 +25,7 @@ function ExamAnswerChoice({ selectedQuestion, setChoiceAnswers, choiceAnswers })
         {selectedQuestion?.choices?.map((item, index) => (
           <label key={`${questionKey}-${index}`} className="flex items-center gap-3 cursor-pointer text-[16px]">
             <input
+              ref={index === 0 ? inputRef : null}
               type="radio"
               name={`choice-${selectedQuestion.id}`}
               value={item.letter}

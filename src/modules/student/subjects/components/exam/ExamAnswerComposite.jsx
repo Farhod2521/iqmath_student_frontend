@@ -33,6 +33,8 @@ function ExamAnswerComposite({
   const { i18n } = useTranslation()
   const [mathQuillLoaded, setMathQuillLoaded] = useState(false)
   const [currentQuestionId, setCurrentQuestionId] = useState(null)
+
+  // Lokal refs: { [questionId]: { [subQuestionId]: mathField } }
   const localMathFieldRefs = useRef({})
 
   // MathQuill yuklanganini tekshirish
@@ -53,65 +55,95 @@ function ExamAnswerComposite({
     checkMathQuill()
   }, [])
 
-  // Question o'zgarganda ref-larni tozalash va yangilash
+  // Question o'zgarganda ref-larni tayyorlash va birinchi sub_question ni active qilish
   useEffect(() => {
-    if (selectedQuestion?.id && selectedQuestion?.id !== currentQuestionId) {
-      setCurrentQuestionId(selectedQuestion.id)
-      
-      if (!mathFieldRefs.current) {
-        mathFieldRefs.current = {}
-      }
-      
-      if (selectedQuestion?.sub_questions?.length > 0) {
-        const firstSubQuestionId = selectedQuestion.sub_questions[0].id
-        setActiveInputId(firstSubQuestionId)
-      }
-      
-      if (!mathFieldRefs.current[selectedQuestion.id]) {
-        mathFieldRefs.current[selectedQuestion.id] = {}
-      }
-      
-      if (!localMathFieldRefs.current[selectedQuestion.id]) {
-        localMathFieldRefs.current[selectedQuestion.id] = {}
-      }
-    }
-  }, [selectedQuestion?.id, currentQuestionId, setActiveInputId, mathFieldRefs])
+    const qid = selectedQuestion?.id
+    if (!qid) return
 
-  // MathQuill inputlarini har doim to'g'ri sinxronlash
-  useEffect(() => {
-    if (selectedQuestion?.sub_questions && localMathFieldRefs.current && localMathFieldRefs.current[selectedQuestion.id]) {
-      selectedQuestion.sub_questions.forEach((subQuestion) => {
-        const mathField = localMathFieldRefs.current[selectedQuestion.id][subQuestion.id]
-        const expectedValue = compositeAnswers[selectedQuestion.id]?.[subQuestion.id] || ''
-        
-        if (mathField && mathField.latex() !== expectedValue) {
-          mathField.latex(expectedValue)
-        }
-      })
+    if (qid !== currentQuestionId) {
+      setCurrentQuestionId(qid)
+
+      // tashqi refs strukturasi
+      if (!mathFieldRefs.current) mathFieldRefs.current = {}
+      if (!mathFieldRefs.current[qid]) mathFieldRefs.current[qid] = {}
+
+      // lokal refs strukturasi
+      if (!localMathFieldRefs.current[qid]) localMathFieldRefs.current[qid] = {}
+
+      // birinchi sub_question ni active qilish
+      const firstSubId = selectedQuestion?.sub_questions?.[0]?.id
+      if (firstSubId) setActiveInputId(firstSubId)
     }
+  }, [selectedQuestion?.id])
+
+  // Maydon qiymatlarini sinxronlash
+  useEffect(() => {
+    const qid = selectedQuestion?.id
+    if (!qid) return
+    if (!selectedQuestion?.sub_questions) return
+    const map = localMathFieldRefs.current[qid]
+    if (!map) return
+
+    selectedQuestion.sub_questions.forEach((sub) => {
+      const mf = map[sub.id]
+      const expected = compositeAnswers[qid]?.[sub.id] || ''
+      if (mf && mf.latex() !== expected) {
+        mf.latex(expected)
+      }
+    })
   }, [selectedQuestion?.id, compositeAnswers])
 
-  if (!mathQuillLoaded) {
+  // 🔎 Fokus: birinchi render/savol almashganda birinchi sub_question maydoniga
+  useEffect(() => {
+    if (!mathQuillLoaded) return
+    const qid = selectedQuestion?.id
+    const firstSubId = selectedQuestion?.sub_questions?.[0]?.id
+    if (!qid || !firstSubId) return
+
+    const mf = localMathFieldRefs.current[qid]?.[firstSubId] || mathFieldRefs.current?.[qid]?.[firstSubId]
+
+    if (!mf) return
+
+    const raf = requestAnimationFrame(() => {
+      try {
+        mf.focus()
+      } catch {}
+      // DOM/layout kechikishlariga chidamli bo'lishi uchun
+      setTimeout(() => {
+        try {
+          mf.focus()
+        } catch {}
+      }, 0)
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [mathQuillLoaded, selectedQuestion?.id])
+
+  if (!mathQuillLoaded || !EditableMathField) {
     return <div>Loading MathQuill...</div>
   }
 
   return (
     <div className="flex flex-col gap-4">
-      {selectedQuestion?.sub_questions?.map((item, index) => {
-        const text1 = i18n.language === 'uz' ? item?.text1_uz : item?.text2_uz
-        const text2 = i18n.language === 'uz' ? item?.text2_uz : item?.text2_ru
-        const fieldValue = compositeAnswers[selectedQuestion.id]?.[item.id] || ''
+      <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
+        {selectedQuestion?.sub_questions?.map((item, index) => {
+          // Til bo'yicha matnlar (fallback'lar bilan)
+          const text1 =
+            i18n.language === 'uz' ? item?.text1_uz ?? item?.text1_ru ?? '' : item?.text1_ru ?? item?.text1_uz ?? ''
 
-        return (
-          <div key={index}>
-            <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
+          const text2 =
+            i18n.language === 'uz' ? item?.text2_uz ?? item?.text2_ru ?? '' : item?.text2_ru ?? item?.text2_uz ?? ''
+
+          const fieldValue = compositeAnswers[selectedQuestion.id]?.[item.id] || ''
+
+          return (
+            <div key={`${selectedQuestion.id}-${item.id}`}>
               <div className="flex items-center gap-4">
                 <span className="text-gray-800 text-[16px]">
                   <MathJax dynamic>{text1}</MathJax>
                 </span>
 
                 <EditableMathField
-                  key={`${selectedQuestion.id}-${item.id}`}
+                  key={`mf-${selectedQuestion.id}-${item.id}`}
                   latex={fieldValue}
                   onChange={(mathField) => {
                     const newValue = mathField.latex()
@@ -123,36 +155,40 @@ function ExamAnswerComposite({
                       }
                     }))
                   }}
-                  onFocus={() => {
-                    setActiveInputId(item.id)
-                  }}
+                  onFocus={() => setActiveInputId(item.id)}
                   mathquillDidMount={(mathField) => {
-                    if (!mathFieldRefs.current) {
-                      mathFieldRefs.current = {}
+                    const qid = selectedQuestion.id
+                    // tashqi refs
+                    if (!mathFieldRefs.current) mathFieldRefs.current = {}
+                    if (!mathFieldRefs.current[qid]) mathFieldRefs.current[qid] = {}
+                    mathFieldRefs.current[qid][item.id] = mathField
+
+                    // lokal refs
+                    if (!localMathFieldRefs.current[qid]) localMathFieldRefs.current[qid] = {}
+                    localMathFieldRefs.current[qid][item.id] = mathField
+
+                    // Birinchi sub_question mount paytida ham fokus
+                    if (index === 0) {
+                      setTimeout(() => {
+                        try {
+                          mathField.focus()
+                        } catch {}
+                      }, 0)
                     }
-                    
-                    if (!mathFieldRefs.current[selectedQuestion.id]) {
-                      mathFieldRefs.current[selectedQuestion.id] = {}
-                    }
-                    
-                    if (!localMathFieldRefs.current[selectedQuestion.id]) {
-                      localMathFieldRefs.current[selectedQuestion.id] = {}
-                    }
-                    
-                    mathFieldRefs.current[selectedQuestion.id][item.id] = mathField
-                    localMathFieldRefs.current[selectedQuestion.id][item.id] = mathField
                   }}
                   style={compositeMathStyle}
                 />
 
-                <MathJax dynamic>{text2}</MathJax>
+                <span className="text-gray-800 text-[16px]">
+                  <MathJax dynamic>{text2}</MathJax>
+                </span>
               </div>
-            </MathJaxContext>
-          </div>
-        )
-      })}
+            </div>
+          )
+        })}
+      </MathJaxContext>
     </div>
   )
 }
 
-export default ExamAnswerComposite;
+export default ExamAnswerComposite

@@ -9,13 +9,14 @@ import Toolbar from '@mui/material/Toolbar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled } from '@mui/material/styles'
 import { IconMenu2 } from '@tabler/icons'
-import { Facebook, Instagram, Phone, Telegram, Twitter, YouTube } from '@mui/icons-material'
+// import { Facebook, Instagram, Phone, Telegram, Twitter, YouTube } from '@mui/icons-material'
 import Brand from '@/components/brand'
 import Navigations from './Navigations'
 import MobileSidebar from './MobileSidebar'
 import LanguageDropdown from '@/components/language'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
+import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
 
 // Styled components (Tashqarida)
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
@@ -42,11 +43,11 @@ const defaultLinks = {
 }
 
 const socialIcons = [
-  { key: 'telegram', Icon: Telegram  , width: 20, height: 20},
-  { key: 'instagram', Icon: Instagram, width: 20, height: 20},
-  { key: 'facebook', Icon: Facebook, width: 20, height: 20},
-  { key: 'youtube', Icon: YouTube, width: 20, height: 20},
-  { key: 'twitter', Icon: Twitter, width: 20, height: 20}
+  { key: 'telegram', Icon: FaTelegram, size: 20 },
+  { key: 'instagram', Icon: FaInstagram, size: 20 },
+  { key: 'facebook', Icon: FaFacebook, size: 20 },
+  { key: 'youtube', Icon: FaYoutube, size: 20 },
+  { key: 'twitter', Icon: FaTwitter, size: 20 }
 ]
 
 const HpHeader = () => {
@@ -96,18 +97,18 @@ const HpHeader = () => {
               </Stack>
               <div className="flex gap-2 items-center">
                 {socialIcons.map(
-                  ({ key, Icon, width, height }) =>
+                  ({ key, Icon, size }) =>
                     socialLinks[key] && (
                       <a key={key} href={socialLinks[key]} target="_blank" rel="noopener noreferrer">
                         <IconButton color="primary">
-                          <Icon width={width} height={height} />
+                          <Icon size={size} />
                         </IconButton>
                       </a>
                     )
                 )}
                 <a href={`tel:${socialLinks.phone}`}>
                   <IconButton color="primary">
-                    <Phone width={20} height={20} />
+                    <FaPhone size={16} />
                   </IconButton>
                 </a>
                 <LanguageDropdown />
