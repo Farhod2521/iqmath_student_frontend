@@ -45,7 +45,7 @@ const StudentDetails = () => {
   return (
     <div className="p-6 space-y-6">
       {/* Main Info and Payment Stats */}
-      {user?.role === RolesList.ADMIN || user?.role === RolesList.PARENT ? (
+      {user?.role === RolesList.ADMIN ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200">
             <div className="flex flex-col items-center text-center">

@@ -280,11 +280,11 @@ export default function SubjectQuestions() {
   }
 
   useKeyboardShortcut('k', () => setShowCalculator((prev) => !prev), { mod: true })
-  useKeyboardShortcut('ArrowUp', handlePrev)
+  useKeyboardShortcut('ArrowUp', handlePrev, { ignoreInput: false })
   useKeyboardShortcut('ArrowLeft', handlePrev)
-  useKeyboardShortcut('ArrowDown', handleNextEnter)
+  useKeyboardShortcut('ArrowDown', handleNextEnter, { ignoreInput: false })
   useKeyboardShortcut('ArrowRight', handleNextEnter)
-  useKeyboardShortcut('Enter', handleNextEnter)
+  useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
 
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
   return (

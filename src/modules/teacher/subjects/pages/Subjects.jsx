@@ -111,6 +111,9 @@ const Subjects = () => {
                       <th className="p-[12px] text-center">№</th>
                       <th className="p-[12px] text-left">{t('title')}</th>
                       <th className="p-[12px] text-left">{t('class')}</th>
+                      <th className="p-[12px] text-left">{t('chapter')}</th>
+                      <th className="p-[12px] text-left">{t('topic')}</th>
+                      <th className="p-[12px] text-left">{t('examples')}</th>
                       <th className="p-[12px] text-left">{t('action')}</th>
                     </tr>
                   </thead>
@@ -124,13 +127,16 @@ const Subjects = () => {
                           className="group border-b hover:bg-gray-50 transition-all"
                         >
                           <td className="p-[12px] text-center">{index + 1}</td>
-                          <td 
-                            className="p-[12px] text-left text-[15px] w-[60%] font-medium transition-all cursor-pointer hover:text-gray-700 hover:underline"
+                          <td
+                            className="p-[12px] text-left text-[15px] w-[20%] font-medium transition-all cursor-pointer hover:text-gray-700 hover:underline"
                             onClick={() => router.push(`/dashboard/teacher/subjects/${get(item, 'id')}`)}
                           >
                             {i18n.language === 'uz' ? get(item, 'name_uz') : get(item, 'name_ru')}
                           </td>
-                          <td className="p-[12px] text-left text-sm">{get(item, 'class_name')} sinf</td>
+                          <td className="p-[12px] text-left text-sm">{get(item, 'class_name')}-sinf</td>
+                          <td className="p-[12px] text-left text-sm">{get(item, 'chapter_count')} ta</td>
+                          <td className="p-[12px] text-left text-sm">{get(item, 'topic_count')} ta</td>
+                          <td className="p-[12px] text-left text-sm">{get(item, 'question_count')} ta</td>
                           <td className="p-[12px] text-left">
                             <div className="flex gap-2">
                               <button

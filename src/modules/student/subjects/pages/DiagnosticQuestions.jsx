@@ -20,6 +20,7 @@ import ActionSolution from '../components/actions/ActionSolution'
 import Calculator from '../components/calculator/Calculator'
 import DiagnosticResultModal from '../components/modal/DiagnosticResultModal'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
 
 const DiagnosticQuestions = ({ subjectId }) => {
   const { t, i18n } = useTranslation()
@@ -53,7 +54,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
   useEffect(() => {
     setShowNextModal(true)
   }, [])
-  
+
   // next and prev uchun
   useEffect(() => {
     if (testQuestions?.length > 0) {
@@ -78,55 +79,6 @@ const DiagnosticQuestions = ({ subjectId }) => {
   const handleNext = () => {
     setSelectedIndex((prev) => (prev < testQuestions.length - 1 ? prev + 1 : prev))
   }
-
-  // Klaviatura eventlari
-  const handleKeyDown = useCallback((event) => {
-    // Input field'larda event'larni to'xtatish
-    const target = event.target
-    if (target.tagName === 'INPUT' || 
-        target.tagName === 'TEXTAREA' || 
-        target.contentEditable === 'true' ||
-        target.closest('.mathquill-editable') ||
-        target.closest('.mq-editable-field')) {
-      return
-    }
-    
-    // Modifier key'lar bosilganda event'larni to'xtatish
-    if (event.ctrlKey || event.altKey || event.metaKey) {
-      return
-    }
-    
-    // Orqaga: Page Up, Backspace, Arrow Left, Arrow Up
-    if (event.key === 'PageUp' || 
-        event.key === 'Backspace' ||
-        event.key === 'ArrowLeft' ||
-        event.key === 'ArrowUp') {
-      event.preventDefault()
-      if (selectedIndex > 0) {
-        handlePrev()
-      }
-    }
-    // Oldinga: Enter, Page Down, Arrow Right, Arrow Down
-    else if (event.key === 'Enter' || 
-             event.key === 'PageDown' || 
-             event.key === 'ArrowRight' ||
-             event.key === 'ArrowDown') {
-      event.preventDefault()
-      
-      if (selectedIndex < testQuestions.length - 1) {
-        handleNext()
-      } else {
-        handleCheckMyResults()
-      }
-    }
-  }, [selectedIndex, testQuestions])
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown, true)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown, true)
-    }
-  }, [handleKeyDown])
 
   // testni boshlash uchun post
   const { mutate: beginTest, isLoading } = usePostQuery({
@@ -294,6 +246,25 @@ const DiagnosticQuestions = ({ subjectId }) => {
     return testQuestions ? testQuestions.map((q) => String(q.id)) : []
   }, [testQuestions])
 
+  const isEndQuestion = useMemo(() => {
+    return selectedIndex === testQuestions?.length - 1
+  }, [selectedIndex, testQuestions])
+
+  const handleNextEnter = () => {
+    if (isEndQuestion) {
+      handleCheckMyResults()
+    } else {
+      handleNext()
+    }
+  }
+
+  useKeyboardShortcut('k', () => setShowCalculator((prev) => !prev), { mod: true, ignoreInput: false })
+  useKeyboardShortcut('ArrowUp', handlePrev, { ignoreInput: false })
+  useKeyboardShortcut('ArrowLeft', handlePrev)
+  useKeyboardShortcut('ArrowDown', handleNextEnter, { ignoreInput: false })
+  useKeyboardShortcut('ArrowRight', handleNextEnter)
+  useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
+
   if (isLoading || !testQuestions)
     return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
 
@@ -363,7 +334,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
                 {t('back')}
               </Button>
 
-              {selectedIndex === testQuestions.length - 1 ? (
+              {isEndQuestion ? (
                 <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
                   {t('check')}
                 </Button>

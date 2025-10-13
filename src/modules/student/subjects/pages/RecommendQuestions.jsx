@@ -28,6 +28,7 @@ import ActionInfo from '../components/actions/ActionInfo'
 import Calculator from '../components/calculator/Calculator'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
 
 export default function RecommendQuestions() {
   const { t, i18n } = useTranslation()
@@ -80,69 +81,6 @@ export default function RecommendQuestions() {
   const handleTabChange = (level) => setTab(level)
   const handlePrev = () => setSelectedIndex((prev) => Math.max(prev - 1, 0))
   const handleNext = () => setSelectedIndex((prev) => Math.min(prev + 1, get(questions, 'data', []).length - 1))
-
-  // Keyboard event'larini qo'shamiz
-  const handleKeyDown = useCallback((event) => {
-    console.log('Recommend - Keyboard pressed:', event.key, event.keyCode)
-    
-    // Back button uchun: 1 + up arrow yoki 1 + left arrow, Page Up, Backspace, Arrow Left
-    if ((event.key === '1' && (event.keyCode === 38 || event.keyCode === 37)) || 
-        event.key === 'PageUp' || 
-        event.key === 'Backspace' ||
-        event.key === 'ArrowLeft') {
-      console.log('Recommend - Back button triggered')
-      event.preventDefault()
-      if (selectedIndex > 0) {
-        handlePrev()
-      }
-    }
-    // Next button uchun: Enter, Page Down, Arrow Right - faqat javob berilgandan keyin
-    else if (event.key === 'Enter' || 
-             event.key === 'PageDown' || 
-             event.key === 'ArrowRight') {
-      console.log('Recommend - Next button triggered')
-      event.preventDefault()
-      
-      // Javob berilganligini tekshirish
-      const currentQuestion = get(questions, 'data', [])[selectedIndex]
-      let hasAnswer = false
-      
-      if (currentQuestion) {
-        if (currentQuestion.question_type === 'choice') {
-          hasAnswer = choiceAnswers[currentQuestion.id] !== null && 
-                     choiceAnswers[currentQuestion.id] !== undefined
-        } else if (currentQuestion.question_type === 'text') {
-          hasAnswer = textAnswers[currentQuestion.id] && 
-                     textAnswers[currentQuestion.id].trim() !== ''
-        } else if (currentQuestion.question_type === 'composite') {
-          const compositeAnswer = compositeAnswers[currentQuestion.id]
-          hasAnswer = compositeAnswer && 
-                     Object.values(compositeAnswer).some(answer => 
-                       answer && answer.trim() !== ''
-                     )
-        }
-      }
-      
-      if (hasAnswer) {
-        if (selectedIndex < get(questions, 'data', []).length - 1) {
-          handleNext()
-        } else {
-          // handleCheckMyResults ni keyinroq chaqiramiz
-          console.log('Recommend - Should call handleCheckMyResults')
-        }
-      } else {
-        console.log('Recommend - No answer provided, cannot proceed')
-      }
-    }
-  }, [selectedIndex, questions, handleNext, handlePrev, choiceAnswers, textAnswers, compositeAnswers])
-
-  useEffect(() => {
-    // window object'ga event listener qo'shamiz
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handleKeyDown])
 
   const handleCheckMyResults = () => {
     const langKey = i18n.language === 'uz' ? 'answer_uz' : 'answer_ru'
@@ -202,6 +140,25 @@ export default function RecommendQuestions() {
 
     return [...listText, ...listChoice, ...listComposite]
   }, [textAnswers, choiceAnswers, compositeAnswers])
+
+  const isEndQuestion = useMemo(() => {
+    return selectedIndex === get(questions, 'data', []).length - 1
+  }, [selectedIndex])
+
+  const handleNextEnter = () => {
+    if (isEndQuestion) {
+      handleCheckMyResults()
+    } else {
+      handleNext()
+    }
+  }
+
+  useKeyboardShortcut('k', () => setShowCalculator((prev) => !prev), { mod: true })
+  useKeyboardShortcut('ArrowUp', handlePrev, { ignoreInput: false })
+  useKeyboardShortcut('ArrowLeft', handlePrev)
+  useKeyboardShortcut('ArrowDown', handleNextEnter, { ignoreInput: false })
+  useKeyboardShortcut('ArrowRight', handleNextEnter)
+  useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
 
   if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
 
@@ -269,7 +226,7 @@ export default function RecommendQuestions() {
                 {t('back')}
               </Button>
 
-              {selectedIndex === get(questions, 'data', []).length - 1 ? (
+              {isEndQuestion ? (
                 <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
                   {t('check')}
                 </Button>

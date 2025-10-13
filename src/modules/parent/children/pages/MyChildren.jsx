@@ -101,7 +101,7 @@ const MyChildren = () => {
 
                     <div className="flex-1">
                       <h2
-                        onClick={() => handleLink(child.identification)}
+                        onClick={() => handleLink(child.id)}
                         className="text-lg font-bold text-slate-900 hover:underline cursor-pointer"
                       >
                         {child.full_name}

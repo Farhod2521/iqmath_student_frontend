@@ -250,7 +250,7 @@ function StudentTable({
         field: 'status',
         flex: 1,
         cellRenderer: (params) => {
-          return params ? <span>Faol</span> : <span>Faol emas</span>
+          return params.value ? <span>Faol</span> : <span>Faol emas</span>
         }
       },
       {
