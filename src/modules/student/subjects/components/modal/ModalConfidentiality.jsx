@@ -34,12 +34,6 @@ const ModalConfidentiality = () => {
     setShowModal(false)
     if (session?.role === 'student') {
       router.push('/dashboard/student/diagnostics')
-    } else if (session?.role === 'parent') {
-      router.push('/dashboard/parent/my-children')
-    } else if (session?.value === 'tutor') {
-      router.push(`/dashboard/tutor/referrals`)
-    } else {
-      window.location.reload()
     }
   }
 
