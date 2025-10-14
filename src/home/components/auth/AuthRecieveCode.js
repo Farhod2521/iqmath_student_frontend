@@ -25,18 +25,6 @@ const AuthRecieveCode = () => {
 
   const { isTeacher, isLoading: roleLoading } = useRoleDetection()
 
-  // Redirect when role is detected
-  // useEffect(() => {
-  //   if (shouldRedirect && !roleLoading) {
-  //     if (isTeacher) {
-  //       router.push(`/dashboard/teacher/statistics?phone=${phoneTab}`)
-  //     } else {
-  //       router.push(`/dashboard/student/subjects?phone${phoneTab}`)
-  //     }
-  //     setShouldRedirect(false)
-  //   }
-  // }, [shouldRedirect, isTeacher, roleLoading, router])
-
   useEffect(() => {
     // Get saved timestamp from localStorage
     const savedTimestamp = localStorage.getItem('timerTimestamp')
@@ -87,13 +75,16 @@ const AuthRecieveCode = () => {
         setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
         toast.success(t('loggedInSuccessfully'))
-        // setShouldRedirect(true)
 
-        if(selectedRole?.value === 'student') {
+        if (selectedRole?.value === 'student') {
           router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
-        }else if(selectedRole?.value === 'parent') {
+        } else if (selectedRole?.value === 'parent') {
           router.push(`/dashboard/parent/my-children?phone=${phoneTab}`)
-        } 
+        } else if (selectedRole?.value === 'tutor') {
+          router.push(`/dashboard/tutor/referrals?phone=${phoneTab}`)
+        } else {
+          window.location.reload()
+        }
         // Loading'ni role detection tugaguncha davom ettirish uchun bu yerda to'xtatmaymiz
       }
     } catch (error) {
