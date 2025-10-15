@@ -116,14 +116,14 @@ function AuthSignUp() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px] rounded-[4px]">
       {/* Ism */}
-      <InputText {...register('full_name', { required: true })} placeholder={`${t('full name')}`} />
+      <InputText pl {...register('full_name', { required: true })} placeholder={t('full_name')} />
       <InputPhone
         inputMode="numeric"
         pattern="[0-9]*"
         {...register('phone', { required: true })}
         onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ''))}
       />
-      
+
       {/* Foydalanuvchi turi */}
       <SelectRole
         value={selectedRole}
@@ -137,8 +137,6 @@ function AuthSignUp() {
       {selectedRole?.value === 'student' && (
         <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
       )}
-
-     
 
       {/* <UserAgreement /> */}
 

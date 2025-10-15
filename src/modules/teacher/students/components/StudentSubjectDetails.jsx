@@ -9,7 +9,6 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import LayoutAdmin from '@/layout/LayoutAdmin'
-import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 
 const StudentSubjectDetails = () => {
   const router = useRouter()

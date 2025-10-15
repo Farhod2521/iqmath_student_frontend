@@ -45,30 +45,26 @@ const StudentDetails = () => {
   return (
     <div className="p-6 space-y-6">
       {/* Main Info and Payment Stats */}
-      {user?.role === RolesList.ADMIN ? (
+      {user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200">
             <div className="flex flex-col items-center text-center">
               <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} className="rounded-full mb-4" />
               <h1 className="text-xl font-bold">{studentData.full_name}</h1>
-              {user?.role === RolesList.TEACHER || user?.role === RolesList.ADMIN ? (
-                <button
-                  onClick={() => setIsRewardModalOpen(true)}
-                  className="mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-                    />
-                  </svg>
-                  {t('giveReward')}
-                </button>
-              ) : (
-                <></>
-              )}
+              <button
+                onClick={() => setIsRewardModalOpen(true)}
+                className="mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                  />
+                </svg>
+                {t('giveReward')}
+              </button>
             </div>
           </div>
 
@@ -118,6 +114,19 @@ const StudentDetails = () => {
         <></>
       )}
 
+      {user?.role === RolesList.PARENT || user?.role === RolesList.TUTOR ? (
+        <div className="bg-white rounded-lg p-4 flex items-center gap-4 max-w-md w-full">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <span className="text-white text-2xl font-semibold">{studentData?.full_name[0]}</span>
+          </div>
+          <div className="flex-1">
+            <h1 className="text-xl font-semibold text-gray-900 mb-1">{studentData?.full_name}</h1>
+            <p className="text-gray-500 text">ID: {studentData?.identification || '...'}</p>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
       <StudentSubjectsList />
 
       {/* Reward Modal */}
