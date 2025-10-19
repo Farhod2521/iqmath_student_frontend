@@ -13,6 +13,7 @@ import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
+import { BookOpen } from 'lucide-react'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -21,7 +22,7 @@ export const RolesList = {
   TEACHER: 'teacher',
   ADMIN: 'admin',
   PARENT: 'parent',
-  TUTOR: 'tutor',
+  TUTOR: 'tutor'
 }
 
 export const getMenuItems = (t) => [
@@ -215,6 +216,20 @@ export const getMenuItems = (t) => [
   { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
   {
     key: 'profile',
+    path: '/dashboard/student/diagnostics/history',
+    label: t('diagnosis_history'),
+    icon: (isActive) => (
+      <BookOpen
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
+    key: 'profile',
     path: '/dashboard/student/profile',
     label: t('profile'),
     icon: (isActive) => (
@@ -291,7 +306,7 @@ export const getMenuItems = (t) => [
   {
     key: 'tutor-referrals',
     path: '/dashboard/tutor/referrals',
-    label: 'Havola orqali qo‘shilganlar',
+    label: t('via_link'),
     icon: (isActive) => (
       <PiShareNetwork
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
@@ -304,7 +319,7 @@ export const getMenuItems = (t) => [
   {
     key: 'tutor-coupons',
     path: '/dashboard/tutor/coupons',
-    label: 'Kuponli foydalanuvchilar',
+    label: t('users_with_coupons'),
     icon: (isActive) => (
       <LuShoppingBag
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
@@ -318,7 +333,7 @@ export const getMenuItems = (t) => [
   {
     key: 'referal',
     path: '/dashboard/tutor/coupon',
-    label: 'Kuponlar',
+    label: t('coupons'),
     icon: (isActive) => (
       <RiCoupon5Line
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}

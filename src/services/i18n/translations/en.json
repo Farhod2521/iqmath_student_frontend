@@ -333,5 +333,11 @@
   "mostUsed": "Most Used",
   "dueIn5Days": "Due in 5 Days",
   "users": "Users",
-  "user": "User"
+  "user": "User",
+  "via_link": "Added via link",
+  "users_with_coupons": "Users with coupons",
+  "referrals": "Referrals",
+  "discount": "Discount",
+  "start": "Start",
+  "diagnosis_history": "Diagnosis history"
 }

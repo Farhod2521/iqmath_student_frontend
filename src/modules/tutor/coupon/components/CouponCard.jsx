@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Copy, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const CouponCard = ({ coupon, onEdit, onDelete, isDeleting }) => {
   const [copied, setCopied] = useState(false)
-
+  const { t } = useTranslation()
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(coupon.code)
@@ -58,28 +59,28 @@ const CouponCard = ({ coupon, onEdit, onDelete, isDeleting }) => {
 
           <div className="space-y-3">
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="text-sm text-gray-500">Chegirma:</span>
+              <span className="text-sm text-gray-500">{t('discount')}:</span>
               <span className="text-lg font-bold text-blue-600">{coupon.discount_percent}%</span>
             </div>
 
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="text-sm text-gray-500">Boshlanish:</span>
+              <span className="text-sm text-gray-500">{t('startDate')}:</span>
               <span className="text-sm font-medium text-gray-700">{formatDate(coupon.valid_from)}</span>
             </div>
 
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="text-sm text-gray-500">Tugash:</span>
+              <span className="text-sm text-gray-500">{t('endDate')}:</span>
               <span className="text-sm font-medium text-gray-700">{formatDate(coupon.valid_until)}</span>
             </div>
 
             <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-gray-500">Holat:</span>
+              <span className="text-sm text-gray-500">{t('status')}:</span>
               <span
                 className={`text-sm font-medium px-3 py-1 rounded-full ${
                   coupon.is_active ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-100'
                 }`}
               >
-                {coupon.is_active ? 'Faol' : 'Nofaol'}
+                {coupon.is_active ? t('active') : t('inactive')}
               </span>
             </div>
           </div>

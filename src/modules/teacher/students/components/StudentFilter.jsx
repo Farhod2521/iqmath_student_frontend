@@ -182,7 +182,7 @@ const StudentFilter = memo(({
     const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams).toString()}`
 
     // Excel faylni yuklab olish
-    window.open(exportUrl, '_blank')
+    window.open(exportUrl)
 
     // Export tugashini bildirish
     setTimeout(() => {

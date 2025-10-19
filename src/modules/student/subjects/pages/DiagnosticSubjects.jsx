@@ -18,7 +18,11 @@ const DiagnosticSubjects = () => {
   const router = useRouter()
 
   // Fanlar ro'yxatini olish
-  const { data: subjects, isLoading, isFetching } = useGetQuery({
+  const {
+    data: subjects,
+    isLoading,
+    isFetching
+  } = useGetQuery({
     listKeyId: KEYS.diagnosticSubjects,
     url: URLS.recommendations,
     config: {
@@ -32,8 +36,7 @@ const DiagnosticSubjects = () => {
   }, [subjects, i18n.language])
 
   const handleSubjectClick = (subject) => {
-    console.log("salom")
-      router.push(`/dashboard/student/diagnostics/test/${subject.id}`)
+    router.push(`/dashboard/student/diagnostics/test/${subject.id}`)
   }
 
   const handleGoToRecommendations = (subject) => {
@@ -43,9 +46,7 @@ const DiagnosticSubjects = () => {
   if (isLoading || isFetching) return <ContentLoader />
 
   return (
-    <div className="font-sf p-6">
-     
-
+    <div className="font-sf p-4">
       <div>
         {subjectsData.map(({ type, data }, idx) => (
           <section key={idx} className="pb-4">

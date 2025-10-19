@@ -107,7 +107,7 @@ const Products = () => {
         {products?.data.map((product) => (
           <div
             key={product.id}
-            className="bg-white dark:bg-[#202936] rounded-[10px] shadow-sm border border-[#EAEFF4] dark:border-[#2A3447FF] overflow-hidden hover:shadow-md transition-shadow duration-300"
+            className="bg-white opacity-80 dark:bg-[#202936] rounded-[10px] shadow-sm border border-[#EAEFF4] dark:border-[#2A3447FF] overflow-hidden hover:shadow-md transition-shadow duration-300"
           >
             {/* Mahsulot rasmi */}
             <div className="relative">

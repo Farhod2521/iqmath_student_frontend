@@ -755,5 +755,10 @@
   "last": "Oxirgi",
   "invalidLogin": "Telefon raqam yoki parol noto'g'ri",
   "users": "Foydalanuvchilar",
-  "user": "Foydalanuvchi"
+  "user": "Foydalanuvchi",
+  "via_link": "Havola orqali qo‘shilganlar",
+  "users_with_coupons": "Kuponli foydalanuvchilar",
+  "referrals": "Referrallar",
+  "start": "Boshlanish",
+  "diagnosis_history": "Diagnostika tarixi"
 }

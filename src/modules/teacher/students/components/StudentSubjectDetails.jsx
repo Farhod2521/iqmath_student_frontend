@@ -14,7 +14,7 @@ const StudentSubjectDetails = () => {
   const router = useRouter()
   const { id, subjectId, subjectName } = router.query
   const { data: session } = useSession()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const [chapters, setChapters] = useState([])
   const [selectedChapter, setSelectedChapter] = useState(null)
@@ -84,7 +84,7 @@ const StudentSubjectDetails = () => {
                         selectedChapter?.chapter_id === chapter.chapter_id ? 'text-blue-600' : ''
                       }`}
                     >
-                      {chapter.chapter_name}
+                      {i18n.language === 'ru' ? chapter.chapter_name_ru : chapter.chapter_name_uz}
                     </td>
                   </tr>
                 ))}
@@ -113,7 +113,7 @@ const StudentSubjectDetails = () => {
                   {selectedChapter.topics.map((topic, index) => (
                     <tr key={topic.topic_id} className="border-t">
                       <td className="p-3 text-center font-medium text-gray-500">{index + 1}</td>
-                      <td className="p-3">{topic.topic_name}</td>
+                      <td className="p-3">{i18n.language === 'ru' ? topic.topic_name_ru : topic.topic_name_uz}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
                           <div className=" min-w-[120px] bg-gray-200 rounded-full h-1.5">
