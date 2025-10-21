@@ -169,26 +169,24 @@ const StudentFilter = memo(({
   }, [onFilterChange])
 
   // Export function
-  const handleExport = useCallback(() => {
-    onExportStart()
+ const handleExport = useCallback(() => {
+   onExportStart()
+   const exportParams = { role: roleValue || '', export: 'excel' }
+   const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams)}`
 
-    // Excel export uchun API so'rov
-    const exportParams = {
-      role: roleValue || '',
-      export: 'excel'
-    }
+   let iframe = document.getElementById('download-frame')
+   if (!iframe) {
+     iframe = document.createElement('iframe')
+     iframe.id = 'download-frame'
+     iframe.style.display = 'none'
+     document.body.appendChild(iframe)
+   }
+   iframe.src = exportUrl // fayl yuklanadi, sahifa o'zgarmaydi
 
-    // URL yaratish
-    const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams).toString()}`
+   // ixtiyoriy: 1s dan keyin loadingni yopish
+   setTimeout(onExportEnd, 1000)
+ }, [onExportStart, onExportEnd, roleValue])
 
-    // Excel faylni yuklab olish
-    window.open(exportUrl)
-
-    // Export tugashini bildirish
-    setTimeout(() => {
-      onExportEnd()
-    }, 1000)
-  }, [onExportStart, onExportEnd, roleValue])
 
   return (
     <>

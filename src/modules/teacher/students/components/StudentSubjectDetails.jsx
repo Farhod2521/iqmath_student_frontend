@@ -9,6 +9,8 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
+import { request } from '@/services/api'
 
 const StudentSubjectDetails = () => {
   const router = useRouter()
@@ -57,7 +59,7 @@ const StudentSubjectDetails = () => {
 
   return (
     <LayoutAdmin>
-      <div className="p-6">
+      <div className="p-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Chapters List (Left Column) */}
           <div className="lg:col-span-5 bg-white rounded-xl border p-4 min-h-[400px]">

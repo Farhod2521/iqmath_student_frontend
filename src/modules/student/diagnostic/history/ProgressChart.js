@@ -1,24 +1,58 @@
 import { BarChart3 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export function ProgressChart({ subject, language }) {
   const chartRef = useRef(null)
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
-  const maxValue = Math.max(...subject.progress_history, 100)
-  const minValue = Math.min(...subject.progress_history, 0)
+  // ✅ progress_history ni xavfsiz olish
+  const history = useMemo(() => {
+    const raw = Array.isArray(subject?.progress_history) ? subject.progress_history : []
+    // Faqat sonlarga o‘tkazamiz va 0–100 oralig‘ida cheklaymiz (ixtiyoriy)
+    return raw
+      .map((n) => Number(n))
+      .filter((n) => Number.isFinite(n))
+      .map((n) => Math.max(0, Math.min(100, n)))
+  }, [subject])
+
+  // ✅ max/min ni xavfsiz hisoblash (bo‘sh bo‘lsa 100/0 fallback)
+  const maxValue = useMemo(() => (history.length ? Math.max(...history) : 100), [history])
+  const minValue = useMemo(() => (history.length ? Math.min(...history) : 0), [history])
+
+  // Range 0 bo‘lsa bo‘linishda xato bo‘lmasligi uchun
+  const range = maxValue - minValue || 1
 
   useEffect(() => {
     if (chartRef.current) {
       const bars = chartRef.current.querySelectorAll('.chart-bar')
       bars.forEach((bar, index) => {
-        setTimeout(() => {
+        // ketma-ket animatsiya
+        const id = setTimeout(() => {
           bar.style.opacity = '1'
           bar.style.transform = 'scaleY(1)'
         }, index * 100)
+        // ixtiyoriy cleanup
+        return () => clearTimeout(id)
       })
     }
-  }, [])
+  }, [history])
+
+  // Agar ma’lumot bo‘lmasa, yoqimli placeholder
+  if (!history.length) {
+    return (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <BarChart3 className="w-6 h-6 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">
+            {language === 'uz' ? subject?.class_uz || 'Fan' : subject?.class_ru || 'Предмет'}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-500">
+          {language === 'uz' ? 'Hali tarix mavjud emas' : 'История пока отсутствует'}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -34,9 +68,9 @@ export function ProgressChart({ subject, language }) {
 
       <div className="relative" ref={chartRef}>
         <div className="flex items-end justify-between gap-2 h-32 pb-8 border-b border-gray-200">
-          {subject.progress_history.map((value, index) => {
-            const height = ((value - minValue) / (maxValue - minValue)) * 100
-            const isLatest = index === subject.progress_history.length - 1
+          {history.map((value, index) => {
+            const height = ((value - minValue) / range) * 100
+            const isLatest = index === history.length - 1
             const isHovered = hoveredIndex === index
 
             return (
@@ -81,7 +115,6 @@ export function ProgressChart({ subject, language }) {
               <span className="text-gray-600">{language === 'uz' ? 'Oldingi natijalar' : 'Предыдущие результаты'}</span>
             </div>
           </div>
-          {/* <div className="text-gray-500">{language === 'uz' ? 'Topshirilgan urinishlar' : 'Количество попыток'}</div> */}
         </div>
       </div>
 
@@ -89,16 +122,16 @@ export function ProgressChart({ subject, language }) {
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <p className="text-xs text-gray-600 mb-1">{language === 'uz' ? 'Eng yuqori' : 'Максимум'}</p>
-            <p className="text-lg font-bold text-green-600">{Math.max(...subject.progress_history)}%</p>
+            <p className="text-lg font-bold text-green-600">{Math.max(...history)}%</p>
           </div>
           <div>
             <p className="text-xs text-gray-600 mb-1">{language === 'uz' ? 'Eng past' : 'Минимум'}</p>
-            <p className="text-lg font-bold text-red-600">{Math.min(...subject.progress_history)}%</p>
+            <p className="text-lg font-bold text-red-600">{Math.min(...history)}%</p>
           </div>
           <div>
             <p className="text-xs text-gray-600 mb-1">{language === 'uz' ? 'Farq' : 'Разница'}</p>
             <p className="text-lg font-bold text-blue-600">
-              {(Math.max(...subject.progress_history) - Math.min(...subject.progress_history)).toFixed(2)}%
+              {(Math.max(...history) - Math.min(...history)).toFixed(2)}%
             </p>
           </div>
         </div>

@@ -56,7 +56,12 @@ function AuthSignIn() {
       <InputPassword {...register('password', { required: true })} placeholder={t('password')} />
       <div className="flex justify-between items-center text-sm mt-2">
         <label className="flex items-center gap-2 text-white">
-          <input type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+          <input
+            type="checkbox"
+            checked={isChecked}
+            className="placeholder-[#ffffee] "
+            onChange={() => setIsChecked(!isChecked)}
+          />
           <span>{t('remember')}</span>
         </label>
         <div

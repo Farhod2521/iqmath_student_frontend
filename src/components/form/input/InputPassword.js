@@ -10,8 +10,8 @@ const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
       <input
         ref={ref}
         type={showPassword ? 'text' : 'password'}
-        className={`w-full border rounded-[8px] px-3 py-2.5 text-sm text-white placeholder-[#e5e5e5] focus:outline-none ${className}`}
-        style={{background:'rgba(255,255,255,0.4)',borderColor:'rgba(255,255,255,0.7)'}}
+        className={`w-full border rounded-[8px] px-3 py-2.5 text-sm text-white placeholder-[#ffffee] focus:outline-none ${className}`}
+        style={{ background: 'rgba(255,255,255,0.4)', borderColor: 'rgba(255,255,255,0.7)' }}
         {...props}
       />
       <div

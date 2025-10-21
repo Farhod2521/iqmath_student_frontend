@@ -130,13 +130,6 @@ const Coupons = () => {
     }
   ]
 
-  const handlePageChange = useCallback((newPage) => {
-    setPagination((prev) => ({ ...prev, current: newPage + 1 }))
-  }, [])
-
-  const handlePageSizeChange = useCallback((newPageSize) => {
-    setPagination((prev) => ({ ...prev, current: 1, limit: newPageSize }))
-  }, [])
 
   if (isCouponsLoading) {
     return (
@@ -149,7 +142,7 @@ const Coupons = () => {
   return (
     <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
       <div className="col-span-12">
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           <>
             <div style={{ width: '100%', height: 'auto' }} className="relative">
               <AgGridReact

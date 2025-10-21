@@ -9,7 +9,6 @@ import Button from '@/components/button'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useScoreStore } from '@/store'
-import { config } from '@/config'
 import PurchaseSuccessModal from '../components/PurchaseSuccessModal'
 import ConfirmPurchaseModal from '../components/ConfirmPurchaseModal'
 
@@ -22,14 +21,7 @@ const Products = () => {
   const [confirmModalData, setConfirmModalData] = useState(null)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
-  const {
-    data: products,
-    isLoading,
-    error
-  } = useGetQuery({
-    key: KEYS.products,
-    url: URLS.products
-  })
+  const { data: products, isLoading, error } = useGetQuery({ key: KEYS.products, url: URLS.products })
 
   const { mutate: exchangeProduct } = useMutation({
     mutationFn: ({ productId }) => request.post(`${URLS.exchangeProduct}${productId}/`, {}),
@@ -44,18 +36,29 @@ const Products = () => {
       }
     },
     onError: (error) => {
-      const errorMessage = error?.response?.data?.error_uz || t('purchaseError')
+      const errorMessage = error?.response?.data?.error_uz || t('purchaseError') || 'Xato yuz berdi'
       toast.error(errorMessage)
       setExchangingProduct(null)
     }
   })
 
   const handlePurchase = (product, paymentType = 'coins') => {
+    // Stok tekshiruvi — agar count 0 bo'lsa modalga o'tmaydi
+    if (!product || product.count === 0) {
+      const msg = t('outOfStock') || "Mahsulot stokda yo'q"
+      toast.error(msg)
+      return
+    }
     setConfirmModalData({ product, paymentType })
     setIsConfirmModalOpen(true)
   }
 
   const handleConfirmPurchase = (product) => {
+    if (!product || product.count === 0) {
+      const msg = t('outOfStock') || "Mahsulot stokda yo'q"
+      toast.error(msg)
+      return
+    }
     setExchangingProduct(product.id)
     exchangeProduct({ productId: product.id })
   }
@@ -87,7 +90,10 @@ const Products = () => {
     )
   }
 
-  if (!products || products.length === 0) {
+  // products strukturasiga qarab tekshirish: odatda API { data: [...] }
+  const productList = products?.data || []
+
+  if (!productList || productList.length === 0) {
     return (
       <div className="p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] shadow-sm border border-[#EAEFF4] dark:border-[#2A3447FF] p-6">
@@ -104,58 +110,72 @@ const Products = () => {
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products?.data.map((product) => (
-          <div
-            key={product.id}
-            className="bg-white opacity-80 dark:bg-[#202936] rounded-[10px] shadow-sm border border-[#EAEFF4] dark:border-[#2A3447FF] overflow-hidden hover:shadow-md transition-shadow duration-300"
-          >
-            {/* Mahsulot rasmi */}
-            <div className="relative">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-contain"
-                onError={(e) => {
-                  e.target.src = '/images/SHOPITEMS.png'
-                }}
-              />
+        {productList.map((product) => {
+          const isOutOfStock = product.count === 0
+          return (
+            <div
+              key={product.id}
+              className={`relative bg-white dark:bg-[#202936] rounded-[10px] shadow-sm border border-[#EAEFF4] dark:border-[#2A3447FF] overflow-hidden hover:shadow-md transition-shadow duration-300
+                ${isOutOfStock ? 'opacity-60 pointer-events-none' : ''}`}
+            >
+              {/* Mahsulot rasmi */}
+              <div className="relative">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-48 object-contain"
+                  onError={(e) => {
+                    e.target.src = '/images/SHOPITEMS.png'
+                  }}
+                />
 
-              <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
-                <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
-                <span className="text-xs font-medium">{product.coin}</span>
+                <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
+                  <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
+                  <span className="text-xs font-medium">{product.coin}</span>
+                </div>
+
+                {isOutOfStock ? (
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <span className="text-lg text-white font-bold">Sotuvda yo'q</span>
+                  </div>
+                ) : null}
               </div>
-              <div className="absolute inset-0 bg-[#1C1E2699] bg-opacity-50 flex items-center justify-center">
-                <span className="text-lg text-white font-bold">Tez kunda</span>
-              </div>
-            </div>
 
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-3 text-[#2A3547] dark:text-white">
-                {i18n.language === 'uz' ? product.name_uz : product.name_ru}
-              </h3>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-3 text-[#2A3547] dark:text-white">
+                  {i18n.language === 'uz' ? product.name_uz : product.name_ru}
+                </h3>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center justify-between p-2 bg-[#F8F9FA] dark:bg-[#2A3447] rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
-                    <span className="text-sm text-[#2A3547] dark:text-white">
-                      {product.coin} {t('coin')}
-                    </span>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center justify-between p-2 bg-[#F8F9FA] dark:bg-[#2A3447] rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
+                      <span className="text-sm text-[#2A3547] dark:text-white">
+                        {product.coin} {t('coin')}
+                      </span>
+                    </div>
+
+                    <div className="text-sm text-[#5A6A85] dark:text-gray-300">
+                      {isOutOfStock ? (
+                        <span className="font-medium">0 ta</span>
+                      ) : (
+                        <span className="font-medium">{product.count} ta</span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <Button
-                // classname="w-full hover:bg-[#4463bb] hover:text-white"
-                classname="w-full "
-                disabled={exchangingProduct === product.id || true}
-                onclick={() => handlePurchase(product, 'coins')}
-              >
-                {exchangingProduct === product.id ? t('purchasing') : t('buyNow')}
-              </Button>
+                <Button
+                  classname="w-full"
+                  disabled={exchangingProduct === product.id || isOutOfStock}
+                  onclick={() => handlePurchase(product, 'coins')}
+                >
+                  {exchangingProduct === product.id ? t('purchasing') : isOutOfStock ? t('outOfStock') : t('buyNow')}
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <PurchaseSuccessModal

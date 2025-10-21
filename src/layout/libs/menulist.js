@@ -213,7 +213,6 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
-  { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
   {
     key: 'profile',
     path: '/dashboard/student/diagnostics/history',
@@ -228,34 +227,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
-  {
-    key: 'profile',
-    path: '/dashboard/student/profile',
-    label: t('profile'),
-    icon: (isActive) => (
-      <LuUser
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
-    type: MenuType.LINK
-  },
-  {
-    key: 'profile',
-    path: '/dashboard/teacher/profile',
-    label: t('profile'),
-    icon: (isActive) => (
-      <LuUser
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
-    type: MenuType.LINK
-  },
+
   {
     key: 'coins',
     path: '/dashboard/student/coins',
@@ -288,22 +260,6 @@ export const getMenuItems = (t) => [
     activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
   },
   {
-    key: 'parent-profile',
-    path: '/dashboard/parent/profile',
-    label: t('profile'),
-    icon: (isActive) => (
-      <LuUser
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.PARENT],
-    type: MenuType.LINK
-  },
-
-  // Tutor role menu items
-
-  {
     key: 'tutor-referrals',
     path: '/dashboard/tutor/referrals',
     label: t('via_link'),
@@ -326,7 +282,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
     type: MenuType.LINK
   },
 
@@ -341,7 +297,50 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
+    type: MenuType.LINK
+  },
+
+  { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
+  {
+    key: 'profile',
+    path: '/dashboard/teacher/profile',
+    label: t('profile'),
+    icon: (isActive) => (
+      <LuUser
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'profile',
+    path: '/dashboard/student/profile',
+    label: t('profile'),
+    icon: (isActive) => (
+      <LuUser
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
+    key: 'parent-profile',
+    path: '/dashboard/parent/profile',
+    label: t('profile'),
+    icon: (isActive) => (
+      <LuUser
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.PARENT],
     type: MenuType.LINK
   },
   {

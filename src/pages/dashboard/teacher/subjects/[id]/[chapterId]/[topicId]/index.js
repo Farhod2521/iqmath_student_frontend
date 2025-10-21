@@ -682,109 +682,155 @@ const Index = () => {
           </button>
         </div>
         <div className="col-span-12 self-start space-y-[12px] border border-[#E9E9E9] rounded-[12px] ">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-b-[#E9E9E9]">
-                <th className="p-[12px] pl-[24px] text-left">#</th>
-                <th className="p-[12px] text-left ">{t('question')}</th>
-                <th className="p-[12px]">{t('questionType')}</th>
-                <th className="p-[12px] text-center">{t('action')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredQuestions.map((topic, index) => (
-                <tr key={index} className="border-t  hover:bg-[#F0F9FF]">
-                  <td className="p-[12px] pl-[24px]">{index + 1}</td>
-                  <td className="p-[12px] ">
-                    <MathJaxContext
-                      config={{
-                        loader: { load: ['input/tex', 'output/chtml'] }
-                      }}
-                    >
+          <MathJaxContext
+            config={{
+              loader: { load: ['input/tex', 'output/chtml'] }
+            }}
+          >
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-b-[#E9E9E9]">
+                  <th className="p-[12px] pl-[24px] text-left">#</th>
+                  <th className="p-[12px] text-left ">{t('question')}</th>
+                  <th className="p-[12px] text-left ">{t('correctAnswers')}</th>
+                  <th className="p-[12px] text-left ">{t('correctAnswers')} (latex) </th>
+                  <th className="p-[12px]">{t('questionType')}</th>
+                  <th className="p-[12px] text-center">{t('action')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredQuestions.map((topic, index) => (
+                  <tr key={index} className="border-t  hover:bg-[#F0F9FF]">
+                    <td className="p-[12px] pl-[24px]">{index + 1}</td>
+                    <td className="p-[12px] ">
                       <MathJax dynamic>
-                        {/* 2. MathJax unicode'ni render qilsin */}
-                        <div>
-                          {' '}
-                          {i18n.language === 'uz'
-                            ? parse(get(topic, 'question_text_uz') || '')
-                            : parse(get(topic, 'question_text_ru') || '')}
-                        </div>
+                        {i18n.language === 'uz'
+                          ? parse(get(topic, 'question_text_uz') || '')
+                          : parse(get(topic, 'question_text_ru') || '')}
                       </MathJax>
-                    </MathJaxContext>
-                  </td>
-                  {/* <td className="p-[12px] text-center">
-                    {parse(get(topic, "correct_text_answer") || "")}
-                  </td> */}
-                  <td className="p-[12px] text-center">
-                    {get(topic, 'question_type') === 'text' ? (
-                      <p className="">{t('textInput')}</p>
-                    ) : get(topic, 'question_type') === 'choice' ? (
-                      <p>{t('selectOption')}</p>
-                    ) : get(topic, 'question_type') === 'image_choice' ? (
-                      <p>{t('imageOption')}</p>
-                    ) : get(topic, 'question_type') === 'composite' ? (
-                      <p>{t('multipleInput')}</p>
-                    ) : null}
-                  </td>
+                    </td>
 
-                  <td className="py-2 text-center">
-                    <div className="flex items-center gap-2 justify-center">
-                      {/* <Button py="py-[8px] px-[8px] block text-sm  border">
+                    <td className="p-[12px] pl-[24px]">
+                      <MathJax dynamic>
+                        {topic?.question_type === 'text' ? (
+                          <>
+                            {i18n.language === 'uz'
+                              ? parse(get(topic, 'correct_text_answer_uz') || '')
+                              : parse(get(topic, 'correct_text_answer_ru') || '')}
+                          </>
+                        ) : topic?.question_type === 'composite' ? (
+                          topic.sub_questions.map((i, idx) => (
+                            <div key={idx} className="flex gap-1">
+                              <span>{i.text1_uz}</span>
+                              <span>{i.correct_answer}</span>
+                              <span>{i.text2_uz}</span>
+                            </div>
+                          ))
+                        ) : (
+                          topic.choices.map((i, idx) => (
+                            <div key={idx} className="flex gap-1">
+                              <span className={`${i.is_correct ? 'text-blue-500' : ''}`}>{i.letter}</span>
+                              <span>{i.text_uz}</span>
+                            </div>
+                          ))
+                        )}
+                      </MathJax>
+                    </td>
+                    <td className="p-[12px] pl-[24px]">
+                      {topic?.question_type === 'text' ? (
+                        <>
+                          {i18n.language === 'uz'
+                            ? parse(get(topic, 'correct_text_answer_uz') || '')
+                            : parse(get(topic, 'correct_text_answer_ru') || '')}
+                        </>
+                      ) : topic?.question_type === 'composite' ? (
+                        topic.sub_questions.map((i, idx) => (
+                          <div key={idx} className="flex gap-1">
+                            <span>{i.text1_uz}</span>
+                            <span>{i.correct_answer}</span>
+                            <span>{i.text2_uz}</span>
+                          </div>
+                        ))
+                      ) : (
+                        topic.choices.map((i, idx) => (
+                          <div key={idx} className="flex gap-1 text-sm">
+                            <span className={`${i.is_correct ? 'text-blue-500' : ''}`}>{i.letter}</span>
+                            <span>{i.text_uz}</span>
+                          </div>
+                        ))
+                      )}
+                    </td>
+                    <td className="p-[12px] text-center">
+                      {get(topic, 'question_type') === 'text' ? (
+                        <p className="">{t('textInput')}</p>
+                      ) : get(topic, 'question_type') === 'choice' ? (
+                        <p>{t('selectOption')}</p>
+                      ) : get(topic, 'question_type') === 'image_choice' ? (
+                        <p>{t('imageOption')}</p>
+                      ) : get(topic, 'question_type') === 'composite' ? (
+                        <p>{t('multipleInput')}</p>
+                      ) : null}
+                    </td>
+
+                    <td className="py-2 text-center">
+                      <div className="flex items-center gap-2 justify-center">
+                        {/* <Button py="py-[8px] px-[8px] block text-sm  border">
                         Batafsil
                       </Button> */}
-                      <Button
-                        onclick={() => {
-                          const qt = get(topic, 'question_type')
-                          setQuestionText(get(topic, 'question_text_uz') || '')
-                          setQuestionTextRu(get(topic, 'question_text_ru'))
+                        <Button
+                          onclick={() => {
+                            const qt = get(topic, 'question_type')
+                            setQuestionText(get(topic, 'question_text_uz') || '')
+                            setQuestionTextRu(get(topic, 'question_text_ru'))
 
-                          setSelectedQuestion(topic)
-                          setQuestionType(qt)
-                          setVideoLink(get(topic, 'video_url_uz') || '')
-                          setVideoLinkRu(get(topic, 'video_url_ru') || '')
-                          setQuestionLevel(get(topic, 'level'))
-                          console.log('SHOW', get(topic, 'level'))
-                          if (qt === 'text') {
-                            setCorrectAnswer(get(topic, 'correct_text_answer_uz') || '')
-                            setCorrectAnswerRu(get(topic, 'correct_text_answer_ru') || '')
-                          } else if (qt === 'choice' || qt === 'image_choice') {
-                            const correct = get(topic, 'choices', [])
-                            const result = {}
-                            correct.forEach((item) => {
-                              result[item.letter] = {
-                                text_uz: item.text_uz,
-                                text_ru: item.text_ru
-                              }
-                            })
-                            setCorrectAnswers(correct.filter((i) => i.is_correct).map((i) => i.letter))
-                            setChoices(result)
-                          } else if (qt === 'composite') {
-                            console.log(get(topic, 'sub_questions'))
-                            // Composite savollar uchun maxsus formatda ishlanadi
-                            setCompositeQuestions(get(topic, 'sub_questions') || [])
-                          }
+                            setSelectedQuestion(topic)
+                            setQuestionType(qt)
+                            setVideoLink(get(topic, 'video_url_uz') || '')
+                            setVideoLinkRu(get(topic, 'video_url_ru') || '')
+                            setQuestionLevel(get(topic, 'level'))
+                            console.log('SHOW', get(topic, 'level'))
+                            if (qt === 'text') {
+                              setCorrectAnswer(get(topic, 'correct_text_answer_uz') || '')
+                              setCorrectAnswerRu(get(topic, 'correct_text_answer_ru') || '')
+                            } else if (qt === 'choice' || qt === 'image_choice') {
+                              const correct = get(topic, 'choices', [])
+                              const result = {}
+                              correct.forEach((item) => {
+                                result[item.letter] = {
+                                  text_uz: item.text_uz,
+                                  text_ru: item.text_ru
+                                }
+                              })
+                              setCorrectAnswers(correct.filter((i) => i.is_correct).map((i) => i.letter))
+                              setChoices(result)
+                            } else if (qt === 'composite') {
+                              console.log(get(topic, 'sub_questions'))
+                              // Composite savollar uchun maxsus formatda ishlanadi
+                              setCompositeQuestions(get(topic, 'sub_questions') || [])
+                            }
 
-                          setEditModal(true)
-                        }}
-                        py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transform-all duration-200"
-                      >
-                        <EditIcon color="white" />
-                      </Button>
-                      <Button
-                        onclick={() => {
-                          setSelectedQuestion(topic)
-                          setDeleteModal(true) // O'chirish modalini ochish
-                        }}
-                        classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transform-all duration-200"
-                      >
-                        <TrashIcon color="white" />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                            setEditModal(true)
+                          }}
+                          py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transform-all duration-200"
+                        >
+                          <EditIcon color="white" />
+                        </Button>
+                        <Button
+                          onclick={() => {
+                            setSelectedQuestion(topic)
+                            setDeleteModal(true) // O'chirish modalini ochish
+                          }}
+                          classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transform-all duration-200"
+                        >
+                          <TrashIcon color="white" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </MathJaxContext>
 
           {showPlayer && (
             <VideoPlayer
@@ -1539,14 +1585,14 @@ const Index = () => {
 
           <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
           <div className="px-[16px] py-[12px] flex items-center justify-center">
-            <Button 
-              classname={'!py-2'} 
+            <Button
+              classname={'!py-2'}
               disabled={isDeleting}
               onclick={() => {
                 onSubmitDeleteQuestion(selectedQuestion?.id)
               }}
             >
-              {isDeleting ? 'O\'chirilmoqda...' : 'O\'chirish'}
+              {isDeleting ? "O'chirilmoqda..." : "O'chirish"}
             </Button>
           </div>
         </SimpleModal>
