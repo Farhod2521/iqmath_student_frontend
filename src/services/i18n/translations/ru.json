@@ -669,5 +669,31 @@
   "referrals": "Рефералы",
   "discount": "Скидка",
   "start": "Начало",
-  "diagnosis_history": "История диагностики"
+  "diagnosis_history": "История диагностики",
+
+  "common": {
+    "loading": "Загрузка...",
+    "currency": "сум"
+  },
+  "tutorPayments": {
+    "paymentpanel": "Платежная панель",
+    "title": "Вывод средств",
+    "currentBalance": "Текущий баланс:",
+    "amountLabel": "Введите сумму",
+    "minimal": "Минимум",
+    "max": "Максимум",
+    "withdraw": "Вывести",
+    "messages": {
+      "success": "Запрос на вывод отправлен!",
+      "error": "Произошла ошибка",
+      "minAmount": "Минимальная сумма вывода — {{amount}} сум",
+      "notEnough": "На балансе недостаточно средств"
+    },
+    "stats": {
+      "totalEarned": "Всего заработано",
+      "withdrawn": "Выведено",
+      "pending": "В обработке",
+      "balance": "Баланс"
+    }
+  }
 }

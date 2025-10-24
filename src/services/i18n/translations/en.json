@@ -340,5 +340,31 @@
   "referrals": "Referrals",
   "discount": "Discount",
   "start": "Start",
-  "diagnosis_history": "Diagnosis history"
+  "diagnosis_history": "Diagnosis history",
+
+  "common": {
+    "loading": "Loading...",
+    "currency": "UZS"
+  },
+  "tutorPayments": {
+    "paymentpanel": "Payment panel",
+    "title": "Withdraw funds",
+    "currentBalance": "Current balance:",
+    "amountLabel": "Enter amount",
+    "minimal": "Minimum",
+    "max": "Max",
+    "withdraw": "Withdraw",
+    "messages": {
+      "success": "Withdrawal request has been sent!",
+      "error": "An error occurred",
+      "minAmount": "Minimum withdrawal amount is {{amount}} UZS",
+      "notEnough": "Insufficient funds in your balance"
+    },
+    "stats": {
+      "totalEarned": "Total earned",
+      "withdrawn": "Withdrawn",
+      "pending": "Pending",
+      "balance": "Balance"
+    }
+  }
 }

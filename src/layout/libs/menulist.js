@@ -14,6 +14,7 @@ import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
+import { MdOutlinePayments } from 'react-icons/md'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -214,7 +215,7 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
-    key: 'profile',
+    key: 'diagnostics-history',
     path: '/dashboard/student/diagnostics/history',
     label: t('diagnosis_history'),
     icon: (isActive) => (
@@ -300,10 +301,23 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
     type: MenuType.LINK
   },
-
+  {
+    key: 'payment-panel',
+    path: '/dashboard/tutor/payment',
+    label: t('tutorPayments.paymentpanel'),
+    icon: (isActive) => (
+      <MdOutlinePayments
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
+    type: MenuType.LINK
+  },
   { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
   {
-    key: 'profile',
+    key: 'teacher-profile',
     path: '/dashboard/teacher/profile',
     label: t('profile'),
     icon: (isActive) => (
@@ -330,6 +344,20 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
+  // {
+  //   key: 'profile',
+  //   path: '/dashboard/student/convert',
+  //   label: t('profile'),
+  //   icon: (isActive) => (
+  //     <LuUser
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   disabled: false,
+  //   roles: [RolesList.STUDENT],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'parent-profile',
     path: '/dashboard/parent/profile',

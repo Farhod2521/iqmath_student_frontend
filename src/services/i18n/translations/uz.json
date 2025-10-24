@@ -761,5 +761,30 @@
   "users_with_coupons": "Kuponli foydalanuvchilar",
   "referrals": "Referrallar",
   "start": "Boshlanish",
-  "diagnosis_history": "Diagnostika tarixi"
+  "diagnosis_history": "Diagnostika tarixi",
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "currency": "so'm"
+  },
+  "tutorPayments": {
+    "paymentpanel": "To'lov paneli",
+    "title": "Pul yechish",
+    "currentBalance": "Joriy balans:",
+    "amountLabel": "Summani kiriting",
+    "minimal": "Minimal",
+    "max": "Maksimal",
+    "withdraw": "Yechib olish",
+    "messages": {
+      "success": "Pul yechib olish so'rovi yuborildi!",
+      "error": "Xatolik yuz berdi",
+      "minAmount": "Minimal yechib olish summasi {{amount}} so'm",
+      "notEnough": "Balansingizda yetarli mablag' yo'q"
+    },
+    "stats": {
+      "totalEarned": "Jami ishlangan",
+      "withdrawn": "Yechib olingan",
+      "pending": "Jarayonda",
+      "balance": "Balans"
+    }
+  }
 }
