@@ -762,6 +762,7 @@
   "referrals": "Referrallar",
   "start": "Boshlanish",
   "diagnosis_history": "Diagnostika tarixi",
+  "questionCount": "Savollar soni",
   "common": {
     "loading": "Yuklanmoqda...",
     "currency": "so'm"

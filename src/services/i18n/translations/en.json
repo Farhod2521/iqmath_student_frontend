@@ -341,7 +341,7 @@
   "discount": "Discount",
   "start": "Start",
   "diagnosis_history": "Diagnosis history",
-
+  "questionCount": "Question Count",
   "common": {
     "loading": "Loading...",
     "currency": "UZS"

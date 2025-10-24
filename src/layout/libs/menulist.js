@@ -57,6 +57,20 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
+    key: 'diagnostics-history',
+    path: '/dashboard/student/diagnostics/history',
+    label: t('diagnosis_history'),
+    icon: (isActive) => (
+      <BookOpen
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
     key: 'recommended', // Diqqat: bu yerda "recommended" bo'lishi kerak
     path: '/dashboard/student/recommendations',
     label: t('recommended'),
@@ -214,20 +228,6 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
-  {
-    key: 'diagnostics-history',
-    path: '/dashboard/student/diagnostics/history',
-    label: t('diagnosis_history'),
-    icon: (isActive) => (
-      <BookOpen
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
-    type: MenuType.LINK
-  },
 
   {
     key: 'coins',
@@ -283,7 +283,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
 
@@ -298,7 +298,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
@@ -312,7 +312,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.TEACHER],
+    roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
   { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },

@@ -670,7 +670,7 @@
   "discount": "Скидка",
   "start": "Начало",
   "diagnosis_history": "История диагностики",
-
+  "questionCount": "Количество вопросов",
   "common": {
     "loading": "Загрузка...",
     "currency": "сум"
