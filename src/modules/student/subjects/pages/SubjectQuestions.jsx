@@ -453,9 +453,9 @@ export default function SubjectQuestions() {
                     <div
                       className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
                       ${
-                        question?.answer === false
+                        !question?.answer
                           ? 'bg-red-100 text-red-600 border-red-400'
-                          : 'bg-green-100 text-green-600 border-green-400'
+                          : 'bg-blue-100 text-blue-600 border-blue-400'
                       } border-2`}
                     >
                       {index + 1}

@@ -684,7 +684,9 @@ const Index = () => {
         <div className="col-span-12 self-start space-y-[12px] border border-[#E9E9E9] rounded-[12px] ">
           <MathJaxContext
             config={{
-              loader: { load: ['input/tex', 'output/chtml'] }
+              loader: { load: ['input/tex', 'output/chtml'] },
+              options: { enableMenu: false },
+              tex: { packages: { '[+]': ['noerrors', 'noundefined'] } }
             }}
           >
             <table className="w-full">
