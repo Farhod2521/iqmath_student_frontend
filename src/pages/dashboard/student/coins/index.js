@@ -12,14 +12,13 @@ import { useScoreStore } from '@/store'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { ArrowLeftRight, Coins, Award, DollarSign, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { usePostQuery } from '@/hooks'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
-const CONVERSION_RATES = {
-  ballToTanga: 1 / 15, // 15 ball = 1 tanga
-  tangaToBall: 15,
-  tangaToSum: 100, // 1 tanga = 100 so'm
-  ballToSum: 100 / 15 // 15 ball = 100 so'm
+const RATES = {
+  BALL_PER_TANGA: 15, // 15 ball = 1 tanga
+  SUM_PER_TANGA: 100 // 1 tanga = 100 so'm
 }
+
 const Index = () => {
   const { data: session } = useSession()
   const { t } = useTranslation()
@@ -34,21 +33,38 @@ const Index = () => {
     enabled: !!session?.accessToken && false
   })
 
-  const [convertFrom, setConvertFrom] = useState('ball') // 'ball' | 'tanga'
+  const [fromUnit, setFromUnit] = useState('ball') // 1-selection
+  const [toUnit, setToUnit] = useState('tanga')
   const [amount, setAmount] = useState('')
   const [message, setMessage] = useState(null) // { type: 'success' | 'error', text: string }
 
   const parsed = amount ? parseFloat(amount) : 0
 
-  const convertedAmount = amount
-    ? (convertFrom === 'ball' ? parsed * CONVERSION_RATES.ballToTanga : parsed * CONVERSION_RATES.tangaToBall).toFixed(
-        2
-      )
-    : '0'
+  const convertedAmount = useMemo(() => {
+    if (!amount || Number.isNaN(parsed) || parsed <= 0) return '0'
 
-  const sumEquivalent = amount
-    ? (convertFrom === 'ball' ? parsed * CONVERSION_RATES.ballToSum : parsed * CONVERSION_RATES.tangaToSum).toFixed(2)
-    : '0'
+    if (fromUnit === 'ball' && toUnit === 'tanga') {
+      return (parsed / RATES.BALL_PER_TANGA).toFixed(2)
+    }
+    if (fromUnit === 'ball' && toUnit === 'sum') {
+      return (parsed * (RATES.SUM_PER_TANGA / RATES.BALL_PER_TANGA)).toFixed(2)
+    }
+    if (fromUnit === 'tanga' && toUnit === 'sum') {
+      return (parsed * RATES.SUM_PER_TANGA).toFixed(2)
+    }
+    return '0'
+  }, [amount, parsed, fromUnit, toUnit])
+
+  const sumEquivalent = useMemo(() => {
+    if (!amount || Number.isNaN(parsed) || parsed <= 0) return '0'
+    // Hamma marshrutda so‘mni hisoblab ko‘rsatamiz:
+    if (fromUnit === 'ball') {
+      // ball → sum
+      return (parsed * (RATES.SUM_PER_TANGA / RATES.BALL_PER_TANGA)).toFixed(2)
+    }
+    // tanga → sum
+    return (parsed * RATES.SUM_PER_TANGA).toFixed(2)
+  }, [amount, parsed, fromUnit])
 
   const { mutate: convertMutate, isPending: isConvertLoading } = usePostQuery({
     listKeyId: '/api/v1/func_student/my-convert/',
@@ -63,6 +79,13 @@ const Index = () => {
       })
     }
   })
+
+  const getApiType = () => {
+    if (fromUnit === 'ball' && toUnit === 'tanga') return 'SCORE_TO_COIN'
+    if (fromUnit === 'ball' && toUnit === 'sum') return 'SCORE_TO_SOM'
+    if (fromUnit === 'tanga' && toUnit === 'sum') return 'COIN_TO_SOM'
+    return null
+  }
 
   const postConvert = (data) => {
     convertMutate(
@@ -90,12 +113,18 @@ const Index = () => {
       }
     )
   }
+
   const handleConvert = () => {
     if (!amount || parsed <= 0 || Number.isNaN(parsed)) {
       setMessage({ type: 'error', text: "Iltimos, to'g'ri miqdor kiriting" })
       return
     }
-    postConvert({ type: convertFrom, amount: parsed })
+    const type = getApiType()
+    if (!type) {
+      setMessage({ type: 'error', text: 'Konvertatsiya turi noto‘g‘ri tanlangan' })
+      return
+    }
+    postConvert({ type, amount: parsed })
   }
 
   const switchConversion = () => {
@@ -103,6 +132,10 @@ const Index = () => {
     setAmount('')
     setMessage(null)
   }
+
+  const FromIcon = fromUnit === 'ball' ? Award : Coins
+  const ToIcon = toUnit === 'tanga' ? Coins : DollarSign
+
   return (
     <LayoutAdmin title={t('points')}>
       <div className="grid grid-cols-12 gap-x-[24px]">
@@ -181,7 +214,7 @@ const Index = () => {
             <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-xl">
               <Award className="w-8 h-8 text-amber-600" />
               <div>
-                <div className="text-2xl font-bold text-amber-700">15</div>
+                <div className="text-2xl font-bold text-amber-700">{RATES.BALL_PER_TANGA}</div>
                 <div className="text-xs text-amber-600">Ball</div>
               </div>
             </div>
@@ -198,16 +231,61 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center gap-3 mt-4 p-3 bg-green-50 rounded-xl">
             <DollarSign className="w-6 h-6 text-green-600" />
-            <div className="text-sm text-green-700 font-medium">1 Tanga = 100 so'm</div>
+            <div className="text-sm text-green-700 font-medium">1 Tanga = {RATES.SUM_PER_TANGA} so'm</div>
           </div>
         </div>
 
         {/* Converter Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* From Section */}
+          {/* Selections */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            {/* 1-selection: qaysidan */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">1-tanlov: Qaysidan</label>
+              <div className="relative">
+                <select
+                  value={fromUnit}
+                  onChange={(e) => setFromUnit(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                >
+                  <option value="ball">Ball</option>
+                  <option value="tanga">Tanga</option>
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  {/* <FromIcon className="w-5 h-5 text-gray-500" /> */}
+                </div>
+              </div>
+            </div>
+
+            {/* 2-selection: qaysiga */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">2-tanlov: Qaysiga</label>
+              <div className="relative">
+                <select
+                  value={toUnit}
+                  onChange={(e) => setToUnit(e.target.value)}
+                  disabled={fromUnit === 'tanga'} // tanga tanlanganda faqat sum bo‘ladi
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all disabled:opacity-60"
+                >
+                  {fromUnit === 'ball' && (
+                    <>
+                      <option value="tanga">Tanga</option>
+                      <option value="sum">So'm</option>
+                    </>
+                  )}
+                  {fromUnit === 'tanga' && <option value="sum">So'm</option>}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  {/* <ToIcon className="w-5 h-5 text-gray-500" /> */}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Amount input (from-unit bo‘yicha) */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {convertFrom === 'ball' ? 'Balldan' : 'Tangadan'}
+              {fromUnit === 'ball' ? 'Balldan miqdor' : 'Tangadan miqdor'}
             </label>
             <div className="relative">
               <input
@@ -220,7 +298,7 @@ const Index = () => {
                 step="0.01"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
-                {convertFrom === 'ball' ? (
+                {fromUnit === 'ball' ? (
                   <>
                     <Award className="w-5 h-5 text-amber-600" />
                     <span className="font-semibold text-gray-700">Ball</span>
@@ -235,10 +313,20 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Switch Button */}
+          {/* Switch (ixtiyoriy) */}
           <div className="flex justify-center mb-6">
             <button
-              onClick={switchConversion}
+              onClick={() => {
+                setMessage(null)
+                setAmount('')
+                if (fromUnit === 'ball') {
+                  setFromUnit('tanga')
+                  setToUnit('sum')
+                } else {
+                  setFromUnit('ball')
+                  setToUnit('tanga')
+                }
+              }}
               className="p-3 bg-indigo-100 hover:bg-indigo-200 rounded-full transition-colors group"
               aria-label="Konvertatsiyani almashtirish"
             >
@@ -246,43 +334,41 @@ const Index = () => {
             </button>
           </div>
 
-          {/* To Section */}
+          {/* Natija (to-unit bo‘yicha) */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {convertFrom === 'ball' ? 'Tangaga' : 'Ballga'}
+              {fromUnit === 'ball' ? (toUnit === 'tanga' ? 'Tangaga' : "So'mga") : "So'mga"}
             </label>
             <div className="relative">
               <div className="w-full px-6 py-4 text-2xl font-semibold border-2 border-gray-200 rounded-xl bg-gray-50 text-gray-600">
                 {convertedAmount}
               </div>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg">
-                {convertFrom === 'ball' ? (
+                {toUnit === 'tanga' ? (
                   <>
                     <Coins className="w-5 h-5 text-blue-600" />
                     <span className="font-semibold text-gray-700">Tanga</span>
                   </>
                 ) : (
                   <>
-                    <Award className="w-5 h-5 text-amber-600" />
-                    <span className="font-semibold text-gray-700">Ball</span>
+                    <span className="font-semibold text-gray-700">So'm</span>
                   </>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Sum Equivalent */}
+          {/* So'm ekvivalenti */}
           <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-600">So'm ekvivalenti:</span>
               <div className="flex items-center gap-2">
-                {/* <DollarSign className="w-5 h-5 text-green-600" /> */}
                 <span className="text-xl font-bold text-green-700">{sumEquivalent} so'm</span>
               </div>
             </div>
           </div>
 
-          {/* Message */}
+          {/* Xabar */}
           {message && (
             <div
               className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${
@@ -300,7 +386,7 @@ const Index = () => {
             </div>
           )}
 
-          {/* Convert Button */}
+          {/* Submit */}
           <button
             onClick={handleConvert}
             disabled={isConvertLoading || !amount || parsed <= 0}
