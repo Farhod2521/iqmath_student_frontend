@@ -5,39 +5,33 @@ export function ProgressChart({ subject, language }) {
   const chartRef = useRef(null)
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
-  // ✅ progress_history ni xavfsiz olish
   const history = useMemo(() => {
     const raw = Array.isArray(subject?.progress_history) ? subject.progress_history : []
-    // Faqat sonlarga o‘tkazamiz va 0–100 oralig‘ida cheklaymiz (ixtiyoriy)
+
     return raw
       .map((n) => Number(n))
       .filter((n) => Number.isFinite(n))
       .map((n) => Math.max(0, Math.min(100, n)))
   }, [subject])
 
-  // ✅ max/min ni xavfsiz hisoblash (bo‘sh bo‘lsa 100/0 fallback)
   const maxValue = useMemo(() => (history.length ? Math.max(...history) : 100), [history])
   const minValue = useMemo(() => (history.length ? Math.min(...history) : 0), [history])
 
-  // Range 0 bo‘lsa bo‘linishda xato bo‘lmasligi uchun
   const range = maxValue - minValue || 1
 
   useEffect(() => {
     if (chartRef.current) {
       const bars = chartRef.current.querySelectorAll('.chart-bar')
       bars.forEach((bar, index) => {
-        // ketma-ket animatsiya
         const id = setTimeout(() => {
           bar.style.opacity = '1'
           bar.style.transform = 'scaleY(1)'
         }, index * 100)
-        // ixtiyoriy cleanup
         return () => clearTimeout(id)
       })
     }
   }, [history])
 
-  // Agar ma’lumot bo‘lmasa, yoqimli placeholder
   if (!history.length) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">

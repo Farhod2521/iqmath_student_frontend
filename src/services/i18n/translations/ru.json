@@ -671,6 +671,7 @@
   "start": "Начало",
   "diagnosis_history": "История диагностики",
   "questionCount": "Количество вопросов",
+  "myChildren": "Мои дети",
   "common": {
     "loading": "Загрузка...",
     "currency": "сум"

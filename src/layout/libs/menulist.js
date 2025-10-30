@@ -84,20 +84,20 @@ export const getMenuItems = (t) => [
     roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
-  {
-    key: 'friends',
-    path: '/dashboard/student/friends',
-    label: t('friends'),
-    icon: (isActive) => (
-      <LuUsers
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'friends',
+  //   path: '/dashboard/student/friends',
+  //   label: t('friends'),
+  //   icon: (isActive) => (
+  //     <LuUsers
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   disabled: false,
+  //   roles: [RolesList.STUDENT],
+  //   type: MenuType.LINK
+  // },
 
   {
     key: 'chat',
@@ -229,21 +229,6 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
 
-  {
-    key: 'coins',
-    path: '/dashboard/student/coins',
-    label: t('points'),
-    icon: (isActive) => (
-      <FaCoins
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
-    type: MenuType.LINK
-  },
-
   // Parent role menu items
   { label: t('main'), roles: [RolesList.PARENT], type: MenuType.TITLE },
   {
@@ -278,12 +263,12 @@ export const getMenuItems = (t) => [
     path: '/dashboard/tutor/coupons',
     label: t('users_with_coupons'),
     icon: (isActive) => (
-      <LuShoppingBag
+      <LuUsers
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT],
     type: MenuType.LINK
   },
 
@@ -298,7 +283,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT],
     type: MenuType.LINK
   },
   {
@@ -316,6 +301,20 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
+  {
+    key: 'coins',
+    path: '/dashboard/student/coins',
+    label: t('points'),
+    icon: (isActive) => (
+      <FaCoins
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
   {
     key: 'teacher-profile',
     path: '/dashboard/teacher/profile',

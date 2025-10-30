@@ -107,7 +107,7 @@ const Index = () => {
         onError: (error) => {
           setMessage({
             type: 'error',
-            text: err?.response?.data?.message || 'Konvertatsiya amalga oshmadi'
+            text: error?.response?.data?.error || 'Konvertatsiya amalga oshmadi'
           })
         }
       }
@@ -127,14 +127,7 @@ const Index = () => {
     postConvert({ type, amount: parsed })
   }
 
-  const switchConversion = () => {
-    setConvertFrom((prev) => (prev === 'ball' ? 'tanga' : 'ball'))
-    setAmount('')
-    setMessage(null)
-  }
-
-  const FromIcon = fromUnit === 'ball' ? Award : Coins
-  const ToIcon = toUnit === 'tanga' ? Coins : DollarSign
+  console.log('coins', coins)
 
   return (
     <LayoutAdmin title={t('points')}>

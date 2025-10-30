@@ -17,7 +17,7 @@ const MyChildren = () => {
 
   const { data: childrenData, isLoading } = useGetQuery({
     key: 'parent-children',
-    url: 'https://api.iqmath.uz/api/v1/auth/parent/confirm-child/list/',
+    url: '/api/v1/auth/parent/confirm-child/list/',
     showErrorMsg: true
   })
 
@@ -43,14 +43,14 @@ const MyChildren = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title="Farzandlarim">
+      <LayoutAdmin title={t('myChildren')}>
         <ContentLoader></ContentLoader>
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title="Farzandlarim">
+    <LayoutAdmin title={t('myChildren')}>
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800"></h1>

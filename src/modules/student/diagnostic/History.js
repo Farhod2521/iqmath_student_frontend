@@ -46,34 +46,6 @@ function DiagnosticHistory() {
     return lang === 'uz' ? uz : ru
   }, [lang])
 
-  // Auth tekshirish
-  if (status === 'loading' || (status === 'authenticated' && !token)) {
-    return <ContentLoader />
-  }
-
-  if (status === 'unauthenticated') {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md w-full text-center border border-gray-200">
-          <div className="flex justify-center mb-6">
-            <div className="bg-blue-100 rounded-full p-6">
-              <FileQuestion className="w-16 h-16" aria-hidden="true" />
-            </div>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">{texts.title}</h2>
-          <p className="text-gray-600 mb-6">{texts.login}</p>
-          <button
-            type="button"
-            onClick={() => router.push('/auth/login')}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-          >
-            Login
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   if (isLoading) return <ContentLoader />
 
   if (isError) {

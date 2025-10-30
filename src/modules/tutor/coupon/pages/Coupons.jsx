@@ -71,7 +71,11 @@ const Coupons = () => {
           toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
           setIsOpen(false)
           refetchCoupons()
-        }
+        },
+       onError: (error) => {
+         const errorMessage = error.response?.data?.detail || 'Xatolik'
+         toast.error(errorMessage)
+       }
       }
     )
   }

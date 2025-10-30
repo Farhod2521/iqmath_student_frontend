@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { HiBell } from 'react-icons/hi2'
@@ -10,42 +10,49 @@ const NavbarNotification = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const { data: session } = useSession()
-  const [unreadCount, setUnreadCount] = useState(0)
 
-  // Ochilmagan murojaatlarni olish
-//   const { data: mentorRequests } = useGetQuery({
-//     key: KEYS.mentorRequests,
-//     url: '/api/v1/func_teacher/teacher-independent/list/',
-//     headers: { Authorization: `Bearer ${session?.accessToken}` },
-//     enabled: !!session?.accessToken
-//   })
-
-//   // Ochilmagan habarlar sonini hisoblash
-//   useEffect(() => {
-//     if (mentorRequests?.data?.results) {
-//       const unread = mentorRequests.data.results.reduce((count, student) => {
-//         return count + student.requests.filter(request => request.status === 'pending').length
-//       }, 0)
-//       setUnreadCount(unread)
-//     }
-//   }, [mentorRequests])
+  const { data: mentorRequests, isLoading } = useGetQuery({
+    key: KEYS.mentorRequests,
+    url: '/api/v1/func_teacher/my-notifications/',
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    enabled: !!session?.accessToken
+  })
 
   const handleNotificationClick = () => {
     router.push('/dashboard/teacher/student-examples')
   }
 
+  const unread_count = useMemo(() => {
+    return mentorRequests?.data?.unread_count || 0
+  }, [mentorRequests])
+
   return (
     <button
       onClick={handleNotificationClick}
-      className="relative p-2 text-[#5d87ff] hover:text-[#5d87ff] transition-colors duration-200"
-      title={t('mentorRequests', 'Mentor murojaatlari')}
+      className="relative p-2 text-[#5d87ff] hover:text-[#4a6fd9] transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2  focus:ring-[#5d87ff] focus:ring-opacity-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+      // title={t('mentorRequests', 'Mentor murojaatlari')}
+      disabled={isLoading}
     >
-      <HiBell className="w-6 h-6" />
-      {/* {unreadCount > 0 && ( */}
-        <span className="absolute -top-1 -right-1 bg-[#5d87ff] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-          {/* {unreadCount > 99 ? '99+' : unreadCount} */}10
-        </span>
-      {/* )} */}
+      <div className={unread_count > 0 ? 'animate-ring' : ''}>
+        <HiBell className="w-8 h-8 transition-transform duration-300" />
+      </div>
+      {unread_count > 0 && (
+        <>
+          <span
+            className="absolute -top-1 -right-1 bg-[#5d87ff] rounded-full p-1 animate-ping opacity-75"
+            style={{ width: '24px', height: '24px' }}
+          />
+
+          <span className="absolute -top-1 -right-1 bg-[#5d87ff] text-white text-xs rounded-full min-w-[24px] h-6 px-1.5 shadow-lg flex items-center justify-center font-medium  animate-badge-appear border-2 border-white">
+            {unread_count > 99 ? '99+' : unread_count}
+          </span>
+        </>
+      )}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded-lg">
+          <div className="w-4 h-4 border-2 border-[#5d87ff] border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
     </button>
   )
 }

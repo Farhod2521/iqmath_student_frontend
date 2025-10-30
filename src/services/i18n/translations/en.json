@@ -342,6 +342,7 @@
   "start": "Start",
   "diagnosis_history": "Diagnosis history",
   "questionCount": "Question Count",
+  "myChildren": "My children",
   "common": {
     "loading": "Loading...",
     "currency": "UZS"
