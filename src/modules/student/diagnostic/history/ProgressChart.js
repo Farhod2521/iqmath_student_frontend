@@ -5,21 +5,52 @@ export function ProgressChart({ subject, language }) {
   const chartRef = useRef(null)
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
+  // Helper: format date (simple, fallback if null)
+  const formatDate = (d) => {
+    if (!d) return null
+    const dt = new Date(d)
+    if (Number.isNaN(dt.getTime())) return d // if it's not a standard date string, return raw
+    return dt.toLocaleDateString()
+  }
+
   const history = useMemo(() => {
     const raw = Array.isArray(subject?.progress_history) ? subject.progress_history : []
 
-    return raw
-      .map((n) => Number(n))
+    const mapped = raw
+      .map((item) => {
+        if (item == null) return null
+        if (
+          typeof item === 'number' ||
+          (typeof item === 'string' && item.trim() !== '' && !Number.isNaN(Number(item)))
+        ) {
+          return Number(item)
+        }
+        if (typeof item === 'object' && item !== null) {
+          // support both 'score' and possible alternative keys
+          const score = item.score ?? item.value ?? item.progress ?? null
+          return score == null ? null : Number(score)
+        }
+        return null
+      })
       .filter((n) => Number.isFinite(n))
-      .map((n) => Math.max(0, Math.min(100, n)))
+      .map((n) => Math.max(0, Math.min(100, n))) // clamp 0..100
+
+    // If no valid history but user has_taken_diagnostic and progress_percent present, show that single point
+    if (!mapped.length && subject?.has_taken_diagnostic && Number.isFinite(Number(subject?.progress_percent))) {
+      const p = Math.max(0, Math.min(100, Number(subject.progress_percent)))
+      return [p]
+    }
+
+    return mapped
   }, [subject])
 
   const maxValue = useMemo(() => (history.length ? Math.max(...history) : 100), [history])
   const minValue = useMemo(() => (history.length ? Math.min(...history) : 0), [history])
-
   const range = maxValue - minValue || 1
 
+  // Animation: schedule timeouts and clear them on cleanup
   useEffect(() => {
+    const timeouts = []
     if (chartRef.current) {
       const bars = chartRef.current.querySelectorAll('.chart-bar')
       bars.forEach((bar, index) => {
@@ -27,11 +58,15 @@ export function ProgressChart({ subject, language }) {
           bar.style.opacity = '1'
           bar.style.transform = 'scaleY(1)'
         }, index * 100)
-        return () => clearTimeout(id)
+        timeouts.push(id)
       })
+    }
+    return () => {
+      timeouts.forEach((id) => clearTimeout(id))
     }
   }, [history])
 
+  // If truly empty -> show "no history" block
   if (!history.length) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -47,6 +82,21 @@ export function ProgressChart({ subject, language }) {
       </div>
     )
   }
+
+  // If we have history, we also want to capture date labels (if provided)
+  // Build parallel array of dates (may be null)
+  const dates = useMemo(() => {
+    const raw = Array.isArray(subject?.progress_history) ? subject.progress_history : []
+    const d = raw.map((item) => {
+      if (item == null) return null
+      if (typeof item === 'object' && item !== null)
+        return formatDate(item.date ?? item.created_at ?? item.date_string ?? null)
+      return null
+    })
+    // if raw was empty but we used progress_percent fallback, return [null]
+    if (!d.length && subject?.has_taken_diagnostic) return [null]
+    return d
+  }, [subject])
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -66,6 +116,7 @@ export function ProgressChart({ subject, language }) {
             const height = ((value - minValue) / range) * 100
             const isLatest = index === history.length - 1
             const isHovered = hoveredIndex === index
+            const dateLabel = dates[index] ?? null
 
             return (
               <div key={index} className="flex-1 flex flex-col items-center h-full justify-end relative group">
@@ -86,8 +137,9 @@ export function ProgressChart({ subject, language }) {
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
                   {(isHovered || isLatest) && (
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs font-semibold whitespace-nowrap z-10">
-                      {value}%
+                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs font-semibold whitespace-nowrap z-10">
+                      <div>{value}%</div>
+                      {dateLabel && <div className="text-[10px] opacity-80 mt-0.5">{dateLabel}</div>}
                       <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                     </div>
                   )}
