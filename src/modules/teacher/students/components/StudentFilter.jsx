@@ -18,6 +18,7 @@ const StudentFilter = memo(({
   const [classValue, setClassValue] = useState('') // Default: "Hammasi" (empty value)
   const [subjectValue, setSubjectValue] = useState('') // Default: "Hammasi" (empty value)
   const [statusValue, setStatusValue] = useState('active')
+  const [langValue, setLangValue] = useState('')
   const [roleValue, setRoleValue] = useState('student') // Default: "Hammasi"
   const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -60,6 +61,12 @@ const StudentFilter = memo(({
     { value: 'tutor', label: 'Tutor' }
   ]
 
+  const langOptions = [
+    { value: '', label: 'Hammasi' },
+    { value: 'uz', label: 'UZ' },
+    { value: 'uz', label: 'RU' }
+  ]
+
   // Debounced search function - faqat bir marta yaratiladi
   useEffect(() => {
     debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal, roleVal) => {
@@ -68,7 +75,8 @@ const StudentFilter = memo(({
         class_num: classVal,
         subject_name: subjectVal, // subject_name parametri sifatida yuboramiz
         status: statusVal,
-        role: roleVal
+        role: roleVal,
+        lang: langValue
       }
       onFilterChange(filterData)
       setIsLoading(false)
@@ -103,10 +111,24 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue)
+        debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue, langValue)
       }
     },
-    [search, subjectValue, statusValue, roleValue]
+    [search, subjectValue, statusValue, roleValue, langValue]
+  )
+
+  // Class o'zgarishini kuzatish
+  const handleLangChange = useCallback(
+    (e) => {
+      const newValue = e.target.value
+      setLangValue(newValue)
+      setIsLoading(true)
+
+      if (debouncedSearchRef.current) {
+        debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue, classValue)
+      }
+    },
+    [search, subjectValue, statusValue, roleValue, classValue]
   )
 
   // Subject o'zgarishini kuzatish
@@ -117,10 +139,10 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(search, classValue, newValue, statusValue, roleValue)
+        debouncedSearchRef.current(search, classValue, newValue, statusValue, roleValue, langValue)
       }
     },
-    [search, classValue, statusValue, roleValue]
+    [search, classValue, statusValue, roleValue, langValue]
   )
 
   const handleStatusChange = useCallback(
@@ -130,10 +152,10 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(search, classValue, subjectValue, newValue, roleValue)
+        debouncedSearchRef.current(search, classValue, subjectValue, newValue, roleValue, langValue)
       }
     },
-    [search, classValue, subjectValue, roleValue]
+    [search, classValue, subjectValue, roleValue, langValue]
   )
 
   // Role o'zgarishini kuzatish
@@ -144,10 +166,10 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(search, classValue, subjectValue, statusValue, newValue)
+        debouncedSearchRef.current(search, classValue, subjectValue, statusValue, newValue, langValue)
       }
     },
-    [search, classValue, subjectValue, statusValue, roleValue]
+    [search, classValue, subjectValue, statusValue, roleValue, langValue]
   )
 
   // Clear filters function
@@ -169,24 +191,23 @@ const StudentFilter = memo(({
   }, [onFilterChange])
 
   // Export function
- const handleExport = useCallback(() => {
-   onExportStart()
-   const exportParams = { role: roleValue || '', export: 'excel' }
-   const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams)}`
+  const handleExport = useCallback(() => {
+    onExportStart()
+    const exportParams = { role: roleValue || '', export: 'excel' }
+    const exportUrl = `${URLS.studentList}?${new URLSearchParams(exportParams)}`
 
-   let iframe = document.getElementById('download-frame')
-   if (!iframe) {
-     iframe = document.createElement('iframe')
-     iframe.id = 'download-frame'
-     iframe.style.display = 'none'
-     document.body.appendChild(iframe)
-   }
-   iframe.src = exportUrl // fayl yuklanadi, sahifa o'zgarmaydi
+    let iframe = document.getElementById('download-frame')
+    if (!iframe) {
+      iframe = document.createElement('iframe')
+      iframe.id = 'download-frame'
+      iframe.style.display = 'none'
+      document.body.appendChild(iframe)
+    }
+    iframe.src = exportUrl // fayl yuklanadi, sahifa o'zgarmaydi
 
-   // ixtiyoriy: 1s dan keyin loadingni yopish
-   setTimeout(onExportEnd, 1000)
- }, [onExportStart, onExportEnd, roleValue])
-
+    // ixtiyoriy: 1s dan keyin loadingni yopish
+    setTimeout(onExportEnd, 1000)
+  }, [onExportStart, onExportEnd, roleValue])
 
   return (
     <>
@@ -196,14 +217,15 @@ const StudentFilter = memo(({
             placeholder={t('searchStudents')}
             value={search}
             onChange={handleSearchChange}
-            className="w-80"
+            className="w-60"
           />
+
           <SelectBox
             label={t('all')}
             options={roleOptions}
             value={roleValue}
             onChange={handleRoleChange}
-            className="w-40"
+            className="w-30"
           />
           {/* Faqat "O'quvchi" tanlanganda sinf va fan filtrlari ko'rinadi */}
           {roleValue === 'student' && (
@@ -213,14 +235,14 @@ const StudentFilter = memo(({
                 options={classOptions}
                 value={classValue}
                 onChange={handleClassChange}
-                className="w-40"
+                className="w-30"
               />
               <SelectBox
                 label={t('subject')}
                 options={subjectOptions}
                 value={subjectValue}
                 onChange={handleSubjectChange}
-                className="w-40"
+                className="w-30"
               />
             </>
           )}
@@ -229,7 +251,14 @@ const StudentFilter = memo(({
             options={statusOptions}
             value={statusValue}
             onChange={handleStatusChange}
-            className="w-40"
+            className="w-30"
+          />
+          <SelectBox
+            label={'Til'}
+            options={langOptions}
+            value={langValue}
+            onChange={handleLangChange}
+            className="w-20"
           />
 
           {/* Clear filters button - faqat filter qilinganida ko'rinadi */}

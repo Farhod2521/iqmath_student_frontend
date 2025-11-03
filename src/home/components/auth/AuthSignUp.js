@@ -59,6 +59,7 @@ function AuthSignUp() {
       formData.append('full_name', full_name)
       formData.append('phone', `${String(998) + String(phone)}`)
       formData.append('role', selectedRole.value)
+      formData.append('lang', i18n.language)
       
       if (selectedRole.value === 'student') {
         formData.append('class_name', selectedOptionCourse?.value)

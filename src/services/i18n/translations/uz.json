@@ -342,6 +342,7 @@
   "toUnlock": "Mavzuni ochish uchun avval oldingi mavzularni tugatishingiz kerak",
   "coin": "Tanga",
   "yourcoins": "Jami tangalaringiz",
+  "yoursums": "Jami summalaringiz",
   "sendToMentor": "Mentorga yuborish",
   "mentorModalSubtitle": "Savolingiz haqida izoh bering",
   "yourComment": "Izohingiz",
@@ -787,5 +788,24 @@
       "pending": "Jarayonda",
       "balance": "Balans"
     }
-  }
+  },
+  "successConverted": "Konvertatsiya muvaffaqiyatli bajarildi!",
+  "errorConvert": "Konvertatsiya amalga oshmadi",
+  "enterValidAmount": "Iltimos, to'g'ri miqdor kiriting",
+  "invalidConvertType": "Konvertatsiya turi noto'g'ri tanlangan",
+  "converterTitle": "Konverter",
+  "converterDesc": "Ball va tangalarni oson konvertatsiya qiling",
+  "ratesTitle": "Konvertatsiya kurslari",
+  "tanga": "tanga",
+  "oneTangaEquals": "1 Tanga = {{sum}} so'm",
+  "selectFromLabel": "1-tanlov: Qaysidan",
+  "selectToLabel": "2-tanlov: Qaysiga",
+  "amountFromBall": "Ball miqdori",
+  "amountFromTanga": "Tanga miqdori",
+  "swapAriaLabel": "Konvertatsiya yo'nalishini almashtirish",
+  "toTanga": "Tangaga",
+  "toSum": "So'mga",
+  "sumEquivalentLabel": "So'm ekvivalenti:",
+  "convertButton": "Konvertatsiya qilish",
+  "footerInfo": "Barcha konvertatsiyalar avtomatik hisoblanadi va API orqali saqlanadi"
 }
