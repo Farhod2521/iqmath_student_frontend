@@ -24,17 +24,21 @@ const StudentSubjectsList = () => {
 
   const subjects = get(data, 'data', data) || []
 
-  const {
-    data: dataD,
-    isLoading: isLoadingD,
-    isFetching: isFetchingD
-  } = useGetQuery({
+  const { data: dataD } = useGetQuery({
     key: ['studentSubjectsD', id],
     url: id ? `/api/v1/func_student/diagnost/students/${id}/subjects/` : null,
     enabled: !!id && !!session?.accessToken
   })
 
   const subjectsD = get(dataD, 'data', dataD) || []
+
+  const { data: dataS } = useGetQuery({
+    key: ['studentSubjectsS', id],
+    url: id ? `/api/v1/func_student/student-statistics/${id}` : null,
+    enabled: !!id && !!session?.accessToken
+  })
+
+  console.log(dataS)
 
   const handleTabChange = (tab) => {
     setIsTabLoading(true)

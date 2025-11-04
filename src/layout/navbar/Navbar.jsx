@@ -11,6 +11,7 @@ import LanguageDropdown from '@/components/language'
 import NavbarBackTeacher from './NavbarBackTeacher'
 import NavbarNotification from './NavbarNotification'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import NavbarSum from './NavbarSum'
 
 const Navbar = ({ title }) => {
   const router = useRouter()
@@ -35,8 +36,9 @@ const Navbar = ({ title }) => {
         <div className="flex items-center gap-x-2 sm:gap-x-4 flex-wrap ">
           {oldToken && <NavbarBackTeacher />}
 
-          {(currentRole !== 'teacher' && currentRole !== 'parent' && currentRole !== 'tutor') && (
+          {currentRole !== 'teacher' && currentRole !== 'parent' && currentRole !== 'tutor' && (
             <>
+              <NavbarSum />
               <NavbarCoins />
               <NavbarPoints />
             </>
@@ -44,11 +46,10 @@ const Navbar = ({ title }) => {
 
           {/* Mentor notification bell - faqat teacher role uchun */}
           {currentRole === 'teacher' && (
-            <div className='flex mr-2'>
+            <div className="flex mr-2">
               <NavbarNotification />
             </div>
-          )
-          }
+          )}
           <LanguageDropdown />
           <NavbarProfile />
         </div>
