@@ -10,17 +10,25 @@ import { useTranslation } from "react-i18next";
 
 const Statistics = () => {
   const { t } = useTranslation();
-  const { data: statisticsData, isLoading } = useGetQuery({
+  const {
+    data: statisticsData,
+    isLoading,
+    isError
+  } = useGetQuery({
     key: KEYS.statistics,
-    url: URLS.statistics,
-  });
+    url: URLS.statistics
+  })
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
-    );
+    )
+  }
+
+  if (isError) {
+    return <div className="flex justify-center items-center h-screen">Sahifani qayta yuklang!</div>
   }
 
   return (

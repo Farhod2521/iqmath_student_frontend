@@ -141,32 +141,43 @@ const Products = () => {
                 ) : null}
               </div>
 
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-3 text-[#2A3547] dark:text-white">
+              <div className="p-4 flex flex-col justify-between">
+                {/* Mahsulot nomi */}
+                <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-3 line-clamp-2 leading-snug">
                   {i18n.language === 'uz' ? product.name_uz : product.name_ru}
                 </h3>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center justify-between p-2 bg-[#F8F9FA] dark:bg-[#2A3447] rounded-lg">
+                {/* Mahsulot ma'lumotlari */}
+                <div className="space-y-3 mb-5">
+                  {/* Narx / Coin */}
+                  <div className="flex items-center justify-between p-3 bg-[#F8F9FA] dark:bg-[#2A3447] rounded-lg hover:bg-[#EEF1F4] dark:hover:bg-[#2E3A50] transition-colors duration-200">
                     <div className="flex items-center gap-2">
                       <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
-                      <span className="text-sm text-[#2A3547] dark:text-white">
-                        {product.coin} {t('coin')}
-                      </span>
+                      <span className="text-sm font-medium text-[#2A3547] dark:text-gray-100">1 dona</span>
                     </div>
+                    <div className="text-sm font-semibold text-[#5A6A85] dark:text-gray-300">
+                      {product.coin} {t('coin')}
+                    </div>
+                  </div>
 
-                    <div className="text-sm text-[#5A6A85] dark:text-gray-300">
-                      {isOutOfStock ? (
-                        <span className="font-medium">0 ta</span>
-                      ) : (
-                        <span className="font-medium">{product.count} ta</span>
-                      )}
+                  {/* Ombordagi miqdor */}
+                  <div className="flex items-center justify-between p-3 bg-[#F8F9FA] dark:bg-[#2A3447] rounded-lg hover:bg-[#EEF1F4] dark:hover:bg-[#2E3A50] transition-colors duration-200">
+                    <div className="flex items-center gap-2 text-sm font-medium text-[#2A3547] gap-2 dark:text-gray-100">
+                      <span>🏷</span> Omborda
+                    </div>
+                    <div className="text-sm font-semibold text-[#5A6A85] dark:text-gray-300">
+                      {isOutOfStock ? <span className="">0 ta</span> : <span className="">{product.count} ta</span>}
                     </div>
                   </div>
                 </div>
 
+                {/* Tugma */}
                 <Button
-                  classname="w-full"
+                  classname={`w-full font-medium rounded-lg py-2 transition-all duration-300 ${
+                    isOutOfStock
+                      ? 'bg-gray-400 text-white cursor-not-allowed'
+                      : 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white shadow-sm hover:shadow-md'
+                  }`}
                   disabled={exchangingProduct === product.id || isOutOfStock}
                   onclick={() => handlePurchase(product, 'coins')}
                 >

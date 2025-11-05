@@ -64,12 +64,12 @@ const StudentFilter = memo(({
   const langOptions = [
     { value: '', label: 'Hammasi' },
     { value: 'uz', label: 'UZ' },
-    { value: 'uz', label: 'RU' }
+    { value: 'ru', label: 'RU' }
   ]
 
   // Debounced search function - faqat bir marta yaratiladi
   useEffect(() => {
-    debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal, roleVal) => {
+    debouncedSearchRef.current = debounce((searchTerm, classVal, subjectVal, statusVal, roleVal, langValue) => {
       const filterData = {
         search: searchTerm,
         class_num: classVal,
@@ -97,10 +97,10 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue, roleValue)
+        debouncedSearchRef.current(newValue, classValue, subjectValue, statusValue, roleValue, langValue)
       }
     },
-    [classValue, subjectValue, statusValue, roleValue]
+    [classValue, subjectValue, statusValue, roleValue, langValue]
   )
 
   // Class o'zgarishini kuzatish
@@ -125,7 +125,7 @@ const StudentFilter = memo(({
       setIsLoading(true)
 
       if (debouncedSearchRef.current) {
-        debouncedSearchRef.current(search, newValue, subjectValue, statusValue, roleValue, classValue)
+        debouncedSearchRef.current(search, classValue, subjectValue, statusValue, roleValue, newValue)
       }
     },
     [search, subjectValue, statusValue, roleValue, classValue]

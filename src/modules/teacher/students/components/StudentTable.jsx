@@ -254,6 +254,14 @@ function StudentTable({
         }
       },
       {
+        headerName: "Ro'yxattan o'tgan tili",
+        field: 'lang',
+        flex: 1,
+        cellRenderer: (params) => {
+          return params.value
+        }
+      },
+      {
         headerName: t('register_date') || "Ro'yxatdan o'tish",
         field: 'registration_date',
         flex: 1,

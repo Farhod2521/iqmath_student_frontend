@@ -44,17 +44,17 @@ const KeyMetric = () => {
               lineHeight={1.9}
               textAlign="justify"
               component="div"
+              sx={{
+                '& p': {
+                  marginBottom: '15px',
+                  marginTop: 0
+                }
+              }}
               dangerouslySetInnerHTML={{
                 __html: language === 'uz' ? data?.about_uz ?? '' : data?.about_ru ?? ''
               }}
             />
           )}
-          {/* <Typography lineHeight={1.9} textAlign="justify">
-            {t('aboutbody2')}
-          </Typography>
-          <Typography lineHeight={1.9} textAlign="justify">
-            {t('aboutbody3')}
-          </Typography> */}
         </Grid>
       </Container>
     </Box>
