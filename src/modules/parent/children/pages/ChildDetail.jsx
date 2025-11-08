@@ -20,7 +20,7 @@ const ChildDetail = () => {
 
   const { data, isLoading, isError } = useGetQuery({
     key: ['/student-statistics', childId],
-    url: `https://api.iqmath.uz/api/v1/func_student/student-statistics/${childId}/`,
+    url: `/api/v1/func_student/student-statistics/${childId}/`,
     enabled: !!childId && !!session?.accessToken
   })
 

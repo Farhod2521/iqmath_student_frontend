@@ -49,6 +49,21 @@ const StudentSubjectDetails = () => {
     }
   }
 
+  const { data: databreadcrumbs } = useGetQuery({
+    key: ['api/v1/func_student/path/list/student_id/', id, subjectId],
+    url: `/api/v1/func_student/path/list/student_id/${id}`,
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`
+    },
+    enabled: !!id && !!subjectId && !!session?.accessToken
+  })
+
+  const breadcrumbs = [
+    { link: '/dashboard/parent/my-children', title: t('myChildren') },
+    { link: `/dashboard/parent/my-children/${id}`, title: t('childInfo') },
+    { link: ``, title: t('mastery') }
+  ]
+
   if (isLoading || isFetching) {
     return (
       <div>
@@ -60,6 +75,7 @@ const StudentSubjectDetails = () => {
   return (
     <LayoutAdmin>
       <div className="p-4">
+        <BaseBreadcrumbs data={breadcrumbs} />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Chapters List (Left Column) */}
           <div className="lg:col-span-5 bg-white rounded-xl border p-4 min-h-[400px]">
