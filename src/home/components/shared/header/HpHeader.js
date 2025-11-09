@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
@@ -7,9 +9,10 @@ import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Toolbar from '@mui/material/Toolbar'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 import { styled } from '@mui/material/styles'
-import { IconMenu2 } from '@tabler/icons'
-// import { Facebook, Instagram, Phone, Telegram, Twitter, YouTube } from '@mui/icons-material'
+import { IconMenu2, IconX } from '@tabler/icons'
 import Brand from '@/components/brand'
 import Navigations from './Navigations'
 import MobileSidebar from './MobileSidebar'
@@ -18,7 +21,7 @@ import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
 
-// Styled components (Tashqarida)
+// Styled components
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
   justifyContent: 'center',
   [theme.breakpoints.up('lg')]: { minHeight: 60 },
@@ -31,6 +34,14 @@ const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
   paddingRight: 0,
   color: theme.palette.text.secondary,
   justifyContent: 'space-between'
+}))
+
+const DrawerHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(2),
+  minHeight: 64
 }))
 
 const defaultLinks = {
@@ -95,24 +106,28 @@ const HpHeader = () => {
               <Stack spacing={1} direction="row" alignItems="center">
                 <Navigations />
               </Stack>
-              <div className="flex gap-2 items-center">
+              <Stack direction="row" spacing={0.5} alignItems="center">
                 {socialIcons.map(
                   ({ key, Icon, size }) =>
                     socialLinks[key] && (
-                      <a key={key} href={socialLinks[key]} target="_blank" rel="noopener noreferrer">
-                        <IconButton color="primary">
-                          <Icon size={size} />
-                        </IconButton>
-                      </a>
+                      <IconButton
+                        key={key}
+                        component="a"
+                        href={socialLinks[key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        color="primary"
+                        size="small"
+                      >
+                        <Icon size={size} />
+                      </IconButton>
                     )
                 )}
-                <a href={`tel:${socialLinks.phone}`}>
-                  <IconButton color="primary">
-                    <FaPhone size={16} />
-                  </IconButton>
-                </a>
+                <IconButton component="a" href={`tel:${socialLinks.phone}`} color="primary" size="small">
+                  <FaPhone size={16} />
+                </IconButton>
                 <LanguageDropdown />
-              </div>
+              </Stack>
             </>
           )}
         </ToolbarStyled>
@@ -125,19 +140,68 @@ const HpHeader = () => {
         onClose={handleDrawerClose}
         PaperProps={{
           sx: {
-            width: 270,
-            height: 'auto',
-            paddingBottom: 2,
-            overflowX: 'hidden',
-            border: 0,
-            boxShadow: (theme) => theme.shadows[8]
+            width: 280,
+            maxWidth: '85vw'
           }
         }}
+        // Drawer ochilganda orqa fonni to'xtatish
+        ModalProps={{
+          keepMounted: true // Mobile performance uchun
+        }}
       >
-        <MobileSidebar />
-        <div className="flex w-full justify-start ml-6 mb-6">
+        {/* Drawer Header */}
+        <DrawerHeader>
+          <Brand />
+          <IconButton
+            onClick={handleDrawerClose}
+            sx={{
+              color: 'text.secondary',
+              '&:hover': {
+                backgroundColor: 'action.hover'
+              }
+            }}
+          >
+            <IconX size={20} />
+          </IconButton>
+        </DrawerHeader>
+
+        <Divider />
+
+        {/* Navigation Links */}
+        <Box onClick={handleDrawerClose}>
+          <MobileSidebar />
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* Social Icons va Language */}
+        <Stack spacing={2} sx={{ px: 2, pb: 2 }}>
+          {/* Social Icons */}
+          <Stack direction="row" spacing={1} justifyContent="flex-start" flexWrap="wrap">
+            {socialIcons.map(
+              ({ key, Icon, size }) =>
+                socialLinks[key] && (
+                  <IconButton
+                    key={key}
+                    component="a"
+                    href={socialLinks[key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="primary"
+                    size="small"
+                  >
+                    <Icon size={size} />
+                  </IconButton>
+                )
+            )}
+            <IconButton component="a" href={`tel:${socialLinks.phone}`} color="primary" size="small">
+              <FaPhone size={16} />
+            </IconButton>
+          </Stack>
+
+          {/* Language Dropdown */}
           <LanguageDropdown />
-        </div>
+        </Stack>
       </Drawer>
     </AppBarStyled>
   )

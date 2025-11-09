@@ -367,5 +367,6 @@
       "pending": "Pending",
       "balance": "Balance"
     }
-  }
+  },
+  "payments": "Payments"
 }

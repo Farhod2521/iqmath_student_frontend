@@ -807,5 +807,6 @@
   "toSum": "So'mga",
   "sumEquivalentLabel": "So'm ekvivalenti:",
   "convertButton": "Konvertatsiya qilish",
-  "footerInfo": "Barcha konvertatsiyalar avtomatik hisoblanadi va API orqali saqlanadi"
+  "footerInfo": "Barcha konvertatsiyalar avtomatik hisoblanadi va API orqali saqlanadi",
+  "payments": "To'lovlar"
 }

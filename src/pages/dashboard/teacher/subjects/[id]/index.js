@@ -103,7 +103,7 @@ const Index = () => {
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
-    enabled: !!session?.accessToken
+    enabled: !!session?.accessToken && !!id
   })
 
   const {
@@ -112,7 +112,7 @@ const Index = () => {
     isFetching: isFetchingTopics
   } = useGetQuery({
     key: [KEYS.topics, selectedId],
-    url: selectedId ? `${URLS.topics}${selectedId}/` : null,
+    url: `${URLS.topics}${selectedId}/`,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
@@ -289,25 +289,22 @@ const Index = () => {
   // Bob o'chirish
   const onSubmitDeleteChapter = async () => {
     try {
-      const response = await axios.delete(
-        `${config.API_URL}${URLS.deleteChapter}${selectedId}/`,
-        {
-          headers: { 
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
+      const response = await axios.delete(`${config.API_URL}${URLS.deleteChapter}${selectedId}/`, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+          'Content-Type': 'application/json'
         }
-      )
+      })
 
       if (response.status === 204) {
         setOpenChapterModal(false)
-        
+
         // Immediate state update - o'chirilgan bobni darhol olib tashlash
-        setChapters(prevChapters => prevChapters.filter(chapter => chapter.id !== selectedId))
-        
+        setChapters((prevChapters) => prevChapters.filter((chapter) => chapter.id !== selectedId))
+
         // Cache invalidation
         await queryClient.invalidateQueries([KEYS.chapters])
-        
+
         toast.success("Bob muvaqqiyatli o'chirildi")
       }
     } catch (error) {
@@ -331,7 +328,7 @@ const Index = () => {
           content_ru: contentRu
         },
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
@@ -346,36 +343,33 @@ const Index = () => {
         setVideoLinkRu('')
         setContent('')
         setContentRu('')
-        
+
         // Immediate state update - yangi mavzuni darhol qo'shish
         if (response.data?.data) {
-          setTopics(prevTopics => [...prevTopics, response.data.data])
+          setTopics((prevTopics) => [...prevTopics, response.data.data])
         }
-        
+
         // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
         await queryClient.invalidateQueries([KEYS.topics])
         await queryClient.refetchQueries([KEYS.topics, selectedId])
-        
+
         // Manual API call agar refetch ishlamasa
         try {
-          const manualResponse = await axios.get(
-            `${config.API_URL}${URLS.topics}${selectedId}/`,
-            {
-              headers: { 
-                Authorization: `Bearer ${session?.accessToken}`,
-                'Content-Type': 'application/json'
-              }
+          const manualResponse = await axios.get(`${config.API_URL}${URLS.topics}${selectedId}/`, {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+              'Content-Type': 'application/json'
             }
-          )
-          
+          })
+
           if (manualResponse.data?.data) {
             setTopics(manualResponse.data.data)
           }
         } catch (manualError) {
           console.error('Manual API error:', manualError)
         }
-        
+
         toast.success('Mavzu muvaqqiyatli yaratildi')
       }
     } catch (error) {
@@ -399,7 +393,7 @@ const Index = () => {
           content_ru: contentRu
         },
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
@@ -414,91 +408,80 @@ const Index = () => {
         setVideoLinkRu('')
         setContent('')
         setContentRu('')
-        
+
         // Immediate state update - o'zgartirilgan mavzuni darhol yangilash
         if (response.data?.data) {
-          setTopics(prevTopics => 
-            prevTopics.map(topic => 
-              topic.id === selectedTopic?.id ? response.data.data : topic
-            )
+          setTopics((prevTopics) =>
+            prevTopics.map((topic) => (topic.id === selectedTopic?.id ? response.data.data : topic))
           )
         }
-        
+
         // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
         await queryClient.invalidateQueries([KEYS.topics])
         await queryClient.refetchQueries([KEYS.topics, selectedId])
-        
+
         // Manual API call agar refetch ishlamasa
         try {
-          const manualResponse = await axios.get(
-            `${config.API_URL}${URLS.topics}${selectedId}/`,
-            {
-              headers: { 
-                Authorization: `Bearer ${session?.accessToken}`,
-                'Content-Type': 'application/json'
-              }
+          const manualResponse = await axios.get(`${config.API_URL}${URLS.topics}${selectedId}/`, {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+              'Content-Type': 'application/json'
             }
-          )
-          
+          })
+
           if (manualResponse.data?.data) {
             setTopics(manualResponse.data.data)
           }
         } catch (manualError) {
           console.error('Manual API error:', manualError)
         }
-        
+
         toast.success("Mavzu muvaqqiyatli o'zgartirildi")
       }
     } catch (error) {
       console.error('Update topic error:', error)
       toast.error(error.response?.data?.error || 'Xatolik yuz berdi')
-    } 
+    }
   }
 
   // Mavzu o'chirish
   const onSubmitDeleteTopic = async (id) => {
     try {
-      const response = await axios.delete(
-        `${config.API_URL}${URLS.deleteTopic}${id}/`,
-        {
-          headers: { 
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
+      const response = await axios.delete(`${config.API_URL}${URLS.deleteTopic}${id}/`, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+          'Content-Type': 'application/json'
         }
-      )
+      })
 
       if (response.status === 204) {
         setOpenTopicsModal(false)
-        
+
         // Immediate state update - o'chirilgan mavzuni darhol olib tashlash
-        setTopics(prevTopics => prevTopics.filter(topic => topic.id !== id))
-        
+        setTopics((prevTopics) => prevTopics.filter((topic) => topic.id !== id))
+
         // Cache invalidation
         await queryClient.invalidateQueries([KEYS.topics, selectedId])
         await queryClient.invalidateQueries([KEYS.topics])
         await queryClient.refetchQueries([KEYS.topics, selectedId])
-        
+
         // Manual API call agar refetch ishlamasa
         try {
-          const manualResponse = await axios.get(
-            `${config.API_URL}${URLS.topics}${selectedId}/`,
-            {
-              headers: { 
-                Authorization: `Bearer ${session?.accessToken}`,
-                'Content-Type': 'application/json'
-              }
+          const manualResponse = await axios.get(`${config.API_URL}${URLS.topics}${selectedId}/`, {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+              'Content-Type': 'application/json'
             }
-          )
-          
+          })
+
           if (manualResponse.data?.data) {
             setTopics(manualResponse.data.data)
           }
         } catch (manualError) {
           console.error('Manual API error:', manualError)
         }
-        
+
         toast.success("Mavzu muvaqqiyatli o'chirildi")
       }
     } catch (error) {
@@ -507,269 +490,274 @@ const Index = () => {
     }
   }
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
-      <LayoutAdmin title={'Mavzular'}>
+      <LayoutAdmin title={t('topics')}>
         <ContentLoader />
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={'Mavzular'}>
-      <MathJaxContext
-        config={{
-          loader: { load: ['input/tex', 'output/chtml'] }
-        }}
-      >
+    <LayoutAdmin title={t('topics')}>
+      <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
         <div className="font-sf">
-          <div className="flex justify-between mb-2">
-            <h2 className="font-semibold text-[16px] uppercase mb-[18px]">{t('topics')}</h2>
-            <Button
-              classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
-              onclick={() => {
-                setOpenChapterModal(true)
-                setNewChapter('')
-                setNewChapterRu('')
-                setModalTypeOfChapter('create')
-              }}
-            >
-              {t('createChapter')}
-            </Button>
-          </div>
-
           <div className="grid grid-cols-12 gap-[24px]">
-            <div className="lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] rounded-[12px]">
-              <DndContext collisionDetection={closestCenter} onDragEnd={handleChaptersDragEnd}>
-                <table className="w-full table-auto border-collapse">
-                  <thead>
-                    <tr className="border-b border-b-[#E9E9E9] p-[12px]">
-                      <th className="p-[12px] text-center">
-                        <button
-                          onClick={() => setIsChaptersDragEnabled((prev) => !prev)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
-                          title="Tartiblash"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+            <div className="lg:col-span-6 col-span-12">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="font-semibold text-[16px] uppercase ">{t('chapters')}</h2>
+                <Button
+                  py="py-[8px] text-sm"
+                  classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
+                  onclick={() => {
+                    setOpenChapterModal(true)
+                    setNewChapter('')
+                    setNewChapterRu('')
+                    setModalTypeOfChapter('create')
+                  }}
+                >
+                  {t('createChapter')}
+                </Button>
+              </div>
+              <div className=" self-start border border-[#E9E9E9] rounded-[12px]">
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleChaptersDragEnd}>
+                  <table className="w-full table-auto border-collapse">
+                    <thead>
+                      <tr className="border-b border-b-[#E9E9E9] p-[12px]">
+                        <th className="p-[12px] text-center">
+                          <button
+                            onClick={() => setIsChaptersDragEnabled((prev) => !prev)}
+                            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                            title="Tartiblash"
                           >
-                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                            <path d="m15 5 4 4" />
-                          </svg>
-                        </button>
-                      </th>
-                      <th className="p-[12px] text-center">#</th>
-                      <th className="p-[12px] text-left">{t('title')}</th>
-                      <th className="p-[12px] text-right">{t('action')}</th>
-                    </tr>
-                  </thead>
-                  <SortableContext
-                    items={chapters}
-                    strategy={verticalListSortingStrategy}
-                    disabled={!isChaptersDragEnabled}
-                  >
-                    <tbody>
-                      {chapters.map((chapter, index) => {
-                        const isActive = selectedId === get(chapter, 'id')
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                              <path d="m15 5 4 4" />
+                            </svg>
+                          </button>
+                        </th>
+                        <th className="p-[12px] text-center">#</th>
+                        <th className="p-[12px] text-left">{t('title')}</th>
+                        <th className="p-[12px] text-right">{t('action')}</th>
+                      </tr>
+                    </thead>
+                    <SortableContext
+                      items={chapters}
+                      strategy={verticalListSortingStrategy}
+                      disabled={!isChaptersDragEnabled}
+                    >
+                      <tbody>
+                        {chapters.map((chapter, index) => {
+                          const isActive = selectedId === get(chapter, 'id')
 
-                        return (
-                          <SortableTableRow
-                            key={chapter.id}
-                            id={chapter.id}
-                            showDragHandle={isChaptersDragEnabled}
-                            onClick={() => setSelectedId(get(chapter, 'id'))}
-                            isActive={isActive}
-                            className="group border-b"
-                          >
-                            <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
-                            <td className="p-[12px] text-left w-[60%] text-[15px] font-medium transition-all">
-                              <MathJax dynamic>
-                                {i18n.language === 'uz' ? get(chapter, 'name_uz') : get(chapter, 'name_ru')}
-                              </MathJax>
-                            </td>
-                            <td className="p-[12px] text-right rounded-br-[12px]">
-                              <div className="flex justify-end gap-1">
-                                <Button
-                                  onclick={(e) => {
-                                    e.stopPropagation()
-                                    setOpenTopicsModal(true)
-                                    setTopicName('')
-                                    setTopicNameRu('')
-                                    setContent('')
-                                    setContentRu('')
-                                    setVideoLink('')
-                                    setVideoLinkRu('')
-                                    setSelectedId(get(chapter, 'id'))
-                                    setModalTypeOfTopic('create')
-                                  }}
-                                  py="py-[8px] text-sm"
-                                  classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
-                                >
-                                  {t('createTopic')}
-                                </Button>
-                                <Button
-                                  onclick={(e) => {
-                                    e.stopPropagation()
-                                    setOpenChapterModal(true)
-                                    setSelectedId(get(chapter, 'id'))
-                                    setNewChapter(get(chapter, 'name_uz'))
-                                    setNewChapterRu(get(chapter, 'name_ru'))
-                                    setModalTypeOfChapter('update')
-                                  }}
-                                  py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
-                                >
-                                  <EditIcon color="white" />
-                                </Button>
-                                <Button
-                                  onclick={(e) => {
-                                    e.stopPropagation()
-                                    setOpenChapterModal(true)
-                                    setSelectedId(get(chapter, 'id'))
-                                    setModalTypeOfChapter('delete')
-                                  }}
-                                  classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
-                                >
-                                  <TrashIcon color="white" />
-                                </Button>
-                              </div>
-                            </td>
-                          </SortableTableRow>
-                        )
-                      })}
-                    </tbody>
-                  </SortableContext>
-                </table>
-              </DndContext>
+                          return (
+                            <SortableTableRow
+                              key={chapter.id}
+                              id={chapter.id}
+                              showDragHandle={isChaptersDragEnabled}
+                              onClick={() => setSelectedId(get(chapter, 'id'))}
+                              isActive={isActive}
+                              className="group border-b"
+                            >
+                              <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
+                              <td className="p-[12px] text-left w-[60%] text-[15px] font-medium transition-all">
+                                <MathJax dynamic>
+                                  {i18n.language === 'uz' ? get(chapter, 'name_uz') : get(chapter, 'name_ru')}
+                                </MathJax>
+                              </td>
+                              <td className="p-[12px] text-right rounded-br-[12px]">
+                                <div className="flex justify-end gap-1">
+                                  <Button
+                                    onclick={(e) => {
+                                      e.stopPropagation()
+                                      setOpenChapterModal(true)
+                                      setSelectedId(get(chapter, 'id'))
+                                      setNewChapter(get(chapter, 'name_uz'))
+                                      setNewChapterRu(get(chapter, 'name_ru'))
+                                      setModalTypeOfChapter('update')
+                                    }}
+                                    py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
+                                  >
+                                    <EditIcon color="white" />
+                                  </Button>
+                                  <Button
+                                    onclick={(e) => {
+                                      e.stopPropagation()
+                                      setOpenChapterModal(true)
+                                      setSelectedId(get(chapter, 'id'))
+                                      setModalTypeOfChapter('delete')
+                                    }}
+                                    classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
+                                  >
+                                    <TrashIcon color="white" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </SortableTableRow>
+                          )
+                        })}
+                      </tbody>
+                    </SortableContext>
+                  </table>
+                </DndContext>
+              </div>
             </div>
 
             {selectedId && (
-              <div
-                className={`lg:col-span-6 col-span-12 self-start border border-[#E9E9E9] ${
-                  topics.length > 0 ? 'border-[#E9E9E9]' : 'border-[#FF9500] bg-[#FFF4E5]'
-                } rounded-[12px]`}
-              >
-                {isLoadingTopics || isFetchingTopics ? (
-                  <ContentLoader />
-                ) : (
-                  <div>
-                    {topics.length > 0 ? (
-                      <DndContext collisionDetection={closestCenter} onDragEnd={handleTopicsDragEnd}>
-                        <table className="w-full table-auto border-collapse">
-                          <thead>
-                            <tr className="border-b border-b-[#E9E9E9] p-[12px]">
-                              <th className="p-[12px] text-center">
-                                <button
-                                  onClick={() => setIsTopicsDragEnabled((prev) => !prev)}
-                                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
-                                  title="Tartiblash"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
+              <div className="lg:col-span-6 col-span-12">
+                <div className="flex justify-between items-center mb-2 ">
+                  <h2 className="font-semibold text-[16px] uppercase">{t('topics')}</h2>
+                  <Button
+                    py="py-[8px] text-sm"
+                    onclick={(e) => {
+                      e.stopPropagation()
+                      setOpenTopicsModal(true)
+                      setTopicName('')
+                      setTopicNameRu('')
+                      setContent('')
+                      setContentRu('')
+                      setVideoLink('')
+                      setVideoLinkRu('')
+                      setSelectedId(selectedId)
+                      setModalTypeOfTopic('create')
+                    }}
+                    classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
+                  >
+                    {t('createTopic')}
+                  </Button>
+                </div>
+                <div
+                  className={` self-start border border-[#E9E9E9] ${
+                    topics.length > 0 ? 'border-[#E9E9E9]' : 'border-[#FF9500] bg-[#FFF4E5]'
+                  } rounded-[12px]`}
+                >
+                  {isLoadingTopics || isFetchingTopics ? (
+                    <ContentLoader />
+                  ) : (
+                    <div>
+                      {topics.length > 0 ? (
+                        <DndContext collisionDetection={closestCenter} onDragEnd={handleTopicsDragEnd}>
+                          <table className="w-full table-auto border-collapse">
+                            <thead>
+                              <tr className="border-b border-b-[#E9E9E9] p-[12px]">
+                                <th className="p-[12px] text-center">
+                                  <button
+                                    onClick={() => setIsTopicsDragEnabled((prev) => !prev)}
+                                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                                    title="Tartiblash"
                                   >
-                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                    <path d="m15 5 4 4" />
-                                  </svg>
-                                </button>
-                              </th>
-                              <th className="p-[12px] text-center">#</th>
-                              <th className="p-[12px] text-left">{t('title')}</th>
-                              <th className="p-[12px] text-center">{t('questionCount')}</th>
-                              <th className="p-[12px] text-left">{t('action')}</th>
-                            </tr>
-                          </thead>
-                          <SortableContext
-                            items={topics}
-                            strategy={verticalListSortingStrategy}
-                            disabled={!isTopicsDragEnabled}
-                          >
-                            <tbody>
-                              {topics.map((topic, index) => (
-                                <SortableTableRow
-                                  key={topic.id}
-                                  id={topic.id}
-                                  showDragHandle={isTopicsDragEnabled}
-                                  className="group border-b hover:bg-gray-50 transition-all"
-                                >
-                                  <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="20"
+                                      height="20"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    >
+                                      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                      <path d="m15 5 4 4" />
+                                    </svg>
+                                  </button>
+                                </th>
+                                <th className="p-[12px] text-center">#</th>
+                                <th className="p-[12px] text-left">{t('title')}</th>
+                                <th className="p-[12px] text-center">{t('questionCount')}</th>
+                                <th className="p-[12px] text-left">{t('action')}</th>
+                              </tr>
+                            </thead>
+                            <SortableContext
+                              items={topics}
+                              strategy={verticalListSortingStrategy}
+                              disabled={!isTopicsDragEnabled}
+                            >
+                              <tbody>
+                                {topics.map((topic, index) => (
+                                  <SortableTableRow
+                                    key={topic.id}
+                                    id={topic.id}
+                                    showDragHandle={isTopicsDragEnabled}
+                                    className="group border-b hover:bg-gray-50 transition-all"
+                                  >
+                                    <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
 
-                                  <td
-                                    className="p-[12px] text-left text-[15px] w-[50%] font-medium transition-all cursor-pointer hover:underline"
-                                    onClick={(e) => {
-                                      e.stopPropagation
-                                      router.push(`/dashboard/teacher/subjects/${id}/${selectedId}/${topic.id}`)
-                                    }}
-                                  >
-                                    <MathJax dynamic>{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</MathJax>
-                                  </td>
-                                  <td className="p-3 align-middle">
-                                    <span className="flex items-center gap-1">
-                                      <QuestionCountIcon size={16} color="#FF9500" />
-                                      {topic.question_count}
-                                    </span>
-                                  </td>
-                                  <td className="p-3 text-right align-middle">
-                                    <div className="flex items-center justify-end gap-1">
-                                      <Button
-                                        onclick={(e) => {
-                                          e.stopPropagation()
-                                          setOpenTopicsModal(true)
-                                          setSelectedTopic(topic)
-                                          setTopicName(topic.name_uz)
-                                          setTopicNameRu(topic.name_ru)
-                                          setContent(topic.content_uz)
-                                          setContentRu(topic.content_ru)
-                                          setVideoLink(topic.video_url_uz)
-                                          setVideoLinkRu(topic.video_url_ru)
-                                          setModalTypeOfTopic('update')
-                                        }}
-                                        py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] border"
-                                      >
-                                        <EditIcon color="white" />
-                                      </Button>
-                                      <Button
-                                        onclick={(e) => {
-                                          e.stopPropagation()
-                                          setOpenTopicsModal(true)
-                                          setSelectedTopic(topic)
-                                          setModalTypeOfTopic('delete')
-                                        }}
-                                        classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
-                                      >
-                                        <TrashIcon color="white" />
-                                      </Button>
-                                    </div>
-                                  </td>
-                                </SortableTableRow>
-                              ))}
-                            </tbody>
-                          </SortableContext>
-                        </table>
-                      </DndContext>
-                    ) : (
-                      <div className="flex items-center justify-center h-[200px] gap-2">
-                        <InfoCircleIcon />
-                        <h3 className="text-[16px] font-normal text-[#8E8E93]">{/* {t("noTopics")} */}</h3>
-                        <p className="">Bu bobda mavzular mavjud emas</p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                                    <td
+                                      className="p-[12px] text-left text-[15px] w-[50%] font-medium transition-all cursor-pointer hover:underline"
+                                      onClick={(e) => {
+                                        e.stopPropagation
+                                        router.push(`/dashboard/teacher/subjects/${id}/${selectedId}/${topic.id}`)
+                                      }}
+                                    >
+                                      <MathJax dynamic>
+                                        {i18n.language === 'uz' ? topic.name_uz : topic.name_ru}
+                                      </MathJax>
+                                    </td>
+                                    <td className="p-3 align-middle">
+                                      <span className="flex items-center gap-1">
+                                        <QuestionCountIcon size={16} color="#FF9500" />
+                                        {topic.question_count}
+                                      </span>
+                                    </td>
+                                    <td className="p-3 text-right align-middle">
+                                      <div className="flex items-center justify-end gap-1">
+                                        <Button
+                                          onclick={(e) => {
+                                            e.stopPropagation()
+                                            setOpenTopicsModal(true)
+                                            setSelectedTopic(topic)
+                                            setTopicName(topic.name_uz)
+                                            setTopicNameRu(topic.name_ru)
+                                            setContent(topic.content_uz)
+                                            setContentRu(topic.content_ru)
+                                            setVideoLink(topic.video_url_uz)
+                                            setVideoLinkRu(topic.video_url_ru)
+                                            setModalTypeOfTopic('update')
+                                          }}
+                                          py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] border"
+                                        >
+                                          <EditIcon color="white" />
+                                        </Button>
+                                        <Button
+                                          onclick={(e) => {
+                                            e.stopPropagation()
+                                            setOpenTopicsModal(true)
+                                            setSelectedTopic(topic)
+                                            setModalTypeOfTopic('delete')
+                                          }}
+                                          classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
+                                        >
+                                          <TrashIcon color="white" />
+                                        </Button>
+                                      </div>
+                                    </td>
+                                  </SortableTableRow>
+                                ))}
+                              </tbody>
+                            </SortableContext>
+                          </table>
+                        </DndContext>
+                      ) : (
+                        <div className="flex items-center justify-center h-[200px] gap-2">
+                          <InfoCircleIcon />
+                          <h3 className="text-[16px] font-normal text-[#8E8E93]">{/* {t("noTopics")} */}</h3>
+                          <p className="">Bu bobda mavzular mavjud emas</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -833,7 +821,6 @@ const Index = () => {
           </div>
         </SimpleModalTeacher>
       )}
-
       {openTopicsModal && (
         <AnimatePresence>
           <motion.div
@@ -913,15 +900,15 @@ const Index = () => {
                     <ClientOnly>
                       {ClassicEditor && (
                         <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
-                                                  <CKEditor
-                          editor={ClassicEditor}
-                          data={content}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();  
-                            setContent(data);
-                          }}
-                          config={mentorCKEditorConfig}
-                        />
+                          <CKEditor
+                            editor={ClassicEditor}
+                            data={content}
+                            onChange={(event, editor) => {
+                              const data = editor.getData()
+                              setContent(data)
+                            }}
+                            config={mentorCKEditorConfig}
+                          />
                         </div>
                       )}
                     </ClientOnly>
@@ -932,15 +919,15 @@ const Index = () => {
                     <ClientOnly>
                       {ClassicEditor && (
                         <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
-                                                  <CKEditor
-                          editor={ClassicEditor}
-                          data={contentRu}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();
-                            setContentRu(data);
-                          }}
-                          config={mentorCKEditorConfig}
-                        />
+                          <CKEditor
+                            editor={ClassicEditor}
+                            data={contentRu}
+                            onChange={(event, editor) => {
+                              const data = editor.getData()
+                              setContentRu(data)
+                            }}
+                            config={mentorCKEditorConfig}
+                          />
                         </div>
                       )}
                     </ClientOnly>

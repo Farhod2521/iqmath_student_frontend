@@ -228,6 +228,19 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN],
     type: MenuType.LINK
   },
+  {
+    key: 'payments-total',
+    path: '/dashboard/teacher/payments',
+    label: t('payments'),
+    icon: (isActive) => (
+      <MdOutlinePayments
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    type: MenuType.LINK
+  },
 
   // Parent role menu items
   { label: t('main'), roles: [RolesList.PARENT], type: MenuType.TITLE },

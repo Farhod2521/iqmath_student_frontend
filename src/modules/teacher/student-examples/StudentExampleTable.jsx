@@ -104,70 +104,77 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
 
   const colDefs = [
     {
-      headerName: t("number"),
-      valueGetter: "node.rowIndex + 1",
+      headerName: t('number'),
+      valueGetter: 'node.rowIndex + 1',
       width: 80,
       minWidth: 60,
       maxWidth: 100,
       flex: 0.5,
       sortable: false,
       checkboxSelection: true,
-      resizable: false,
+      resizable: false
     },
     {
-      headerName: t("student"),
-      field: "student_name",
+      headerName: t('student'),
+      field: 'student_name',
       width: 200,
       minWidth: 150,
       maxWidth: 300,
       flex: 1.5,
       cellRenderer: (params) => (
         <div className={`flex items-center gap-2 cursor-pointer ${params.data.has_answers ? 'text-green-600' : ''}`}>
-          <Image src={"/icons/pupil.svg"} alt="pupil" width={23} height={22} />
-          <span className={`font-medium ${params.data.has_answers ? 'text-green-600' : ''}`}>{params.value}</span>
-          {params.data.has_answers && (
-            <div className="w-2 h-2 bg-green-500 rounded-full ml-1 flex-shrink-0"></div>
-          )}
+          <Image src={'/icons/pupil.svg'} alt="pupil" width={23} height={22} />
+          <span
+            onClick={() => onViewDetails(params.data.id, params.data.student_name)}
+            className={`font-medium hover:underline ${params.data.has_answers ? 'text-green-600' : ''}`}
+          >
+            {params.value}
+          </span>
+          {params.data.has_answers && <div className="w-2 h-2 bg-green-500 rounded-full ml-1 flex-shrink-0"></div>}
         </div>
-      ),
+      )
     },
     {
-      headerName: t("class"),
-      field: "class_name",
+      headerName: t('class'),
+      field: 'class_name',
       width: 180,
       minWidth: 120,
       maxWidth: 200,
       flex: 1,
-      cellClass: "text-center",
+      cellClass: 'text-center'
     },
     {
-      headerName: t("submittedTime"),
-      field: "created_at",
+      headerName: t('submittedTime'),
+      field: 'created_at',
       width: 180,
       minWidth: 130,
       maxWidth: 220,
       flex: 1.2,
-      cellClass: "text-center",
+      cellClass: 'text-center',
       cellRenderer: (params) => {
-        return formatDate(params.value);
-      },
+        return formatDate(params.value)
+      }
     },
     {
-      headerName: t("status"),
-      field: "status",
+      headerName: t('status'),
+      field: 'status',
       width: 140,
       minWidth: 100,
       maxWidth: 160,
       flex: 0.8,
       cellRenderer: (params) => (
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(params.value)}`}>
+        <span
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+            params.value
+          )}`}
+        >
           {getStatusText(params.value)}
         </span>
-      ),
+      )
     },
     {
       headerName: "Javob bergan o'qituvchi",
-      field: "teacher.full_name",
+      field: 'teacher.full_name',
       width: 200,
       minWidth: 150,
       maxWidth: 280,
@@ -181,11 +188,11 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
             <span className="font-medium text-gray-700 text-sm">{params.value}</span>
           </div>
         )
-      },
+      }
     },
     {
-      headerName: "Javob berilgan vaqti",
-      field: "teacher.reviewed_at",
+      headerName: 'Javob berilgan vaqti',
+      field: 'teacher.reviewed_at',
       width: 160,
       minWidth: 120,
       maxWidth: 180,
@@ -194,16 +201,12 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
         if (!params.value) {
           return <span className="text-gray-400 italic text-xs">-</span>
         }
-        return (
-          <span className="text-center">
-            {formatTeacherDate(params.value)}
-          </span>
-        )
-      },
+        return <span className="text-center">{formatTeacherDate(params.value)}</span>
+      }
     },
     {
-      headerName: "Izoh",
-      field: "teacher.commit",
+      headerName: 'Izoh',
+      field: 'teacher.commit',
       width: 80,
       minWidth: 60,
       maxWidth: 100,
@@ -212,10 +215,10 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
         if (!params.value) {
           return <span className="text-gray-400 italic text-xs">-</span>
         }
-        
+
         return (
           <div className="flex items-center justify-center">
-            <button 
+            <button
               onClick={() => {
                 if (typeof window !== 'undefined' && window.showCommentModal) {
                   window.showCommentModal(params.value, params.data.student_name)
@@ -228,15 +231,15 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg> */}
-              <img src={"/icons/eye-dark.svg"} alt="comment" className="text-black" width={18} height={18} />
+              <img src={'/icons/eye-dark.svg'} alt="comment" className="text-black" width={18} height={18} />
             </button>
           </div>
         )
-      },
+      }
     },
     {
-      headerName: "Telegram",
-      field: "telegram",
+      headerName: 'Telegram',
+      field: 'telegram',
       width: 100,
       minWidth: 80,
       maxWidth: 120,
@@ -253,38 +256,34 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
               <FaTelegram className="w-5 h-5 text-blue-500 ml-2" />
             </button>
           </div>
-        );
-      },
+        )
+      }
     },
     {
-      headerName: "",
-      field: "actions",
+      headerName: '',
+      field: 'actions',
       width: 120,
       minWidth: 80,
       maxWidth: 140,
       flex: 0.6,
       resizable: false,
       cellRenderer: (params) => {
-        const isLoading = actionLoading[params.data.id];
-        
+        const isLoading = actionLoading[params.data.id]
+
         return (
           <div className="flex gap-2 justify-end">
-            <button 
+            <button
               onClick={() => onViewDetails(params.data.id, params.data.student_name)}
               className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap"
             >
-              {t("details")}
+              {t('details')}
             </button>
           </div>
-        );
-      },
-    },
-  ];
+        )
+      }
+    }
+  ]
 
-  // Debug uchun
-  console.log('StudentExampleTable - data:', data)
-  console.log('StudentExampleTable - colDefs:', colDefs)
-  console.log('StudentExampleTable - isLoading:', isLoading)
 
   return (
     <div className="flex flex-col">
