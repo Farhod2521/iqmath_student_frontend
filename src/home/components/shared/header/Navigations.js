@@ -24,13 +24,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
   transition: 'all 0.3s ease',
 
   '&:hover': {
-    backgroundColor: 'rgba(93, 135, 255, 0.08)',
-    color: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff'
   },
 
   '&.active': {
-    backgroundColor: 'rgba(93, 135, 255, 0.15)',
-    color: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff'
   }
 }))
 
