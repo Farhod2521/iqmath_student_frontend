@@ -15,6 +15,7 @@ import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
 import { MdOutlinePayments } from 'react-icons/md'
+import { FaAddressBook } from 'react-icons/fa'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -259,6 +260,19 @@ export const getMenuItems = (t) => [
     activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
   },
   {
+    key: 'my-children-results',
+    path: '/dashboard/parent/results',
+    label: t('science_results'),
+    icon: (isActive) => (
+      <FaAddressBook
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.PARENT],
+    type: MenuType.LINK
+  },
+  {
     key: 'tutor-referrals',
     path: '/dashboard/tutor/referrals',
     label: t('via_link'),
@@ -286,7 +300,7 @@ export const getMenuItems = (t) => [
   },
 
   {
-    key: 'referal',
+    key: 'referal-tutor',
     path: '/dashboard/tutor/coupon',
     label: t('coupons'),
     icon: (isActive) => (
@@ -297,6 +311,20 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.TUTOR],
+    type: MenuType.LINK
+  },
+  {
+    key: 'referal-teacher',
+    path: '/dashboard/teacher/coupon',
+    label: t('coupons'),
+    icon: (isActive) => (
+      <RiCoupon5Line
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.TEACHER],
     type: MenuType.LINK
   },
   {

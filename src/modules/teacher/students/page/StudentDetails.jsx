@@ -43,7 +43,7 @@ const StudentDetails = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 space-y-6">
       {/* Main Info and Payment Stats */}
       {user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -51,6 +51,13 @@ const StudentDetails = () => {
             <div className="flex flex-col items-center text-center">
               <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} className="rounded-full mb-4" />
               <h1 className="text-xl font-bold">{studentData.full_name}</h1>
+              <span
+                className={`px-2 xl:px-3 py-1 mt-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                  studentData.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}
+              >
+                {studentData.is_active ? t('active') : t('inactive')}
+              </span>
               <button
                 onClick={() => setIsRewardModalOpen(true)}
                 className="mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
@@ -84,7 +91,7 @@ const StudentDetails = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500">{t('paymentStatus')}</p>
-                <div className="flex flex-wrap gap-x-3 gap-y-1 items-center mt-1">
+                <div className="flex flex-wrap flex-col gap-x-3 gap-y-1 items-start mt-1">
                   <span className="flex items-center text-sm text-yellow-600">
                     <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
                     {studentData.payment_status_count?.pending} {t('pending')}
@@ -121,6 +128,13 @@ const StudentDetails = () => {
           </div>
           <div className="flex-1">
             <h1 className="text-xl font-semibold text-gray-900 mb-1">{studentData?.full_name}</h1>
+            <span
+              className={`px-2 xl:px-3 py-1 mt-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                studentData.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              }`}
+            >
+              {studentData.is_active ? t('active') : t('inactive')}
+            </span>
             <p className="text-gray-500 text">ID: {studentData?.identification || '...'}</p>
           </div>
         </div>
