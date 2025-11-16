@@ -22,12 +22,12 @@ function SidebarPlan() {
 
 
   useEffect(() => {
+    if (currentRole === 'teacher' || currentRole === 'parent' || currentRole === 'tutor') return
     getPaymentTrailDays()
       .then((res) => {
-        setData((prev) => ({ ...prev, ...res?.data }));
+        setData((prev) => ({ ...prev, ...res?.data }))
       })
-      .catch((error) => {
-      })
+      .catch((error) => {})
   }, [])
 
   if (currentRole === 'teacher' || currentRole === 'parent' || currentRole === 'tutor') {
@@ -44,7 +44,11 @@ function SidebarPlan() {
         <p className="text-[24px] font-semibold my-[12px]">
           {data.payment_amount} {t('sum')}
         </p>
-
+        {data.current_plan?.plan_name && (
+          <p className="text-[15px] font-medium pb-[12px]">
+            {t('paymentType')} 1 oylik {data.current_plan?.plan_name}
+          </p>
+        )}
         {data.is_paid || data.days_until_next_payment > 0 ? (
           <p className="text-[15px] font-medium">
             {t('nextCharge')} {data.end_date}
@@ -77,7 +81,7 @@ function SidebarPlan() {
             className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
           >
             {t('subjects')}
-          </Button> 
+          </Button>
         )}
       </div>
     </div>

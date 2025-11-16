@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { request } from '@/services/api'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useSession } from 'next-auth/react'
 
 const useGetQuery = ({
   key = 'get-all',
@@ -13,10 +14,18 @@ const useGetQuery = ({
   enabled = true
 }) => {
   const { t } = useTranslation()
+  const { data: session } = useSession()
 
   const { isLoading, isError, data, error, isFetching } = useQuery(
     [key, params],
-    () => request.get(url, { params, headers }),
+    () =>
+      request.get(url, {
+        params,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+          ...headers
+        }
+      }),
     {
       keepPreviousData: true,
       onSuccess: () => {
@@ -30,7 +39,7 @@ const useGetQuery = ({
           console.log(errorMessage)
         }
       },
-      enabled
+      enabled: !!session?.accessToken && enabled
     }
   )
 

@@ -34,11 +34,11 @@ const StudentSubjectsList = () => {
 
   const { data: dataS } = useGetQuery({
     key: ['studentSubjectsS', id],
-    url: id ? `/api/v1/func_student/student-statistics/${id}` : null,
+    url: id ? `/api/v1/func_student/student-statistics/${id}/` : null,
     enabled: !!id && !!session?.accessToken
   })
 
-  console.log(dataS)
+  console.log('dataS', dataS)
 
   const handleTabChange = (tab) => {
     setIsTabLoading(true)
