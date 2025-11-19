@@ -190,7 +190,7 @@ export default function SubjectQuestions() {
 
     checkMyResults(
       {
-        url: `${URLS.studentCheckAnswer}${topicId}/`,
+        url: URLS.studentCheckAnswer,
         attributes: { choice_answers, composite_answers, text_answers },
         config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       },
