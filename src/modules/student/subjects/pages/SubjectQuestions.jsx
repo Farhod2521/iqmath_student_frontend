@@ -48,6 +48,7 @@ export default function SubjectQuestions() {
 
   const [textAnswers, setTextAnswers] = useState({})
   const [choiceAnswers, setChoiceAnswers] = useState({})
+  const [imageAnswers, setImageAnswers] = useState({})
   const [compositeAnswers, setCompositeAnswers] = useState({})
   const [results, setResults] = useState()
   const [score, setScore] = useState()
@@ -306,6 +307,14 @@ export default function SubjectQuestions() {
           <div className="w-full flex flex-col items-center">
             {(() => {
               switch (selectedQuestion?.question_type) {
+                case 'image_choice':
+                  return (
+                    <ExamAnswerImage
+                      selectedQuestion={selectedQuestion}
+                      setImageAnswers={setImageAnswers}
+                      imageAnswers={imageAnswers}
+                    />
+                  )
                 case 'choice':
                   return (
                     <ExamAnswerChoice
