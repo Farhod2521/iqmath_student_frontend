@@ -17,7 +17,7 @@ function ExamAnswerImage({ selectedQuestion, setImageAnswers, imageAnswers }) {
         <label
           key={`${questionKey}-${index}`}
           className={`block cursor-pointer border-2 rounded-lg p-4 transition-all hover:border-blue-400 ${
-            imageAnswers[selectedQuestion.id] === item.letter
+            imageAnswers[selectedQuestion?.id] === item.letter
               ? 'border-blue-600 bg-blue-50'
               : 'border-gray-200 bg-white'
           }`}

@@ -21,6 +21,7 @@ import ExamQuestionList from '../components/exam/ExamQuestionList'
 import ExamQuestionSelected from '../components/exam/ExamQuestionSelected'
 import ExamAnswerChoice from '../components/exam/ExamAnswerChoice'
 import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
+import ExamAnswerImage from '../components/exam/ExamAnswerImage'
 import ExamAnswerText from '../components/exam/ExamAnswerText'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 import ActionSolution from '../components/actions/ActionSolution'
@@ -170,7 +171,7 @@ export default function SubjectQuestions() {
       }))
 
     const choice_answers = qData
-      .filter((q) => q.question_type === 'choice')
+      .filter((q) => q.question_type === 'choice' || q.question_type === 'image_choice')
       .map((q) => {
         const selectedLetter = choiceAnswers[q.id]
         const selectedChoice = q.choices?.find((choice) => choice.letter === selectedLetter)
@@ -189,7 +190,7 @@ export default function SubjectQuestions() {
 
     checkMyResults(
       {
-        url: URLS.studentCheckAnswer,
+        url: `${URLS.studentCheckAnswer}${topicId}/`,
         attributes: { choice_answers, composite_answers, text_answers },
         config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       },
@@ -311,8 +312,8 @@ export default function SubjectQuestions() {
                   return (
                     <ExamAnswerImage
                       selectedQuestion={selectedQuestion}
-                      setImageAnswers={setImageAnswers}
-                      imageAnswers={imageAnswers}
+                      setImageAnswers={setChoiceAnswers}
+                      imageAnswers={choiceAnswers}
                     />
                   )
                 case 'choice':
@@ -489,7 +490,7 @@ export default function SubjectQuestions() {
                   {t('close')}
                 </Button>
                 <Button
-                  className="px-4 bg-[#007AFF] py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                  className="px-4 bg-[#007AFF] py-2 rounded-md  text-white hover:bg-blue-600 transition-colors"
                   onPress={handleSendAllToMentor}
                 >
                   {t('sendMentor')}
