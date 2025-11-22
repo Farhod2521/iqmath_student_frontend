@@ -3,7 +3,7 @@
   "telegram_bot": "Зарегистрируйтесь через Telegram-бот",
   "olympics": "Олимпиада",
   "results": "Результаты",
-  "science_results": "Результаты науки",
+  "science_results": "Успеваемости",
   "welcome": "Добро пожаловать",
   "questions": "Вопросы",
   "homePage": "Главная страница",
@@ -719,5 +719,8 @@
   "sumEquivalentLabel": "Эквивалент в сумах:",
   "convertButton": "Выполнить конвертацию",
   "footerInfo": "Все конвертации автоматически рассчитываются и сохраняются через API",
-  "payments": "Платежи"
+  "payments": "Платежи",
+  "id": "ID",
+  "mastery_statistics": "Статистика освоения",
+  "no_statistics": "Статистика пока отсутствует"
 }

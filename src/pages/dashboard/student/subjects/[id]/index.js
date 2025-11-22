@@ -15,6 +15,8 @@ import RightIcon from '@/components/icons/right'
 import CoinsIcon from '@/components/icons/coins'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
+import { request } from '@/services/api'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -49,6 +51,17 @@ const SubjectsPage = () => {
     }
   }, [chapter])
 
+  const [pathList, setPathList] = useState([])
+  const fetchData = () => {
+    request.post('/api/v1/func_student/path/list/', { subject: id }).then((res) => {
+      setPathList(res.data)
+    })
+  }
+
+  useEffect(() => {
+    if (id) fetchData()
+  }, [id])
+
   if (isLoadingChapter || isFetchingChapter) {
     return <ContentLoader />
   }
@@ -64,13 +77,19 @@ const SubjectsPage = () => {
         }}
       >
         <div className="font-sf">
-          <StudentBreadcrumbs mainLink="/dashboard/student/subjects" />
-
+          {/* <StudentBreadcrumbs mainLink="/dashboard/student/subjects" /> */}
+          <BaseBreadcrumbs
+            data={pathList.map((item) => ({
+              link: '/dashboard/student/subjects',
+              title: i18n.language === 'uz' ? item.title_uz : item.title_ru
+            }))}
+          />
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             {/* BOB (Chapter) Section */}
             <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
               {/* Mobile Header - BOB */}
-              <div className="md:hidden bg-gray-100 px-4 py-3 border-b border-gray-200">
+
+              <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +140,7 @@ const SubjectsPage = () => {
             {selectedChapterId && (
               <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
                 {/* Mobile Header - MAVZU */}
-                <div className="md:hidden bg-gray-100 px-4 py-3 border-b border-gray-200">
+                <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
                       <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

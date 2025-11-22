@@ -4,12 +4,12 @@ import SimpleModal from './simple-modal'
 import { useTranslation } from 'react-i18next'
 import { FaTelegram } from 'react-icons/fa'
 
-const SuccessPopup = ({ open, onClose }) => {
+const SuccessPopup = ({ open, telegramLink, onClose }) => {
   const { t } = useTranslation()
 
   const handleTelegramClick = () => {
     // Telegram bot linkini ochish
-    window.open('https://t.me/iqmath_bot', '_blank')
+    window.open(telegramLink || 'https://t.me/iqmath_bot', '_blank')
     // Modalni yopamiz
     onClose()
   }

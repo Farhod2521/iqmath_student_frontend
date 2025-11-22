@@ -810,5 +810,8 @@
   "sumEquivalentLabel": "So'm ekvivalenti:",
   "convertButton": "Konvertatsiya qilish",
   "footerInfo": "Barcha konvertatsiyalar avtomatik hisoblanadi va API orqali saqlanadi",
-  "payments": "To'lovlar"
+  "payments": "To'lovlar",
+  "id": "ID",
+  "mastery_statistics": "O'zlashtirish statistikasi",
+  "no_statistics": "Hozircha statistika mavjud emas"
 }

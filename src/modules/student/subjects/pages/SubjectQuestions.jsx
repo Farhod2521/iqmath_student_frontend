@@ -234,6 +234,8 @@ export default function SubjectQuestions() {
     return questionsData.map((q) => String(q.id))
   }, [questions])
 
+  const [telegramLink, setTelegramLink] = useState('')
+
   const handleSendAllToMentor = async () => {
     const dataToSend = get(results, 'data', null)
     if (!dataToSend) {
@@ -254,7 +256,8 @@ export default function SubjectQuestions() {
           config: { headers: { Authorization: `Bearer ${session.accessToken}` } }
         },
         {
-          onSuccess: () => {
+          onSuccess: (res) => {
+            setTelegramLink(res?.data?.telegram_link)
             setShowMistake(false)
             setShowResult(false)
             setShowSuccessPopup(true)
@@ -501,7 +504,7 @@ export default function SubjectQuestions() {
         </div>
       </div>
 
-      <SuccessPopup open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
+      <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </div>
   )
 }

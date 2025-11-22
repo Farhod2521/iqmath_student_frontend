@@ -18,6 +18,7 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
   useEffect(() => {
     if (open) setMessage('')
   }, [open])
+  const [telegramLink, setTelegramLink] = useState('')
 
   const handleSend = () => {
     if (!message.trim()) {
@@ -29,12 +30,13 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
         url: URLS.sendMentor,
         attributes: {
           question_id: questionId,
-          message,
+          message
         },
         config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       },
       {
-        onSuccess: () => {
+        onSuccess: (res) => {
+          setTelegramLink(res?.data?.telegram_link)
           setMessage('')
           onClose()
           setTimeout(() => {
@@ -43,7 +45,7 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
         },
         onError: () => {
           toast.error(t('errorOccurred', 'Xatolik yuz berdi!'))
-        },
+        }
       }
     )
   }
@@ -55,7 +57,12 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
           <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
             <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
               </svg>
             </div>
             <div>
@@ -69,7 +76,7 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
               className="w-full border border-gray-300 rounded-lg p-3 min-h-[90px] text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               placeholder={t('mentorHelpPlaceholder', 'Bu misolni tushunmadim, iltimos tushuntirib bering...')}
               value={message}
-              onChange={e => setMessage(e.target.value)}
+              onChange={(e) => setMessage(e.target.value)}
             />
             <p className="text-xs text-gray-400 mt-1">
               {t('mentorReadComment', "Mentor sizga yordam berish uchun izohingizni o'qiydi")}
@@ -103,13 +110,10 @@ const SendToMentorModal = ({ open, onClose, questionId }) => {
           </div>
         </div>
       </SimpleModal>
-      
-      <SuccessPopup
-        open={showSuccessPopup} 
-        onClose={() => setShowSuccessPopup(false)} 
-      />
+
+      <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </>
   )
 }
 
-export default SendToMentorModal 
+export default SendToMentorModal

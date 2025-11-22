@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BookOpen, TrendingUp, Award } from 'lucide-react'
+import { SiWebmoney } from 'react-icons/si'
 
 function Index() {
   const { t } = useTranslation()
@@ -25,7 +26,7 @@ function Index() {
   })
 
   const data = useMemo(() => statistics?.data, [statistics])
-  // Faqat mavzulari bo'lgan fanlarni filter qilish va guruplash
+
   const groupedSubjects = useMemo(() => {
     if (!data?.student_diagnost) return []
 
@@ -82,23 +83,37 @@ function Index() {
           <div className="flex justify-between items-center flex-wrap gap-4">
             <div>
               <h1 className="text-3xl font-semibold text-[#1A1D29] mb-1">{data.full_name}</h1>
-              <p className="text-sm text-[#6B7280]">ID: {data.identification}</p>
+              <p className="text-sm text-[#6B7280]">
+                {t('id')}: {data.identification}
+              </p>
             </div>
+
             <div className="flex gap-3">
+              <div className="flex items-center gap-2 bg-[#009900] text-white px-4 py-2.5 rounded-xl font-semibold">
+                <SiWebmoney size={18} />
+                <span>
+                  {data.total_paid_amount} <span className="text-[#E0E8FF]">{t('currency')}</span>
+                </span>
+              </div>
               <div className="flex items-center gap-2 bg-[#5B7FFF] text-white px-4 py-2.5 rounded-xl font-semibold">
                 <Award size={18} />
-                <span>{data.score} ball</span>
+                <span>
+                  {data.score} {t('score')}
+                </span>
               </div>
+
               <div className="flex items-center gap-2 bg-[#FFB020] text-white px-4 py-2.5 rounded-xl font-semibold">
                 <TrendingUp size={18} />
-                <span>{data.coin} coin</span>
+                <span>
+                  {data.coin} {t('coin')}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Subjects Statistics */}
-        <h2 className="text-2xl font-semibold text-[#1A1D29] mb-6">O'zlashtirish statistikasi</h2>
+        <h2 className="text-2xl font-semibold text-[#1A1D29] mb-6">{t('mastery_statistics')}</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {groupedSubjects.map((subject, index) => (
@@ -117,11 +132,12 @@ function Index() {
               {/* Progress Bar */}
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium text-[#6B7280]">O'zlashtirish</span>
+                  <span className="text-sm font-medium text-[#6B7280]">{t('mastery')}</span>
                   <span className={`text-sm font-bold ${getMasteryTextColor(subject.averageMastery)}`}>
                     {subject.averageMastery.toFixed(1)}%
                   </span>
                 </div>
+
                 <div className="h-2 bg-[#F3F4F6] rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-600 ${getMasteryColor(
@@ -135,11 +151,12 @@ function Index() {
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 rounded-xl bg-[#F9FAFB] border border-[#F3F4F6]">
-                  <p className="text-xs font-medium text-[#6B7280] mb-1">Bo'limlar</p>
+                  <p className="text-xs font-medium text-[#6B7280] mb-1">{t('chapters')}</p>
                   <p className="text-xl font-bold text-[#1A1D29]">{subject.totalChapters}</p>
                 </div>
+
                 <div className="p-3 rounded-xl bg-[#F9FAFB] border border-[#F3F4F6]">
-                  <p className="text-xs font-medium text-[#6B7280] mb-1">Mavzular</p>
+                  <p className="text-xs font-medium text-[#6B7280] mb-1">{t('topics')}</p>
                   <p className="text-xl font-bold text-[#1A1D29]">
                     {subject.masteredTopics}/{subject.totalTopics}
                   </p>
@@ -151,7 +168,7 @@ function Index() {
 
         {groupedSubjects.length === 0 && (
           <div className="bg-white rounded-xl border border-[#E8EBF0] p-12 text-center">
-            <h3 className="text-xl text-[#6B7280]">Hozircha statistika mavjud emas</h3>
+            <h3 className="text-xl text-[#6B7280]">{t('no_statistics')}</h3>
           </div>
         )}
       </div>

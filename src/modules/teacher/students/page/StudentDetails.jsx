@@ -21,8 +21,6 @@ const StudentDetails = () => {
   const { t } = useTranslation()
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false)
 
-
-
   const { data, isLoading, isFetching } = useGetQuery({
     key: [KEYS.studentStatistics, id],
     url: `${URLS.studentStatistics}${id}/`,
@@ -103,6 +101,10 @@ const StudentDetails = () => {
                   <span className="flex items-center text-sm text-red-600">
                     <div className="w-2 h-2 rounded-full bg-red-400 mr-2"></div>
                     {studentData.payment_status_count?.failed} {t('failed')}
+                  </span>
+                  <span className="flex items-center text-sm text-red-600">
+                    <div className={`w-2 h-2 rounded-full bg-red-400 mr-2`}></div>
+                    {studentData.is_active ? t('active') : t('inactive')}
                   </span>
                 </div>
               </div>

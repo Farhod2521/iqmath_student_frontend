@@ -72,7 +72,7 @@ const Index = () => {
     },
     ru: {
       noChildren: 'Нет детей',
-      child: 'Ребенок',
+      child: 'Ученики',
       idPhone: 'ID / Телефон',
       classSubject: 'Класс / Предмет',
       registered: 'Зарегистрирован',

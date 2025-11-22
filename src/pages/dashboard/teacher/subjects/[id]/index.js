@@ -30,43 +30,64 @@ import SortableTableRow from '@/modules/teacher/subjects/components/sortable-tab
 import Link from 'next/link'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
+import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
+import { request } from '@/services/api'
 
 // ClientOnly helper
 function ClientOnly({ children }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
-  return children;
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+  return children
 }
 
-const CKEditor = dynamic(() => import("@ckeditor/ckeditor5-react").then(mod => mod.CKEditor), { ssr: false });
-let ClassicEditor;
-if (typeof window !== "undefined") {
-  ClassicEditor = require("@ckeditor/ckeditor5-build-classic");
+const CKEditor = dynamic(() => import('@ckeditor/ckeditor5-react').then((mod) => mod.CKEditor), { ssr: false })
+let ClassicEditor
+if (typeof window !== 'undefined') {
+  ClassicEditor = require('@ckeditor/ckeditor5-build-classic')
 }
 
 const mentorCKEditorConfig = {
   toolbar: {
     items: [
-      'bold', 'italic', 'strikethrough',
+      'bold',
+      'italic',
+      'strikethrough',
       '|',
-      'bulletedList', 'numberedList', 'outdent', 'indent', 'blockQuote',
+      'bulletedList',
+      'numberedList',
+      'outdent',
+      'indent',
+      'blockQuote',
       '|',
-      'imageUpload', 'table', 'specialCharacters',
+      'imageUpload',
+      'table',
+      'specialCharacters',
       '|',
-      'link', 'unlink',
+      'link',
+      'unlink',
       '|',
       'maximize',
       '|',
-      'undo', 'redo'
+      'undo',
+      'redo'
     ],
     shouldNotGroupWhenFull: false,
     removeItems: []
   },
-  removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload'],
+  removePlugins: [
+    'CKFinderUploadAdapter',
+    'CKFinder',
+    'EasyImage',
+    'Image',
+    'ImageCaption',
+    'ImageStyle',
+    'ImageToolbar',
+    'ImageUpload'
+  ],
   height: '200px',
-  minHeight: '200px',
-};
+  minHeight: '200px'
+}
 
 const Index = () => {
   const router = useRouter()
@@ -490,6 +511,16 @@ const Index = () => {
     }
   }
 
+  const [pathList, setPathList] = useState([])
+  const fetchData = () => {
+    request.post('/api/v1/func_student/path/list/', { subject: id }).then((res) => {
+      setPathList(res.data)
+    })
+  }
+  useEffect(() => {
+    if (id) fetchData()
+  }, [id])
+
   if (isLoading) {
     return (
       <LayoutAdmin title={t('topics')}>
@@ -502,6 +533,12 @@ const Index = () => {
     <LayoutAdmin title={t('topics')}>
       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
         <div className="font-sf">
+          <BaseBreadcrumbs
+            data={pathList.map((item) => ({
+              link: '/dashboard/student/subjects',
+              title: i18n.language === 'uz' ? item.title_uz : item.title_ru
+            }))}
+          />
           <div className="grid grid-cols-12 gap-[24px]">
             <div className="lg:col-span-6 col-span-12">
               <div className="flex justify-between items-center mb-2">

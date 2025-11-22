@@ -368,5 +368,11 @@
       "balance": "Balance"
     }
   },
-  "payments": "Payments"
+  "payments": "Payments",
+  "id": "ID",
+  "coin": "coin",
+  "mastery_statistics": "Mastery Statistics",
+  "chapters": "Chapters",
+  "topics": "Topics",
+  "no_statistics": "No statistics available"
 }
