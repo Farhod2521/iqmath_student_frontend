@@ -36,7 +36,7 @@ const Index = () => {
   const handleCreateCoupon = () => {
     createCoupon(
       {
-        url: 'api/v1/func_student/student/coupon/',
+        url: 'api/v1/universal/coupon-generate/',
         config: {
           headers: {
             Authorization: `Bearer ${session?.accessToken}`
@@ -56,7 +56,7 @@ const Index = () => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
         {
-          url: `/api/v1/universal/coupon-generate/${couponId}/`,
+          url: `api/v1/universal/coupon-generate/${couponId}/`,
           config: {
             headers: {
               Authorization: `Bearer ${session?.accessToken}`
