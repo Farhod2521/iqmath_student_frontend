@@ -35,14 +35,7 @@ const Index = () => {
 
   const handleCreateCoupon = () => {
     createCoupon(
-      {
-        url: 'api/v1/universal/coupon-generate/',
-        config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`
-          }
-        }
-      },
+      { url: 'api/v1/universal/coupon-generate/' },
       {
         onSuccess: (data) => {
           toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
@@ -56,20 +49,12 @@ const Index = () => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
         {
-          url: `api/v1/universal/coupon-generate/${couponId}/`,
-          config: {
-            headers: {
-              Authorization: `Bearer ${session?.accessToken}`
-            }
-          }
+          url: `api/v1/universal/coupon-generate/`
         },
         {
           onSuccess: (data) => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
-            // Also refetch to ensure data consistency
-            if (refetchCoupons && typeof refetchCoupons === 'function') {
-              refetchCoupons()
-            }
+            refetchCoupons()
           },
           onError: (error) => {
             const errorMessage =

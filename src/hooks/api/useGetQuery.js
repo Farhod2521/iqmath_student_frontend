@@ -16,7 +16,7 @@ const useGetQuery = ({
   const { t } = useTranslation()
   const { data: session } = useSession()
 
-  const { isLoading, isError, data, error, isFetching } = useQuery(
+  const { isLoading, isError, data, error, isFetching, refetch } = useQuery(
     [key, params],
     () =>
       request.get(url, {
@@ -48,7 +48,8 @@ const useGetQuery = ({
     isError,
     data,
     error,
-    isFetching
+    isFetching,
+    refetch
   }
 }
 

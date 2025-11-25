@@ -1,6 +1,5 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
@@ -36,12 +35,7 @@ const Index = () => {
   const handleCreateCoupon = () => {
     createCoupon(
       {
-        url: 'api/v1/func_student/student/coupon/',
-        config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`
-          }
-        }
+        url: 'api/v1/func_student/student/coupon/'
       },
       {
         onSuccess: (data) => {
@@ -55,21 +49,11 @@ const Index = () => {
   const handleDeleteCoupon = (couponId) => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
-        {
-          url: `/api/v1/func_student/student/coupon/${couponId}/`,
-          config: {
-            headers: {
-              Authorization: `Bearer ${session?.accessToken}`
-            }
-          }
-        },
+        { url: `/api/v1/func_student/student/coupon/` },
         {
           onSuccess: (data) => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
-            // Also refetch to ensure data consistency
-            if (refetchCoupons && typeof refetchCoupons === 'function') {
-              refetchCoupons()
-            }
+            refetchCoupons()
           },
           onError: (error) => {
             const errorMessage =
