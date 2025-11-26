@@ -98,7 +98,6 @@ const Index = () => {
                 coupon={couponsData?.data.coupon}
                 onEdit={handleEditCoupon}
                 onDelete={handleDeleteCoupon}
-                isDeleting={isDeleting}
               />
             </div>
           ) : (

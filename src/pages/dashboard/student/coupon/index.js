@@ -12,7 +12,6 @@ import { LoadingState } from '@/modules/student/products/components'
 
 const Index = () => {
   const { t } = useTranslation()
-  const { data: session } = useSession()
 
   const {
     data: couponsData,
@@ -23,20 +22,12 @@ const Index = () => {
     url: '/api/v1/func_student/student/coupon/'
   })
 
-  const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
-    listKeyId: 'create-coupon',
-    hideSuccessToast: true
-  })
-
-  const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
-    listKeyId: 'delete-coupon'
-  })
+  const { mutate: createCoupon } = usePostQuery({ listKeyId: 'create-coupon', hideSuccessToast: true })
+  const { mutate: deleteCoupon } = useDeleteQuery({ listKeyId: 'delete-coupon' })
 
   const handleCreateCoupon = () => {
     createCoupon(
-      {
-        url: 'api/v1/func_student/student/coupon/'
-      },
+      { url: 'api/v1/func_student/student/coupon/' },
       {
         onSuccess: (data) => {
           toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
@@ -49,7 +40,7 @@ const Index = () => {
   const handleDeleteCoupon = (couponId) => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
-        { url: `/api/v1/func_student/student/coupon/` },
+        { url: `api/v1/universal/coupon-generate/` },
         {
           onSuccess: (data) => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
@@ -97,7 +88,6 @@ const Index = () => {
                 coupon={couponsData?.data.coupon}
                 onEdit={handleEditCoupon}
                 onDelete={handleDeleteCoupon}
-                isDeleting={isDeleting}
               />
             </div>
           ) : (

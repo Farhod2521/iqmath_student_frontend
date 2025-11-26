@@ -20,35 +20,17 @@ const Coupons = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
   const [coupons, setCoupons] = useState([])
-  const [editingCoupon, setEditingCoupon] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
 
   const {
     data: couponsData,
     isLoading: isCouponsLoading,
     refetch: refetchCoupons
-  } = useQuery(
-    [KEYS.myCuponers],
-    () =>
-      request.get(URLS.myCuponers, {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`
-        }
-      }),
-    {
-      enabled: !!session?.accessToken
-    }
-  )
-
-  const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
-    listKeyId: 'create-coupon',
-    hideSuccessToast: true
+  } = useQuery([KEYS.myCuponers], () => request.get(URLS.myCuponers), {
+    enabled: !!session?.accessToken
   })
 
-  const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
-    listKeyId: 'delete-coupon'
-  })
+  const { mutate: createCoupon } = usePostQuery({ listKeyId: 'create-coupon', hideSuccessToast: true })
+  const { mutate: deleteCoupon } = useDeleteQuery({ listKeyId: 'delete-coupon' })
 
   useEffect(() => {
     if (couponsData?.data) {
@@ -69,13 +51,12 @@ const Coupons = () => {
       {
         onSuccess: (data) => {
           toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
-          setIsOpen(false)
           refetchCoupons()
         },
-       onError: (error) => {
-         const errorMessage = error.response?.data?.detail || 'Xatolik'
-         toast.error(errorMessage)
-       }
+        onError: (error) => {
+          const errorMessage = error.response?.data?.detail || 'Xatolik'
+          toast.error(errorMessage)
+        }
       }
     )
   }
@@ -84,7 +65,7 @@ const Coupons = () => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
         {
-          url: `${URLS.myCuponers}${couponId}/`,
+          url: `api/v1/universal/coupon-generate/`,
           config: {
             headers: {
               Authorization: `Bearer ${session?.accessToken}`
@@ -94,12 +75,8 @@ const Coupons = () => {
         {
           onSuccess: (data) => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
-            // Update local state immediately for better UX
             setCoupons((prev) => prev.filter((coupon) => coupon.id !== couponId))
-            // Also refetch to ensure data consistency
-            if (refetchCoupons && typeof refetchCoupons === 'function') {
-              refetchCoupons()
-            }
+            refetchCoupons()
           },
           onError: (error) => {
             const errorMessage =
@@ -109,11 +86,6 @@ const Coupons = () => {
         }
       )
     }
-  }
-
-  const handleEditCoupon = (coupon) => {
-    setEditingCoupon(coupon)
-    setIsEditOpen(true)
   }
 
   if (isCouponsLoading) {
@@ -138,16 +110,10 @@ const Coupons = () => {
           </Button>
         </div>
 
-        {coupons.length > 0 ? (
+        {coupons?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
             {coupons.map((coupon) => (
-              <CouponCard
-                key={coupon.id}
-                coupon={coupon}
-                onEdit={handleEditCoupon}
-                onDelete={handleDeleteCoupon}
-                isDeleting={isDeleting}
-              />
+              <CouponCard key={coupon.id} coupon={coupon} onEdit={() => {}} onDelete={handleDeleteCoupon} />
             ))}
           </div>
         ) : (

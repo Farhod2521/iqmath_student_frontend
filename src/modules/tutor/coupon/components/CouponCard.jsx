@@ -3,7 +3,7 @@ import toast from 'react-hot-toast'
 import { Copy, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-const CouponCard = ({ coupon, onEdit, onDelete, isDeleting }) => {
+const CouponCard = ({ coupon, onEdit, onDelete }) => {
   const [copied, setCopied] = useState(false)
   const { t } = useTranslation()
   const handleCopy = async () => {
@@ -49,7 +49,6 @@ const CouponCard = ({ coupon, onEdit, onDelete, isDeleting }) => {
 
             <button
               onClick={() => onDelete(coupon.id)}
-              disabled={isDeleting}
               className="p-2 text-red-500 hover:bg-red-50 transition-colors rounded-lg disabled:opacity-50"
               title="O'chirish"
             >
