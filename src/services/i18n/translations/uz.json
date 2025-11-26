@@ -813,5 +813,16 @@
   "payments": "To'lovlar",
   "id": "ID",
   "mastery_statistics": "O'zlashtirish statistikasi",
-  "no_statistics": "Hozircha statistika mavjud emas"
+  "no_statistics": "Hozircha statistika mavjud emas",
+  "loadingProducts": "Mahsulotlar yuklanmoqda...",
+  "errorTitle": "Xatolik yuz berdi",
+  "errorDescription": "Mahsulotlarni yuklashda muammo yuz berdi",
+  "onePiece": "1 dona",
+  "inStock": "Omborda",
+  "productOutOfStock": "Mahsulot stokda yo'q",
+  "piece": "ta",
+  "noStudentsUsedCoupon": "Kupondan foydalangan o'quvchilar yo'q",
+  "couponStudentListDescription": "Bu sahifada kupondan foydalangan o'quvchilar ro'yxati chiqadi",
+  "noInvitedFriends": "Taklif qilingan do'stlar mavjud emas!",
+  "inviteFriendsDescription": "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing"
 }

@@ -119,10 +119,10 @@ const Referal = () => {
               <UserPlus size={40} className="text-gray-400" />
             </div>
             <h3 className="text-xl font-bold text-black mb-3">
-              {t('noInvitedStudents', "Taklif qilingan o'quvchilar mavjud emas!")}
+              {t('noInvitedFriends', "Taklif qilingan do'stlar mavjud emas!")}
             </h3>
             <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
-              {t('inviteStudentsDescription', "O'quvchilaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
+              {t('inviteFriendsDescription', "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
             </p>
             <div className="flex gap-4 justify-center">
               <Button

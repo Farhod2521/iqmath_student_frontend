@@ -722,5 +722,17 @@
   "payments": "Платежи",
   "id": "ID",
   "mastery_statistics": "Статистика освоения",
-  "no_statistics": "Статистика пока отсутствует"
+  "no_statistics": "Статистика пока отсутствует",
+  "loadingProducts": "Загрузка товаров...",
+  "errorTitle": "Произошла ошибка",
+  "errorDescription": "Возникла ошибка при загрузке товаров",
+  "onePiece": "1 штука",
+  "inStock": "В наличии",
+  "productOutOfStock": "Товара нет на складе",
+  "buyNow": "Купить",
+  "piece": "шт",
+  "noStudentsUsedCoupon": "Нет учеников, использовавших купон",
+  "couponStudentListDescription": "На этой странице отображается список учеников, использовавших купон",
+  "noInvitedFriends": "Приглашённых друзей нет!",
+  "inviteFriendsDescription": "Пригласите своих друзей и зарегистрируйте их"
 }
