@@ -1,35 +1,30 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import useDeleteQuery from '@/hooks/api/useDeleteQuery'
 import { Button } from '@heroui/react'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
-import { CouponCard, EmptyState } from '@/modules/tutor/coupon/components'
-import { LoadingState } from '@/modules/student/products/components'
+import EmptyCuponState from '@/modules/cupons/EmtyCuponState'
+import CouponCard from '@/modules/cupons/CouponCard'
+// import CouponCard from '@/modules/cupons/CouponCard'
 
 const Index = () => {
   const { t } = useTranslation()
-  const { data: session } = useSession()
 
   const {
     data: couponsData,
     isLoading: isCouponsLoading,
     refetch: refetchCoupons
-  } = useGetQuery({
-    key: ['/api/v1/universal/coupon-generate/'],
-    url: '/api/v1/universal/coupon-generate/'
-  })
+  } = useGetQuery({ key: '/api/v1/universal/coupon-generate/', url: '/api/v1/universal/coupon-generate/' })
 
   const { mutate: createCoupon, isLoading: isCreating } = usePostQuery({
     listKeyId: 'create-coupon',
     hideSuccessToast: true
   })
 
-  const { mutate: deleteCoupon, isLoading: isDeleting } = useDeleteQuery({
+  const { mutate: deleteCoupon } = useDeleteQuery({
     listKeyId: 'delete-coupon'
   })
 
@@ -45,12 +40,10 @@ const Index = () => {
     )
   }
 
-  const handleDeleteCoupon = (couponId) => {
+  const handleDeleteCoupon = () => {
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
-        {
-          url: `api/v1/universal/coupon-generate/`
-        },
+        { url: `api/v1/universal/coupon-generate/` },
         {
           onSuccess: (data) => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
@@ -71,7 +64,14 @@ const Index = () => {
   if (isCouponsLoading) {
     return (
       <LayoutAdmin title={t('coupons')}>
-        <LoadingState />
+        <div className="p-6">
+          <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5D87FF] mx-auto"></div>
+              <p className="text-[#5A6A85] dark:text-gray-400 mt-4">Yuklanmoqda...</p>
+            </div>
+          </div>
+        </div>
       </LayoutAdmin>
     )
   }
@@ -101,7 +101,7 @@ const Index = () => {
               />
             </div>
           ) : (
-            <EmptyState onAddNew={handleCreateCoupon} />
+            <EmptyCuponState onAddNew={handleCreateCoupon} />
           )}
         </div>
       </div>

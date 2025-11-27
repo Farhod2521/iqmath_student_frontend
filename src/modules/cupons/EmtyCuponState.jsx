@@ -1,7 +1,7 @@
 import { Button } from '@heroui/react'
 import { PlusIcon } from '@heroicons/react/24/outline'
 
-const EmptyState = ({ onAddNew }) => {
+const EmptyCuponState = ({ onAddNew }) => {
   return (
     <div className="text-center py-16">
       <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
@@ -20,4 +20,4 @@ const EmptyState = ({ onAddNew }) => {
   )
 }
 
-export default EmptyState
+export default EmptyCuponState

@@ -286,8 +286,8 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
-    key: 'tutor-coupons',
-    path: '/dashboard/tutor/coupons', //
+    key: 'cupon-users',
+    path: '/dashboard/cupons/users', //
     label: t('users_with_coupons'),
     icon: (isActive) => (
       <LuUsers
@@ -298,10 +298,9 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT],
     type: MenuType.LINK
   },
-
   {
-    key: 'referal-tutor',
-    path: '/dashboard/tutor/coupon',
+    key: 'cupon-list',
+    path: '/dashboard/cupons/list',
     label: t('coupons'),
     icon: (isActive) => (
       <RiCoupon5Line
@@ -310,35 +309,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR],
-    type: MenuType.LINK
-  },
-  {
-    key: 'referal-teacher',
-    path: '/dashboard/teacher/coupon',
-    label: t('coupons'),
-    icon: (isActive) => (
-      <RiCoupon5Line
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.TEACHER],
-    type: MenuType.LINK
-  },
-  {
-    key: 'referal',
-    path: '/dashboard/student/coupon',
-    label: t('coupons'),
-    icon: (isActive) => (
-      <RiCoupon5Line
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
   {
