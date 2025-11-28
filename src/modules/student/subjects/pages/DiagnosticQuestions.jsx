@@ -21,6 +21,7 @@ import Calculator from '../components/calculator/Calculator'
 import DiagnosticResultModal from '../components/modal/DiagnosticResultModal'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
+import ExamAnswerImage from '../components/exam/ExamAnswerImage'
 
 const DiagnosticQuestions = ({ subjectId }) => {
   const { t, i18n } = useTranslation()
@@ -289,6 +290,14 @@ const DiagnosticQuestions = ({ subjectId }) => {
           <div className="w-full flex flex-col items-center">
             {(() => {
               switch (selectedQuestion?.question_type) {
+                case 'image_choice':
+                  return (
+                    <ExamAnswerImage
+                      selectedQuestion={selectedQuestion}
+                      setImageAnswers={setChoiceAnswers}
+                      imageAnswers={choiceAnswers}
+                    />
+                  )
                 case 'choice':
                   return (
                     <ExamAnswerChoice

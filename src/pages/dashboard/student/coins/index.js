@@ -28,7 +28,7 @@ const Index = () => {
 
   return (
     <LayoutAdmin title={t('points')}>
-      <div className="grid grid-cols-12 gap-x-[24px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
           className="col-span-12 p-[24px] rounded-[12px] text-white bg-no-repeat bg-cover relative"

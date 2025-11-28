@@ -139,16 +139,8 @@ function NavbarProfile() {
             }}
             className="flex gap-x-[12px] text-start cursor-pointer"
           >
-            <div
-              className="w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center"
-            >
-              <Image
-                src="/icons/avatar.png"
-                alt="user"
-                width={28}
-                height={28}
-                className="rounded-full"
-              />
+            <div className="w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
+              <Image src="/icons/avatar.png" alt="user" width={28} height={28} className="rounded-full" />
             </div>
 
             <div>
@@ -173,15 +165,17 @@ function NavbarProfile() {
           <>
             {/* Modal Backdrop */}
             <div
-              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${isExiting ? 'opacity-0' : 'opacity-40'
-                }`}
+              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${
+                isExiting ? 'opacity-0' : 'opacity-40'
+              }`}
               onClick={closeModal}
             ></div>
 
             {/* Modal Container */}
             <div
-              className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
-                }`}
+              className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${
+                isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
+              }`}
             >
               <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
                 <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2>

@@ -42,9 +42,12 @@ const LanguageDropdown = () => {
     <div className="relative inline-block">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="group flex items-center gap-1 bg-white text-black border rounded-md py-1 px-3 hover:bg-[#5d87ff] hover:text-white active:bg-[#5d87ff] active:text-white transition active:scale-90"
+        className="group flex items-center gap-1 bg-white text-black border rounded-md py-1 px-3 h-8 sm:h-9 hover:bg-[#5d87ff] hover:text-white active:bg-[#5d87ff] active:text-white transition active:scale-90"
       >
-        <CiGlobe className='text-[#5d87ff] group-hover:text-white group-active:text-white transition-colors duration-200' size={24} />
+        <CiGlobe
+          className="text-[#5d87ff] group-hover:text-white group-active:text-white transition-colors duration-200"
+          size={24}
+        />
         <span className="uppercase text-sm">{selectedLanguage.code}</span>
       </button>
 

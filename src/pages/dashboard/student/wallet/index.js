@@ -6,7 +6,7 @@ const Index = () => {
   const { t } = useTranslation()
   return (
     <LayoutAdmin title={t('wallet')}>
-      <div className="grid grid-cols-12 gap-x-[24px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div className="col-span-6 space-y-[12px]">
           <Card className="rounded-[12px] ">
             <div className="border border-[#E9E9E9] py-[16px] px-[24px]  flex items-center justify-between">

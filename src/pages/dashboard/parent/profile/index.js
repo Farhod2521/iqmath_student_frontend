@@ -28,7 +28,7 @@ const Index = () => {
 
   return (
     <LayoutAdmin title={`${t('profile')}`}>
-      <div className="grid grid-cols-12 gap-x-[24px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div className="col-span-5 border border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">
             <div className="group w-[100px] h-[100px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200">
