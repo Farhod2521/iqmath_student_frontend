@@ -564,6 +564,7 @@
   "purchaseSuccessful": "Harid muvaffaqiyatli amalga oshirildi!",
   "exchangeId": "Almashuv ID",
   "viewPurchasedProducts": "Mening mahsulotlarim",
+  "emptyPurchasedProducts": "Hozircha hech qanday mahsulot sotib olmagansiz.",
   "confirmPurchase": "Ha, sotib olaman",
   "confirmPurchaseMessage": "Ushbu mahsulotni sotib olishni xohlaysizmi?",
   "purchaseWarning": "Bu amalni qaytarib bo'lmaydi!",

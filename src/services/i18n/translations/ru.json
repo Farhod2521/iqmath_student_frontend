@@ -523,6 +523,7 @@
   "products": "Продукты",
   "allProducts": "Все продукты",
   "purchasedProducts": "Купленные продукты",
+  "emptyPurchasedProducts": "Вы пока не приобрели ни одного товара.",
   "price": "Цена",
   "buyWithMoney": "Купить за деньги",
   "buyWithPoints": "Купить за баллы",

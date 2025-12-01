@@ -9,12 +9,8 @@ const EmptyState = () => {
       <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">
-            {t('purchasedProducts')}
-          </h2>
-          <p className="text-[#5A6A85] dark:text-gray-400">
-            Hali hech qanday mahsulot sotib olmagansiz
-          </p>
+          <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">{t('purchasedProducts')}</h2>
+          <p className="text-[#5A6A85] dark:text-gray-400">{t('emptyPurchasedProducts')}</p>
         </div>
       </div>
     </div>
