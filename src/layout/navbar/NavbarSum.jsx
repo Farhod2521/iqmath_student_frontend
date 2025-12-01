@@ -19,7 +19,7 @@ function NavbarSum() {
     >
       <SiWebmoney width={24} height={24} color="#FDA001" />
       <p className="text-sm sm:text-md font-medium hidden sm:block">
-        {scoreData.sum} {t('sum')}
+        {scoreData.sum ?? 0} {t('sum')}
       </p>
     </Button>
   )

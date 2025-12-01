@@ -1,47 +1,72 @@
-import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
 import { get } from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
+import { request } from '@/services/api'
 
 function SelectClass({ option, onChange }) {
   const { t, i18n } = useTranslation()
 
-  const [dropdownOpenCourse, setDropdownOpenCourse] = useState(false)
+  const [schoolClasses, setSchoolClasses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [open, setOpen] = useState(false)
 
-  const { data: schoolClasses, isLoading: isLoadingSchoolClasses } = useGetQuery({
-    key: KEYS.schoolClasses,
-    url: URLS.schoolClasses
-  })
+  const dropdownRef = useRef(null)
 
+  // --- Fetch data ---
+  useEffect(() => {
+    request
+      .get(URLS.schoolClasses)
+      .then((res) => {
+        const data = get(res, 'data', []) // <-- API структура тўғриланди
+        setSchoolClasses(data)
+      })
+      .catch((err) => {
+        console.log(err)
+        setError('Failed to load classes')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
 
-  
-  
-  const filteredCoursesRaw = get(schoolClasses, 'data', [])
-
-  const uniqueClassesMap = {}
-  filteredCoursesRaw.forEach(item => {
-    if (!uniqueClassesMap[item.class_name]) {
-      uniqueClassesMap[item.class_name] = item
+  // --- Close dropdown on outside click ---
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false)
+      }
     }
-  })
-  const filteredCourses = Object.values(uniqueClassesMap).map(item => ({
-    ...item,
-    class_uz: item.class_name + '-sinf',
-    class_ru: item.class_name + '-класс',
-  }))
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [])
+
+  // --- Filter unique classes ---
+  const filtered = useMemo(() => {
+    const map = {}
+    schoolClasses.forEach((c) => {
+      if (!map[c.class_name]) map[c.class_name] = c
+    })
+    return Object.values(map).map((item) => ({
+      ...item,
+      class_uz: `${item.class_name}-sinf`,
+      class_ru: `${item.class_name}-класс`
+    }))
+  }, [schoolClasses])
 
   return (
-    <div className="relative text-[#2A3547] cursor-pointer">
+    <div className="relative text-[#2A3547]" ref={dropdownRef}>
+      {/* Selected */}
       <div
-        onClick={() => setDropdownOpenCourse((prev) => !prev)}
-        className="w-full text-left px-[16px] py-[10px] border border-[#EAEFF4] rounded-[12px] bg-white focus:outline-none flex items-center justify-between"
+        onClick={() => setOpen((p) => !p)}
+        className="w-full text-left px-4 py-2 border border-[#EAEFF4] rounded-xl bg-white cursor-pointer flex items-center justify-between"
       >
-        <span>{option?.label || t('selectClass')}</span>
+        <span className="truncate">{option?.label || t('selectClass')}</span>
+
         <svg
-          className={`w-5 h-5 transform ${dropdownOpenCourse ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 transition-transform ${open ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -51,27 +76,37 @@ function SelectClass({ option, onChange }) {
         </svg>
       </div>
 
-      {/* Dropdown options */}
-      {dropdownOpenCourse && (
+      {/* Dropdown */}
+      {open && (
         <motion.div
-          initial={{ opacity: 0, translateY: '0px' }}
-          animate={{ opacity: 1, translateY: '0px' }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute w-full top-12 bg-white border border-gray-200 rounded-md shadow-md z-50"
         >
-          <ul className="absolute w-full top-12 bg-white border border-gray-300 rounded-md shadow-md z-50">
-            {filteredCourses.map((option, index) => (
-              <li
-                key={index}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  onChange({ label: i18n.language === 'uz' ? option?.class_uz : option?.class_ru, value: option?.id })
-                  setDropdownOpenCourse(false)
-                }}
-              >
-                {i18n.language === 'uz' ? option.class_uz : option.class_ru}
-              </li>
-            ))}
-          </ul>
+          {loading && <div className="p-3 text-center text-gray-500 text-sm">{t('loading')}...</div>}
+
+          {error && <div className="p-3 text-center text-red-500 text-sm">{error}</div>}
+
+          {!loading && !error && (
+            <ul className="max-h-60 overflow-auto">
+              {filtered.map((item) => (
+                <li
+                  key={item.id}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition"
+                  onClick={() => {
+                    const label = i18n.language === 'uz' ? item.class_uz : item.class_ru
+                    onChange({ label, value: item.id })
+                    setOpen(false)
+                  }}
+                >
+                  {i18n.language === 'uz' ? item.class_uz : item.class_ru}
+                </li>
+              ))}
+
+              {filtered.length === 0 && <li className="px-4 py-2 text-gray-500 text-sm">{t('noData')}</li>}
+            </ul>
+          )}
         </motion.div>
       )}
     </div>
