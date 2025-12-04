@@ -672,6 +672,8 @@
   "users_with_coupons": "Пользователи с купонами",
   "referrals": "Рефералы",
   "discount": "Скидка",
+  "discount_perent": "Процент скидки",
+  "discount_price": "Сумма скидки",
   "start": "Начало",
   "diagnosis_history": "История диагностики",
   "questionCount": "Количество вопросов",

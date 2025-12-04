@@ -94,14 +94,14 @@ function NavbarProfile() {
     <>
       <button
         ref={buttonRef}
-        className="group w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
+        className="group w-[36px] h-[36px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
         onClick={handleProfile}
       >
         <Image
           src="/icons/avatar.png"
           alt="user"
-          width={28}
-          height={28}
+          width={24}
+          height={24}
           className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
         />
       </button>
@@ -109,7 +109,7 @@ function NavbarProfile() {
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute bg-white dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px] z-10"
+          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px] z-10"
         >
           <div className="flex gap-x-[12px]">
             <div className="space-y-[4px] text-black dark:text-white">

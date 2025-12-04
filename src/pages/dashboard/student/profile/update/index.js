@@ -15,6 +15,7 @@ import { get } from 'lodash'
 import { Button, Card } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
+import { request } from '@/services/api'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -23,13 +24,13 @@ const Index = () => {
   const [showDropdownMail, setShowDropdownMail] = useState(false)
   const [showDropdownPassword, setShowDropdownPassword] = useState(false)
   const [showDropdownAccount, setShowDropdownAccount] = useState(false)
-  
+
   // Form states - faqat API'da mavjud bo'lgan fieldlar
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  
+
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -42,10 +43,7 @@ const Index = () => {
   const [smsCode, setSmsCode] = useState('')
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
-  const {
-    data: studentProfile,
-    isLoading
-  } = useGetQuery({
+  const { data: studentProfile, isLoading } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
     headers: {
@@ -85,7 +83,7 @@ const Index = () => {
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
     if (phoneNumber !== get(studentProfile, 'data.phone', '')) {
       if (!currentPassword) {
-        toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
+        toast.error("Telefon raqamni o'zgartirish uchun joriy parolni kiriting")
         return
       }
       updateData.phone = phoneNumber
@@ -98,7 +96,7 @@ const Index = () => {
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -131,7 +129,7 @@ const Index = () => {
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -153,17 +151,17 @@ const Index = () => {
       toast.error('Joriy parolni kiriting')
       return
     }
-    
+
     if (!newPassword) {
       toast.error('Yangi parolni kiriting')
       return
     }
-    
+
     if (newPassword.length < 6) {
-      toast.error('Yangi parol kamida 6 ta belgi bo\'lishi kerak')
+      toast.error("Yangi parol kamida 6 ta belgi bo'lishi kerak")
       return
     }
-    
+
     if (newPassword !== confirmPassword) {
       toast.error('Yangi parollar mos kelmadi')
       return
@@ -180,21 +178,21 @@ const Index = () => {
         attributes: passwordData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
       },
       {
         onSuccess: (data) => {
-          toast.success('Parol muvaffaqiyatli o\'zgartirildi')
+          toast.success("Parol muvaffaqiyatli o'zgartirildi")
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
           setShowDropdownPassword(false)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'Parol o\'zgartirishda xatolik yuz berdi')
+          toast.error(error.response?.data?.error || "Parol o'zgartirishda xatolik yuz berdi")
         }
       }
     )
@@ -217,7 +215,7 @@ const Index = () => {
         attributes: verificationData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -231,10 +229,22 @@ const Index = () => {
           setPhoneNumber(newPhone)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'SMS kod noto\'g\'ri')
+          toast.error(error.response?.data?.error || "SMS kod noto'g'ri")
         }
       }
     )
+  }
+
+  const handleDelete = () => {
+    request
+      .delete('/api/v1/auth/student/delete-profile/')
+      .then((res) => {
+        toast.success("Hisob o'chirildi")
+        window.location.reload()
+      })
+      .catch((err) => {
+        toast.error("O'chirib bo'lmadi")
+      })
   }
 
   if (isLoading) {
@@ -250,7 +260,7 @@ const Index = () => {
   return (
     <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-6 space-y-[12px]">
+        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
@@ -542,6 +552,7 @@ const Index = () => {
                   </div>
 
                   <Button
+                    onClick={handleDelete}
                     variant="bordered"
                     className={'flex bg-transparent !text-black gap-x-[8px] border border-[#FF3B30]'}
                   >
@@ -554,7 +565,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 sm:col-span-6 ">
           <ImageUploader />
         </div>
       </div>

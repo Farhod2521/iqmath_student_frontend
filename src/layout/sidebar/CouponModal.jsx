@@ -87,17 +87,13 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
         >
           <FaTimes className="text-[#5A6A85] dark:text-[#7C8FAC] text-sm" />
         </button>
-        
+
         <div className="text-center mb-8">
           {/* <div className="mx-auto w-20 h-20 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-6">
             <FaTag className="text-blue-600 dark:text-blue-400 text-4xl" />
           </div> */}
-          <h2 className="text-3xl font-bold text-[#2A3547] dark:text-white mb-3">
-            {t('promoCode')}
-          </h2>
-          <p className="text-lg text-[#5A6A85] dark:text-gray-400">
-            {t('promoCodeDescription')}
-          </p>
+          <h2 className="text-3xl font-bold text-[#2A3547] dark:text-white mb-3">{t('promoCode')}</h2>
+          <p className="text-lg text-[#5A6A85] dark:text-gray-400">{t('promoCodeDescription')}</p>
         </div>
 
         <div className="mb-8">
@@ -115,11 +111,7 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
               onclick={handleCheckCoupon}
               disabled={isCheckingCoupon || !couponCode.trim()}
             >
-              {isCheckingCoupon ? (
-                <FaSpinner className="animate-spin" />
-              ) : (
-                t('check')
-              )}
+              {isCheckingCoupon ? <FaSpinner className="animate-spin" /> : t('check')}
             </Button>
           </div>
         </div>
@@ -128,9 +120,7 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
           <div className="mb-8 p-6 bg-[#E6FFFA] dark:bg-[#1B3C48] rounded-xl border border-[#13DEB9]/30 dark:border-[#13DEB9]/30">
             <div className="flex items-center gap-3 mb-4">
               <FaCheckCircle className="text-[#13DEB9] dark:text-[#13DEB9] text-xl" />
-              <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">
-                {t('couponValid')}
-              </span>
+              <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">{t('couponValid')}</span>
             </div>
             <div className="space-y-3 text-base">
               <div className="flex justify-between">
@@ -146,13 +136,13 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
               <div className="flex justify-between">
                 <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
                 <span className="text-[#5A6A85] dark:text-gray-400 text-lg">
-                  {couponData.original_price?.toLocaleString()} so'm
+                  {couponData.discounted_price?.toLocaleString()} so'm
                 </span>
               </div>
               <div className="flex justify-between border-t border-[#13DEB9]/30 dark:border-[#13DEB9]/30 pt-3">
                 <span className="text-[#2A3547] dark:text-white font-semibold text-lg">{t('finalPrice')}:</span>
                 <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-xl">
-                  {couponData.discounted_price?.toLocaleString()} so'm
+                  {couponData.original_price?.toLocaleString()} so'm
                 </span>
               </div>
             </div>

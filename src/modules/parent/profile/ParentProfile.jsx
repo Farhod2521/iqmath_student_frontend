@@ -15,6 +15,7 @@ import { get } from 'lodash'
 import { Button, Card } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
+import { request } from '@/services/api'
 
 const ParentProfile = () => {
   const { t } = useTranslation()
@@ -22,13 +23,13 @@ const ParentProfile = () => {
   const [showDropdownMain, setShowDropdownMain] = useState(false)
   const [showDropdownPassword, setShowDropdownPassword] = useState(false)
   const [showDropdownAccount, setShowDropdownAccount] = useState(false)
-  
+
   // Form states - faqat API'da mavjud bo'lgan fieldlar
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  
+
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -41,10 +42,7 @@ const ParentProfile = () => {
   const [smsCode, setSmsCode] = useState('')
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
-  const {
-    data: parentProfile,
-    isLoading
-  } = useGetQuery({
+  const { data: parentProfile, isLoading } = useGetQuery({
     key: KEYS.parentProfile,
     url: URLS.parentProfile,
     headers: {
@@ -76,7 +74,7 @@ const ParentProfile = () => {
 
   const handleProfileUpdate = () => {
     console.log('handleProfileUpdate called', { fullName, email, address, phoneNumber })
-    
+
     const updateData = {
       full_name: fullName,
       email: email,
@@ -86,7 +84,7 @@ const ParentProfile = () => {
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
     if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
       if (!currentPassword) {
-        toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
+        toast.error("Telefon raqamni o'zgartirish uchun joriy parolni kiriting")
         return
       }
       updateData.phone = phoneNumber
@@ -105,7 +103,7 @@ const ParentProfile = () => {
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -132,17 +130,17 @@ const ParentProfile = () => {
       toast.error('Joriy parolni kiriting')
       return
     }
-    
+
     if (!newPassword) {
       toast.error('Yangi parolni kiriting')
       return
     }
-    
+
     if (newPassword.length < 6) {
-      toast.error('Yangi parol kamida 6 ta belgi bo\'lishi kerak')
+      toast.error("Yangi parol kamida 6 ta belgi bo'lishi kerak")
       return
     }
-    
+
     if (newPassword !== confirmPassword) {
       toast.error('Yangi parollar mos kelmadi')
       return
@@ -159,7 +157,7 @@ const ParentProfile = () => {
         attributes: passwordData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -167,7 +165,7 @@ const ParentProfile = () => {
       {
         onSuccess: (data) => {
           console.log('Password change success:', data)
-          toast.success('Parol muvaffaqiyatli o\'zgartirildi')
+          toast.success("Parol muvaffaqiyatli o'zgartirildi")
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
@@ -175,7 +173,7 @@ const ParentProfile = () => {
         },
         onError: (error) => {
           console.log('Password change error:', error)
-          toast.error(error.response?.data?.error || 'Parol o\'zgartirishda xatolik yuz berdi')
+          toast.error(error.response?.data?.error || "Parol o'zgartirishda xatolik yuz berdi")
         }
       }
     )
@@ -198,7 +196,7 @@ const ParentProfile = () => {
         attributes: verificationData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -214,24 +212,36 @@ const ParentProfile = () => {
         },
         onError: (error) => {
           console.log('Phone verification error:', error)
-          toast.error(error.response?.data?.error || 'SMS kod noto\'g\'ri')
+          toast.error(error.response?.data?.error || "SMS kod noto'g'ri")
         }
       }
     )
   }
 
+  const handleDelete = () => {
+    request
+      .delete('/api/v1/auth/student/delete-profile/')
+      .then((res) => {
+        toast.success("Hisob o'chirildi")
+        window.location.reload()
+      })
+      .catch((err) => {
+        toast.error("O'chirib bo'lmadi")
+      })
+  }
+
   if (isLoading) {
     return (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
     )
   }
 
   return (
     <>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-6 space-y-[12px]">
+        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
@@ -256,9 +266,9 @@ const ParentProfile = () => {
                     <p className="text-[15px] mb-[8px]">
                       To'liq ism <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="text" 
-                      value={fullName} 
+                    <Input
+                      type="text"
+                      value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="To'liq ismingizni kiriting"
                     />
@@ -268,9 +278,9 @@ const ParentProfile = () => {
                     <p className="text-[15px] mb-[8px]">
                       Telefon raqam <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="text" 
-                      value={phoneNumber} 
+                    <Input
+                      type="text"
+                      value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       placeholder="+998901234567"
                     />
@@ -280,21 +290,19 @@ const ParentProfile = () => {
                     <p className="text-[15px] mb-[8px]">
                       Email <span className="text-[#FF3B30]">*</span>
                     </p>
-                    <Input 
-                      type="email" 
-                      value={email} 
+                    <Input
+                      type="email"
+                      value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="email@example.com"
                     />
                   </div>
 
                   <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Manzil
-                    </p>
-                    <Input 
-                      type="text" 
-                      value={address} 
+                    <p className="text-[15px] mb-[8px]">Manzil</p>
+                    <Input
+                      type="text"
+                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder="Manzilingizni kiriting"
                     />
@@ -306,8 +314,8 @@ const ParentProfile = () => {
                         Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
                       </p>
                       <div className="relative">
-                        <Input 
-                          type={showCurrentPassword ? "text" : "password"} 
+                        <Input
+                          type={showCurrentPassword ? 'text' : 'password'}
                           value={currentPassword}
                           onChange={(e) => setCurrentPassword(e.target.value)}
                           placeholder="Joriy parolingizni kiriting"
@@ -327,12 +335,12 @@ const ParentProfile = () => {
                     </div>
                   )}
 
-                  <button 
+                  <button
                     type="button"
                     onClick={() => {
-                      console.log('Saqlash button clicked - Asosiy ma\'lumotlar')
+                      console.log("Saqlash button clicked - Asosiy ma'lumotlar")
                       handleProfileUpdate()
-                    }} 
+                    }}
                     className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
                     Saqlash
@@ -367,8 +375,8 @@ const ParentProfile = () => {
                       Joriy parol <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showCurrentPassword ? "text" : "password"} 
+                      <Input
+                        type={showCurrentPassword ? 'text' : 'password'}
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         placeholder="Joriy parolingizni kiriting"
@@ -392,8 +400,8 @@ const ParentProfile = () => {
                       Yangi parol <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showNewPassword ? "text" : "password"} 
+                      <Input
+                        type={showNewPassword ? 'text' : 'password'}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="Yangi parolni kiriting"
@@ -417,8 +425,8 @@ const ParentProfile = () => {
                       Yangi parolni tasdiqlang <span className="text-[#FF3B30]">*</span>
                     </p>
                     <div className="relative">
-                      <Input 
-                        type={showConfirmPassword ? "text" : "password"} 
+                      <Input
+                        type={showConfirmPassword ? 'text' : 'password'}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Yangi parolni qayta kiriting"
@@ -437,12 +445,12 @@ const ParentProfile = () => {
                     </div>
                   </div>
 
-                  <button 
+                  <button
                     type="button"
                     onClick={() => {
                       console.log('Saqlash button clicked - Parol')
                       handlePasswordChange()
-                    }} 
+                    }}
                     disabled={isChangingPassword}
                     className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
                   >
@@ -483,16 +491,13 @@ const ParentProfile = () => {
                     />
 
                     <div>
-                      <h3 className="text-[17px] font-semibold">
-                        {get(parentProfile, 'data.full_name', '')}
-                      </h3>
-                      <p className="text-[#8A8A8E] text-[15px]">
-                        ID: {get(parentProfile, 'data.id', '')}
-                      </p>
+                      <h3 className="text-[17px] font-semibold">{get(parentProfile, 'data.full_name', '')}</h3>
+                      <p className="text-[#8A8A8E] text-[15px]">ID: {get(parentProfile, 'data.id', '')}</p>
                     </div>
                   </div>
 
                   <Button
+                    onClick={handleDelete}
                     variant="bordered"
                     className={'flex bg-transparent !text-black gap-x-[8px] border border-[#FF3B30]'}
                   >
@@ -505,7 +510,7 @@ const ParentProfile = () => {
           </div>
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 sm:col-span-6">
           <ImageUploader />
         </div>
       </div>
@@ -518,7 +523,7 @@ const ParentProfile = () => {
             <p className="text-gray-600 mb-4">
               {newPhone} raqamiga SMS kod yuborildi. Tasdiqlash uchun kodni kiriting.
             </p>
-            
+
             <div className="mb-4">
               <Input
                 type="text"
@@ -528,7 +533,7 @@ const ParentProfile = () => {
                 className="w-full"
               />
             </div>
-            
+
             <div className="flex gap-2">
               <button
                 onClick={() => {
@@ -554,7 +559,7 @@ const ParentProfile = () => {
           </div>
         </div>
       )}
-      </>
+    </>
   )
 }
 

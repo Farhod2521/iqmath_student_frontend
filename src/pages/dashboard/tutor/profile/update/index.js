@@ -15,6 +15,7 @@ import { get } from 'lodash'
 import { Button, Card } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
+import { request } from '@/services/api'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -217,6 +218,18 @@ const Index = () => {
     )
   }
 
+  const handleDelete = () => {
+    request
+      .delete('/api/v1/auth/student/delete-profile/')
+      .then((res) => {
+        toast.success("Hisob o'chirildi")
+        window.location.reload()
+      })
+      .catch((err) => {
+        toast.error("O'chirib bo'lmadi")
+      })
+  }
+
   if (isLoading) {
     return (
       <LayoutAdmin title={t('profile')}>
@@ -230,7 +243,7 @@ const Index = () => {
   return (
     <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-6 space-y-[12px]">
+        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
@@ -488,6 +501,7 @@ const Index = () => {
                   </div>
 
                   <Button
+                    onClick={handleDelete}
                     variant="bordered"
                     className={'flex bg-transparent !text-black gap-x-[8px] border border-[#FF3B30]'}
                   >
@@ -500,7 +514,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 sm:col-span-6">
           <ImageUploader />
         </div>
       </div>

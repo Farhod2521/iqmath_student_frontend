@@ -14,21 +14,14 @@ function ActionSolution({ selectedQuestion }) {
 
   const handleSolution = () => {
     if (!selectedQuestion?.id) {
-      console.error('selectedQuestion.id mavjud emas:', selectedQuestion)
       return
     }
-    
+
     setIsLoading(true)
     setError('')
     setData('')
     onOpen() // Modal darhol ochiladi
-    
-    console.log('API chaqiruvi:', {
-      question_id: selectedQuestion.id,
-      lang: i18n.language,
-      question_type: selectedQuestion.question_type
-    })
-    
+
     request
       .post('/api/v1/func_teacher/openai/process/', {
         question_id: selectedQuestion.id,

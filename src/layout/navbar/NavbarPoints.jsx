@@ -14,11 +14,19 @@ function NavbarPoints() {
       isLoading={scoreData.isLoading}
       variant="bordered"
       onPress={() => router.push('/dashboard/student/coins')}
-      className="border-[#E9E9E9] py-1 px-1 sm:px-3 rounded-md border shadow-sm min-w-10 sm:min-w-20 h-8 sm:h-9 flex items-center gap-1 sm:gap-2 hover:bg-[#5d87ff] hover:text-white hover:border-white transition-all duration-200"
+      className="
+        border-[#E9E9E9]
+        rounded-md border shadow-sm
+        flex items-center gap-1 sm:gap-2
+        hover:bg-[#5d87ff] hover:text-white hover:border-white
+        transition-all duration-200
+         py-1 px-3 h-8 sm:h-9 
+      "
     >
-      <Image src="/icons/coins-logo.svg" alt="Coins logo" width={18} height={18} className="sm:w-22 sm:h-22" />
-      <p className="text-sm sm:text-md font-medium hidden sm:block">
-        {scoreData.score} {t('ball')}
+      <Image src="/icons/coins-logo.svg" alt="Coins logo" width={16} height={16} className="sm:w-[22px] sm:h-[22px]" />
+
+      <p className="text-sm sm:text-md font-medium flex gap-1">
+        {scoreData.score} <span className="hidden sm:block">{t('ball')}</span>
       </p>
     </Button>
   )

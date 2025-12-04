@@ -10,7 +10,7 @@ import { TrendingUp, Award } from 'lucide-react'
 import { SiWebmoney } from 'react-icons/si'
 
 function Index() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
   const { id: childId } = router.query
   const { data: session } = useSession()
@@ -83,6 +83,8 @@ function Index() {
                   <thead className="bg-gray-50">
                     <tr className="text-left text-gray-500 border-b">
                       <th className="p-4 font-medium">{t('subjectName')}</th>
+                      <th className="p-4 font-medium">{t('chapter')}</th>
+                      <th className="p-4 font-medium">{t('topic')}</th>
                       <th className="p-4 font-medium">{t('mastery')}</th>
                     </tr>
                   </thead>
@@ -123,9 +125,15 @@ function StatBadge({ icon, value, label, bgColor }) {
 function SubjectRow({ subject, isLast }) {
   const masteryPercent = subject.mastery_percent ?? 0
 
+  const { t, i18n } = useTranslation()
+
   return (
     <tr className={`${!isLast ? 'border-b' : ''} hover:bg-gray-50 transition-colors`}>
-      <td className="p-4 font-semibold text-[#1A1D29]">{subject.subject_name}</td>
+      <td className="p-4 font-semibold text-[#1A1D29]">
+        {i18n.language == 'uz' ? subject.subject_name_uz : subject.subject_name_ru}
+      </td>
+      <td className="font-semibold text-sm px-4">{subject.chapters}</td>
+      <td className="font-semibold text-sm px-4">{subject.topics}</td>
       <td className="p-4">
         <div className="flex items-center gap-3">
           <div className="flex-1 bg-gray-200 rounded-full h-2 min-w-[120px] max-w-[300px]">

@@ -22,12 +22,8 @@ const CouponSection = ({
         <div className="bg-white dark:bg-[#2A3447] border border-[#EAEFF4] dark:border-[#2A3447] rounded-[12px] p-6 mb-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white">
-                {selectedPlan.name}
-              </h3>
-              <p className="text-sm text-[#5A6A85] dark:text-gray-400">
-                {selectedPlan.duration}
-              </p>
+              <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white">{selectedPlan.name}</h3>
+              <p className="text-sm text-[#5A6A85] dark:text-gray-400">{selectedPlan.duration}</p>
             </div>
             <div className="text-right">
               <div className="text-xl font-bold text-[#2A3547] dark:text-white">
@@ -57,11 +53,7 @@ const CouponSection = ({
             onclick={onCheckCoupon}
             disabled={isCheckingCoupon || !couponCode.trim()}
           >
-            {isCheckingCoupon ? (
-              <FaSpinner className="animate-spin" />
-            ) : (
-              t('checkCoupon')
-            )}
+            {isCheckingCoupon ? <FaSpinner className="animate-spin" /> : t('checkCoupon')}
           </Button>
         </div>
       </div>
@@ -71,35 +63,27 @@ const CouponSection = ({
         <div className="mb-6 p-6 bg-[#E6FFFA] dark:bg-[#1B3C48] rounded-[12px] border border-[#13DEB9]/30 dark:border-[#13DEB9]/30">
           <div className="flex items-center gap-3 mb-4">
             <FaTag className="text-[#13DEB9] dark:text-[#13DEB9] text-xl" />
-            <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">
-              {t('couponApplied')}
-            </span>
+            <span className="text-lg font-semibold text-[#02b3a9] dark:text-[#13DEB9]">{t('couponApplied')}</span>
           </div>
           <div className="space-y-3 text-base">
+            <div className="flex justify-between">
+              <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
+              <span className="text-[#5A6A85] dark:text-gray-400 line-through">
+                {couponData.price?.toLocaleString()} {t('sum')}
+              </span>
+            </div>
             <div className="flex justify-between">
               <span className="text-[#2A3547] dark:text-white">{t('couponCode')}:</span>
               <span className="font-mono font-bold text-[#5D87FF] text-lg">{couponData.code}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">{t('discount')}:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('discount_perent')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-lg">
                 {couponData.discount_percent}%
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
-              <span className="text-[#5A6A85] dark:text-gray-400 line-through">
-                {couponData.original_price?.toLocaleString()} {t('sum')}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">{t('finalPrice')}:</span>
-              <span className="text-[#2A3547] dark:text-white">
-                {couponData.price?.toLocaleString()} {t('sum')}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#2A3547] dark:text-white">{t('discount')}:</span>
+              <span className="text-[#2A3547] dark:text-white">{t('discount_price')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9]">
                 -{couponData.saved_amount?.toLocaleString()} {t('sum')}
               </span>
@@ -122,7 +106,7 @@ const CouponSection = ({
         >
           {t('back')}
         </Button>
-        
+
         {couponData ? (
           <Button
             classname="flex-1 py-3 text-base bg-green-500 hover:bg-green-600 text-white rounded-[8px]"
@@ -131,10 +115,7 @@ const CouponSection = ({
             {t('proceedToPayment')}
           </Button>
         ) : (
-          <Button
-            classname="flex-1 py-3 text-base rounded-[8px]"
-            onclick={onSkipCoupon}
-          >
+          <Button classname="flex-1 py-3 text-base rounded-[8px]" onclick={onSkipCoupon}>
             {t('skipCoupon')}
           </Button>
         )}

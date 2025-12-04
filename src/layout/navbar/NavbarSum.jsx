@@ -15,14 +15,23 @@ function NavbarSum() {
       isLoading={scoreData.isLoading}
       variant="bordered"
       onPress={() => router.push('/dashboard/student/coins')}
-      className="border-[#E9E9E9] py-1 px-2 sm:px-3 rounded-md border shadow-sm min-w-10 sm:min-w-20 h-8 sm:h-9 flex items-center gap-1 sm:gap-2 hover:bg-[#5d87ff] hover:text-white hover:border-white transition-all duration-200"
+      className="
+      border-[#E9E9E9]
+        rounded-md border shadow-sm
+        flex items-center gap-1 sm:gap-2
+        hover:bg-[#5d87ff] hover:text-white hover:border-white
+        transition-all duration-200
+         py-1 px-3 h-8 sm:h-9 
+      "
     >
-      <SiWebmoney width={24} height={24} color="#FDA001" />
-      <p className="text-sm sm:text-md font-medium hidden sm:block">
-        {scoreData.sum ?? 0} {t('sum')}
+      <SiWebmoney size={16} className="text-[#FDA001] sm:size-5" />
+
+      <p className="text-sm sm:text-md font-medium flex gap-1">
+        {scoreData.sum ?? 0} <span className="hidden sm:block">{t('sum')}</span>
       </p>
     </Button>
   )
 }
+
 
 export default NavbarSum
