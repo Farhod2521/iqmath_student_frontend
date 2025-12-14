@@ -41,6 +41,7 @@ const Navigations = () => {
   const navs = [
     { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
+    { title: t('prices'), to: '/prices' },
     { title: t('faq'), to: '/faqs' },
     { title: t('contactus'), to: 'tel:+998881989000' }
   ]

@@ -207,8 +207,8 @@ export function ProgressChart({ subject, language }) {
                     ? 'Kamroq'
                     : 'Меньше'
                   : language === 'uz'
-                  ? `+${repeatedTopics.length - 3} ko'p`
-                  : `+${repeatedTopics.length - 3}`}
+                  ? `+${repeatedTopics.length - 3} Ko'proq`
+                  : `+${repeatedTopics.length - 3} Ещё`}
               </button>
             )}
           </div>

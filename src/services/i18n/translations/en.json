@@ -374,5 +374,9 @@
   "mastery_statistics": "Mastery Statistics",
   "chapters": "Chapters",
   "topics": "Topics",
-  "no_statistics": "No statistics available"
+  "no_statistics": "No statistics available",
+  "prices": "Prices",
+  "pricePerMonth": "Price per month",
+  "buy": "Buy now",
+  "notAvailable": "Not available"
 }

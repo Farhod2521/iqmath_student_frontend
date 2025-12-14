@@ -827,5 +827,9 @@
   "noStudentsUsedCoupon": "Kupondan foydalangan o'quvchilar yo'q",
   "couponStudentListDescription": "Bu sahifada kupondan foydalangan o'quvchilar ro'yxati chiqadi",
   "noInvitedFriends": "Taklif qilingan do'stlar mavjud emas!",
-  "inviteFriendsDescription": "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing"
+  "inviteFriendsDescription": "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing",
+  "prices": "Ta'riflar",
+  "pricePerMonth": "Oyiga to‘lov",
+  "buy": "Sotib olish",
+  "notAvailable": "Mavjud emas"
 }

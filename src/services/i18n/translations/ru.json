@@ -737,5 +737,9 @@
   "noStudentsUsedCoupon": "Нет учеников, использовавших купон",
   "couponStudentListDescription": "На этой странице отображается список учеников, использовавших купон",
   "noInvitedFriends": "Приглашённых друзей нет!",
-  "inviteFriendsDescription": "Пригласите своих друзей и зарегистрируйте их"
+  "inviteFriendsDescription": "Пригласите своих друзей и зарегистрируйте их",
+  "prices": "Платежи",
+  "pricePerMonth": "Цена за месяц",
+  "buy": "Купить",
+  "notAvailable": "Недоступно"
 }
