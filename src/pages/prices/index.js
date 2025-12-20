@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import {
-  Box,
-  Breadcrumbs,
-  Container,
-  CssBaseline,
-  ThemeProvider,
-  Typography,
-  CircularProgress,
-  Card,
-  CardContent,
-  Chip,
-  Button
-} from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Box, Breadcrumbs, Container, CssBaseline, ThemeProvider, Typography } from '@mui/material'
 
 import LayoutHome from '@/home/Layout'
 import ScrollToTop from '@/home/components/shared/scroll-to-top'
@@ -24,10 +11,17 @@ import { request } from '@/services/api'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
+// ICONS
+import StarIcon from '@mui/icons-material/Star'
+import LocalOfferIcon from '@mui/icons-material/LocalOffer'
+import PaymentsIcon from '@mui/icons-material/Payments'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+
 function Prices() {
   const theme = ThemeSettings()
   const { t } = useTranslation()
   const router = useRouter()
+
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -43,8 +37,7 @@ function Prices() {
 
   const handleBuy = async (plan) => {
     const session = await getSession()
-    if (!!session) {
-      // keyinchalik payment page yoki modal
+    if (session) {
       console.log('Selected plan:', plan)
     } else {
       router.push('/')
@@ -60,7 +53,7 @@ function Prices() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {/* Header */}
+        {/* HEADER */}
         <Box py={7} bgcolor="#5d87ff">
           <Typography variant="h5" align="center" color="white" fontWeight={600}>
             {t('prices')}
@@ -76,30 +69,54 @@ function Prices() {
           </Box>
         </Box>
 
-        {/* Content */}
+        {/* CONTENT */}
         <Container maxWidth="lg" sx={{ mt: 4, pb: { xs: 4, lg: 8 } }}>
           {isLoading ? (
             <div className="flex justify-center mt-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
             </div>
           ) : data.length ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
-              {data.map((item) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {data.map((item, idx) => (
                 <div
                   key={item.id}
-                  className={`h-full w-full flex flex-col rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl group ${
+                  className={`relative h-full flex flex-col rounded-xl transition-all duration-300 hover:shadow-xl ${
                     item.discount_percent ? 'border-2 border-blue-500' : 'border border-gray-200'
                   }`}
                 >
+                  {/* PROMO RIBBON */}
+                  {idx === 0 && (
+                    <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
+                      <span className="absolute top-4 -right-8 rotate-45 bg-orange-500 text-white text-xs font-semibold px-8 py-1 shadow-md flex items-center gap-1">
+                        <LocalOfferIcon sx={{ fontSize: 14 }} />
+                        Promo
+                      </span>
+                    </div>
+                  )}
+
+                  {/* BEST CHOICE RIBBON */}
+                  {idx === 1 && (
+                    <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
+                      <span className="absolute top-2 -right-8 rotate-45 bg-green-500 text-white text-xs font-semibold px-8 py-1 shadow-md flex items-center gap-1">
+                        <StarIcon sx={{ fontSize: 14 }} />
+                        Best
+                      </span>
+                    </div>
+                  )}
+
+                  {/* BODY */}
                   <div className="flex-1 p-6">
-                    {/* Title */}
-                    <h3 className="text-xl font-semibold text-gray-900">{item.get_months_display}</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                      <CalendarMonthIcon sx={{ fontSize: 20, color: '#5d87ff' }} />
+                      {item.get_months_display}
+                    </h3>
 
-                    {/* Subtitle */}
-                    <p className="mt-2 text-gray-600">{t('pricePerMonth')}</p>
+                    <p className="mt-2 text-gray-600 flex items-center gap-2">
+                      <PaymentsIcon sx={{ fontSize: 18 }} />
+                      {t('pricePerMonth')}
+                    </p>
 
-                    {/* Price */}
-                    <p className="mt-2 text-2xl font-medium text-gray-900 transition-colors duration-300 group-hover:text-blue-500">
+                    <p className="mt-2 text-2xl font-medium text-gray-900 transition-colors duration-300 hover:text-blue-500">
                       {Number(item.price_per_month).toLocaleString()} so'm
                     </p>
 
@@ -109,21 +126,21 @@ function Prices() {
                           {Number(item.sale_price).toLocaleString()} so'm
                         </p>
 
-                        <span className="inline-block mt-2 px-3 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
-                          -{item.discount_percent}%
+                        <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
+                          <LocalOfferIcon sx={{ fontSize: 16 }} />-{item.discount_percent}%
                         </span>
                       </>
                     )}
                   </div>
 
-                  {/* Buy button */}
+                  {/* BUY BUTTON */}
                   <div className="p-4">
                     <button
                       disabled={!item.is_active}
                       onClick={() => handleBuy(item)}
-                      className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all duration-300 group-hover:scale-[1.02] ${
+                      className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all ${
                         item.is_active
-                          ? 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer'
+                          ? 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'
                           : 'bg-gray-300 cursor-not-allowed'
                       }`}
                     >
