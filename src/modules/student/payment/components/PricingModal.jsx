@@ -1,4 +1,4 @@
-  import React from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '@/components/button'
 import { usePricingModal } from '../hooks/usePricingModal'
@@ -35,12 +35,9 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-3xl w-full max-h-[80vh] overflow-y-auto">
-        <ModalHeader 
-          activeTab={activeTab} 
-          onClose={handleClose} 
-        />
+        <ModalHeader activeTab={activeTab} onClose={handleClose} />
 
-        <div className="p-4">
+        <div className="p-4 overflow-hidden">
           {activeTab === 'plans' ? (
             <>
               {isLoadingPlans ? (
@@ -49,17 +46,11 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
                 </div>
               ) : plansError ? (
                 <div className="text-center py-12">
-                  <p className="text-red-500 dark:text-red-400">
-                    {t('plansError')}
-                  </p>
+                  <p className="text-red-500 dark:text-red-400">{t('plansError')}</p>
                 </div>
               ) : (
                 <>
-                  <PlanGrid 
-                    plans={plans}
-                    selectedPlan={selectedPlan}
-                    onSelectPlan={handleSelectPlan}
-                  />
+                  <PlanGrid plans={plans} selectedPlan={selectedPlan} onSelectPlan={handleSelectPlan} />
 
                   {selectedPlan && (
                     <div className="text-center">
@@ -69,9 +60,7 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
                       >
                         {t('proceedToPayment')} - {selectedPlan.price.toLocaleString()} {t('sum')}
                       </Button>
-                      <p className="text-sm text-[#5A6A85] dark:text-gray-400 mt-3">
-                        {t('nextStep')}
-                      </p>
+                      <p className="text-sm text-[#5A6A85] dark:text-gray-400 mt-3">{t('nextStep')}</p>
                     </div>
                   )}
                 </>
@@ -97,4 +86,3 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
 }
 
 export default PricingModal
-

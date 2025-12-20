@@ -16,6 +16,8 @@ import StarIcon from '@mui/icons-material/Star'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
 import PaymentsIcon from '@mui/icons-material/Payments'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import { PricingModal } from '@/modules/student/payment/components'
+import toast from 'react-hot-toast'
 
 function Prices() {
   const theme = ThemeSettings()
@@ -24,6 +26,9 @@ function Prices() {
 
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const session = getSession()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
 
   const fetchData = async () => {
     try {
@@ -37,11 +42,18 @@ function Prices() {
 
   const handleBuy = async (plan) => {
     const session = await getSession()
-    if (session) {
-      console.log('Selected plan:', plan)
-    } else {
+    if (!session) {
+      toast.success("Tarif rejani sotib qolish uchun avval ro'yxatdan o'ting")
       router.push('/')
+      return
     }
+    setSelectedPlan(plan)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedPlan(null)
   }
 
   useEffect(() => {
@@ -154,7 +166,11 @@ function Prices() {
             <p className="text-center text-gray-600 mt-12">{t('noData')}</p>
           )}
         </Container>
-
+        <PricingModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          originalPrice={selectedPlan?.price_per_month || 0}
+        />
         <ScrollToTop />
       </ThemeProvider>
     </LayoutHome>
