@@ -381,7 +381,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
             score={score}
             onRetake={handleRetakeTest}
             showRetakeButton={true}
-            subjectId={tab}
+            subjectId={subjectId}
           />
         </div>
       </div>
