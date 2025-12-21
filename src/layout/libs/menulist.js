@@ -24,7 +24,8 @@ export const RolesList = {
   TEACHER: 'teacher',
   ADMIN: 'admin',
   PARENT: 'parent',
-  TUTOR: 'tutor'
+  TUTOR: 'tutor',
+  SUPERADMIN: 'superadmin'
 }
 
 export const getMenuItems = (t) => [

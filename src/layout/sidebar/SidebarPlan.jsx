@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 import { useCouponStore, usePricingModalStore } from '@/store'
+import { RolesList } from '../libs/menulist'
 
 function SidebarPlan() {
   const { t } = useTranslation()
@@ -15,14 +16,12 @@ function SidebarPlan() {
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
   const { openPricingModal } = usePricingModalStore()
 
-  
   const handleInitiatePayment = () => {
     openPricingModal(data.payment_amount)
   }
 
-
   useEffect(() => {
-    if (currentRole === 'teacher' || currentRole === 'parent' || currentRole === 'tutor') return
+    if (currentRole !== RolesList.STUDENT) return
     getPaymentTrailDays()
       .then((res) => {
         setData((prev) => ({ ...prev, ...res?.data }))
@@ -30,8 +29,8 @@ function SidebarPlan() {
       .catch((error) => {})
   }, [])
 
-  if (currentRole === 'teacher' || currentRole === 'parent' || currentRole === 'tutor') {
-    return null
+  if (currentRole !== RolesList.STUDENT) {
+    return <></>
   }
 
   return (
