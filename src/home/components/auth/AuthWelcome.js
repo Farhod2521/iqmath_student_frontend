@@ -38,8 +38,8 @@ function AuthWelcome() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-medium mb-5 text-white">{t('welcome')}!</h1>
-      <div className="flex flex-col sm:flex-row gap-3">
+      <h1 className="mb-5 text-2xl font-medium text-white">{t('welcome')}!</h1>
+      <div className="flex flex-col gap-3 sm:flex-row">
         <button
           onClick={handleEnter}
           className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${

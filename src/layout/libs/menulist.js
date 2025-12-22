@@ -15,7 +15,7 @@ import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
 import { MdOutlinePayments } from 'react-icons/md'
-import { FaAddressBook } from 'react-icons/fa'
+import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -29,7 +29,7 @@ export const RolesList = {
 }
 
 export const getMenuItems = (t) => [
-  { label: t('main'), roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.TITLE },
+  { label: t('main'), roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.TITLE },
   {
     key: 'main',
     path: '/dashboard/student/subjects',
@@ -41,7 +41,21 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.ADMIN],
+    roles: [RolesList.STUDENT, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'prices',
+    path: '/dashboard/prices',
+    label: t('prices'),
+    icon: (isActive) => (
+      <FaDollarSign
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -55,7 +69,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -69,7 +83,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -83,7 +97,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   // {
@@ -112,7 +126,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.ADMIN],
+    roles: [RolesList.STUDENT, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -125,7 +139,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK,
     children: [
       {
@@ -162,7 +176,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -175,7 +189,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -188,7 +202,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -201,7 +215,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -214,7 +228,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -227,7 +241,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -240,12 +254,12 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
 
   // Parent role menu items
-  { label: t('main'), roles: [RolesList.PARENT], type: MenuType.TITLE },
+  { label: t('main'), roles: [RolesList.PARENT, RolesList.SUPERADMIN], type: MenuType.TITLE },
   {
     key: 'my-children',
     path: '/dashboard/parent/my-children',
@@ -256,7 +270,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.PARENT],
+    roles: [RolesList.PARENT, RolesList.SUPERADMIN],
     type: MenuType.LINK,
     activePatterns: ['/dashboard/parent/my-children'] // Bu path bilan boshlanadigan barcha routelar
   },
@@ -270,7 +284,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.PARENT],
+    roles: [RolesList.PARENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -283,7 +297,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -296,7 +310,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -310,7 +324,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -327,7 +341,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
-  { roles: [RolesList.STUDENT, RolesList.TEACHER], type: MenuType.GROUP },
+  { roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.GROUP },
   {
     key: 'coins',
     path: '/dashboard/student/coins',
@@ -339,7 +353,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -416,7 +430,8 @@ export const getMenuItemClasses = (isActive, disabled) => {
   const base =
     'flex gap-x-[10px] items-center py-[10px] px-[12px] rounded-[8px] transition-all duration-300 font-medium text-[15px] group'
   const active = 'bg-[#5D87FF] text-white'
-  const inactive = 'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#4463bb] hover:text-white dark:hover:bg-[#4463bb] dark:text-white'
+  const inactive =
+    'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#4463bb] hover:text-white dark:hover:bg-[#4463bb] dark:text-white'
   const disabledCls = 'opacity-50 cursor-not-allowed pointer-events-none'
   return `${base} ${disabled ? disabledCls : isActive ? active : inactive}`
 }

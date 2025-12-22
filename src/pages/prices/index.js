@@ -85,76 +85,78 @@ function Prices() {
         <Container maxWidth="lg" sx={{ mt: 4, pb: { xs: 4, lg: 8 } }}>
           {isLoading ? (
             <div className="flex justify-center mt-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
+              <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
             </div>
           ) : data.length ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {data.map((item, idx) => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {data?.map((item, idx) => (
                 <div
                   key={item.id}
-                  className={`relative h-full flex flex-col rounded-xl transition-all duration-300 hover:shadow-xl ${
-                    item.discount_percent ? 'border-2 border-blue-500' : 'border border-gray-200'
-                  }`}
+                  className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
+                   ${item.discount_percent > 0 ? 'bg-gradient-to-br from-blue-500 to-purple-500' : 'bg-gray-200'}`}
                 >
-                  {/* PROMO RIBBON */}
-                  {idx === 0 && (
-                    <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
-                      <span className="absolute top-4 -right-8 rotate-45 bg-orange-500 text-white text-xs font-semibold px-8 py-1 shadow-md flex items-center gap-1">
-                        <LocalOfferIcon sx={{ fontSize: 14 }} />
-                        Promo
+                  <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
+                    {/* BADGE */}
+                    {item.discount_percent > 0 && (
+                      <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-500">
+                        🔥 -{item.discount_percent}%
                       </span>
-                    </div>
-                  )}
+                    )}
 
-                  {/* BEST CHOICE RIBBON */}
-                  {idx === 1 && (
-                    <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
-                      <span className="absolute top-2 -right-8 rotate-45 bg-green-500 text-white text-xs font-semibold px-8 py-1 shadow-md flex items-center gap-1">
-                        <StarIcon sx={{ fontSize: 14 }} />
-                        Best
-                      </span>
-                    </div>
-                  )}
-
-                  {/* BODY */}
-                  <div className="flex-1 p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                      <CalendarMonthIcon sx={{ fontSize: 20, color: '#5d87ff' }} />
-                      {item.get_months_display}
+                    {/* TITLE */}
+                    <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
+                      <CalendarMonthIcon sx={{ color: '#5d87ff' }} />
+                      {item.months_display}
                     </h3>
 
-                    <p className="mt-2 text-gray-600 flex items-center gap-2">
-                      <PaymentsIcon sx={{ fontSize: 18 }} />
-                      {t('pricePerMonth')}
-                    </p>
+                    <p className="mt-1 text-sm text-gray-500">{t('pricePerMonth')}</p>
 
-                    <p className="mt-2 text-2xl font-medium text-gray-900 transition-colors duration-300 hover:text-blue-500">
-                      {Number(item.price_per_month).toLocaleString()} so'm
-                    </p>
-
-                    {item.discount_percent > 0 && (
-                      <>
-                        <p className="mt-2 text-gray-500 line-through">
-                          {Number(item.sale_price).toLocaleString()} so'm
-                        </p>
-
-                        <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
-                          <LocalOfferIcon sx={{ fontSize: 16 }} />-{item.discount_percent}%
+                    {/* PRICE */}
+                    <div className="mt-4">
+                      <div className="flex items-end gap-2">
+                        <span className="text-3xl font-extrabold text-gray-900">
+                          {Number(item.sale_price).toLocaleString()}
                         </span>
-                      </>
-                    )}
-                  </div>
+                        <span className="mb-1 text-sm text-gray-500">so'm</span>
+                      </div>
 
-                  {/* BUY BUTTON */}
-                  <div className="p-4">
+                      {item.discount_percent > 0 && (
+                        <span className="block mt-1 text-sm text-gray-400 line-through">
+                          {Number(item.price_per_month).toLocaleString()} so'm
+                        </span>
+                      )}
+                    </div>
+
+                    {/* BENEFITS */}
+                    <ul className="flex-1 mt-6 space-y-3">
+                      {item.benefits.map((b) => (
+                        <li
+                          key={b.id}
+                          className={`flex items-center gap-2 text-sm ${
+                            b.is_selected ? 'text-gray-800' : 'text-gray-400 line-through'
+                          }`}
+                        >
+                          <span
+                            className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold
+                ${b.is_selected ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}`}
+                          >
+                            {b.is_selected ? '✓' : '✕'}
+                          </span>
+                          {b.title}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* BUTTON */}
                     <button
                       disabled={!item.is_active}
                       onClick={() => handleBuy(item)}
-                      className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all ${
-                        item.is_active
-                          ? 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'
-                          : 'bg-gray-300 cursor-not-allowed'
-                      }`}
+                      className={`mt-6 w-full py-3 rounded-xl font-semibold text-white transition-all
+          ${
+            item.is_active
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 active:scale-95'
+              : 'bg-gray-300 cursor-not-allowed'
+          }`}
                     >
                       {item.is_active ? t('buy') : t('notAvailable')}
                     </button>
@@ -163,7 +165,7 @@ function Prices() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-600 mt-12">{t('noData')}</p>
+            <p className="mt-12 text-center text-gray-600">{t('noData')}</p>
           )}
         </Container>
         <PricingModal
