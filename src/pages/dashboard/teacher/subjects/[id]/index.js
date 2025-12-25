@@ -137,7 +137,7 @@ const Index = () => {
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
     },
-    enabled: !!selectedId && !!session?.accessToken
+    enabled: Boolean(selectedId && session?.accessToken)
   })
 
   const { mutate: reorderChapters } = usePostQuery({
@@ -161,8 +161,8 @@ const Index = () => {
   }, [topicsData])
 
   useEffect(() => {
-    const chapterList = get(chaptersData, 'data', [])
-    if (chapterList.length > 0 && !selectedId) {
+    const chapterList = chaptersData?.data ?? []
+    if (chapterList.length > 0) {
       setSelectedId(get(chapterList[0], 'id'))
     }
   }, [chaptersData])
