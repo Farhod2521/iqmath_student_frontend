@@ -4,6 +4,18 @@ import { Pencil, Trash2, Plus, X, Check } from 'lucide-react'
 import { request } from '@/services/api'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import SubscriptionPlansGrid from './components/SubscriptionPlansGrid'
+import { useTranslation } from 'react-i18next'
+
+const commonAPI = {
+  getCategories: async () => {
+    const { data } = await request.get('/api/v1/payments/superadmin/subscription-categories/')
+    return data
+  },
+  getBenefites: async () => {
+    const { data } = await request.get('/api/v1/payments/superadmin/subscription-benefits/')
+    return data
+  }
+}
 
 // API functions
 const subscriptionAPI = {
@@ -33,6 +45,7 @@ export default function SubscriptionPlans() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingPlan, setEditingPlan] = useState(null)
   const [selectedBenefits, setSelectedBenefits] = useState([])
+  const { t, i18n } = useTranslation()
   const [formData, setFormData] = useState({
     name: '',
     months: 1,
@@ -50,6 +63,18 @@ export default function SubscriptionPlans() {
   } = useQuery({
     queryKey: ['subscription-plans'],
     queryFn: subscriptionAPI.getAll,
+    refetchOnWindowFocus: false
+  })
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ['subscription-categories'],
+    queryFn: commonAPI.getCategories,
+    refetchOnWindowFocus: false
+  })
+
+  const { data: allBenefits = [] } = useQuery({
+    queryKey: ['subscription-benefites'],
+    queryFn: commonAPI.getBenefites,
     refetchOnWindowFocus: false
   })
 
@@ -80,18 +105,6 @@ export default function SubscriptionPlans() {
       queryClient.invalidateQueries(['subscription-plans'])
     }
   })
-
-  // Extract unique categories from plans (faqat null bo'lmaganlari)
-  const categories = [
-    ...new Map(
-      plans.filter((plan) => plan.category && plan.category.id).map((plan) => [plan.category.id, plan.category])
-    ).values()
-  ]
-
-  // Extract all unique benefits from plans
-  const allBenefits = [
-    ...new Map(plans.flatMap((plan) => plan.benefits || []).map((benefit) => [benefit.id, benefit])).values()
-  ]
 
   function resetForm() {
     setFormData({
@@ -293,7 +306,7 @@ export default function SubscriptionPlans() {
                       <option value="">Kategoriyani tanlang yoki bo'sh qoldiring</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
-                          {category.title_uz}
+                          {i18n.language === 'uz' ? category.title_uz : category.title_ru}
                         </option>
                       ))}
                     </select>
@@ -358,7 +371,9 @@ export default function SubscriptionPlans() {
                             {selectedBenefits.includes(benefit.id) && <Check className="w-3 h-3 text-white" />}
                           </div>
                           <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">{benefit.title}</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {i18n.language === 'uz' ? benefit.title_uz : benefit.title_ru}
+                            </p>
                             {benefit.description && <p className="text-xs text-gray-500">{benefit.description}</p>}
                           </div>
                         </div>

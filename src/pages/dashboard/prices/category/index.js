@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { request } from '@/services/api'
-import { Pencil, Trash2, Plus, Sparkles } from 'lucide-react'
+import { Pencil, Trash2, Plus, Sparkles, X } from 'lucide-react'
 
 const subscriptionAPI = {
   getAll: async () => {
@@ -242,8 +242,8 @@ export default function Category() {
                   <input
                     type="text"
                     className="w-full px-3 py-2 text-sm border border-gray-300 sm:px-4 sm:py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-base"
-                    value={form.title_uz}
-                    onChange={(e) => setForm({ ...form, title_uz: e.target.value })}
+                    value={form.title_ru}
+                    onChange={(e) => setForm({ ...form, title_ru: e.target.value })}
                     required
                   />
                 </div>

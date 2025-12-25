@@ -235,7 +235,7 @@ const Index = () => {
   return (
     <LayoutAdmin title={t('profile')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-6 space-y-[12px]">
+        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
@@ -503,7 +503,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12 sm:col-span-6">
           <ImageUploader />
         </div>
       </div>

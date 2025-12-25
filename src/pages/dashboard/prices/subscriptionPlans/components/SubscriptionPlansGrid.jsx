@@ -7,9 +7,9 @@ const categoryColors = {
   SPECIAL: 'from-blue-500 to-cyan-500'
 }
 
-export default function SubscriptionPlansGrid({ plans, onEdit, onDelete, isDeleting }) {
+export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, isDeleting }) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 grid-cols-4">
       {plans.map((item) => {
         const catTitle = item.category?.title?.toUpperCase() || ''
         const catGradient = categoryColors[catTitle] || 'from-gray-500 to-gray-400'

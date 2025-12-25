@@ -21,7 +21,7 @@ import toast from 'react-hot-toast'
 
 function Prices() {
   const theme = ThemeSettings()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const router = useRouter()
 
   const [data, setData] = useState([])
@@ -91,23 +91,24 @@ function Prices() {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {data?.map((item, idx) => (
                 <div
-                  key={item.id}
+                  key={idx}
                   className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
-                   ${item.discount_percent > 0 ? 'bg-gradient-to-br from-blue-500 to-purple-500' : 'bg-gray-200'}`}
+                   bg-gradient-to-br from-blue-500 to-purple-500`}
                 >
-                  <div className="absolute z-20 -translate-x-1/2 -top-2 left-1/2">
-                    <span
-                      className={`px-5 py-1.5 text-xs font-bold tracking-wide text-white rounded-full shadow-lg
-    ${item.discount_percent > 0 ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-gray-400'}`}
-                    >
-                      {item.name}
-                    </span>
-                  </div>
+                  {item.category && item.category.title_uz && item.category.title_ru && (
+                    <div className="absolute z-20 -translate-x-1/2 -top-2 left-1/2">
+                      <span
+                        className={`px-5 py-1.5 text-xs font-bold whitespace-nowrap tracking-wide text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-500`}
+                      >
+                        {i18n.language === 'uz' ? item.category.title_uz : item.category.title_ru}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
                     {/* BADGE */}
                     {item.discount_percent > 0 && (
-                      <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-500">
+                      <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-2 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
                         🔥 -{item.discount_percent}%
                       </span>
                     )}
@@ -116,11 +117,12 @@ function Prices() {
 
                     <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
                       <CalendarMonthIcon sx={{ color: '#5d87ff' }} />
-                      {item.months_display}
+                      {item.name}
                     </h3>
 
-                    <p className="mt-1 text-sm text-gray-500">{t('pricePerMonth')}</p>
-
+                    <p className="mt-1 text-sm text-gray-500">
+                      {item.months} {t('pricePerMonth')}
+                    </p>
                     {/* PRICE */}
                     <div className="mt-4">
                       <div className="flex items-end gap-2">
@@ -152,7 +154,7 @@ function Prices() {
                           >
                             {b.is_selected ? '✓' : '✕'}
                           </span>
-                          {b.title_uz}
+                          {i18n.language === 'uz' ? b.title_uz : b.title_ru}
                         </li>
                       ))}
                     </ul>

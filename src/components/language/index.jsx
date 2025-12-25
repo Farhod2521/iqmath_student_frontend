@@ -52,7 +52,7 @@ const LanguageDropdown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 right-0 mt-1 z-50 bg-white dark:bg-[#5d87ff] border border-gray-300 shadow-md rounded-md">
+        <div className="absolute left-0 right-0 w-[72px] mt-1 z-50 bg-white dark:bg-[#5d87ff] border border-gray-300 shadow-md rounded-md">
           {languages
             .filter((lang) => lang.code !== selectedLanguage.code)
             .map((lang) => (

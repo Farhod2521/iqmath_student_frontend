@@ -35,14 +35,14 @@ function StudentTable({
   const getData = useCallback(
     (page = 1, limit = 10, filters = {}) => {
       setIsLoadingData(true)
-      
+
       const params = {
         page,
         size: limit,
         ...filters
       }
 
-      Object.keys(params).forEach(key => {
+      Object.keys(params).forEach((key) => {
         if (params[key] === '' || params[key] === null || params[key] === undefined) {
           delete params[key]
         }
@@ -66,7 +66,7 @@ function StudentTable({
           }
         })
         .catch((error) => {
-          console.error('O\'quvchilar ma\'lumotlarini olishda xatolik:', error)
+          console.error("O'quvchilar ma'lumotlarini olishda xatolik:", error)
           setData([])
           if (onStudentsDataChange) {
             onStudentsDataChange([])
@@ -79,7 +79,7 @@ function StudentTable({
   )
 
   useEffect(() => {
-    setPagination(prev => ({ ...prev, current: 1 })) 
+    setPagination((prev) => ({ ...prev, current: 1 }))
     getData(1, pagination.limit, filterData)
   }, [filterData, getData, pagination.limit])
 
@@ -91,14 +91,14 @@ function StudentTable({
 
   const handleExportAllStudents = useCallback(async () => {
     onExportStart()
-    
+
     try {
       const exportParams = {
         export: 'excel',
         ...filterData
       }
 
-      Object.keys(exportParams).forEach(key => {
+      Object.keys(exportParams).forEach((key) => {
         if (exportParams[key] === '' || exportParams[key] === null || exportParams[key] === undefined) {
           delete exportParams[key]
         }
@@ -106,11 +106,11 @@ function StudentTable({
 
       const response = await request.get('/api/v1/auth/student/student_list/', {
         params: exportParams,
-        responseType: 'blob' 
+        responseType: 'blob'
       })
-      
-      const blob = new Blob([response.data], { 
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
@@ -120,10 +120,10 @@ function StudentTable({
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
-      
+
       toast.success(t('exportAllStudentsSuccess'))
     } catch (error) {
-      console.error("Export xatosi:", error)
+      console.error('Export xatosi:', error)
       toast.error(t('exportError'))
     } finally {
       onExportEnd()
@@ -140,34 +140,34 @@ function StudentTable({
     postLoginAsStudent(s.id)
       .then((res) => {
         // Avval current token'ni saqlaymiz - sessionStorage yoki NextAuth session'dan
-        let currentAccessToken = sessionStorage.getItem('access_token');
+        let currentAccessToken = sessionStorage.getItem('access_token')
         if (!currentAccessToken && session?.accessToken) {
-          currentAccessToken = session.accessToken;
+          currentAccessToken = session.accessToken
         }
-        
+
         if (!currentAccessToken) {
-          return;
+          return
         }
-        
+
         // Yangi tokenni o'quvchi tokeni sifatida saqlaymiz
-        sessionStorage.setItem('access_token', res.data?.access_token);
-        
+        sessionStorage.setItem('access_token', res.data?.access_token)
+
         // O'qituvchi tokenini vaqtincha saqlaymiz
-        sessionStorage.setItem('old_token', currentAccessToken);
+        sessionStorage.setItem('old_token', currentAccessToken)
 
         // User-store ni vaqtincha student qilib o'zgartiramiz
-        const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}');
+        const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}')
         if (currentUser.user) {
-          currentUser.user.role = 'student';
-          localStorage.setItem('user-store', JSON.stringify(currentUser));
+          currentUser.user.role = 'student'
+          localStorage.setItem('user-store', JSON.stringify(currentUser))
         }
 
         // O'quvchi sahifasiga yo'naltiramiz
-        router.push('/dashboard/student/subjects');
+        router.push('/dashboard/student/subjects')
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 
   const handleGiveReward = (student) => {
@@ -204,7 +204,7 @@ function StudentTable({
       {
         headerName: t('user'),
         field: 'full_name',
-        flex: 1.5,
+        maxWidth: 200,
         onCellClicked: (params) => {
           router.push(`/dashboard/teacher/pupils/${params.data.id}`)
         },
@@ -217,12 +217,11 @@ function StudentTable({
       }
     ]
 
-    // Faqat "student" roli tanlanganda sinf ustunini qo'shish
     if (filterData.role === 'student') {
       baseColumns.push({
         headerName: t('class'),
         field: 'class_num',
-        maxWidth: 150,
+        maxWidth: 100,
         cellClass: 'text-center',
         cellRenderer: (params) => {
           const classText = params.value || ''
@@ -243,11 +242,12 @@ function StudentTable({
       {
         headerName: t('phone'),
         field: 'phone',
-        flex: 1
+        minWidth: 120
       },
       {
         headerName: t('status'),
         field: 'status',
+        minWidth: 100,
         flex: 1,
         cellRenderer: (params) => {
           return params.value ? <span>Faol</span> : <span>Faol emas</span>
@@ -256,7 +256,7 @@ function StudentTable({
       {
         headerName: "Ro'yxattan o'tgan tili",
         field: 'lang',
-        flex: 1,
+        minWidth: 100,
         cellRenderer: (params) => {
           return params.value
         }
@@ -264,7 +264,7 @@ function StudentTable({
       {
         headerName: t('register_date') || "Ro'yxatdan o'tish",
         field: 'registration_date',
-        flex: 1,
+        minWidth: 100,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
@@ -275,7 +275,7 @@ function StudentTable({
       {
         headerName: t('lastLoginTime') || 'Oxirgi kirish',
         field: 'last_login_time',
-        flex: 1,
+        maxWidth: 100,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
@@ -284,9 +284,9 @@ function StudentTable({
         }
       },
       {
-        headerName: '',
+        headerName: t('action'),
         field: 'actions',
-        flex: 2,
+        minWidth: 260,
         cellRenderer: (p) => (
           <div className="flex gap-2 justify-end">
             <button
@@ -322,13 +322,12 @@ function StudentTable({
 
   return (
     <>
-    <div className="flex flex-col">
-      {isLoadingData ? (
-        <div className="relative">
-          <ContentLoader classNames="!min-h-[400px] !w-full" />
-        </div>
-      ) : (
-        <div style={{ width: '100%', height: 'auto' }} className="relative">
+      <div className="flex flex-col">
+        {isLoadingData ? (
+          <div className="relative">
+            <ContentLoader classNames="!min-h-[400px] !w-full" />
+          </div>
+        ) : (
           <AgGridReact
             rowData={data}
             columnDefs={colDefs}
@@ -336,17 +335,16 @@ function StudentTable({
             className="custom-grid"
             pagination={false}
           />
-        </div>
-      )}
-      {!isLoadingData && (
-        <StudentPagination
-          pagination={pagination}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          isLoading={isLoadingData}
-        />
-      )}
-    </div>
+        )}
+        {!isLoadingData && (
+          <StudentPagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+            isLoading={isLoadingData}
+          />
+        )}
+      </div>
 
       {/* Reward Modal */}
       <StudentRewardModal

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { request } from '@/services/api'
-import { Pencil, Trash2, Plus, X, Sparkles, Search } from 'lucide-react'
+import { Pencil, Trash2, Plus, X, Sparkles } from 'lucide-react'
 
 const subscriptionAPI = {
   getAll: async () => {
@@ -67,13 +67,7 @@ export default function Benefits() {
   const resetForm = () => {
     setOpen(false)
     setEditing(null)
-    setForm({
-      title_uz: '',
-      title_ru: '',
-      description_uz: '',
-      description_ru: '',
-      is_active: true
-    })
+    setForm({ title_uz: '', title_ru: '', description_uz: '', description_ru: '', is_active: true })
   }
 
   const handleSubmit = (e) => {
@@ -260,7 +254,6 @@ export default function Benefits() {
                   type="submit"
                   className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white border border-transparent shadow-sm sm:w-auto sm:px-6 sm:py-3 sm:text-base bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {' '}
                   Saqlash
                 </button>
               </div>

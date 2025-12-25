@@ -119,7 +119,7 @@ const Index = () => {
     isLoading,
     isFetching
   } = useGetQuery({
-    key: KEYS.chapters,
+    key: [KEYS.chapters, KEYS.chapters],
     url: `${URLS.chapters}${id}/`,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
@@ -132,7 +132,7 @@ const Index = () => {
     isLoading: isLoadingTopics,
     isFetching: isFetchingTopics
   } = useGetQuery({
-    key: [KEYS.topics, selectedId],
+    key: [KEYS.topics, selectedId, id],
     url: `${URLS.topics}${selectedId}/`,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`
