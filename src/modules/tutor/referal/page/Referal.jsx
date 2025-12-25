@@ -113,18 +113,18 @@ const Referal = () => {
   if (!data || data.length === 0) {
     return (
       <div className="space-y-6">
-        <Card className="border-none shadow-sm bg-white rounded-xl">
-          <div className="text-center py-16 px-6">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <Card className="bg-white border-none shadow-sm rounded-xl">
+          <div className="px-6 py-16 text-center">
+            <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-full">
               <UserPlus size={40} className="text-gray-400" />
             </div>
-            <h3 className="text-xl font-bold text-black mb-3">
+            <h3 className="mb-3 text-xl font-bold text-black">
               {t('noInvitedFriends', "Taklif qilingan do'stlar mavjud emas!")}
             </h3>
-            <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
+            <p className="max-w-md mx-auto mb-8 text-base text-gray-600">
               {t('inviteFriendsDescription', "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing")}
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex justify-center gap-4">
               <Button
                 onPress={() => setIsModalOpen(true)}
                 className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2"
@@ -161,7 +161,7 @@ const Referal = () => {
         </Button>
       </div>
       <div className="flex flex-col">
-        <div style={{ width: '100%', height: 'auto' }} className="relative">
+        <div className="relative h-auto min-w-[600px] sm:w-full">
           <AgGridReact
             rowData={data}
             columnDefs={colDefs}

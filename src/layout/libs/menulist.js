@@ -1,6 +1,6 @@
 import { LuBookText, LuUser } from 'react-icons/lu'
 import { TbCheckbox } from 'react-icons/tb'
-import { FaCoins } from 'react-icons/fa6'
+import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
 import { BiDirections } from 'react-icons/bi'
 import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
@@ -46,7 +46,6 @@ export const getMenuItems = (t) => [
   },
   {
     key: 'prices',
-    path: '/dashboard/prices',
     label: t('prices'),
     icon: (isActive) => (
       <FaDollarSign
@@ -56,7 +55,51 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.SUPERADMIN],
-    type: MenuType.LINK
+    type: MenuType.LINK,
+    children: [
+      {
+        key: 'subscriptionPlans',
+        path: '/dashboard/prices/subscriptionPlans',
+        label: t('subscriptionPlans'),
+        icon: (isActive) => (
+          <FaMoneyBillWave
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={26}
+          />
+        ),
+        disabled: false,
+        roles: [RolesList.SUPERADMIN],
+        type: MenuType.LINK
+      },
+      {
+        key: 'category',
+        path: '/dashboard/prices/category',
+        label: t('category'),
+        icon: (isActive) => (
+          <FaClipboardList
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={26}
+          />
+        ),
+        disabled: false,
+        roles: [RolesList.SUPERADMIN],
+        type: MenuType.LINK
+      },
+      {
+        key: 'benifits',
+        path: '/dashboard/prices/benifits',
+        label: t('benifits'),
+        icon: (isActive) => (
+          <FaTags
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={26}
+          />
+        ),
+        disabled: false,
+        roles: [RolesList.SUPERADMIN],
+        type: MenuType.LINK
+      }
+    ]
   },
   {
     key: 'diagnostics',

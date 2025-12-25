@@ -829,6 +829,9 @@
   "noInvitedFriends": "Taklif qilingan do'stlar mavjud emas!",
   "inviteFriendsDescription": "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing",
   "prices": "Ta'riflar",
+  "subscriptionPlans": "Obuna rejalari",
+  "benifits": "Foyda",
+  "category": "Kategoriya",
   "pricePerMonth": "Oyiga to‘lov",
   "buy": "Sotib olish",
   "notAvailable": "Mavjud emas"

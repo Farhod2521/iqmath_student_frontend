@@ -95,6 +95,15 @@ function Prices() {
                   className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
                    ${item.discount_percent > 0 ? 'bg-gradient-to-br from-blue-500 to-purple-500' : 'bg-gray-200'}`}
                 >
+                  <div className="absolute z-20 -translate-x-1/2 -top-2 left-1/2">
+                    <span
+                      className={`px-5 py-1.5 text-xs font-bold tracking-wide text-white rounded-full shadow-lg
+    ${item.discount_percent > 0 ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-gray-400'}`}
+                    >
+                      {item.name}
+                    </span>
+                  </div>
+
                   <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
                     {/* BADGE */}
                     {item.discount_percent > 0 && (
@@ -104,6 +113,7 @@ function Prices() {
                     )}
 
                     {/* TITLE */}
+
                     <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
                       <CalendarMonthIcon sx={{ color: '#5d87ff' }} />
                       {item.months_display}
@@ -142,7 +152,7 @@ function Prices() {
                           >
                             {b.is_selected ? '✓' : '✕'}
                           </span>
-                          {b.title}
+                          {b.title_uz}
                         </li>
                       ))}
                     </ul>

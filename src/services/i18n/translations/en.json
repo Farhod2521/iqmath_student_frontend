@@ -376,6 +376,9 @@
   "topics": "Topics",
   "no_statistics": "No statistics available",
   "prices": "Prices",
+  "benifits": "Benifits",
+  "category": "Category",
+  "subscriptionPlans": "Subscription plans",
   "pricePerMonth": "Price per month",
   "buy": "Buy now",
   "notAvailable": "Not available"

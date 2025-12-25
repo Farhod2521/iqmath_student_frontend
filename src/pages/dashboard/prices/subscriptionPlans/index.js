@@ -293,7 +293,7 @@ export default function SubscriptionPlans() {
                       <option value="">Kategoriyani tanlang yoki bo'sh qoldiring</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
-                          {category.title}
+                          {category.title_uz}
                         </option>
                       ))}
                     </select>
