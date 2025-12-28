@@ -9,6 +9,7 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import { request } from '@/services/api'
 
@@ -72,6 +73,8 @@ const StudentSubjectDetails = () => {
     )
   }
 
+  console.log('chapters', chapters)
+
   return (
     <LayoutAdmin>
       <div className="p-4">
@@ -79,8 +82,32 @@ const StudentSubjectDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Chapters List (Left Column) */}
           <div className="lg:col-span-5 bg-white rounded-xl border p-4 min-h-[400px]">
-            <h3 className="text-lg font-semibold mb-2">{t('chapters')}</h3>
+            <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-gray-800 uppercase">{t('chapters')}</h3>
+                  <p className="text-gray-500 text-xs">{t('select')}</p>
+                </div>
+              </div>
+            </div>
             <table className="w-full">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 uppercase">
+                  <th className="p-2 font-medium w-10">#</th>
+                  <th className="p-2 font-medium">{t('title')}</th>
+                  <th className="p-2 font-medium w-1/3">{t('mastery')}</th>
+                </tr>
+              </thead>
               <tbody>
                 {chapters.map((chapter, index) => (
                   <tr
@@ -104,6 +131,31 @@ const StudentSubjectDetails = () => {
                     >
                       {i18n.language === 'ru' ? chapter.chapter_name_ru : chapter.chapter_name_uz}
                     </td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <div className=" min-w-[120px] bg-gray-200 rounded-full h-1.5">
+                          <div
+                            className={`h-1.5   rounded-full ${
+                              chapter.progress === null || chapter.progress === undefined
+                                ? 'bg-gray-400'
+                                : chapter.progress >= 80
+                                ? 'bg-green-500'
+                                : chapter.progress >= 50
+                                ? 'bg-yellow-400'
+                                : 'bg-red-500'
+                            }`}
+                            style={{
+                              width: `${
+                                chapter.progress === null || chapter.progress === undefined ? 0 : chapter.progress
+                              }%`
+                            }}
+                          ></div>
+                        </div>
+                        <span className="font-semibold text-xs text-gray-500">
+                          {chapter.progress === null || chapter.progress === undefined ? 0 : chapter.progress}%
+                        </span>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -112,8 +164,24 @@ const StudentSubjectDetails = () => {
 
           {/* Topics List (Right Column) */}
           <div className="lg:col-span-7 bg-white rounded-xl border p-4 min-h-[400px] flex flex-col">
-            <h3 className="text-lg font-semibold mb-2">{t('topics')}</h3>
-
+            <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-gray-800 uppercase">{t('topic')}</h3>
+                  <p className="text-gray-500 text-xs">{t('topicsList')}</p>
+                </div>
+              </div>
+            </div>
             {isTopicsLoading ? (
               <div className="flex-grow flex items-center justify-center">
                 <ContentLoader classNames="!min-h-[500px]" />

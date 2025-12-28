@@ -66,8 +66,6 @@ const formatDate = (dateString) => {
 const ChatBox = () => {
   const queryClient = useQueryClient()
   const messagesEndRef = useRef(null)
-  const { user, role: userRole } = useUserStore()
-
   const [activeChat, setActiveChat] = useState(null)
   const [newMessage, setNewMessage] = useState('')
   const [showChatList, setShowChatList] = useState(true)
@@ -78,23 +76,17 @@ const ChatBox = () => {
     avatar: '/images/avatar.png'
   })
 
-  console.log('user', user)
-
-  /* === Chatlar === */
   const { data: chats = [], isLoading: chatsLoading } = useQuery({
     queryKey: ['chats'],
     queryFn: chatAPI.getChats
   })
-  console.log('data', chats)
 
-  /* === Xabarlar === */
   const { data: messages = [], isLoading: messagesLoading } = useQuery({
     queryKey: ['messages', activeChat?.id],
     queryFn: () => chatAPI.getMessages(activeChat.id),
     enabled: !!activeChat
   })
 
-  /* === Xabar yuborish === */
   const sendMutation = useMutation({
     mutationFn: chatAPI.sendMessage,
     onSuccess: () => {
@@ -106,10 +98,7 @@ const ChatBox = () => {
   })
 
   const handleSend = () => {
-    console.log('new', newMessage)
-
     if (!newMessage.trim()) return
-    console.log('newMessage', replyingTo)
 
     // const newMsg = {
     //   id: Date.now(),
@@ -139,11 +128,9 @@ const ChatBox = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  console.log('message', messages)
-
   return (
     <LayoutAdmin title="Chat">
-      <div className="h-[85vh] flex gap-1 bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="h-[85vh] flex gap-1 bg-white rounded-2xl  overflow-hidden">
         {/* ================= CHAT LIST ================= */}
         <div
           className={`${
@@ -153,16 +140,6 @@ const ChatBox = () => {
           {/* Header */}
           <div className="p-6 border-b border-gray-100">
             <h2 className="mb-4 text-2xl font-bold text-gray-800">Xabarlar</h2>
-            {/* <div className="relative">
-              <BiSearch className="absolute text-xl text-gray-400 -translate-y-1/2 left-4 top-1/2" />
-              <input
-                type="text"
-                placeholder="Qidirish..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-3 pl-12 pr-4 transition-all border-0 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div> */}
           </div>
 
           {/* Chat List */}
@@ -175,6 +152,7 @@ const ChatBox = () => {
                 onClick={() => {
                   setActiveChat(chat)
                   setShowChatList(false)
+                  cancelReply()
                 }}
                 className={`flex items-center gap-4 p-4 cursor-pointer transition-all border-l-4 
                   ${activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
@@ -184,9 +162,6 @@ const ChatBox = () => {
                   <div className="flex items-center justify-center text-lg font-semibold text-white rounded-full shadow-lg w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500">
                     {chat?.other_user_name?.charAt(0) || '?'}
                   </div>
-                  {/* {isUserOnline(chat) && (
-                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                  )} */}
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -222,9 +197,6 @@ const ChatBox = () => {
                     <div className="flex items-center justify-center w-10 h-10 font-semibold text-white rounded-full shadow-md md:w-12 md:h-12text-lg bg-gradient-to-br from-blue-400 to-purple-500">
                       {activeChat.other_user_name?.charAt(0) || '?'}
                     </div>
-                    {/* {isUserOnline(activeChat) && (
-                      <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
-                    )} */}
                   </div>
                   <div>
                     <h3 className="text-base font-semibold text-gray-800 md:text-lg">{activeChat.other_user_name}</h3>
@@ -240,9 +212,9 @@ const ChatBox = () => {
                     </p> */}
                   </div>
                 </div>
-                <button className="p-2 transition-colors rounded-full hover:bg-gray-100">
+                {/* <button className="p-2 transition-colors rounded-full hover:bg-gray-100">
                   <HiDotsVertical className="text-xl text-gray-600" />
-                </button>
+                </button> */}
               </div>
 
               {/* Messages */}
@@ -302,19 +274,19 @@ const ChatBox = () => {
                     </div>
                   ) : (
                     <div key={msg.id} className="flex gap-3">
-                      <div className="flex-shrink-0 w-8 h-8">
+                      {/* <div className="flex-shrink-0 w-8 h-8">
                         {showAvatar && (
                           <div className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white rounded-full shadow-md bg-gradient-to-br from-purple-400 to-pink-500">
                             {msg.sender_name?.charAt(0) || activeChat.other_user_name?.charAt(0) || '?'}
                           </div>
                         )}
-                      </div>
+                      </div> */}
                       <div className="max-w-[70%] group cursor-pointer" onDoubleClick={() => handleReply(msg)}>
-                        {showName && (
+                        {/* {showName && (
                           <p className="mb-1 ml-1 text-xs font-medium text-gray-600">
                             {msg.sender_name || activeChat.other_user_name}
                           </p>
-                        )}
+                        )} */}
                         {msg.reply_to_text && (
                           <div className="p-3 mb-2 bg-gray-100 border-l-4 border-gray-400 rounded-lg">
                             {msg.reply_to_sender && (
