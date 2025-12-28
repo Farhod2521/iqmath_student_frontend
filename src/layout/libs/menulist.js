@@ -158,20 +158,21 @@ export const getMenuItems = (t) => [
   //   type: MenuType.LINK
   // },
 
-  {
-    key: 'chat',
-    path: '/dashboard/student/chat',
-    label: t('chat'),
-    icon: (isActive) => (
-      <HiChatBubbleLeftRight
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT, RolesList.ADMIN, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'chat',
+  //   path: '/dashboard/student/chat',
+  //   label: t('chat'),
+  //   icon: (isActive) => (
+  //     <HiChatBubbleLeftRight
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   disabled: false,
+  //   roles: [RolesList.STUDENT, RolesList.ADMIN, RolesList.SUPERADMIN],
+  //   type: MenuType.LINK
+  // },
+
   {
     key: 'products',
     label: t('products'),
@@ -272,6 +273,20 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'chat',
+    path: '/dashboard/student/chat/chat-box',
+    label: t('chat'),
+    icon: (isActive) => (
+      <HiChatBubbleLeftRight
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

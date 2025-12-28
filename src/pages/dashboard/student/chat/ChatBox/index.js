@@ -19,14 +19,14 @@ const ChatBox = () => {
 
   const handleSend = () => {
     if (!newMessage.trim()) return
-    
+
     const newMsg = {
       id: Date.now(),
       text: newMessage,
       fromMe: true
     }
-    
-    setMessages(prev => [...prev, newMsg])
+
+    setMessages((prev) => [...prev, newMsg])
     setNewMessage('')
   }
 
@@ -40,20 +40,20 @@ const ChatBox = () => {
           </div>
         </div>
         <div className="h-[60vh] flex-1 overflow-y-auto custom-scroll p-4 space-y-6 bg-[#F9F9F9]">
-          <div className="text-center text-xs text-gray-400 mb-4">Сегодня</div>
+          <div className="mb-4 text-xs text-center text-gray-400">Сегодня</div>
 
           {messages?.map((msg) =>
             msg.fromMe ? (
               <div key={msg.id} className="flex justify-end">
                 <div className="flex items-end gap-3 max-w-[75%]">
-                  <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
-                  <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
+                  <div className="p-3 text-sm text-gray-800 bg-white shadow rounded-xl">{msg.text}</div>
+                  <Image src={chat.avatar} alt="avatar" width={40} height={40} className="bg-black rounded-full" />
                 </div>
               </div>
             ) : (
               <div key={msg.id} className="flex items-start gap-3 max-w-[75%]">
-                <Image src={chat.avatar} alt="avatar" width={40} height={40} className="rounded-full bg-black" />
-                <div className="bg-white p-3 rounded-xl shadow text-sm text-gray-800">{msg.text}</div>
+                <Image src={chat.avatar} alt="avatar" width={40} height={40} className="bg-black rounded-full" />
+                <div className="p-3 text-sm text-gray-800 bg-white shadow rounded-xl">{msg.text}</div>
               </div>
             )
           )}
@@ -61,14 +61,14 @@ const ChatBox = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="border-t p-4 flex items-center gap-3 bg-white">
+        <div className="flex items-center gap-3 p-4 bg-white border-t">
           <input
             type="text"
             placeholder="Введите сообщение"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 p-3 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 p-3 text-sm border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Button color="primary" onPress={handleSend} isIconOnly className="">
             <IoMdSend />
@@ -79,4 +79,4 @@ const ChatBox = () => {
   )
 }
 
-export default ChatBox 
+export default ChatBox
