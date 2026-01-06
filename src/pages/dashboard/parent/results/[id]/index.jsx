@@ -4,16 +4,20 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import ChildNotFoundState from '@/modules/parent/children/components/child-detail/ChildNotFoundState'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
+import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { TrendingUp, Award } from 'lucide-react'
 import { SiWebmoney } from 'react-icons/si'
+import EyeIcon from '../../../../../../public/icons/eyeIcon'
 
 function Index() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const router = useRouter()
   const { id: childId } = router.query
   const { data: session } = useSession()
+  const [activeTab, setActiveTab] = useState('mastery')
+  const [isTabLoading, setIsTabLoading] = useState(false)
 
   const {
     data: statistics,
@@ -25,9 +29,33 @@ function Index() {
     enabled: !!childId && !!session?.accessToken
   })
 
+  const { data: dataS, isFetching } = useGetQuery({
+    key: ['studentSubjects', childId],
+    url: childId ? `/api/v1/func_student/students/${childId}/subjects/` : null,
+    enabled: !!childId && !!session?.accessToken
+  })
+
+  const subjects = get(dataS, 'data', dataS) || []
+
+  const { data: dataD } = useGetQuery({
+    key: ['studentSubjectsD', childId],
+    url: childId ? `/api/v1/func_student/diagnost/students/${childId}/subjects/` : null,
+    enabled: !!childId && !!session?.accessToken
+  })
+
+  const subjectsD = get(dataD, 'data', dataD) || []
+
   const data = useMemo(() => statistics?.data, [statistics])
 
   if (isLoading) {
+    return (
+      <LayoutAdmin>
+        <ContentLoader />
+      </LayoutAdmin>
+    )
+  }
+
+  if (isLoading || isFetching || isTabLoading) {
     return (
       <LayoutAdmin>
         <ContentLoader />
@@ -40,6 +68,123 @@ function Index() {
   }
 
   const hasStatistics = data?.student_diagnost?.length > 0
+
+  const handleTabChange = (tab) => {
+    setIsTabLoading(true)
+    setActiveTab(tab)
+    // Simulate loading time to prevent UI jumping
+    setTimeout(() => {
+      setIsTabLoading(false)
+    }, 300)
+  }
+
+  const renderTable = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full table-auto">
+        <thead>
+          <tr className="text-left text-gray-500 border-b">
+            <th className="p-4 font-medium">{t('subjectName')}</th>
+            <th className="p-4 font-medium text-center">{t('class')}</th>
+            <th className="p-4 font-medium">{t('mastery')}</th>
+            <th className="p-4 font-medium text-center">{t('action')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subjects.map((subject) => (
+            <tr key={subject.id} className="border-b last:border-none">
+              <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
+              <td className="p-4 text-center align-middle">{subject.class_name}</td>
+              <td className="p-4">
+                <div className="flex items-center gap-2 min-w-[80px]">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{
+                        width: `${
+                          subject.mastery_percent === null || subject.mastery_percent === undefined
+                            ? 0
+                            : subject.mastery_percent
+                        }%`
+                      }}
+                    ></div>
+                  </div>
+                  <span className="font-semibold text-sm">
+                    {subject.mastery_percent === null || subject.mastery_percent === undefined
+                      ? 0
+                      : subject.mastery_percent}
+                    %
+                  </span>
+                </div>
+              </td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => router.push(`/dashboard/teacher/pupils/${childId}/${subject.id}`)}
+                  className="text-gray-500 hover:text-blue-600"
+                  title={t('details')}
+                >
+                  <EyeIcon />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderTableD = () => (
+    <div className="overflow-x-auto">
+      <table className="w-full table-auto">
+        <thead>
+          <tr className="text-left text-gray-500 border-b">
+            <th className="p-4 font-medium">{t('subjectName')}</th>
+            <th className="p-4 font-medium text-center">{t('class')}</th>
+            <th className="p-4 font-medium">{t('mastery')}</th>
+            <th className="p-4 font-medium text-center">{t('action')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subjectsD.map((subject) => (
+            <tr key={subject.id} className="border-b last:border-none">
+              <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
+              <td className="p-4 text-center align-middle">{subject.class_name}</td>
+              <td className="p-4">
+                <div className="flex items-center gap-2 min-w-[80px]">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{
+                        width: `${
+                          subject.mastery_percent === null || subject.mastery_percent === undefined
+                            ? 0
+                            : subject.mastery_percent
+                        }%`
+                      }}
+                    ></div>
+                  </div>
+                  <span className="font-semibold text-sm">
+                    {subject.mastery_percent === null || subject.mastery_percent === undefined
+                      ? 0
+                      : subject.mastery_percent}
+                    %
+                  </span>
+                </div>
+              </td>
+              <td className="p-4 text-center">
+                <button
+                  onClick={() => router.push(`/dashboard/teacher/pupils/${childId}/${subject.id}`)}
+                  className="text-gray-500 hover:text-blue-600"
+                  title={t('details')}
+                >
+                  <EyeIcon />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
 
   return (
     <LayoutAdmin>
@@ -69,7 +214,51 @@ function Index() {
           </div>
         </div>
 
-        {/* Statistics Content */}
+        <div>
+          <div className="bg-white rounded-xl border p-4">
+            {/* Tabs */}
+            <div className="flex border-b mb-4">
+              <button
+                onClick={() => handleTabChange('mastery')}
+                className={`px-4 py-2 font-medium text-sm ${
+                  activeTab === 'mastery'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {i18n.language === 'ru' ? 'Освоение по предметам' : "Fanlar bo'yicha o'zlashtirish"}
+              </button>
+              <button
+                onClick={() => handleTabChange('diagnostics')}
+                className={`px-4 py-2 font-medium text-sm ${
+                  activeTab === 'diagnostics'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            <div>
+              {activeTab === 'mastery' && (
+                <div>
+                  <h2 className="text-xl font-bold mb-4">{t('subjectMastery')}</h2>
+                  {renderTable()}
+                </div>
+              )}
+              {activeTab === 'diagnostics' && (
+                <div>
+                  <h2 className="text-xl font-bold mb-4">{i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}</h2>
+                  {renderTableD()}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Statistics Content
         {!hasStatistics ? (
           <div className="bg-white rounded-xl border border-[#E8EBF0] p-12 text-center">
             <h3 className="text-xl text-[#6B7280]">{t('no_statistics')}</h3>
@@ -101,7 +290,7 @@ function Index() {
               </div>
             </div>
           </>
-        )}
+        )} */}
       </div>
     </LayoutAdmin>
   )
