@@ -78,14 +78,11 @@ const ChatBox = () => {
     avatar: '/images/avatar.png'
   })
 
-  console.log('user', user)
-
   /* === Chatlar === */
   const { data: chats = [], isLoading: chatsLoading } = useQuery({
     queryKey: ['chats'],
     queryFn: chatAPI.getChats
   })
-  console.log('data', chats)
 
   /* === Xabarlar === */
   const { data: messages = [], isLoading: messagesLoading } = useQuery({
@@ -106,10 +103,7 @@ const ChatBox = () => {
   })
 
   const handleSend = () => {
-    console.log('new', newMessage)
-
     if (!newMessage.trim()) return
-    console.log('newMessage', replyingTo)
 
     // const newMsg = {
     //   id: Date.now(),
@@ -138,8 +132,6 @@ const ChatBox = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
-
-  console.log('message', messages)
 
   return (
     <LayoutAdmin title="Chat">

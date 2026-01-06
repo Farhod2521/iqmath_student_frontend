@@ -260,7 +260,7 @@ export default function SubjectQuestions() {
             setTelegramLink(res?.data?.telegram_link)
             setShowMistake(false)
             setShowResult(false)
-            setShowSuccessPopup(true)
+            // setShowSuccessPopup(true)
           },
           onError: () => toast.error('Xatolik yuz berdi!')
         }
@@ -291,7 +291,7 @@ export default function SubjectQuestions() {
   useKeyboardShortcut('ArrowRight', handleNextEnter)
   useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
 
-  if (isLoading) return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
+  if (isLoading) return <div className="w-full p-4 italic text-center text-gray-500">{t('chooseQueation')}</div>
   return (
     <div className="font-sf">
       <ModalLevel handleTabChange={handleTabChange} tab={tab} />
@@ -308,7 +308,7 @@ export default function SubjectQuestions() {
 
         <div className="md:col-span-6 py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
           <ExamQuestionSelected selectedQuestion={selectedQuestion} selectedIndex={selectedIndex} />
-          <div className="w-full flex flex-col items-center">
+          <div className="flex flex-col items-center w-full">
             {(() => {
               switch (selectedQuestion?.question_type) {
                 case 'image_choice':
@@ -352,7 +352,7 @@ export default function SubjectQuestions() {
             })()}
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex gap-4">
               <Button
                 onPress={handlePrev}
@@ -365,17 +365,17 @@ export default function SubjectQuestions() {
               </Button>
 
               {isEndQuestion ? (
-                <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <Button onPress={handleCheckMyResults} className="px-4 py-2 text-white bg-blue-500 rounded-md">
                   {t('check')}
                 </Button>
               ) : (
-                <Button className="px-4 py-2 rounded-md bg-blue-500 text-white" onPress={handleNext}>
+                <Button className="px-4 py-2 text-white bg-blue-500 rounded-md" onPress={handleNext}>
                   {t('next')}
                 </Button>
               )}
             </div>
 
-            <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-3">
               {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>}
               {/* */}
               <ActionInfo />
@@ -404,7 +404,7 @@ export default function SubjectQuestions() {
                 </button>
               </div>
 
-              <div className=" flex flex-col justify-center items-center">
+              <div className="flex flex-col items-center justify-center ">
                 <Image src={'/icons/award.svg'} alt="circle" width={84} height={118} className="mt-[24px]" />
 
                 <p className="text-[22px] font-semibold mt-[24px] mb-[16px] ">
@@ -460,9 +460,9 @@ export default function SubjectQuestions() {
               <div className="px-8 py-6 border-b border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900">{t('myResults')}</h3>
               </div>
-              <div className="py-6 px-8 space-y-4">
+              <div className="px-8 py-6 space-y-4">
                 {get(results, 'data.question', []).map((question, index) => (
-                  <div key={index} className="bg-white rounded-lg   p-4 flex items-start gap-4">
+                  <div key={index} className="flex items-start gap-4 p-4 bg-white rounded-lg">
                     <div
                       className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
                       ${
@@ -476,7 +476,7 @@ export default function SubjectQuestions() {
                     <div className="flex-1 min-w-0 text-gray-800">
                       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
                         <MathJax dynamic>
-                          <div className="text-gray-800 leading-relaxed">
+                          <div className="leading-relaxed text-gray-800">
                             {parse(i18n.language === 'uz' ? question?.question_uz : question?.question_ru || '')}
                           </div>
                         </MathJax>
@@ -485,9 +485,9 @@ export default function SubjectQuestions() {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-end px-8 pb-6 gap-3">
+              <div className="flex justify-end gap-3 px-8 pb-6">
                 <Button
-                  className="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 text-white transition-colors bg-gray-500 rounded-md hover:bg-gray-600"
                   onPress={() => setShowMistake(false)}
                 >
                   {t('close')}
@@ -504,7 +504,7 @@ export default function SubjectQuestions() {
         </div>
       </div>
 
-      <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
+      {/* <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} /> */}
     </div>
   )
 }
