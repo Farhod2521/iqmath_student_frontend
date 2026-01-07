@@ -106,14 +106,11 @@ function Prices() {
                   )}
 
                   <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
-                    {/* BADGE */}
                     {item.discount_percent > 0 && (
                       <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-2 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
                         🔥 -{item.discount_percent}%
                       </span>
                     )}
-
-                    {/* TITLE */}
 
                     <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
                       <CalendarMonthIcon sx={{ color: '#5d87ff' }} />

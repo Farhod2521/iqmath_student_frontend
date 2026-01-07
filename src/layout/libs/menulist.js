@@ -64,7 +64,7 @@ export const getMenuItems = (t) => [
         icon: (isActive) => (
           <FaMoneyBillWave
             className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-            size={26}
+            size={18}
           />
         ),
         disabled: false,
@@ -78,7 +78,7 @@ export const getMenuItems = (t) => [
         icon: (isActive) => (
           <FaClipboardList
             className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-            size={26}
+            size={18}
           />
         ),
         disabled: false,
@@ -92,7 +92,7 @@ export const getMenuItems = (t) => [
         icon: (isActive) => (
           <FaTags
             className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-            size={26}
+            size={18}
           />
         ),
         disabled: false,

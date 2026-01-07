@@ -65,6 +65,18 @@ const StudentSubjectDetails = () => {
     { link: ``, title: t('mastery') }
   ]
 
+  //   const breadcrumbs = useMemo(() => {
+  //   if (session?.role === 'teacher') {
+  //     return [{ link: '', title: t('mastery') }]
+  //   }
+
+  //   return [
+  //     { link: '/dashboard/parent/my-children', title: t('myChildren') },
+  //     { link: `/dashboard/parent/my-children/${id}`, title: t('childInfo') },
+  //     { link: '', title: t('mastery') }
+  //   ]
+  // }, [session?.role, id, t])
+
   if (isLoading || isFetching) {
     return (
       <div>
@@ -73,18 +85,16 @@ const StudentSubjectDetails = () => {
     )
   }
 
-  console.log('chapters', chapters)
-
   return (
     <LayoutAdmin>
       <div className="p-4">
         <BaseBreadcrumbs data={breadcrumbs} />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="grid items-start grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Chapters List (Left Column) */}
           <div className="lg:col-span-5 bg-white rounded-xl border p-4 min-h-[400px]">
-            <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+            <div className="px-4 py-3 bg-gray-100 border-b border-gray-200 ">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -96,16 +106,16 @@ const StudentSubjectDetails = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-gray-800 uppercase">{t('chapters')}</h3>
-                  <p className="text-gray-500 text-xs">{t('select')}</p>
+                  <p className="text-xs text-gray-500">{t('select')}</p>
                 </div>
               </div>
             </div>
             <table className="w-full">
               <thead>
-                <tr className="text-left text-xs text-gray-400 uppercase">
-                  <th className="p-2 font-medium w-10">#</th>
+                <tr className="text-xs text-left text-gray-400 uppercase">
+                  <th className="w-10 p-2 font-medium">#</th>
                   <th className="p-2 font-medium">{t('title')}</th>
-                  <th className="p-2 font-medium w-1/3">{t('mastery')}</th>
+                  <th className="w-1/3 p-2 font-medium">{t('mastery')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,7 +161,7 @@ const StudentSubjectDetails = () => {
                             }}
                           ></div>
                         </div>
-                        <span className="font-semibold text-xs text-gray-500">
+                        <span className="text-xs font-semibold text-gray-500">
                           {chapter.progress === null || chapter.progress === undefined ? 0 : chapter.progress}%
                         </span>
                       </div>
@@ -164,9 +174,9 @@ const StudentSubjectDetails = () => {
 
           {/* Topics List (Right Column) */}
           <div className="lg:col-span-7 bg-white rounded-xl border p-4 min-h-[400px] flex flex-col">
-            <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+            <div className="px-4 py-3 bg-gray-100 border-b border-gray-200 ">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -178,27 +188,27 @@ const StudentSubjectDetails = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-gray-800 uppercase">{t('topic')}</h3>
-                  <p className="text-gray-500 text-xs">{t('topicsList')}</p>
+                  <p className="text-xs text-gray-500">{t('topicsList')}</p>
                 </div>
               </div>
             </div>
             {isTopicsLoading ? (
-              <div className="flex-grow flex items-center justify-center">
+              <div className="flex items-center justify-center flex-grow">
                 <ContentLoader classNames="!min-h-[500px]" />
               </div>
             ) : selectedChapter ? (
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-xs text-gray-400 uppercase">
-                    <th className="p-2 font-medium w-10">#</th>
+                  <tr className="text-xs text-left text-gray-400 uppercase">
+                    <th className="w-10 p-2 font-medium">#</th>
                     <th className="p-2 font-medium">{t('title')}</th>
-                    <th className="p-2 font-medium w-1/3">{t('mastery')}</th>
+                    <th className="w-1/3 p-2 font-medium">{t('mastery')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {selectedChapter.topics.map((topic, index) => (
                     <tr key={topic.topic_id} className="border-t">
-                      <td className="p-3 text-center font-medium text-gray-500">{index + 1}</td>
+                      <td className="p-3 font-medium text-center text-gray-500">{index + 1}</td>
                       <td className="p-3">{i18n.language === 'ru' ? topic.topic_name_ru : topic.topic_name_uz}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
@@ -222,7 +232,7 @@ const StudentSubjectDetails = () => {
                               }}
                             ></div>
                           </div>
-                          <span className="font-semibold text-xs text-gray-500">
+                          <span className="text-xs font-semibold text-gray-500">
                             {topic.score_percent === null || topic.score_percent === undefined
                               ? 0
                               : topic.score_percent}
@@ -235,7 +245,7 @@ const StudentSubjectDetails = () => {
                 </tbody>
               </table>
             ) : (
-              <div className="flex-grow flex items-center justify-center">
+              <div className="flex items-center justify-center flex-grow">
                 <p className="text-gray-500">{t('selectChapter')}</p>
               </div>
             )}

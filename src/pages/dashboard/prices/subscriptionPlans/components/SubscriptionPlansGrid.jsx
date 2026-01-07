@@ -1,5 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import { Pencil, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const categoryColors = {
   STANDARD: 'from-pink-500 to-fuchsia-500',
@@ -8,6 +9,8 @@ const categoryColors = {
 }
 
 export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, isDeleting }) {
+  const { t, i18n } = useTranslation()
+
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {plans.map((item) => {
@@ -28,7 +31,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
                   className={`px-5 py-1.5 text-xs font-bold tracking-wide text-white rounded-full shadow-lg
                   bg-gradient-to-r ${catGradient}`}
                 >
-                  {catTitle}
+                  {i18n.language === 'uz' ? item.category.title_uz : item.category.title_ru}
                 </span>
               </div>
             )}
@@ -77,7 +80,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
                     >
                       {b.is_selected ? '✓' : '✕'}
                     </span>
-                    {b.title}
+                    {i18n.language === 'uz' ? b.title_uz : b.title_ru}
                   </li>
                 ))}
               </ul>
@@ -89,7 +92,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
                   className="flex items-center justify-center w-full gap-2 py-2 text-sm font-semibold text-gray-700 transition border rounded-xl hover:bg-gray-100"
                 >
                   <Pencil className="w-4 h-4" />
-                  Tahrirlash
+                  {t('editProfile')}
                 </button>
 
                 <button
@@ -98,7 +101,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
                   className="flex items-center justify-center w-full gap-2 py-2 text-sm font-semibold text-red-600 transition rounded-xl bg-red-50 hover:bg-red-100 disabled:opacity-50"
                 >
                   <Trash2 className="w-4 h-4" />
-                  O‘chirish
+                  {t('delete')}
                 </button>
               </div>
             </div>

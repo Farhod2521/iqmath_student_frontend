@@ -97,16 +97,16 @@ export default function Benefits() {
               <div className="p-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl">
                 <Sparkles className="w-6 h-6 text-blue-600" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Obuna Foydalari</h1>
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{t('subscriptionBenefits')}</h1>
             </div>
-            <p className="text-sm text-gray-600 sm:text-base">Barcha obuna rejalari uchun foydalarni boshqaring</p>
+            <p className="text-sm text-gray-600 sm:text-base">{t('benefitsSubscriptionPlans')}</p>
           </div>
           <button
             onClick={() => setOpen(true)}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white transition-all sm:px-4 sm:py-3 sm:text-base bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
-            Yangi Foyda
+            {t('newProfit')}
           </button>
         </div>
 
@@ -116,10 +116,10 @@ export default function Benefits() {
           <table className="w-full min-w-[600px] sm:min-w-full text-sm sm:text-base border-collapse">
             <thead className="top-0 z-10 bg-gray-100 ">
               <tr>
-                <th className="p-2 text-left sm:p-3">Sarlavha (UZ)</th>
-                <th className="p-2 text-left sm:p-3">Sarlavha (RU)</th>
-                <th className="p-2 text-left sm:p-3">Tavsif (UZ)</th>
-                <th className="p-2 text-left sm:p-3">Tavsif (RU)</th>
+                <th className="p-2 text-left sm:p-3">{t('title')} (UZ)</th>
+                <th className="p-2 text-left sm:p-3">{t('title')} (RU)</th>
+                <th className="p-2 text-left sm:p-3">{t('benefitsDescription')} (UZ)</th>
+                <th className="p-2 text-left sm:p-3">{t('benefitsDescription')} (RU)</th>
                 <th className="p-2 text-center sm:p-3">{t('status')}</th>
                 <th className="p-2 text-center sm:p-3">{t('action')}</th>
               </tr>
@@ -158,8 +158,8 @@ export default function Benefits() {
                 <tr>
                   <td colSpan="6" className="p-4 text-center text-gray-400 sm:p-6">
                     <div className="w-full p-6 text-center bg-white border border-gray-200 sm:p-8 rounded-2xl ">
-                      <h3 className="mb-2 text-lg font-semibold text-gray-900">Hozircha foydalar mavjud emas</h3>
-                      <p className="mb-4 text-gray-600 sm:mb-6">'Obuna rejalari uchun birinchi foydani yarating</p>
+                      <h3 className="mb-2 text-lg font-semibold text-gray-900">{t('noBenefitsAvailable')}</h3>
+                      <p className="mb-4 text-gray-600 sm:mb-6">{t('createProfitSubscription')}</p>
 
                       <button
                         onClick={() => {
@@ -169,7 +169,7 @@ export default function Benefits() {
                         className="inline-flex items-center gap-2 px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                       >
                         <Plus className="w-5 h-5" />
-                        Birinchi foydani yarating
+                        {t('createFirstProfit')}
                       </button>
                     </div>
                   </td>
@@ -189,11 +189,9 @@ export default function Benefits() {
               <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center sm:gap-0">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                    {editing ? 'Foydani Tahrirlash' : 'Yangi Foyda'}
+                    {editing ? t('editProfit') : t('newProft')}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-600 sm:text-base">
-                    {editing ? 'Foydani yangilash' : 'Yangi foyda yaratish'}
-                  </p>
+                  <p className="mt-1 text-sm text-gray-600 sm:text-base">{editing ? t('editProfit') : t('newProft')}</p>
                 </div>
                 <button
                   type="button"
@@ -205,10 +203,10 @@ export default function Benefits() {
               </div>
 
               {[
-                ['title_uz', 'Sarlavha (UZ)'],
-                ['title_ru', 'Sarlavha (RU)'],
-                ['description_uz', 'Tavsif (UZ)'],
-                ['description_ru', 'Tavsif (RU)']
+                ['title_uz', `${t('title')} (UZ)`],
+                ['title_ru', `${t('title')} (RU)`],
+                ['description_uz', `${t('benefitsDescription')} (UZ)`],
+                ['description_ru', `${t('benefitsDescription')} (RU)`]
               ].map(([key, label]) => (
                 <div key={key} className="mb-3">
                   <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">{label}</label>
@@ -233,11 +231,9 @@ export default function Benefits() {
                   />
                   <div className="ml-2 sm:ml-3">
                     <label htmlFor="is_active" className="text-sm font-medium text-gray-700 sm:text-base">
-                      Faol holatda
+                      {t('activeStatus')}
                     </label>
-                    <p className="text-xs text-gray-500 sm:text-sm">
-                      Agar belgilansa, foyda foydalanuvchilarga ko'rinadi
-                    </p>
+                    <p className="text-xs text-gray-500 sm:text-sm">{t('checkedProfitVisibe')}</p>
                   </div>
                 </div>
               </div>
@@ -248,13 +244,13 @@ export default function Benefits() {
                   onClick={resetForm}
                   className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 shadow-sm sm:w-auto sm:px-6 sm:py-3 sm:text-base rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Bekor qilish
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white border border-transparent shadow-sm sm:w-auto sm:px-6 sm:py-3 sm:text-base bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Saqlash
+                  {t('save')}
                 </button>
               </div>
             </form>

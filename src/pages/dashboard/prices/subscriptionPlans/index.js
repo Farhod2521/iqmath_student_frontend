@@ -229,15 +229,15 @@ export default function SubscriptionPlans() {
         {/* Header */}
         <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Obuna Rejalari</h1>
-            <p className="mt-1 text-sm text-gray-600">Barcha obuna rejalarini boshqaring</p>
+            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{t('subscriptionPlans')}</h1>
+            <p className="mt-1 text-sm text-gray-600">{t('ManageSubscriptionPlans')}</p>
           </div>
           <button
             onClick={openCreateModal}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
           >
             <Plus className="w-5 h-5" />
-            Yangi reja
+            {t('newPlans')}
           </button>
         </div>
 
@@ -247,7 +247,7 @@ export default function SubscriptionPlans() {
             {createMutation.error?.message ||
               updateMutation.error?.message ||
               deleteMutation.error?.message ||
-              'Xatolik yuz berdi'}
+              t('errorTitle')}
           </div>
         )}
 
@@ -257,7 +257,7 @@ export default function SubscriptionPlans() {
 
         {plans.length === 0 && (
           <div className="py-12 text-center">
-            <p className="text-gray-500">Hozircha obuna rejalari yo'q</p>
+            <p className="text-gray-500">{t('NoSubscriptionPlans')}</p>
           </div>
         )}
 
@@ -268,7 +268,7 @@ export default function SubscriptionPlans() {
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <h2 className="text-xl font-semibold text-gray-900">
-                  {editingPlan ? 'Rejani tahrirlash' : 'Yangi reja yaratish'}
+                  {editingPlan ? t('plansEdit') : t('newPlansCreate')}
                 </h2>
                 <button
                   onClick={() => {
@@ -284,7 +284,7 @@ export default function SubscriptionPlans() {
               {/* Modal Body */}
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">Reja nomi</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">{t('planName')}</label>
                   <input
                     type="text"
                     required
@@ -297,13 +297,13 @@ export default function SubscriptionPlans() {
                 {/* Faqat tahrirlashda kategoriya ko'rsatiladi */}
                 {editingPlan && categories.length > 0 && (
                   <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Kategoriya (ixtiyoriy)</label>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">{t('categoryOptional')}</label>
                     <select
                       value={formData.category}
                       onChange={(e) => handleInputChange('category', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      <option value="">Kategoriyani tanlang yoki bo'sh qoldiring</option>
+                      <option value="">{t('selectCategory')}</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                           {i18n.language === 'uz' ? category.title_uz : category.title_ru}
@@ -314,7 +314,7 @@ export default function SubscriptionPlans() {
                 )}
 
                 <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">Oylar soni</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">{t('numberMonths')}</label>
                   <input
                     type="number"
                     required
@@ -326,7 +326,7 @@ export default function SubscriptionPlans() {
                 </div>
 
                 <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">Oylik narx (so'm)</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">{t('monthlyPrice')}</label>
                   <input
                     type="number"
                     required
@@ -340,7 +340,7 @@ export default function SubscriptionPlans() {
                 </div>
 
                 <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">Chegirma (%)</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">{t('discount')} (%)</label>
                   <input
                     type="number"
                     required
@@ -355,7 +355,7 @@ export default function SubscriptionPlans() {
                 {/* Faqat tahrirlashda imtiyozlar ko'rsatiladi */}
                 {editingPlan && allBenefits.length > 0 && (
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-700">Imtiyozlar</label>
+                    <label className="block mb-2 text-sm font-medium text-gray-700">{t('benefits')}</label>
                     <div className="space-y-2 overflow-y-auto max-h-40">
                       {allBenefits.map((benefit) => (
                         <div
@@ -379,7 +379,9 @@ export default function SubscriptionPlans() {
                         </div>
                       ))}
                     </div>
-                    <p className="mt-1 text-xs text-gray-500">Tanlangan imtiyozlar soni: {selectedBenefits.length}</p>
+                    <p className="mt-1 text-xs text-gray-500">
+                      {t('selectedBenefits')}: {selectedBenefits.length}
+                    </p>
                   </div>
                 )}
 
@@ -392,14 +394,14 @@ export default function SubscriptionPlans() {
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
-                    Faol
+                    {t('active')}
                   </label>
                 </div>
 
                 {/* Preview */}
                 {formData.price_per_month && formData.months && (
                   <div className="p-4 space-y-1 rounded-lg bg-blue-50">
-                    <p className="text-sm text-gray-600">Jami narx:</p>
+                    <p className="text-sm text-gray-600">{t('totalPrice')}:</p>
                     {formData.discount_percent > 0 && (
                       <p className="text-sm text-gray-400 line-through">
                         {(parseFloat(formData.price_per_month) * formData.months).toLocaleString()} so'm
@@ -409,7 +411,7 @@ export default function SubscriptionPlans() {
                       {parseFloat(
                         calculateTotalPrice(formData.months, formData.price_per_month, formData.discount_percent)
                       ).toLocaleString()}{' '}
-                      so'm
+                      {t('sum')}
                     </p>
                   </div>
                 )}
@@ -425,14 +427,14 @@ export default function SubscriptionPlans() {
                     disabled={isSubmitting}
                     className="flex-1 px-4 py-2 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
                   >
-                    Bekor qilish
+                    {t('cancel')}
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="flex-1 px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Saqlanmoqda...' : editingPlan ? 'Saqlash' : 'Yaratish'}
+                    {isSubmitting ? 'Loading...' : editingPlan ? t('save') : t('create')}
                   </button>
                 </div>
               </form>

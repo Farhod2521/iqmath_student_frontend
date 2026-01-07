@@ -113,16 +113,16 @@ export default function Category() {
               <div className="p-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl">
                 <Sparkles className="w-6 h-6 text-blue-600" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Obuna Kategoriyalari</h1>
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{t('subscriptionCategories')}</h1>
             </div>
-            <p className="text-sm text-gray-600 sm:text-base">Barcha obuna rejalari uchun kategoriyalarni boshqaring</p>
+            <p className="text-sm text-gray-600 sm:text-base">{t('categoriesSubscriptionPlans')}</p>
           </div>
           <button
             onClick={() => setOpen(true)}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white transition-all sm:px-4 sm:py-3 sm:text-base bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
-            Yangi Kategoriya
+            {t('newCategory')}
           </button>
         </div>
 
@@ -131,9 +131,9 @@ export default function Category() {
           <table className="w-full min-w-[600px] sm:min-w-full text-sm sm:text-base border-collapse">
             <thead className="top-0 z-10 bg-gray-100 ">
               <tr>
-                <th className="p-2 text-left sm:p-3">Title (UZ)</th>
-                <th className="p-2 text-left sm:p-3">Title (RU)</th>
-                <th className="p-2 text-left sm:p-3">Slug</th>
+                <th className="p-2 text-left sm:p-3">{t('title')} (UZ)</th>
+                <th className="p-2 text-left sm:p-3">{t('title')} (RU)</th>
+                <th className="p-2 text-left sm:p-3">{t('slug')}</th>
                 <th className="p-2 text-center sm:p-3">{t('status')}</th>
                 <th className="p-2 text-center sm:p-3">{t('action')}</th>
               </tr>
@@ -141,8 +141,7 @@ export default function Category() {
             <tbody>
               {categories.map((item) => (
                 <tr key={item.id} className="border-t">
-                  <td className="p-2 sm:p-3">{item.title_uz}</td>
-                  <td className="p-2 sm:p-3">{item.title_ru}</td>
+                  <td className="p-2 sm:p-3">{i18n.language === 'uz' ? item.title_uz : item.title_ru}</td>
                   <td className="p-2 text-gray-500 sm:p-3">{item.slug}</td>
                   <td className="p-2 text-center sm:p-3">{item.is_active ? '✅' : '❌'}</td>
                   <td className="p-2 sm:p-3">
@@ -174,10 +173,8 @@ export default function Category() {
                       <tr>
                         <td colSpan="6" className="p-6 text-center text-gray-400">
                           <div className="w-full p-8 text-center bg-white border border-gray-200 rounded-2xl ">
-                            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                              Hozircha kategoriyalar mavjud emas
-                            </h3>
-                            <p className="mb-6 text-gray-600">'Obuna rejalari uchun birinchi kategoriyani yarating</p>
+                            <h3 className="mb-2 text-lg font-semibold text-gray-900">{t('noCategories')}</h3>
+                            <p className="mb-6 text-gray-600">{t('categoryCreateSubscriptionPlans')}</p>
 
                             <button
                               onClick={() => {
@@ -187,7 +184,7 @@ export default function Category() {
                               className="inline-flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-lg sm:py-3 sm:px-6 hover:bg-blue-700"
                             >
                               <Plus className="w-5 h-5" />
-                              Birinchi kategoriyani yarating
+                              {t('createFirstCategory')}
                             </button>
                           </div>
                         </td>
@@ -210,10 +207,10 @@ export default function Category() {
               <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center sm:gap-0">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                    {editing ? 'Kategoriyani Tahrirlash' : 'Yangi Kategoriya'}
+                    {editing ? t('editCategory') : t('newCategory')}
                   </h3>
                   <p className="mt-1 text-sm text-gray-600 sm:text-base">
-                    {editing ? 'Kategoriyani yangilash' : 'Yangi kategoriya yaratish'}
+                    {editing ? t('editCategory') : t('newCategory')}
                   </p>
                 </div>
                 <button
@@ -227,7 +224,9 @@ export default function Category() {
 
               <div className="space-y-5">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">Sarlavha (Uz) *</label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">
+                    {t('title')} (Uz) *
+                  </label>
                   <input
                     type="text"
                     className="w-full px-3 py-2 text-sm border border-gray-300 sm:px-4 sm:py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-base"
@@ -238,7 +237,9 @@ export default function Category() {
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">Sarlavha (Ru) *</label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">
+                    {t('title')} (Ru) *
+                  </label>
                   <input
                     type="text"
                     className="w-full px-3 py-2 text-sm border border-gray-300 sm:px-4 sm:py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-base"
@@ -249,7 +250,7 @@ export default function Category() {
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">Slug</label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700 sm:text-base">{t('slug')}</label>
                   <input
                     type="text"
                     className="w-full px-3 py-2 text-sm border border-gray-300 sm:px-4 sm:py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none sm:text-base"
@@ -271,11 +272,9 @@ export default function Category() {
 
                     <div className="ml-2 sm:ml-3">
                       <label htmlFor="is_active" className="text-sm font-medium text-gray-700 sm:text-base">
-                        Faol holatda
+                        {t('activeStatus')}
                       </label>
-                      <p className="text-xs text-gray-500 sm:text-sm">
-                        Agar belgilansa, kategoriya foydalanuvchilarga ko'rinadi
-                      </p>
+                      <p className="text-xs text-gray-500 sm:text-sm">{t('checkedCategoryVisibe')}</p>
                     </div>
                   </div>
                 </div>
@@ -287,13 +286,13 @@ export default function Category() {
                   onClick={resetForm}
                   className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 shadow-sm sm:w-auto sm:px-6 sm:py-3 sm:text-base rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Bekor qilish
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 shadow-sm sm:w-auto sm:px-6 sm:py-3 sm:text-base rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Saqlash
+                  {t('save')}
                 </button>
               </div>
             </form>
