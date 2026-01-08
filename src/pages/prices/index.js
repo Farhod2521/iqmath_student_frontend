@@ -27,8 +27,8 @@ function Prices() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  // const [selectedPlan, handleSelectPlan] = useState(null)
+  const [dataSource, setDataSource] = useState([])
+  const [selectedPlan, setSelectedPlan] = useState(null)
   const {
     isPricingModalOpen,
     openPricingModal,
@@ -36,17 +36,15 @@ function Prices() {
     closePricingModal
   } = usePricingModalStore()
 
-  const { selectedPlan, plans, handleSelectPlan } = usePricingModal()
-
-  // const fetchData = async () => {
-  //   try {
-  //     setIsLoading(true)
-  //     const res = await request.get(URLS.paymentPlans)
-  //     // setData(res.data ?? [])
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      const res = await request.get(URLS.paymentPlans)
+      setDataSource(res.data ?? [])
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleBuy = async (plan) => {
     const session = await getSession()
@@ -55,9 +53,62 @@ function Prices() {
       router.push('/')
       return
     }
-    handleSelectPlan(plan)
+    setSelectedPlan(plan)
     openPricingModal(plan?.price)
   }
+
+  const data =
+    dataSource?.map((plan) => {
+      const originalPrice =
+        plan.discount_percent > 0 ? Math.round(plan.sale_price / (1 - plan.discount_percent / 100)) : plan.sale_price
+
+      // Tarif nomini tarjima qilish
+      const getTranslatedName = (months) => {
+        switch (months) {
+          case 1:
+            return t('oneMonth')
+          case 3:
+            return t('threeMonths')
+          case 6:
+            return t('sixMonths')
+          case 12:
+            return t('oneYear')
+          default:
+            return `${months} ${t('months')}`
+        }
+      }
+
+      return {
+        id: plan.id,
+        is_active: plan.is_active,
+        original_name: plan.name,
+        name: getTranslatedName(plan.months),
+        duration: getTranslatedName(plan.months),
+        price: plan.sale_price,
+        price_per_month: plan.price_per_month,
+        originalPrice: originalPrice,
+        discount: plan.discount_percent,
+        months: plan.months,
+        months_display: plan.months_display,
+        created_at: plan?.created_at,
+        updated_at: plan?.updated_at,
+        //
+        benefits: plan.benefits?.map((benefit) => ({
+          id: benefit.id,
+          title: i18n.language === 'uz' ? benefit.title_uz : benefit.title_ru,
+          description: benefit.description,
+          isSelected: benefit.is_selected
+        })),
+        category: {
+          id: plan?.category?.id,
+          title: i18n.language === 'uz' ? plan?.category?.title_uz : plan?.category?.title_ru
+        }
+      }
+    }) || []
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <LayoutHome>
@@ -86,9 +137,9 @@ function Prices() {
             <div className="flex justify-center mt-12">
               <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
             </div>
-          ) : plans.length ? (
+          ) : data.length ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {plans?.map((item, idx) => (
+              {data?.map((item, idx) => (
                 <div
                   key={item?.id}
                   className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
@@ -99,15 +150,15 @@ function Prices() {
                       <span
                         className={`px-5 py-1.5 text-xs font-bold whitespace-nowrap tracking-wide text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-500`}
                       >
-                        {item?.category?.title}
+                        {item.category?.title}
                       </span>
                     </div>
                   )}
 
                   <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
-                    {item.discount > 0 && (
+                    {item.discount_percent > 0 && (
                       <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-2 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
-                        🔥 -{item.discount}%
+                        🔥 -{item.discount_percent}%
                       </span>
                     )}
 
@@ -127,7 +178,7 @@ function Prices() {
 
                       {item.price_per_month > 0 && (
                         <span className="block mt-1 text-sm text-gray-400 line-through">
-                          {Number(item.price_per_month).toLocaleString()} so'm
+                          {Number(item.originalPrice).toLocaleString()} so'm
                         </span>
                       )}
                     </div>

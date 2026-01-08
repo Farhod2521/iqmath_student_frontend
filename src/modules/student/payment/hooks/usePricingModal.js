@@ -193,7 +193,7 @@ export const usePricingModal = () => {
     plansError,
 
     setCouponCode,
-
+    setActiveTab,
     handleSelectPlan,
     handleNext,
     handleBack,
