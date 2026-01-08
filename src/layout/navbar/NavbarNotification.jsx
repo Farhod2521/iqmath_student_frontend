@@ -101,7 +101,7 @@ const NavbarNotification = () => {
         )}
 
         {(isGetting || isPosting) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-60 rounded-lg">
+          <div className="absolute inset-0 flex items-center justify-center bg-white rounded-lg bg-opacity-60">
             <div className="w-4 h-4 border-2 border-[#5d87ff] border-t-transparent rounded-full animate-spin" />
           </div>
         )}
@@ -111,13 +111,13 @@ const NavbarNotification = () => {
         <div className="absolute right-0 mt-2 w-80 max-h-[420px] overflow-hidden rounded-lg shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-50">
           <div className="p-3 border-b">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-sm">Bildirishnomalar</span>
+              <span className="text-sm font-semibold">Bildirishnomalar</span>
               <span className="text-xs text-gray-500">{unread_count} yangi</span>
             </div>
           </div>
 
           <div className="max-h-[340px] overflow-auto">
-            {(!latest || latest.length === 0) && <div className="p-4 text-sm text-gray-500">Xabarlar yo‘q</div>}
+            {(!latest || latest.length === 0) && <div className="p-4 text-sm text-gray-500">{t('noMessage')}</div>}
 
             {latest.map((item) => (
               <button
@@ -131,15 +131,15 @@ const NavbarNotification = () => {
                     <div className="text-sm font-medium">{item.student}</div>
                     {/* <div className="text-xs px-2 py-0.5 rounded-full border">{item.status}</div> */}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">{item.subject}</div>
-                  <div className="text-xs text-gray-400 mt-1">{item.created_at}</div>
+                  <div className="mt-1 text-xs text-gray-500">{item.subject}</div>
+                  <div className="mt-1 text-xs text-gray-400">{item.created_at}</div>
                 </div>
                 {!item.is_seen && <div className="w-2 h-2 rounded-full bg-[#5d87ff] mt-2" />}
               </button>
             ))}
           </div>
 
-          <div className="p-2 border-t flex items-center justify-between">
+          <div className="flex items-center justify-between p-2 border-t">
             <div></div>
 
             <button

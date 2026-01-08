@@ -259,6 +259,7 @@
   "noRequests": "Hozircha murojaatlar yo'q",
   "noRequestsDescription": "Mentorga murojaat yuborganingizda bu yerda ko'rinadi",
   "message": "Xabar",
+  "messages": "Xabarlar",
   "noMessage": "Xabar yo'q",
   "mentorResponse": "Mentor javobi",
   "attachedQuestions": "Biriktirilgan savollar",
@@ -867,5 +868,8 @@
   "createProfitSubscription": "Obuna rejalari uchun birinchi foydani yarating.",
   "createFirstProfit": "Birinchi foydani yarating",
   "editProfit": "Foydani tahrirlash",
-  "newProft": "Yangi foyda"
+  "newProft": "Yangi foyda",
+  "newCoupon": "Yangi kupon",
+  "startConversation": "Suhbatni boshlang",
+  "chatSendMessage": "Xabar yuborish uchun chat tanlang"
 }

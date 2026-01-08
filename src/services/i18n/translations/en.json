@@ -237,6 +237,7 @@
   "noRequests": "No requests yet",
   "noRequestsDescription": "Your requests to the mentor will appear here",
   "message": "Message",
+  "messages": "Messages",
   "noMessage": "No message",
   "mentorResponse": "Mentor Response",
   "attachedQuestions": "Attached Questions",
@@ -414,5 +415,8 @@
   "createProfitSubscription": "Create the first profit for subscription plans.",
   "createFirstProfit": "Create the first profit",
   "editProfit": "Edit profit",
-  "newProft": "New profit"
+  "newProft": "New profit",
+  "newCoupon": "New coupon",
+  "startConversation": "Start a conversation",
+  "chatSendMessage": "Select a chat to send a message"
 }

@@ -246,6 +246,7 @@
   "noRequests": "Пока нет запросов",
   "noRequestsDescription": "Ваши запросы к ментору будут отображаться здесь",
   "message": "Сообщение",
+  "messages": "Сообщение",
   "noMessage": "Нет сообщения",
   "mentorResponse": "Ответ ментора",
   "attachedQuestions": "Прикрепленные вопросы",
@@ -777,5 +778,8 @@
   "createProfitSubscription": "Создайте первую прибыль для подписных планов.",
   "createFirstProfit": "Получите первую прибыль",
   "editProfit": "Редактировать прибыль",
-  "newProft": "Новая прибыль"
+  "newProft": "Новая прибыль",
+  "newCoupon": "Новая купон",
+  "startConversation": "Начните разговор",
+  "chatSendMessage": "Выберите чат, чтобы отправить сообщение."
 }

@@ -41,11 +41,11 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
           {activeTab === 'plans' ? (
             <>
               {isLoadingPlans ? (
-                <div className="flex justify-center items-center py-12">
+                <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5D87FF]"></div>
                 </div>
               ) : plansError ? (
-                <div className="text-center py-12">
+                <div className="py-12 text-center">
                   <p className="text-red-500 dark:text-red-400">{t('plansError')}</p>
                 </div>
               ) : (

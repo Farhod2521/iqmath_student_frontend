@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import { Box, Container, Accordion, AccordionSummary, AccordionDetails, Dialog, IconButton } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { styled } from '@mui/material/styles'
-import { IconMinus, IconPlus } from '@tabler/icons'
+import { IconMinus, IconPlayerPlay, IconPlus, IconX } from '@tabler/icons'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
@@ -25,9 +25,63 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   }
 }))
 
+const VideoModal = ({ open, onClose, videoId }) => {
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: '12px',
+          bgcolor: 'background.paper'
+        }
+      }}
+    >
+      <Box sx={{ position: 'relative', bgcolor: '#000' }}>
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            zIndex: 10,
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            color: 'white',
+            '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.7)' }
+          }}
+        >
+          <IconX size={24} />
+        </IconButton>
+
+        <Box sx={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', bgcolor: '#000' }}>
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+          />
+        </Box>
+      </Box>
+    </Dialog>
+  )
+}
+
 const FAQ = () => {
   const [expandedIndex, setExpandedIndex] = useState(0)
   const { t, i18n } = useTranslation()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedVideoId, setSelectedVideoId] = useState(null)
+
   const language = i18n.language
   const faqItems = [
     { question: 'faqq1', answer: 'faqa1' },
@@ -57,6 +111,21 @@ const FAQ = () => {
       })
   }, [])
 
+  const extractYoutubeId = (text) => {
+    if (!text) return null
+    const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    const match = text.match(regExp)
+    return match ? match[1] : null
+  }
+
+  const handleWatchVideo = (url) => {
+    const youtubeId = extractYoutubeId(url)
+    if (youtubeId) {
+      setSelectedVideoId(youtubeId)
+      setModalOpen(true)
+    }
+  }
+
   return (
     <Container maxWidth="lg" sx={{ mt: 3, pb: { xs: '30px', lg: '60px' } }}>
       <Grid container spacing={3} justifyContent="center">
@@ -71,14 +140,67 @@ const FAQ = () => {
                 >
                   {language === 'uz' ? item.question_uz : item.question_ru}
                 </AccordionSummary>
-                <AccordionDetails>
+                {/* <AccordionDetails>
                   <div dangerouslySetInnerHTML={{ __html: language === 'uz' ? item.answer_uz : item.answer_ru }} />
+                </AccordionDetails> */}
+                <AccordionDetails>
+                  <Box>
+                    {(() => {
+                      const answer = language === 'uz' ? item.answer_uz : item.answer_ru
+                      const url = item?.urk || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                      const youtubeId = extractYoutubeId(url)
+
+                      return (
+                        <>
+                          {answer && (
+                            <Box mb={youtubeId ? 2 : 0}>
+                              <div dangerouslySetInnerHTML={{ __html: answer }} />
+                            </Box>
+                          )}
+
+                          {youtubeId && (
+                            <Box>
+                              <button
+                                onClick={() => handleWatchVideo(url)}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                  padding: '5px 10px',
+                                  backgroundColor: '#ef4444',
+                                  color: 'white',
+                                  border: 'none',
+                                  borderRadius: '6px',
+                                  fontSize: '14px',
+                                  fontWeight: 500,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.3s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.backgroundColor = '#dc2626'
+                                  // e.target.style.transform = 'translateY(-2px)'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.backgroundColor = '#ef4444'
+                                  // e.target.style.transform = 'translateY(0)'
+                                }}
+                              >
+                                <IconPlayerPlay size={18} stroke={2} />
+                                Video ko'rish
+                              </button>
+                            </Box>
+                          )}
+                        </>
+                      )
+                    })()}
+                  </Box>
                 </AccordionDetails>
               </StyledAccordion>
             ))}
           </Box>
         </Grid>
       </Grid>
+      <VideoModal open={modalOpen} onClose={() => setModalOpen(false)} videoId={selectedVideoId} />
     </Container>
   )
 }

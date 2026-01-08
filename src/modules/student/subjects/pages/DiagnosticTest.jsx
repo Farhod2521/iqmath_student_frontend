@@ -25,7 +25,6 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
   })
 
   const handleBeginTest = () => {
-    
     beginTest(
       {
         url: URLS.beginTest,
@@ -39,10 +38,9 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
       },
       {
         onSuccess: (res) => {
-          
           // API response strukturini tekshirish
           let questions = []
-          
+
           if (res?.data?.questions) {
             questions = res.data.questions
           } else if (Array.isArray(res?.data)) {
@@ -50,16 +48,16 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
           } else if (res?.data) {
             questions = [res.data]
           }
-          
+
           console.log('Questions array:', questions)
           console.log('Questions length:', questions.length)
-          
+
           if (questions.length === 0) {
             console.error('No questions received from API')
             toast.error('Test savollari topilmadi')
             return
           }
-          
+
           setTestQuestions(questions)
           setShowLevelModal(false)
           toast.success(isRetake ? 'Qayta topshirish boshlandi!' : 'Diqqat! Test boshlandi.')
@@ -71,7 +69,7 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
           console.error('Error data:', err?.response?.data)
           console.error('Error status:', err?.response?.status)
           console.error('Error message:', err?.response?.data?.message)
-          
+
           // Xatolik xabarini ko'rsatish
           const errorMessage = err?.response?.data?.message || 'Testni boshlashda xatolik yuz berdi'
           toast.error(errorMessage)
@@ -94,21 +92,14 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
       {showLevelModal && (
         <SimpleModal>
           <div className="flex justify-between px-[16px] py-[18px]">
-            <h3 className="text-[19px] font-semibold">
-              {isRetake ? t('retakeDiagnostic') : t('diagnostics')}
-            </h3>
-            <button 
-              onClick={() => router.push('/dashboard/student/diagnostics')} 
-              className="rounded"
-            >
+            <h3 className="text-[19px] font-semibold">{isRetake ? t('retakeDiagnostic') : t('diagnostics')}</h3>
+            <button onClick={() => router.push('/dashboard/student/diagnostics')} className="rounded">
               <img src="/icons/close.svg" alt="close" width={24} height={24} />
             </button>
           </div>
           <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
           <div className="p-[24px]">
-            <p className="text-[15px]">
-              {isRetake ? t('chooseLevelForRetake') : t('chooseYourLevel')}
-            </p>
+            <p className="text-[15px]">{isRetake ? t('chooseLevelForRetake') : t('chooseYourLevel')}</p>
             <ul className="flex mt-[16px] gap-x-[12px]">
               <li className="flex-grow">
                 <button
@@ -151,7 +142,7 @@ const DiagnosticTest = ({ subjectId, isRetake = false }) => {
               disabled={isLoading}
               className="bg-[#5D87FF] text-white py-[11px] px-[26px] rounded-[8px] w-full sm:w-auto disabled:opacity-50"
             >
-              {isLoading ? 'Yuklanmoqda...' : (isRetake ? t('retakeTest') : t('takeTest'))}
+              {isLoading ? t('loading') : isRetake ? t('retakeTest') : t('takeTest')}
             </button>
           </div>
         </SimpleModal>

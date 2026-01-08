@@ -16,29 +16,37 @@ import StarIcon from '@mui/icons-material/Star'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
 import PaymentsIcon from '@mui/icons-material/Payments'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import { PricingModal } from '@/modules/student/payment/components'
+import { CouponSection, PricingModal } from '@/modules/student/payment/components'
 import toast from 'react-hot-toast'
+import { usePricingModalStore } from '@/store'
+import { usePricingModal } from '@/modules/student/payment/hooks/usePricingModal'
+import PricingCouponModal from '@/modules/student/payment/components/PricingCouponModal'
 
 function Prices() {
   const theme = ThemeSettings()
   const { t, i18n } = useTranslation()
   const router = useRouter()
-
-  const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const session = getSession()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState(null)
+  // const [selectedPlan, handleSelectPlan] = useState(null)
+  const {
+    isPricingModalOpen,
+    openPricingModal,
+    originalPrice: pricingOriginalPrice,
+    closePricingModal
+  } = usePricingModalStore()
 
-  const fetchData = async () => {
-    try {
-      setIsLoading(true)
-      const res = await request.get(URLS.paymentPlans)
-      setData(res.data ?? [])
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const { selectedPlan, plans, handleSelectPlan } = usePricingModal()
+
+  // const fetchData = async () => {
+  //   try {
+  //     setIsLoading(true)
+  //     const res = await request.get(URLS.paymentPlans)
+  //     // setData(res.data ?? [])
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
 
   const handleBuy = async (plan) => {
     const session = await getSession()
@@ -47,18 +55,9 @@ function Prices() {
       router.push('/')
       return
     }
-    setSelectedPlan(plan)
-    setIsModalOpen(true)
+    handleSelectPlan(plan)
+    openPricingModal(plan?.price)
   }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedPlan(null)
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
 
   return (
     <LayoutHome>
@@ -87,49 +86,46 @@ function Prices() {
             <div className="flex justify-center mt-12">
               <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
             </div>
-          ) : data.length ? (
+          ) : plans.length ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {data?.map((item, idx) => (
+              {plans?.map((item, idx) => (
                 <div
-                  key={idx}
+                  key={item?.id}
                   className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
                    bg-gradient-to-br from-blue-500 to-purple-500`}
                 >
-                  {item.category && item.category.title_uz && item.category.title_ru && (
+                  {item.category && item.category?.title && (
                     <div className="absolute z-20 -translate-x-1/2 -top-2 left-1/2">
                       <span
                         className={`px-5 py-1.5 text-xs font-bold whitespace-nowrap tracking-wide text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-500`}
                       >
-                        {i18n.language === 'uz' ? item.category.title_uz : item.category.title_ru}
+                        {item?.category?.title}
                       </span>
                     </div>
                   )}
 
                   <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
-                    {item.discount_percent > 0 && (
+                    {item.discount > 0 && (
                       <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-2 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
-                        🔥 -{item.discount_percent}%
+                        🔥 -{item.discount}%
                       </span>
                     )}
 
-                    <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
-                      <CalendarMonthIcon sx={{ color: '#5d87ff' }} />
-                      {item.name}
-                    </h3>
+                    <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">{item.original_name}</h3>
 
                     <p className="mt-1 text-sm text-gray-500">
-                      {item.months} {t('pricePerMonth')}
+                      <CalendarMonthIcon sx={{ color: '#5d87ff' }} /> {item.months} {t('pricePerMonth')}
                     </p>
                     {/* PRICE */}
                     <div className="mt-4">
                       <div className="flex items-end gap-2">
                         <span className="text-3xl font-extrabold text-gray-900">
-                          {Number(item.sale_price).toLocaleString()}
+                          {Number(item.price).toLocaleString()}
                         </span>
                         <span className="mb-1 text-sm text-gray-500">so'm</span>
                       </div>
 
-                      {item.discount_percent > 0 && (
+                      {item.price_per_month > 0 && (
                         <span className="block mt-1 text-sm text-gray-400 line-through">
                           {Number(item.price_per_month).toLocaleString()} so'm
                         </span>
@@ -142,16 +138,17 @@ function Prices() {
                         <li
                           key={b.id}
                           className={`flex items-center gap-2 text-sm ${
-                            b.is_selected ? 'text-gray-800' : 'text-gray-400 line-through'
+                            b.isSelected ? 'text-gray-800' : 'text-gray-400 line-through'
                           }`}
                         >
                           <span
                             className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold
-                ${b.is_selected ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}`}
+                ${b.isSelected ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}`}
                           >
-                            {b.is_selected ? '✓' : '✕'}
+                            {b.isSelected ? '✓' : '✕'}
                           </span>
-                          {i18n.language === 'uz' ? b.title_uz : b.title_ru}
+
+                          {b.title}
                         </li>
                       ))}
                     </ul>
@@ -177,10 +174,12 @@ function Prices() {
             <p className="mt-12 text-center text-gray-600">{t('noData')}</p>
           )}
         </Container>
-        <PricingModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          originalPrice={selectedPlan?.price_per_month || 0}
+
+        <PricingCouponModal
+          selectedPlan={selectedPlan}
+          isOpen={isPricingModalOpen}
+          onClose={closePricingModal}
+          originalPrice={pricingOriginalPrice}
         />
         <ScrollToTop />
       </ThemeProvider>

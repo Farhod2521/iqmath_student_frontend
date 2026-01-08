@@ -107,7 +107,7 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
   return (
     <div className="px-4 space-y-4">
       {LETTERS.slice(0, selectedCount).map((letter) => (
-        <div key={letter} className="border-2 border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+        <div key={letter} className="p-4 transition-colors border-2 border-gray-200 rounded-lg hover:border-blue-300">
           <div className="flex items-center gap-2 mb-3">
             <input
               type="radio"
@@ -116,9 +116,9 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
               onChange={() => onChange('correctImageAnswer', letter)}
               className="w-4 h-4"
             />
-            <span className="font-semibold text-lg">{letter} varianti</span>
+            <span className="text-lg font-semibold">{letter} varianti</span>
             {correctAnswer === letter && (
-              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">To&apos;g&apos;ri</span>
+              <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">To&apos;g&apos;ri</span>
             )}
           </div>
 
@@ -127,7 +127,7 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
               type="text"
               placeholder="Ctrl+V bosib rasm joylashtiring yoki pastdagi tugmani bosing"
               onPaste={(e) => handlePaste(letter, e)}
-              className="w-full border border-gray-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               readOnly
             />
 
@@ -137,28 +137,28 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
                 accept="image/jpeg,image/png,image/gif,image/webp"
                 onChange={(e) => handleFileSelect(letter, e.target.files?.[0])}
                 disabled={uploadingStates[letter]}
-                className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer disabled:opacity-50"
+                className="w-full text-sm cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
               />
             </label>
 
             {uploadingStates[letter] && (
-              <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
-                <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full" />
+              <div className="flex items-center gap-2 p-2 rounded-lg bg-blue-50">
+                <div className="w-4 h-4 border-2 border-blue-600 rounded-full animate-spin border-t-transparent" />
                 <span className="text-sm text-blue-700">Yuklanmoqda...</span>
               </div>
             )}
 
             {!uploadingStates[letter] && imageUrls[letter] && (
               <div className="space-y-2">
-                <div className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-green-50">
                   <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm text-green-700 flex-1">Yuklandi</span>
+                  <span className="flex-1 text-sm text-green-700">Yuklandi</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(letter)}
-                    className="text-red-500 hover:text-red-700 p-1"
+                    className="p-1 text-red-500 hover:text-red-700"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -166,8 +166,8 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
                   </button>
                 </div>
 
-                <div className="relative w-full h-40 bg-gray-100 rounded-lg overflow-hidden">
-                  <img src={imageUrls[letter]} alt={`${letter} variant`} className="w-full h-full object-contain" />
+                <div className="relative w-full h-40 overflow-hidden bg-gray-100 rounded-lg">
+                  <img src={imageUrls[letter]} alt={`${letter} variant`} className="object-contain w-full h-full" />
                 </div>
               </div>
             )}
@@ -181,7 +181,7 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
           type="button"
           onClick={handleRemoveOption}
           disabled={selectedCount <= 2}
-          className="px-4 py-2 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm text-red-600 rounded-lg bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           - Variant o&apos;chirish
         </button>
@@ -190,14 +190,14 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
           type="button"
           onClick={handleAddOption}
           disabled={selectedCount >= 7}
-          className="px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm text-blue-600 rounded-lg bg-blue-50 hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           + Variant qo&apos;shish
         </button>
       </div>
 
       {/* Eslatma */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+      <div className="p-3 border border-blue-200 rounded-lg bg-blue-50">
         <p className="text-sm text-blue-800">
           <span className="font-semibold">Maslahat:</span> Input maydoniga bosib Ctrl+V (yoki Cmd+V) tugmalarini bosing
           yoki pastdagi tugma orqali faylni tanlang. Rasm avtomatik yuklanadi.

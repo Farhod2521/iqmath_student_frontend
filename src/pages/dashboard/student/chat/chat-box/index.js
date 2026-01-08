@@ -3,11 +3,11 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { IoMdSend } from 'react-icons/io'
 import { HiDotsVertical } from 'react-icons/hi'
-import { BsCheckAll, BsCheck } from 'react-icons/bs'
+import { BsCheckAll, BsCheck, BsLink45Deg } from 'react-icons/bs'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { request } from '@/services/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useUserStore } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 const chatAPI = {
   getChats: async () => {
@@ -64,6 +64,7 @@ const formatDate = (dateString) => {
 }
 
 const ChatBox = () => {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const messagesEndRef = useRef(null)
   const [activeChat, setActiveChat] = useState(null)
@@ -129,6 +130,17 @@ const ChatBox = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  const extractUrl = (text) => {
+    if (!text) return null
+    const match = text.match(/https?:\/\/[^\s]+/)
+    return match ? match[0] : null
+  }
+
+  const removeUrlFromText = (text) => {
+    if (!text || typeof text !== 'string') return text
+    return text.replace(/https?:\/\/[^\s]+/g, '').trim()
+  }
+
   return (
     <LayoutAdmin title="Chat">
       <div className="h-[85vh] flex gap-1 bg-white rounded-2xl  overflow-hidden">
@@ -140,12 +152,12 @@ const ChatBox = () => {
         >
           {/* Header */}
           <div className="p-6 border-b border-gray-100">
-            <h2 className="mb-4 text-2xl font-bold text-gray-800">Xabarlar</h2>
+            <h2 className="mb-4 text-2xl font-bold text-gray-800">{t('messages')}</h2>
           </div>
 
           {/* Chat List */}
           <div className="flex-1 overflow-y-auto">
-            {chatsLoading && <p className="px-6 py-4 text-sm text-gray-400">Yuklanmoqda...</p>}
+            {chatsLoading && <p className="px-6 py-4 text-sm text-gray-400">{t('loading')}</p>}
 
             {chats.map((chat) => (
               <div
@@ -220,14 +232,19 @@ const ChatBox = () => {
 
               {/* Messages */}
               <div className="flex-1 p-3 space-y-4 overflow-y-auto md:p-6">
-                {messagesLoading && <p className="text-sm text-center text-gray-400">Xabarlar yuklanmoqda...</p>}
+                {messagesLoading && (
+                  <p className="text-sm text-center text-gray-400">
+                    {t('messages')} {t('loading')}
+                  </p>
+                )}
 
                 {messages?.messages?.map((msg, index) => {
                   const isMe = msg.sender_id !== activeChat.other_user_id
                   const showAvatar =
                     !isMe && (index === 0 || messages.messages[index - 1].sender_id === activeChat.other_user_id)
                   const showName = !isMe && showAvatar
-
+                  const extractedUrl = extractUrl(msg?.url) || extractUrl(msg?.text)
+                  const cleanText = removeUrlFromText(msg.text)
                   return isMe ? (
                     <div key={msg.id} className="flex justify-end">
                       <div className="max-w-[70%] group cursor-pointer" onDoubleClick={() => handleReply(msg)}>
@@ -241,7 +258,18 @@ const ChatBox = () => {
                         )}
                         <div className="relative">
                           <div className="p-4 text-white rounded-tr-sm shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl">
-                            <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                            <p className="text-sm leading-relaxed whitespace-pre-wrap">{cleanText}</p>
+                            {extractedUrl && (
+                              <div className="flex items-center justify-start gap-2 mt-1">
+                                <span className="text-[12px]">Natija havolada:</span>
+                                <BsLink45Deg
+                                  size={18}
+                                  onClick={() => window.open(extractedUrl, '_blank')}
+                                  className="text-sm text-gray-200"
+                                  title="Havola mavjud"
+                                />
+                              </div>
+                            )}
                             <div className="flex items-center justify-end gap-1 mt-2">
                               <span className="text-xs text-blue-100">{formatTime(msg.created_at)}</span>
                               {msg.is_read ? (
@@ -298,8 +326,24 @@ const ChatBox = () => {
                         )}
                         <div className="relative">
                           <div className="p-4 bg-white border border-gray-100 rounded-tl-sm shadow-md rounded-2xl">
-                            <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">{msg.text}</p>
-                            <span className="block mt-2 text-xs text-gray-400">{formatTime(msg.created_at)}</span>
+                            <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">{cleanText}</p>
+                            {/* <span className="block mt-2 text-xs text-gray-400">{formatTime(msg.created_at)}</span> */}
+                            <div className="flex items-center justify-between mt-2">
+                              <div className="flex items-center gap-1">
+                                {extractedUrl && (
+                                  <div className="flex items-center justify-between gap-2">
+                                    <span className="text-[12px]">Natija havolada:</span>
+                                    <BsLink45Deg
+                                      size={18}
+                                      onClick={() => window.open(extractedUrl, '_blank')}
+                                      className="text-sm text-gray-400"
+                                      title="Havola mavjud"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                              <span className="text-xs text-gray-400">{formatTime(msg.created_at)}</span>
+                            </div>
                           </div>
                           <button
                             onClick={() => handleReply(msg)}
@@ -392,8 +436,8 @@ const ChatBox = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-2xl font-bold text-gray-700">Suhbatni boshlang</h3>
-                <p className="text-gray-500">Xabar yuborish uchun chat tanlang</p>
+                <h3 className="mb-2 text-2xl font-bold text-gray-700">{t('startConversation')}</h3>
+                <p className="text-gray-500">{t('chatSendMessage')}</p>
               </div>
             </div>
           )}

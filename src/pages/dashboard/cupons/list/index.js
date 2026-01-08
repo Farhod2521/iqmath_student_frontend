@@ -66,9 +66,9 @@ const Index = () => {
       <LayoutAdmin title={t('coupons')}>
         <div className="p-6">
           <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
-            <div className="text-center py-12">
+            <div className="py-12 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5D87FF] mx-auto"></div>
-              <p className="text-[#5A6A85] dark:text-gray-400 mt-4">Yuklanmoqda...</p>
+              <p className="text-[#5A6A85] dark:text-gray-400 mt-4">{t('loading')}</p>
             </div>
           </div>
         </div>
@@ -80,19 +80,19 @@ const Index = () => {
     <LayoutAdmin title={t('coupons')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-12">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center justify-between mb-6">
             <div></div>
             <Button
               onPress={handleCreateCoupon}
               className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
             >
               <PlusIcon className="w-5 h-5" />
-              Yangi kupon
+              {t('newCoupon')}
             </Button>
           </div>
 
           {!!couponsData?.data.coupon ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               <CouponCard
                 key={couponsData?.data.coupon.id}
                 coupon={couponsData?.data.coupon}

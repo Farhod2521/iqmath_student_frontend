@@ -3,17 +3,18 @@ import { toast } from 'react-hot-toast'
 
 export const getPaymentInitiate = (subscriptionId, couponCode = null) => {
   const payload = {}
-  
+
   if (subscriptionId) {
     payload.subscription_id = subscriptionId
   }
-  
+
   if (couponCode) {
     payload.coupon_code = couponCode
   }
-  
-  return request.post('/api/v1/payments/initiate-payment/', payload).catch(() => {
-    //   toast.error('Maʼlumotlarni olishda xatolik yuz berdi')
+
+  return request.post('/api/v1/payments/initiate-payment/', payload).catch((err) => {
+    // console.log('errpr', err?.response?.data?.error)
+    toast.error(err?.response?.data?.error)
   })
 }
 export const getPaymentTrailDays = () =>
