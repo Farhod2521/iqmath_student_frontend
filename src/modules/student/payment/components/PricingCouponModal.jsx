@@ -12,7 +12,7 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
     isLoadingPlans,
     plansError,
     setCouponCode,
-    handleNext,
+    setActiveTab,
     handleCheckCoupon,
     handleSelectPlan,
     handleSkipCoupon,
@@ -28,6 +28,7 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
   useEffect(() => {
     if (selectedPlan) {
       handleSelectPlan(selectedPlan)
+      setActiveTab('coupon')
     }
   }, [selectedPlan])
 

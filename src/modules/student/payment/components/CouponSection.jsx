@@ -16,6 +16,7 @@ const CouponSection = ({
 }) => {
   const { t } = useTranslation()
 
+
   return (
     <div className="max-w-lg mx-auto">
       {/* Selected Plan Info */}

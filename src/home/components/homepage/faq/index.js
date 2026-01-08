@@ -6,6 +6,9 @@ import { IconMinus, IconPlayerPlay, IconPlus, IconX } from '@tabler/icons'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
+import { Button } from '@heroui/react'
+import { FaEye } from 'react-icons/fa'
+import { Link } from 'brainly-style-guide'
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
   borderRadius: '8px',
@@ -147,7 +150,7 @@ const FAQ = () => {
                   <Box>
                     {(() => {
                       const answer = language === 'uz' ? item.answer_uz : item.answer_ru
-                      const url = item?.urk || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                      const url = item?.url
                       const youtubeId = extractYoutubeId(url)
 
                       return (
@@ -160,7 +163,7 @@ const FAQ = () => {
 
                           {youtubeId && (
                             <Box>
-                              <button
+                              {/* <Link
                                 onClick={() => handleWatchVideo(url)}
                                 style={{
                                   display: 'inline-flex',
@@ -187,7 +190,30 @@ const FAQ = () => {
                               >
                                 <IconPlayerPlay size={18} stroke={2} />
                                 Video ko'rish
-                              </button>
+                              </Link> */}
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  color: '#1677ff', // Ant Design primary blue
+                                  fontSize: '14px',
+                                  fontWeight: 500,
+                                  textDecoration: 'none',
+                                  cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.textDecoration = 'underline'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.textDecoration = 'none'
+                                }}
+                              >
+                                Ko'rish
+                              </a>
                             </Box>
                           )}
                         </>
