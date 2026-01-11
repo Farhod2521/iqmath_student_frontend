@@ -9,7 +9,6 @@ import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 
-
 const SidebarMenu = () => {
   const { t } = useTranslation()
   const router = useRouter()
@@ -59,7 +58,7 @@ const SidebarMenu = () => {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
             if (type === MenuType.GROUP) {
-              return <div key={key || idx} className="border-t mb-2 pb-2" />
+              return <div key={key || idx} className="pb-2 mb-2 border-t" />
             }
             if (type === MenuType.LINK) {
               // Check if current path matches any active patterns
@@ -114,6 +113,15 @@ const SidebarMenu = () => {
                     <div className={getMenuItemClasses(isActive, disabled)}>
                       {typeof icon === 'function' ? icon(isActive) : icon}
                       <p>{label}</p>
+                      {key === 'chatasadbek' && (
+                        <span
+                          className={`ml-auto min-w-[20px] h-[20px] px-1 text-xs flex items-center justify-center rounded-full  ${
+                            isActive ? 'bg-white text-blue-500' : 'bg-blue-500 text-white'
+                          } font-medium`}
+                        >
+                          5
+                        </span>
+                      )}
                     </div>
                   </Link>
                 </li>

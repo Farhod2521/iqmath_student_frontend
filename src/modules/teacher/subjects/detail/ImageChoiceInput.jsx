@@ -68,11 +68,47 @@ const ImageChoiceInput = ({ correctAnswer, imageUrls, onChange, optionCount = 4 
       }
     }
   }
+  // /management/upload-file-delete/2
+  // shu qsmda ozgarish qilish kerak
 
-  const handleRemoveImage = (letter) => {
-    const updatedUrls = { ...imageUrls }
-    delete updatedUrls[letter]
-    onChange('imageUrls', updatedUrls)
+  const deleteImageFromServer = async (fileId) => {
+    const response = await fetch(`https://api.iqmath.uz/api/v1/management/upload-file-delete/${fileId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Rasmni o‘chirishda xatolik')
+    }
+  }
+
+  const extractFileId = (url) => {
+    const match = url.match(/-(\d+)\.png$/)
+    return match ? match[1] : null
+  }
+
+  const handleRemoveImage = async (letter) => {
+    try {
+      const imageData = imageUrls?.[letter]
+      if (!imageData) return
+
+      const fileId = extractFileId(imageData)
+      if (!fileId) {
+        toast.error('File ID topilmadi')
+        return
+      }
+      await deleteImageFromServer(fileId)
+
+      const updatedUrls = { ...imageUrls }
+      delete updatedUrls[letter]
+
+      onChange('imageUrls', updatedUrls)
+      toast.success(`Variant rasmi o‘chirildi`)
+    } catch (error) {
+      toast.error(error.message || 'Rasmni o‘chirishda xatolik')
+    }
   }
 
   const handleAddOption = () => {

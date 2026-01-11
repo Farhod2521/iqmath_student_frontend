@@ -16,6 +16,7 @@ import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
 import { MdOutlinePayments } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
+import ProductsIcon from '@/components/icons/products'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -210,6 +211,20 @@ export const getMenuItems = (t) => [
       }
     ]
   },
+
+  // { asadbek
+  //   key: 'products-exchange',
+  //   path: '/dashboard/teacher/purchased-products',
+  //   label: t('purchasedProducts'),
+  //   icon: (isActive) => (
+  //     <ProductsIcon
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={20}
+  //     />
+  //   ),
+  //   roles: [RolesList.TEACHER, RolesList.SUPERADMIN],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'statistics',
     path: '/dashboard/teacher/statistics',

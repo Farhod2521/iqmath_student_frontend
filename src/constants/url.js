@@ -96,6 +96,7 @@ export const URLS = {
   products: '/api/v1/management/products/',
   exchangeProduct: '/api/v1/func_student/my-products/exchange/',
   purchasedProducts: '/api/v1/func_student/my-products/exchange/list/',
+  productsExchangeList: '/api/v1/func_teacher/teacher/product-exchange-list/',
   checkCoupon: '/api/v1/payments/check-coupon/',
   paymentPlans: '/api/v1/payments/plans/',
 

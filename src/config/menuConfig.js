@@ -53,6 +53,7 @@ export const createMenuConfig = (t) => ({
           }
         ]
       },
+
       {
         key: 'chat',
         path: '/dashboard/student/chat',
@@ -160,4 +161,4 @@ export const createMenuConfig = (t) => ({
       }
     ]
   }
-}) 
+})
