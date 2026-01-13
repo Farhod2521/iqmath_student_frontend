@@ -1,0 +1,75 @@
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+
+const formatDate = (dateString) => {
+  if (!dateString) return '-'
+  const date = new Date(dateString)
+  const now = new Date()
+  const diff = now - date
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+
+  if (minutes < 1) return 'hozir'
+  if (minutes < 60) return `${minutes}m`
+  if (hours < 24) return `${hours}h`
+  if (days < 7) return `${days}d`
+
+  return date.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit' })
+}
+
+const ChatsList = ({ chatsLoading, chats = [], setActiveChat, setShowChatList, cancelReply, activeChat }) => {
+  const { t } = useTranslation()
+  return (
+    <div className="flex-1 overflow-y-auto">
+      {chatsLoading && <p className="px-6 py-4 text-sm text-gray-400">{t('loading')}</p>}
+
+      {chats.map((chat) => (
+        <div
+          key={chat.id}
+          onClick={() => {
+            setActiveChat(chat)
+            setShowChatList(false)
+            cancelReply()
+          }}
+          className={`flex items-center gap-4 p-4 cursor-pointer transition-all border-l-4 
+                  ${activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
+                `}
+        >
+          <div className="relative flex-shrink-0">
+            <div className="flex items-center justify-center text-lg font-semibold text-white rounded-full shadow-lg w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500">
+              {chat?.other_user_name?.charAt(0) || '?'}
+            </div>
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className={`font-semibold truncate ${chat.unread_count > 0 ? 'text-gray-900' : 'text-gray-800'}`}>
+                {chat.other_user_name}
+              </h3>
+              <span className="flex-shrink-0 ml-2 text-xs text-gray-500">{formatDate(chat.last_message_at)}</span>
+            </div>
+
+            <div className="flex items-center justify-between gap-2">
+              <p
+                className={`flex-1 text-sm truncate ${
+                  chat.unread_count > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
+                }`}
+              >
+                {chat.last_message}
+              </p>
+
+              {chat.unread_count > 0 && (
+                <span className="flex-shrink-0 min-w-[20px] h-5 px-1.5 flex items-center justify-center text-[10px] font-bold text-white bg-blue-500 rounded-full">
+                  {chat.unread_count > 99 ? '99+' : chat.unread_count}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default ChatsList

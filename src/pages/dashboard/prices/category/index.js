@@ -141,7 +141,8 @@ export default function Category() {
             <tbody>
               {categories.map((item) => (
                 <tr key={item.id} className="border-t">
-                  <td className="p-2 sm:p-3">{i18n.language === 'uz' ? item.title_uz : item.title_ru}</td>
+                  <td className="p-2 sm:p-3">{item.title_uz}</td>
+                  <td className="p-2 sm:p-3">{item.title_ru}</td>
                   <td className="p-2 text-gray-500 sm:p-3">{item.slug}</td>
                   <td className="p-2 text-center sm:p-3">{item.is_active ? '✅' : '❌'}</td>
                   <td className="p-2 sm:p-3">

@@ -8,6 +8,9 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import { request } from '@/services/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import IndependentResultCard from './components/IndependentResult'
+import ChatsList from './components/ChatsList'
+import EmptyMessage from './components/EmptyMessage'
 
 const chatAPI = {
   getChats: async () => {
@@ -46,36 +49,14 @@ const formatTime = (dateString) => {
   return date.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
 }
 
-const formatDate = (dateString) => {
-  if (!dateString) return '-'
-  const date = new Date(dateString)
-  const now = new Date()
-  const diff = now - date
-  const minutes = Math.floor(diff / 60000)
-  const hours = Math.floor(diff / 3600000)
-  const days = Math.floor(diff / 86400000)
-
-  if (minutes < 1) return 'hozir'
-  if (minutes < 60) return `${minutes}m`
-  if (hours < 24) return `${hours}h`
-  if (days < 7) return `${days}d`
-
-  return date.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit' })
-}
-
 const ChatBox = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const messagesEndRef = useRef(null)
   const [activeChat, setActiveChat] = useState(null)
   const [newMessage, setNewMessage] = useState('')
   const [showChatList, setShowChatList] = useState(true)
   const [replyingTo, setReplyingTo] = useState(null)
-
-  const [chat, setChat] = useState({
-    name: 'Support',
-    avatar: '/images/avatar.png'
-  })
 
   /* === Chatlar === */
   const { data: chats = [], isLoading: chatsLoading } = useQuery({
@@ -156,39 +137,14 @@ const ChatBox = () => {
           </div>
 
           {/* Chat List */}
-          <div className="flex-1 overflow-y-auto">
-            {chatsLoading && <p className="px-6 py-4 text-sm text-gray-400">{t('loading')}</p>}
-
-            {chats.map((chat) => (
-              <div
-                key={chat.id}
-                onClick={() => {
-                  setActiveChat(chat)
-                  setShowChatList(false)
-                  cancelReply()
-                }}
-                className={`flex items-center gap-4 p-4 cursor-pointer transition-all border-l-4 
-                  ${activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
-                `}
-              >
-                <div className="relative">
-                  <div className="flex items-center justify-center text-lg font-semibold text-white rounded-full shadow-lg w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500">
-                    {chat?.other_user_name?.charAt(0) || '?'}
-                  </div>
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold text-gray-800 truncate">{chat.other_user_name}</h3>
-                    <span className="ml-2 text-xs text-gray-500">{formatDate(chat.last_message_at)}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="flex-1 text-sm text-gray-600 truncate">{chat.last_message}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ChatsList
+            chats={chats}
+            chatsLoading={chatsLoading}
+            setActiveChat={setActiveChat}
+            setShowChatList={setShowChatList}
+            cancelReply={cancelReply}
+            activeChat={activeChat}
+          />
         </div>
 
         {/* ================= CHAT BOX ================= */}
@@ -327,6 +283,9 @@ const ChatBox = () => {
                         <div className="relative">
                           <div className="p-4 bg-white border border-gray-100 rounded-tl-sm shadow-md rounded-2xl">
                             <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">{cleanText}</p>
+
+                            {msg?.independent_data && <IndependentResultCard data={msg?.independent_data} />}
+
                             {/* <span className="block mt-2 text-xs text-gray-400">{formatTime(msg.created_at)}</span> */}
                             <div className="flex items-center justify-between mt-2">
                               <div className="flex items-center gap-1">
@@ -424,22 +383,7 @@ const ChatBox = () => {
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-center flex-1">
-              <div className="text-center">
-                <div className="flex items-center justify-center w-24 h-24 mx-auto mb-6 rounded-full shadow-2xl bg-gradient-to-br from-blue-400 to-purple-500">
-                  <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mb-2 text-2xl font-bold text-gray-700">{t('startConversation')}</h3>
-                <p className="text-gray-500">{t('chatSendMessage')}</p>
-              </div>
-            </div>
+            <EmptyMessage />
           )}
         </div>
       </div>
