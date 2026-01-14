@@ -4,7 +4,7 @@ import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/f
 import { BiDirections } from 'react-icons/bi'
 import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
-import { PiBooksLight } from 'react-icons/pi'
+import { PiBooksLight, PiTrophy } from 'react-icons/pi'
 import { PiUsers } from 'react-icons/pi'
 import { PiGraduationCap } from 'react-icons/pi'
 import { FiLayers } from 'react-icons/fi'
@@ -302,6 +302,26 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'ratings',
+    path: '/dashboard/ratings',
+    label: t('ratings'),
+    icon: (isActive) => (
+      <PiTrophy
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [
+      RolesList.TEACHER,
+      RolesList.ADMIN,
+      RolesList.SUPERADMIN,
+      RolesList.TUTOR,
+      RolesList.STUDENT,
+      RolesList.PARENT
+    ],
     type: MenuType.LINK
   },
   {

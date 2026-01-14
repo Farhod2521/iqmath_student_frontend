@@ -62,6 +62,7 @@ export const URLS = {
   sendMentor: '/api/v1/func_student/my-unsolved-question/create/',
   statistics: '/api/v1/management/statistics/',
   studentStatistics: 'api/v1/func_student/student-statistics/',
+  studentTop: '/api/v1/func_student/student/studenttop/app',
   studentSubjectChapters: '/api/v1/func_student/students/',
   // Drag & Drop API endpoints
   reorderSubjects: '/api/v1/func_teacher/subjects/reorder/',
