@@ -29,6 +29,7 @@ import ActionInfo from '../components/actions/ActionInfo'
 import ActionCalculator from '../components/actions/ActionCalculator'
 import Calculator from '../components/calculator/Calculator'
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
+import SuccessPopupSendChat from '@/components/modal/SuccessPopupSendChat'
 
 export default function SubjectQuestions() {
   const { t, i18n } = useTranslation()
@@ -504,7 +505,7 @@ export default function SubjectQuestions() {
         </div>
       </div>
 
-      <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
+      <SuccessPopupSendChat open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </div>
   )
 }

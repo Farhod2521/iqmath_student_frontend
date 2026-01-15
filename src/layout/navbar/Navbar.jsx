@@ -41,10 +41,10 @@ const Navbar = ({ title }) => {
         <div className="flex flex-wrap items-center justify-end gap-x-1 md:gap-x-2 sm:gap-x-4">
           {oldToken && <NavbarBackTeacher />}
 
+          <NavbarMathMenu />
           {currentRole === RolesList.STUDENT && (
             <>
               {/* <NavbarMultiplication /> */}
-              <NavbarMathMenu />
               <NavbarSum />
               <NavbarCoins />
               <NavbarPoints />

@@ -3,13 +3,12 @@ import { Button } from '@heroui/react'
 import SimpleModal from './simple-modal'
 import { useTranslation } from 'react-i18next'
 import { FaTelegram } from 'react-icons/fa'
+import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 
-const SuccessPopupSendChat = ({ open, telegramLink, onClose }) => {
+const SuccessPopupSendChat = ({ open, onClose }) => {
   const { t } = useTranslation()
 
   const handleTelegramClick = () => {
-    // // Telegram bot linkini ochish
-    // window.open(telegramLink || 'https://t.me/iqmath_bot', '_blank')
     // // Modalni yopamiz
     onClose()
   }
@@ -21,7 +20,7 @@ const SuccessPopupSendChat = ({ open, telegramLink, onClose }) => {
         <div className="px-6 py-5">
           <div className="text-center">
             <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full">
-              <FaTelegram className="w-8 h-8 text-blue-600" />
+              <HiChatBubbleLeftRight className="w-8 h-8 text-blue-600" />
             </div>
             <p className="mb-6 text-sm leading-relaxed text-gray-700">{t('requestMentor')}</p>
           </div>
@@ -33,7 +32,7 @@ const SuccessPopupSendChat = ({ open, telegramLink, onClose }) => {
             onPress={handleTelegramClick}
             className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
           >
-            <FaTelegram className="w-4 h-4" />
+            {/* <HiChatBubbleLeftRight className="w-4 h-4" /> */}
             {t('understandable')}
           </Button>
         </div>
