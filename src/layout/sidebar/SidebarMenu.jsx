@@ -8,15 +8,18 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-
+import { useSidebarCount } from '@/hooks'
 
 const SidebarMenu = () => {
   const { t } = useTranslation()
+  const { data } = useSidebarCount()
   const router = useRouter()
   const { user, role: userRole } = useUserStore()
   const { role } = useRoleDetection()
   const [hasScrollbar, setHasScrollbar] = useState(false)
   const [expandedMenus, setExpandedMenus] = useState({})
+
+  const chat_read_count = data?.data?.total_unread_messages
 
   useEffect(() => {
     const checkScrollbar = () => {
@@ -59,7 +62,7 @@ const SidebarMenu = () => {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
             if (type === MenuType.GROUP) {
-              return <div key={key || idx} className="border-t mb-2 pb-2" />
+              return <div key={key || idx} className="pb-2 mb-2 border-t" />
             }
             if (type === MenuType.LINK) {
               // Check if current path matches any active patterns
@@ -114,6 +117,15 @@ const SidebarMenu = () => {
                     <div className={getMenuItemClasses(isActive, disabled)}>
                       {typeof icon === 'function' ? icon(isActive) : icon}
                       <p>{label}</p>
+                      {key === 'chat' && chat_read_count > 0 && (
+                        <span
+                          className={`ml-auto min-w-[20px] h-[20px] px-1 text-xs flex items-center justify-center rounded-full  ${
+                            isActive ? 'bg-white text-blue-500' : 'bg-blue-500 text-white'
+                          } font-medium`}
+                        >
+                          {chat_read_count}
+                        </span>
+                      )}
                     </div>
                   </Link>
                 </li>

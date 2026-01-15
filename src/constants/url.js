@@ -62,6 +62,7 @@ export const URLS = {
   sendMentor: '/api/v1/func_student/my-unsolved-question/create/',
   statistics: '/api/v1/management/statistics/',
   studentStatistics: 'api/v1/func_student/student-statistics/',
+  studentTop: '/api/v1/func_student/student/studenttop/app',
   studentSubjectChapters: '/api/v1/func_student/students/',
   // Drag & Drop API endpoints
   reorderSubjects: '/api/v1/func_teacher/subjects/reorder/',
@@ -96,6 +97,7 @@ export const URLS = {
   products: '/api/v1/management/products/',
   exchangeProduct: '/api/v1/func_student/my-products/exchange/',
   purchasedProducts: '/api/v1/func_student/my-products/exchange/list/',
+  productsExchangeList: '/api/v1/func_teacher/teacher/product-exchange-list/',
   checkCoupon: '/api/v1/payments/check-coupon/',
   paymentPlans: '/api/v1/payments/plans/',
 
@@ -104,5 +106,6 @@ export const URLS = {
 
   // Tutor referrals endpoints
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',
-  tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/'
+  tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/',
+  chatUnreadTotal: '/api/v1/func_chat/chats/unread-total/'
 }

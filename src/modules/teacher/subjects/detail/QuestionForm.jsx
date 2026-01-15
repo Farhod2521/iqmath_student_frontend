@@ -12,7 +12,7 @@ const QuestionForm = ({ formData, onFormChange, questionType, onQuestionTypeChan
   const { t } = useTranslation()
 
   return (
-    <div className="space-y-4 my-5">
+    <div className="my-5 space-y-4">
       {/* Question Text - Uzbek */}
       <div className="px-4">
         <label className="block mb-2 font-medium">{t('question')} (O&apos;zbek tilida)</label>
@@ -47,7 +47,7 @@ const QuestionForm = ({ formData, onFormChange, questionType, onQuestionTypeChan
       {/* Question Type and Level */}
       <div className="flex gap-4">
         <QuestionTypeSelect value={questionType} onChange={onQuestionTypeChange} />
-        <div className="px-4 w-full space-y-2">
+        <div className="w-full px-4 space-y-2">
           <label className="block font-medium">{t('questionLevel')}</label>
           <select
             value={formData.questionLevel}

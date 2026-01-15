@@ -1,4 +1,5 @@
 {
+  "ratings": "Ratinglar",
   "dashboard": "Boshqaruv paneli",
   "telegram_bot": "Telegram bot orqali ro'yxatdan o'ting",
   "olympics": "Olimpiada",
@@ -268,6 +269,8 @@
   "telegram": "Telegram",
   "requestSubmitted": "Murojaatingiz tez orada ko'rib chiqiladi va javobini telegram bot orqali olasiz. Buning uchun telegram botimizga a'zo bo'ling!",
   "goToTelegramBot": "Botga o'tish",
+  "requestMentor": "Murojaatingiz tez orada ko'rib chiqiladi. Javobni chat orqali olasiz!",
+  "understandable": "Tushunarli",
   "main": "Asosiy",
   "account": "Hisob",
   "myLearning": "Mening o‘qishim",

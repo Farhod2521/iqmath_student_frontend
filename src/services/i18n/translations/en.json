@@ -1,4 +1,5 @@
 {
+  "ratings": "Ratings",
   "dashboard": "Dashboard",
   "telegram_bot": "Sign up through the Telegram bot",
   "main": "Main",
@@ -418,5 +419,7 @@
   "newProft": "New profit",
   "newCoupon": "New coupon",
   "startConversation": "Start a conversation",
-  "chatSendMessage": "Select a chat to send a message"
+  "chatSendMessage": "Select a chat to send a message",
+  "requestMentor": "Your request will be reviewed shortly. You will receive an answer via chat!",
+  "understandable": "Understandable"
 }

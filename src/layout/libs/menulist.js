@@ -4,7 +4,7 @@ import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/f
 import { BiDirections } from 'react-icons/bi'
 import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
-import { PiBooksLight } from 'react-icons/pi'
+import { PiBooksLight, PiTrophy } from 'react-icons/pi'
 import { PiUsers } from 'react-icons/pi'
 import { PiGraduationCap } from 'react-icons/pi'
 import { FiLayers } from 'react-icons/fi'
@@ -16,6 +16,7 @@ import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
 import { MdOutlinePayments } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
+import ProductsIcon from '@/components/icons/products'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -210,6 +211,20 @@ export const getMenuItems = (t) => [
       }
     ]
   },
+
+  // { asadbek
+  //   key: 'products-exchange',
+  //   path: '/dashboard/teacher/purchased-products',
+  //   label: t('purchasedProducts'),
+  //   icon: (isActive) => (
+  //     <ProductsIcon
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={20}
+  //     />
+  //   ),
+  //   roles: [RolesList.TEACHER, RolesList.SUPERADMIN],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'statistics',
     path: '/dashboard/teacher/statistics',
@@ -287,6 +302,26 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'ratings',
+    path: '/dashboard/ratings',
+    label: t('ratings'),
+    icon: (isActive) => (
+      <PiTrophy
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [
+      RolesList.TEACHER,
+      RolesList.ADMIN,
+      RolesList.SUPERADMIN,
+      RolesList.TUTOR,
+      RolesList.STUDENT,
+      RolesList.PARENT
+    ],
     type: MenuType.LINK
   },
   {

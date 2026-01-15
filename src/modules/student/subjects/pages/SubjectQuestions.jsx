@@ -260,7 +260,7 @@ export default function SubjectQuestions() {
             setTelegramLink(res?.data?.telegram_link)
             setShowMistake(false)
             setShowResult(false)
-            // setShowSuccessPopup(true)
+            setShowSuccessPopup(true)
           },
           onError: () => toast.error('Xatolik yuz berdi!')
         }
@@ -504,7 +504,7 @@ export default function SubjectQuestions() {
         </div>
       </div>
 
-      {/* <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} /> */}
+      <SuccessPopup telegramLink={telegramLink} open={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </div>
   )
 }
