@@ -1,98 +1,106 @@
-import React from 'react'
-import { Box, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
-import { styled } from '@mui/material/styles'
-import { IconArrowLeft, IconArrowRight } from '@tabler/icons'
-// import './carousel.css'
-import { useTheme } from '@mui/material/styles'
-
-import user1 from '@/assets/images/frontend-pages/homepage/user1.jpg'
-import user2 from '@/assets/images/frontend-pages/homepage/user2.jpg'
-import user3 from '@/assets/images/frontend-pages/homepage/user3.jpg'
-import user4 from '@/assets/images/frontend-pages/homepage/user4.jpg'
-import user5 from '@/assets/images/frontend-pages/homepage/user5.jpg'
-import Image from 'next/image'
-
-function SampleNextArrow(props) {
-  const { className, onClick } = props
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      className={className}
-      sx={{
-        cursor: 'pointer',
-        position: 'absolute',
-        top: { xs: 'unset ', sm: '-100px' },
-        bottom: { xs: '-60px', sm: 'unset' },
-        right: 0,
-        backgroundColor: (theme) => theme.palette.grey[100],
-        width: '48px',
-        height: '48px',
-        borderRadius: '50%'
-      }}
-      onClick={onClick}
-    >
-      <IconArrowRight />
-    </Box>
-  )
-}
-
-function SamplePrevArrow(props) {
-  const { className, onClick } = props
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      className={className}
-      sx={{
-        cursor: 'pointer',
-        position: 'absolute',
-        top: { xs: 'unset ', sm: '-100px' },
-        bottom: { xs: '-60px', sm: 'unset' },
-        right: '60px',
-        backgroundColor: (theme) => theme.palette.grey[100],
-        width: '48px',
-        height: '48px',
-        borderRadius: '50%'
-      }}
-      onClick={onClick}
-    >
-      <IconArrowLeft />
-    </Box>
-  )
-}
+import { X, ChevronRight } from 'lucide-react'
 
 const LeaderShipCarousel = () => {
-  const theme = useTheme()
+  const [selectedLeader, setSelectedLeader] = useState(null)
 
-  const slideStyle = {
-    padding: '0 30px' // Add padding between slides
-  }
+  const leaders = [
+    {
+      id: 1,
+      name: 'Al-Xorazmiy',
+      title: 'Algebra asoschilaridan biri',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+      yearsActive: '780-850',
+      shortBio: 'Algebra asoschilaridan muallifi',
+      fullBio:
+        "Muhammad ibn Muso al-Xorazmiy - buyuk o'zbek matematigi va astronomi. Algebra fanining asoschilaridan biri hisoblanadi. Uning 'Al-jabr' asari algebraning rivojlanishiga katta hissa qo'shgan.",
+      achievements: [
+        'Algebra fanining asoschilaridan',
+        'Hind raqamlarini Yevropa va Sharqqa yoygan',
+        'Algoritmlar nazariyasining asoschisi'
+      ]
+    },
+
+    {
+      id: 2,
+      name: 'Marie Curie',
+      position: 'Fizik va Kimyogar',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+      shortBio: 'Radioaktivlik tadqiqotchisi',
+      fullBio:
+        "Mari Kyuri (1867-1934) - polshalik-fransuz fizik va kimyogar. Radioaktivlik sohasidagi tadqiqotlari uchun ikki marta Nobel mukofotiga sazovor bo'lgan yagona ayol. Poloniy va radiy elementlarini kashf etgan. Tibbiyot va fanга katta hissa qo'shgan.",
+      achievements: ['2 ta Nobel mukofoti', 'Poloniy va Radiy kashfiyoti', 'Radioaktivlik tadqiqotlari'],
+      yearsActive: '1891-1934'
+    },
+    {
+      id: 3,
+      name: 'Isaac Newton',
+      position: 'Matematik va Fizik',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+      shortBio: 'Klassik mexanika asoschilaridan',
+      fullBio:
+        "Isaak Nyuton (1643-1727) - ingliz fizigi, matematigi, astronomi va tabiat faylasufi. Gravitatsiya qonunini kashf etgan. Harakat qonunlari zamonaviy fizikaning asosini tashkil etadi. Matematik analizni yaratishda ham katta rol o'ynagan.",
+      achievements: ['Gravitatsiya qonuni', 'Harakat qonunlari', 'Matematik analiz'],
+      yearsActive: '1661-1727'
+    },
+    {
+      id: 4,
+      name: 'Nikola Tesla',
+      position: 'Ixtirochi va Muhandis',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+      shortBio: "O'zgaruvchan tok tizimi muallifi",
+      fullBio:
+        "Nikola Tesla (1856-1943) - serbiyalik-amerikalik ixtirochi, muhandis va fizik. O'zgaruvchan tok tizimini ishlab chiqqan. Simsiz energiya uzatish, radio, röntgen nurlari va boshqa ko'plab sohalarda tadqiqotlar olib borgan. Zamonaviy elektr energetikasi uning kashfiyotlariga asoslangan.",
+      achievements: ["O'zgaruvchan tok tizimi", "Tesla g'altagi", 'Simsiz energiya uzatish'],
+      yearsActive: '1875-1943'
+    },
+    {
+      id: 5,
+      name: 'Stephen Hawking',
+      position: 'Nazariy Fizik',
+      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
+      shortBio: 'Qora tuynuklar tadqiqotchisi',
+      fullBio:
+        "Stiven Xoking (1942-2018) - ingliz nazariy fizigi va kosmologi. Qora tuynuklar va koinotning kelib chiqishi bo'yicha fundamental tadqiqotlar olib borgan. 'Vaqt qisqacha tarixi' kitobi eng ko'p sotiladigan ilmiy asarlardan biri. Og'ir kasallikka qaramay, butun hayotini fanga bag'ishlagan.",
+      achievements: ['Qora tuynuklar nazariyasi', 'Katta portlash nazariyasi', 'Mashhur kitoblar muallifi'],
+      yearsActive: '1962-2018'
+    },
+    {
+      id: 6,
+      name: 'Ada Lovelace',
+      position: 'Matematik',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
+      shortBio: 'Birinchi dasturchi',
+      fullBio:
+        'Ada Lavleys (1815-1852) - ingliz matematigi, dunyodagi birinchi kompyuter dasturchisi deb tan olingan. Charlz Bebbidjning analitik mashinasi uchun birinchi algoritmni yozgan. Zamonaviy dasturlash tillarining asoschilaridan biri hisoblanadi.',
+      achievements: ['Birinchi kompyuter dasturi', 'Analitik mashina algoritmlari', 'Dasturlash asoschilaridan'],
+      yearsActive: '1833-1852'
+    }
+  ]
 
   const settings = {
     dots: false,
+    arrows: false,
     infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    className: 'slider variable-width',
-    centerMode: false,
-    slidesToScroll: 4,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    speed: 4500,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    cssEase: 'linear',
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    pauseOnHover: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2
+          slidesToScroll: 1
         }
       },
       {
-        breakpoint: 480,
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1
@@ -101,100 +109,175 @@ const LeaderShipCarousel = () => {
     ]
   }
 
-  const UserBox = styled(Box)(() => ({
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.default : 'white',
-    maxWidth: 'calc(100% - 51px)',
-    marginLeft: '15px',
-    borderRadius: '8px',
-    marginTop: '-30px !important',
-    boxShadow: '0px 6px 12px rgba(127, 145, 156, 0.12)',
-    marginBottom: '10px'
-  }))
-
   return (
-    <Slider {...settings} className="leadership-carousel" style={{ marginLeft: '15px' }}>
-      <div style={slideStyle}>
-        <Image src={user1} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Alex Martinez
-          </Typography>
-          <Typography variant="body1">CEO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user2} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Jordan Nguyen
-          </Typography>
-          <Typography variant="body1">CTO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user3} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Taylor Roberts
-          </Typography>
-          <Typography variant="body1">Product Manager</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user4} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Morgan Patel
-          </Typography>
-          <Typography variant="body1">Lead Developer</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user5} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Kiana Collins
-          </Typography>
-          <Typography variant="body1">Software Developer</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user1} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Alex Martinez
-          </Typography>
-          <Typography variant="body1">CEO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user2} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Jordan Nguyen
-          </Typography>
-          <Typography variant="body1">CTO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user3} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Taylor Roberts
-          </Typography>
-          <Typography variant="body1">Product Manager</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <Image src={user4} alt="user-Image" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox bgcolor="white" px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Morgan Patel
-          </Typography>
-          <Typography variant="body1">Lead Developer</Typography>
-        </UserBox>
-      </div>
-    </Slider>
+    <div className="w-full overflow-hidden py-8">
+      <Slider {...settings} className="leadership-carousel">
+        {leaders.map((leader) => (
+          <div key={leader.id} className="px-3">
+            <div
+              className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              onClick={() => setSelectedLeader(leader)}
+              style={{ width: '380px', margin: '0 auto' }}
+            >
+              <div className="relative overflow-hidden group">
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={leader.image}
+                    alt={leader.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    draggable="false"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 transition-colors group-hover:text-blue-600">
+                  {leader.name}
+                </h3>
+                <p className="text-blue-600 font-medium mb-3">{leader.position}</p>
+                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{leader.shortBio}</p>
+                <div className="mt-4 text-blue-600 text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span>Batafsil</span>
+                  <ChevronRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+
+      {/* Modal */}
+      {selectedLeader && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 animate-fadeIn"
+          onClick={() => setSelectedLeader(null)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slideUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex justify-between items-center z-10">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">To'liq ma'lumot</h2>
+              <button
+                onClick={() => setSelectedLeader(null)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-6 h-6 text-gray-700" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row gap-6 mb-6">
+                <div className="sm:w-2/5">
+                  <div className="relative overflow-hidden rounded-xl shadow-xl">
+                    <img
+                      src={selectedLeader.image}
+                      alt={selectedLeader.name}
+                      className="w-full aspect-square object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  </div>
+                </div>
+                <div className="sm:w-3/5">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{selectedLeader.name}</h3>
+                  <p className="text-lg sm:text-xl text-blue-600 font-medium mb-4">{selectedLeader.position}</p>
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-4 border border-blue-100">
+                    <p className="text-sm text-gray-600 font-medium mb-1">Faoliyat davri:</p>
+                    <p className="text-lg sm:text-xl text-gray-900 font-semibold">{selectedLeader.yearsActive}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span className="w-1 h-6 bg-blue-600 rounded"></span>
+                  Biografiya
+                </h4>
+                <p className="text-gray-700 leading-relaxed text-justify">{selectedLeader.fullBio}</p>
+              </div>
+
+              <div>
+                <h4 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span className="w-1 h-6 bg-blue-600 rounded"></span>
+                  Asosiy yutuqlari
+                </h4>
+                <div className="space-y-3">
+                  {selectedLeader.achievements.map((achievement, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors"
+                    >
+                      <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        {index + 1}
+                      </span>
+                      <span className="text-gray-700 leading-relaxed">{achievement}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 bg-gradient-to-t from-gray-50 to-white border-t border-gray-200 px-4 sm:px-6 py-4">
+              <button
+                onClick={() => setSelectedLeader(null)}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg"
+              >
+                Yopish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        .leadership-carousel .slick-slide {
+          padding: 0 8px;
+        }
+
+        .leadership-carousel .slick-list {
+          margin: 0 -8px;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .animate-slideUp {
+          animation: slideUp 0.4s ease-out;
+        }
+
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      `}</style>
+    </div>
   )
 }
 

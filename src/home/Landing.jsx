@@ -3,6 +3,17 @@ import { ThemeSettings } from './theme/Theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import ScrollToTop from './components/shared/scroll-to-top'
 import BannerHeader from './components/homepage/banner/BannerHeader'
+import Features from './components/homepage/features/Features'
+import Footer from '@/components/footer'
+import C2a from './components/shared/c2a'
+import FAQ from './components/homepage/faq'
+import Pricing from './components/shared/pricing'
+import ExceptionalFeature from './components/homepage/exceptional-feature'
+import Reviews from './components/shared/reviews'
+import PowerfulDozens from './components/homepage/powerful-dozens'
+import Leadership from './components/shared/leadership'
+import DefendFocus from './components/homepage/defend-focus'
+import CTA from './components/shared/cta'
 
 function Landing() {
   const theme = ThemeSettings()
@@ -11,23 +22,23 @@ function Landing() {
       <CssBaseline />
       <style jsx global>{`
         body {
-          overflow: hidden !important;
+          overflow: auto !important;
         }
       `}</style>
       {/* <HeaderAlert /> */}
 
-      <BannerHeader />
-
-      {/* <Features />
-      <DefendFocus />
-      <Leadership />
+      {/* <BannerHeader /> */}
       <PowerfulDozens />
+      <C2a />
+      {/* <Features /> */}
+      {/* <ExceptionalFeature /> */}
+      <DefendFocus />
       <Reviews />
-      <ExceptionalFeature />
+      {/* <Leadership /> */}
       <Pricing />
       <FAQ />
-      <C2a /> */}
-      {/* <Footer /> */}
+      <CTA />
+      <Footer />
       <ScrollToTop />
     </ThemeProvider>
   )

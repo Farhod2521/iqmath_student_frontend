@@ -1,22 +1,22 @@
-import React from 'react';
-import Grid from '@mui/material/Grid2';
-import { Box, Typography } from '@mui/material';
+import React from 'react'
+import Grid from '@mui/material/Grid2'
+import { Box, Typography } from '@mui/material'
 
 const FeatureTitle = () => {
   return (
     <Grid container spacing={3} justifyContent="center">
       <Grid size={{ xs: 12, lg: 6 }} textAlign="center">
         <Typography variant="body1">
-          Introducing Modernize's Light & Dark Skins,{' '}
+          IQmath — matematikani tushunib o‘rganish uchun yaratilgan zamonaviy platforma.{' '}
           <Box fontWeight={500} component="span">
-            Exceptional Dashboards
+            Video darslar
           </Box>
-          , and <br />
-          Dynamic Pages - Stay Updated on What's New!
+          , mashqlar va testlar bilan <br />
+          real natijaga erishing.
         </Typography>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default FeatureTitle;
+export default FeatureTitle
