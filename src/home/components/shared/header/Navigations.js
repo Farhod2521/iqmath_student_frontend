@@ -8,13 +8,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-export const NavLinks = [
-  { title: 'Bosh sahifa', to: '/' },
-  { title: 'Biz haqimizda', to: '/about' },
-  { title: 'Savol javob', to: '/faqs' },
-  { title: "Bog'lanish", to: 'tel:+998881989000' }
-]
-
 const StyledButton = styled(Button)(({ theme }) => ({
   fontSize: '15px',
   color: theme.palette.text.secondary,

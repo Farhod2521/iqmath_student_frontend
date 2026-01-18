@@ -2,119 +2,132 @@ import React from 'react'
 import { Box, Stack, Typography, Container } from '@mui/material'
 import FeatureTitle from './FeatureTitle'
 import Grid from '@mui/material/Grid2'
-
-import icon1 from '@/assets/images/svgs/icon-briefcase.svg'
-import FeatureApp from '@/assets/images/frontend-pages/homepage/feature-apps.png'
-import LogoIcon from '@/assets/images/logos/logoIcon.svg'
-import Screen1 from '@/assets/images/frontend-pages/homepage/screen1.png'
-import IconBubble from '@/assets/images/svgs/icon-speech-bubble.svg'
-import IconFav from '@/assets/images/svgs/icon-favorites.svg'
 import Image from 'next/image'
+
+// lucide-react icons
+import { SlidersHorizontal, PlayCircle, ClipboardCheck } from 'lucide-react'
 
 const Features = () => {
   return (
     <Box pt={10} pb={10}>
       <Container maxWidth="lg">
         <FeatureTitle />
-
         <Grid container spacing={3} mt={3}>
+          {/* ================= LEFT COLUMN ================= */}
           <Grid size={{ xs: 12, sm: 6, lg: 'grow' }}>
+            {/* Moslashuvchan ta’lim */}
             <Box mb={3} bgcolor="warning.light" borderRadius="24px">
               <Box px={4} py="65px">
-                <Stack direction="column" spacing={2} textAlign="center">
-                  <Box textAlign="center">
-                    <Image src={icon1} alt="icon1" width={40} height={40} />
-                  </Box>
+                <Stack spacing={2} textAlign="center">
+                  <SlidersHorizontal size={40} strokeWidth={1.8} />
+
                   <Typography variant="h6" fontWeight={700}>
-                    Light & Dark Color Schemes
+                    Moslashuvchan ta’lim tizimi
                   </Typography>
-                  <Typography variant="body1">Choose your preferred visual style effortlessly.</Typography>
+                  <Typography variant="body1">
+                    Har bir o‘quvchi o‘z bilim darajasi va tezligiga mos ravishda o‘rganadi.
+                  </Typography>
                 </Stack>
               </Box>
             </Box>
+
+            {/* Kurslar */}
             <Box textAlign="center" mb={3} bgcolor="secondary.light" borderRadius="24px">
               <Box px={4} py="50px">
-                <Stack direction="column" spacing={2} textAlign="center">
+                <Stack spacing={2}>
                   <Typography variant="h6" fontWeight={700}>
-                    12+ Ready to Use Application Designs
+                    Keng qamrovli kurslar
                   </Typography>
-                  <Typography variant="body1"> Instantly deployable designs for your applications.</Typography>
+                  <Typography variant="body1">
+                    Algebra, geometriya, statistika va boshqa muhim yo‘nalishlar bo‘yicha kurslar.
+                  </Typography>
                 </Stack>
               </Box>
-              <Box height="70px">
-                <Image src={FeatureApp} alt="icon1" width={250} height={70} />
+
+              {/* IMAGE URL */}
+              <Box height="90px">
+                {/* <Image
+                  src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=300&fit=crop"
+                  alt="Matematika kurslari"
+                  width={260}
+                  height={90}
+                  style={{ objectFit: 'contain' }}
+                /> */}
               </Box>
             </Box>
           </Grid>
-          <Grid
-            size={{ xs: 12, lg: 5 }}
-            sx={{
-              order: {
-                xs: 3,
-                lg: 2
-              }
-            }}
-          >
+
+          {/* ================= CENTER MAIN CARD ================= */}
+          <Grid size={{ xs: 12, lg: 5 }} sx={{ order: { xs: 3, lg: 2 } }}>
             <Box textAlign="center" mb={3} bgcolor="primary.light" borderRadius="24px">
               <Box pt="65px" pb="40px" px={5}>
-                <Image src={LogoIcon} alt="logo" height="50" width="50" />
-                <Typography
-                  variant="h2"
-                  fontWeight="700"
-                  mt={4}
-                  sx={{
-                    fontSize: {
-                      lg: '40px',
-                      xs: '35px'
-                    }
-                  }}
-                >
-                  New Demos
+                {/* LOGO (URL ham bo‘lishi mumkin) */}
+                {/* <Image
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"
+                  alt="IQmath logo"
+                  width={50}
+                  height={50}
+                /> */}
+
+                <Typography variant="h2" fontWeight={700} mt={4} sx={{ fontSize: { lg: '40px', xs: '35px' } }}>
+                  Zamonaviy o‘quv platforma
                 </Typography>
+
                 <Typography variant="body1" mt={2}>
-                  Brand new demos to help you build the perfect dashboard:{' '}
+                  IQmath ilg‘or o‘qitish metodikasi va zamonaviy texnologiyalar asosida ishlab chiqilgan.{' '}
                   <Typography component="span" fontWeight={600}>
-                    Dark and Right-to-Left.
+                    Video darslar va amaliy mashqlar bilan.
                   </Typography>
                 </Typography>
+
+                {/* MAIN IMAGE URL */}
                 <Box mt={5} mb={2}>
-                  <Image src={Screen1} alt="icon1" width={405} height={245} style={{ width: '100%', height: 'auto' }} />
+                  {/* <Image
+                    src="https://images.unsplash.com/photo-1584697964154-4d1f8f5c1f65?w=900&h=600&fit=crop"
+                    alt="Online matematika darsi"
+                    width={420}
+                    height={260}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '16px'
+                    }}
+                  /> */}
                 </Box>
               </Box>
             </Box>
           </Grid>
-          <Grid
-            size={{ xs: 12, sm: 6, lg: 'grow' }}
-            sx={{
-              order: {
-                xs: 2,
-                lg: 3
-              }
-            }}
-          >
+
+          {/* ================= RIGHT COLUMN ================= */}
+          <Grid size={{ xs: 12, sm: 6, lg: 'grow' }} sx={{ order: { xs: 2, lg: 3 } }}>
+            {/* Video darslar */}
             <Box textAlign="center" mb={3} bgcolor="success.light" borderRadius="24px">
               <Box px={4} py="65px">
-                <Stack direction="column" spacing={2} textAlign="center">
-                  <Box textAlign="center">
-                    <Image src={IconBubble} alt="icon1" width={40} height={40} />
-                  </Box>
+                <Stack spacing={2} textAlign="center">
+                  <PlayCircle size={40} strokeWidth={1.8} />
+
                   <Typography variant="h6" fontWeight={700}>
-                    Code Improvements
+                    Video darslar
                   </Typography>
-                  <Typography variant="body1"> Benefit from continuous improvements and optimizations.</Typography>
+                  <Typography variant="body1">
+                    Murakkab mavzular bosqichma-bosqich video orqali tushuntiriladi.
+                  </Typography>
                 </Stack>
               </Box>
             </Box>
+
+            {/* Test va mashqlar */}
             <Box textAlign="center" mb={3} bgcolor="error.light" borderRadius="24px">
               <Box px={4} py="65px">
-                <Stack direction="column" spacing={2} textAlign="center">
-                  <Box textAlign="center">
-                    <Image src={IconFav} alt="icon1" width={40} height={40} />
-                  </Box>
+                <Stack spacing={2} textAlign="center">
+                  <ClipboardCheck size={40} strokeWidth={1.8} />
+
                   <Typography variant="h6" fontWeight={700}>
-                    50+ UI Components
+                    Test va mashqlar
                   </Typography>
-                  <Typography variant="body1"> A rich collection for seamless user experiences.</Typography>
+                  <Typography variant="body1">
+                    Bilimingizni mustahkamlash va imtihonlarga tayyorlanish imkoniyati.
+                  </Typography>
                 </Stack>
               </Box>
             </Box>

@@ -1,14 +1,40 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Typography, Container, Stack, Button } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 import DesignCol from '@/assets/images/frontend-pages/homepage/design-collection.png'
 import Image from 'next/image'
+import { Award, BookOpen, TrendingUp, Video } from 'lucide-react'
 
 const C2a = () => {
+  const { t } = useTranslation()
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'))
   const smUp = useMediaQuery((theme) => theme.breakpoints.only('sm'))
+
+  const features = [
+    {
+      icon: <Video className="w-8 h-8" />,
+      title: t('VideoTutorials'),
+      description: t('detailedVideo')
+    },
+    {
+      icon: <BookOpen className="w-8 h-8" />,
+      title: t('kengKurslar'),
+      description: t('setCourses')
+    },
+    {
+      icon: <TrendingUp className="w-8 h-8" />,
+      title: t('flexibleLearning'),
+      description: t('learnPlatform')
+    },
+    {
+      icon: <Award className="w-8 h-8" />,
+      title: t('testingEvaluation'),
+      description: t('testKnowledge')
+    }
+  ]
 
   return (
     <>
@@ -21,86 +47,29 @@ const C2a = () => {
           }
         }}
       >
-        <Box
-          bgcolor="primary.light"
-          borderRadius="24px"
-          overflow="hidden"
-          position="relative"
-          sx={{
-            py: {
-              xs: '40px',
-              lg: '70px'
-            }
-          }}
-        >
-          <Container maxWidth="lg">
-            <Grid container spacing={3} alignItems="center">
-              <Grid size={{ xs: 12, lg: 6, sm: 8 }}>
-                <Typography
-                  variant="h4"
-                  mb={3}
-                  fontWeight={700}
-                  fontSize="40px"
-                  lineHeight="1.4"
-                  sx={{
-                    fontSize: {
-                      lg: '40px',
-                      xs: '30px'
-                    }
-                  }}
+        {/* Features Section */}
+        <section id="features" className="py-20 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('PlatCapabilit')}</h2>
+              <p className="text-xl text-gray-600">{t('everythingEducation')}</p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer"
                 >
-                  Develop with feature-rich React Dashboard
-                </Typography>
-                <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useflexgap="true" flexWrap="wrap" mb={3}>
-                  <Button variant="contained" size="large" href="/auth/login">
-                    Member Login
-                  </Button>
-                  <Button variant="outlined" size="large" href="/auth/register">
-                    Register as Member
-                  </Button>
-                </Stack>
-                <Typography fontSize="14px">
-                  <Box fontWeight={600} component="span">
-                    One-time purchase -
-                  </Box>{' '}
-                  no recurring fees.
-                </Typography>
-              </Grid>
-            </Grid>
-          </Container>
-
-          {lgUp ? (
-            <Image
-              src={DesignCol}
-              alt="design"
-              width={900}
-              height={365}
-              style={{
-                position: 'absolute',
-                right: 0,
-                top: 0,
-                width: 'auto',
-                height: '100%'
-              }}
-            />
-          ) : null}
-
-          {smUp ? (
-            <Image
-              src={DesignCol}
-              alt="design"
-              width={900}
-              height={365}
-              style={{
-                position: 'absolute',
-                right: '-200px',
-                top: 0,
-                width: 'auto',
-                height: '100%'
-              }}
-            />
-          ) : null}
-        </Box>
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-4">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </Container>
     </>
   )
