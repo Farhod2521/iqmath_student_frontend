@@ -30,11 +30,11 @@ function Landing() {
       {/* <BannerHeader /> */}
       <PowerfulDozens />
       <C2a />
-      {/* <Features /> */}
-      {/* <ExceptionalFeature /> */}
       <DefendFocus />
+      <Features />
+      {/* <ExceptionalFeature /> */}
       <Reviews />
-      {/* <Leadership /> */}
+      <Leadership />
       <Pricing />
       <FAQ />
       <CTA />

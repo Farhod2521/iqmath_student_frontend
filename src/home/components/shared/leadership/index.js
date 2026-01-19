@@ -34,8 +34,7 @@ const Leadership = () => {
       name: 'Al-Beruniy',
       title: 'Ensiklopedik olim',
       // image: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Al-Khwarizmi_MuslimMathematician.jpg',
-      image: AlXorazmiy,
-
+      image: AlBeruniy,
       period: '973-1048',
       bio: "Abu Rayhon Beruniy - buyuk o'zbek olimi, matematika, astronomiya, fizika, geografiya va boshqa ko'plab fanlarda fundamental tadqiqotlar olib borgan. Yer radiusini yuqori aniqlikda hisoblagan.",
       achievements: [
@@ -49,8 +48,7 @@ const Leadership = () => {
       name: "Mirzo Ulug'bek",
       title: 'Astronomiya va matematika buyuk olimi',
       // image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
-      image: AlXorazmiy,
-
+      image: MirzoUlugbek,
       period: '1394-1449',
       bio: "Mirzo Ulug'bek - buyuk davlat arbobi, olim va mesenati. Samarqandda rasadxona qurgan va yulduzlar katalogini yaratgan. Trigonometriya bo'yicha fundamental ishlar bajargan.",
       achievements: [
@@ -64,7 +62,7 @@ const Leadership = () => {
       name: "Al-Farg'oniy",
       title: 'Astronomiya va matematika olimi',
       // image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
-      image: AlXorazmiy,
+      image: AlFargoni,
 
       period: '798-861',
       bio: "Ahmad al-Farg'oniy - Farg'ona vodiysida tug'ilgan buyuk astronom va matematik. Uning asarlari Yevropada keng tarqalgan va Renessans davridagi astronomiya rivojiga katta ta'sir ko'rsatgan.",
@@ -79,8 +77,7 @@ const Leadership = () => {
       name: 'Umar Xayyom',
       title: 'Matematik, astronom va shoir',
       // image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-      image: AlXorazmiy,
-
+      image: UmarXayyom,
       period: '1048-1131',
       bio: 'Umar Xayyom - fors-tojik matematigi, astronomi va shoiri. Kubik tenglamalar nazariyasini rivojlantirgan. Jaloliy taqvimini yaratgan. Ruboiylari bilan butun dunyoga mashhur.',
       achievements: [
@@ -94,8 +91,7 @@ const Leadership = () => {
       name: 'Ibn Sino',
       title: 'Tibbiyot, falsafa va matematika olimi',
       // image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
-      image: AlXorazmiy,
-
+      image: IbnSino,
       period: '980-1037',
       bio: "Abu Ali ibn Sino (Avitsenna) - buyuk o'rta asrlar olimi. Tibbiyot, falsafa, matematika va boshqa ko'plab fanlarda asarlar yaratgan. 'Tib qonunlari' asari 600 yildan ortiq davr mobaynida tibbiyotda asosiy qo'llanma bo'lgan.",
       achievements: [
@@ -214,11 +210,9 @@ const Leadership = () => {
                     <Image
                       src={scientist.image}
                       alt={scientist.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 320px"
-                      // width={250}
-                      // height={70}
+                      width={320}
+                      height={320}
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="p-6">
@@ -290,10 +284,17 @@ const Leadership = () => {
               <div className="p-6">
                 <div className="flex flex-col md:flex-row gap-6 mb-6">
                   <div className="md:w-2/5">
-                    <img
+                    {/* <img
                       src={selectedScientist.image}
                       alt={selectedScientist.name}
                       className="w-full rounded-xl shadow-lg"
+                    /> */}
+                    <Image
+                      src={selectedScientist.image}
+                      alt={selectedScientist.name}
+                      width={500}
+                      height={500}
+                      className="w-full rounded-xl"
                     />
                   </div>
                   <div className="md:w-3/5 space-y-4">

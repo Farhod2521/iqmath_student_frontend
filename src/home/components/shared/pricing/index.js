@@ -11,8 +11,8 @@ const Pricing = () => {
     <Box
       sx={{
         py: {
-          xs: 5,
-          lg: 11
+          xs: 5
+          // lg: 11
         }
       }}
     >
