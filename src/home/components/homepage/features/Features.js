@@ -20,7 +20,11 @@ const cardStyle = {
 const Features = () => {
   return (
     <Box pt={10} pb={10}>
-      <Container maxWidth="lg">
+      <Container
+        sx={{
+          maxWidth: '1400px !important'
+        }}
+      >
         <FeatureTitle />
 
         <Grid container spacing={3} mt={3}>
@@ -89,24 +93,11 @@ const Features = () => {
                 </Typography>
 
                 <Box mt={4}>
-                  {/* <Image
-                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
-                    alt="Online learning"
-                    width={420}
-                    height={260}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: 20,
-                      objectFit: 'cover'
-                    }}
-                    unoptimized
-                  /> */}
                   <Image
                     src="https://images.unsplash.com/photo-1532012197267-da84d127e765"
                     alt="Matematika formulalari"
                     width={420}
-                    height={260}
+                    height={240}
                     style={{ borderRadius: 16, objectFit: 'cover', width: '100%' }}
                     unoptimized
                   />

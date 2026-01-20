@@ -130,7 +130,7 @@ const FAQ = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 3, pb: { xs: '30px', lg: '60px' } }}>
+    <Container sx={{ maxWidth: '1400px !important', mt: 3, pb: { xs: '30px', lg: '60px' } }}>
       <Grid container spacing={3} justifyContent="center">
         <Grid xs={12} lg={8}>
           <Box mt={7}>

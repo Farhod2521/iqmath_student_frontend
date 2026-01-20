@@ -48,22 +48,22 @@ const C2a = () => {
         }}
       >
         {/* Features Section */}
-        <section id="features" className="py-20 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('PlatCapabilit')}</h2>
+        <section id="features" className="px-4 py-20 bg-white">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-16 text-center">
+              <h2 className="mb-4 text-4xl font-bold text-gray-900">{t('PlatCapabilit')}</h2>
               <p className="text-xl text-gray-600">{t('everythingEducation')}</p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer"
+                  className="p-6 transition transform cursor-pointer bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl hover:shadow-xl hover:-translate-y-2"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-4">
+                  <div className="flex items-center justify-center w-16 h-16 mb-4 text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <h3 className="mb-2 text-xl font-bold text-gray-900">{feature.title}</h3>
                   <p className="text-gray-600">{feature.description}</p>
                 </div>
               ))}

@@ -8,6 +8,8 @@
   "welcome": "Welcome",
   "questions": "Questions",
   "homePage": "Home page",
+  "news": "News",
+  "new": "New",
   "reminder": "Reminder",
   "first_reminder": "For the Olympics, 30 questions are provided, the first 10 questions are evaluated at 2.1 points, the next 10 questions at 3.1 points, the last 10 questions are evaluated at 5.1 points.",
   "second_reminder": "The maximum score is 103 points.",
