@@ -39,24 +39,29 @@ const Reviews = () => {
             </Grid>
           </Grid> */}
       {/* Benefits Section */}
-      <section id="benefits" className="py-20 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Nima Uchun IQmath?</h2>
+      <section id="benefits" className="px-4 py-20 text-white bg-gradient-to-r from-blue-600 to-purple-600">
+        <Container
+          sx={{
+            maxWidth: '1400px !important',
+            margin: 'auto !important'
+          }}
+        >
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-bold">Nima Uchun IQmath?</h2>
             <p className="text-xl opacity-90">O'qish natijasida oladigan afzalliklar</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition flex items-start space-x-3"
+                className="flex items-start p-6 space-x-3 transition bg-white/10 backdrop-blur-lg rounded-xl hover:bg-white/20"
               >
-                <CheckCircle className="w-6 h-6 flex-shrink-0 mt-1" />
+                <CheckCircle className="flex-shrink-0 w-6 h-6 mt-1" />
                 <span className="text-lg">{benefit}</span>
               </div>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
       {/* </Container>
       </Box> */}

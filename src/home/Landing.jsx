@@ -7,13 +7,14 @@ import Features from './components/homepage/features/Features'
 import Footer from '@/components/footer'
 import C2a from './components/shared/c2a'
 import FAQ from './components/homepage/faq'
-import Pricing from './components/shared/pricing'
-import ExceptionalFeature from './components/homepage/exceptional-feature'
-import Reviews from './components/shared/reviews'
+import Pricing from './components/homepage/pricing'
+import Reviews from './components/homepage/reviews'
 import PowerfulDozens from './components/homepage/powerful-dozens'
-import Leadership from './components/shared/leadership'
+import Leadership from './components/homepage/leadership'
 import DefendFocus from './components/homepage/defend-focus'
 import CTA from './components/shared/cta'
+import Benefits from './components/homepage/benefits'
+import Courses from './components/homepage/courses'
 
 function Landing() {
   const theme = ThemeSettings()
@@ -30,11 +31,14 @@ function Landing() {
       {/* <BannerHeader /> */}
       <PowerfulDozens />
       <C2a />
+      <Courses />
+      <Benefits />
       <DefendFocus />
       <Features />
       {/* <ExceptionalFeature /> */}
       <Reviews />
       <Leadership />
+
       <Pricing />
       <FAQ />
       <CTA />

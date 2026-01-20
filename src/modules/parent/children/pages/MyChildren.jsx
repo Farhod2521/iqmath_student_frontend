@@ -80,7 +80,7 @@ const MyChildren = () => {
             </p>
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="bg-[#5D87FF] rounded-[12px] text-white px-4 py-2 rounded font-medium"
+              className="bg-[#5D87FF] rounded-[12px] text-white px-4 py-2 font-medium"
             >
               Farzand qo'shish
             </button>

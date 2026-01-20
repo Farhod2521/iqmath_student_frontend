@@ -36,6 +36,7 @@ const Navigations = () => {
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/prices' },
     { title: t('faq'), to: '/faqs' },
+    { title: t('news'), to: '/news' },
     { title: t('contactus'), to: 'tel:+998881989000' }
   ]
 

@@ -12,11 +12,10 @@ const Pricing = () => {
       sx={{
         py: {
           xs: 5
-          // lg: 11
         }
       }}
     >
-      <Container maxWidth="lg">
+      <Container sx={{ maxWidth: '1400px !important', mt: 4, pb: { xs: 4, lg: 4 } }}>
         <Grid container spacing={3} alignItems="center" justifyContent="center">
           <Grid size={{ xs: 12, lg: 7 }}>
             <Typography
@@ -54,10 +53,8 @@ const Pricing = () => {
             </Typography>
           </Grid>
         </Grid>
-
-        {/* Asosiy Pricing Content */}
-        <PricingContent />
       </Container>
+      <PricingContent />
     </Box>
   )
 }
