@@ -58,7 +58,6 @@ const PowerfulDozens = () => {
     <section
       className="relative w-full flex justify-center my-auto items-center h-[100vh] md:h-[calc(80vh-60px)]"
       style={{
-        // height: 'calc(80vh - 60px)',
         filter: loading ? 'blur(12px)' : 'none'
       }}
     >

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-
+import { useTranslation } from 'react-i18next'
 import 'slick-carousel/slick/slick.css'
 
 import LeadershipSlider from './LeadershipSlider'
 import { Container } from '@mui/material'
 
 const Leadership = () => {
+  const { t } = useTranslation()
+
   return (
     <>
       <section className="relative px-4 py-20 overflow-hidden text-gray-900 bg-gray-50">
@@ -19,14 +21,10 @@ const Leadership = () => {
           <div className="relative mx-auto max-w-7xl">
             <div className="mb-12 text-center">
               <div className="inline-block px-4 py-2 mb-4 rounded-full bg-white/30 backdrop-blur-md">
-                <span className="text-sm font-semibold text-gray-800">🎓 Buyuk Olimlar</span>
+                <span className="text-sm font-semibold text-gray-800"> {t('leadership.badge')}</span>
               </div>
-              <h2 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-                Matematika Tarixidagi Ulug' Shaxslar
-              </h2>
-              <p className="max-w-2xl mx-auto text-xl text-gray-600">
-                O'rta Osiyo va dunyo matematikasiga katta hissa qo'shgan buyuk olimlar
-              </p>
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">{t('leadership.title')}</h2>
+              <p className="max-w-2xl mx-auto text-xl text-gray-600">{t('leadership.subtitle')}</p>
             </div>
 
             <LeadershipSlider />

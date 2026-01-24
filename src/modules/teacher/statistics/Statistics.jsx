@@ -7,6 +7,7 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useTranslation } from 'react-i18next'
+import MentorClosedChatsStats from './components/MentorClosedChatsStats'
 
 const Statistics = () => {
   const { t } = useTranslation()
@@ -34,6 +35,9 @@ const Statistics = () => {
   return (
     <div className="p-6 md:p-8 font-sf">
       <StatsCards data={statisticsData?.data} isLoading={isLoading} />
+      <div className="my-8">
+        <MentorClosedChatsStats />
+      </div>
 
       <div className="grid grid-cols-1 gap-8 mb-8 xl:grid-cols-2">
         <RevenueSummary data={statisticsData?.data} />

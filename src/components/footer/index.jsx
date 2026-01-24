@@ -4,55 +4,49 @@ import { TelegramIcon } from '../icons/social-media/telegram'
 import { InstagramIcon } from '../icons/social-media/instagram'
 import YoutubeIcon from '../icons/social-media/youtube'
 import { Container } from '@mui/material'
+
+import { useTranslation } from 'react-i18next'
+
 const Footer = () => {
+  const { t } = useTranslation()
+
   const footerLinks = [
     {
-      title: 'Platform',
+      title: t('footer.platform'),
       links: [
-        { name: 'Kurslar', href: '/' },
-        { name: 'Narxlar', href: '/prices' },
-        { name: 'Biz haqimizda', href: '/about' }
-        // { name: 'Blog', href: '/blog' }
+        { name: t('footer.links.courses'), href: '/' },
+        { name: t('footer.links.pricing'), href: '/prices' },
+        { name: t('footer.links.about'), href: '/about' }
       ]
     },
     {
-      title: 'Yordam',
+      title: t('footer.support'),
       links: [
-        { name: 'FAQs', href: '/faqs' },
-        { name: "Qo'llab-quvvatlash", href: '/' },
-        { name: 'Aloqa', href: 'tel:+998881989000' }
-        // { name: 'Dokumentatsiya', href: '/docs' }
+        { name: t('footer.links.faq'), href: '/faqs' },
+        { name: t('footer.links.support'), href: '/' },
+        { name: t('footer.links.contact'), href: 'tel:+998881989000' }
       ]
     }
-    // {
-    //   title: 'Huquqiy',
-    //   links: [
-    //     { name: 'Maxfiylik siyosati', href: '/privacy' },
-    //     { name: 'Foydalanish shartlari', href: '/terms' },
-    //     { name: 'Qaytarish siyosati', href: '/return-policy' },
-    //     // { name: 'Cookie siyosati', href: '/cookies' }
-    //   ]
-    // }
   ]
 
   const contactInfo = [
     {
       icon: '/icons/phone.svg',
-      label: 'Telefon',
+      label: t('footer.contact.phone'),
       value: '+998 88 198 90 00',
       href: 'tel:+998881989000',
       type: 'phone'
     },
     {
       icon: '/icons/mail.svg',
-      label: 'Email',
+      label: t('footer.contact.email'),
       value: 'info@iqmath.uz',
       href: 'mailto:info@iqmath.uz',
       type: 'email'
     },
     {
       icon: '/icons/address.svg',
-      label: 'Manzil',
+      label: t('footer.contact.address'),
       value: "Toshkent, O'zbekiston",
       href: '#',
       type: 'address'
@@ -102,8 +96,7 @@ const Footer = () => {
                   <Brand />
                 </div>
                 <p className="text-gray-400 text-[15px] leading-relaxed mb-6 max-w-sm">
-                  IQmath - matematikani samarali o'rganish uchun innovatsion elektron platforma. Zamonaviy ta'lim
-                  texnologiyalari bilan bilimingizni yangi bosqichga olib chiqing.
+                  {t('footer.brandDescription')}
                 </p>
 
                 {/* Newsletter */}
@@ -143,7 +136,7 @@ const Footer = () => {
 
               {/* Contact Info */}
               <div className="lg:col-span-4">
-                <h3 className="mb-4 text-base font-semibold text-white">Aloqa ma'lumotlari</h3>
+                <h3 className="mb-4 text-base font-semibold text-white">{t('footer.contact.contact')}</h3>
                 <ul className="space-y-4">
                   {contactInfo.map((contact, idx) => (
                     <li key={idx}>
@@ -183,7 +176,7 @@ const Footer = () => {
                 <p className="flex items-center gap-2">
                   <span>© 2025 IQmath</span>
                   <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:inline">Barcha huquqlar himoyalangan</span>
+                  <span className="hidden sm:inline">{t('footer.copyright')}</span>
                 </p>
               </div>
               {/* Social Media */}
@@ -213,11 +206,11 @@ const Footer = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-xs font-medium text-gray-400">Xavfsiz to'lov</span>
+                  <span className="text-xs font-medium text-gray-400">{t('footer.paymentSecure')}</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <span>Made with</span>
+                  <span>{t('footer.madeWith')}</span>
                   <svg className="w-4 h-4 text-red-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
@@ -225,7 +218,7 @@ const Footer = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>in Uzbekistan</span>
+                  <span>{t('footer.in')}</span>
                 </div>
               </div>
             </div>

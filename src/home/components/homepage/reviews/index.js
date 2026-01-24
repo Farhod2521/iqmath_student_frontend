@@ -4,16 +4,10 @@ import ContentArea from './ContentArea'
 import ReviewCarousel from './ReviewCarousel'
 import Grid from '@mui/material/Grid2'
 import { CheckCircle } from 'lucide-react'
-
+import { useTranslation } from 'react-i18next'
 const Reviews = () => {
-  const benefits = [
-    'Mantiqiy va analitik fikrlash rivojlanadi',
-    "Akademik ko'rsatkichlar yaxshilanadi",
-    "Hayotiy muammolarni hal qilish ko'nikmalari",
-    "O'z tezligingizda o'rganish imkoniyati",
-    'Imtihonlarga professional tayyorgarlik',
-    'Doimiy progress monitoring'
-  ]
+  const { t } = useTranslation()
+  const benefits = t('benefitsSection.items', { returnObjects: true })
 
   return (
     <>
@@ -47,8 +41,8 @@ const Reviews = () => {
           }}
         >
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold">Nima Uchun IQmath?</h2>
-            <p className="text-xl opacity-90">O'qish natijasida oladigan afzalliklar</p>
+            <h2 className="mb-4 text-4xl font-bold"> {t('benefitsSection.title')}</h2>
+            <p className="text-xl opacity-90"> {t('benefitsSection.subtitle')}</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {benefits.map((benefit, index) => (
