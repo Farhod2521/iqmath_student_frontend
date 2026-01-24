@@ -5,28 +5,28 @@ import { useTranslation } from 'react-i18next'
 const Courses = () => {
   const { t } = useTranslation()
   return (
-    <section class="py-20 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-gradient text-white">
+    <section className="py-20 text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-gradient">
       <Container sx={{ maxWidth: '1300px !important' }}>
-        <div class=" px-4 sm:px-6 lg:px-8">
-          <h2 class="text-2xl md:text-4xl font-bold text-center mb-12">{t('availableCourses')}</h2>
+        <div className="px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-2xl font-bold text-center md:text-4xl">{t('availableCourses')}</h2>
 
-          <div class="flex flex-wrap justify-center gap-4 mt-10">
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+          <div className="flex flex-wrap justify-center gap-4 mt-10">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('algebra')}
             </div>
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('geometry')}
             </div>
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('statistics')}
             </div>
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('account')}
             </div>
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('trigonometry')}
             </div>
-            <div class="bg-white/20 backdrop-blur-lg px-8 py-4 rounded-full text-xl font-semibold hover:bg-white/30 hover:scale-105 transform transition duration-300">
+            <div className="px-8 py-4 text-xl font-semibold transition duration-300 transform rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 hover:scale-105">
               {t('probabilityTheory')}
             </div>
           </div>
