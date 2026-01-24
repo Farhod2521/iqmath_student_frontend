@@ -29,8 +29,6 @@ const categoryColors = {
 export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, isDeleting }) {
   const { t, i18n } = useTranslation()
 
-  console.log('plans', plans)
-
   const getCategoryStyle = (category) => {
     if (!category) return categoryColors.STANDARD
     const catTitle = category.title.toUpperCase()
@@ -86,33 +84,18 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
               {/* PRICE */}
               <div className="mt-4">
                 <div className="flex items-end gap-2">
-                  <span className="text-3xl font-extrabold text-gray-900">{item.sale_price.toLocaleString()}</span>
+                  {/* <span className="text-3xl font-extrabold text-gray-900 line-through"> */}
+                  <span className="block mt-1 text-2xl text-gray-400 line-through">
+                    {(item.price_per_month * item.months).toLocaleString()}
+                  </span>
                   <span className="mb-1 text-sm text-gray-500">so'm</span>
                 </div>
-                {item.discount_percent > 0 && (
-                  <span className="block mt-1 text-sm text-gray-400 line-through">
-                    {(item.price_per_month * item.months).toLocaleString()} so'm
-                  </span>
+                {item.sale_price > 0 && (
+                  // <span className="block mt-1 text-sm text-gray-400 line-through">
+                  <span className="text-sm font-extrabold text-gray-900">{item.sale_price.toLocaleString()} so'm</span>
                 )}
               </div>
-              {/* BENEFITS */}
-              {/* <ul className="flex-1 mt-6 space-y-2">
-                {item.benefits?.map((b) => (
-                  <li
-                    key={b.id}
-                    className={`flex items-center gap-2 text-sm
-                      ${b.is_selected ? 'text-gray-800' : 'text-gray-400 line-through'}`}
-                  >
-                    <span
-                      className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold
-                      ${b.is_selected ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}`}
-                    >
-                      {b.is_selected ? '✓' : '✕'}
-                    </span>
-                    {i18n.language === 'uz' ? b.title_uz : b.title_ru}
-                  </li>
-                ))}
-              </ul> */}
+
               {/* Benefits */}
               <div className="flex-1 mt-6 mb-0 space-y-3">
                 {item.benefits?.map((b) => (

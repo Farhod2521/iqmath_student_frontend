@@ -71,13 +71,13 @@ const PricingContent = () => {
       return {
         id: plan.id,
         is_active: plan.is_active,
-        original_name: plan.name,
+        original_name: i18n.language === 'uz' ? plan?.name_uz : plan?.name_ru,
         name: getTranslatedName(plan.months),
         duration: getTranslatedName(plan.months),
         price: plan.sale_price,
         price_per_month: plan.price_per_month,
         originalPrice: originalPrice,
-        discount: plan.discount_percent,
+        discount_percent: plan.discount_percent,
         months: plan.months,
         months_display: plan.months_display,
         created_at: plan?.created_at,
@@ -127,7 +127,7 @@ const PricingContent = () => {
 
                 <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
                   {item.discount_percent > 0 && (
-                    <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-2 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
+                    <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-4 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
                       🔥 -{item.discount_percent}%
                     </span>
                   )}
@@ -140,15 +140,16 @@ const PricingContent = () => {
                   {/* PRICE */}
                   <div className="mt-4">
                     <div className="flex items-end gap-2">
-                      <span className="text-3xl font-extrabold text-gray-900">
-                        {Number(item.price).toLocaleString()}
+                      {/* <span className="text-3xl font-extrabold text-gray-900"> */}
+                      <span className="block mt-1 text-2xl text-gray-400 line-through">
+                        {Number(item.originalPrice).toLocaleString()}
                       </span>
                       <span className="mb-1 text-sm text-gray-500">so'm</span>
                     </div>
 
                     {item.price_per_month > 0 && (
-                      <span className="block mt-1 text-sm text-gray-400 line-through">
-                        {Number(item.originalPrice).toLocaleString()} so'm
+                      <span className="block mt-1 text-sm font-extrabold text-gray-900">
+                        {Number(item.price).toLocaleString()} so'm
                       </span>
                     )}
                   </div>
