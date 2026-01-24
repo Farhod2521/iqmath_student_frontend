@@ -1,11 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Typography, Container, Stack, Button } from '@mui/material'
-import Grid from '@mui/material/Grid2'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
-import DesignCol from '@/assets/images/frontend-pages/homepage/design-collection.png'
-import Image from 'next/image'
 import { Award, BookOpen, TrendingUp, Video } from 'lucide-react'
 
 const C2a = () => {
