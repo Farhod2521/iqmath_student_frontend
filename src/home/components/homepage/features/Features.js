@@ -3,6 +3,7 @@ import { Box, Stack, Typography, Container } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Image from 'next/image'
 import FeatureTitle from './FeatureTitle'
+import { useTranslation } from 'react-i18next'
 
 // icons
 import { SlidersHorizontal, PlayCircle, ClipboardCheck, BookOpen } from 'lucide-react'
@@ -18,6 +19,7 @@ const cardStyle = {
 }
 
 const Features = () => {
+  const { t } = useTranslation()
   return (
     <Box pt={10} pb={10}>
       <Container
@@ -37,9 +39,9 @@ const Features = () => {
                   <SlidersHorizontal size={40} />
 
                   <Typography variant="h6" fontWeight={700}>
-                    Moslashuvchan ta’lim tizimi
+                    {t('featuresSection.adaptive.title')}
                   </Typography>
-                  <Typography>Har bir o‘quvchi o‘z bilim darajasi va tezligiga mos ravishda o‘rganadi.</Typography>
+                  <Typography> {t('featuresSection.adaptive.desc')}</Typography>
 
                   <Image
                     src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
@@ -59,9 +61,9 @@ const Features = () => {
                 <Stack spacing={2}>
                   <BookOpen size={40} />
                   <Typography variant="h6" fontWeight={700}>
-                    Keng qamrovli kurslar
+                    {t('featuresSection.courses.title')}
                   </Typography>
-                  <Typography>Algebra, geometriya, statistika va boshqa muhim yo‘nalishlar.</Typography>
+                  <Typography> {t('featuresSection.courses.desc')}</Typography>
 
                   <Image
                     src="https://images.unsplash.com/photo-1509228468518-180dd4864904"
@@ -81,14 +83,14 @@ const Features = () => {
             <Box bgcolor="primary.light" sx={{ ...cardStyle, height: '100%' }}>
               <Box px={5} pt={8} pb={5} textAlign="center">
                 <Typography variant="h2" fontWeight={700} sx={{ fontSize: { xs: '32px', lg: '40px' } }}>
-                  Zamonaviy o‘quv platforma
+                  {t('featuresSection.platform.title')}
                 </Typography>
 
                 <Typography mt={2}>
-                  IQmath ilg‘or metodika va texnologiyalar asosida ishlab chiqilgan.
+                  {t('featuresSection.platform.desc')}
                   <Typography component="span" fontWeight={600}>
                     {' '}
-                    Video darslar va real mashqlar bilan.
+                    {t('featuresSection.platform.highlight')}
                   </Typography>
                 </Typography>
 
@@ -114,9 +116,9 @@ const Features = () => {
                 <Stack spacing={2}>
                   <PlayCircle size={40} />
                   <Typography variant="h6" fontWeight={700}>
-                    Video darslar
+                    {t('featuresSection.video.title')}
                   </Typography>
-                  <Typography>Murakkab mavzular video orqali sodda tushuntiriladi.</Typography>
+                  <Typography> {t('featuresSection.video.desc')}</Typography>
 
                   <Image
                     src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178"
@@ -136,9 +138,9 @@ const Features = () => {
                 <Stack spacing={2}>
                   <ClipboardCheck size={40} />
                   <Typography variant="h6" fontWeight={700}>
-                    Test va mashqlar
+                    {t('featuresSection.tests.title')}
                   </Typography>
-                  <Typography>Bilimni mustahkamlash va imtihonga tayyorlanish.</Typography>
+                  <Typography> {t('featuresSection.tests.desc')}</Typography>
 
                   <Image
                     src="https://images.unsplash.com/photo-1588072432836-e10032774350"

@@ -2,10 +2,12 @@ import { Box, Typography, Card, CardMedia, CardContent, Button, IconButton } fro
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const CARD_WIDTH = 320
 
 const NewsSlider = ({ news }) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const [index, setIndex] = useState(0)
   const [withTransition, setWithTransition] = useState(true)
@@ -62,10 +64,10 @@ const NewsSlider = ({ news }) => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Typography variant="h1" fontWeight={600}>
-          Yangiliklar
+          {t('news')}
         </Typography>
         <Button variant="contained" color="primary" onClick={() => router.push('/news')}>
-          Barchasi
+          {t('allNews')}
         </Button>
       </Box>
       <Box sx={{ overflow: 'hidden', py: 4 }}>

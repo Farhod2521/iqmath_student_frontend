@@ -86,12 +86,6 @@ const FAQ = () => {
   const [selectedVideoId, setSelectedVideoId] = useState(null)
 
   const language = i18n.language
-  const faqItems = [
-    { question: 'faqq1', answer: 'faqa1' },
-    { question: 'faqq2', answer: 'faqa2' },
-    { question: 'faqq3', answer: 'faqa3' },
-    { question: 'faqq4', answer: 'faqa4' }
-  ]
 
   const handleChange = (index) => (_, isExpanded) => {
     setExpandedIndex(isExpanded ? index : false)
@@ -99,6 +93,7 @@ const FAQ = () => {
 
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     setLoading(true)
     request

@@ -1,8 +1,10 @@
 import React from 'react'
 import Grid from '@mui/material/Grid2'
 import { Box, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 const FeatureTitle = () => {
+  const { t } = useTranslation()
   return (
     <Grid container justifyContent="center" spacing={2}>
       <Grid size={{ xs: 12, lg: 7 }} textAlign="center">
@@ -15,7 +17,7 @@ const FeatureTitle = () => {
             color: 'primary.main'
           }}
         >
-          Nega IQmath?
+          {t('featureTitle.eyebrow')}
         </Typography>
 
         {/* MAIN TITLE */}
@@ -29,8 +31,8 @@ const FeatureTitle = () => {
             lineHeight: 1.2
           }}
         >
-          Matematikani tushunib o‘rganing,
-          <br /> natijani his qiling
+          {t('featureTitle.titleLine1')}
+          <br /> {t('featureTitle.titleLine2')}
         </Typography>
 
         {/* DESCRIPTION */}
@@ -38,17 +40,17 @@ const FeatureTitle = () => {
           <Box component="span" fontWeight={600} color="text.primary">
             IQmath
           </Box>{' '}
-          — matematikani yodlash emas, balki{' '}
+          {t('featureTitle.desc1')}{' '}
           <Box component="span" fontWeight={600}>
-            tushunish
+            {t('featureTitle.desc2')}
           </Box>{' '}
-          orqali o‘rgatuvchi zamonaviy platforma.
+          {t('featureTitle.desc3')}
           <br />
-          Video darslar, interaktiv mashqlar va testlar yordamida{' '}
+          {t('featureTitle.desc4')}{' '}
           <Box component="span" fontWeight={600}>
-            real natijaga
+            {t('featureTitle.desc5')}
           </Box>{' '}
-          erishing.
+          {t('featureTitle.desc6')}
         </Typography>
       </Grid>
     </Grid>

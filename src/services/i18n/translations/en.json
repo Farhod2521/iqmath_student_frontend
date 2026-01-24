@@ -443,5 +443,109 @@
   "flexibleLearning": "Flexible Learning",
   "learnPlatform": "Learn at your own pace. Our platform adapts to your level.",
   "testingEvaluation": "Testing and Evaluation",
-  "testKnowledge": "Test your knowledge and prepare for exams"
+  "testKnowledge": "Test your knowledge and prepare for exams",
+  "availableCourses": "Available Courses",
+  "algebra": "Algebra",
+  "geometry": "Geometry",
+  "trigonometry": "Trigonometry",
+  "probabilityTheory": "Probability theory",
+  "withIQmath": "With IQmath, it is possible to achieve",
+  "academicResults": "Academic Results",
+  "significantlyBetter": "Significantly better grades and knowledge level",
+  "logicalThinking": "Logical Thinking",
+  "logicalThinkingDesc": "Problem-solving and analytical skills",
+  "independence": "Independence",
+  "independenceDesc": "Ability for self-development and independent learning",
+  "examPreparation": "Exam Preparation",
+  "examPreparationDesc": "Confident preparation for any tests and exams",
+  "allNews": "All",
+  "featureTitle": {
+    "eyebrow": "Why IQmath?",
+    "titleLine1": "Learn mathematics with understanding,",
+    "titleLine2": "feel the results",
+    "desc1": "— a modern platform that teaches mathematics through",
+    "desc2": "understanding",
+    "desc3": "instead of memorization.",
+    "desc4": "With video lessons, interactive exercises, and tests,",
+    "desc5": "achieve real",
+    "desc6": "results."
+  },
+  "featuresSection": {
+    "adaptive": {
+      "title": "Flexible learning system",
+      "desc": "Each student learns according to their own knowledge level and pace."
+    },
+    "courses": {
+      "title": "Comprehensive courses",
+      "desc": "Algebra, geometry, statistics, and other essential subjects."
+    },
+    "platform": {
+      "title": "Modern learning platform",
+      "desc": "IQmath is developed using advanced methods and technologies.",
+      "highlight": "With video lessons and real practice."
+    },
+    "video": {
+      "title": "Video lessons",
+      "desc": "Complex topics are explained simply through videos."
+    },
+    "tests": {
+      "title": "Tests and exercises",
+      "desc": "Strengthening knowledge and exam preparation."
+    }
+  },
+  "benefitsSection": {
+    "title": "Why IQmath?",
+    "subtitle": "Benefits you gain through learning",
+    "items": [
+      "Development of logical and analytical thinking",
+      "Improved academic performance",
+      "Skills for solving real-life problems",
+      "Learn at your own pace",
+      "Professional exam preparation",
+      "Continuous progress monitoring"
+    ]
+  },
+  "leadership": {
+    "badge": "🎓 Great Scholars",
+    "title": "Great figures in the history of mathematics",
+    "subtitle": "Outstanding scholars who made major contributions to world mathematics",
+
+    "more": "Learn more",
+    "modalTitle": "Full information",
+    "periodLabel": "Lived period:",
+    "bioTitle": "Biography",
+    "achievementsTitle": "Key achievements",
+    "close": "Close"
+  },
+  "cta": {
+    "title": "Start your math journey today!",
+    "description": "Join thousands of students on the IQmath platform and take your knowledge to the next level",
+    "button": "Sign Up",
+    "features": ["No credit card required", "Cancel anytime"]
+  },
+  "footer": {
+    "brandDescription": "IQmath is an innovative e-learning platform for effective mathematics learning. Take your knowledge to the next level with modern educational technologies.",
+    "platform": "Platform",
+    "support": "Support",
+    "legal": "Legal",
+    "links": {
+      "courses": "Courses",
+      "pricing": "Pricing",
+      "about": "About Us",
+      "faq": "FAQs",
+      "support": "Support",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "contact": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    },
+    "copyright": "All rights reserved",
+    "madeWith": "Made with",
+    "in": "in Uzbekistan",
+    "paymentSecure": "Secure Payment"
+  }
 }

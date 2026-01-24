@@ -896,5 +896,111 @@
   "flexibleLearning": "Moslashuvchan Ta'lim",
   "learnPlatform": "O'z tezligingizda o'rganing. Platformamiz sizning darajangizga moslashadi.",
   "testingEvaluation": "Test va Baholash",
-  "testKnowledge": "Bilimingizni sinab ko'ring va imtihonlarga tayyorlaning."
+  "testKnowledge": "Bilimingizni sinab ko'ring va imtihonlarga tayyorlaning.",
+  "availableCourses": "Mavjud kurslar",
+  "algebra": "Algebra",
+  "geometry": "Geometriya",
+  "trigonometry": "Trigonometriya",
+  "probabilityTheory": "Ehtimollik nazariyasi",
+  "withIQmath": "IQmath Bilan Erishish Mumkin",
+  "academicResults": "Akademik Natijalar",
+  "significantlyBetter": "Sezilarli darajada yaxshi baholar va bilim darajasi",
+  "logicalThinking": "Mantiqiy Fikrlash",
+  "logicalThinkingDesc": "Muammolarni hal qilish va tahlil qilish ko‘nikmalari",
+  "independence": "Mustaqillik",
+  "independenceDesc": "O‘z-o‘zini rivojlantirish va mustaqil o‘rganish qobiliyati",
+  "examPreparation": "Imtihonga tayyorgarlik",
+  "examPreparationDesc": "Har qanday test va imtihonlarga ishonch bilan kirish",
+  "allNews": "Barchasi",
+  "featureTitle": {
+    "eyebrow": "Nega IQmath?",
+    "titleLine1": "Matematikani tushunib o‘rganing,",
+    "titleLine2": "natijani his qiling",
+    "desc1": "— matematikani yodlash emas, balki",
+    "desc2": "tushunish",
+    "desc3": "orqali o‘rgatuvchi zamonaviy platforma.",
+    "desc4": "Video darslar, interaktiv mashqlar va testlar yordamida",
+    "desc5": "real natijaga",
+    "desc6": "erishing."
+  },
+  "featuresSection": {
+    "adaptive": {
+      "title": "Moslashuvchan ta’lim tizimi",
+      "desc": "Har bir o‘quvchi o‘z bilim darajasi va tezligiga mos ravishda o‘rganadi."
+    },
+    "courses": {
+      "title": "Keng qamrovli kurslar",
+      "desc": "Algebra, geometriya, statistika va boshqa muhim yo‘nalishlar."
+    },
+    "platform": {
+      "title": "Zamonaviy o‘quv platforma",
+      "desc": "IQmath ilg‘or metodika va texnologiyalar asosida ishlab chiqilgan.",
+      "highlight": "Video darslar va real mashqlar bilan."
+    },
+    "video": {
+      "title": "Video darslar",
+      "desc": "Murakkab mavzular video orqali sodda tushuntiriladi."
+    },
+    "tests": {
+      "title": "Test va mashqlar",
+      "desc": "Bilimni mustahkamlash va imtihonga tayyorlanish."
+    }
+  },
+  "benefitsSection": {
+    "title": "Nima uchun IQmath?",
+    "subtitle": "O‘qish natijasida oladigan afzalliklar",
+    "items": [
+      "Mantiqiy va analitik fikrlash rivojlanadi",
+      "Akademik ko‘rsatkichlar yaxshilanadi",
+      "Hayotiy muammolarni hal qilish ko‘nikmalari",
+      "O‘z tezligingizda o‘rganish imkoniyati",
+      "Imtihonlarga professional tayyorgarlik",
+      "Doimiy progress monitoring"
+    ]
+  },
+  "leadership": {
+    "badge": "🎓 Buyuk Olimlar",
+    "title": "Matematika tarixidagi ulug‘ shaxslar",
+    "subtitle": "O‘rta Osiyo va dunyo matematikasiga katta hissa qo‘shgan buyuk olimlar",
+
+    "more": "Batafsil ma'lumot",
+    "modalTitle": "To‘liq ma'lumot",
+    "periodLabel": "Yashagan davri:",
+    "bioTitle": "Biografiya",
+    "achievementsTitle": "Asosiy yutuqlari",
+    "close": "Yopish"
+  },
+  "pricingPageHeader": "O‘quvchilaringizga mos tariflarni tanlang",
+  "pricingPageSubHeader": "IQmath platformasidagi eng mos tariflarni tanlab, matematikani tez va samarali o‘rganing",
+  "cta": {
+    "title": "Matematika sayohatingizni bugun boshlang!",
+    "description": "Minglab talabalar bilan birga IQmath platformasida o'z bilimlaringizni yangi bosqichga olib chiqing",
+    "button": "Ro'yxatdan o'tish",
+    "features": ["Kredit karta talab qilinmaydi", "Har qanday vaqtda bekor qilish mumkin"]
+  },
+  "footer": {
+    "brandDescription": "IQmath - matematikani samarali o'rganish uchun innovatsion elektron platforma. Zamonaviy ta'lim texnologiyalari bilan bilimingizni yangi bosqichga olib chiqing.",
+    "platform": "Platforma",
+    "support": "Yordam",
+    "legal": "Huquqiy",
+    "links": {
+      "courses": "Kurslar",
+      "pricing": "Narxlar",
+      "about": "Biz haqimizda",
+      "faq": "FAQs",
+      "support": "Qo'llab-quvvatlash",
+      "contact": "Aloqa",
+      "privacy": "Maxfiylik siyosati",
+      "terms": "Foydalanish shartlari"
+    },
+    "contact": {
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Manzil"
+    },
+    "copyright": "Barcha huquqlar himoyalangan",
+    "madeWith": "Made with",
+    "in": "in Uzbekistan",
+    "paymentSecure": "Xavfsiz to'lov"
+  }
 }

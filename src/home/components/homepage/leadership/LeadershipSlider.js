@@ -7,7 +7,10 @@ import AlFargoni from '@/assets/images/leadership/AlFargoniy.jpg'
 import AlXorazmiy from '@/assets/images/leadership/AlXorazmiy.jpg'
 import MirzoUlugbek from '@/assets/images/leadership/mirzoUlugbek.jpg'
 import UmarXayyom from '@/assets/images/leadership/UmarXayyom.jpg'
+import { useTranslation } from 'react-i18next'
+
 const LeadershipSlider = () => {
+  const { t } = useTranslation()
   const scientists = [
     {
       id: 1,
@@ -173,7 +176,7 @@ const LeadershipSlider = () => {
                   onClick={() => setSelectedScientist(current)}
                   className="px-6 py-2.5 text-sm font-semibold text-white transition-all rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
                 >
-                  Batafsil ma'lumot
+                  {t('leadership.more')}
                 </button>
               </div>
             </div>
@@ -223,7 +226,7 @@ const LeadershipSlider = () => {
           >
             {/* Modal Header */}
             <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 md:text-2xl">To'liq Ma'lumot</h2>
+              <h2 className="text-xl font-bold text-gray-900 md:text-2xl"> {t('leadership.modalTitle')}</h2>
               <button
                 onClick={() => setSelectedScientist(null)}
                 className="p-2 transition rounded-full hover:bg-gray-100"
@@ -246,7 +249,7 @@ const LeadershipSlider = () => {
                   <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">{selectedScientist.name}</h3>
                   <p className="text-lg text-blue-600 md:text-xl">{selectedScientist.title}</p>
                   <div className="p-4 bg-gray-50 rounded-xl">
-                    <p className="mb-1 text-sm text-gray-500">Yashagan davri:</p>
+                    <p className="mb-1 text-sm text-gray-500"> {t('leadership.periodLabel')}</p>
                     <p className="text-xl font-bold text-gray-900 md:text-2xl">{selectedScientist.period}</p>
                   </div>
                 </div>
@@ -255,7 +258,7 @@ const LeadershipSlider = () => {
               <div className="mb-6">
                 <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
                   <span className="w-1 h-6 bg-blue-500 rounded"></span>
-                  Biografiya
+                  {t('leadership.bioTitle')}
                 </h4>
                 <p className="leading-relaxed text-gray-700">{selectedScientist.bio}</p>
               </div>
@@ -263,7 +266,7 @@ const LeadershipSlider = () => {
               <div>
                 <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
                   <span className="w-1 h-6 bg-purple-500 rounded"></span>
-                  Asosiy Yutuqlari
+                  {t('leadership.achievementsTitle')}
                 </h4>
                 <div className="space-y-3">
                   {selectedScientist.achievements.map((achievement, index) => (
@@ -287,7 +290,7 @@ const LeadershipSlider = () => {
                 onClick={() => setSelectedScientist(null)}
                 className="w-full py-3 font-semibold text-white transition bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
               >
-                Yopish
+                {t('leadership.close')}
               </button>
             </div>
           </div>
