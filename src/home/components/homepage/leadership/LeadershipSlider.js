@@ -92,6 +92,7 @@ const LeadershipSlider = () => {
                 >
                   <Image
                     src={current.image}
+                    unoptimized
                     alt={i18n.language === 'uz' ? current.title_uz : current.title_ru}
                     width={160} // md:160
                     height={160} // md:160
@@ -199,6 +200,7 @@ const LeadershipSlider = () => {
                 <div className="flex justify-center md:w-2/5">
                   <Image
                     src={detailData.image}
+                    unoptimized
                     alt={i18n.language === 'ru' ? detailData.title_ru : detailData.title_uz}
                     width={256}
                     height={256}

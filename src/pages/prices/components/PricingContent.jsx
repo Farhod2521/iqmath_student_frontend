@@ -7,7 +7,9 @@ import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 // ICONS
-
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
+import PaidIcon from '@mui/icons-material/Paid'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import toast from 'react-hot-toast'
 import { usePricingModalStore } from '@/store'
@@ -113,44 +115,67 @@ const PricingContent = () => {
               <div
                 key={item?.id}
                 className={`relative cursor-pointer flex flex-col rounded-2xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl
-                   bg-gradient-to-br from-blue-500 to-purple-500`}
+     bg-gradient-to-br from-blue-500 to-purple-500 overflow-hidden`} // overflow-hidden qo'shdik
               >
                 {item.category && item.category?.title && (
-                  <div className="absolute z-20 -translate-x-1/2 -top-2 left-1/2">
-                    <span
-                      className={`px-5 py-1.5 text-xs font-bold whitespace-nowrap tracking-wide text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-500`}
+                  <div className="absolute top-0 right-0 z-50 overflow-hidden">
+                    <div
+                      className={`relative px-4 py-1 text-xs font-bold text-white uppercase shadow-lg rounded-bl-lg rounded-tr-2xl
+      ${
+        item.category?.title.toLowerCase() === 'best value'
+          ? 'bg-gradient-to-r from-amber-500 to-orange-500'
+          : 'bg-gradient-to-r from-blue-500 to-purple-500'
+      }`}
                     >
+                      {' '}
                       {item.category?.title}
-                    </span>
+                    </div>
                   </div>
                 )}
+                {/* {item.category && item.category?.title && (
+                  <div className="absolute z-50 w-40 top-4 -right-10">
+                    <div className="relative px-4 py-1.5 text-[10px] font-bold text-center text-white uppercase transform rotate-45 shadow-md bg-gradient-to-r from-blue-500 to-purple-500">
+                      {item.category?.title}
+                    </div>
+                  </div>
+                )} */}
 
                 <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
-                  {item.discount_percent > 0 && (
-                    <span className="absolute px-3 py-1 text-xs font-semibold text-white rounded-full shadow top-4 right-2 bg-gradient-to-r from-blue-500 to-purple-500">
-                      🔥 -{item.discount_percent}%
-                    </span>
-                  )}
-
                   <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">{item.original_name}</h3>
 
-                  <p className="mt-1 text-sm text-gray-500">
-                    <CalendarMonthIcon sx={{ color: '#5d87ff' }} /> {item.months} {t('month')}
+                  <p className="flex items-center mt-1 text-sm text-center text-gray-500">
+                    <CalendarMonthIcon sx={{ color: '#5d87ff' }} />{' '}
+                    <span>
+                      {item.months} {t('month')}
+                    </span>
                   </p>
                   {/* PRICE */}
-                  <div className="mt-4">
-                    <div className="flex items-end gap-2">
-                      {/* <span className="text-3xl font-extrabold text-gray-900"> */}
-                      <span className="block mt-1 text-2xl text-gray-400 line-through">
+                  <div className="mt-4 space-y-2">
+                    {/* ORIGINAL PRICE */}
+                    <div className="flex items-center gap-1">
+                      <AttachMoneyIcon sx={{ fontSize: 18, color: '#9ca3af' }} />
+                      <span className="text-xl text-gray-400 line-through">
                         {Number(item.originalPrice).toLocaleString()}
                       </span>
-                      <span className="mb-1 text-sm text-gray-500">so'm</span>
+                      <span className="text-sm text-gray-500">so'm</span>
                     </div>
 
+                    {/* DISCOUNT */}
+                    {item.discount_percent > 0 && (
+                      <div className="flex items-center gap-1">
+                        <LocalFireDepartmentIcon sx={{ fontSize: 16, color: 'red' }} />
+                        <span className="text-xs font-semibold">-{item.discount_percent}%</span>
+                      </div>
+                    )}
+
+                    {/* FINAL PRICE */}
                     {item.price_per_month > 0 && (
-                      <span className="block mt-1 text-sm font-extrabold text-gray-900">
-                        {Number(item.price).toLocaleString()} so'm
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <PaidIcon sx={{ fontSize: 20, color: '#1e40af' }} />
+                        <span className="text-2xl font-extrabold text-gray-900">
+                          {Number(item.price).toLocaleString()} so'm
+                        </span>
+                      </div>
                     )}
                   </div>
 
