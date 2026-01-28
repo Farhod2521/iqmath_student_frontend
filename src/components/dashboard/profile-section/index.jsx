@@ -50,7 +50,7 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
                   className={`flex gap-x-[10px] items-center py-[10px] px-[12px] rounded-[8px] active:scale-90 scale-100 transition-all duration-300 ${
                     isActive
                       ? 'bg-[#5D87FF] text-white'
-                      : 'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#ECF2FF] dark:text-white dark:hover:bg-[#252B48] dark:text-white'
+                      : 'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#ECF2FF] dark:text-white dark:hover:bg-[#252B48]'
                   }`}
                 >
                   {isActive ? item.activeIcon : item.icon}
@@ -102,7 +102,7 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
               }`}
             >
               <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
-                <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2>
+                <h2 className="mb-1 text-xl font-semibold">{t('exitWeb')}</h2>
                 <p className="text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
                 <div className="flex justify-end gap-x-[10px]">
                   <button

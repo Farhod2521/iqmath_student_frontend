@@ -5,8 +5,16 @@ import { useTranslation } from 'react-i18next'
 const Benefits = () => {
   const { t } = useTranslation()
   return (
-    <section className="py-20 bg-white">
-      <Container sx={{ maxWidth: '1300px !important' }}>
+    <section className="py-10 bg-white">
+      <Container
+        sx={{
+          maxWidth: '1400px !important',
+          py: {
+            xs: '20px',
+            lg: '30px'
+          }
+        }}
+      >
         <div className="px-4 sm:px-6 lg:px-8">
           <h2 className="mb-16 text-2xl font-bold text-center text-gray-800 md:text-4xl">{t('withIQmath')}</h2>
 

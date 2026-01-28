@@ -11,10 +11,11 @@ import Pricing from './components/homepage/pricing'
 import Reviews from './components/homepage/reviews'
 import PowerfulDozens from './components/homepage/powerful-dozens'
 import Leadership from './components/homepage/leadership'
-import DefendFocus from './components/homepage/defend-focus'
 import CTA from './components/shared/cta'
 import Benefits from './components/homepage/benefits'
 import Courses from './components/homepage/courses'
+import NewsPage from './components/homepage/defend-focus'
+import HomePage from './components/homepage/defend-focus/NewsDetail'
 
 function Landing() {
   const theme = ThemeSettings()
@@ -33,7 +34,8 @@ function Landing() {
       <C2a />
       <Courses />
       <Benefits />
-      <DefendFocus />
+      {/* <NewsPage /> */}
+      <HomePage />
       <Features />
       {/* <ExceptionalFeature /> */}
       <Reviews />

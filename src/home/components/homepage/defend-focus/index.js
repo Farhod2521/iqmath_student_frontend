@@ -3,6 +3,8 @@ import { Box, Button, Container, Typography } from '@mui/material'
 
 import NewsSlider from './NewsSlider'
 import { useRouter } from 'next/router'
+import { request } from '@/services/api'
+import { useQuery } from '@tanstack/react-query'
 
 /* ---------------- MOCK DATA ---------------- */
 
@@ -132,8 +134,27 @@ Agar yadro sintezi reaktorlari ishga tushirilsa, bu insoniyat energetika inqilob
   }
 ]
 
-const DefendFocus = () => {
+const newsApi = {
+  getAll: async () => {
+    const { data } = await request.get('/api/v1/management/app/elon-list/')
+    return data
+  }
+  // getDetail: async (id) => {
+  //   const { data } = await request.get(`/api/v1/management/mobile/mathematicians/${id}/`)
+  //   return data
+  // }
+}
+
+const NewsPage = () => {
   const router = useRouter()
+
+  const { data } = useQuery({
+    queryKey: ['data-news'],
+    queryFn: newsApi.getAll,
+    refetchOnWindowFocus: false
+  })
+
+  console.log('data', data)
 
   const handleAllClick = () => {
     router.push('/news')
@@ -146,4 +167,4 @@ const DefendFocus = () => {
   )
 }
 
-export default DefendFocus
+export default NewsPage

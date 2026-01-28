@@ -102,13 +102,13 @@ const PricingContent = () => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ mt: 4, pb: { xs: 4, lg: 8 } }}>
+      <Container sx={{ maxWidth: '1000px !important', mt: 4, pb: { xs: 4, lg: 8 } }}>
         {isLoading ? (
           <div className="flex justify-center mt-12">
             <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
           </div>
         ) : data.length ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid justify-center grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data?.map((item, idx) => (
               <div
                 key={item?.id}

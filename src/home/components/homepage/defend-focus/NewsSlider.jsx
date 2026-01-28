@@ -1,4 +1,6 @@
+import { request } from '@/services/api'
 import { Box, Typography, Card, CardMedia, CardContent, Button, IconButton } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
@@ -6,12 +8,27 @@ import { useTranslation } from 'react-i18next'
 
 const CARD_WIDTH = 320
 
+const newsApi = {
+  getAll: async () => {
+    const { data } = await request.get('/api/v1/management/app/elon-list/')
+    return data
+  }
+}
+
 const NewsSlider = ({ news }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [index, setIndex] = useState(0)
   const [withTransition, setWithTransition] = useState(true)
   const sliderRef = useRef(null)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['data-newsall'],
+    queryFn: newsApi.getAll,
+    refetchOnWindowFocus: false
+  })
+
+  console.log('data', data)
 
   const items = [...news, ...news]
 

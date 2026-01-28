@@ -6,7 +6,7 @@ const Courses = () => {
   const { t } = useTranslation()
   return (
     <section className="py-20 text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-gradient">
-      <Container sx={{ maxWidth: '1300px !important' }}>
+      <Container sx={{ maxWidth: '1400px !important' }}>
         <div className="px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 text-2xl font-bold text-center md:text-4xl">{t('availableCourses')}</h2>
 

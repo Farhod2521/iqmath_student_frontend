@@ -9,6 +9,7 @@ import { URLS } from '@/constants/url'
 import { Button } from '@heroui/react'
 import { FaEye } from 'react-icons/fa'
 import { Link } from 'brainly-style-guide'
+import { usePathname } from 'next/navigation'
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
   borderRadius: '8px',
@@ -84,6 +85,8 @@ const FAQ = () => {
   const { t, i18n } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedVideoId, setSelectedVideoId] = useState(null)
+  const pathname = usePathname()
+  const isFaqPage = pathname === '/faqs'
 
   const language = i18n.language
 
@@ -124,12 +127,14 @@ const FAQ = () => {
     }
   }
 
+  const visibleData = isFaqPage ? data : data.slice(0, 5)
+
   return (
     <Container sx={{ maxWidth: '1400px !important', mt: 3, pb: { xs: '30px', lg: '60px' } }}>
       <Grid container spacing={3} justifyContent="center">
         <Grid xs={12} lg={8}>
           <Box mt={7}>
-            {data.map((item, index) => (
+            {visibleData?.map((item, index) => (
               <StyledAccordion key={index} expanded={expandedIndex === index} onChange={handleChange(index)}>
                 <AccordionSummary
                   expandIcon={

@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick.css'
 
 import LeadershipSlider from './LeadershipSlider'
 import { Container } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 
 const Leadership = () => {
   const { t } = useTranslation()
