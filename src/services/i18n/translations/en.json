@@ -547,5 +547,50 @@
     "madeWith": "Made with",
     "in": "in Uzbekistan",
     "paymentSecure": "Secure Payment"
+  },
+  "chatBox": {
+    "request_close": {
+      "close_request_sent": "Close request has been sent",
+      "error_requesting_close": "Error sending close request",
+      "send_chat_close": "Send chat close request",
+      "close_chat_description": "Send a request to close the chat",
+      "important_notice": "Important notice",
+      "close_request_info": "A request to close the chat will be sent. Administrator approval is required.",
+      "optional": "optional",
+      "enter_close_reason": "Enter reason for closing...",
+      "close_reason_hint": "Specify the reason for closing (optional)",
+      "close_warning": "Warning: After the chat is closed, new messages cannot be sent.",
+      "sending": "Sending..."
+    },
+    "confirm_close": {
+      "chat_closed_successfully": "Chat closed successfully",
+      "error_closing_chat": "Error closing the chat",
+      "rate_chat_session": "Rate the chat session",
+      "very_poor": "Very poor",
+      "poor": "Poor",
+      "average": "Average",
+      "good": "Good",
+      "excellent": "Excellent",
+      "optional": "optional",
+      "enter_feedback": "Write your feedback...",
+      "feedback_helps_improve": "Your feedback helps improve the service",
+      "rate_experience": "Rate your experience and leave feedback",
+      "submitting": "Submitting..."
+    },
+    "chat_transfer": {
+      "chat_transferred_successfully": "Chat transferred successfully",
+      "error_transferring_chat": "Error transferring chat",
+      "transfer_chat": "Transfer chat",
+      "close_chat": "Close chat",
+      "submit_and_close": "Submit",
+      "select_teacher": "Select a teacher",
+      "no_teachers_available": "No teachers available",
+      "support": "support",
+      "reason_optional": "Reason is optional",
+      "enter_transfer_reason": "Enter an optional reason",
+      "transfer_reason_hint": "Guideline for transfer reason",
+      "transferring": "Transferring...",
+      "select_teacher_to_transfer": "Select a teacher to transfer"
+    }
   }
 }

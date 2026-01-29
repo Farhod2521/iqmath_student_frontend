@@ -110,7 +110,7 @@ const PowerfulDozens = () => {
 
               <div className="flex flex-row gap-4 pt-4">
                 <a
-                  href="https://play.google.com/store"
+                  href="https://play.google.com/store/apps/details?id=com.iqmath.mobile"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-6 py-3 transition bg-black rounded-xl hover:scale-105"
@@ -144,7 +144,7 @@ const PowerfulDozens = () => {
                 </a>
 
                 <a
-                  href="https://www.apple.com/app-store/"
+                  href="https://apps.apple.com/ru/app/iqmath/id6753702778"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-6 py-3 transition bg-white rounded-xl hover:scale-105"

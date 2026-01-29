@@ -18,8 +18,37 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit' })
 }
 
-const ChatsList = ({ chatsLoading, chats = [], setActiveChat, setShowChatList, cancelReply, activeChat }) => {
+const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
   const { t } = useTranslation()
+
+  const getChatStatus = (chat) => {
+    if (chat?.is_closed) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-full">
+          {t('closed')}
+        </span>
+      )
+    }
+
+    if (chat?.is_transferred) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-full">
+          {t('transferred')}
+        </span>
+      )
+    }
+
+    if (chat?.close_requested) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-700 bg-orange-100 rounded-full">
+          {t('close_requested')}
+        </span>
+      )
+    }
+
+    return null
+  }
+
   return (
     <div className="flex-1 overflow-y-auto">
       {chatsLoading && <p className="px-6 py-4 text-sm text-gray-400">{t('loading')}</p>}
@@ -28,13 +57,23 @@ const ChatsList = ({ chatsLoading, chats = [], setActiveChat, setShowChatList, c
         <div
           key={chat.id}
           onClick={() => {
-            setActiveChat(chat)
-            setShowChatList(false)
-            cancelReply()
+            if (chat.is_closed) {
+              // Yopilgan chatni ochish uchun ogohlantirish
+              if (window.confirm(t('chat_closed_open_warning'))) {
+                props.setActiveChat(chat)
+                props.setShowChatList(false)
+                props.cancelReply()
+              }
+            } else {
+              props.setActiveChat(chat)
+              props.setShowChatList(false)
+              props.cancelReply()
+            }
           }}
           className={`flex items-center gap-4 p-4 cursor-pointer transition-all border-l-4 
-                  ${activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
-                `}
+            ${props.activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
+            ${chat.is_closed ? 'opacity-70' : ''}
+          `}
         >
           <div className="relative flex-shrink-0">
             <div className="flex items-center justify-center text-lg font-semibold text-white rounded-full shadow-lg w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500">
@@ -44,9 +83,12 @@ const ChatsList = ({ chatsLoading, chats = [], setActiveChat, setShowChatList, c
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
-              <h3 className={`font-semibold truncate ${chat.unread_count > 0 ? 'text-gray-900' : 'text-gray-800'}`}>
-                {chat.other_user_name}
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className={`font-semibold truncate ${chat.unread_count > 0 ? 'text-gray-900' : 'text-gray-800'}`}>
+                  {chat.other_user_name}
+                </h3>
+                {getChatStatus(chat)}
+              </div>
               <span className="flex-shrink-0 ml-2 text-xs text-gray-500">{formatDate(chat.last_message_at)}</span>
             </div>
 

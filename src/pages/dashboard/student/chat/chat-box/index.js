@@ -11,43 +11,14 @@ import { useTranslation } from 'react-i18next'
 import IndependentResultCard from './components/IndependentResult'
 import ChatsList from './components/ChatsList'
 import EmptyMessage from './components/EmptyMessage'
-
-const chatAPI = {
-  getChats: async () => {
-    const { data } = await request.get('/api/v1/func_chat/chat/list/')
-    return data
-  },
-  getMessages: async (chatId) => {
-    const { data } = await request.get(`/api/v1/func_chat/chat/${chatId}/messages/`)
-    return data
-  },
-  sendMessage: async ({ chatId, text, reply_to = null }) => {
-    const payload = { text }
-    if (reply_to) {
-      payload.reply_to = reply_to
-    }
-    const { data } = await request.post(`/api/v1/func_chat/chat/${chatId}/send/`, payload)
-    return data
-  }
-}
-
-const formatDateTime = (dateString) => {
-  if (!dateString) return '-'
-  const date = new Date(dateString)
-  return date.toLocaleString('uz-UZ', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-const formatTime = (dateString) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
-}
+import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
+import RatingModal from './components/RatingModal'
+import TransferModal from './components/TransferModal'
+import CLoseModal from './components/CLoseModal'
+import { FaFlagCheckered } from 'react-icons/fa6'
+import { extractUrl, formatTime, removeUrlFromText } from '@/shared/utils'
+import { chatAPI } from '@/shared/services'
 
 const ChatBox = () => {
   const { t, i18n } = useTranslation()
@@ -57,11 +28,30 @@ const ChatBox = () => {
   const [newMessage, setNewMessage] = useState('')
   const [showChatList, setShowChatList] = useState(true)
   const [replyingTo, setReplyingTo] = useState(null)
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
+  const [isClosedModalOpen, setIsClosedModalOpen] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [closedComment, setClosedComment] = useState('')
+  const [transferTeacherId, setTransferTeacherId] = useState('')
+  const [transferReason, setTransferReason] = useState('')
+
+  const { data: session } = useSession()
+
+  const isStudent = ['student', 'superadmin', 'tutor'].includes(session?.role)
+  const isAdmin = ['superadmin', 'teacher', 'tutor'].includes(session?.role)
 
   /* === Chatlar === */
   const { data: chats = [], isLoading: chatsLoading } = useQuery({
     queryKey: ['chats'],
     queryFn: chatAPI.getChats
+  })
+
+  const { data: teachers = [], isLoading: teachersLoading } = useQuery({
+    queryKey: ['teachers-for-transfer'],
+    queryFn: chatAPI.getTeachersForTransfer,
+    enabled: isTransferModalOpen // Faqat modal ochilganda fetch qilish
   })
 
   const { data: messages = [], isLoading: messagesLoading } = useQuery({
@@ -83,15 +73,6 @@ const ChatBox = () => {
   const handleSend = () => {
     if (!newMessage.trim()) return
 
-    // const newMsg = {
-    //   id: Date.now(),
-    //   text: newMessage,
-    //   fromMe: true
-    // }
-
-    // setMessages((prev) => [...prev, newMsg])
-    // setNewMessage('')
-
     sendMutation.mutate({
       chatId: activeChat.id,
       text: newMessage,
@@ -111,20 +92,52 @@ const ChatBox = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const extractUrl = (text) => {
-    if (!text) return null
-    const match = text.match(/https?:\/\/[^\s]+/)
-    return match ? match[0] : null
-  }
+  // Mutation'lar
+  const closeMutation = useMutation({
+    mutationFn: (ratingData) => chatAPI.confirmClose(activeChat.id, ratingData),
+    onSuccess: () => {
+      setIsRatingModalOpen(false)
+      setRating(0)
+      setComment('')
+      queryClient.invalidateQueries(['chats'])
+      setActiveChat(null)
+      toast.success(t('chatBox.confirm_close.chat_closed_successfully'))
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.confirm_close.error_closing_chat'))
+    }
+  })
 
-  const removeUrlFromText = (text) => {
-    if (!text || typeof text !== 'string') return text
-    return text.replace(/https?:\/\/[^\s]+/g, '').trim()
-  }
+  const transferMutation = useMutation({
+    mutationFn: chatAPI.transferChat,
+    onSuccess: () => {
+      setIsTransferModalOpen(false)
+      setTransferTeacherId('')
+      setTransferReason('')
+      queryClient.invalidateQueries(['chats'])
+      toast.success(t('chatBox.chat_transfer.chat_transferred_successfully'))
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.chat_transfer.error_transferring_chat'))
+    }
+  })
+
+  const requestCloseMutation = useMutation({
+    mutationFn: (comment) => chatAPI.requestClose(activeChat.id, comment),
+    onSuccess: () => {
+      toast.success(t('close_request_sent'))
+      queryClient.invalidateQueries(['chats'])
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.request_close.error_requesting_close'))
+    }
+  })
+
+  // Modal komponentlari
 
   return (
     <LayoutAdmin title="Chat">
-      <div className="h-[85vh] flex gap-1 bg-white rounded-2xl  overflow-hidden">
+      <div className="h-[85vh] flex gap-1 bg-white rounded-2xl overflow-hidden">
         {/* ================= CHAT LIST ================= */}
         <div
           className={`${
@@ -163,27 +176,42 @@ const ChatBox = () => {
                 </button>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <div className="flex items-center justify-center w-10 h-10 font-semibold text-white rounded-full shadow-md md:w-12 md:h-12text-lg bg-gradient-to-br from-blue-400 to-purple-500">
+                    <div className="flex items-center justify-center w-10 h-10 text-lg font-semibold text-white rounded-full shadow-md md:w-12 md:h-12 bg-gradient-to-br from-blue-400 to-purple-500">
                       {activeChat.other_user_name?.charAt(0) || '?'}
                     </div>
                   </div>
                   <div>
                     <h3 className="text-base font-semibold text-gray-800 md:text-lg">{activeChat.other_user_name}</h3>
-                    {/* <p className="flex items-center gap-1 text-sm text-green-500">
-                      {isUserOnline(activeChat) ? (
-                        <>
-                          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                          Onlayn
-                        </>
-                      ) : (
-                        <span className="text-gray-500">Oflayn</span>
-                      )}
-                    </p> */}
                   </div>
                 </div>
-                {/* <button className="p-2 transition-colors rounded-full hover:bg-gray-100">
-                  <HiDotsVertical className="text-xl text-gray-600" />
-                </button> */}
+
+                <div className="flex items-center gap-2">
+                  {/* Transfer */}
+                  {isAdmin && (
+                    <Button
+                      onPress={() => setIsTransferModalOpen(true)}
+                      className="p-2 rounded-full hover:bg-gray-100"
+                      title={t('chatBox.chat_transfer.transfer_chat')}
+                    >
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                        />
+                      </svg>
+                    </Button>
+                  )}
+
+                  {/* Old dots (ixtiyoriy qoldiramiz) */}
+                  {/* <button
+                    onClick={() => setShowActionsMenu(!showActionsMenu)}
+                    className="p-2 rounded-full hover:bg-gray-100"
+                  >
+                    <HiDotsVertical className="text-xl text-gray-600" />
+                  </button> */}
+                </div>
               </div>
 
               {/* Messages */}
@@ -259,19 +287,7 @@ const ChatBox = () => {
                     </div>
                   ) : (
                     <div key={msg.id} className="flex gap-3">
-                      {/* <div className="flex-shrink-0 w-8 h-8">
-                        {showAvatar && (
-                          <div className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white rounded-full shadow-md bg-gradient-to-br from-purple-400 to-pink-500">
-                            {msg.sender_name?.charAt(0) || activeChat.other_user_name?.charAt(0) || '?'}
-                          </div>
-                        )}
-                      </div> */}
                       <div className="max-w-[70%] group cursor-pointer" onDoubleClick={() => handleReply(msg)}>
-                        {/* {showName && (
-                          <p className="mb-1 ml-1 text-xs font-medium text-gray-600">
-                            {msg.sender_name || activeChat.other_user_name}
-                          </p>
-                        )} */}
                         {msg.reply_to_text && (
                           <div className="p-3 mb-2 bg-gray-100 border-l-4 border-gray-400 rounded-lg">
                             {msg.reply_to_sender && (
@@ -286,7 +302,6 @@ const ChatBox = () => {
 
                             {msg?.independent_data && <IndependentResultCard data={msg?.independent_data} />}
 
-                            {/* <span className="block mt-2 text-xs text-gray-400">{formatTime(msg.created_at)}</span> */}
                             <div className="flex items-center justify-between mt-2">
                               <div className="flex items-center gap-1">
                                 {extractedUrl && (
@@ -352,8 +367,8 @@ const ChatBox = () => {
                     </button>
                   </div>
                 )}
-                <div className="flex items-end gap-2 md:gap-3">
-                  <div className="relative flex-1">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="flex-1 mt-2 ">
                     <textarea
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
@@ -369,16 +384,50 @@ const ChatBox = () => {
                       style={{ minHeight: '56px', maxHeight: '120px' }}
                     />
                   </div>
-                  <Button
-                    color="primary"
-                    isIconOnly
-                    onPress={handleSend}
-                    isLoading={sendMutation.isPending}
-                    isDisabled={!newMessage.trim()}
-                    className="w-12 h-12 text-white transition-all md:w-14 md:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl hover:shadow-lg disabled:opacity-50 hover:scale-105 active:scale-95"
-                  >
-                    <IoMdSend className="text-lg md:text-xl" />
-                  </Button>
+                  <div className="flex items-end gap-2">
+                    <Button
+                      color="primary"
+                      isIconOnly
+                      onPress={handleSend}
+                      isLoading={sendMutation.isPending}
+                      isDisabled={!newMessage.trim()}
+                      className="w-12 h-12 text-white transition-all md:w-14 md:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl hover:shadow-lg disabled:opacity-50 hover:scale-105 active:scale-95"
+                    >
+                      <IoMdSend className="text-lg md:text-xl" />
+                    </Button>
+
+                    {isStudent && (
+                      <Button
+                        color="primary"
+                        isIconOnly
+                        onPress={() => setIsRatingModalOpen(true)}
+                        className="relative flex items-center justify-center w-12 h-12 transition md:w-14 md:h-14 group rounded-2xl bg-red-50 hover:bg-red-100"
+                      >
+                        <FaFlagCheckered className="text-lg md:text-xl" />
+
+                        {/* Tooltip */}
+                        <span className="absolute px-2 py-1 text-xs text-white transition scale-0 bg-gray-800 rounded -top-8 group-hover:scale-100">
+                          {t(' chatBox.chat_transfer.close_chat')}
+                        </span>
+                      </Button>
+                    )}
+
+                    {isAdmin && (
+                      <Button
+                        color="primary"
+                        isIconOnly
+                        onPress={() => setIsClosedModalOpen(true)}
+                        className="relative flex items-center justify-center w-12 h-12 transition md:w-14 md:h-14 group rounded-2xl bg-red-50 hover:bg-red-100"
+                      >
+                        <FaFlagCheckered className="text-lg md:text-xl" />
+
+                        {/* Tooltip */}
+                        <span className="absolute px-2 py-1 text-xs text-white transition scale-0 bg-gray-800 rounded -top-8 group-hover:scale-100">
+                          {t(' chatBox.chat_transfer.close_chat')}
+                        </span>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </>
@@ -386,6 +435,40 @@ const ChatBox = () => {
             <EmptyMessage />
           )}
         </div>
+
+        {/* Modallar */}
+        {isRatingModalOpen && (
+          <RatingModal
+            closeMutation={closeMutation}
+            rating={rating}
+            setRating={setRating}
+            setComment={setComment}
+            comment={comment}
+            setIsRatingModalOpen={setIsRatingModalOpen}
+          />
+        )}
+
+        {isClosedModalOpen && (
+          <CLoseModal
+            closeMutation={requestCloseMutation}
+            setIsClosedModalOpen={setIsClosedModalOpen}
+            setComment={setClosedComment}
+            comment={closedComment}
+          />
+        )}
+        {isTransferModalOpen && (
+          <TransferModal
+            transferTeacherId={transferTeacherId}
+            setTransferTeacherId={setTransferTeacherId}
+            transferReason={transferReason}
+            setTransferReason={setTransferReason}
+            transferMutation={transferMutation}
+            setIsTransferModalOpen={setIsTransferModalOpen}
+            activeChat={activeChat}
+            teachers={teachers}
+            teachersLoading={teachersLoading}
+          />
+        )}
       </div>
     </LayoutAdmin>
   )

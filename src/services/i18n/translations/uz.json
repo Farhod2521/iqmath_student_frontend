@@ -1002,5 +1002,50 @@
     "madeWith": "Made with",
     "in": "in Uzbekistan",
     "paymentSecure": "Xavfsiz to'lov"
+  },
+  "chatBox": {
+    "request_close": {
+      "close_request_sent": "Yopish so'rovi yuborildi",
+      "error_requesting_close": "So'rov yuborishda xatolik",
+      "send_chat_close": "Chatni yopishga yuborish",
+      "close_chat_description": "Chatni yopish so'rovini yuborish",
+      "important_notice": "Muhim eslatma",
+      "close_request_info": "Chatni yopish so'rovi yuboriladi. Administrator tasdiqlashi kerak.",
+      "optional": "ixtiyoriy",
+      "enter_close_reason": "Yopish sababini kiriting...",
+      "close_reason_hint": "Yopish sababini ko'rsating (ixtiyoriy)",
+      "close_warning": "Diqqat: Chat yopilgandan so'ng, yangi xabarlar yuborib bo'lmaydi.",
+      "sending": "Yuborilmoqda..."
+    },
+    "confirm_close": {
+      "chat_closed_successfully": "Chat muvaffaqiyatli yopildi",
+      "error_closing_chat": "Chat yopilishida xatolik",
+      "rate_chat_session": "Chat sessiyasini baholang",
+      "very_poor": "Juda yomon",
+      "poor": "Yomon",
+      "average": "O'rtacha",
+      "good": "Yaxshi",
+      "excellent": "A'lo",
+      "optional": "ixtiyoriy",
+      "enter_feedback": "Fikr-mulohazangizni yozing...",
+      "feedback_helps_improve": "Sizning fikringiz xizmatni yaxshilashga yordam beradi",
+      "rate_experience": "Baholang va fikr-mulohaza qoldiring",
+      "submitting": "Yuborilmoqda..."
+    },
+    "chat_transfer": {
+      "chat_transferred_successfully": "Chat muvaffaqiyatli o'tkazildi",
+      "error_transferring_chat": "Chat o'tkazishda xatolik",
+      "transfer_chat": "Boshqaga biriktirish",
+      "close_chat": "Chatni yopish",
+      "submit_and_close": "Yuborish",
+      "select_teacher": "O'qtuvchi tanlash",
+      "no_teachers_available": "O'qtuvchi mavjud emas",
+      "support": "yordam",
+      "reason_optional": "Sabab ixtiyoriy",
+      "enter_transfer_reason": "Ixtiyoriy sabab kiriting",
+      "transfer_reason_hint": "O'tkazish sababi bo'yicha ko'rsatma",
+      "transferring": "O'tkazish",
+      "select_teacher_to_transfer": "O'tkazishga o'qituvchini tanlang"
+    }
   }
 }

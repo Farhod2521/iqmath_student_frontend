@@ -912,5 +912,50 @@
     "madeWith": "Сделано с",
     "in": "в Узбекистане",
     "paymentSecure": "Безопасная оплата"
+  },
+  "chatBox": {
+    "request_close": {
+      "close_request_sent": "Запрос на закрытие отправлен",
+      "error_requesting_close": "Ошибка при отправке запроса",
+      "send_chat_close": "Отправить запрос на закрытие чата",
+      "close_chat_description": "Отправить запрос на закрытие чата",
+      "important_notice": "Важное уведомление",
+      "close_request_info": "Запрос на закрытие чата будет отправлен. Требуется подтверждение администратора.",
+      "optional": "необязательно",
+      "enter_close_reason": "Введите причину закрытия...",
+      "close_reason_hint": "Укажите причину закрытия (необязательно)",
+      "close_warning": "Внимание: после закрытия чата отправка новых сообщений будет невозможна.",
+      "sending": "Отправляется..."
+    },
+    "confirm_close": {
+      "chat_closed_successfully": "Чат успешно закрыт",
+      "error_closing_chat": "Ошибка при закрытии чата",
+      "rate_chat_session": "Оцените сессию чата",
+      "very_poor": "Очень плохо",
+      "poor": "Плохо",
+      "average": "Средне",
+      "good": "Хорошо",
+      "excellent": "Отлично",
+      "optional": "необязательно",
+      "enter_feedback": "Введите ваш отзыв...",
+      "feedback_helps_improve": "Ваш отзыв помогает улучшить сервис",
+      "rate_experience": "Оцените ваш опыт и оставьте отзыв",
+      "submitting": "Отправляется..."
+    },
+    "chat_transfer": {
+      "chat_transferred_successfully": "Чат успешно передан",
+      "error_transferring_chat": "Ошибка при передаче чата",
+      "transfer_chat": "Передать другому",
+      "close_chat": "Закрыть чат",
+      "submit_and_close": "Отправить",
+      "select_teacher": "Выберите преподавателя",
+      "no_teachers_available": "Преподаватели недоступны",
+      "support": "поддержка",
+      "reason_optional": "Причина необязательна",
+      "enter_transfer_reason": "Введите причину (необязательно)",
+      "transfer_reason_hint": "Комментарий к причине передачи",
+      "transferring": "Передача...",
+      "select_teacher_to_transfer": "Выберите преподавателя для передачи"
+    }
   }
 }
