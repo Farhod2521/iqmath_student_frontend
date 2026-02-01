@@ -37,30 +37,39 @@ const C2a = () => {
       <Container
         sx={{
           maxWidth: '1400px !important',
-          py: {
-            xs: '20px',
-            lg: '30px'
-          }
+          py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' }
         }}
       >
         {/* Features Section */}
-        <section id="features" className="px-4 py-10 bg-white md:py-20">
+        <section id="features" className="relative py-10 md:py-16 ">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-4xl font-bold text-gray-900">{t('PlatCapabilit')}</h2>
-              <p className="text-xl text-gray-600">{t('everythingEducation')}</p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+                {t('PlatCapabilit')}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg">
+                {t('everythingEducation')}
+              </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="p-6 transition transform cursor-pointer bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl hover:shadow-xl hover:-translate-y-2"
+                  className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition
+                           hover:-translate-y-1 hover:shadow-xl active:scale-[0.99]"
                 >
-                  <div className="flex items-center justify-center w-16 h-16 mb-4 text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl">
-                    {feature.icon}
+                  {/* Glow */}
+                  <div className="absolute transition rounded-full pointer-events-none -right-10 -top-10 h-28 w-28 bg-blue-500/10 blur-2xl group-hover:bg-blue-500/20" />
+                  <div className="absolute w-32 h-32 transition rounded-full pointer-events-none -left-12 -bottom-12 bg-purple-500/10 blur-2xl group-hover:bg-purple-500/20" />
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-12 h-12 text-white shadow-md rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600">
+                      {feature.icon}
+                    </div>
+
+                    <h3 className="text-base font-bold text-gray-900 sm:text-lg">{feature.title}</h3>
                   </div>
-                  <h3 className="mb-2 text-xl font-bold text-gray-900">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  {/* <h3 className="mb-2 text-xl font-bold text-gray-900">{feature.title}</h3> */}
+                  <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">{feature.description}</p>
                 </div>
               ))}
             </div>

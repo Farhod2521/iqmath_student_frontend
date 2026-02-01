@@ -15,7 +15,7 @@ const Pricing = () => {
         }
       }}
     >
-      <Container sx={{ maxWidth: '1400px !important', mt: 4, pb: { xs: 4, lg: 4 } }}>
+      <Container sx={{ maxWidth: '1400px !important', py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' } }}>
         <Grid container spacing={3} alignItems="center" justifyContent="center">
           <Grid size={{ xs: 12, lg: 7 }}>
             <Typography

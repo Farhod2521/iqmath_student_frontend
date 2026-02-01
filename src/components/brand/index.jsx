@@ -4,7 +4,7 @@ import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 
-const Brand = ({ onLoad }) => {
+const Brand = ({ onLoad, footer = false }) => {
   const router = useRouter()
   const [imageError, setImageError] = useState(false)
 
@@ -43,7 +43,7 @@ const Brand = ({ onLoad }) => {
           onError={handleImageError}
         />
         <h1
-          className={` font-normal text-[32px] font-bicubik text-black font-myriad   ${
+          className={` font-normal text-[32px] font-bicubik ${footer ? 'text-white' : 'text-black'} font-myriad   ${
             router.pathname === '/' ? 'dark:text-[#3965c6]' : 'dark:text-white'
           }`}
         >

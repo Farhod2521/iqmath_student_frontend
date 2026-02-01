@@ -30,7 +30,7 @@
   "totalScore": "Your total score",
   "score": "point",
   "login": "Log in",
-  "sign in": "Sign in",
+  "signIn": "signIn",
   "phone number": "Phone number",
   "password": "Password",
   "remember": "Remember",
@@ -259,6 +259,8 @@
   "contactSupport": "Contact Support",
   "needHelp": "Need Help?",
   "faq": "Frequently Asked Questions",
+  "faqSubtitle": "Answers to the most frequently asked questions about using the platform, payments, and classes.",
+  "more": "More",
   "liveChat": "Live Chat",
   "emailSupport": "Email Support",
   "phoneSupport": "Phone Support",
@@ -450,6 +452,7 @@
   "trigonometry": "Trigonometry",
   "probabilityTheory": "Probability theory",
   "withIQmath": "With IQmath, it is possible to achieve",
+  "withIQmathTitle": "Learning with IQmath improves not only academic performance but also strengthens logical thinking.",
   "academicResults": "Academic Results",
   "significantlyBetter": "Significantly better grades and knowledge level",
   "logicalThinking": "Logical Thinking",
@@ -591,6 +594,32 @@
       "transfer_reason_hint": "Guideline for transfer reason",
       "transferring": "Transferring...",
       "select_teacher_to_transfer": "Select a teacher to transfer"
+    },
+    "pricing": {
+      "authRequired": "To purchase a plan, please sign up first",
+      "youSave": "You save",
+      "currency": "UZS",
+      "next": "Next",
+      "bestValue": "Best value",
+      "mostPopular": "Most popular"
     }
+  },
+  "authCard": {
+    "badge": "Get started fast",
+    "title": "Sign up in just 2 minutes",
+    "subtitle": "Create a profile, access lessons, and track your progress.",
+    "features": {
+      "secure": "Secure login and personal dashboard",
+      "videos": "400+ video lessons and exercises",
+      "roles": "Perfect for teachers, parents, and students"
+    },
+    "cta": "Sign up / Log in",
+    "footer": "Log in once — everything becomes easy"
+  },
+  "coursesSection": {
+    "title": "Available courses",
+    "subtitle": "IQmath offers courses across different topics — pick what fits you best and learn step by step.",
+    "goalTitle": "Goal",
+    "goalText": "Strengthen knowledge and track results through theory + practice exercises + video lessons."
   }
 }

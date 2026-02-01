@@ -12,7 +12,7 @@ const TextAnswerInput = ({ correctAnswer, correctAnswerRu, onChange }) => {
             value={correctAnswer}
             onChange={(e) => onChange('correctAnswer', e.target.value.replace(/\s/g, ''))}
             placeholder="Latex (O'zbek)"
-            className="w-full border rounded-lg py-2 px-3 mb-2"
+            className="w-full px-3 py-2 mb-2 border rounded-lg"
           />
           <MathJax dynamic>{correctAnswer}</MathJax>
         </div>
@@ -24,7 +24,7 @@ const TextAnswerInput = ({ correctAnswer, correctAnswerRu, onChange }) => {
             value={correctAnswerRu}
             onChange={(e) => onChange('correctAnswerRu', e.target.value.replace(/\s/g, ''))}
             placeholder="Latex (Rus)"
-            className="w-full border rounded-lg py-2 px-3 mb-2"
+            className="w-full px-3 py-2 mb-2 border rounded-lg"
           />
           <MathJax dynamic>{correctAnswerRu}</MathJax>
         </div>

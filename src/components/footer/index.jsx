@@ -22,7 +22,7 @@ const Footer = () => {
     {
       title: t('footer.support'),
       links: [
-        { name: t('footer.links.faq'), href: '/faqs' },
+        { name: t('footer.links.faq'), href: '#faq-list-top' },
         { name: t('footer.links.support'), href: '/' },
         { name: t('footer.links.contact'), href: 'tel:+998881989000' }
       ]
@@ -57,20 +57,20 @@ const Footer = () => {
     {
       icon: <TelegramIcon />,
       name: 'Telegram',
-      href: 'https://t.me/iqmath',
-      color: 'hover:bg-blue-500'
+      href: 'https://t.me/iqmath2025',
+      brand: 'telegram'
     },
     {
       icon: <InstagramIcon />,
       name: 'Instagram',
-      href: 'https://instagram.com/iqmath',
-      color: 'hover:bg-pink-500'
+      href: 'https://www.instagram.com/iq_mathuz/',
+      brand: 'instagram'
     },
     {
       icon: <YoutubeIcon />,
       name: 'YouTube',
-      href: 'https://youtube.com/iqmath',
-      color: 'hover:bg-red-500'
+      href: 'https://www.youtube.com/@iqmathuz',
+      brand: 'youtube'
     }
   ]
 
@@ -93,11 +93,9 @@ const Footer = () => {
               {/* Brand & Description */}
               <div className="lg:col-span-4">
                 <div className="mb-6">
-                  <Brand />
+                  <Brand footer={true} />
                 </div>
-                <p className="text-gray-400 text-[15px] leading-relaxed mb-6 max-w-sm">
-                  {t('footer.brandDescription')}
-                </p>
+                <p className="text-white text-[15px] leading-relaxed mb-6 max-w-sm">{t('footer.brandDescription')}</p>
 
                 {/* Newsletter */}
                 {/* <div className="space-y-3">
@@ -188,10 +186,37 @@ const Footer = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-11 h-11 bg-gray-800 rounded-lg flex items-center justify-center hover:text-white transition transform hover:scale-110 hover:shadow-lg ${social.color} group`}
                       aria-label={social.name}
+                      className={`
+        group w-11 h-11 rounded-lg flex items-center justify-center
+        bg-gray-800 transition transform hover:scale-110 hover:shadow-lg
+        ${
+          social.brand === 'telegram'
+            ? 'hover:bg-[#229ED9]'
+            : social.brand === 'instagram'
+              ? 'hover:bg-gradient-to-br hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF]'
+              : social.brand === 'youtube'
+                ? 'hover:bg-[#FF0000]'
+                : ''
+        }
+      `}
                     >
-                      <div className="transition-transform group-hover:scale-110">{social.icon}</div>
+                      <div
+                        className={`
+          transition-colors
+          ${
+            social.brand === 'telegram'
+              ? 'text-[#229ED9] group-hover:text-white'
+              : social.brand === 'instagram'
+                ? 'text-[#DD2A7B] group-hover:text-white'
+                : social.brand === 'youtube'
+                  ? 'text-[#FF0000] group-hover:text-white'
+                  : 'text-gray-400'
+          }
+        `}
+                      >
+                        {social.icon}
+                      </div>
                     </a>
                   ))}
                 </div>

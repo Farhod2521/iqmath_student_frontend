@@ -28,7 +28,6 @@ function Landing() {
         }
       `}</style>
       {/* <HeaderAlert /> */}
-
       {/* <BannerHeader /> */}
       <PowerfulDozens />
       <C2a />

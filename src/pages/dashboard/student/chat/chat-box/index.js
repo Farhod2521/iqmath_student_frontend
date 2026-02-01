@@ -39,8 +39,8 @@ const ChatBox = () => {
 
   const { data: session } = useSession()
 
-  const isStudent = ['student', 'superadmin', 'tutor'].includes(session?.role)
-  const isAdmin = ['superadmin', 'teacher', 'tutor'].includes(session?.role)
+  const isStudent = ['student', 'superadmin'].includes(session?.role)
+  const isAdmin = ['superadmin', 'teacher'].includes(session?.role)
 
   /* === Chatlar === */
   const { data: chats = [], isLoading: chatsLoading } = useQuery({
@@ -99,6 +99,7 @@ const ChatBox = () => {
       setIsRatingModalOpen(false)
       setRating(0)
       setComment('')
+      queryClient.invalidateQueries(['messages', activeChat.id])
       queryClient.invalidateQueries(['chats'])
       setActiveChat(null)
       toast.success(t('chatBox.confirm_close.chat_closed_successfully'))
@@ -114,6 +115,7 @@ const ChatBox = () => {
       setIsTransferModalOpen(false)
       setTransferTeacherId('')
       setTransferReason('')
+      queryClient.invalidateQueries(['messages', activeChat.id])
       queryClient.invalidateQueries(['chats'])
       toast.success(t('chatBox.chat_transfer.chat_transferred_successfully'))
     },
@@ -126,7 +128,10 @@ const ChatBox = () => {
     mutationFn: (comment) => chatAPI.requestClose(activeChat.id, comment),
     onSuccess: () => {
       toast.success(t('close_request_sent'))
+      queryClient.invalidateQueries(['messages', activeChat.id])
       queryClient.invalidateQueries(['chats'])
+      setIsClosedModalOpen(false)
+      setClosedComment('')
     },
     onError: (error) => {
       toast.error(error.response?.data?.detail || t('chatBox.request_close.error_requesting_close'))
@@ -380,7 +385,7 @@ const ChatBox = () => {
                       }}
                       placeholder="Xabar yozing..."
                       rows="1"
-                      className="w-full px-4 py-3 pr-12 text-sm transition-all border-2 border-gray-200 resize-none md:py-4 md:px-6 rounded-2xl focus:outline-none focus:border-blue-500"
+                      className="w-full px-3 py-3 text-sm transition-all border-2 border-gray-200 resize-none md:px-6 md:py-4 rounded-2xl focus:outline-none focus:border-blue-500"
                       style={{ minHeight: '56px', maxHeight: '120px' }}
                     />
                   </div>
@@ -391,7 +396,7 @@ const ChatBox = () => {
                       onPress={handleSend}
                       isLoading={sendMutation.isPending}
                       isDisabled={!newMessage.trim()}
-                      className="w-12 h-12 text-white transition-all md:w-14 md:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl hover:shadow-lg disabled:opacity-50 hover:scale-105 active:scale-95"
+                      className="w-10 h-10 text-white transition-all md:w-14 md:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl hover:shadow-lg disabled:opacity-50 active:scale-95"
                     >
                       <IoMdSend className="text-lg md:text-xl" />
                     </Button>
@@ -401,7 +406,7 @@ const ChatBox = () => {
                         color="primary"
                         isIconOnly
                         onPress={() => setIsRatingModalOpen(true)}
-                        className="relative flex items-center justify-center w-12 h-12 transition md:w-14 md:h-14 group rounded-2xl bg-red-50 hover:bg-red-100"
+                        className="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-red-50 hover:bg-red-100"
                       >
                         <FaFlagCheckered className="text-lg md:text-xl" />
 
@@ -417,7 +422,7 @@ const ChatBox = () => {
                         color="primary"
                         isIconOnly
                         onPress={() => setIsClosedModalOpen(true)}
-                        className="relative flex items-center justify-center w-12 h-12 transition md:w-14 md:h-14 group rounded-2xl bg-red-50 hover:bg-red-100"
+                        className="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-red-50 hover:bg-red-100"
                       >
                         <FaFlagCheckered className="text-lg md:text-xl" />
 

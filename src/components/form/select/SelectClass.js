@@ -82,18 +82,18 @@ function SelectClass({ option, onChange }) {
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute w-full top-12 bg-white border border-gray-200 rounded-md shadow-md z-50"
+          className="absolute z-50 w-full bg-white border border-gray-200 rounded-md shadow-md top-12"
         >
-          {loading && <div className="p-3 text-center text-gray-500 text-sm">{t('loading')}...</div>}
+          {loading && <div className="p-3 text-sm text-center text-gray-500">{t('loading')}...</div>}
 
-          {error && <div className="p-3 text-center text-red-500 text-sm">{error}</div>}
+          {error && <div className="p-3 text-sm text-center text-red-500">{error}</div>}
 
           {!loading && !error && (
-            <ul className="max-h-60 overflow-auto">
+            <ul className="overflow-auto max-h-60">
               {filtered.map((item) => (
                 <li
                   key={item.id}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition"
+                  className="px-4 py-2 transition cursor-pointer hover:bg-gray-100"
                   onClick={() => {
                     const label = i18n.language === 'uz' ? item.class_uz : item.class_ru
                     onChange({ label, value: item.id })
@@ -104,7 +104,7 @@ function SelectClass({ option, onChange }) {
                 </li>
               ))}
 
-              {filtered.length === 0 && <li className="px-4 py-2 text-gray-500 text-sm">{t('noData')}</li>}
+              {filtered.length === 0 && <li className="px-4 py-2 text-sm text-gray-500">{t('noData')}</li>}
             </ul>
           )}
         </motion.div>

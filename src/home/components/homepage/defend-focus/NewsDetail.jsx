@@ -1,34 +1,18 @@
 // HomePage.jsx
-import React, { useState, useEffect } from 'react'
-import {
-  Container,
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Button,
-  Chip,
-  Skeleton,
-  Pagination
-} from '@mui/material'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Container, Box, Typography, Card, CardContent, Button, Chip, Skeleton } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import SparklesIcon from '@mui/icons-material/AutoAwesome'
 import ZapIcon from '@mui/icons-material/Bolt'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, EffectCoverflow, Pagination as SwiperPagination, Navigation } from 'swiper/modules'
+import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
 import { request } from '@/services/api'
 import { useTranslation } from 'react-i18next'
+import { formatDate } from '@/shared/utils'
 
 const newsApi = {
   getAll: async () => {
@@ -38,18 +22,16 @@ const newsApi = {
 }
 
 const HomePage = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const router = useRouter()
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
   const [isVisible, setIsVisible] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6
+  const swiperRef = useRef(null)
 
   const {
     data: newsData,
     isLoading,
-    isError,
-    error
+    isError
   } = useQuery({
     queryKey: ['data-news'],
     queryFn: newsApi.getAll,
@@ -58,112 +40,83 @@ const HomePage = () => {
     retry: 2
   })
 
-  useEffect(() => {
-    setIsVisible(true)
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
+  useEffect(() => setIsVisible(true), [])
+
+  // ✅ LOOP barqaror bo‘lishi uchun: yetarli slide + unique key (dupId)
+  const sliderItems = useMemo(() => {
+    if (!newsData?.length) return []
+    const MIN = 18 // 1200 breakpoint'da slidesPerView=3 -> loop uchun yaxshi zaxira
+    const out = []
+    let dup = 0
+
+    while (out.length < MIN) {
+      for (const item of newsData) {
+        out.push({ ...item, __dupId: dup++ })
+        if (out.length >= MIN) break
+      }
     }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  const language = 'uz'
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now - date)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 0) return 'Bugun'
-    if (diffDays === 1) return 'Kecha'
-    if (diffDays < 7) return `${diffDays} kun oldin`
-    return date.toLocaleDateString('uz-UZ', { month: 'short', day: 'numeric' })
-  }
-
-  // Prepare slider news (minimum 5 items)
-  const prepareSliderNews = () => {
-    if (!newsData || newsData.length === 0) return []
-
-    let sliderItems = [...newsData]
-
-    // If less than 5, duplicate until we have at least 5
-    while (sliderItems.length < 5) {
-      sliderItems = [...sliderItems, ...newsData]
-    }
-
-    // Take latest 5 news
-    return sliderItems.slice(0, 5)
-  }
-
-  const sliderNews = prepareSliderNews()
-
-  // Pagination logic
-  const totalPages = Math.ceil((newsData?.length || 0) / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const currentNews = newsData?.slice(startIndex, endIndex) || []
-
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value)
-    window.scrollTo({ top: 600, behavior: 'smooth' })
-  }
+    return out
+  }, [newsData])
 
   const handleNewsClick = (newsId) => {
-    router.push(`/news`)
+    router.push('/news')
+    // agar detail route bo‘lsa:
+    // router.push(`/news/${newsId}`)
   }
 
-  // Loading Skeleton Component
   const SliderSkeleton = () => (
     <Box
       sx={{
-        height: { xs: 300, sm: 380, md: 450 },
-        borderRadius: 6,
-        background: 'rgba(255,255,255,0.03)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        height: { xs: 240, sm: 300, md: 360 },
+        borderRadius: 4,
+        background: 'rgba(0,0,0,0.03)',
+        border: '1px solid rgba(17,24,39,0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}
     >
-      <Skeleton
-        variant="rectangular"
-        width="100%"
-        height="100%"
-        animation="wave"
-        sx={{ bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 6 }}
-      />
+      <Skeleton variant="rectangular" width="100%" height="100%" animation="wave" sx={{ borderRadius: 4 }} />
     </Box>
   )
 
-  // Error State
+  const reviveLoopAndAutoplay = () => {
+    const sw = swiperRef.current
+    if (!sw) return
+    try {
+      sw.update()
+      // loop ba’zan “stuck” bo‘ladi — qayta yaratib yuboramiz
+      sw.loopDestroy()
+      sw.loopCreate()
+      sw.loopFix()
+      sw.autoplay?.stop()
+      sw.autoplay?.start()
+    } catch (e) {}
+  }
+
   if (isError) {
     return (
       <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)'
-        }}
+        sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}
       >
-        <Box sx={{ textAlign: 'center', color: '#fff' }}>
-          <ErrorOutlineIcon sx={{ fontSize: 80, color: '#FF4785', mb: 2 }} />
-          <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+        <Box sx={{ textAlign: 'center', color: '#111827', px: 2 }}>
+          <ErrorOutlineIcon sx={{ fontSize: 70, color: '#ef4444', mb: 2 }} />
+          <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
             Xatolik yuz berdi
           </Typography>
-          <Typography variant="body1" sx={{ mb: 4, color: 'rgba(255,255,255,0.7)' }}>
+          <Typography variant="body1" sx={{ mb: 3, color: 'rgba(17,24,39,0.7)' }}>
             Yangiliklar yuklanmadi. Iltimos, qaytadan urinib ko'ring.
           </Typography>
           <Button
             variant="contained"
             onClick={() => window.location.reload()}
             sx={{
-              background: 'linear-gradient(135deg, #FF4785 0%, #FFC700 100%)',
+              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
               px: 4,
-              py: 1.5
+              py: 1.3,
+              borderRadius: 999,
+              textTransform: 'none',
+              fontWeight: 800
             }}
           >
             Qayta yuklash
@@ -175,428 +128,279 @@ const HomePage = () => {
 
   return (
     <Box
+      id="news-detail"
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        // background: 'linear-gradient(135deg, #9333ea 0%, #6d28d9 50%, #4c1d95 100%)',
-        background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 40%, #312e81 100%)',
+        background: 'linear-gradient(180deg, #F6F7FF 0%, #FFFFFF 45%, #F7FAFF 100%)',
         minHeight: '50vh'
       }}
     >
-      {/* Animated Background Effects */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0,
-          opacity: 0.3,
-          pointerEvents: 'none'
-        }}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            width: 600,
-            height: 600,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255,71,133,0.3) 0%, transparent 70%)',
-            top: '10%',
-            left: '70%',
-            animation: 'float 20s ease-in-out infinite',
-            '@keyframes float': {
-              '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-              '50%': { transform: 'translate(-50px, 50px) scale(1.1)' }
-            }
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            width: 400,
-            height: 400,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255,199,0,0.2) 0%, transparent 70%)',
-            bottom: '20%',
-            left: '10%',
-            animation: 'float 15s ease-in-out infinite 5s'
-          }}
-        />
-      </Box>
-
-      <Container
-        sx={{
-          maxWidth: '1400px !important',
-          py: {
-            xs: '20px',
-            lg: '30px'
-          },
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        {/* Header */}
-
-        <Box
-          sx={{
-            textAlign: 'center',
-            pb: 2,
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
-        >
-          {' '}
-          {/* <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900">{t('PlatCapabilit')}</h2>
-            <p className="text-xl text-gray-600">{t('everythingEducation')}</p>
-          </div> */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-            <Typography
-              variant="h2"
-              sx={{
-                fontWeight: 900,
-                color: '#f0f0f0',
-                fontSize: { xs: '1.7rem', md: '2.25rem' },
-                letterSpacing: '-0.02em'
-              }}
-            >
-              Eng So'ngi Yangiliklar
-            </Typography>
-          </Box>
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'rgba(255,255,255,0.7)',
-              maxWidth: 600,
-              mx: 'auto',
-              fontWeight: 400
-            }}
-          >
-            IQMath platformasidagi eng dolzarb yangiliklardan xabardor bo'ling
-          </Typography>
-        </Box>
-        {/* News Slider */}
-        {isLoading ? (
-          <SliderSkeleton />
-        ) : (
+      <div className="py-10 md:py-16">
+        {/* Soft background */}
+        <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
           <Box
             sx={{
-              mb: 2,
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
-              transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s'
+              position: 'absolute',
+              top: -120,
+              right: -120,
+              width: 360,
+              height: 360,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 72%)'
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: -140,
+              left: -140,
+              width: 420,
+              height: 420,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 72%)'
+            }}
+          />
+        </Box>
+
+        <Container
+          sx={{
+            maxWidth: '1400px !important',
+            py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' },
+            position: 'relative',
+            zIndex: 1
+          }}
+        >
+          {/* Header */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 1.5, sm: 0 },
+              mb: 1
             }}
           >
-            <Swiper
-              effect={'coverflow'}
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView={'auto'}
-              coverflowEffect={{
-                rotate: 15,
-                stretch: 0,
-                depth: 300,
-                modifier: 1,
-                slideShadows: false
-              }}
-              autoplay={{
-                delay: 4000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true
-              }}
-              pagination={{
-                clickable: true,
-                dynamicBullets: true
-              }}
-              navigation={true}
-              modules={[Autoplay, EffectCoverflow, SwiperPagination, Navigation]}
-              className="newsSwiper"
-              style={{
-                paddingBottom: '60px',
-                '--swiper-pagination-color': '#FF4785',
-                '--swiper-pagination-bullet-inactive-color': '#fff',
-                '--swiper-pagination-bullet-inactive-opacity': '0.3',
-                '--swiper-navigation-color': '#FF4785',
-                '--swiper-navigation-size': '44px'
+            <Typography variant="h1" fontWeight={600} sx={{ fontSize: { xs: '1.4rem', sm: '2rem' } }}>
+              {t('news')}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push('/news')}
+              sx={{ borderRadius: 999, textTransform: 'none', fontWeight: 800 }}
+            >
+              {t('allNews')}
+            </Button>
+          </Box>
+
+          {/* Slider */}
+          {isLoading ? (
+            <SliderSkeleton />
+          ) : (
+            <Box
+              sx={{
+                mt: 2,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(18px)',
+                transition: 'all 0.6s ease'
               }}
             >
-              {sliderNews.map((news, index) => (
-                <SwiperSlide
-                  key={`${news.id}-${index}`}
-                  style={{
-                    width: '85%',
-                    maxWidth: '700px',
-                    height: 'auto'
-                  }}
-                >
-                  <Card
-                    onClick={() => handleNewsClick(news.id)}
-                    sx={{
-                      height: { xs: 300, sm: 380, md: 450 },
-                      borderRadius: 6,
-                      overflow: 'hidden',
-                      position: 'relative',
-                      cursor: 'pointer',
-                      background: 'rgba(255,255,255,0.03)',
-                      backdropFilter: 'blur(20px)',
-                      border: '2px solid rgba(255,255,255,0.1)',
-                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                      '&:hover': {
-                        transform: 'translateY(-10px) scale(1.02)',
-                        border: '2px solid rgba(255,71,133,0.5)',
-                        boxShadow: '0 30px 60px rgba(255,71,133,0.3)',
-                        '& .news-overlay': {
-                          background:
-                            'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.95) 100%)'
-                        },
-                        '& .news-image': {
-                          transform: 'scale(1.1)'
-                        },
-                        '& .arrow-icon': {
-                          transform: 'translateX(10px)'
+              <Swiper
+                onSwiper={(sw) => {
+                  swiperRef.current = sw
+                  // mount bo‘lganda loop/autoplay 100% ishga tushsin
+                  setTimeout(reviveLoopAndAutoplay, 120)
+                }}
+                onResize={() => setTimeout(reviveLoopAndAutoplay, 120)}
+                onSlideChangeTransitionEnd={() => {
+                  const sw = swiperRef.current
+                  if (sw?.autoplay && sw.autoplay.running === false) setTimeout(reviveLoopAndAutoplay, 80)
+                }}
+                slidesPerView={1.05}
+                spaceBetween={12}
+                breakpoints={{
+                  480: { slidesPerView: 1.2, spaceBetween: 12 },
+                  600: { slidesPerView: 1.6, spaceBetween: 14 },
+                  900: { slidesPerView: 2.4, spaceBetween: 16 },
+                  1200: { slidesPerView: 3, spaceBetween: 16 }
+                }}
+                loop={sliderItems.length > 1}
+                loopPreventsSliding={false}
+                speed={650}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                  stopOnLastSlide: false
+                }}
+                observer
+                observeParents
+                watchOverflow={false}
+                modules={[Autoplay]}
+                style={{ paddingBottom: 0 }}
+              >
+                {sliderItems.map((news) => (
+                  <SwiperSlide key={`${news.id}-${news.__dupId}`} style={{ height: '100%' }}>
+                    <Card
+                      onClick={() => handleNewsClick(news.id)}
+                      sx={{
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        borderRadius: 3,
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        border: '1px solid rgba(17,24,39,0.08)',
+                        background: '#fff',
+                        boxShadow: '0 6px 16px rgba(17,24,39,0.06)',
+                        transition: 'all .2s ease',
+                        '&:hover': {
+                          boxShadow: '0 10px 24px rgba(17,24,39,0.10)',
+                          borderColor: 'rgba(99,102,241,0.25)'
                         }
-                      }
-                    }}
-                  >
-                    {/* Background Image */}
-                    <Box
-                      className="news-image"
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundImage: `url(${news.image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                        zIndex: 1
-                      }}
-                    />
-
-                    {/* Gradient Overlay */}
-                    <Box
-                      className="news-overlay"
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background:
-                          'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%)',
-                        transition: 'background 0.5s ease',
-                        zIndex: 2
-                      }}
-                    />
-
-                    {/* Content */}
-                    <CardContent
-                      sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        zIndex: 3,
-                        p: { xs: 2.5, sm: 3, md: 3.5 }
                       }}
                     >
-                      {/* Badge */}
-                      <Box sx={{ mb: 2 }}>
-                        <Chip
-                          icon={<ZapIcon sx={{ fontSize: 18 }} />}
-                          label="Yangilik"
-                          sx={{
-                            background: 'linear-gradient(135deg, #FF4785 0%, #FFC700 100%)',
-                            color: '#fff',
-                            fontWeight: 700,
-                            fontSize: '0.9rem',
-                            px: 1,
-                            borderRadius: 3,
-                            '& .MuiChip-icon': {
-                              color: '#fff'
-                            }
-                          }}
-                        />
-                      </Box>
-
-                      {/* Title */}
-                      <Typography
-                        variant="h4"
+                      {/* Media (doim bir xil height) */}
+                      <Box
                         sx={{
-                          color: '#fff',
-                          fontWeight: 800,
-                          mb: 1.5,
-                          fontSize: { xs: '1.3rem', sm: '1.6rem', md: '1.8rem' },
-                          lineHeight: 1.3,
-                          textShadow: '0 4px 20px rgba(0,0,0,0.5)',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
+                          position: 'relative',
+                          height: { xs: 150, sm: 170, md: 190 },
+                          flexShrink: 0,
+                          backgroundColor: '#f3f4f6',
                           overflow: 'hidden'
                         }}
                       >
-                        {news.title_uz}
-                      </Typography>
-
-                      {/* Description */}
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: 'rgba(255,255,255,0.85)',
-                          mb: 2,
-                          fontSize: '0.95rem',
-                          lineHeight: 1.5,
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          textShadow: '0 2px 10px rgba(0,0,0,0.5)'
-                        }}
-                        dangerouslySetInnerHTML={{
-                          __html: news.text_uz.replace(/<[^>]+>/g, '')
-                        }}
-                      />
-
-                      {/* Footer */}
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <AccessTimeIcon sx={{ fontSize: 20, color: 'rgba(255,255,255,0.6)' }} />
-                          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', fontWeight: 500 }}>
-                            {formatDate(news.created_at)}
-                          </Typography>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Typography
-                            variant="body2"
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            backgroundImage: `url(${news.image})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            background:
+                              'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.0) 35%, rgba(0,0,0,0.15) 100%)'
+                          }}
+                        />
+                        <Box sx={{ position: 'absolute', left: 12, top: 12 }}>
+                          <Chip
+                            icon={<ZapIcon sx={{ fontSize: 18 }} />}
+                            label="Yangilik"
                             sx={{
-                              color: '#FFC700',
-                              fontWeight: 700,
-                              fontSize: '1rem'
-                            }}
-                          >
-                            Batafsil
-                          </Typography>
-                          <ArrowForwardIcon
-                            className="arrow-icon"
-                            sx={{
-                              color: '#FFC700',
-                              fontSize: 24,
-                              transition: 'transform 0.3s ease'
+                              background: 'rgba(255,255,255,0.92)',
+                              color: '#111827',
+                              fontWeight: 800,
+                              border: '1px solid rgba(17,24,39,0.10)',
+                              '& .MuiChip-icon': { color: '#6366f1' }
                             }}
                           />
                         </Box>
                       </Box>
-                    </CardContent>
-                  </Card>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </Box>
-        )}
-        {/* Additional News Grid Section */}
-        {newsData && newsData.length > 5 && (
-          <Box sx={{ mt: 10 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: 800,
-                color: '#fff',
-                mb: 6,
-                textAlign: 'center'
-              }}
-            >
-              Boshqa Yangiliklar
-            </Typography>
-            <Grid container spacing={4}>
-              {currentNews.map((news) => (
-                <Grid item xs={12} sm={6} md={4} key={news.id}>
-                  <Card
-                    onClick={() => handleNewsClick(news.id)}
-                    sx={{
-                      height: '100%',
-                      borderRadius: 4,
-                      overflow: 'hidden',
-                      cursor: 'pointer',
-                      background: 'rgba(255,255,255,0.05)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 20px 40px rgba(255,71,133,0.2)',
-                        border: '1px solid rgba(255,71,133,0.3)'
-                      }
-                    }}
-                  >
-                    <CardMedia component="img" height="200" image={news.image} alt={news.title_uz} />
-                    <CardContent sx={{ p: 3 }}>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          color: '#fff',
-                          fontWeight: 700,
-                          mb: 1,
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        {news.title_uz}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: 'rgba(255,255,255,0.6)',
-                          fontSize: '0.9rem'
-                        }}
-                      >
-                        {formatDate(news.created_at)}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
 
-            {totalPages > 1 && (
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-                <Pagination
-                  count={totalPages}
-                  page={currentPage}
-                  onChange={handlePageChange}
-                  size="large"
-                  sx={{
-                    '& .MuiPaginationItem-root': {
-                      color: '#fff',
-                      borderColor: 'rgba(255,255,255,0.2)',
-                      '&:hover': {
-                        background: 'rgba(255,71,133,0.2)'
-                      }
-                    },
-                    '& .Mui-selected': {
-                      background: 'linear-gradient(135deg, #FF4785 0%, #FFC700 100%) !important',
-                      color: '#fff'
-                    }
-                  }}
-                />
-              </Box>
-            )}
-          </Box>
-        )}
-      </Container>
+                      {/* Content (hammasi tekis) */}
+                      <CardContent
+                        sx={{
+                          p: { xs: 2, sm: 2.25 },
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 1.2,
+                          flexGrow: 1
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontWeight: 900,
+                            color: '#111827',
+                            fontSize: { xs: '0.95rem', sm: '1.02rem' },
+                            lineHeight: 1.25,
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            minHeight: '2.5em'
+                          }}
+                        >
+                          {i18n.language === 'uz' ? news.title_uz : news.title_ru}
+                        </Typography>
+
+                        <Typography
+                          sx={{
+                            color: 'rgba(17,24,39,0.65)',
+                            fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                            lineHeight: 1.5,
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            minHeight: '3em'
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: ((i18n.language === 'uz' ? news.text_uz : news.text_ru) || '').replace(
+                              /<[^>]+>/g,
+                              ''
+                            )
+                          }}
+                        />
+
+                        {/* Bottom row (doim pastda) */}
+                        <Box
+                          sx={{
+                            mt: 'auto',
+                            pt: 1.2,
+                            borderTop: '1px solid rgba(17,24,39,0.08)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 1.5
+                          }}
+                        >
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <AccessTimeIcon sx={{ fontSize: 18, color: 'rgba(17,24,39,0.45)' }} />
+                            <Typography sx={{ fontSize: 13, color: 'rgba(17,24,39,0.55)', fontWeight: 600 }}>
+                              {formatDate(news.created_at)}
+                            </Typography>
+                          </Box>
+
+                          <Button
+                            variant="contained"
+                            endIcon={<ArrowForwardIcon />}
+                            sx={{
+                              textTransform: 'none',
+                              fontWeight: 800,
+                              borderRadius: 999,
+                              px: 2,
+                              py: 0.7,
+                              fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                              boxShadow: '0 10px 20px rgba(99,102,241,0.25)',
+                              '&:hover': {
+                                background: 'linear-gradient(135deg, #585cf0 0%, #9f4ff2 100%)'
+                              }
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleNewsClick(news.id)
+                            }}
+                          >
+                            Batafsil
+                          </Button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </Box>
+          )}
+        </Container>
+      </div>
     </Box>
   )
 }

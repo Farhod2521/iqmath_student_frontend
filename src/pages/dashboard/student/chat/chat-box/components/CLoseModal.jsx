@@ -29,20 +29,6 @@ const CloseModal = ({ closeMutation, comment, setComment, setIsClosedModalOpen }
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {/* Info Banner */}
-          {/* <div className="flex items-start gap-3 p-4 border-2 border-orange-200 rounded-xl bg-orange-50/50">
-            <AlertCircle className="flex-shrink-0 w-5 h-5 mt-0.5 text-orange-600" />
-            <div className="flex-1">
-              <h4 className="text-sm font-semibold text-orange-900">
-                {t('chatBox.request_close.important_notice') || 'Muhim eslatma'}
-              </h4>
-              <p className="mt-1 text-xs text-orange-700">
-                {t('chatBox.request_close.close_request_info') ||
-                  "Chatni yopish so'rovi yuboriladi. Administrator tasdiqlashi kerak."}
-              </p>
-            </div>
-          </div> */}
-
           {/* Comment Textarea */}
           <div>
             <label className="block mb-3 text-sm font-semibold text-gray-700">
@@ -60,7 +46,7 @@ const CloseModal = ({ closeMutation, comment, setComment, setIsClosedModalOpen }
                 placeholder={t('chatBox.request_close.enter_close_reason') || 'Yopish sababini kiriting...'}
                 maxLength={500}
               />
-              <div className="absolute text-xs text-gray-400 bottom-3 right-3">{comment.length}/500</div>
+              <div className="absolute text-xs text-gray-400 bottom-3 right-3">{comment?.length}/500</div>
             </div>
             <p className="flex items-start gap-2 mt-2 text-xs text-gray-500">
               <span className="inline-block w-1 h-1 mt-1.5 bg-gray-400 rounded-full"></span>
@@ -90,11 +76,11 @@ const CloseModal = ({ closeMutation, comment, setComment, setIsClosedModalOpen }
           </button>
           <button
             onClick={() => closeMutation.mutate({ comment })}
-            disabled={closeMutation.isPending}
+            disabled={closeMutation?.isPending}
             className="relative px-6 py-2.5 text-sm font-semibold text-white transition-all bg-gradient-to-r from-orange-600 to-red-600 rounded-xl hover:from-orange-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-lg shadow-orange-500/30 disabled:shadow-none overflow-hidden group"
           >
             <span className="relative z-10 flex items-center gap-2">
-              {closeMutation.isPending ? (
+              {closeMutation?.isPending ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
                   {t('chatBox.request_close.sending') || 'Yuborilmoqda...'}

@@ -1,38 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import 'slick-carousel/slick/slick.css'
-
 import LeadershipSlider from './LeadershipSlider'
-import { Container } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
+import { Container, Grid, Typography } from '@mui/material'
 
 const Leadership = () => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <section className="relative px-4 py-20 overflow-hidden text-gray-900 bg-gray-50">
-        <Container sx={{ maxWidth: '1400px !important' }}>
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 bg-blue-200 rounded-full w-96 h-96 filter blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 bg-purple-200 rounded-full w-96 h-96 filter blur-3xl"></div>
-          </div>
+    <section className="relative py-20 overflow-hidden bg-gray-50">
+      {/* Background blur blobs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full bg-blue-200/40 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full bg-purple-200/40 blur-3xl" />
+      </div>
 
-          <div className="relative mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <div className="inline-block px-4 py-2 mb-4 rounded-full bg-white/30 backdrop-blur-md">
-                <span className="text-sm font-semibold text-gray-800"> {t('leadership.badge')}</span>
-              </div>
-              <h2 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">{t('leadership.title')}</h2>
-              <p className="max-w-2xl mx-auto text-xl text-gray-600">{t('leadership.subtitle')}</p>
-            </div>
+      <Container
+        sx={{
+          maxWidth: '1400px !important',
+          position: 'relative',
+          py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' }
+        }}
+      >
+        <div className="relative mx-auto max-w-7xl">
+          {/* Header */}
 
+          <Grid container spacing={3} mb={5} alignItems="center" justifyContent="center">
+            <Grid size={{ xs: 12, lg: 7 }}>
+              <Typography
+                textAlign="center"
+                variant="h4"
+                lineHeight={1.4}
+                mb={2}
+                fontWeight={700}
+                sx={{
+                  fontSize: {
+                    lg: '40px',
+                    xs: '35px'
+                  }
+                }}
+              >
+                {t('leadership.title')}
+              </Typography>
+              <Typography
+                textAlign="center"
+                variant="body1"
+                mb={2}
+                sx={{
+                  fontSize: {
+                    lg: '18px',
+                    xs: '16px'
+                  },
+                  color: 'text.secondary'
+                }}
+              >
+                {t('leadership.subtitle')}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {/* Slider */}
+          <div className="relative">
             <LeadershipSlider />
           </div>
-        </Container>
-      </section>
-    </>
+        </div>
+      </Container>
+    </section>
   )
 }
 

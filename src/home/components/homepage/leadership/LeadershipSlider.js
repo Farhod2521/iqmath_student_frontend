@@ -1,12 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Award, X, Calendar } from 'lucide-react'
-import IbnSino from '@/assets/images/leadership/ibnSino.jpg'
-import AlBeruniy from '@/assets/images/leadership/alBeruniy.jpg'
-import AlFargoni from '@/assets/images/leadership/AlFargoniy.jpg'
-import AlXorazmiy from '@/assets/images/leadership/AlXorazmiy.jpg'
-import MirzoUlugbek from '@/assets/images/leadership/mirzoUlugbek.jpg'
-import UmarXayyom from '@/assets/images/leadership/UmarXayyom.jpg'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
@@ -20,6 +14,17 @@ const leadershipApi = {
     const { data } = await request.get(`/api/v1/management/mobile/mathematicians/${id}/`)
     return data
   }
+}
+
+const CircleImage = ({ src, alt, size = 160, className = '' }) => {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-full bg-white/60 ring-4 ring-blue-100 shadow-lg ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <Image src={src} alt={alt} fill sizes={`${size}px`} className="object-cover" unoptimized />
+    </div>
+  )
 }
 
 const LeadershipSlider = () => {
@@ -36,9 +41,7 @@ const LeadershipSlider = () => {
   })
 
   useEffect(() => {
-    if (data?.length) {
-      setScientists(data)
-    }
+    if (data?.length) setScientists(data)
   }, [data])
 
   const { data: detailData } = useQuery({
@@ -50,11 +53,7 @@ const LeadershipSlider = () => {
 
   useEffect(() => {
     if (!scientists?.length) return
-
-    const timer = setInterval(() => {
-      changeSlide((currentIndex + 1) % scientists.length)
-    }, 6000)
-
+    const timer = setInterval(() => changeSlide((currentIndex + 1) % scientists.length), 6000)
     return () => clearInterval(timer)
   }, [scientists, currentIndex])
 
@@ -63,116 +62,119 @@ const LeadershipSlider = () => {
     setTimeout(() => {
       setCurrentIndex(nextIndex)
       setIsAnimating(false)
-    }, 300)
+    }, 260)
   }
 
-  const handlePrev = () => {
-    changeSlide((currentIndex - 1 + scientists.length) % scientists.length)
-  }
-
-  const handleNext = () => {
-    changeSlide((currentIndex + 1) % scientists.length)
-  }
+  const handlePrev = () => changeSlide((currentIndex - 1 + scientists.length) % scientists.length)
+  const handleNext = () => changeSlide((currentIndex + 1) % scientists.length)
 
   const current = scientists[currentIndex]
+
+  const getTitle = (obj) => (i18n.language === 'ru' ? obj?.title_ru : obj?.title_uz)
+  const getSubtitle = (obj) => (i18n.language === 'ru' ? obj?.subtitle_ru : obj?.subtitle_uz)
+  const getYears = (obj) => (i18n.language === 'ru' ? obj?.life_years_ru : obj?.life_years_uz)
 
   return (
     <div className="relative max-w-5xl mx-auto">
       {/* Main Card */}
       {current && (
-        <div className="overflow-hidden bg-white shadow-2xl rounded-2xl">
-          <div className="p-6 md:p-10">
-            <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
-              {/* Image - Smaller & Circular */}
-              <div className="relative flex-shrink-0">
-                <div
-                  className={`relative w-32 h-32 md:w-40 md:h-40 transition-all duration-500 ease-in-out ${
-                    isAnimating ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
-                  }`}
-                >
-                  <Image
-                    src={current.image}
-                    unoptimized
-                    alt={i18n.language === 'uz' ? current.title_uz : current.title_ru}
-                    width={160} // md:160
-                    height={160} // md:160
-                    priority
-                    className={`object-cover border-4 border-blue-100 rounded-full shadow-lg transition-all duration-500 ease-in-out ${
-                      isAnimating ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
-                    }`}
-                  />
-                </div>
+        <div className="relative overflow-hidden bg-white border border-gray-100 shadow-[0_30px_70px_rgba(0,0,0,0.10)] rounded-3xl">
+          <div className="absolute inset-0 pointer-events-none opacity-60 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+
+          <div className="relative p-5 sm:p-6 md:p-10">
+            <div className="flex flex-col items-center gap-6 md:flex-row">
+              {/* Image */}
+              <div
+                className={`transition-all duration-500 ease-out ${isAnimating ? 'opacity-0 scale-[0.96]' : 'opacity-100 scale-100'}`}
+              >
+                <CircleImage
+                  src={current.image}
+                  alt={getTitle(current) || 'Scientist'}
+                  className="w-[160px] h-[160px] sm:w-[190px] sm:h-[190px] lg:w-[210px] lg:h-[210px]"
+                />
               </div>
 
-              {/* Content - Compact */}
-              <div className="flex-1 text-center md:text-left">
+              {/* Content */}
+              <div className="flex-1 min-w-0 text-center md:text-left">
                 <div
-                  className={`transition-all duration-500 ease-in-out ${
-                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                  }`}
+                  className={`transition-all duration-500 ease-out ${isAnimating ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'}`}
                 >
-                  <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">
-                    <Award className="w-3 h-3" />
-                    {i18n.language === 'ru' ? current.title_ru : current.title_uz}
-                  </div>
+                  {/* <div className="inline-flex items-center gap-2 px-4 py-2 mb-3 text-xs font-semibold text-blue-700 border border-blue-100 rounded-full bg-blue-50">
+                    <Award className="w-4 h-4" />
+                    {getSubtitle(current)}
+                  </div> */}
 
-                  <h2 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">
-                    {' '}
-                    {i18n.language === 'ru' ? current.subtitle_ru : current.subtitle_uz}
+                  <h2 className="mb-4 text-2xl font-black tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+                    {getTitle(current)}
                   </h2>
 
+                  <p className="mb-5 text-sm font-semibold text-gray-600 sm:text-base md:text-lg">
+                    {getSubtitle(current)}
+                  </p>
+
                   <div className="flex items-center justify-center gap-2 mb-4 text-gray-600 md:justify-start">
-                    <Calendar className="w-4 h-4" />
-                    <span className="font-medium">
-                      {i18n.language === 'ru' ? current.life_years_ru : current.life_years_uz}
+                    <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full">
+                      <Calendar className="w-4 h-4" />
                     </span>
+                    <span className="text-sm font-semibold sm:text-base">{getYears(current)}</span>
                   </div>
 
-                  <p className="mb-4 text-sm leading-relaxed text-gray-600 md:text-base line-clamp-3">{current.bio}</p>
+                  <div className="flex flex-col justify-center gap-2 sm:flex-row sm:items-center sm:gap-3 md:justify-start">
+                    <button
+                      onClick={() => setSelectedScientist(current)}
+                      className="px-6 py-2.5 text-sm font-semibold text-white transition rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      {t('leadership.more')}
+                    </button>
 
-                  <button
-                    onClick={() => setSelectedScientist(current)}
-                    className="px-6 py-2.5 text-sm font-semibold text-white transition-all rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
-                  >
-                    {t('leadership.more')}
-                  </button>
+                    <button
+                      onClick={handleNext}
+                      className="px-6 py-2.5 text-sm font-semibold text-gray-900 transition rounded-xl bg-gray-100 hover:bg-gray-200 active:scale-[0.98] sm:hidden"
+                    >
+                      {t('leadership.next') || 'Next'}
+                    </button>
+                  </div>
                 </div>
               </div>
+            </div>
+
+            {/* Indicators */}
+            <div className="flex flex-wrap justify-center gap-2 mt-6 sm:gap-3">
+              {scientists.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => changeSlide(i)}
+                  className={`h-9 px-3 rounded-full text-xs sm:text-sm font-semibold transition border ${
+                    i === currentIndex
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-[1.03]'
+                      : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>
       )}
-      {/* Navigation Buttons */}
+
+      {/* Navigation Buttons (desktop) */}
       <button
         onClick={handlePrev}
-        className="absolute left-0 w-10 h-10 transition -translate-y-1/2 bg-white border border-gray-200 rounded-full shadow-lg md:-left-16 top-1/2 md:w-12 md:h-12 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+        className="hidden lg:flex absolute left-2 xl:left-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
+        aria-label="Previous"
       >
-        <ChevronLeft className="w-5 h-5 mx-auto md:w-6 md:h-6" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
 
       <button
         onClick={handleNext}
-        className="absolute right-0 w-10 h-10 transition -translate-y-1/2 bg-white border border-gray-200 rounded-full shadow-lg md:-right-16 top-1/2 md:w-12 md:h-12 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+        className="hidden lg:flex absolute right-2 xl:right-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
+        aria-label="Next"
       >
-        <ChevronRight className="w-5 h-5 mx-auto md:w-6 md:h-6" />
+        <ChevronRight className="w-6 h-6" />
       </button>
 
-      {/* Indicators */}
-      <div className="flex justify-center gap-2 mt-6 md:gap-3">
-        {scientists.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => changeSlide(i)}
-            className={`w-8 h-8 md:w-10 md:h-10 rounded-full text-xs md:text-sm font-semibold transition ${
-              i === currentIndex ? 'bg-blue-600 text-white scale-110' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
-
-      {/* Modal */}
       {/* Modal */}
       {selectedScientist && detailData && (
         <div
@@ -193,18 +195,15 @@ const LeadershipSlider = () => {
                 <X className="w-5 h-5 text-gray-600 md:w-6 md:h-6" />
               </button>
             </div>
-
             {/* Modal Content */}
             <div className="p-6">
               <div className="flex flex-col gap-6 mb-6 md:flex-row">
-                <div className="flex justify-center md:w-2/5">
-                  <Image
+                <div className="flex justify-center sm:w-2/5">
+                  <CircleImage
                     src={detailData.image}
-                    unoptimized
-                    alt={i18n.language === 'ru' ? detailData.title_ru : detailData.title_uz}
-                    width={256}
-                    height={256}
-                    className="object-cover border-4 border-blue-100 rounded-full shadow-xl"
+                    alt={getTitle(detailData) || 'Scientist'}
+                    size={200}
+                    className="sm:!w-[220px] sm:!h-[220px]"
                   />
                 </div>
                 <div className="space-y-4 md:w-3/5">
@@ -222,19 +221,16 @@ const LeadershipSlider = () => {
                   </div>
                 </div>
               </div>
-
               {/* Description */}
               <div>
                 <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
-                  <span className="w-1 h-6 bg-blue-500 rounded"></span>
-                  {t('leadership.bioTitle')}
+                  <span className="w-1 h-6 bg-blue-500 rounded"></span> {t('leadership.bioTitle')}
                 </h4>
                 <p className="leading-relaxed text-gray-700">
                   {i18n.language === 'ru' ? detailData.description_ru : detailData.description_uz}
                 </p>
               </div>
             </div>
-
             {/* Modal Footer */}
             <div className="sticky bottom-0 p-6 border-t border-gray-200 bg-gray-50">
               <button

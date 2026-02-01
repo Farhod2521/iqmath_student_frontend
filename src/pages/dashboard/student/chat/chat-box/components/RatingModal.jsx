@@ -122,7 +122,7 @@ const RatingModal = ({ closeMutation, rating, setRating, setComment, comment, se
                 className="w-full px-4 py-3 border-2 border-gray-200 resize-none rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
                 placeholder={t('chatBox.confirm_close.enter_feedback') || 'Fikr-mulohazangizni yozing...'}
               />
-              <div className="absolute text-xs text-gray-400 bottom-3 right-3">{comment.length}/500</div>
+              <div className="absolute text-xs text-gray-400 bottom-3 right-3">{comment?.length}/500</div>
             </div>
           </div>
         </div>
@@ -138,10 +138,10 @@ const RatingModal = ({ closeMutation, rating, setRating, setComment, comment, se
 
           <button
             onClick={() => closeMutation.mutate({ stars: rating, comment })}
-            disabled={!rating || closeMutation.isPending}
+            disabled={!rating || closeMutation?.isPending}
             className="px-6 py-2 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 disabled:opacity-50"
           >
-            {closeMutation.isPending
+            {closeMutation?.isPending
               ? t('chatBox.confirm_close.submitting') || 'Yuborilmoqda...'
               : t('chatBox.chat_transfer.submit_and_close')}
           </button>

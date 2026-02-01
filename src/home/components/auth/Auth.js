@@ -37,17 +37,15 @@ function Auth() {
   }, [router.query])
 
   return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center relative"
-    >
+    <div className="relative flex items-center justify-center w-full ">
       <div
-        className="w-full max-w-xl md:min-w-[550px] rounded-lg p-8 md:p-12 shadow-lg"
-        style={{ background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040' }}
+        className="w-full max-w-xl md:min-w-[550px] border  bg-white/5 border-white/10 rounded-lg p-8 md:p-12 shadow-lg"
+        // style={{ background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040' }}
       >
         <div>
           {currentTab === 'signIn' || currentTab === 'signUp' ? (
             <div>
-              <div className="tab-row  flex flex-col gap-2 p-2 mb-8 rounded-md" style={{ background: '#ECF2FF' }}>
+              <div className="flex flex-col gap-2 p-2 mb-8 rounded-md tab-row" style={{ background: '#ECF2FF' }}>
                 <button
                   onClick={() => handleTabChange('signIn')}
                   className={`[400px]-w-1/2 w-full py-1.5 text-sm font-medium rounded-md transition ${
@@ -66,7 +64,7 @@ function Auth() {
                       : 'text-[#222] hover:bg-[#ECF2FF]'
                   }`}
                 >
-                  {t('sign in')}
+                  {t('signIn')}
                 </button>
               </div>
               {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}

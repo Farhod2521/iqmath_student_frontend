@@ -5,10 +5,9 @@ import { URLS } from '@/constants/url'
 import { request } from '@/services/api'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import styles from '../styles/index.module.css'
 
 // ICONS
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import PaidIcon from '@mui/icons-material/Paid'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import toast from 'react-hot-toast'
@@ -41,7 +40,7 @@ const PricingContent = () => {
   const handleBuy = async (plan) => {
     const session = await getSession()
     if (!session) {
-      toast.success("Tarif rejani sotib qolish uchun avval ro'yxatdan o'ting")
+      toast.success(t('pricing.authRequired'))
       router.push('/auth')
       return
     }
@@ -118,69 +117,72 @@ const PricingContent = () => {
      bg-gradient-to-br from-blue-500 to-purple-500 overflow-hidden`} // overflow-hidden qo'shdik
               >
                 {item.category && item.category?.title && (
-                  <div className="absolute top-0 right-0 z-50 overflow-hidden">
+                  <div className="absolute top-0 right-0 z-10 overflow-hidden rounded-bl-xl">
                     <div
-                      className={`relative px-4 py-1 text-xs font-bold text-white uppercase shadow-lg rounded-bl-lg rounded-tr-2xl
-      ${
-        item.category?.title.toLowerCase() === 'best value'
-          ? 'bg-gradient-to-r from-amber-500 to-orange-500'
-          : 'bg-gradient-to-r from-blue-500 to-purple-500'
-      }`}
+                      className={`relative px-5 py-2 text-sm font-extrabold text-white uppercase tracking-wide
+      rounded-bl-2xl rounded-tr-2xl shadow-xl
+      ${styles.pricingBadge}
+      ${item.category?.title.toLowerCase() === 'best value' ? styles.badgeBest : styles.badgeDefault}`}
                     >
-                      {' '}
                       {item.category?.title}
                     </div>
                   </div>
                 )}
-                {/* {item.category && item.category?.title && (
-                  <div className="absolute z-50 w-40 top-4 -right-10">
-                    <div className="relative px-4 py-1.5 text-[10px] font-bold text-center text-white uppercase transform rotate-45 shadow-md bg-gradient-to-r from-blue-500 to-purple-500">
-                      {item.category?.title}
-                    </div>
-                  </div>
-                )} */}
 
-                <div className="flex flex-col h-full p-6 rounded-2xl bg-white/95 backdrop-blur">
+                <div className="flex flex-col h-full p-6 sm:p-7 md:p-8 rounded-2xl bg-white/95 backdrop-blur">
                   <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">{item.original_name}</h3>
-
-                  <p className="flex items-center mt-1 text-sm text-center text-gray-500">
-                    <CalendarMonthIcon sx={{ color: '#5d87ff' }} />{' '}
-                    <span>
-                      {item.months} {t('month')}
-                    </span>
-                  </p>
-                  {/* PRICE */}
-                  <div className="mt-4 space-y-2">
-                    {/* ORIGINAL PRICE */}
-                    <div className="flex items-center gap-1">
-                      <AttachMoneyIcon sx={{ fontSize: 18, color: '#9ca3af' }} />
-                      <span className="text-xl text-gray-400 line-through">
-                        {Number(item.originalPrice).toLocaleString()}
+                  <div className="flex justify-center mt-3 md:justify-start">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100">
+                      <CalendarMonthIcon sx={{ color: '#5d87ff', fontSize: 20 }} />
+                      <span className="text-base font-semibold text-gray-700">
+                        {item.months} {t('month')}
                       </span>
-                      <span className="text-sm text-gray-500">so'm</span>
                     </div>
-
-                    {/* DISCOUNT */}
-                    {item.discount_percent > 0 && (
-                      <div className="flex items-center gap-1">
-                        <LocalFireDepartmentIcon sx={{ fontSize: 16, color: 'red' }} />
-                        <span className="text-xs font-semibold">-{item.discount_percent}%</span>
-                      </div>
-                    )}
-
-                    {/* FINAL PRICE */}
-                    {item.price_per_month > 0 && (
-                      <div className="flex items-center gap-1">
-                        <PaidIcon sx={{ fontSize: 20, color: '#1e40af' }} />
-                        <span className="text-2xl font-extrabold text-gray-900">
-                          {Number(item.price).toLocaleString()} so'm
-                        </span>
-                      </div>
-                    )}
                   </div>
 
+                  {/* PRICE */}
+                  <div className="mt-5 space-y-3">
+                    {(() => {
+                      const original = Number(item.originalPrice || 0)
+                      const sale = Number(item.price || 0)
+                      const saved = Math.max(0, original - sale)
+                      const savedPercent = original > 0 ? Math.round((saved / original) * 100) : 0
+
+                      return (
+                        <>
+                          {/* FINAL PRICE */}
+                          {item.price_per_month > 0 && (
+                            <div className="flex items-center gap-2 mb-1">
+                              <PaidIcon sx={{ fontSize: 20, color: '#1e40af' }} />
+                              <span className="text-2xl font-extrabold text-gray-900">
+                                {sale.toLocaleString()} {t('pricing.currency')}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="flex flex-wrap items-center gap-2 pt-1">
+                            <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold text-green-700 bg-green-100 rounded-full">
+                              {t('pricing.youSave')}: {saved.toLocaleString()} {t('pricing.currency')}
+                            </span>
+                            {savedPercent > 0 && (
+                              <span className="text-xs font-semibold text-gray-500">(-{savedPercent}%)</span>
+                            )}
+                          </div>
+
+                          {/* ORIGINAL PRICE */}
+                          {/* {original > 0 && (
+                            <div className="flex items-center gap-1">
+                              <AttachMoneyIcon sx={{ fontSize: 18, color: '#9ca3af' }} />
+                              <span className="text-xl text-gray-400 line-through">{original.toLocaleString()}</span>
+                              <span className="text-sm text-gray-500">so'm</span>
+                            </div>
+                          )} */}
+                        </>
+                      )
+                    })()}
+                  </div>
                   {/* BENEFITS */}
-                  <ul className="flex-1 mt-6 space-y-3">
+                  <ul className="flex-1 mt-7 space-y-3.5">
                     {item.benefits.map((b) => (
                       <li
                         key={b.id}
@@ -204,7 +206,7 @@ const PricingContent = () => {
                   <button
                     disabled={!item.is_active}
                     onClick={() => handleBuy(item)}
-                    className={`mt-6 w-full py-3 rounded-xl font-semibold text-white transition-all
+                    className={`mt-6 w-full py-3.5 rounded-xl font-semibold text-white transition-all
           ${
             item.is_active
               ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 active:scale-95'

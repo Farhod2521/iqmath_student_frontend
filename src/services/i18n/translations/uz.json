@@ -32,7 +32,7 @@
   "totalScore": "Sizning to'plagan balingiz",
   "score": "Ball",
   "login": "Tizimga kirish",
-  "sign in": "Ro'yxatdan o'tish",
+  "signIn": "Ro'yxatdan o'tish",
   "phone number": "Telefon raqam",
   "password": "Parol",
   "remember": "Eslab qolsin",
@@ -340,6 +340,18 @@
   "authSubTitle": "Kod SMS orqali yuborildi",
   "authSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz!",
   "authCodePlaceholder": "Kodni kiriting",
+  "authCard": {
+    "badge": "Tez boshlang",
+    "title": "2 daqiqada ro‘yxatdan o‘ting",
+    "subtitle": "Profil yarating, darslarni oching va natijalarni kuzating.",
+    "features": {
+      "secure": "Xavfsiz kirish va shaxsiy kabinet",
+      "videos": "400+ video dars va mashqlar",
+      "roles": "O‘qituvchi / ota-ona / o‘quvchi uchun qulay"
+    },
+    "cta": "Ro‘yxatdan o‘tish / Kirish",
+    "footer": "Bir marta kiring — keyin hammasi oson bo‘ladi"
+  },
   "recommended": "Tavsiya",
   "needToStudy": "O'zlashtirishingiz kerak bo'lgan mavzular ro'yxati",
   "examples": "Misollar",
@@ -739,6 +751,8 @@
   "contactSupport": "Qo'llab-quvvatlash bilan bog'lanish",
   "needHelp": "Yordam kerakmi?",
   "faq": "Tez-tez so'raladigan savollar",
+  "faqSubtitle": "Platformadan foydalanish, to‘lovlar va darslar bo‘yicha eng ko‘p beriladigan savollarga javoblar",
+  "more": "Ko'proq",
   "liveChat": "Jonli chat",
   "emailSupport": "Email yordami",
   "phoneSupport": "Telefon yordami",
@@ -903,6 +917,7 @@
   "trigonometry": "Trigonometriya",
   "probabilityTheory": "Ehtimollik nazariyasi",
   "withIQmath": "IQmath Bilan Erishish Mumkin",
+  "withIQmathTitle": "IQmath bilan o‘qish natijasida nafaqat akademik ko‘rsatkichlar yaxshilanadi, balki mantiqiy fikrlash ham kuchayadi.",
   "academicResults": "Akademik Natijalar",
   "significantlyBetter": "Sezilarli darajada yaxshi baholar va bilim darajasi",
   "logicalThinking": "Mantiqiy Fikrlash",
@@ -922,6 +937,12 @@
     "desc4": "Video darslar, interaktiv mashqlar va testlar yordamida",
     "desc5": "real natijaga",
     "desc6": "erishing."
+  },
+  "coursesSection": {
+    "title": "Mavjud kurslar",
+    "subtitle": "IQmath platformasida turli yo‘nalishlar bo‘yicha kurslar mavjud — o‘zingizga mosini tanlab, bosqichma-bosqich o‘rganing.",
+    "goalTitle": "Maqsad",
+    "goalText": "Nazariya + amaliy mashqlar + video darsliklar orqali bilimni mustahkamlash va natijani kuzatish."
   },
   "featuresSection": {
     "adaptive": {
@@ -968,10 +989,19 @@
     "periodLabel": "Yashagan davri:",
     "bioTitle": "Biografiya",
     "achievementsTitle": "Asosiy yutuqlari",
-    "close": "Yopish"
+    "close": "Yopish",
+    "next": "Keyingi"
   },
   "pricingPageHeader": "O‘quvchilaringizga mos tariflarni tanlang",
   "pricingPageSubHeader": "IQmath platformasidagi eng mos tariflarni tanlab, matematikani tez va samarali o‘rganing",
+  "pricing": {
+    "authRequired": "Tarifni sotib olish uchun avval ro‘yxatdan o‘ting",
+    "youSave": "Tejaysiz",
+    "currency": "so‘m",
+    "next": "Keyingi",
+    "bestValue": "Eng foydali",
+    "mostPopular": "Eng ommabop"
+  },
   "cta": {
     "title": "Matematika sayohatingizni bugun boshlang!",
     "description": "Minglab talabalar bilan birga IQmath platformasida o'z bilimlaringizni yangi bosqichga olib chiqing",

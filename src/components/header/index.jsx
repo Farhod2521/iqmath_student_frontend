@@ -18,7 +18,7 @@ const navLinks = [
   { href: '/', label: 'Главная' },
   { href: '#about-us', label: 'О нас' },
   // { href: "https://iqmath.uz/", label: "courses" },
-  { href: '#faq', label: 'Вопросы и ответы' }
+  { href: '##faq-list-top', label: 'Вопросы и ответы' }
   // { href: "/about-olympics", label: "Об олимпиаде" },
 ]
 
@@ -36,12 +36,12 @@ const Header = ({ color = 'white' }) => {
 
   return (
     <header className="relative z-20 py-3 bg-white">
-      <div className="container mx-auto font-sf  px-4">
+      <div className="container px-4 mx-auto font-sf">
         <div className="flex gap-x-[50px] justify-between ">
           <Brand />
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex justify-center gap-4 items-center">
+          <nav className="items-center justify-center hidden gap-4 lg:flex">
             {navLinks.map(({ href, label }) =>
               href.startsWith('http') ? (
                 <a
@@ -74,7 +74,7 @@ const Header = ({ color = 'white' }) => {
 
             {/* Ijtimoiy tarmoq linklari */}
             {socialLinks && (
-              <div className="hidden lg:flex items-center gap-x-4 ml-4">
+              <div className="items-center hidden ml-4 lg:flex gap-x-4">
                 {socialLinks.telegram_link && (
                   <a href={socialLinks.telegram_link} target="_blank" rel="noopener noreferrer">
                     <TelegramIcon className="w-6 h-6 text-[#5D87FF] hover:text-[#4570EA] transition-colors" />
@@ -107,7 +107,7 @@ const Header = ({ color = 'white' }) => {
 
             {/* Burger Menu Button */}
             <button
-              className="ml-4 lg:hidden p-2 rounded-md transition hover:bg-gray-200"
+              className="p-2 ml-4 transition rounded-md lg:hidden hover:bg-gray-200"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? (
@@ -153,7 +153,7 @@ const Header = ({ color = 'white' }) => {
           menuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex items-center justify-between p-4 border-b">
           <Brand />
           <button onClick={() => setMenuOpen(false)}>
             <svg
@@ -186,7 +186,7 @@ const Header = ({ color = 'white' }) => {
 
         {/* Social Media Icons in Mobile Menu */}
 
-        {/* <div className="absolute bottom-4 left-0 w-full flex justify-center gap-4 border-t pt-4">
+        {/* <div className="absolute left-0 flex justify-center w-full gap-4 pt-4 border-t bottom-4">
           {isEmpty(get(networkings, "data", []))
             ? ""
             : get(networkings, "data", []).map((networking, index) => (

@@ -20,6 +20,10 @@ import LanguageDropdown from '@/components/language'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
+import AuthModal from '../../auth/AuthModal'
+import { getSession } from 'next-auth/react'
+import { useTranslation } from 'react-i18next'
+import Auth from '../../auth/Auth'
 
 // Styled components
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
@@ -62,13 +66,20 @@ const socialIcons = [
 ]
 
 const HpHeader = () => {
+  const { t } = useTranslation()
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'))
   const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'))
   const [open, setOpen] = useState(false)
   const [socialLinks, setSocialLinks] = useState(defaultLinks)
+  const [authOpen, setAuthOpen] = useState(false)
+  const [session, setSession] = useState(null)
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
+
+  useEffect(() => {
+    getSession().then((sess) => setSession(sess))
+  }, [])
 
   useEffect(() => {
     request
@@ -91,23 +102,55 @@ const HpHeader = () => {
       })
   }, [])
 
+  const handleAuthClick = () => {
+    // if (session) {
+    //   toast.success(t('welcome', 'Xush kelibsiz!'))
+    //   if (session?.role === 'teacher') router.push('/dashboard/teacher/statistics')
+    //   else if (session?.role === 'parent') router.push('/dashboard/parent/my-children')
+    //   else router.push('/dashboard/student/subjects')
+    //   return
+    // }
+
+    setAuthOpen(true)
+  }
+
   return (
     <AppBarStyled position="sticky" elevation={0}>
       <Container sx={{ maxWidth: '1400px !important' }}>
         <ToolbarStyled>
           <Brand />
+          {/* MOBILE */}
           {lgDown && (
-            <IconButton color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
-              <IconMenu2 size={20} />
-            </IconButton>
+            <Stack direction="row" spacing={1} alignItems="center">
+              {/* xohlasangiz mobileda ham auth button ko‘rsatsin */}
+              <Button
+                variant="contained"
+                onClick={handleAuthClick}
+                sx={{
+                  borderRadius: 999,
+                  textTransform: 'none',
+                  fontWeight: 800,
+                  px: 2.2,
+                  py: 0.8,
+                  background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'
+                }}
+              >
+                {session ? t('login', 'Kirish') : t('signIn')}
+              </Button>
+
+              <IconButton color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
+                <IconMenu2 size={20} />
+              </IconButton>
+            </Stack>
           )}
+
           {lgUp && (
             <>
               <Stack spacing={1} direction="row" alignItems="center">
                 <Navigations />
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
-                {socialIcons.map(
+                {/* {socialIcons.map(
                   ({ key, Icon, size }) =>
                     socialLinks[key] && (
                       <IconButton
@@ -125,8 +168,23 @@ const HpHeader = () => {
                 )}
                 <IconButton component="a" href={`tel:${socialLinks.phone}`} color="primary" size="small">
                   <FaPhone size={16} />
-                </IconButton>
+                </IconButton> */}
                 <LanguageDropdown />
+                <Button
+                  variant="contained"
+                  onClick={handleAuthClick}
+                  sx={{
+                    borderRadius: 999,
+                    textTransform: 'none',
+                    fontWeight: 900,
+                    px: 2.6,
+                    py: 1,
+                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                    boxShadow: '0 10px 20px rgba(99,102,241,0.20)'
+                  }}
+                >
+                  {session ? t('login', 'Kirish') : t('signIn')}
+                </Button>
               </Stack>
             </>
           )}
@@ -203,6 +261,9 @@ const HpHeader = () => {
           <LanguageDropdown />
         </Stack>
       </Drawer>
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
+        <Auth />
+      </AuthModal>
     </AppBarStyled>
   )
 }

@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Accordion, AccordionSummary, AccordionDetails, Dialog, IconButton } from '@mui/material'
+import {
+  Box,
+  Container,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Dialog,
+  IconButton,
+  Typography
+} from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { styled } from '@mui/material/styles'
-import { IconMinus, IconPlayerPlay, IconPlus, IconX } from '@tabler/icons'
+import { IconChevronDown, IconChevronUp, IconMinus, IconPlayerPlay, IconPlus, IconX } from '@tabler/icons'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
@@ -85,6 +94,8 @@ const FAQ = () => {
   const { t, i18n } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedVideoId, setSelectedVideoId] = useState(null)
+  const [showAll, setShowAll] = useState(false)
+
   const pathname = usePathname()
   const isFaqPage = pathname === '/faqs'
 
@@ -127,43 +138,104 @@ const FAQ = () => {
     }
   }
 
-  const visibleData = isFaqPage ? data : data.slice(0, 5)
+  // const visibleData = isFaqPage ? data : data.slice(0, 5)
+  const LIMIT = 5
+  const visibleData = isFaqPage || showAll ? data : data.slice(0, LIMIT)
+  const canToggle = !isFaqPage && data.length > LIMIT
+
+  const handleToggle = () => {
+    setShowAll((p) => !p)
+    if (showAll) {
+      // yopayotganda tepaga qaytarsin
+      setTimeout(() => {
+        document.getElementById('faq-list-top')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 50)
+    }
+  }
 
   return (
-    <Container sx={{ maxWidth: '1400px !important', mt: 3, pb: { xs: '30px', lg: '60px' } }}>
-      <Grid container spacing={3} justifyContent="center">
-        <Grid xs={12} lg={8}>
-          <Box mt={7}>
-            {visibleData?.map((item, index) => (
-              <StyledAccordion key={index} expanded={expandedIndex === index} onChange={handleChange(index)}>
-                <AccordionSummary
-                  expandIcon={
-                    expandedIndex === index ? <IconMinus size={21} stroke={1.5} /> : <IconPlus size={21} stroke={1.5} />
-                  }
-                >
-                  {language === 'uz' ? item.question_uz : item.question_ru}
-                </AccordionSummary>
-                {/* <AccordionDetails>
+    <Box mt={7} id="faq-list-top">
+      <Container sx={{ maxWidth: '1400px !important', mt: 3, pb: { xs: '30px', lg: '60px' } }}>
+        <Grid container spacing={3} alignItems="center" justifyContent="center">
+          <Grid size={{ xs: 12, lg: 7 }}>
+            <Typography
+              textAlign="center"
+              variant="h4"
+              lineHeight={1.4}
+              mb={2}
+              fontWeight={700}
+              sx={{
+                fontSize: {
+                  lg: '40px',
+                  xs: '35px'
+                }
+              }}
+            >
+              {/* i18n bilan title */}
+              {t('faq', "Tez-tez so'raladigan savollar")}
+            </Typography>
+            <Typography
+              textAlign="center"
+              variant="body1"
+              mb={2}
+              sx={{
+                fontSize: {
+                  lg: '18px',
+                  xs: '16px'
+                },
+                color: 'text.secondary'
+              }}
+            >
+              {t(
+                'faqSubtitle',
+                'Platformadan foydalanish, to‘lovlar va darslar bo‘yicha eng ko‘p beriladigan savollarga javoblar'
+              )}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} justifyContent="center">
+          <Grid xs={12} lg={8}>
+            <Box mt={7}>
+              {loading ? (
+                <div className="flex justify-center mt-12">
+                  <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
+                </div>
+              ) : (
+                visibleData?.map((item, index) => (
+                  <StyledAccordion key={index} expanded={expandedIndex === index} onChange={handleChange(index)}>
+                    <AccordionSummary
+                      expandIcon={
+                        expandedIndex === index ? (
+                          <IconMinus size={21} stroke={1.5} />
+                        ) : (
+                          <IconPlus size={21} stroke={1.5} />
+                        )
+                      }
+                    >
+                      {language === 'uz' ? item.question_uz : item.question_ru}
+                    </AccordionSummary>
+                    {/* <AccordionDetails>
                   <div dangerouslySetInnerHTML={{ __html: language === 'uz' ? item.answer_uz : item.answer_ru }} />
                 </AccordionDetails> */}
-                <AccordionDetails>
-                  <Box>
-                    {(() => {
-                      const answer = language === 'uz' ? item.answer_uz : item.answer_ru
-                      const url = item?.url
-                      const youtubeId = extractYoutubeId(url)
+                    <AccordionDetails>
+                      <Box>
+                        {(() => {
+                          const answer = language === 'uz' ? item.answer_uz : item.answer_ru
+                          const url = item?.url
+                          const youtubeId = extractYoutubeId(url)
 
-                      return (
-                        <>
-                          {answer && (
-                            <Box mb={youtubeId ? 2 : 0}>
-                              <div dangerouslySetInnerHTML={{ __html: answer }} />
-                            </Box>
-                          )}
+                          return (
+                            <>
+                              {answer && (
+                                <Box mb={youtubeId ? 2 : 0}>
+                                  <div dangerouslySetInnerHTML={{ __html: answer }} />
+                                </Box>
+                              )}
 
-                          {youtubeId && (
-                            <Box>
-                              {/* <Link
+                              {youtubeId && (
+                                <Box>
+                                  {/* <Link
                                 onClick={() => handleWatchVideo(url)}
                                 style={{
                                   display: 'inline-flex',
@@ -191,43 +263,73 @@ const FAQ = () => {
                                 <IconPlayerPlay size={18} stroke={2} />
                                 Video ko'rish
                               </Link> */}
-                              <a
-                                href={url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
-                                  color: '#1677ff', // Ant Design primary blue
-                                  fontSize: '14px',
-                                  fontWeight: 500,
-                                  textDecoration: 'none',
-                                  cursor: 'pointer'
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.textDecoration = 'underline'
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.textDecoration = 'none'
-                                }}
-                              >
-                                Ko'rish
-                              </a>
-                            </Box>
-                          )}
-                        </>
-                      )
-                    })()}
-                  </Box>
-                </AccordionDetails>
-              </StyledAccordion>
-            ))}
-          </Box>
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      color: '#1677ff', // Ant Design primary blue
+                                      fontSize: '14px',
+                                      fontWeight: 500,
+                                      textDecoration: 'none',
+                                      cursor: 'pointer'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.textDecoration = 'underline'
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.textDecoration = 'none'
+                                    }}
+                                  >
+                                    Ko'rish
+                                  </a>
+                                </Box>
+                              )}
+                            </>
+                          )
+                        })()}
+                      </Box>
+                    </AccordionDetails>
+                  </StyledAccordion>
+                ))
+              )}
+              {canToggle && (
+                <Box display="flex" justifyContent="center" mt={1}>
+                  <button
+                    onClick={handleToggle}
+                    className={`
+        inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white
+        bg-gradient-to-r from-blue-600 to-purple-600
+        shadow-lg shadow-blue-500/20
+        transition-all duration-200
+        hover:opacity-95 hover:-translate-y-0.5 hover:shadow-xl
+        active:translate-y-0 active:scale-[0.98]
+        ${showAll ? 'animate-pulse' : 'animate-bounce'}
+      `}
+                  >
+                    {showAll ? (
+                      <>
+                        <IconChevronUp size={20} stroke={2} />
+                        {t('close', 'Yopish')}
+                      </>
+                    ) : (
+                      <>
+                        <IconChevronDown size={20} stroke={2} />
+                        {t('more', "Ko'proq")}
+                      </>
+                    )}
+                  </button>
+                </Box>
+              )}
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      <VideoModal open={modalOpen} onClose={() => setModalOpen(false)} videoId={selectedVideoId} />
-    </Container>
+        <VideoModal open={modalOpen} onClose={() => setModalOpen(false)} videoId={selectedVideoId} />
+      </Container>
+    </Box>
   )
 }
 

@@ -159,11 +159,11 @@ const TransferModal = ({
                 })
               }
             }}
-            disabled={!transferTeacherId || transferMutation.isPending}
+            disabled={!transferTeacherId || transferMutation?.isPending}
             className="relative px-6 py-2.5 text-sm font-semibold text-white transition-all bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-lg shadow-blue-500/30 disabled:shadow-none overflow-hidden group"
           >
             <span className="relative z-10 flex items-center gap-2">
-              {transferMutation.isPending ? (
+              {transferMutation?.isPending ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
                   {t('transferring')}

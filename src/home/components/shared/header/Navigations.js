@@ -35,9 +35,9 @@ const Navigations = () => {
     { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/prices' },
-    { title: t('faq'), to: '/faqs' },
-    { title: t('news'), to: '/news' },
-    { title: t('contactus'), to: 'tel:+998881989000' }
+    { title: t('faq'), to: '#faq-list-top' },
+    { title: t('news'), to: '#news-detail' }
+    // { title: t('contactus'), to: 'tel:+998881989000' }
   ]
 
   const isActive = (path) => {
