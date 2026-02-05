@@ -11,22 +11,11 @@ import Auth from '../../auth/Auth'
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
-  const [data, setData] = useState({})
-  const [loading, setLoading] = useState(true)
   const [session, setSession] = useState(null)
   const [showAuth, setShowAuth] = useState(false)
 
   const router = useRouter()
   const authRef = useRef(null)
-
-  useEffect(() => {
-    setLoading(true)
-    request
-      .get(URLS.systemBanner)
-      .then((res) => setData(res.data?.[0] || {}))
-      .catch((error) => console.error('Error fetching banner image:', error))
-      .finally(() => setLoading(false))
-  }, [])
 
   useEffect(() => {
     getSession().then((sess) => setSession(sess))
@@ -62,8 +51,8 @@ const PowerfulDozens = () => {
         <div
           className="absolute inset-0 bg-center bg-cover"
           style={{
-            backgroundImage: `url(${data?.image || ''})`,
-            filter: loading ? 'blur(14px)' : 'blur(6px)',
+            backgroundImage: 'url(https://api.iqmath.uz/Media/BANNER/bg-img.jpg)',
+            filter: 'blur(6px)',
             transform: 'scale(1.08)',
             transition: 'filter .4s ease'
           }}
@@ -129,15 +118,23 @@ const PowerfulDozens = () => {
               {/* Stats (qoldiravering) */}
               <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl">8,000+</div>
+                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                    <p>8,000</p> <span>+</span>
+                  </div>
                   <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('activeReader')}</div>
                 </div>
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl">400+</div>
+                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                    <p>400</p>
+                    <span>+</span>
+                  </div>
                   <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('VideoTutorials')}</div>
                 </div>
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl">4.9⭐</div>
+                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                    <p>4.9</p>
+                    <span>⭐</span>
+                  </div>
                   <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('ratings')}</div>
                 </div>
               </div>

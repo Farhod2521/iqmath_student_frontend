@@ -59,9 +59,9 @@ const HomePage = () => {
   }, [newsData])
 
   const handleNewsClick = (newsId) => {
-    router.push('/news')
+    // router.push('/news')
     // agar detail route bo‘lsa:
-    // router.push(`/news/${newsId}`)
+    router.push(`/news/${newsId}`)
   }
 
   const SliderSkeleton = () => (

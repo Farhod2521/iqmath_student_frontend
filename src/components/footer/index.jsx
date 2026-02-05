@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 const Footer = () => {
   const { t } = useTranslation()
 
+
   const footerLinks = [
     {
       title: t('footer.platform'),
@@ -55,18 +56,21 @@ const Footer = () => {
 
   const socialLinks = [
     {
+      key: 'telegram',
       icon: <TelegramIcon />,
       name: 'Telegram',
       href: 'https://t.me/iqmath2025',
       brand: 'telegram'
     },
     {
+      key: 'instagram',
       icon: <InstagramIcon />,
       name: 'Instagram',
       href: 'https://www.instagram.com/iq_mathuz/',
       brand: 'instagram'
     },
     {
+      key: 'youtube',
       icon: <YoutubeIcon />,
       name: 'YouTube',
       href: 'https://www.youtube.com/@iqmathuz',
@@ -172,7 +176,7 @@ const Footer = () => {
               {/* Copyright */}
               <div className="flex flex-wrap items-center gap-4 text-[14px] text-gray-400">
                 <p className="flex items-center gap-2">
-                  <span>© 2025 IQmath</span>
+                  <span>© {new Date().getFullYear()} IQmath</span>
                   <span className="hidden sm:inline">•</span>
                   <span className="hidden sm:inline">{t('footer.copyright')}</span>
                 </p>

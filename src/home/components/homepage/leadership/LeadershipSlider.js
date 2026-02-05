@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight, Award, X, Calendar } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
+
 
 const leadershipApi = {
   getAll: async () => {
@@ -181,66 +183,69 @@ const LeadershipSlider = () => {
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
           onClick={() => setSelectedScientist(null)}
         >
-          <div
-            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 md:text-2xl">{t('leadership.modalTitle')}</h2>
-              <button
-                onClick={() => setSelectedScientist(null)}
-                className="p-2 transition rounded-full hover:bg-gray-100"
-              >
-                <X className="w-5 h-5 text-gray-600 md:w-6 md:h-6" />
-              </button>
-            </div>
-            {/* Modal Content */}
-            <div className="p-6">
-              <div className="flex flex-col gap-6 mb-6 md:flex-row">
-                <div className="flex justify-center sm:w-2/5">
-                  <CircleImage
-                    src={detailData.image}
-                    alt={getTitle(detailData) || 'Scientist'}
-                    size={200}
-                    className="sm:!w-[220px] sm:!h-[220px]"
-                  />
-                </div>
-                <div className="space-y-4 md:w-3/5">
-                  <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-                    {i18n.language === 'ru' ? detailData.title_ru : detailData.title_uz}
-                  </h3>
-                  <p className="text-lg text-blue-600 md:text-xl">
-                    {i18n.language === 'ru' ? detailData.subtitle_ru : detailData.subtitle_uz}
-                  </p>
-                  <div className="p-4 bg-gray-50 rounded-xl">
-                    <p className="mb-1 text-sm text-gray-500">{t('leadership.periodLabel')}</p>
-                    <p className="text-xl font-bold text-gray-900 md:text-2xl">
-                      {i18n.language === 'ru' ? detailData.life_years_ru : detailData.life_years_uz}
+          <MathJaxContext config={mathJaxConfig}>
+            <div
+              className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
+                <h2 className="text-xl font-bold text-gray-900 md:text-2xl">{t('leadership.modalTitle')}</h2>
+                <button
+                  onClick={() => setSelectedScientist(null)}
+                  className="p-2 transition rounded-full hover:bg-gray-100"
+                >
+                  <X className="w-5 h-5 text-gray-600 md:w-6 md:h-6" />
+                </button>
+              </div>
+              {/* Modal Content */}
+              <div className="p-6">
+                <div className="flex flex-col gap-6 mb-6 md:flex-row">
+                  <div className="flex justify-center sm:w-2/5">
+                    <CircleImage
+                      src={detailData.image}
+                      alt={getTitle(detailData) || 'Scientist'}
+                      size={200}
+                      className="sm:!w-[220px] sm:!h-[220px]"
+                    />
+                  </div>
+                  <div className="space-y-4 md:w-3/5">
+                    <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                      {i18n.language === 'ru' ? detailData.title_ru : detailData.title_uz}
+                    </h3>
+                    <p className="text-lg text-blue-600 md:text-xl">
+                      {i18n.language === 'ru' ? detailData.subtitle_ru : detailData.subtitle_uz}
                     </p>
+                    <div className="p-4 bg-gray-50 rounded-xl">
+                      <p className="mb-1 text-sm text-gray-500">{t('leadership.periodLabel')}</p>
+                      <p className="text-xl font-bold text-gray-900 md:text-2xl">
+                        {i18n.language === 'ru' ? detailData.life_years_ru : detailData.life_years_uz}
+                      </p>
+                    </div>
                   </div>
                 </div>
+                {/* Description */}
+                <div>
+                  <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
+                    <span className="w-1 h-6 bg-blue-500 rounded"></span> {t('leadership.bioTitle')}
+                  </h4>
+
+                  <MathJax dynamic className="leading-relaxed text-gray-700">
+                    {i18n.language === 'ru' ? detailData.description_ru : detailData.description_uz}
+                  </MathJax>
+                </div>
               </div>
-              {/* Description */}
-              <div>
-                <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
-                  <span className="w-1 h-6 bg-blue-500 rounded"></span> {t('leadership.bioTitle')}
-                </h4>
-                <p className="leading-relaxed text-gray-700">
-                  {i18n.language === 'ru' ? detailData.description_ru : detailData.description_uz}
-                </p>
+              {/* Modal Footer */}
+              <div className="sticky bottom-0 p-6 border-t border-gray-200 bg-gray-50">
+                <button
+                  onClick={() => setSelectedScientist(null)}
+                  className="w-full py-3 font-semibold text-white transition bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
+                >
+                  {t('leadership.close')}
+                </button>
               </div>
             </div>
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 p-6 border-t border-gray-200 bg-gray-50">
-              <button
-                onClick={() => setSelectedScientist(null)}
-                className="w-full py-3 font-semibold text-white transition bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
-              >
-                {t('leadership.close')}
-              </button>
-            </div>
-          </div>
+          </MathJaxContext>
         </div>
       )}
     </div>
@@ -248,3 +253,13 @@ const LeadershipSlider = () => {
 }
 
 export default LeadershipSlider
+
+
+// mathjax.config.js
+export const mathJaxConfig = {
+  loader: { load: ['input/tex', 'output/chtml'] },
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$']],
+  },
+}

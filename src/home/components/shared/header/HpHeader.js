@@ -174,12 +174,12 @@ const HpHeader = () => {
                   variant="contained"
                   onClick={handleAuthClick}
                   sx={{
-                    borderRadius: 999,
+                    borderRadius: '8px',
                     textTransform: 'none',
                     fontWeight: 900,
                     px: 2.6,
-                    py: 1,
-                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                    // py: 1,
+                    background: '#5D87FF',
                     boxShadow: '0 10px 20px rgba(99,102,241,0.20)'
                   }}
                 >

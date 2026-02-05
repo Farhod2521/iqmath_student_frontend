@@ -15,6 +15,11 @@ const NewsDetails = () => {
     <LayoutHome>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <style jsx global>{`
+          body {
+            overflow: auto !important;
+          }
+        `}</style>
         <BannerSingle />
         <NewsSingle />
         <ScrollToTop />

@@ -18,7 +18,7 @@ const navLinks = [
   { href: '/', label: 'Главная' },
   { href: '#about-us', label: 'О нас' },
   // { href: "https://iqmath.uz/", label: "courses" },
-  { href: '##faq-list-top', label: 'Вопросы и ответы' }
+  { href: '#faq-list-top', label: 'Вопросы и ответы' }
   // { href: "/about-olympics", label: "Об олимпиаде" },
 ]
 

@@ -13,6 +13,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import toast from 'react-hot-toast'
 import { usePricingModalStore } from '@/store'
 import PricingCouponModal from '@/modules/student/payment/components/PricingCouponModal'
+import AuthModal from '@/home/components/auth/AuthModal'
+import Auth from '@/home/components/auth/Auth'
 
 const PricingContent = () => {
   const { t, i18n } = useTranslation()
@@ -20,6 +22,9 @@ const PricingContent = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [dataSource, setDataSource] = useState([])
   const [selectedPlan, setSelectedPlan] = useState(null)
+   const [authOpen, setAuthOpen] = useState(false)
+
+
   const {
     isPricingModalOpen,
     openPricingModal,
@@ -41,7 +46,7 @@ const PricingContent = () => {
     const session = await getSession()
     if (!session) {
       toast.success(t('pricing.authRequired'))
-      router.push('/auth')
+      setAuthOpen(true)
       return
     }
     setSelectedPlan(plan)
@@ -230,6 +235,9 @@ const PricingContent = () => {
         onClose={closePricingModal}
         originalPrice={pricingOriginalPrice}
       />
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
+        <Auth />
+      </AuthModal>
     </>
   )
 }
