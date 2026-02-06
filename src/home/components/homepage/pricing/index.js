@@ -9,6 +9,7 @@ const Pricing = () => {
 
   return (
     <Box
+      id="prices"
       sx={{
         py: {
           xs: 5

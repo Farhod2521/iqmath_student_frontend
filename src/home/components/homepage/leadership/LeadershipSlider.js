@@ -6,7 +6,6 @@ import { request } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 
-
 const leadershipApi = {
   getAll: async () => {
     const { data } = await request.get('/api/v1/management/mobile/mathematicians/')
@@ -124,7 +123,7 @@ const LeadershipSlider = () => {
                   <div className="flex flex-col justify-center gap-2 sm:flex-row sm:items-center sm:gap-3 md:justify-start">
                     <button
                       onClick={() => setSelectedScientist(current)}
-                      className="px-6 py-2.5 text-sm font-semibold text-white transition rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+                      className="px-6 py-2.5 text-sm font-semibold text-white transition rounded-[8px] bg-[#5D87FF] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {t('leadership.more')}
                     </button>
@@ -148,7 +147,7 @@ const LeadershipSlider = () => {
                   onClick={() => changeSlide(i)}
                   className={`h-9 px-3 rounded-full text-xs sm:text-sm font-semibold transition border ${
                     i === currentIndex
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-[1.03]'
+                      ? 'bg-[#5D87FF] text-white border-[#5D87FF] shadow-md scale-[1.03]'
                       : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -163,7 +162,7 @@ const LeadershipSlider = () => {
       {/* Navigation Buttons (desktop) */}
       <button
         onClick={handlePrev}
-        className="hidden lg:flex absolute left-2 xl:left-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
+        className="hidden lg:flex absolute left-2 xl:left-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-[#5D87FF] hover:text-white hover:border-[#5D87FF] transition"
         aria-label="Previous"
       >
         <ChevronLeft className="w-6 h-6" />
@@ -171,7 +170,7 @@ const LeadershipSlider = () => {
 
       <button
         onClick={handleNext}
-        className="hidden lg:flex absolute right-2 xl:right-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition"
+        className="hidden lg:flex absolute right-2 xl:right-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-[#5D87FF] hover:text-white hover:border-[#5D87FF] transition"
         aria-label="Next"
       >
         <ChevronRight className="w-6 h-6" />
@@ -254,12 +253,14 @@ const LeadershipSlider = () => {
 
 export default LeadershipSlider
 
-
 // mathjax.config.js
 export const mathJaxConfig = {
   loader: { load: ['input/tex', 'output/chtml'] },
   tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$']],
-  },
+    inlineMath: [
+      ['$', '$'],
+      ['\\(', '\\)']
+    ],
+    displayMath: [['$$', '$$']]
+  }
 }

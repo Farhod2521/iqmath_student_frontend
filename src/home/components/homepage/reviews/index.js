@@ -21,7 +21,7 @@ const Reviews = () => {
         py: { xs: 8, md: 12 },
         color: '#fff',
         // gradient background
-        background: 'linear-gradient(90deg, #2563eb 0%, #7c3aed 100%)'
+        background: 'linear-gradient(90deg, #4C6FFF 0%, #7C5CFF 100%)'
       }}
     >
       {/* Background blur blobs */}

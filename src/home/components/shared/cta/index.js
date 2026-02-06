@@ -30,7 +30,7 @@ const CTA = () => {
         <div className="relative max-w-5xl mx-auto">
           <div className="relative overflow-hidden shadow-2xl rounded-3xl">
             {/* animated-ish gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500" />
 
             {/* shine layer */}
             <div className="absolute inset-0 pointer-events-none opacity-40">
@@ -78,7 +78,11 @@ const CTA = () => {
           </div>
         </div>
       </section>
-      <AuthModal open={openAuth} onClose={() => setOpenAuth(false)} title={t('login', 'Kirish / Ro‘yxatdan o‘tish')}>
+      <AuthModal
+        open={openAuth}
+        onClose={() => setOpenAuth(false)}
+        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
+      >
         <Auth />
       </AuthModal>
     </>

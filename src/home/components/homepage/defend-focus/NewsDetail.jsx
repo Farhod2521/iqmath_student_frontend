@@ -189,7 +189,7 @@ const HomePage = () => {
               variant="contained"
               color="primary"
               onClick={() => router.push('/news')}
-              sx={{ borderRadius: 999, textTransform: 'none', fontWeight: 800 }}
+              sx={{ borderRadius: '8px', textTransform: 'none', backgroundColor: '#5D87FF', fontWeight: 800 }}
             >
               {t('allNews')}
             </Button>
@@ -239,7 +239,7 @@ const HomePage = () => {
                 observeParents
                 watchOverflow={false}
                 modules={[Autoplay]}
-                style={{ paddingBottom: 0 }}
+                style={{ paddingBottom: '50px' }}
               >
                 {sliderItems.map((news) => (
                   <SwiperSlide key={`${news.id}-${news.__dupId}`} style={{ height: '100%' }}>
@@ -307,7 +307,8 @@ const HomePage = () => {
                       {/* Content (hammasi tekis) */}
                       <CardContent
                         sx={{
-                          p: { xs: 2, sm: 2.25 },
+                          pt: { xs: 2, sm: 2.25 },
+                          paddingBottom: { xs: 1, sm: 0.25 },
                           display: 'flex',
                           flexDirection: 'column',
                           gap: 1.2,
@@ -373,10 +374,10 @@ const HomePage = () => {
                             endIcon={<ArrowForwardIcon />}
                             sx={{
                               textTransform: 'none',
-                              fontWeight: 800,
-                              borderRadius: 999,
+                              fontWeight: 600,
+                              borderRadius: '8px',
                               px: 2,
-                              py: 0.7,
+                              py: 0.6,
                               fontSize: { xs: '0.8rem', sm: '0.85rem' },
                               background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
                               boxShadow: '0 10px 20px rgba(99,102,241,0.25)',

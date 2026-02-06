@@ -22,8 +22,7 @@ const PricingContent = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [dataSource, setDataSource] = useState([])
   const [selectedPlan, setSelectedPlan] = useState(null)
-   const [authOpen, setAuthOpen] = useState(false)
-
+  const [authOpen, setAuthOpen] = useState(false)
 
   const {
     isPricingModalOpen,
@@ -235,7 +234,11 @@ const PricingContent = () => {
         onClose={closePricingModal}
         originalPrice={pricingOriginalPrice}
       />
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
+      >
         <Auth />
       </AuthModal>
     </>

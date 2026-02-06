@@ -302,8 +302,7 @@ const FAQ = () => {
                     onClick={handleToggle}
                     className={`
         inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white
-        bg-gradient-to-r from-blue-600 to-purple-600
-        shadow-lg shadow-blue-500/20
+        bg-[#5D87FF] shadow-lg shadow-blue-500/20
         transition-all duration-200
         hover:opacity-95 hover:-translate-y-0.5 hover:shadow-xl
         active:translate-y-0 active:scale-[0.98]

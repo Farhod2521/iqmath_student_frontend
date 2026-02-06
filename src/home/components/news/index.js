@@ -188,7 +188,7 @@ const NewsAll = () => {
                   sx={{
                     mt: 'auto',
                     py: 1.2,
-                    borderRadius: 2,
+                    borderRadius: '8px',
                     textTransform: 'none',
                     fontWeight: 600,
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

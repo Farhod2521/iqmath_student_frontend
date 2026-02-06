@@ -4,10 +4,12 @@ import { Play, Video, Sparkles, ShieldCheck, Users } from 'lucide-react'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { useRouter } from 'next/router'
-import { getSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { Container } from '@mui/material'
 import Auth from '../../auth/Auth'
+import { Call } from '@mui/icons-material'
+import SimpleLoader from '@/components/loader/simple-loader'
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
@@ -28,18 +30,7 @@ const PowerfulDozens = () => {
   }
 
   const handleAuthRedirect = () => {
-    // session bo'lsa: eski logika
-    if (session) {
-      toast.success(t('welcome', 'Xush kelibsiz!'))
-      if (session?.role === 'teacher') router.push('/dashboard/teacher/statistics')
-      else if (session?.role === 'parent') router.push('/dashboard/parent/my-children')
-      else router.push('/dashboard/student/subjects')
-      return
-    }
-
-    // session yo'q bo'lsa: AuthPanel ochamiz
-    toast.success(t('start_register', "Boshlash uchun ro'yxatdan o'ting"))
-    openAuthPanel()
+    window.location.href = 'tel:+998881989000'
   }
 
   const handleAboutRedirect = () => router.push('/about')
@@ -94,19 +85,19 @@ const PowerfulDozens = () => {
                   onClick={handleAuthRedirect}
                   className="
                     group inline-flex items-center justify-center gap-2
-                    rounded-full bg-gradient-to-r from-blue-600 to-purple-600
+                    rounded-[8px] bg-[#5D87FF]
                     px-8 py-3 font-semibold text-white shadow-lg shadow-blue-600/20
                     transition hover:shadow-xl hover:shadow-purple-600/25 active:scale-[0.98]
                   "
                 >
-                  <span>{session ? t('login') : t('signIn')}</span>
-                  <Play className="h-5 w-5 transition group-hover:translate-x-0.5" />
+                  <span> {t('connection')}</span>
+                  <Call className="h-5 w-5 transition" />
                 </button>
 
                 <button
                   onClick={handleAboutRedirect}
                   className="
-                    inline-flex items-center justify-center rounded-full
+                    inline-flex items-center justify-center rounded-[8px]
                     border-2 border-white/70 px-8 py-3 font-semibold text-white
                     transition hover:bg-white hover:text-black active:scale-[0.98]
                   "
@@ -144,10 +135,10 @@ const PowerfulDozens = () => {
             <div className="lg:col-span-5" ref={authRef}>
               <div className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto lg:sticky lg:top-24">
                 {!showAuth ? (
-                  <PreAuthCard onStart={openAuthPanel} />
+                  <PreAuthCard onStart={openAuthPanel} session={session} />
                 ) : (
                   <div className="duration-300 animate-in fade-in slide-in-from-bottom-2">
-                    <Auth />
+                    <Auth background={true} />
                     <button
                       onClick={() => setShowAuth(false)}
                       className="w-full mt-3 text-sm text-center transition text-white/70 hover:text-white"
@@ -167,8 +158,37 @@ const PowerfulDozens = () => {
 
 export default PowerfulDozens
 
-function PreAuthCard({ onStart }) {
+function PreAuthCard({ onStart, session }) {
   const { t } = useTranslation()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleEnter = async () => {
+    setIsLoading(true)
+    try {
+      if (session?.role === 'teacher') {
+        router.push('/dashboard/teacher/statistics')
+      } else if (session?.role === 'parent') {
+        router.push('/dashboard/parent/my-children')
+      } else {
+        router.push('/dashboard/student/subjects')
+      }
+    } catch (e) {
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' })
+  }
+
+  // Loading matnini aniqlash
+  const getLoadingText = () => {
+    if (isLoading) return <SimpleLoader /> || 'Loading...'
+    return t('enter')
+  }
+
   return (
     <div className="relative p-[1px] rounded-3xl bg-gradient-to-r from-white/25 via-white/10 to-white/25">
       <div className="p-5 border shadow-2xl rounded-3xl border-white/10 bg-white/10 backdrop-blur-xl sm:p-6">
@@ -200,20 +220,44 @@ function PreAuthCard({ onStart }) {
         </div>
 
         {/* CTA */}
-        <button
-          onClick={onStart}
-          className="
-            mt-6 w-full rounded-2xl
-            bg-gradient-to-r from-blue-600 to-purple-600
+        {!session ? (
+          <>
+            <button
+              onClick={onStart}
+              className="
+            mt-6 w-full rounded-[8px]
+            bg-[#5D87FF]
             px-5 py-3 font-semibold text-white
             shadow-lg shadow-blue-600/20 transition
             hover:shadow-xl hover:shadow-purple-600/25 active:scale-[0.99]
-          "
-        >
-          {t('authCard.cta')}
-        </button>
+            "
+            >
+              {t('authCard.cta')}
+            </button>
 
-        <p className="mt-3 text-xs text-center text-white/60"> {t('authCard.cta')}</p>
+            <p className="mt-3 text-xs text-center text-white/60"> {t('authCard.cta')}</p>
+          </>
+        ) : (
+          <div className="flex mt-6 flex-col gap-3 sm:flex-row">
+            <button
+              onClick={handleEnter}
+              className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${
+                isLoading ? 'opacity-70' : ''
+              }`}
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <span>{getLoadingText()}</span>
+                </div>
+              ) : (
+                t('enter')
+              )}
+            </button>
+            <button onClick={handleLogout} className="w-full sm:w-1/2 bg-[#EDEDF2] text-black py-3 rounded-md">
+              {t('left')}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

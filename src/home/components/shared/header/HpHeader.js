@@ -179,8 +179,8 @@ const HpHeader = () => {
                     fontWeight: 900,
                     px: 2.6,
                     // py: 1,
-                    background: '#5D87FF',
-                    boxShadow: '0 10px 20px rgba(99,102,241,0.20)'
+                    background: '#5D87FF'
+                    // boxShadow: '0 10px 20px rgba(99,102,241,0.20)'
                   }}
                 >
                   {session ? t('login', 'Kirish') : t('signIn')}
@@ -261,7 +261,11 @@ const HpHeader = () => {
           <LanguageDropdown />
         </Stack>
       </Drawer>
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
+      >
         <Auth />
       </AuthModal>
     </AppBarStyled>

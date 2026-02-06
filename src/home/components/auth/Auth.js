@@ -12,7 +12,7 @@ import AuthNewPassword from './AuthNewPassword'
 import CredentialsPopup from '@/components/modal/CredentialsPopup'
 import { getSession } from 'next-auth/react'
 
-function Auth() {
+function Auth({ background = false }) {
   const { t } = useTranslation()
   const router = useRouter()
   const { currentTab } = useAuthTabStore((state) => state)
@@ -39,7 +39,7 @@ function Auth() {
   return (
     <div className="relative flex items-center justify-center w-full ">
       <div
-        className="w-full max-w-xl md:min-w-[550px] border  bg-white/5 border-white/10 rounded-lg p-8 md:p-12 shadow-lg"
+        className={`w-full max-w-xl md:min-w-[550px]   ${background ? 'bg-white/5 border-white/10 border shadow-lg' : ''} rounded-lg p-8 md:p-12 `}
         // style={{ background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040' }}
       >
         <div>

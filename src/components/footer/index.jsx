@@ -10,13 +10,12 @@ import { useTranslation } from 'react-i18next'
 const Footer = () => {
   const { t } = useTranslation()
 
-
   const footerLinks = [
     {
       title: t('footer.platform'),
       links: [
         { name: t('footer.links.courses'), href: '/' },
-        { name: t('footer.links.pricing'), href: '/prices' },
+        { name: t('footer.links.pricing'), href: '#prices' },
         { name: t('footer.links.about'), href: '/about' }
       ]
     },
