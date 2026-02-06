@@ -36,7 +36,7 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
         <ModalHeader activeTab={activeTab} onClose={handleClose} />
 
         <div className="p-4 overflow-hidden">

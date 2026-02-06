@@ -16,9 +16,8 @@ const CouponSection = ({
 }) => {
   const { t } = useTranslation()
 
-
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="w-full max-w-full px-4">
       {/* Selected Plan Info */}
       {selectedPlan && (
         <div className="bg-white dark:bg-[#2A3447] border border-[#EAEFF4] dark:border-[#2A3447] rounded-[12px] p-6 mb-6 shadow-sm">
