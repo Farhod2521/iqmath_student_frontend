@@ -143,7 +143,7 @@ const PowerfulDozens = () => {
                       onClick={() => setShowAuth(false)}
                       className="w-full mt-3 text-sm text-center transition text-white/70 hover:text-white"
                     >
-                      ← Ortga
+                      ← {t('back')}
                     </button>
                   </div>
                 )}

@@ -928,6 +928,11 @@
   "examPreparation": "Imtihonga tayyorgarlik",
   "examPreparationDesc": "Har qanday test va imtihonlarga ishonch bilan kirish",
   "allNews": "Barchasi",
+  "isError": {
+    "title": "Xatolik yuz berdi",
+    "description": "Yangiliklar yuklanmadi. Iltimos, qaytadan urinib ko'ring.",
+    "reload": "Qayta yuklash"
+  },
   "featureTitle": {
     "eyebrow": "Nega IQmath?",
     "titleLine1": "Matematikani tushunib o‘rganing,",

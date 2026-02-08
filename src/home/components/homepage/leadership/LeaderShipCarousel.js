@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import { X, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const LeaderShipCarousel = () => {
+  const { t } = useTranslation()
   const [selectedLeader, setSelectedLeader] = useState(null)
 
   const leaders = [
@@ -137,7 +139,7 @@ const LeaderShipCarousel = () => {
                 <p className="text-blue-600 font-medium mb-3">{leader.position}</p>
                 <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{leader.shortBio}</p>
                 <div className="mt-4 text-blue-600 text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span>Batafsil</span>
+                  <span>{t('details')}</span>
                   <ChevronRight className="w-4 h-4" />
                 </div>
               </div>

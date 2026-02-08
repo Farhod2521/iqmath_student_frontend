@@ -102,10 +102,10 @@ const HomePage = () => {
         <Box sx={{ textAlign: 'center', color: '#111827', px: 2 }}>
           <ErrorOutlineIcon sx={{ fontSize: 70, color: '#ef4444', mb: 2 }} />
           <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
-            Xatolik yuz berdi
+            {t('isError.title')}
           </Typography>
           <Typography variant="body1" sx={{ mb: 3, color: 'rgba(17,24,39,0.7)' }}>
-            Yangiliklar yuklanmadi. Iltimos, qaytadan urinib ko'ring.
+            {t('isError.description')}
           </Typography>
           <Button
             variant="contained"
@@ -119,7 +119,7 @@ const HomePage = () => {
               fontWeight: 800
             }}
           >
-            Qayta yuklash
+            {t('isError.reload')}
           </Button>
         </Box>
       </Box>
@@ -390,7 +390,7 @@ const HomePage = () => {
                               handleNewsClick(news.id)
                             }}
                           >
-                            Batafsil
+                            {t('details')}
                           </Button>
                         </Box>
                       </CardContent>

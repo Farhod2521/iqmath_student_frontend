@@ -463,6 +463,11 @@
   "examPreparation": "Exam Preparation",
   "examPreparationDesc": "Confident preparation for any tests and exams",
   "allNews": "All",
+  "isError": {
+    "title": "An error occurred",
+    "description": "Failed to load the news. Please try again.",
+    "reload": "Reload"
+  },
   "featureTitle": {
     "eyebrow": "Why IQmath?",
     "titleLine1": "Learn mathematics with understanding,",
