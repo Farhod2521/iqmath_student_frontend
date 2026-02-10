@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { config } from '@/config'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import usePutQuery from '@/hooks/api/usePutQuery'
 import useDeleteQuestion from '@/hooks/api/useDeleteQuestion'
@@ -47,14 +47,14 @@ const SubjectDetail = () => {
   const { data: topics } = useGetQuery({
     key: KEYS.topics,
     url: chapterId ? `${URLS.topics}${chapterId}/` : null,
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!chapterId && !!session?.accessToken
   })
 
   const { data: questionList } = useGetQuery({
     key: KEYS.questionList,
     url: `${URLS.questionList}${topicId}/`,
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!topicId && !!session?.accessToken
   })
 

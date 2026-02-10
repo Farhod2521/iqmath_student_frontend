@@ -1,6 +1,6 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import useDeleteQuery from '@/hooks/api/useDeleteQuery'
 import { Button } from '@heroui/react'

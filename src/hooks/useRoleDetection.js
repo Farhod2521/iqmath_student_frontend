@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useUserStore } from '@/store/userStore'
@@ -19,10 +19,14 @@ export const useRoleDetection = () => {
     }
   }, [status, setRole, setUser])
 
-  const { data: studentProfile, isLoading: studentLoading, error } = useGetQuery({
+  const {
+    data: studentProfile,
+    isLoading: studentLoading,
+    error
+  } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken && status === 'authenticated' && session?.role !== 'parent',
     showErrorMsg: false // Error toast'ni o'chirib qo'yamiz
   })
@@ -38,7 +42,7 @@ export const useRoleDetection = () => {
       // Agar API dan profile kelmasa, session dan role olish (parent role uchun)
       setRole(session.role)
       setTimeoutError(false)
-      
+
       // Parent role uchun session dan user ma'lumotlarini set qilish
       if (session.role === 'parent') {
         setUser({
@@ -66,7 +70,9 @@ export const useRoleDetection = () => {
   // Loading holatini yaxshilash
   // Session loading yoki student profile loading bo'lsa loading ko'rsatamiz
   // Timeout error bo'lsa loading'ni to'xtatamiz
-  const isLoading = (status === 'loading' || (studentLoading && !role && session?.accessToken && status === 'authenticated')) && !timeoutError
+  const isLoading =
+    (status === 'loading' || (studentLoading && !role && session?.accessToken && status === 'authenticated')) &&
+    !timeoutError
   const isTeacher = role === 'teacher' || role === 'mentor' || role === 'Teacher' || role === 'Mentor'
   const isParent = role === 'parent' || role === 'Parent'
 
@@ -78,4 +84,4 @@ export const useRoleDetection = () => {
     studentProfile,
     error: error || timeoutError
   }
-} 
+}

@@ -1,7 +1,7 @@
 const YoutubeIcon = ({ props, className }) => {
   return (
     <svg
-      width="29"
+      width="25"
       height="20"
       viewBox="0 0 29 20"
       // fill="none"

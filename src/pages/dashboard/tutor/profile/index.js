@@ -1,7 +1,7 @@
 import ProfileDetails from '@/components/profile-details'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useSession } from 'next-auth/react'
@@ -19,9 +19,9 @@ const Index = () => {
   } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
   const router = useRouter()

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 // import ThemeChanger from "../theme-switcher";
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import storage from '@/services/storage'
@@ -18,11 +18,8 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   // const [tab, setTab] = useState("active");
   const [openProfile, setOpenProfile] = useState(false)
   const router = useRouter()
-  const { theme } = useTheme()
   const profileRef = useRef(null)
   const { t } = useTranslation()
-  const { role } = useRoleDetection()
-  const [accessToken, setAccessToken] = useState('')
 
   const {
     data: studentProfile,
@@ -31,9 +28,9 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   } = useGetQuery({
     key: KEYS.studentProfile,
     url: URLS.studentProfile,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 
@@ -41,9 +38,9 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
     url: URLS.coins,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 

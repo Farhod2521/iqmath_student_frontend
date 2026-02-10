@@ -1,6 +1,6 @@
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { get, set } from 'lodash'
@@ -175,11 +175,11 @@ const SubjectDetail = () => {
     isLoading: isLoadingTopics,
     isFetching: isFetchingTopics
   } = useGetQuery({
-    key: KEYS.topics,
+    key: [KEYS.topics, chapterId],
     url: chapterId ? `${URLS.topics}${chapterId}/` : null,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!chapterId && !!session?.accessToken
   })
   // savollarni olish
@@ -188,11 +188,11 @@ const SubjectDetail = () => {
     isLoading,
     isFetching
   } = useGetQuery({
-    key: KEYS.questionList,
+    key: [KEYS.questionList, topicId],
     url: `${URLS.questionList}${topicId}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!topicId && !!session?.accessToken
   })
 

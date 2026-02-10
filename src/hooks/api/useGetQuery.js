@@ -11,22 +11,30 @@ const useGetQuery = ({
   headers = {},
   showSuccessMsg = false,
   showErrorMsg = false,
-  enabled = true
+  enabled = true,
+  staleTime = 60_000,
+  refetchOnWindowFocus = false,
+  refetchOnMount = false
 }) => {
   const { t } = useTranslation()
   const { data: session } = useSession()
+
   const { isLoading, isError, data, error, isFetching, refetch } = useQuery(
     [key, params],
     () =>
       request.get(url, {
         params,
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-          ...headers
-        }
+        headers
+        // headers: {
+        //   Authorization: `Bearer ${session?.accessToken}`,
+        //   ...headers
+        // }
       }),
     {
+      staleTime,
       keepPreviousData: true,
+      refetchOnWindowFocus,
+      refetchOnMount,
       onSuccess: () => {
         if (showSuccessMsg) {
           toast.success(t('SUCCESS'))

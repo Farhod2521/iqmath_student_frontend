@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
@@ -59,7 +59,7 @@ export default function SubjectQuestions() {
     key: KEYS.studentQuestions,
     url: `${URLS.studentQuestions}${topicId}/`,
     params: { level: tab },
-    headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
     enabled: !!topicId && !!session?.accessToken
   })
 

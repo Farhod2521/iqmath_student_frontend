@@ -1,6 +1,6 @@
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import Button from '@/components/button'
@@ -121,9 +121,9 @@ const Index = () => {
   } = useGetQuery({
     key: [KEYS.chapters, KEYS.chapters],
     url: `${URLS.chapters}${id}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken && !!id
   })
 
@@ -134,9 +134,9 @@ const Index = () => {
   } = useGetQuery({
     key: [KEYS.topics, selectedId, id],
     url: `${URLS.topics}${selectedId}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: Boolean(selectedId && session?.accessToken)
   })
 
@@ -807,8 +807,8 @@ const Index = () => {
               {modalTypeOfChapter === 'create'
                 ? `${t('createChapter')}`
                 : modalTypeOfChapter === 'update'
-                ? `${t('editChapter')}`
-                : `${t('deleteChapter')}`}
+                  ? `${t('editChapter')}`
+                  : `${t('deleteChapter')}`}
             </h3>
             <button onClick={() => setOpenChapterModal(false)} className="rounded">
               <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
@@ -848,8 +848,8 @@ const Index = () => {
                 modalTypeOfChapter === 'create'
                   ? onSubmitCreateChapter
                   : modalTypeOfChapter === 'update'
-                  ? onSubmitUpdateChapter
-                  : onSubmitDeleteChapter
+                    ? onSubmitUpdateChapter
+                    : onSubmitDeleteChapter
               }
               classname={'!py-2'}
             >
@@ -875,8 +875,8 @@ const Index = () => {
                   {modalTypeOfTopic === 'create'
                     ? `${t('createTopic')}`
                     : modalTypeOfTopic === 'update'
-                    ? `${t('editTopic')}`
-                    : `${t('deleteTopic')}`}
+                      ? `${t('editTopic')}`
+                      : `${t('deleteTopic')}`}
                 </h3>
                 <button onClick={() => setOpenTopicsModal(false)} className="rounded">
                   <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
@@ -980,8 +980,8 @@ const Index = () => {
                     modalTypeOfTopic === 'create'
                       ? onSubmitCreateTopic
                       : modalTypeOfTopic === 'update'
-                      ? onSubmitUpdateTopic
-                      : () => onSubmitDeleteTopic(selectedTopic?.id)
+                        ? onSubmitUpdateTopic
+                        : () => onSubmitDeleteTopic(selectedTopic?.id)
                   }
                   classname={'!py-2 hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
                 >

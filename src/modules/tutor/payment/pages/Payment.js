@@ -29,7 +29,7 @@ export default function TutorPayments() {
   } = useGetQuery({
     key: '/api/v1/tutor/tutor/payments/',
     url: '/api/v1/tutor/tutor/payments/',
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken
   })
   const paymentData = resData?.data

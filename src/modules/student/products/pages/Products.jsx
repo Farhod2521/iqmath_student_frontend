@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
 import { useMutation } from '@tanstack/react-query'
 import { request } from '@/services/api'
 import Button from '@/components/button'
@@ -12,6 +11,7 @@ import { useScoreStore } from '@/store'
 import PurchaseSuccessModal from '../components/PurchaseSuccessModal'
 import ConfirmPurchaseModal from '../components/ConfirmPurchaseModal'
 import { FaBoxOpen } from 'react-icons/fa'
+import { useGetQuery } from '@/hooks'
 
 const Products = () => {
   const { t, i18n } = useTranslation()

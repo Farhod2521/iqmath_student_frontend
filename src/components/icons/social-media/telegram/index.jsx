@@ -5,7 +5,7 @@ export const TelegramIcon = ({ className = '', ...props }) => {
     <svg
       width="25"
       height="20"
-      viewBox="0 0 25 20"
+      viewBox="0 0 29 20"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       className={className}

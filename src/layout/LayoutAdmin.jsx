@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Sidebar from './sidebar/Sidebar'
 import Main from './Main'
 import { useScoreStore, useSettingStore } from '@/store'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
@@ -20,7 +20,7 @@ const LayoutAdmin = ({ children, title }) => {
       setIsSidebarOpen(window.innerWidth > 1024)
     }
 
-    updateSidebarState() 
+    updateSidebarState()
     window.addEventListener('resize', updateSidebarState)
 
     setIsMounted(true)
@@ -35,9 +35,9 @@ const LayoutAdmin = ({ children, title }) => {
   }, [router.pathname, setIsSidebarOpen])
 
   const { setScoreData } = useScoreStore()
-  
+
   const isTeacherMode = typeof window !== 'undefined' ? sessionStorage.getItem('is_teacher_mode') === 'true' : false
-  
+
   const coinsUrl = isTeacherMode ? URLS.coins : URLS.coins
   const { data: score, isLoading } = useGetQuery({ key: KEYS.coins, url: coinsUrl })
 

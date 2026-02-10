@@ -8,7 +8,6 @@ import AnimateUp from '@/components/motion-animation'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
-import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
@@ -16,6 +15,7 @@ import { Button, Card } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
+import { useGetQuery } from '@/hooks'
 
 const ParentProfile = () => {
   const { t } = useTranslation()
@@ -45,9 +45,9 @@ const ParentProfile = () => {
   const { data: parentProfile, isLoading } = useGetQuery({
     key: KEYS.parentProfile,
     url: URLS.parentProfile,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 

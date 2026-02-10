@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { HiBell } from 'react-icons/hi2'
 import { useTranslation } from 'react-i18next'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { KEYS } from '@/constants/key'
 
@@ -22,7 +22,7 @@ const NavbarNotification = () => {
   } = useGetQuery({
     key: KEYS.mentorRequests,
     url: '/api/v1/func_teacher/my-notifications/',
-    headers: { Authorization: `Bearer ${session?.accessToken}` },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!session?.accessToken
   })
 

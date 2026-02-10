@@ -1,6 +1,6 @@
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -35,9 +35,9 @@ const Index = () => {
   } = useGetQuery({
     key: KEYS.advisedTopics,
     url: URLS.advisedTopics,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken,
     params: { level: 1 }
   })
@@ -45,9 +45,9 @@ const Index = () => {
   const { data: topics } = useGetQuery({
     key: KEYS.diagnosticsTopics,
     url: `${URLS.diagnosticsTopics}${id}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!id && !!session?.accessToken
   })
 

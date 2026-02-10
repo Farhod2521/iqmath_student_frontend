@@ -10,7 +10,7 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
@@ -23,13 +23,13 @@ const Index = () => {
   const [showDropdownMail, setShowDropdownMail] = useState(false)
   const [showDropdownPassword, setShowDropdownPassword] = useState(false)
   const [showDropdownAccount, setShowDropdownAccount] = useState(false)
-  
+
   // Form states - faqat API'da mavjud bo'lgan fieldlar
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  
+
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -42,15 +42,12 @@ const Index = () => {
   const [smsCode, setSmsCode] = useState('')
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
-  const {
-    data: tutorProfile,
-    isLoading
-  } = useGetQuery({
+  const { data: tutorProfile, isLoading } = useGetQuery({
     key: KEYS.teacherProfile,
     url: URLS.teacherProfile,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 
@@ -85,7 +82,7 @@ const Index = () => {
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
     if (phoneNumber !== get(tutorProfile, 'data.phone', '')) {
       if (!currentPassword) {
-        toast.error('Telefon raqamni o\'zgartirish uchun joriy parolni kiriting')
+        toast.error("Telefon raqamni o'zgartirish uchun joriy parolni kiriting")
         return
       }
       updateData.phone = phoneNumber
@@ -98,7 +95,7 @@ const Index = () => {
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -131,7 +128,7 @@ const Index = () => {
         attributes: updateData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -153,17 +150,17 @@ const Index = () => {
       toast.error('Joriy parolni kiriting')
       return
     }
-    
+
     if (!newPassword) {
       toast.error('Yangi parolni kiriting')
       return
     }
-    
+
     if (newPassword.length < 6) {
-      toast.error('Yangi parol kamida 6 ta belgi bo\'lishi kerak')
+      toast.error("Yangi parol kamida 6 ta belgi bo'lishi kerak")
       return
     }
-    
+
     if (newPassword !== confirmPassword) {
       toast.error('Yangi parollar mos kelmadi')
       return
@@ -180,21 +177,21 @@ const Index = () => {
         attributes: passwordData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
       },
       {
         onSuccess: (data) => {
-          toast.success('Parol muvaffaqiyatli o\'zgartirildi')
+          toast.success("Parol muvaffaqiyatli o'zgartirildi")
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
           setShowDropdownPassword(false)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'Parol o\'zgartirishda xatolik yuz berdi')
+          toast.error(error.response?.data?.error || "Parol o'zgartirishda xatolik yuz berdi")
         }
       }
     )
@@ -217,7 +214,7 @@ const Index = () => {
         attributes: verificationData,
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -231,7 +228,7 @@ const Index = () => {
           setPhoneNumber(newPhone)
         },
         onError: (error) => {
-          toast.error(error.response?.data?.error || 'SMS kod noto\'g\'ri')
+          toast.error(error.response?.data?.error || "SMS kod noto'g'ri")
         }
       }
     )

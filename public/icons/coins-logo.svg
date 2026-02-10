@@ -6,8 +6,8 @@
 <circle cx="12.9999" cy="13.0001" r="11.0758" stroke="white" stroke-width="0.381818"/>
 <defs>
 <linearGradient id="paint0_linear_8401_3452" x1="15.3111" y1="26.8667" x2="23.4" y2="3.17778" gradientUnits="userSpaceOnUse">
-<stop stop-color="#F5C700"/>
-<stop offset="1" stop-color="#FF9500"/>
+<stop stopColor="#F5C700"/>
+<stop offset="1" stopColor="#FF9500"/>
 </linearGradient>
 <clipPath id="clip0_8401_3452">
 <rect width="15.6" height="15.6" fill="white" transform="translate(5.19995 5.19995)"/>

@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { useState } from 'react'
 import ContentLoader from '@/components/loader/content-loader'
-import useGetQuery from '@/hooks/api/useGetQuery'
 import EyeIcon from '/public/icons/eyeIcon'
+import { useGetQuery } from '@/hooks'
 
 const StudentSubjectsList = () => {
   const router = useRouter()

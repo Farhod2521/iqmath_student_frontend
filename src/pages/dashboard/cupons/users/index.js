@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { AgGridReact } from 'ag-grid-react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import LayoutAdmin from '@/layout/LayoutAdmin'

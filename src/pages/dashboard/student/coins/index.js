@@ -6,7 +6,7 @@ import 'swiper/css/navigation'
 import { useSession } from 'next-auth/react'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { get } from 'lodash'
 import { useScoreStore } from '@/store'
 import LayoutAdmin from '@/layout/LayoutAdmin'
@@ -20,9 +20,9 @@ const Index = () => {
   const { data: coins, isLoading: coinsLoading } = useGetQuery({
     key: KEYS.coins,
     url: URLS.coins,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken && false
   })
 

@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import AddChildModal from '@/modules/parent/children/components/AddChildModal.jsx'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality.jsx'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import ContentLoader from '@/components/loader/content-loader'
 import { useRouter } from 'next/navigation'
 

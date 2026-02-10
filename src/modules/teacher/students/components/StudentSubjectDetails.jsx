@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 
 import ContentLoader from '@/components/loader/content-loader'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import LayoutAdmin from '@/layout/LayoutAdmin'
@@ -26,9 +26,9 @@ const StudentSubjectDetails = () => {
   const { data, isLoading, isFetching } = useGetQuery({
     key: [KEYS.studentSubjectChapters, id, subjectId],
     url: id && subjectId ? `${URLS.studentSubjectChapters}${id}/subjects/${subjectId}/chapters/` : null,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!id && !!subjectId && !!session?.accessToken
   })
 
@@ -149,10 +149,10 @@ const StudentSubjectDetails = () => {
                               chapter.progress === null || chapter.progress === undefined
                                 ? 'bg-gray-400'
                                 : chapter.progress >= 80
-                                ? 'bg-green-500'
-                                : chapter.progress >= 50
-                                ? 'bg-yellow-400'
-                                : 'bg-red-500'
+                                  ? 'bg-green-500'
+                                  : chapter.progress >= 50
+                                    ? 'bg-yellow-400'
+                                    : 'bg-red-500'
                             }`}
                             style={{
                               width: `${
@@ -218,10 +218,10 @@ const StudentSubjectDetails = () => {
                                 topic.score_percent === null || topic.score_percent === undefined
                                   ? 'bg-gray-400'
                                   : topic.score_percent >= 80
-                                  ? 'bg-green-500'
-                                  : topic.score_percent >= 50
-                                  ? 'bg-yellow-400'
-                                  : 'bg-red-500'
+                                    ? 'bg-green-500'
+                                    : topic.score_percent >= 50
+                                      ? 'bg-yellow-400'
+                                      : 'bg-red-500'
                               }`}
                               style={{
                                 width: `${

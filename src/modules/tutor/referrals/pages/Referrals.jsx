@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import usePutQuery from '@/hooks/api/usePutQuery'
 import useDeleteQuery from '@/hooks/api/useDeleteQuery'
@@ -31,9 +31,9 @@ const Referrals = () => {
   } = useGetQuery({
     key: KEYS.tutorReferrals,
     url: URLS.tutorReferrals,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 
@@ -62,7 +62,7 @@ const Referrals = () => {
     }
 
     if (referralCode.trim().length < 3) {
-      toast.error('Referral kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+      toast.error("Referral kodi kamida 3 ta belgidan iborat bo'lishi kerak")
       return
     }
 
@@ -72,7 +72,7 @@ const Referrals = () => {
         attributes: { code: referralCode.trim().toUpperCase() },
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -86,9 +86,8 @@ const Referrals = () => {
           }
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.error || 
-                             error.response?.data?.message || 
-                             'Referral yaratishda xatolik yuz berdi'
+          const errorMessage =
+            error.response?.data?.error || error.response?.data?.message || 'Referral yaratishda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
@@ -102,7 +101,7 @@ const Referrals = () => {
     }
 
     if (referralCode.trim().length < 3) {
-      toast.error('Referral kodi kamida 3 ta belgidan iborat bo\'lishi kerak')
+      toast.error("Referral kodi kamida 3 ta belgidan iborat bo'lishi kerak")
       return
     }
 
@@ -112,7 +111,7 @@ const Referrals = () => {
         data: { code: referralCode.trim().toUpperCase() },
         config: {
           headers: {
-            'Authorization': `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             'Content-Type': 'application/json'
           }
         }
@@ -127,9 +126,8 @@ const Referrals = () => {
           }
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.error || 
-                             error.response?.data?.message || 
-                             'Referral yangilashda xatolik yuz berdi'
+          const errorMessage =
+            error.response?.data?.error || error.response?.data?.message || 'Referral yangilashda xatolik yuz berdi'
           toast.error(errorMessage)
         }
       }
@@ -137,28 +135,27 @@ const Referrals = () => {
   }
 
   const handleDeleteReferral = (referralId) => {
-    if (window.confirm('Bu referralni o\'chirishni xohlaysizmi?')) {
+    if (window.confirm("Bu referralni o'chirishni xohlaysizmi?")) {
       deleteReferral(
         {
           url: `${URLS.tutorReferrals}${referralId}/`,
           config: {
             headers: {
-              'Authorization': `Bearer ${session?.accessToken}`
+              Authorization: `Bearer ${session?.accessToken}`
             }
           }
         },
         {
           onSuccess: (data) => {
-            toast.success('Referral muvaffaqiyatli o\'chirildi')
-            setReferrals(prev => prev.filter(referral => referral.id !== referralId))
+            toast.success("Referral muvaffaqiyatli o'chirildi")
+            setReferrals((prev) => prev.filter((referral) => referral.id !== referralId))
             if (refetchReferrals && typeof refetchReferrals === 'function') {
               refetchReferrals()
             }
           },
           onError: (error) => {
-            const errorMessage = error.response?.data?.error || 
-                               error.response?.data?.message || 
-                               'Referral o\'chirishda xatolik yuz berdi'
+            const errorMessage =
+              error.response?.data?.error || error.response?.data?.message || "Referral o'chirishda xatolik yuz berdi"
             toast.error(errorMessage)
           }
         }

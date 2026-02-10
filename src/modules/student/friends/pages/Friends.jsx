@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, Button, Avatar } from '@heroui/react'
-import { 
-  UserPlus, 
-} from 'lucide-react'
+import { UserPlus } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ContentLoader from '@/components/loader/content-loader'
-import useGetQuery from '@/hooks/api/useGetQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { AgGridReact } from 'ag-grid-react'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import CreateReferalModal from '../components/CreateReferalModal'
 import { useUserStore } from '@/store'
-  
+import { useGetQuery } from '@/hooks'
+
 ModuleRegistry.registerModules([AllCommunityModule])
 
 const Friends = () => {
@@ -22,7 +20,7 @@ const Friends = () => {
   const [copied, setCopied] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const {
-    data: referralsData,  
+    data: referralsData,
     isLoading: isLoadingReferrals,
     isFetching: isFetchingReferrals
   } = useGetQuery({
@@ -31,10 +29,11 @@ const Friends = () => {
   })
   const user = useUserStore()
 
-  const data = referralsData?.data?.map((item, index) => ({
-    ...item,
-    index: index + 1
-  })) || []
+  const data =
+    referralsData?.data?.map((item, index) => ({
+      ...item,
+      index: index + 1
+    })) || []
 
   console.log('Referrals Data:', referralsData)
   console.log('Processed Data:', data)
@@ -43,7 +42,7 @@ const Friends = () => {
     if (user?.user?.identification) {
       setInviteLink(`https://iqmath.uz/?referral_code=${user.user.identification}`)
     }
-  }, [user?.user?.identification])  
+  }, [user?.user?.identification])
 
   const handleCopyLink = async () => {
     try {
@@ -64,15 +63,14 @@ const Friends = () => {
           text: t('inviteMessage'),
           url: inviteLink
         })
-      } catch (err) {
-      }
+      } catch (err) {}
     } else {
       handleCopyLink()
     }
   }
 
   const formatDate = (dateString) => {
-     return dateString.slice(0, 10)
+    return dateString.slice(0, 10)
   }
 
   const colDefs = [
@@ -90,10 +88,9 @@ const Friends = () => {
       flex: 2,
       cellRenderer: (params) => (
         <div className="flex items-center gap-3">
-         
           <span className="font-medium text-[15px]">{params.value || '-'}</span>
         </div>
-      ) 
+      )
     },
     {
       headerName: t('referredOn'),
@@ -107,9 +104,7 @@ const Friends = () => {
 
   return (
     <div className="space-y-6">
-
       <div className="flex items-center justify-end">
-       
         <Button
           onClick={() => setIsModalOpen(true)}
           className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-[10px] font-medium"
@@ -119,23 +114,21 @@ const Friends = () => {
         </Button>
       </div>
 
-        <div className="flex flex-col">
-          {isLoadingReferrals ? (
-            <div className="relative">
-              <ContentLoader classNames="!min-h-[400px] !w-full" />
-            </div>
-          ) : (
-            <>
-              {(!data || data.length === 0) ? (
+      <div className="flex flex-col">
+        {isLoadingReferrals ? (
+          <div className="relative">
+            <ContentLoader classNames="!min-h-[400px] !w-full" />
+          </div>
+        ) : (
+          <>
+            {!data || data.length === 0 ? (
               <Card className="border-none shadow-sm">
-                   <div className="text-center py-16">
+                <div className="text-center py-16">
                   <div className="w-20 h-20 bg-[#F8F9FA] rounded-full flex items-center justify-center mx-auto mb-6">
                     <UserPlus size={40} className="text-[#5A6A85]" />
                   </div>
                   <h3 className="text-[20px] font-semibold text-black mb-3">{t('noReferralsYet')}</h3>
-                  <p className="text-[16px] text-[#5A6A85] mb-8 max-w-md mx-auto">
-                    {t('noReferralsDescription')}
-                  </p>
+                  <p className="text-[16px] text-[#5A6A85] mb-8 max-w-md mx-auto">{t('noReferralsDescription')}</p>
                   <Button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-[10px] font-medium text-[16px]"
@@ -162,17 +155,17 @@ const Friends = () => {
               </div>
             )}
           </>
-          )}
-        </div>
+        )}
+      </div>
 
-      <CreateReferalModal 
-        isModalOpen={isModalOpen} 
-        setIsModalOpen={setIsModalOpen} 
-        inviteLink={inviteLink} 
-        handleCopyLink={handleCopyLink} 
-        handleShare={handleShare} 
-        copied={copied} 
-        setCopied={setCopied} 
+      <CreateReferalModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        inviteLink={inviteLink}
+        handleCopyLink={handleCopyLink}
+        handleShare={handleShare}
+        copied={copied}
+        setCopied={setCopied}
       />
     </div>
   )

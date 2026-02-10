@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 
 function PaymentTable() {
   const { data: session } = useSession()
@@ -10,9 +10,9 @@ function PaymentTable() {
   const { data: converts, isLoading: convertsLoading } = useGetQuery({
     key: '/api/v1/tutor/tutor/withdrawals/list/',
     url: '/api/v1/tutor/tutor/withdrawals/list/',
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}`
+    // },
     enabled: !!session?.accessToken
   })
 

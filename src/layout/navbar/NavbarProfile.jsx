@@ -1,25 +1,20 @@
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import Link from 'next/link'
+
 import Image from 'next/image'
 import { useUserStore } from '@/store'
-import { useAuthTabStore } from '@/store'
 import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useQueryClient } from '@tanstack/react-query'
 
 function NavbarProfile() {
-  const { data: session } = useSession()
   const { t } = useTranslation()
   const { role: currentRole } = useRoleDetection()
-  const { clearCredentials } = useAuthTabStore()
-  const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [openProfile, setOpenProfile] = useState(false)
@@ -50,7 +45,7 @@ function NavbarProfile() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (
-        profileRef.current && 
+        profileRef.current &&
         !profileRef.current?.contains(event.target) &&
         buttonRef.current &&
         !buttonRef.current?.contains(event.target)
@@ -69,7 +64,7 @@ function NavbarProfile() {
   }, [openProfile])
 
   const handleProfile = () => {
-    setOpenProfile(prev => !prev)
+    setOpenProfile((prev) => !prev)
   }
 
   const handleLogout = async () => {
@@ -109,7 +104,7 @@ function NavbarProfile() {
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px] z-10"
+          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px]"
         >
           <div className="flex gap-x-[12px]">
             <div className="space-y-[4px] text-black dark:text-white">
@@ -153,7 +148,7 @@ function NavbarProfile() {
 
           <button
             onClick={handleLogoutClick}
-            className="text-black py-3 w-full border border-[#5d87ff] text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
+            className="py-3 w-full border border-[#5d87ff] text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
           >
             {t('logout')}
           </button>

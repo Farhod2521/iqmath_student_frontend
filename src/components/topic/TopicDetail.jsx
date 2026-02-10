@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
 
@@ -19,11 +19,7 @@ import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { Button } from '@heroui/react'
 
-const TopicDetail = ({ 
-  basePath = '/dashboard/student/subjects', 
-  title = 'subjects',
-  showSidebar = false 
-}) => {
+const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjects', showSidebar = false }) => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
   const router = useRouter()
@@ -41,9 +37,9 @@ const TopicDetail = ({
   } = useGetQuery({
     key: KEYS.studentTopics,
     url: `${URLS.studentTopics}${chapterId}/`,
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}` || ''
-    },
+    // headers: {
+    //   Authorization: `Bearer ${session?.accessToken}` || ''
+    // },
     enabled: !!chapterId && !!session?.accessToken
   })
 
@@ -55,7 +51,7 @@ const TopicDetail = ({
       setSelectedIndex(idx)
       setSelectedTopic(topic)
       setOpen(false)
-      
+
       // URL ni yangilash
       router.push(`${basePath}/${id}/${chapterId}/${topic.id}`, undefined, { shallow: true })
     }
@@ -69,7 +65,7 @@ const TopicDetail = ({
 
     setSelectedIndex(newIndex)
     setSelectedTopic(topicsList[newIndex])
-    
+
     // URL ni yangilash
     router.push(`${basePath}/${id}/${chapterId}/${topicsList[newIndex].id}`, undefined, { shallow: true })
   }
@@ -105,14 +101,14 @@ const TopicDetail = ({
 
   return (
     <LayoutAdmin title={t(title)}>
-      <StudentBreadcrumbs 
-        selectTitle={topicName} 
+      <StudentBreadcrumbs
+        selectTitle={topicName}
         mainLink={basePath}
         subjectName={i18n.language === 'uz' ? selectedTopic.subject_name_uz : selectedTopic.subject_name_ru}
         chapterName={i18n.language === 'uz' ? selectedTopic.chapter_name_uz : selectedTopic.chapter_name_ru}
         topicName={topicName}
       />
-      
+
       <div className="font-sf container mx-auto px-0 sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E9E9E9] rounded-xl mx-auto max-w-4xl relative">
           {/* Topic Selection Header */}
@@ -167,7 +163,7 @@ const TopicDetail = ({
 
           {/* Video Section */}
           <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6 gap-4">
-            <div 
+            <div
               className="flex gap-x-4 items-center cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => setShowPlayer(true)}
             >

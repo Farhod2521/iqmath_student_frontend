@@ -6,8 +6,6 @@ import { toast } from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
-
-import useGetQuery from '@/hooks/api/useGetQuery'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
@@ -30,6 +28,7 @@ import ActionCalculator from '../components/actions/ActionCalculator'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
 import ExamAnswerImage from '../components/exam/ExamAnswerImage'
+import { useGetQuery } from '@/hooks'
 
 export default function RecommendQuestions() {
   const { t, i18n } = useTranslation()
@@ -60,7 +59,7 @@ export default function RecommendQuestions() {
     key: KEYS.studentQuestions,
     url: `${URLS.studentQuestions}${topicId}/`,
     params: { level: 1 },
-    headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
+    // headers: { Authorization: `Bearer ${session?.accessToken}` || '' },
     enabled: !!topicId && !!session?.accessToken
   })
 

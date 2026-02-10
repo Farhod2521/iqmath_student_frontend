@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 
-import useGetQuery from '@/hooks/api/useGetQuery'
+import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
 import CardSubjectWithProgress from '../components/card/CardSubjectWithProgress'
@@ -24,10 +24,10 @@ const DiagnosticSubjects = () => {
     isFetching
   } = useGetQuery({
     listKeyId: KEYS.diagnosticSubjects,
-    url: URLS.recommendations,
-    config: {
-      headers: { Authorization: `Bearer ${session?.accessToken}` }
-    }
+    url: URLS.recommendations
+    // config: {
+    //   headers: { Authorization: `Bearer ${session?.accessToken}` }
+    // }
   })
 
   const subjectsData = useMemo(() => {
