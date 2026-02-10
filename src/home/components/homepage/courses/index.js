@@ -6,12 +6,13 @@ const Courses = () => {
   const { t } = useTranslation()
 
   const courses = [
+    t('math'),
     t('algebra'),
-    t('geometry'),
-    t('statistics'),
-    t('account'),
-    t('trigonometry'),
-    t('probabilityTheory')
+    t('geometry')
+    // t('statistics')
+    // t('account'),
+    // t('trigonometry'),
+    // t('probabilityTheory')
   ]
 
   return (

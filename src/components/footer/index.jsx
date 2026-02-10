@@ -137,7 +137,7 @@ const Footer = () => {
 
               {/* Contact Info */}
               <div className="lg:col-span-4">
-                <h3 className="mb-4 text-base font-semibold text-white">{t('footer.contact.contact')}</h3>
+                <h3 className="mb-4 text-base font-semibold text-white">{t('connection')}</h3>
                 <ul className="space-y-4">
                   {contactInfo.map((contact, idx) => (
                     <li key={idx}>
@@ -149,9 +149,9 @@ const Footer = () => {
                           <Image
                             src={contact.icon}
                             alt={contact.label}
-                            width={20}
+                            width={21}
                             height={20}
-                            className="filter brightness-0 invert group-hover:brightness-100"
+                            className="filter brightness-100 invert group-hover:brightness-0"
                           />
                         </div>
                         <div className="flex-1">

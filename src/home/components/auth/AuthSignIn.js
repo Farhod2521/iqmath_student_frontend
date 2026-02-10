@@ -34,7 +34,7 @@ function AuthSignIn() {
           router.push('/dashboard/student/subjects')
         }
         toast.success(t('loggedInSuccessfully'))
-      }else{
+      } else {
         toast.error(t('invalidLogin'))
       }
     } catch (error) {

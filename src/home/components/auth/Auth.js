@@ -17,24 +17,46 @@ function Auth({ background = false }) {
   const router = useRouter()
   const { currentTab } = useAuthTabStore((state) => state)
   const { setTab } = useAuthTabStore.getState()
-  const handleTabChange = (newTab) => setTab(newTab)
+
+  const handleTabChange = (newTab) => {
+    setTab(newTab)
+
+    // tab ni urlga yozib qo'yamiz: ?tab=signIn yoki ?tab=signUp
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, tab: newTab }
+      },
+      undefined,
+      { shallow: true }
+    )
+  }
 
   const getAuth = async () => {
     const session = await getSession()
     if (!!session) {
       setTab('welcome')
-    } else {
-      if (router.query.referral_code) {
-        setTab('signUp')
-      } else {
-        setTab('signIn')
-      }
+      return
     }
+
+    const tab = router.query.tab
+    if (tab === 'signUp' || tab === 'signIn') {
+      setTab(tab)
+      return
+    }
+
+    if (router.query.referral_code) {
+      setTab('signUp')
+      return
+    }
+
+    setTab('signIn')
   }
 
   useEffect(() => {
+    if (!router.isReady) return
     getAuth()
-  }, [router.query])
+  }, [router.isReady, router.query.tab, router.query.referral_code])
 
   return (
     <div className="relative flex items-center justify-center w-full ">

@@ -24,6 +24,7 @@ import AuthModal from '../../auth/AuthModal'
 import { getSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import Auth from '../../auth/Auth'
+import { useRouter } from 'next/router'
 
 // Styled components
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
@@ -73,6 +74,7 @@ const HpHeader = () => {
   const [socialLinks, setSocialLinks] = useState(defaultLinks)
   const [authOpen, setAuthOpen] = useState(false)
   const [session, setSession] = useState(null)
+  const router = useRouter()
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
@@ -103,15 +105,23 @@ const HpHeader = () => {
   }, [])
 
   const handleAuthClick = () => {
-    // if (session) {
-    //   toast.success(t('welcome', 'Xush kelibsiz!'))
-    //   if (session?.role === 'teacher') router.push('/dashboard/teacher/statistics')
-    //   else if (session?.role === 'parent') router.push('/dashboard/parent/my-children')
-    //   else router.push('/dashboard/student/subjects')
-    //   return
-    // }
-
     setAuthOpen(true)
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, tab: 'signUp' }
+      },
+      undefined,
+      { shallow: true }
+    )
+  }
+
+  const handleClose = () => {
+    setAuthOpen(false)
+    const nextQuery = { ...router.query }
+    delete nextQuery.tab
+
+    router.replace({ pathname: router.pathname, query: nextQuery }, undefined, { shallow: true })
   }
 
   return (
@@ -261,11 +271,7 @@ const HpHeader = () => {
           <LanguageDropdown />
         </Stack>
       </Drawer>
-      <AuthModal
-        open={authOpen}
-        onClose={() => setAuthOpen(false)}
-        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
-      >
+      <AuthModal open={authOpen} onClose={handleClose} title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}>
         <Auth />
       </AuthModal>
     </AppBarStyled>

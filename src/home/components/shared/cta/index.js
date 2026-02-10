@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IconArrowRight, IconCheck } from '@tabler/icons-react'
 import AuthModal from '../../auth/AuthModal'
@@ -8,9 +8,27 @@ import Auth from '../../auth/Auth'
 const CTA = () => {
   const { t } = useTranslation()
   const [openAuth, setOpenAuth] = useState(false)
+  const router = useRouter()
 
   const handleAuthRedirect = () => {
     setOpenAuth(true)
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, tab: 'signUp' }
+      },
+      undefined,
+      { shallow: true }
+    )
+  }
+
+  const handleClose = () => {
+    setOpenAuth(false)
+
+    const nextQuery = { ...router.query }
+    delete nextQuery.tab
+
+    router.replace({ pathname: router.pathname, query: nextQuery }, undefined, { shallow: true })
   }
 
   const features = useMemo(() => {
@@ -78,11 +96,7 @@ const CTA = () => {
           </div>
         </div>
       </section>
-      <AuthModal
-        open={openAuth}
-        onClose={() => setOpenAuth(false)}
-        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
-      >
+      <AuthModal open={openAuth} onClose={handleClose} title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}>
         <Auth />
       </AuthModal>
     </>
