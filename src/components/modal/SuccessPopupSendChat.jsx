@@ -10,6 +10,7 @@ const SuccessPopupSendChat = ({ open, onClose }) => {
 
   const handleTelegramClick = () => {
     // // Modalni yopamiz
+    // /dashboard/student/chat/chat-box
     onClose()
   }
 

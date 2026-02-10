@@ -40,18 +40,43 @@ const Index = () => {
     )
   }
 
-  const handleDeleteCoupon = () => {
+  // const handleDeleteCoupon = () => {
+  //   if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
+  //     deleteCoupon(
+  //       { url: `api/v1/universal/coupon-generate/` },
+  //       {
+  //         onSuccess: (data) => {
+  //           toast.success("Kupon muvaffaqiyatli o'chirildi")
+  //           refetchCoupons()
+  //         },
+  //         onError: (error) => {
+  //           const errorMessage =
+  //             error.response?.data?.error || error.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
+  //           toast.error(errorMessage)
+  //         }
+  //       }
+  //     )
+  //   }
+  // }
+
+  const handleDeleteCoupon = (couponId) => {
+    if (!couponId) {
+      toast.error('Kupon ID topilmadi')
+      return
+    }
+
     if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
       deleteCoupon(
-        { url: `api/v1/universal/coupon-generate/` },
+        // backend shunga mos bo‘lsa: /coupon-generate/{id}/
+        { url: `api/v1/universal/coupon-generate/${couponId}/` },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             toast.success("Kupon muvaffaqiyatli o'chirildi")
             refetchCoupons()
           },
           onError: (error) => {
             const errorMessage =
-              error.response?.data?.error || error.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
+              error?.response?.data?.error || error?.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
             toast.error(errorMessage)
           }
         }
@@ -76,6 +101,11 @@ const Index = () => {
     )
   }
 
+  console.log('couponsData', couponsData?.data)
+
+  const rawCoupon = couponsData?.data?.coupon
+  const coupons = Array.isArray(rawCoupon) ? rawCoupon : rawCoupon ? [rawCoupon] : []
+
   return (
     <LayoutAdmin title={t('coupons')}>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
@@ -91,14 +121,23 @@ const Index = () => {
             </Button>
           </div>
 
-          {!!couponsData?.data.coupon ? (
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-              <CouponCard
+          {coupons?.length > 0 ? (
+            <div className="grid grid-cols-1 gap-2 md:gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+              {coupons?.map((coupon) => (
+                <CouponCard
+                  key={coupon?.id}
+                  coupon={coupon}
+                  onEdit={handleEditCoupon}
+                  // ✅ endi qaysi kupon o‘chishini biladi
+                  onDelete={() => handleDeleteCoupon(coupon?.id)}
+                />
+              ))}
+              {/* <CouponCard
                 key={couponsData?.data.coupon.id}
                 coupon={couponsData?.data.coupon}
                 onEdit={handleEditCoupon}
                 onDelete={handleDeleteCoupon}
-              />
+              /> */}
             </div>
           ) : (
             <EmptyCuponState onAddNew={handleCreateCoupon} />
