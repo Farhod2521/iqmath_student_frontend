@@ -112,7 +112,18 @@ const PowerfulDozens = () => {
                   href="https://play.google.com/store/apps/details?id=com.iqmath.mobile"
                   target="_blank"
                   rel="noreferrer"
-                  className="group inline-flex items-center gap-3 h-[60px] min-w-[220px] px-5 rounded-2xl bg-gradient-to-r from-[#0B1220]/85 to-[#111827]/80 border border-white/20 ring-1 ring-white/10 backdrop-blur-md shadow-lg shadow-black/30 transition hover:shadow-xl hover:shadow-black/40 hover:border-white/30 hover:scale-[1.01]  active:scale-[0.99] "
+                  className="
+    group inline-flex items-center gap-3
+    h-[60px] min-w-[220px] px-5
+    rounded-2xl
+    border border-white/20 ring-1 ring-white/15
+    bg-black/70 hover:bg-black/80
+    shadow-lg shadow-black/40 hover:shadow-black/50
+    backdrop-blur-md
+    transition
+    hover:-translate-y-[1px]
+    active:translate-y-0 active:scale-[0.99]
+  "
                 >
                   {/* Google Play SVG */}
                   <svg
@@ -198,7 +209,17 @@ const PowerfulDozens = () => {
                   href="https://apps.apple.com/us/app/iqmath/id6753702778"
                   target="_blank"
                   rel="noreferrer"
-                  className="group inline-flex items-center gap-3 h-[60px] min-w-[220px] px-5 rounded-2xl bg-white/90 hover:bg-white border border-black/10 shadow-lg shadow-black/10 transition hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
+                  className="
+    group inline-flex items-center gap-3
+    h-[60px] min-w-[220px] px-5
+    rounded-2xl
+    border border-black/10 ring-1 ring-white/40
+    bg-white/85 hover:bg-white
+    shadow-lg shadow-black/15 hover:shadow-black/25
+    transition
+    hover:-translate-y-[1px]
+    active:translate-y-0 active:scale-[0.99]
+  "
                 >
                   {/* Apple SVG */}
                   <svg
