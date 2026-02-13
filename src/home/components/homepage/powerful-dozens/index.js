@@ -80,7 +80,7 @@ const PowerfulDozens = () => {
               </p>
 
               {/* Buttons */}
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:gap-4">
+              {/* <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:gap-4">
                 <button
                   onClick={handleAuthRedirect}
                   className="
@@ -91,7 +91,7 @@ const PowerfulDozens = () => {
                   "
                 >
                   <span> {t('connection')}</span>
-                  <Call className="h-5 w-5 transition" />
+                  <Call className="w-5 h-5 transition" />
                 </button>
 
                 <button
@@ -104,7 +104,7 @@ const PowerfulDozens = () => {
                 >
                   {t('moreInfo')}
                 </button>
-              </div>
+              </div> */}
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 {/* Google Play */}
@@ -112,14 +112,7 @@ const PowerfulDozens = () => {
                   href="https://play.google.com/store/apps/details?id=com.iqmath.mobile"
                   target="_blank"
                   rel="noreferrer"
-                  className="
-      inline-flex items-center gap-3
-      h-[56px] min-w-[210px] px-4
-      rounded-xl bg-black/80 hover:bg-black
-      border border-white/10
-      backdrop-blur-md
-      transition
-    "
+                  className="group inline-flex items-center gap-3 h-[60px] min-w-[220px] px-5 rounded-2xl bg-gradient-to-r from-[#0B1220]/85 to-[#111827]/80 border border-white/20 ring-1 ring-white/10 backdrop-blur-md shadow-lg shadow-black/30 transition hover:shadow-xl hover:shadow-black/40 hover:border-white/30 hover:scale-[1.01]  active:scale-[0.99] "
                 >
                   {/* Google Play SVG */}
                   <svg
@@ -195,7 +188,7 @@ const PowerfulDozens = () => {
                   </svg>
 
                   <span className="leading-tight">
-                    <span className="block text-[11px] text-white/70">Get it on</span>
+                    <span className="block text-[11px] text-white/75">Get it on</span>
                     <span className="block text-[16px] font-semibold text-white">Google Play</span>
                   </span>
                 </a>
@@ -205,13 +198,7 @@ const PowerfulDozens = () => {
                   href="https://apps.apple.com/us/app/iqmath/id6753702778"
                   target="_blank"
                   rel="noreferrer"
-                  className="
-      inline-flex items-center gap-3
-      h-[56px] min-w-[210px] px-4
-      rounded-xl bg-white/90 hover:bg-white
-      border border-black/10
-      transition
-    "
+                  className="group inline-flex items-center gap-3 h-[60px] min-w-[220px] px-5 rounded-2xl bg-white/90 hover:bg-white border border-black/10 shadow-lg shadow-black/10 transition hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
                 >
                   {/* Apple SVG */}
                   <svg
@@ -240,20 +227,20 @@ const PowerfulDozens = () => {
               {/* Stats (qoldiravering) */}
               <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
                     <p>8,000</p> <span>+</span>
                   </div>
                   <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('activeReader')}</div>
                 </div>
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
                     <p>400</p>
                     <span>+</span>
                   </div>
                   <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('VideoTutorials')}</div>
                 </div>
                 <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="text-2xl font-extrabold md:text-3xl flex items-center gap-1">
+                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
                     <p>4.9</p>
                     <span>⭐</span>
                   </div>
@@ -369,7 +356,7 @@ function PreAuthCard({ onStart, session }) {
             <p className="mt-3 text-xs text-center text-white/60"> {t('authCard.cta')}</p>
           </>
         ) : (
-          <div className="flex mt-6 flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-3 mt-6 sm:flex-row">
             <button
               onClick={handleEnter}
               className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${

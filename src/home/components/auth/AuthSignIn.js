@@ -54,7 +54,7 @@ function AuthSignIn() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px]">
       <InputPhone {...register('phone', { required: true })} placeholder={t('phone number')} />
       <InputPassword {...register('password', { required: true })} placeholder={t('password')} />
-      <div className="flex justify-between items-center text-sm mt-2">
+      <div className="flex items-center justify-between mt-2 text-sm">
         <label className="flex items-center gap-2 text-white">
           <input
             type="checkbox"
@@ -71,7 +71,7 @@ function AuthSignIn() {
           {t('forget password')}
         </div>
       </div>
-      <div className="w-full flex justify-center items-center">
+      <div className="flex items-center justify-center w-full">
         <button
           type="submit"
           disabled={isLoading}

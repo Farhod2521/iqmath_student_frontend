@@ -1,44 +1,69 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoClose } from 'react-icons/io5'
 
-const MAX_HINTS = 3 // maksimal hintlar soni
 const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+const QUESTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
 
 const MultiplicationQuizModal = ({ open, onClose }) => {
-  const [number, setNumber] = useState(2)
   const [currentKarra, setCurrentKarra] = useState(2)
-  const [question, setQuestion] = useState(1)
+
+  // random savollar tartibi (1..10) va hozirgi index
+  const [quizOrder, setQuizOrder] = useState(() => shuffle(QUESTIONS))
+  const [idx, setIdx] = useState(0)
+
   const [userAnswer, setUserAnswer] = useState('')
-
   const [showHint, setShowHint] = useState(false)
-  const [hintUsed, setHintUsed] = useState(0)
-  const [unlockedKarras, setUnlockedKarras] = useState([2]) // faqat 2 karra ochiq
 
-  if (!open) return null
-  const correctAnswer = currentKarra * question
+  // hozirgi savol
+  const question = quizOrder[idx] ?? quizOrder[0]
+  const correctAnswer = useMemo(() => currentKarra * question, [currentKarra, question])
+
+  // Modal ochilganda: reset (xohlasang olib tashlasa ham bo‘ladi)
+  useEffect(() => {
+    if (open) {
+      setUserAnswer('')
+      setShowHint(false)
+    }
+  }, [open])
+
+  // Karra o‘zgarsa: savollarni qayta random qilib boshlash
+  const startForKarra = (k) => {
+    setCurrentKarra(k)
+    setQuizOrder(shuffle(QUESTIONS))
+    setIdx(0)
+    setUserAnswer('')
+    setShowHint(false)
+  }
 
   const handleNext = () => {
-    if (!userAnswer) {
+    if (userAnswer === '' || userAnswer === null) {
       toast.error('Iltimos, javob kiriting!')
       return
     }
 
-    if (Number(userAnswer) === currentKarra * question) {
+    if (Number(userAnswer) === correctAnswer) {
       toast.success('Ajoyib! To‘g‘ri javob.')
 
-      if (question === 10) {
-        toast.success(`${currentKarra} karra tugatildi!`)
-        if (currentKarra < 10) {
-          const next = currentKarra + 1
-          setUnlockedKarras((prev) => [...prev, next])
-          setCurrentKarra(next)
-        }
-        setQuestion(1)
-        setHintUsed(0)
+      const isLast = idx >= quizOrder.length - 1
+      if (isLast) {
+        toast.success(`${currentKarra} karra bo‘yicha test tugadi!`)
+        // shu karrani qayta random qilib yana davom ettirish:
+        setQuizOrder(shuffle(QUESTIONS))
+        setIdx(0)
       } else {
-        setQuestion((prev) => prev + 1)
+        setIdx((p) => p + 1)
       }
+
       setUserAnswer('')
       setShowHint(false)
     } else {
@@ -47,23 +72,19 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
   }
 
   const handleHint = () => {
-    if (hintUsed >= MAX_HINTS) {
-      toast.error('Sizning yordam olish imkoniyatingiz tugadi!')
-      return
-    }
-    setShowHint(true)
-    setHintUsed((prev) => prev + 1)
+    setShowHint((p) => !p) // xohlasang toggle
   }
 
   const handleClose = () => {
-    onClose()
+    onClose?.()
     setCurrentKarra(2)
-    setQuestion(1)
+    setQuizOrder(shuffle(QUESTIONS))
+    setIdx(0)
     setUserAnswer('')
     setShowHint(false)
-    setHintUsed(0)
-    setUnlockedKarras([2])
   }
+
+  if (!open) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-3 bg-black/40">
@@ -72,25 +93,26 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
           <IoClose size={22} />
         </button>
 
-        <h2 className="mb-4 text-lg font-semibold text-center">Karra Quiz</h2>
+        <h2 className="mb-4 text-lg font-semibold text-center">Karra Quiz (Random)</h2>
+
         {/* Karra buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-4">
           {numbers.map((n) => (
             <button
               key={n}
-              onClick={() => unlockedKarras.includes(n) && setCurrentKarra(n)}
+              onClick={() => startForKarra(n)}
               className={`px-3 py-1.5 rounded-lg border text-sm ${
-                currentKarra === n
-                  ? 'bg-blue-500 text-white'
-                  : unlockedKarras.includes(n)
-                  ? 'hover:bg-gray-100'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                currentKarra === n ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
               }`}
-              disabled={!unlockedKarras.includes(n)}
             >
               {n} karra
             </button>
           ))}
+        </div>
+
+        {/* Progress */}
+        <div className="mb-2 text-xs text-right text-gray-500">
+          {idx + 1}/{quizOrder.length}
         </div>
 
         {/* Savol */}
@@ -106,23 +128,19 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
             onChange={(e) => setUserAnswer(e.target.value)}
             className="flex-1 px-3 py-2 border rounded-lg"
             placeholder="Javobingizni kiriting"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleNext()
+            }}
           />
           <button
             onClick={handleHint}
-            className={`w-12 h-12 flex items-center justify-center font-bold text-lg rounded-lg
-              ${
-                hintUsed < MAX_HINTS
-                  ? 'bg-green-200 text-green-800 hover:bg-green-300'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
+            className="flex items-center justify-center w-12 h-12 text-lg font-bold text-green-800 bg-green-200 rounded-lg hover:bg-green-300"
             title="Yordam"
-            disabled={hintUsed >= MAX_HINTS}
           >
             ?
           </button>
         </div>
 
-        {/* Feedback + Hint */}
         {showHint && (
           <div className="mb-2 text-sm font-semibold text-center text-blue-600">To‘g‘ri javob: {correctAnswer}</div>
         )}
@@ -130,8 +148,6 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
         <button onClick={handleNext} className="w-full py-2 mb-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
           Keyingi
         </button>
-        {/* Hint count */}
-        <div className="text-xs text-right text-gray-500">Qolgan yordam: {MAX_HINTS - hintUsed}</div>
       </div>
     </div>
   )

@@ -48,7 +48,7 @@ const LanguageDropdown = () => {
           className="text-[#5d87ff] group-hover:text-white group-active:text-white transition-colors duration-200"
           size={24}
         />
-        <span className="uppercase text-sm">{selectedLanguage.code}</span>
+        <span className="text-sm uppercase">{selectedLanguage.code}</span>
       </button>
 
       {isOpen && (
