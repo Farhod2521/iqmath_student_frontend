@@ -135,7 +135,7 @@ const PricingContent = () => {
 
                 <div className="flex flex-col h-full p-6 sm:p-7 md:p-8 rounded-2xl bg-white/95 backdrop-blur">
                   <h3 className="flex items-center gap-2 text-2xl font-bold text-gray-900">{item.original_name}</h3>
-                  <div className="flex mt-3 justify-start">
+                  <div className="flex justify-start mt-3">
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100">
                       <CalendarMonthIcon sx={{ color: '#5d87ff', fontSize: 20 }} />
                       <span className="text-base font-semibold text-gray-700">

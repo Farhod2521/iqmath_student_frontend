@@ -29,9 +29,14 @@ const IndependentResultCard = ({ data }) => {
 
       <div className="space-y-1 text-sm text-gray-700">
         {subject && (
-          <p>
-            <b>Fan:</b> {i18n.language === 'uz' ? subject?.name_uz : subject?.name_ru}
-          </p>
+          <>
+            <p>
+              <b>Fan:</b> {i18n.language === 'uz' ? subject?.name_uz : subject?.name_ru}
+            </p>
+            <p>
+              <b>Sinf:</b> {subject?.class_num}
+            </p>
+          </>
         )}
         {/* {chapters?.length > 0 && (
           <p>
