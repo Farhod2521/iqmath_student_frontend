@@ -247,10 +247,12 @@ const ChatBox = () => {
                         )}
                         <div className="relative">
                           <div className="p-4 text-white rounded-tr-sm shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl">
-                            <p className="text-sm leading-relaxed whitespace-pre-wrap">{cleanText}</p>
+                            <p className="text-sm whitespace-pre-wrap break-all [overflow-wrap:anywhere]">
+                              {cleanText}
+                            </p>
                             {extractedUrl && (
                               <div className="flex items-center justify-start gap-2 mt-1">
-                                <span className="text-[12px]">Natija havolada:</span>
+                                <span className="text-[12px]">{t('msgResult.resultInLink')}:</span>
                                 <BsLink45Deg
                                   size={18}
                                   onClick={() => window.open(extractedUrl, '_blank')}
@@ -311,7 +313,7 @@ const ChatBox = () => {
                               <div className="flex items-center gap-1">
                                 {extractedUrl && (
                                   <div className="flex items-center justify-between gap-2">
-                                    <span className="text-[12px]">Natija havolada:</span>
+                                    <span className="text-[12px]">{t('msgResult.resultInLink')}:</span>
                                     <BsLink45Deg
                                       size={18}
                                       onClick={() => window.open(extractedUrl, '_blank')}
@@ -358,7 +360,7 @@ const ChatBox = () => {
                   <div className="flex items-start justify-between p-3 mb-3 border-l-4 border-blue-500 rounded-lg bg-blue-50">
                     <div className="flex-1 min-w-0">
                       <p className="mb-1 text-xs font-semibold text-blue-700">
-                        Javob berilmoqda: {replyingTo.sender_name || activeChat.other_user_name}
+                        {t('msgResult.answering')}: {replyingTo.sender_name || activeChat.other_user_name}
                       </p>
                       <p className="text-sm text-gray-600 truncate">{replyingTo.text}</p>
                     </div>
