@@ -10,12 +10,16 @@ import EmptyCuponState from '@/modules/cupons/EmtyCuponState'
 import CouponCard from '@/modules/cupons/CouponCard'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from '@heroui/react'
 import { useState } from 'react'
+import { useUserStore } from '@/store'
+import { RolesList } from '@/layout/libs/menulist'
 
 const Index = () => {
   const { t } = useTranslation()
-
+  const { user } = useUserStore((state) => state)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [discountPercent, setDiscountPercent] = useState('')
+
+  const isTeacher = user?.role === RolesList.TEACHER
 
   const {
     data: couponsData,
@@ -33,8 +37,29 @@ const Index = () => {
   })
 
   const openCreateModal = () => {
-    setDiscountPercent('')
-    setIsCreateModalOpen(true)
+    if (isTeacher) {
+      setDiscountPercent('')
+      setIsCreateModalOpen(true)
+    } else {
+      // Teacher emas → modal ochilmaydi → direct create
+      createCoupon(
+        {
+          url: 'api/v1/universal/coupon-generate/'
+          //   attributes YUBORILMAYDI
+        },
+        {
+          onSuccess: (data) => {
+            toast.success(data?.data?.message || t('couponCreatedSuccessfully'))
+            refetchCoupons()
+          },
+          onError: (error) => {
+            const errorMessage =
+              error?.response?.data?.error || error?.response?.data?.message || t('thereErrorCreatingCoupon')
+            toast.error(errorMessage)
+          }
+        }
+      )
+    }
   }
 
   const closeCreateModal = () => {
@@ -43,6 +68,8 @@ const Index = () => {
   }
 
   const handleCreateCoupon = () => {
+    if (!isTeacher) return
+
     const percent = Number(discountPercent)
 
     if (!percent || percent < 1 || percent > 100) {
@@ -57,7 +84,7 @@ const Index = () => {
       },
       {
         onSuccess: (data) => {
-          toast.success(data?.data?.message || 'Kupon muvaffaqiyatli yaratildi')
+          toast.success(data?.data?.message || t('couponCreatedSuccessfully'))
           setIsCreateModalOpen(false)
           refetchCoupons()
         },
@@ -94,13 +121,13 @@ const Index = () => {
       return
     }
 
-    if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
+    if (window.confirm(t('doYouDeleteCoupon'))) {
       deleteCoupon(
         // backend shunga mos bo‘lsa: /coupon-generate/{id}/
         { url: `api/v1/universal/coupon-generate/${couponId}/` },
         {
           onSuccess: () => {
-            toast.success("Kupon muvaffaqiyatli o'chirildi")
+            toast.success(t('couponSuccessfullyRedeemed'))
             refetchCoupons()
           },
           onError: (error) => {
@@ -130,8 +157,6 @@ const Index = () => {
     )
   }
 
-  console.log('couponsData', couponsData?.data)
-
   const rawCoupon = couponsData?.data?.coupon
   const coupons = Array.isArray(rawCoupon) ? rawCoupon : rawCoupon ? [rawCoupon] : []
 
@@ -155,15 +180,27 @@ const Index = () => {
             onOpenChange={(open) => (open ? setIsCreateModalOpen(true) : closeCreateModal())}
             backdrop="blur"
             size="md"
+            hideCloseButton
           >
-            <ModalContent className="overflow-hidden bg-white dark:bg-[#202936] rounded-2xl shadow-2xl border border-[#EAEFF4] dark:border-[#2A3447]">
+            <ModalContent className="relative overflow-hidden bg-white dark:bg-[#202936] rounded-2xl shadow-2xl border border-[#EAEFF4] dark:border-[#2A3447]">
               {(onClose) => (
                 <>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    disabled={isCreating}
+                    aria-label="Close"
+                    className="absolute z-50 inline-flex items-center justify-center text-white transition rounded-full right-4 top-4 h-9 w-9 bg-white/20 hover:bg-white/30 disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                   {/* Header */}
                   <ModalHeader className="p-0">
                     <div className="w-full px-6 py-5 bg-gradient-to-r from-[#5d87ff] to-[#6c5cff] text-white">
-                      <div className="text-base font-semibold">Yangi kupon yaratish</div>
-                      <div className="mt-1 text-xs text-white/80">Chegirma foizini kiriting (1–100)</div>
+                      <div className="text-base font-semibold">{t('createNewCoupon')}</div>
+                      <div className="mt-1 text-xs text-white/80">{t('enterDiscountPercentage')}</div>
                     </div>
                   </ModalHeader>
 
@@ -174,7 +211,7 @@ const Index = () => {
                         type="text"
                         inputMode="numeric"
                         pattern="[0-9]*"
-                        placeholder="Chegirma (%)"
+                        placeholder={`${t('discount')} (%)`}
                         value={discountPercent}
                         onValueChange={(v) => setDiscountPercent(v.replace(/\D/g, ''))} // faqat raqam
                         onBlur={() => {
@@ -188,13 +225,12 @@ const Index = () => {
                             'bg-white dark:bg-[#1b2330] border border-[#EAEFF4] dark:border-[#2A3447] shadow-sm hover:border-[#5d87ff] focus-within:border-[#5d87ff]',
                           input: 'text-[#2A3547] dark:text-white'
                         }}
-                        endContent={<span className="text-sm text-gray-400">%</span>}
                       />
 
                       <div className="flex items-start gap-2 rounded-xl bg-[#F5F7FF] dark:bg-[#1b2330] px-4 py-3 border border-[#EAEFF4] dark:border-[#2A3447]">
                         <div className="mt-0.5 h-2 w-2 rounded-full bg-[#5d87ff]" />
                         <p className="text-xs text-[#5A6A85] dark:text-gray-300 leading-5">
-                          Kupon yaratish uchun 1 dan 100 gacha qiymat kiriting. Masalan: <b>10</b> = 10% chegirma.
+                          {t('toCreateCouponEnter')} <b>10</b> = 10% <span className="lowercase">{t('discount')}</span>.
                         </p>
                       </div>
                     </div>
@@ -208,7 +244,7 @@ const Index = () => {
                       className="bg-white dark:bg-[#202936] border border-[#EAEFF4] dark:border-[#2A3447] px-6 py-3 rounded-lg text-[#2A3547] dark:text-white"
                       isDisabled={isCreating}
                     >
-                      Bekor qilish
+                      {t('cancel')}
                     </Button>
 
                     <Button
@@ -216,7 +252,7 @@ const Index = () => {
                       isLoading={isCreating}
                       className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
                     >
-                      Yaratish
+                      {t('create')}
                     </Button>
                   </ModalFooter>
                 </>
@@ -231,7 +267,7 @@ const Index = () => {
                   key={coupon?.id}
                   coupon={coupon}
                   onEdit={handleEditCoupon}
-                  // ✅ endi qaysi kupon o‘chishini biladi
+                  // endi qaysi kupon o‘chishini biladi
                   onDelete={() => handleDeleteCoupon(coupon?.id)}
                 />
               ))}
