@@ -186,7 +186,8 @@ export default function SubjectQuestions() {
       .filter((q) => q.question_type === 'composite')
       .map((q) => ({
         question_id: q.id,
-        answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
+        // answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
+        answers: q.sub_questions.map((sub) => (compositeAnswers[q.id] || {})[sub.id] || '')
       }))
 
     checkMyResults(
