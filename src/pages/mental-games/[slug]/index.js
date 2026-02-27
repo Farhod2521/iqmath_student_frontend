@@ -2,16 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-// import AuthModal from '@/components/auth/AuthModal'
-// import Auth from '@/components/auth/Auth'
-
-// import { closeAuthModal, openAuthWithReturn } from '@/shared/utils/authGate'
-// import { mentalGames } from '@/components/homepage/games/gamesData'
-import GameRenderer from './GameRenderer'
-import AuthModal from '../../home/components/auth/AuthModal'
-import Auth from '../../home/components/auth/Auth'
-import { closeAuthModal, openAuthWithReturn } from '../../home/components/auth/AuthGate'
-import { mentalGames } from '../../home/components/homepage/games/gamesData'
+import GameRenderer from '@/home/components/mental-games/GameRenderer'
+import AuthModal from '@/home/components/auth/AuthModal'
+import Auth from '@/home/components/auth/Auth'
+import { mentalGames } from '@/home/components/homepage/games/gamesData'
+import { openAuthWithReturn, closeAuthModal } from '@/home/components/auth/AuthGate'
 
 export default function MentalGamePlayPage() {
   const router = useRouter()
