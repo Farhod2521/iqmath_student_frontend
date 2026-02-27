@@ -16,8 +16,6 @@ import Benefits from './components/homepage/benefits'
 import Courses from './components/homepage/courses'
 import NewsPage from './components/homepage/defend-focus'
 import HomePage from './components/homepage/defend-focus/NewsDetail'
-import GamesSlider from './components/homepage/games'
-
 function Landing() {
   const theme = ThemeSettings()
   return (
