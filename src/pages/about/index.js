@@ -19,5 +19,4 @@ function AboutUs() {
     </LayoutHome>
   )
 }
-
 export default AboutUs

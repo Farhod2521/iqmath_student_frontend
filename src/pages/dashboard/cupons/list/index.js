@@ -219,11 +219,11 @@ const Index = () => {
                           if (!n) return setDiscountPercent('')
                           setDiscountPercent(String(Math.max(1, Math.min(100, n))))
                         }}
-                        variant="bordered"
+                        // variant="bordered"
                         classNames={{
                           inputWrapper:
-                            'bg-white dark:bg-[#1b2330] border border-[#EAEFF4] dark:border-[#2A3447] shadow-sm hover:border-[#5d87ff] focus-within:border-[#5d87ff]',
-                          input: 'text-[#2A3547] dark:text-white'
+                            'bg-white dark:bg-[#1b2330] border border-[#EAEFF4] dark:border-[#2A3447] shadow-sm hover:border-[#EAEFF4] focus-within:border-[#EAEFF4] focus-within:ring-0 focus-within:ring-offset-0 focus-within:shadow-none',
+                          input: 'text-[#2A3547] dark:text-white outline-none'
                         }}
                       />
 

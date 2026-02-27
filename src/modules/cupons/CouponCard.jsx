@@ -28,12 +28,12 @@ const CouponCard = ({ coupon, onEdit, onDelete }) => {
   }
 
   return (
-    <div className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:border-blue-300 bg-white">
+    <div className="p-6 transition-all duration-300 bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-blue-300">
       <div className="flex flex-col h-full">
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm">
+              <div className="px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-sm bg-gradient-to-r from-blue-500 to-blue-600">
                 {coupon.code}
               </div>
               <button
@@ -49,7 +49,7 @@ const CouponCard = ({ coupon, onEdit, onDelete }) => {
 
             <button
               onClick={() => onDelete(coupon.id)}
-              className="p-2 text-red-500 hover:bg-red-50 transition-colors rounded-lg disabled:opacity-50"
+              className="p-2 text-red-500 transition-colors rounded-lg hover:bg-red-50 disabled:opacity-50"
               title="O'chirish"
             >
               <Trash2 size={18} />

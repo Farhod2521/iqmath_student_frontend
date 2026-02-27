@@ -1,9 +1,11 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import Image from 'next/image'
 
 const StatsCards = ({ data }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
+
+  console.log('data', data)
 
   const stats = [
     {
@@ -105,7 +107,7 @@ const StatsCards = ({ data }) => {
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-8">
+    <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {stats.map((stat) => (
         <div
           key={stat.key}
@@ -113,13 +115,7 @@ const StatsCards = ({ data }) => {
         >
           <div className="flex items-start gap-3 mb-3">
             <div className="p-2 bg-gray-50 dark:bg-[#2A3547] rounded-lg">
-              <Image 
-                src={stat.icon} 
-                alt={stat.key} 
-                width={20} 
-                height={20} 
-                className={stat.iconClass || ""}
-              />
+              <Image src={stat.icon} alt={stat.key} width={20} height={20} className={stat.iconClass || ''} />
             </div>
             <div className="flex-1">
               <p className="text-[#7C8FAC] text-xs font-medium mb-1">{stat.badge.value}</p>
@@ -132,7 +128,7 @@ const StatsCards = ({ data }) => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default StatsCards;
+export default StatsCards
