@@ -1,55 +1,84 @@
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import { useGetQuery } from '@/hooks'
 import { Box, Container, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import dayjs from 'dayjs'
 
 const NewsSingle = () => {
   const router = useRouter()
+  const { i18n } = useTranslation()
   const { id } = router.query
-  const news = {
-    id: 1,
-    title: "Sun'iy intellekt sohasida yangi yutuq qayd etildi",
-    shortDescription: 'OpenAI kompaniyasi GPT-5 modelini taqdim etdi',
-    fullContent: `OpenAI kompaniyasi bugun dunyoga o'zining eng so'nggi sun'iy intellekt modeli GPT-5 ni taqdim etdi. Bu model avvalgi versiyalarga nisbatan ancha kuchli va samarali ishlaydi.
 
-Yangi model 100 trillionga yaqin parametrga ega bo'lib, u oldingi GPT-4 modelidan 10 baravar kuchliroq. GPT-5 murakkab mantiqiy masalalarni yechishda, dasturlashda va ijodiy kontentni yaratishda yangi rekordlar o'rnatdi.
+  const { data: item, isLoading } = useGetQuery({
+    key: [KEYS.news, id],
+    url: `${URLS.newsTotal}${id}/`,
+    enabled: !!id
+  })
+  const data = item?.data ?? item
 
-Kompaniya rahbari Sem Altman aytishicha, GPT-5 inson darajasidagi umumiy sun'iy intellektga (AGI) erishish yo'lida muhim qadam hisoblanadi. Model mediatsina, ta'lim, tadqiqot va ko'plab boshqa sohalarda qo'llanilishi mumkin.
+  const currentLang = i18n.language?.slice(0, 2) === 'ru' ? 'ru' : 'uz'
 
-Texnik jihozlar:
-- 100 trillion parametr
-- Multimodal qobiliyatlar (matn, rasm, audio, video)
-- 128K tokenli kontekst oynasi
-- Real-time ma'lumotlar bilan ishlash imkoniyati
+  const title = useMemo(() => {
+    if (!data) return ''
+    return currentLang === 'ru' ? data.title_ru : data.title_uz
+  }, [data, currentLang])
 
-GPT-5 hozircha cheklangan beta-test rejimida ishlaydi va keyingi yil boshida keng auditoriya uchun ochiq bo'ladi. Model foydalanish narxi GPT-4 ga nisbatan 30% arzonroq bo'lishi kutilmoqda.`,
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-    date: '2026-01-15',
-    author: 'Dr. Ali Karimov',
-    category: 'Texnologiya',
-    readTime: '5 daqiqa'
-  }
+  const text = useMemo(() => {
+    if (!data) return ''
+    return currentLang === 'ru' ? data.text_ru : data.text_uz
+  }, [data, currentLang])
 
-  if (!news) return null
+  if (isLoading) return null
+  if (!data) return null
+
+  console.log('RAW data:', data)
 
   return (
-    <Container sx={{ py: 6, maxWidth: 'md' }}>
+    <Container maxWidth="md" sx={{ py: 6 }}>
       {/* Rasm */}
-      <Box component="img" src={news.image} alt={news.title} sx={{ width: '100%', borderRadius: 2, mb: 3 }} />
+      {data?.image && (
+        <Box
+          component="img"
+          src={data.image}
+          alt={title}
+          sx={{
+            width: '100%',
+            borderRadius: 3,
+            mb: 4,
+            objectFit: 'cover'
+          }}
+        />
+      )}
 
       {/* Sarlavha */}
-      <Typography variant="h3" fontWeight={700} mb={2}>
-        {news.title}
+      <Typography variant="h4" fontWeight={700} mb={2}>
+        {title}
       </Typography>
 
-      {/* Muallif va sana */}
-      <Typography variant="body2" color="text.secondary" mb={3}>
-        {news.author} | {news.date} | {news.category} | {news.readTime}
+      {/* Sana */}
+      <Typography variant="body2" color="text.secondary" mb={2}>
+        {dayjs(data.created_at).format('DD MMMM YYYY, HH:mm')}
       </Typography>
 
-      {/* To'liq matn */}
-      <Typography lineHeight={1.8} sx={{ whiteSpace: 'pre-line' }}>
-        {news.fullContent}
-      </Typography>
+      {/* Video (agar bo‘lsa) */}
+      {data?.video && (
+        <Box mb={4}>
+          <video src={data.video} controls style={{ width: '100%', borderRadius: 12 }} />
+        </Box>
+      )}
+
+      {/* To‘liq matn (HTML) */}
+      <Box
+        sx={{
+          lineHeight: 1.8,
+          fontSize: '1.05rem',
+          '& p': { mb: 2 }
+        }}
+        dangerouslySetInnerHTML={{ __html: text }}
+      />
     </Container>
   )
 }

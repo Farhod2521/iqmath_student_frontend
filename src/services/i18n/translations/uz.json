@@ -513,6 +513,7 @@
   "phone": "Telefon",
   "region": "Hudud",
   "loginAsStudent": "Talaba sifatida kirish",
+  "device": "Qurilma",
   "exportSuccess": "Excel fayli muvaffaqiyatli yuklandi!",
   "noDataToExport": "Export qilish uchun ma'lumot mavjud emas!",
   "resultSummary": "Natija xulosasi",

@@ -21,7 +21,7 @@ import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
 import AuthModal from '../../auth/AuthModal'
-import { getSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import Auth from '../../auth/Auth'
 import { useRouter } from 'next/router'
@@ -73,15 +73,16 @@ const HpHeader = () => {
   const [open, setOpen] = useState(false)
   const [socialLinks, setSocialLinks] = useState(defaultLinks)
   const [authOpen, setAuthOpen] = useState(false)
-  const [session, setSession] = useState(null)
+  // const [session, setSession] = useState(null)
+  const { data: session, status } = useSession()
   const router = useRouter()
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
 
-  useEffect(() => {
-    getSession().then((sess) => setSession(sess))
-  }, [])
+  // useEffect(() => {
+  //   getSession().then((sess) => setSession(sess))
+  // }, [])
 
   useEffect(() => {
     request

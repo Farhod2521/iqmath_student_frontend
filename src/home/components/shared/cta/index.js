@@ -4,11 +4,16 @@ import { useTranslation } from 'react-i18next'
 import { IconArrowRight, IconCheck } from '@tabler/icons-react'
 import AuthModal from '../../auth/AuthModal'
 import Auth from '../../auth/Auth'
+import { useSession } from 'next-auth/react'
+import SimpleLoader from '@/components/loader/simple-loader'
 
 const CTA = () => {
   const { t } = useTranslation()
   const [openAuth, setOpenAuth] = useState(false)
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { data: session, status } = useSession()
 
   const handleAuthRedirect = () => {
     setOpenAuth(true)
@@ -35,6 +40,26 @@ const CTA = () => {
     const val = t('cta.features', { returnObjects: true })
     return Array.isArray(val) ? val : []
   }, [t])
+
+  const handleEnter = async () => {
+    setIsLoading(true)
+    try {
+      if (session?.role === 'teacher') {
+        router.push('/dashboard/teacher/statistics')
+      } else if (session?.role === 'parent') {
+        router.push('/dashboard/parent/my-children')
+      } else {
+        router.push('/dashboard/student/subjects')
+      }
+    } catch (e) {
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const getLoadingText = () => {
+    if (isLoading) return <SimpleLoader /> || 'Loading...'
+    return t('enter')
+  }
 
   return (
     <>
@@ -65,16 +90,34 @@ const CTA = () => {
               </p>
 
               {/* button */}
-              <button
-                onClick={handleAuthRedirect}
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-extrabold text-blue-700
+              {!session ? (
+                <button
+                  onClick={handleAuthRedirect}
+                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-extrabold text-blue-700
                          bg-white rounded-full shadow-xl transition
                          hover:-translate-y-0.5 hover:shadow-2xl
                          active:translate-y-0 active:scale-[0.98]"
-              >
-                {t('cta.button')}
-                <IconArrowRight className="transition-transform duration-200 group-hover:translate-x-1" size={18} />
-              </button>
+                >
+                  {t('cta.button')}
+                  <IconArrowRight className="transition-transform duration-200 group-hover:translate-x-1" size={18} />
+                </button>
+              ) : (
+                <button
+                  onClick={handleEnter}
+                  className={`group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-extrabold text-blue-700
+                         bg-white rounded-full shadow-xl transition
+                         hover:-translate-y-0.5 hover:shadow-2xl
+                         active:translate-y-0 active:scale-[0.98] ${isLoading ? 'opacity-70' : ''}`}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <span>{getLoadingText()}</span>
+                    </div>
+                  ) : (
+                    t('enter')
+                  )}
+                </button>
+              )}
 
               {/* features */}
               {features.length > 0 && (

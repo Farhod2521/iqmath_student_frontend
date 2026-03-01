@@ -15,6 +15,7 @@ import { usePricingModalStore } from '@/store'
 import PricingCouponModal from '@/modules/student/payment/components/PricingCouponModal'
 import AuthModal from '@/home/components/auth/AuthModal'
 import Auth from '@/home/components/auth/Auth'
+import { closeAuthModal, openAuthWithReturn } from '@/home/components/auth/AuthGate'
 
 const PricingContent = () => {
   const { t, i18n } = useTranslation()
@@ -44,8 +45,14 @@ const PricingContent = () => {
   const handleBuy = async (plan) => {
     const session = await getSession()
     if (!session) {
-      toast.success(t('pricing.authRequired'))
+      // plan ni vaqtincha saqlab turamiz (login bo'lgach davom ettirish uchun)
+      localStorage.setItem('pending_plan_id', String(plan.id))
+
       setAuthOpen(true)
+
+      // shu sahifaga qaytib kelsin (hozirgi url + querylar bilan)
+      const returnUrl = router.asPath
+      openAuthWithReturn(router, returnUrl, 'signUp') // ?tab=signUp + returnUrl yozadi
       return
     }
     setSelectedPlan(plan)
@@ -104,6 +111,28 @@ const PricingContent = () => {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (!router.isReady) return
+    ;(async () => {
+      const session = await getSession()
+      if (!session) return
+
+      const pendingId = localStorage.getItem('pending_plan_id')
+      if (!pendingId) return
+
+      const plan = data.find((p) => String(p.id) === String(pendingId))
+      if (!plan) return
+
+      setSelectedPlan(plan)
+      openPricingModal(plan?.price)
+      localStorage.removeItem('pending_plan_id')
+
+      // auth querylarni tozalab qo'ysak chiroyli
+      closeAuthModal(router)
+      setAuthOpen(false)
+    })()
+  }, [router.isReady, data, openPricingModal])
 
   return (
     <>

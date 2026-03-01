@@ -107,5 +107,6 @@ export const URLS = {
   // Tutor referrals endpoints
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',
   tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/',
-  chatUnreadTotal: '/api/v1/func_chat/chats/unread-total/'
+  chatUnreadTotal: '/api/v1/func_chat/chats/unread-total/',
+  newsTotal: '/api/v1/management/app/elon-list/'
 }

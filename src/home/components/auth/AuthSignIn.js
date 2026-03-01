@@ -24,6 +24,16 @@ function AuthSignIn() {
       const result = await signIn('credentials', { phone: formattedPhone, password, redirect: false })
       if (result?.ok) {
         const session = await getSession()
+
+        // ✅ return url bo'lsa shu yerga qaytaramiz
+        const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
+
+        if (returnUrl) {
+          router.replace(returnUrl)
+          toast.success(t('loggedInSuccessfully'))
+          return
+        }
+
         if (session?.role === 'teacher') {
           router.push('/dashboard/teacher/statistics')
         } else if (session?.role === 'parent') {

@@ -4,7 +4,7 @@ import { Play, Video, Sparkles, ShieldCheck, Users, Image } from 'lucide-react'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { useRouter } from 'next/router'
-import { getSession, signOut } from 'next-auth/react'
+import { getSession, signOut, useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { Container } from '@mui/material'
 import Auth from '../../auth/Auth'
@@ -13,15 +13,16 @@ import SimpleLoader from '@/components/loader/simple-loader'
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
-  const [session, setSession] = useState(null)
+  // const [session, setSession] = useState(null)
   const [showAuth, setShowAuth] = useState(false)
+  const { data: session, status } = useSession()
 
   const router = useRouter()
   const authRef = useRef(null)
 
-  useEffect(() => {
-    getSession().then((sess) => setSession(sess))
-  }, [])
+  // useEffect(() => {
+  //   getSession().then((sess) => setSession(sess))
+  // }, [])
 
   const openAuthPanel = () => {
     setShowAuth(true)

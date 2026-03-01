@@ -14,8 +14,9 @@ import Leadership from './components/homepage/leadership'
 import CTA from './components/shared/cta'
 import Benefits from './components/homepage/benefits'
 import Courses from './components/homepage/courses'
-import NewsPage from './components/homepage/defend-focus'
 import HomePage from './components/homepage/defend-focus/NewsDetail'
+import MentalGames from './components/mental-games/MentalGames'
+
 function Landing() {
   const theme = ThemeSettings()
   return (
@@ -29,17 +30,16 @@ function Landing() {
       {/* <HeaderAlert /> */}
       {/* <BannerHeader /> */}
       <PowerfulDozens />
-      {/* <GamesSlider /> */}
       <C2a />
       <Courses />
+      {/* <MentalGames /> */}
       <Benefits />
       {/* <NewsPage /> */}
-      <HomePage />
+      <HomePage /> {/*news */}
       <Features />
       {/* <ExceptionalFeature /> */}
       <Reviews />
       <Leadership />
-
       <Pricing />
       <FAQ />
       <CTA />
