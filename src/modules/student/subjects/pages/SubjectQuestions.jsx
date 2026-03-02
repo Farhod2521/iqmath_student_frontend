@@ -215,7 +215,7 @@ export default function SubjectQuestions() {
       Object.entries(fields)
         .filter(([key, value]) => {
           if (typeof value === 'object' && value !== null) {
-            return Object.values(value).some((v) => v && v.trim() !== '')
+            return Object.values(value)?.some((v) => v && v.trim() !== '')
           }
           return value !== null && value !== undefined && value !== ''
         })

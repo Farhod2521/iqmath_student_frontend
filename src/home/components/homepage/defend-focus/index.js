@@ -154,8 +154,6 @@ const NewsPage = () => {
     refetchOnWindowFocus: false
   })
 
-  console.log('data', data)
-
   const handleAllClick = () => {
     router.push('/news')
   }

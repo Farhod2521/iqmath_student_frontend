@@ -85,13 +85,13 @@ function AuthSignIn() {
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
+          className={`w-full sm:w-[70%] md:w-[60%] lg:w-[50%] border mt-2 py-2 mx-auto text-sm sm:text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
             isLoading ? 'opacity-70' : ''
           }`}
           style={{ boxShadow: '0 0 15px 1px #00000040' }}
         >
           {isLoading ? (
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-1 sm:gap-2">
               <SimpleLoader />
               <span>{getLoadingText()}</span>
             </div>

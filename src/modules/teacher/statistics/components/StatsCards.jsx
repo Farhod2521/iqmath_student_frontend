@@ -5,8 +5,6 @@ import Image from 'next/image'
 const StatsCards = ({ data }) => {
   const { t } = useTranslation()
 
-  console.log('data', data)
-
   const stats = [
     {
       key: 'totalTeachers',

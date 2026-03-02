@@ -279,7 +279,7 @@ const Index = () => {
               /> */}
             </div>
           ) : (
-            <EmptyCuponState onAddNew={handleCreateCoupon} />
+            <EmptyCuponState onAddNew={openCreateModal} />
           )}
         </div>
       </div>

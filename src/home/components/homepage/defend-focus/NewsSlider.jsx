@@ -28,8 +28,6 @@ const NewsSlider = ({ news }) => {
     refetchOnWindowFocus: false
   })
 
-  console.log('data', data)
-
   const items = [...news, ...news]
 
   useEffect(() => {

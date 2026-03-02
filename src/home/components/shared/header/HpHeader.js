@@ -59,11 +59,9 @@ const defaultLinks = {
 }
 
 const socialIcons = [
-  { key: 'telegram', Icon: FaTelegram, size: 20 },
-  { key: 'instagram', Icon: FaInstagram, size: 20 },
-  { key: 'facebook', Icon: FaFacebook, size: 20 },
-  { key: 'youtube', Icon: FaYoutube, size: 20 },
-  { key: 'twitter', Icon: FaTwitter, size: 20 }
+  { key: 'telegram', Icon: FaTelegram, size: 20, link_url: 'https://t.me/iqmath2025' },
+  { key: 'instagram', Icon: FaInstagram, size: 20, link_url: 'https://www.instagram.com/iq_mathuz/' },
+  { key: 'youtube', Icon: FaYoutube, size: 20, link_url: 'https://www.youtube.com/@iqmathuz' }
 ]
 
 const HpHeader = () => {
@@ -71,39 +69,12 @@ const HpHeader = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'))
   const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'))
   const [open, setOpen] = useState(false)
-  const [socialLinks, setSocialLinks] = useState(defaultLinks)
   const [authOpen, setAuthOpen] = useState(false)
-  // const [session, setSession] = useState(null)
   const { data: session, status } = useSession()
   const router = useRouter()
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
-
-  // useEffect(() => {
-  //   getSession().then((sess) => setSession(sess))
-  // }, [])
-
-  useEffect(() => {
-    request
-      .get(URLS.systemSettings)
-      .then((res) => {
-        if (res.data?.length) {
-          const settings = res.data[0]
-          setSocialLinks({
-            telegram: settings.telegram_link || '',
-            instagram: settings.instagram_link || '',
-            facebook: settings.facebook_link || '',
-            youtube: settings.youtube_link || '',
-            twitter: settings.twitter_link || '',
-            phone: defaultLinks.phone
-          })
-        }
-      })
-      .catch((err) => {
-        console.error('Error fetching social links:', err)
-      })
-  }, [])
 
   const handleAuthClick = () => {
     setAuthOpen(true)
@@ -138,12 +109,20 @@ const HpHeader = () => {
                 variant="contained"
                 onClick={handleAuthClick}
                 sx={{
-                  borderRadius: 999,
+                  borderRadius: '8px',
                   textTransform: 'none',
                   fontWeight: 800,
-                  px: 2.2,
-                  py: 0.8,
-                  background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'
+
+                  px: { xs: 1.4, sm: 2.2 }, // gorizontal padding
+                  py: { xs: 0.55, sm: 0.8 }, // vertikal padding
+                  fontSize: { xs: 12, sm: 14 }, // yozuv o'lchami
+                  minHeight: { xs: 34, sm: 38 }, // tugma balandligi
+                  minWidth: { xs: 96, sm: 120 }, // tugma eni
+                  lineHeight: 1,
+                  whiteSpace: 'nowrap',
+
+                  // ✅ style
+                  background: '#5D87FF'
                 }}
               >
                 {session ? t('login', 'Kirish') : t('signIn')}
@@ -247,23 +226,20 @@ const HpHeader = () => {
         <Stack spacing={2} sx={{ px: 2, pb: 2 }}>
           {/* Social Icons */}
           <Stack direction="row" spacing={1} justifyContent="flex-start" flexWrap="wrap">
-            {socialIcons.map(
-              ({ key, Icon, size }) =>
-                socialLinks[key] && (
-                  <IconButton
-                    key={key}
-                    component="a"
-                    href={socialLinks[key]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="primary"
-                    size="small"
-                  >
-                    <Icon size={size} />
-                  </IconButton>
-                )
-            )}
-            <IconButton component="a" href={`tel:${socialLinks.phone}`} color="primary" size="small">
+            {socialIcons.map(({ key, Icon, size, link_url }) => (
+              <IconButton
+                key={key}
+                component="a"
+                href={link_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="primary"
+                size="small"
+              >
+                <Icon size={size} />
+              </IconButton>
+            ))}
+            <IconButton component="a" href={`tel:+998881989000`} color="primary" size="small">
               <FaPhone size={16} />
             </IconButton>
           </Stack>

@@ -232,7 +232,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
 
     Object.entries(compositeAnswers).forEach(([questionId, subAnswers]) => {
       if (subAnswers && typeof subAnswers === 'object') {
-        const hasAnyAnswer = Object.values(subAnswers).some((answer) => answer && answer.trim() !== '')
+        const hasAnyAnswer = Object.values(subAnswers)?.some((answer) => answer && answer.trim() !== '')
         if (hasAnyAnswer) {
           answeredQuestions.add(questionId)
         }
@@ -267,7 +267,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
   useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
 
   if (isLoading || !testQuestions)
-    return <div className="p-4 text-gray-500 italic  text-center w-full">{t('chooseQueation')}</div>
+    return <div className="w-full p-4 italic text-center text-gray-500">{t('chooseQueation')}</div>
 
   return (
     <div className="font-sf">
@@ -287,7 +287,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
         <div className="md:col-span-6 py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
           <ExamQuestionSelected selectedQuestion={selectedQuestion} selectedIndex={selectedIndex} />
 
-          <div className="w-full flex flex-col items-center">
+          <div className="flex flex-col items-center w-full">
             {(() => {
               switch (selectedQuestion?.question_type) {
                 case 'image_choice':
@@ -331,7 +331,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
             })()}
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex gap-4">
               <Button
                 onPress={handlePrev}
@@ -344,17 +344,17 @@ const DiagnosticQuestions = ({ subjectId }) => {
               </Button>
 
               {isEndQuestion ? (
-                <Button onPress={handleCheckMyResults} className="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <Button onPress={handleCheckMyResults} className="px-4 py-2 text-white bg-blue-500 rounded-md">
                   {t('check')}
                 </Button>
               ) : (
-                <Button className="px-4 py-2 rounded-md bg-blue-500 text-white" onPress={handleNext}>
+                <Button className="px-4 py-2 text-white bg-blue-500 rounded-md" onPress={handleNext}>
                   {t('next')}
                 </Button>
               )}
             </div>
 
-            <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-3">
               {/* {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>} */}
               <ActionInfo />
               {['composite', 'text'].includes(selectedQuestion?.question_type) && (

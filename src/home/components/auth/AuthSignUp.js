@@ -19,7 +19,9 @@ import toast from 'react-hot-toast'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
-  const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup, setSelectedRole } = useAuthTabStore((state) => state)
+  const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup, setSelectedRole } = useAuthTabStore(
+    (state) => state
+  )
   const router = useRouter()
 
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
@@ -34,13 +36,11 @@ function AuthSignUp() {
 
   // Function to translate error messages
   const translateErrorMessage = (errorMessage) => {
-    if (errorMessage.includes('Bu telefon raqam allaqachon ro\'yxatdan o\'tgan')) {
+    if (errorMessage.includes("Bu telefon raqam allaqachon ro'yxatdan o'tgan")) {
       return t('phoneAlreadyRegistered')
     }
     return errorMessage // Return original message if no translation found
   }
-
-
 
   const onSubmit = async ({ full_name, phone }) => {
     if (!selectedRole) {
@@ -60,11 +60,11 @@ function AuthSignUp() {
       formData.append('phone', `${String(998) + String(phone)}`)
       formData.append('role', selectedRole.value)
       formData.append('lang', i18n.language)
-      
+
       if (selectedRole.value === 'student') {
         formData.append('class_name', selectedOptionCourse?.value)
       }
-      
+
       if (router.query.referral_code) {
         formData.append('referral_code', router.query.referral_code)
       }
@@ -99,7 +99,7 @@ function AuthSignUp() {
             if (error.response?.data?.errors) {
               const errors = error.response.data.errors
               const errorMessages = Object.values(errors).flat()
-              const translatedMessages = errorMessages.map(msg => translateErrorMessage(msg))
+              const translatedMessages = errorMessages.map((msg) => translateErrorMessage(msg))
               toast.error(translatedMessages.join('\n'))
             } else {
               console.log('error occured')
@@ -141,11 +141,11 @@ function AuthSignUp() {
 
       {/* <UserAgreement /> */}
 
-      <div className="w-full flex justify-center items-center">
+      <div className="flex items-center justify-center w-full">
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-[60%] border py-2 mt-2 text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
+          className={`w-full sm:w-[70%] md:w-[60%] lg:w-[50%] border py-2 mt-2 font-medium text-sm sm:text-lg rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
             isLoading ? 'opacity-70' : ''
           }`}
         >

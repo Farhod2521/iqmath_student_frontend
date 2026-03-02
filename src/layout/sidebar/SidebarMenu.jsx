@@ -68,12 +68,12 @@ const SidebarMenu = () => {
               // Check if current path matches any active patterns
               let isActive = router.pathname === path || router.pathname.endsWith(path)
               if (activePatterns && activePatterns.length > 0) {
-                isActive = isActive || activePatterns.some((pattern) => router.pathname.startsWith(pattern))
+                isActive = isActive || activePatterns?.some((pattern) => router.pathname.startsWith(pattern))
               }
 
               if (children) {
                 const isExpanded = isMenuExpanded(key)
-                const hasActiveChild = children.some(
+                const hasActiveChild = children?.some(
                   (child) => router.pathname === child.path || router.pathname.endsWith(child.path)
                 )
 
