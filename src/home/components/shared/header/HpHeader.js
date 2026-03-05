@@ -248,7 +248,7 @@ const HpHeader = () => {
           <LanguageDropdown />
         </Stack>
       </Drawer>
-      <AuthModal open={authOpen} onClose={handleClose} title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}>
+      <AuthModal open={authOpen} onClose={handleClose} title={t('auth', 'Kirish / Ro‘yxatdan o‘tish')}>
         <Auth />
       </AuthModal>
     </AppBarStyled>

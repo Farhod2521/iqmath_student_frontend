@@ -1,5 +1,6 @@
 {
   "ratings": "Ratinglar",
+  "auth": "Kirish / Ro‘yxatdan o‘tish",
   "dashboard": "Boshqaruv paneli",
   "telegram_bot": "Telegram bot orqali ro'yxatdan o'ting",
   "olympics": "Olimpiada",
@@ -1107,6 +1108,32 @@
       "transfer_reason_hint": "O'tkazish sababi bo'yicha ko'rsatma",
       "transferring": "O'tkazish",
       "select_teacher_to_transfer": "O'tkazishga o'qituvchini tanlang"
+    }
+  },
+  "games": {
+    "hero": {
+      "badge": "Aqlni charxlaydigan mini-o‘yinlar",
+      "collapse": "Tanlang va o‘ynashni boshlang",
+      "search": "Qidiruv",
+      "filters": "Filterlar",
+      "title": "Aqliy o'yinlar",
+      "subtitle": "Tezkor fikrlash, xotira, diqqat va mantiqni rivojlantiruvchi o‘yinlar to‘plami.",
+      "ctaView": "O‘yinlarni ko‘rish",
+      "ctaStart": "Birinchi o‘yinni boshlash",
+      "statGames": "{{count}} ta o‘yin",
+      "statSource": "SafeKidGames manbasi"
+    },
+    "section": {
+      "title": "Aqliy o‘yinlar",
+      "subtitle": "SafeKidGames’dan olingan o‘yinlar",
+      "all": "Barchasi",
+      "hint": "O‘ynash tugmasi bosilganda o‘yin yangi tabda ochiladi.",
+      "noFound": "Hech narsa topilmadi."
+    },
+    "card": {
+      "noImage": "Rasm yo‘q",
+      "subtitle": "Aqlni rivojlantiruvchi mini-o‘yin",
+      "play": "O‘ynash"
     }
   }
 }

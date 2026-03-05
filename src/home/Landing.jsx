@@ -15,7 +15,7 @@ import CTA from './components/shared/cta'
 import Benefits from './components/homepage/benefits'
 import Courses from './components/homepage/courses'
 import HomePage from './components/homepage/defend-focus/NewsDetail'
-import MentalGames from './components/mental-games/MentalGames'
+import GamesSlider from './components/homepage/games'
 
 function Landing() {
   const theme = ThemeSettings()
@@ -32,7 +32,7 @@ function Landing() {
       <PowerfulDozens />
       <C2a />
       <Courses />
-      {/* <MentalGames /> */}
+      <GamesSlider />
       <Benefits />
       {/* <NewsPage /> */}
       <HomePage /> {/*news */}

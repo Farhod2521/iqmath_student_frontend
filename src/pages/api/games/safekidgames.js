@@ -1,4 +1,4 @@
-import { safekidSeeds } from '@/home/components/homepage/games/gamesData'
+import { safekidSeeds } from '@/data/gamesData'
 
 const cache = new Map()
 

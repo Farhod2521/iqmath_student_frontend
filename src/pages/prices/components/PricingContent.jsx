@@ -263,11 +263,7 @@ const PricingContent = () => {
         onClose={closePricingModal}
         originalPrice={pricingOriginalPrice}
       />
-      <AuthModal
-        open={authOpen}
-        onClose={() => setAuthOpen(false)}
-        title={t('authCard.cta', 'Kirish / Ro‘yxatdan o‘tish')}
-      >
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} title={t('auth', 'Kirish / Ro‘yxatdan o‘tish')}>
         <Auth />
       </AuthModal>
     </>
