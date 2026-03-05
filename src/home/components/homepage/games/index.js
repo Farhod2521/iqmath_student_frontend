@@ -150,18 +150,6 @@ export default function GamesSection() {
             }}
           >
             <Box sx={{ maxWidth: 760 }}>
-              <Chip
-                label={t('games.hero.badge')}
-                sx={{
-                  fontWeight: 900,
-                  bgcolor: 'rgba(255,255,255,0.85)',
-                  border: '1px solid rgba(17,24,39,0.10)',
-                  backdropFilter: 'blur(10px)',
-                  px: 1.2,
-                  py: 0.8
-                }}
-              />
-
               <Typography
                 sx={{
                   mt: 2,
@@ -191,7 +179,7 @@ export default function GamesSection() {
                 />
                 <Chip
                   icon={<CategoryIcon />}
-                  label={t('games.hero.statSource')}
+                  label={t('games.hero.badge')}
                   sx={{
                     fontWeight: 900,
                     bgcolor: 'rgba(255,255,255,0.8)',
@@ -287,9 +275,9 @@ export default function GamesSection() {
               <Typography sx={{ fontWeight: 900, fontSize: { xs: '1.35rem', sm: '1.9rem' }, color: '#0f172a' }}>
                 {t('games.section.title')}
               </Typography>
-              <Typography sx={{ mt: 1.6, color: 'rgba(15,23,42,0.60)', fontWeight: 700, fontSize: 14 }}>
+              {/* <Typography sx={{ mt: 1.6, color: 'rgba(15,23,42,0.60)', fontWeight: 700, fontSize: 14 }}>
                 {t('games.section.subtitle')}
-              </Typography>
+              </Typography> */}
             </Box>
 
             <Button

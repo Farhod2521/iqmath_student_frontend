@@ -1134,6 +1134,18 @@
       "noImage": "Rasm yo‘q",
       "subtitle": "Aqlni rivojlantiruvchi mini-o‘yin",
       "play": "O‘ynash"
+    },
+    "categories": {
+      "all": "Barchasi",
+      "math": "Matematika",
+      "word": "So'z o'yinlari",
+      "puzzle": "Boshqotirma",
+      "memory": "Xotira",
+      "match-3": "Match 3",
+      "education": "Ta'lim",
+      "board": "Stol o'yini",
+      "action": "Harakat",
+      "sports": "Sport"
     }
   }
 }

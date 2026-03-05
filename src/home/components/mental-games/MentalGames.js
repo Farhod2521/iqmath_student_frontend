@@ -16,8 +16,7 @@ export default function MentalGames() {
   const router = useRouter()
   const { data: session } = useSession()
   const [openAuth, setOpenAuth] = useState(false)
-
-  const [search, setSearch] = useState('')
+  const [activeCategory, setActiveCategory] = useState('all')
 
   const games = useMemo(() => {
     return (safekidSeeds || []).map((g) => {
@@ -32,25 +31,24 @@ export default function MentalGames() {
     })
   }, [])
 
+    const categories = useMemo(() => [...new Set(games.map((g) => g.category))], [games])
+
+
   const filtered = useMemo(() => {
-    const s = search.trim().toLowerCase()
-    return games.filter((g) => {
-      const bySearch = !s ? true : (g.title || '').toLowerCase().includes(s) || (g.slug || '').toLowerCase().includes(s)
-      return bySearch
-    })
-  }, [games, search])
+    if (activeCategory === 'all') return games
+    return games.filter((g) => g.category === activeCategory)
+  }, [games, activeCategory])
 
   const onPlay = (game) => {
-    const returnUrl = `/mental-games/${game.slug}`
+      const returnUrl = `/mental-games/out?to=${encodeURIComponent(game.href)}`
 
     if (!session) {
       setOpenAuth(true)
-      // returnUrl bilan auth qilib qaytganda shu pagega kelsin
       openAuthWithReturn(router, returnUrl, 'signUp')
       return
     }
 
-    window.open(returnUrl, '_blank')
+    window.open(returnUrl, '_blank', 'noopener,noreferrer')
   }
 
   const onClose = () => {
@@ -72,7 +70,7 @@ export default function MentalGames() {
 
           {/* Filters */}
           <div className="mt-6">
-            <Filters search={search} setSearch={setSearch} />
+            <Filters categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
           </div>
         </div>
 
