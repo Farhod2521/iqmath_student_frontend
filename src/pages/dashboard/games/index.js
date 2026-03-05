@@ -98,7 +98,7 @@ export default function MentalGames() {
           </div>
 
           {/* ── Filters ────────────────────────────────── */}
-          <div className="relative z-10 -mt-7 flex flex-wrap justify-center gap-2.5 px-6">
+          <div className="relative z-10 -mt-10 flex flex-wrap justify-center gap-2.5 px-6">
             <button
               onClick={() => setActiveCategory(ALL_KEY)}
               className={`flex items-center gap-1.5 rounded-full border-2 border-transparent px-5 py-2 text-sm font-extrabold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg
