@@ -102,154 +102,6 @@ export default function GamesSection() {
 
   return (
     <>
-      {/* HERO */}
-      <Box
-        sx={{
-          position: 'relative',
-          overflow: 'hidden',
-          py: { xs: 7, md: 9 },
-          background:
-            'radial-gradient(1200px 380px at 20% 0%, rgba(99,102,241,0.20), transparent 60%), radial-gradient(900px 320px at 80% 10%, rgba(168,85,247,0.18), transparent 60%), linear-gradient(180deg, #F8FAFF 0%, #FFFFFF 70%)'
-        }}
-      >
-        <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: -160,
-              right: -160,
-              width: 520,
-              height: 520,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)',
-              filter: 'blur(2px)'
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: -220,
-              left: -220,
-              width: 640,
-              height: 640,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(168,85,247,0.16) 0%, transparent 72%)',
-              filter: 'blur(2px)'
-            }}
-          />
-        </Box>
-
-        <Container sx={{ maxWidth: '1400px !important', position: 'relative', zIndex: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: { xs: 'flex-start', lg: 'flex-end' },
-              justifyContent: 'space-between',
-              flexDirection: { xs: 'column', lg: 'row' },
-              gap: { xs: 3, lg: 2 }
-            }}
-          >
-            <Box sx={{ maxWidth: 760 }}>
-              <Typography
-                sx={{
-                  mt: 2,
-                  fontWeight: 900,
-                  color: '#0f172a',
-                  lineHeight: 1.05,
-                  fontSize: { xs: '2.0rem', sm: '2.6rem', md: '3.2rem' }
-                }}
-              >
-                {t('games.hero.title')}
-              </Typography>
-
-              <Typography sx={{ mt: 1.2, color: 'rgba(15,23,42,0.65)', fontWeight: 700, fontSize: { xs: 14, sm: 16 } }}>
-                {t('games.hero.subtitle')}
-              </Typography>
-
-              {/* stats */}
-              <Box sx={{ mt: 3, display: 'flex', gap: 1.2, flexWrap: 'wrap' }}>
-                <Chip
-                  icon={<SportsEsportsIcon />}
-                  label={t('games.hero.statGames', { count: games.length })}
-                  sx={{
-                    fontWeight: 900,
-                    bgcolor: 'rgba(255,255,255,0.8)',
-                    border: '1px solid rgba(17,24,39,0.10)'
-                  }}
-                />
-                <Chip
-                  icon={<CategoryIcon />}
-                  label={t('games.hero.badge')}
-                  sx={{
-                    fontWeight: 900,
-                    bgcolor: 'rgba(255,255,255,0.8)',
-                    border: '1px solid rgba(17,24,39,0.10)'
-                  }}
-                />
-              </Box>
-            </Box>
-
-            {/* CTA */}
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 1.2,
-                flexDirection: { xs: 'column', sm: 'row' },
-                width: { xs: '100%', lg: 'auto' },
-                alignItems: { xs: 'stretch', lg: 'center' }
-              }}
-            >
-              {/* Primary */}
-              <Button
-                fullWidth
-                variant="contained"
-                endIcon={<ArrowForwardIcon />}
-                onClick={() => {
-                  const el = document.getElementById('games-slider')
-                  el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }}
-                sx={{
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  fontWeight: 950,
-                  py: 1.25,
-                  px: 2.6,
-                  flexWrap: 'nowrap',
-                  '&:active': { transform: 'translateY(0px)' }
-                }}
-              >
-                {t('games.hero.ctaView')}
-              </Button>
-
-              {/* Secondary */}
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<PlayArrowIcon />}
-                onClick={() => {
-                  const first = games?.[0]
-                  if (first) onPlay(first)
-                }}
-                sx={{
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  fontWeight: 950,
-                  py: 1.25,
-                  px: 6,
-                  gap: 1,
-                  minWidth: 0,
-                  whiteSpace: 'nowrap',
-                  flexWrap: 'nowrap',
-                  '&:active': { transform: 'translateY(0px)' }
-                }}
-              >
-                {t('games.hero.ctaStart')}
-              </Button>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-
       {/* SLIDER SECTION */}
       <Box
         id="games-slider"
@@ -260,42 +112,36 @@ export default function GamesSection() {
         }}
       >
         <Container sx={{ maxWidth: '1400px !important', py: { xs: 5, md: 7 }, position: 'relative', zIndex: 1 }}>
-          {/* header */}
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: { xs: 'flex-start', sm: 'center' },
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: { xs: 1.2, sm: 0 },
-              mb: 2
+              textAlign: 'center',
+              mb: { xs: 4, md: 5 }
             }}
           >
-            <Box>
-              <Typography sx={{ fontWeight: 900, fontSize: { xs: '1.35rem', sm: '1.9rem' }, color: '#0f172a' }}>
-                {t('games.section.title')}
-              </Typography>
-              {/* <Typography sx={{ mt: 1.6, color: 'rgba(15,23,42,0.60)', fontWeight: 700, fontSize: 14 }}>
-                {t('games.section.subtitle')}
-              </Typography> */}
-            </Box>
-
-            <Button
-              variant="contained"
-              onClick={() => router.push('/mental-games')}
+            <Typography
               sx={{
-                borderRadius: '8px',
-                textTransform: 'none',
                 fontWeight: 900,
-                px: 2.2,
-                py: 1.1
+                color: '#111827',
+                fontSize: { xs: '1.8rem', sm: '2.3rem' },
+                lineHeight: 1.15
               }}
-              endIcon={<ArrowForwardIcon />}
             >
-              {t('games.section.all')}
-            </Button>
-          </Box>
+              {t('games.section.title')}
+            </Typography>
 
+            <Typography
+              sx={{
+                mt: 1,
+                mx: 'auto',
+                maxWidth: 620,
+                color: 'rgba(17,24,39,0.62)',
+                fontWeight: 500,
+                fontSize: { xs: 13, sm: 14 }
+              }}
+            >
+              {t('games.hero.subtitle')}
+            </Typography>
+          </Box>
           {/* slider */}
           {!sliderItems.length ? (
             <SliderSkeleton />
@@ -350,15 +196,15 @@ export default function GamesSection() {
                         flexDirection: 'column',
                         borderRadius: 4,
                         overflow: 'hidden',
-                        border: '1px solid rgba(15,23,42,0.10)',
+                        // border: '1px solid rgba(15,23,42,0.10)',
                         background: 'rgba(255,255,255,0.92)',
-                        backdropFilter: 'blur(10px)',
-                        boxShadow: '0 10px 22px rgba(15,23,42,0.06)',
+                        // backdropFilter: 'blur(10px)',
+                        // boxShadow: '0 10px 22px rgba(15,23,42,0.06)',
                         transition: 'all .22s ease',
                         '&:hover': {
-                          transform: 'translateY(-6px)',
-                          boxShadow: '0 18px 36px rgba(15,23,42,0.10)',
-                          borderColor: 'rgba(99,102,241,0.24)'
+                          transform: 'translateY(-6px)'
+                          // boxShadow: '0 18px 36px rgba(15,23,42,0.10)',
+                          // borderColor: 'rgba(99,102,241,0.24)'
                         }
                       }}
                     >
@@ -404,7 +250,7 @@ export default function GamesSection() {
                                   placeItems: 'center',
                                   background: 'rgba(255,255,255,0.92)',
                                   border: '1px solid rgba(15,23,42,0.10)',
-                                  boxShadow: '0 14px 26px rgba(15,23,42,0.08)',
+                                  // boxShadow: '0 14px 26px rgba(15,23,42,0.08)',
                                   mx: 'auto'
                                 }}
                               >
@@ -488,9 +334,9 @@ export default function GamesSection() {
                               fontWeight: 900,
                               borderRadius: '8px',
                               py: 1.15,
-                              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                              boxShadow: '0 12px 20px rgba(99,102,241,0.22)',
-                              '&:hover': { background: 'linear-gradient(135deg, #585cf0 0%, #9f4ff2 100%)' }
+                              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'
+                              // boxShadow: '0 12px 20px rgba(99,102,241,0.22)',
+                              // '&:hover': { background: 'linear-gradient(135deg, #585cf0 0%, #9f4ff2 100%)' }
                             }}
                           >
                             {t('games.card.play')}
@@ -501,11 +347,35 @@ export default function GamesSection() {
                   </SwiperSlide>
                 ))}
               </Swiper>
-
-              {/* small helper text */}
-              <Typography sx={{ mt: 1, color: 'rgba(15,23,42,0.45)', fontWeight: 700, fontSize: 12 }}>
-                {t('games.section.hint')}
-              </Typography>
+              <Box
+                sx={{
+                  mt: 2,
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => router.push('/mental-games')}
+                  sx={{
+                    minWidth: 96,
+                    borderRadius: '8px',
+                    textTransform: 'none',
+                    fontWeight: 700,
+                    fontSize: 12,
+                    px: 2,
+                    py: 0.9,
+                    background: '#5b8def',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      background: '#4f83e8',
+                      boxShadow: 'none'
+                    }
+                  }}
+                >
+                  {t('games.section.all')}
+                </Button>
+              </Box>
             </Box>
           )}
         </Container>

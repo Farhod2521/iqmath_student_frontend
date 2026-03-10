@@ -254,10 +254,10 @@ const HomePage = () => {
                         cursor: 'pointer',
                         border: '1px solid rgba(17,24,39,0.08)',
                         background: '#fff',
-                        boxShadow: '0 6px 16px rgba(17,24,39,0.06)',
+                        // boxShadow: '0 6px 16px rgba(17,24,39,0.06)',
                         transition: 'all .2s ease',
                         '&:hover': {
-                          boxShadow: '0 10px 24px rgba(17,24,39,0.10)',
+                          // boxShadow: '0 10px 24px rgba(17,24,39,0.10)',
                           borderColor: 'rgba(99,102,241,0.25)'
                         }
                       }}

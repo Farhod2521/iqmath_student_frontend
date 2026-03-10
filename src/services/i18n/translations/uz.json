@@ -1112,6 +1112,7 @@
   },
   "games": {
     "hero": {
+      "navTitle": "O'yinlar",
       "badge": "Aqlni charxlaydigan mini-o‘yinlar",
       "collapse": "Tanlang va o‘ynashni boshlang",
       "search": "Qidiruv",

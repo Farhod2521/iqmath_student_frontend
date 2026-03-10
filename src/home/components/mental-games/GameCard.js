@@ -9,14 +9,14 @@ export default function GameCard({ game, onPlay }) {
       onClick={onPlay}
       className="group relative cursor-pointer rounded-3xl p-[1px] bg-gradient-to-br from-indigo-500/30 via-sky-400/20 to-fuchsia-500/30"
     >
-      <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 backdrop-blur shadow-[0_10px_30px_-12px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.32)]">
+      <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 backdrop-blur shadow-[0_10px_30px_-12px_rgba(0,0,0,0.25)] transition-all duration-300  group-hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.32)]">
         {/* Image */}
         <div className="relative h-[170px] bg-gradient-to-br from-slate-100 via-slate-50 to-indigo-50">
           {game.cover ? (
             <img
               src={game.cover}
               alt={game.title}
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+              className="object-cover w-full h-full transition duration-500"
               onError={(e) => {
                 // fallback: broken image bo‘lsa yashirib qo‘yamiz
                 e.currentTarget.style.display = 'none'

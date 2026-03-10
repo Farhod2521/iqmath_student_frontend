@@ -10,6 +10,15 @@ import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 import { useSidebarCount } from '@/hooks'
 
+const HIDDEN_MENU_KEYS_WHEN_INACTIVE = [
+  'diagnostics-history',
+  'chat',
+  'ratings',
+  'tutor-referrals',
+  'cupon-users',
+  'cupon-list'
+]
+
 const SidebarMenu = () => {
   const { t } = useTranslation()
   const { data } = useSidebarCount()
@@ -34,14 +43,21 @@ const SidebarMenu = () => {
     return () => window.removeEventListener('resize', checkScrollbar)
   }, [])
 
-  const menuItems = getMenuItems(t).filter((item) => {
-    if (item.key === 'recommended' && !user?.has_diagnost) return false
-    if (role && item.roles && Array.isArray(item.roles)) {
-      return item.roles.includes(userRole)
-    }
-
-    return true
-  })
+  const menuItems = getMenuItems(t)
+    .filter((item) => {
+      if (item.key === 'recommended' && !user?.has_diagnost) return false
+      if (role && item.roles && Array.isArray(item.roles)) {
+        return item.roles.includes(userRole)
+      }
+      return true
+    })
+    .filter((item) => {
+      // user.status false bo'lsa ayrim menularni yashiramiz
+      if (user?.status === false && HIDDEN_MENU_KEYS_WHEN_INACTIVE.includes(item.key)) {
+        return false
+      }
+      return true
+    })
 
   const toggleMenu = (key) => {
     setExpandedMenus((prev) => ({

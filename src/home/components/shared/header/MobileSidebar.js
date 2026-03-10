@@ -14,13 +14,13 @@ const MobileSidebar = () => {
   const pathname = usePathname()
 
   const navs = [
-    { title: t('homePage'), to: '/' },
+    // { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/#prices' },
-    { title: t('faq'), to: '/#faq-list-top' },
-    { title: t('games.hero.title'), to: '/mental-games' },
     { title: t('news'), to: '/#news-detail' },
-    { title: t('contactus'), to: 'tel:+998881989000' }
+    { title: t('games.hero.navTitle'), to: '/mental-games' },
+    { title: t('faqTitle'), to: '/#faq-list-top' }
+    // { title: t('contactus'), to: 'tel:+998881989000' }
   ]
 
   const isActive = (path) => {
