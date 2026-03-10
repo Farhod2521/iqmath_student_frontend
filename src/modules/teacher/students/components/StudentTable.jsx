@@ -247,16 +247,27 @@ function StudentTable({
       {
         headerName: t('status'),
         field: 'status',
-        minWidth: 100,
+        minWidth: 110,
         flex: 1,
         cellRenderer: (params) => {
           return params.value ? <span>Faol</span> : <span>Faol emas</span>
         }
       },
       {
-        headerName: "Ro'yxattan o'tgan tili",
-        field: 'lang',
+        headerName: "Ro'yxatdan o'tgan qurilma",
+        field: 'device',
         minWidth: 100,
+        cellRenderer: (params) => {
+          if (!params.value) {
+            return <span className="text-gray-400">-</span>
+          }
+          return <span>{params.value.replaceAll('-', '.')}</span>
+        }
+      },
+      {
+        headerName: "Ro'yxatdan o'tgan tili",
+        field: 'lang',
+        minWidth: 70,
         cellRenderer: (params) => {
           return params.value
         }
@@ -275,7 +286,7 @@ function StudentTable({
       {
         headerName: t('lastLoginTime') || 'Oxirgi kirish',
         field: 'last_login_time',
-        maxWidth: 100,
+        minWidth: 100,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
@@ -332,8 +343,15 @@ function StudentTable({
             rowData={data}
             columnDefs={colDefs}
             domLayout="autoHeight"
-            className="custom-grid"
+            className="custom-grid ag-theme-quartz"
             pagination={false}
+            defaultColDef={{
+              sortable: true,
+              filter: true,
+              resizable: true,
+              wrapHeaderText: true,
+              autoHeaderHeight: true
+            }}
           />
         )}
         {!isLoadingData && (

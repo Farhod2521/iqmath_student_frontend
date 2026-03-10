@@ -31,6 +31,9 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
     padding: '8px 24px',
     minHeight: '60px',
     fontSize: '18px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px'
+    },
     fontWeight: 500
   },
   '& .MuiAccordionDetails-root': {
@@ -165,10 +168,8 @@ const FAQ = () => {
               mb={2}
               fontWeight={700}
               sx={{
-                fontSize: {
-                  lg: '40px',
-                  xs: '35px'
-                }
+                fontSize: { xs: '24px', sm: '34px', md: '42px' },
+                lineHeight: 1.1
               }}
             >
               {/* i18n bilan title */}
@@ -179,10 +180,7 @@ const FAQ = () => {
               variant="body1"
               mb={2}
               sx={{
-                fontSize: {
-                  lg: '18px',
-                  xs: '16px'
-                },
+                fontSize: { xs: '14px', sm: '16px', md: '18px' },
                 color: 'text.secondary'
               }}
             >

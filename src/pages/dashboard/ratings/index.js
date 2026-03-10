@@ -4,11 +4,7 @@ import { URLS } from '@/constants/url'
 import { usePostQuery } from '@/hooks'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
-const TYPES = [
-  { label: 'Eng ko‘p ball', value: 'score' },
-  { label: 'Eng ko‘p tanga', value: 'coin' },
-  { label: 'Eng ko‘p so‘m', value: 'som' }
-]
+
 
 const COUNTS = [10, 50, 100, 1000]
 
@@ -21,6 +17,12 @@ const StudentTopLeaderboard = () => {
   const { mutate, isLoading } = usePostQuery({
     hideSuccessToast: true
   })
+
+  const TYPES = [
+    { label: t('topBall'), value: 'score' },
+    { label: t('topTanga'), value: 'coin' },
+    { label: t('topSum'), value: 'som' }
+  ]
 
   useEffect(() => {
     mutate(
@@ -47,16 +49,16 @@ const StudentTopLeaderboard = () => {
   }
 
   const getUnitByType = () => {
-    if (type === 'score') return 'ball'
-    if (type === 'coin') return 'tanga'
-    if (type === 'som') return "so'm"
+    if (type === 'score') return <span className="lowercase">{t('ball')}</span>
+    if (type === 'coin') return t('tanga')
+    if (type === 'som') return <span className="lowercase">{t('sum')}</span>
     return ''
   }
 
   return (
     <LayoutAdmin title={t('ratings')}>
       <div className="bg-white dark:bg-[#202936] border rounded-xl p-6 mt-8">
-        <h3 className="mb-4 text-lg font-semibold">🏆 Studentlar reytingi</h3>
+        <h3 className="mb-4 text-lg font-semibold">🏆 {t('studentRating')}</h3>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-6">
@@ -90,8 +92,8 @@ const StudentTopLeaderboard = () => {
               <thead>
                 <tr className="border-b">
                   <th className="py-2 text-left">#</th>
-                  <th className="py-2 text-left">Talaba</th>
-                  <th className="py-2 text-right">Qiymat</th>
+                  <th className="py-2 text-left">{t('student')}</th>
+                  <th className="py-2 text-right">{t('value')}</th>
                 </tr>
               </thead>
               <tbody>

@@ -12,7 +12,10 @@ const Pricing = () => {
       id="prices"
       sx={{
         py: {
-          xs: 5
+          xs: '16px',
+          sm: '20px',
+          md: '35px',
+          lg: '40px'
         }
       }}
     >
@@ -26,10 +29,8 @@ const Pricing = () => {
               mb={2}
               fontWeight={700}
               sx={{
-                fontSize: {
-                  lg: '40px',
-                  xs: '35px'
-                }
+                fontSize: { xs: '24px', sm: '34px', md: '42px' },
+                lineHeight: 1.1
               }}
             >
               {/* i18n bilan title */}
@@ -40,10 +41,8 @@ const Pricing = () => {
               variant="body1"
               mb={2}
               sx={{
-                fontSize: {
-                  lg: '18px',
-                  xs: '16px'
-                },
+                mx: 'auto',
+                fontSize: { xs: '14px', sm: '16px', md: '18px' },
                 color: 'text.secondary'
               }}
             >

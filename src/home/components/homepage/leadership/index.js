@@ -7,7 +7,7 @@ const Leadership = () => {
   const { t } = useTranslation()
 
   return (
-    <section className="relative py-20 overflow-hidden bg-gray-50">
+    <section className="relative py-12 sm:py-20  overflow-hidden bg-gray-50">
       {/* Background blur blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full bg-blue-200/40 blur-3xl" />
@@ -24,19 +24,16 @@ const Leadership = () => {
         <div className="relative mx-auto max-w-7xl">
           {/* Header */}
 
-          <Grid container spacing={3} mb={5} alignItems="center" justifyContent="center">
+          <div className="flex justify-center ">
             <Grid size={{ xs: 12, lg: 7 }}>
               <Typography
                 textAlign="center"
                 variant="h4"
                 lineHeight={1.4}
-                mb={2}
+                mb={1}
                 fontWeight={700}
                 sx={{
-                  fontSize: {
-                    lg: '40px',
-                    xs: '35px'
-                  }
+                  fontSize: { xs: '24px', sm: '34px', md: '42px' }
                 }}
               >
                 {t('leadership.title')}
@@ -46,17 +43,15 @@ const Leadership = () => {
                 variant="body1"
                 mb={2}
                 sx={{
-                  fontSize: {
-                    lg: '18px',
-                    xs: '16px'
-                  },
+                  mx: 'auto',
+                  fontSize: { xs: '14px', sm: '16px', md: '18px' },
                   color: 'text.secondary'
                 }}
               >
                 {t('leadership.subtitle')}
               </Typography>
             </Grid>
-          </Grid>
+          </div>
 
           {/* Slider */}
           <div className="relative">

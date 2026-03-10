@@ -27,7 +27,7 @@ const FeatureTitle = () => {
           mt={1}
           mb={2}
           sx={{
-            fontSize: { xs: '28px', md: '36px' },
+            fontSize: { xs: '24px', md: '36px' },
             lineHeight: 1.2
           }}
         >
@@ -36,7 +36,7 @@ const FeatureTitle = () => {
         </Typography>
 
         {/* DESCRIPTION */}
-        <Typography variant="body1" color="text.secondary" sx={{ fontSize: '16px' }}>
+        <Typography variant="body1" color="text.secondary" sx={{ fontSize: '14px' }}>
           <Box component="span" fontWeight={600} color="text.primary">
             IQmath
           </Box>{' '}

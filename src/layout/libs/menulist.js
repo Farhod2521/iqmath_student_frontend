@@ -251,26 +251,26 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
-  {
-    key: 'mental-games',
-    path: '/dashboard/games',
-    label: t('games.section.title'),
-    icon: (isActive) => (
-      <PiUsers
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [
-      RolesList.TEACHER,
-      RolesList.ADMIN,
-      RolesList.SUPERADMIN,
-      RolesList.TUTOR,
-      RolesList.STUDENT,
-      RolesList.PARENT
-    ],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'mental-games',
+  //   path: '/dashboard/games',
+  //   label: t('games.section.title'),
+  //   icon: (isActive) => (
+  //     <PiUsers
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   roles: [
+  //     RolesList.TEACHER,
+  //     RolesList.ADMIN,
+  //     RolesList.SUPERADMIN,
+  //     RolesList.TUTOR,
+  //     RolesList.STUDENT,
+  //     RolesList.PARENT
+  //   ],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'subjects',
     path: '/dashboard/teacher/subjects',

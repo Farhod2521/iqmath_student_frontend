@@ -69,8 +69,8 @@ const SidebarMenu = () => {
   const isMenuExpanded = (key) => expandedMenus[key]
 
   return (
-    <div className={`font-sf overflow-y-auto sidebar-menu mb-[16px] ${hasScrollbar ? 'pr-[32px]' : ''}`}>
-      <ul className="space-y-[8px]">
+    <div className={`font-sf overflow-y-auto sidebar-menu mb-[16px] h-full ${hasScrollbar ? 'pr-[32px]' : ''}`}>
+      <ul className="space-y-[12px] px-[24px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(userRole))
           .map(({ key, path, label, icon, disabled, type, children, activePatterns }, idx) => {
@@ -78,7 +78,7 @@ const SidebarMenu = () => {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
             if (type === MenuType.GROUP) {
-              return <div key={key || idx} className="pb-2 mb-2 border-t" />
+              return <div key={key || idx} className="my-3 border-t border-gray-200" />
             }
             if (type === MenuType.LINK) {
               // Check if current path matches any active patterns
@@ -94,7 +94,7 @@ const SidebarMenu = () => {
                 )
 
                 return (
-                  <li key={key} className="my-[16px] mx-[24px]">
+                  <li key={key}>
                     <div
                       className={`${getMenuItemClasses(hasActiveChild, disabled)} cursor-pointer`}
                       onClick={() => toggleMenu(key)}
@@ -128,7 +128,7 @@ const SidebarMenu = () => {
               }
 
               return (
-                <li key={key} className="cursor-pointer my-[16px] mx-[24px]">
+                <li key={key} className="cursor-pointer">
                   <Link href={disabled ? '#' : path}>
                     <div className={getMenuItemClasses(isActive, disabled)}>
                       {typeof icon === 'function' ? icon(isActive) : icon}

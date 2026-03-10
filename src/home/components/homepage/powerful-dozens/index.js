@@ -56,13 +56,7 @@ const PowerfulDozens = () => {
 
       <Container sx={{ maxWidth: '1400px !important', py: { xs: '18px', sm: '24px', md: '32px', lg: '36px' } }}>
         <div className="relative">
-          <div
-            className="
-              grid gap-10 lg:grid-cols-12 lg:gap-12
-              min-h-[calc(100vh-120px)] md:min-h-[calc(80vh-60px)]
-              items-center py-10 md:py-14
-            "
-          >
+          <div className="grid gap-8 lg:grid-cols-12 items-center min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] py-10 md:py-16">
             {/* LEFT / HERO */}
             <div className="lg:col-span-7 space-y-7">
               <div className="inline-flex items-center gap-2 px-4 py-2 text-sm text-white border rounded-full border-white/15 bg-white/10 backdrop-blur-md">
@@ -107,33 +101,42 @@ const PowerfulDozens = () => {
                 </button>
               </div> */}
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div
+                className="
+  flex gap-3
+  max-[360px]:flex-col
+  sm:flex-row
+  sm:items-center
+"
+              >
                 {/* Google Play */}
                 <a
                   href="https://play.google.com/store/apps/details?id=com.iqmath.mobile"
                   target="_blank"
                   rel="noreferrer"
                   className="
-    group inline-flex items-center gap-3
-    h-[60px] min-w-[220px] px-5
-    rounded-2xl
-    border border-white/20 ring-1 ring-white/15
+    group flex items-center gap-3
+    h-[48px] sm:h-[54px] md:h-[60px]
+    min-w-[160px] sm:min-w-[180px] md:min-w-[200px]
+    px-3 sm:px-4 md:px-5
+    rounded-xl sm:rounded-2xl
+    border border-white/20
+    ring-1 ring-white/15
     bg-black/70 hover:bg-black/80
     shadow-lg shadow-black/40 hover:shadow-black/50
     backdrop-blur-md
     transition
     hover:-translate-y-[1px]
-    active:translate-y-0 active:scale-[0.99]
+    active:scale-[0.98]
+    w-full sm:w-auto
   "
                 >
-                  {/* Google Play SVG */}
+                  {/* Icon */}
+
                   <svg
-                    width="24"
-                    height="24"
                     viewBox="0 0 25 25"
-                    fill="none"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 shrink-0"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
                   >
                     <path
                       d="M21.7756 11.5149L17.4561 9.05957L14.0156 12.5L17.4561 15.9405L21.7756 13.4852C22.541 13.0532 22.541 11.9468 21.7756 11.5149Z"
@@ -151,57 +154,36 @@ const PowerfulDozens = () => {
                       d="M14.0156 12.5001L3.73962 22.776C4.08064 23.117 4.62626 23.2307 5.10369 22.9579L17.456 15.9405L14.0156 12.5001Z"
                       fill="url(#gp3)"
                     />
+
                     <defs>
-                      <linearGradient
-                        id="gp0"
-                        x1="14.0156"
-                        y1="12.5"
-                        x2="22.3516"
-                        y2="12.5"
-                        gradientUnits="userSpaceOnUse"
-                      >
+                      <linearGradient id="gp0" x1="14.0156" y1="12.5" x2="22.3516" y2="12.5">
                         <stop stopColor="#FFBD00" />
                         <stop offset="1" stopColor="#FFE000" />
                       </linearGradient>
-                      <linearGradient
-                        id="gp1"
-                        x1="14.0156"
-                        y1="12.5001"
-                        x2="3.40625"
-                        y2="23.1094"
-                        gradientUnits="userSpaceOnUse"
-                      >
+
+                      <linearGradient id="gp1" x1="14.0156" y1="12.5" x2="3.4" y2="23">
                         <stop stopColor="#00BEFF" />
                         <stop offset="1" stopColor="#00E3FF" />
                       </linearGradient>
-                      <linearGradient
-                        id="gp2"
-                        x1="3.40623"
-                        y1="1.89067"
-                        x2="14.0156"
-                        y2="12.5"
-                        gradientUnits="userSpaceOnUse"
-                      >
+
+                      <linearGradient id="gp2" x1="3.4" y1="1.8" x2="14.0156" y2="12.5">
                         <stop stopColor="#15CF74" />
                         <stop offset="1" stopColor="#00F076" />
                       </linearGradient>
-                      <linearGradient
-                        id="gp3"
-                        x1="14.0156"
-                        y1="12.5001"
-                        x2="3.40623"
-                        y2="23.1094"
-                        gradientUnits="userSpaceOnUse"
-                      >
+
+                      <linearGradient id="gp3" x1="14.0156" y1="12.5" x2="3.4" y2="23">
                         <stop stopColor="#FF3A44" />
                         <stop offset="1" stopColor="#E12653" />
                       </linearGradient>
                     </defs>
                   </svg>
 
+                  {/* Text */}
                   <span className="leading-tight">
-                    <span className="block text-[11px] text-white/75">Get it on</span>
-                    <span className="block text-[16px] font-semibold text-white">Google Play</span>
+                    <span className="block text-[9px] sm:text-[10px] md:text-[11px] text-white/70">Get it on</span>
+                    <span className="block text-[13px] sm:text-[15px] md:text-[16px] font-semibold text-white">
+                      Google Play
+                    </span>
                   </span>
                 </a>
 
@@ -211,25 +193,26 @@ const PowerfulDozens = () => {
                   target="_blank"
                   rel="noreferrer"
                   className="
-    group inline-flex items-center gap-3
-    h-[60px] min-w-[220px] px-5
-    rounded-2xl
-    border border-black/10 ring-1 ring-white/40
-    bg-white/85 hover:bg-white
+    group flex items-center gap-3
+    h-[48px] sm:h-[54px] md:h-[60px]
+    min-w-[160px] sm:min-w-[180px] md:min-w-[200px]
+    px-3 sm:px-4 md:px-5
+    rounded-xl sm:rounded-2xl
+    border border-black/10
+    ring-1 ring-white/40
+    bg-white/90 hover:bg-white
     shadow-lg shadow-black/15 hover:shadow-black/25
     transition
     hover:-translate-y-[1px]
-    active:translate-y-0 active:scale-[0.99]
+    active:scale-[0.98]
+    w-full sm:w-auto
   "
                 >
-                  {/* Apple SVG */}
+                  {/* Icon */}
                   <svg
-                    width="24"
-                    height="24"
                     viewBox="0 0 24 24"
-                    fill="none"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 shrink-0"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
                   >
                     <path
                       fillRule="evenodd"
@@ -239,9 +222,14 @@ const PowerfulDozens = () => {
                     />
                   </svg>
 
+                  {/* Text */}
                   <span className="leading-tight">
-                    <span className="block text-[11px] text-black/60">Download on the</span>
-                    <span className="block text-[16px] font-semibold text-black">App Store</span>
+                    <span className="block text-[9px] sm:text-[10px] md:text-[11px] text-black/60">
+                      Download on the
+                    </span>
+                    <span className="block text-[13px] sm:text-[15px] md:text-[16px] font-semibold text-black">
+                      App Store
+                    </span>
                   </span>
                 </a>
               </div>

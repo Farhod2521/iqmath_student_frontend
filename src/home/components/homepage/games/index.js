@@ -122,7 +122,7 @@ export default function GamesSection() {
               sx={{
                 fontWeight: 900,
                 color: '#111827',
-                fontSize: { xs: '1.8rem', sm: '2.3rem' },
+                fontSize: { xs: '24px', sm: '2.3rem' },
                 lineHeight: 1.15
               }}
             >
@@ -136,7 +136,7 @@ export default function GamesSection() {
                 maxWidth: 620,
                 color: 'rgba(17,24,39,0.62)',
                 fontWeight: 500,
-                fontSize: { xs: 13, sm: 14 }
+                fontSize: { xs: 14, sm: 18 }
               }}
             >
               {t('games.hero.subtitle')}

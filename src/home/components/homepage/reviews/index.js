@@ -72,7 +72,7 @@ const Reviews = () => {
             variant="h2"
             fontWeight={900}
             sx={{
-              fontSize: { xs: '28px', sm: '34px', md: '42px' },
+              fontSize: { xs: '24px', sm: '34px', md: '42px' },
               lineHeight: 1.1,
               letterSpacing: '-0.02em'
             }}
@@ -85,7 +85,7 @@ const Reviews = () => {
               mt: 1.5,
               mx: 'auto',
               maxWidth: 760,
-              fontSize: { xs: '15px', sm: '16px', md: '18px' },
+              fontSize: { xs: '14px', sm: '16px', md: '18px' },
               opacity: 0.9
             }}
           >

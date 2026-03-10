@@ -52,9 +52,13 @@ const LayoutAdmin = ({ children, title }) => {
 
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
-      <div className="relative flex min-h-screen dark:bg-[#202936] bg-white transition-all">
+      <div className="flex min-h-screen bg-white dark:bg-[#202936]">
         <Sidebar />
-        <Main title={''}>{children}</Main>
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <Main title={title}>
+            <div className="flex-1 overflow-auto">{children}</div>
+          </Main>
+        </div>
       </div>
     </ThemeProvider>
   )

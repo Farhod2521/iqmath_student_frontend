@@ -63,7 +63,7 @@ const CTA = () => {
 
   return (
     <>
-      <section className="relative px-4 py-16 overflow-hidden sm:py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <section className="relative px-4 py-14 sm:py-18 overflow-hidden sm:py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* soft background blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute rounded-full -top-24 -left-24 h-72 w-72 bg-blue-300/30 blur-3xl" />
@@ -85,7 +85,7 @@ const CTA = () => {
                 {t('cta.title')}
               </h2>
 
-              <p className="max-w-2xl mx-auto mb-8 text-base text-white/90 sm:text-lg md:text-xl">
+              <p className="max-w-2xl mx-auto mb-8 text-[14px] text-white/90 sm:text-lg md:text-xl">
                 {t('cta.description')}
               </p>
 
@@ -93,8 +93,8 @@ const CTA = () => {
               {!session ? (
                 <button
                   onClick={handleAuthRedirect}
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-extrabold text-blue-700
-                         bg-white rounded-full shadow-xl transition
+                  className="group inline-flex items-center justify-center gap-2 px-4 sm:px-8 py-2 sm:py-4 text-[14px] font-extrabold text-blue-700
+                         bg-white rounded-xl shadow-xl transition
                          hover:-translate-y-0.5 hover:shadow-2xl
                          active:translate-y-0 active:scale-[0.98]"
                 >
@@ -105,7 +105,7 @@ const CTA = () => {
                 <button
                   onClick={handleEnter}
                   className={`group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-extrabold text-blue-700
-                         bg-white rounded-full shadow-xl transition
+                         bg-white rounded-xl shadow-xl transition
                          hover:-translate-y-0.5 hover:shadow-2xl
                          active:translate-y-0 active:scale-[0.98] ${isLoading ? 'opacity-70' : ''}`}
                 >
