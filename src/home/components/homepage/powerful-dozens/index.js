@@ -56,7 +56,7 @@ const PowerfulDozens = () => {
 
       <Container sx={{ maxWidth: '1400px !important', py: { xs: '18px', sm: '24px', md: '32px', lg: '36px' } }}>
         <div className="relative">
-          <div className="grid gap-8 lg:grid-cols-12 items-center min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] py-10 md:py-16">
+          <div className="grid gap-8 lg:grid-cols-12 items-center min-h-[calc(100vh-120px)] md:min-h-[calc(80vh-60px)] py-10 md:py-16">
             {/* LEFT / HERO */}
             <div className="lg:col-span-7 space-y-7">
               <div className="inline-flex items-center gap-2 px-4 py-2 text-sm text-white border rounded-full border-white/15 bg-white/10 backdrop-blur-md">
