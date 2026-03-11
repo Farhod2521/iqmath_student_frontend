@@ -52,9 +52,12 @@ const LayoutAdmin = ({ children, title }) => {
 
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
-      <div className="flex min-h-screen bg-white dark:bg-[#202936]">
+      {/* ROOT LAYOUT */}
+      <div className="flex h-screen overflow-hidden bg-white dark:bg-[#202936]">
         <Sidebar />
-        <div className="flex flex-col flex-1 min-w-0 min-h-screen">
+
+        {/* MAIN AREA */}
+        <div className="flex flex-col flex-1 min-w-0 min-h-0">
           <Main title={title}>{children}</Main>
         </div>
       </div>
