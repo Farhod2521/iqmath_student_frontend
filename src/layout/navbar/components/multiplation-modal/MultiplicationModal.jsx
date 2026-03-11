@@ -1,17 +1,19 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AiOutlineClose } from 'react-icons/ai'
 
 const numbers = [2, 3, 4, 5, 6, 7, 8, 9]
 
 const MultiplicationModal = ({ onClose }) => {
   const [selected, setSelected] = useState(2)
+  const { t } = useTranslation()
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="relative w-full max-w-md p-5 bg-white rounded-xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">🧮 Karra jadvali</h3>
+          <h3 className="text-lg font-semibold">🧮 {t('karraTable')}</h3>
           <button onClick={onClose}>
             <AiOutlineClose size={20} />
           </button>

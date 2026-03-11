@@ -62,7 +62,6 @@ function AuthSignUp() {
       formData.append('lang', i18n.language)
       formData.append('device', 'web')
 
-
       if (selectedRole.value === 'student') {
         formData.append('class_name', selectedOptionCourse?.value)
       }

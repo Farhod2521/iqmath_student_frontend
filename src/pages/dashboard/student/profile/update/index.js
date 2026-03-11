@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 
 const Index = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data: session } = useSession()
   const [showDropdownMain, setShowDropdownMain] = useState(false)
   const [showDropdownMail, setShowDropdownMail] = useState(false)
@@ -30,7 +30,8 @@ const Index = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-
+  const [classId, setClassId] = useState('')
+  const [subjectOptions, setSubjectOptions] = useState([])
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -54,6 +55,17 @@ const Index = () => {
 
   useEffect(() => {
     if (studentProfile?.data) {
+      const profileClassUz = studentProfile.data.class_name_uz
+      const profileClassRu = studentProfile.data.class_name_ru
+
+      const matched = subjectOptions.find((item) => {
+        return item.class_name_uz === profileClassUz || item.class_name_ru === profileClassRu
+      })
+
+      if (matched) {
+        setClassId(String(matched.id))
+      }
+
       setFullName(studentProfile.data.full_name || '')
       setPhoneNumber(studentProfile.data.phone || '')
       setEmail(studentProfile.data.email || '')
@@ -73,11 +85,25 @@ const Index = () => {
     listKeyId: 'verify-phone-change'
   })
 
+  // --- Fetch data ---
+  useEffect(() => {
+    request
+      .get(URLS.subjectNameList)
+      .then((res) => {
+        const data = get(res, 'data', []) // <-- API структура тўғриланди
+        setSubjectOptions(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
   const handleProfileUpdate = () => {
     const updateData = {
       full_name: fullName,
       email: email,
-      address: address
+      address: address,
+      class_name: classId ? Number(classId) : null
     }
 
     // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
@@ -111,36 +137,6 @@ const Index = () => {
         },
         onError: (error) => {
           toast.error(error.response?.data?.error || 'Profil yangilashda xatolik yuz berdi')
-        }
-      }
-    )
-  }
-
-  const handleEmailSubmit = () => {
-    const updateData = {
-      full_name: get(studentProfile, 'data.full_name', ''),
-      email: email,
-      address: get(studentProfile, 'data.address', '')
-    }
-
-    profileUpdate(
-      {
-        url: URLS.updateProfile,
-        attributes: updateData,
-        config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      },
-      {
-        onSuccess: (data) => {
-          toast.success('Email muvaffaqiyatli yangilandi')
-          setShowDropdownMail(false)
-        },
-        onError: (error) => {
-          toast.error(error.response?.data?.error || 'Email yangilashda xatolik yuz berdi')
         }
       }
     )
@@ -250,8 +246,8 @@ const Index = () => {
   if (isLoading) {
     return (
       <LayoutAdmin title={t('profile')}>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
         </div>
       </LayoutAdmin>
     )
@@ -265,9 +261,9 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMain(!showDropdownMain)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
-              <h4 className="font-medium text-[17px]">Asosiy ma'lumotlar</h4>
+              <h4 className="font-medium text-[17px]">{t('basicInformation')}</h4>
               <button>
                 <RightIcon
                   className={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
@@ -315,6 +311,23 @@ const Index = () => {
                     />
                   </div>
 
+                  <div>
+                    <p className="text-[15px] mb-[8px]">Sinf</p>
+                    <select
+                      value={classId}
+                      onChange={(e) => setClassId(e.target.value)}
+                      className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none focus:border-[#5d87ff]"
+                    >
+                      <option value="">Sinfni tanlang</option>
+
+                      {subjectOptions.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {i18n.language === 'uz' ? item.class_name_uz : item.class_name_ru}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   {phoneNumber !== get(studentProfile, 'data.phone', '') && (
                     <div>
                       <p className="text-[15px] mb-[8px]">
@@ -329,7 +342,7 @@ const Index = () => {
                         />
                         <button
                           type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          className="absolute -translate-y-1/2 right-3 top-1/2"
                           onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                         >
                           {showCurrentPassword ? (
@@ -361,7 +374,7 @@ const Index = () => {
           {/* <div className="border py-[17px] px-[24px] rounded-[12px]">
                 <div
                   onClick={() => setShowDropdownMail(!showDropdownMail)}
-                  className="flex justify-between items-center cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer"
                 >
                   <h4 className="font-medium text-[17px]">Email o'zgartirish</h4>
                   <button>
@@ -408,7 +421,7 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownPassword(!showDropdownPassword)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
               <h4 className="font-medium text-[17px]">Parol o'zgartirish</h4>
               <button>
@@ -437,7 +450,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                       >
                         {showCurrentPassword ? (
@@ -462,7 +475,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowNewPassword(!showNewPassword)}
                       >
                         {showNewPassword ? (
@@ -487,7 +500,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
                         {showConfirmPassword ? (
@@ -519,7 +532,7 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownAccount(!showDropdownAccount)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
               <h4 className="font-medium text-[17px]">Hisob ma'lumotlari</h4>
               <button>
@@ -542,7 +555,7 @@ const Index = () => {
                         alt="user"
                         width={40}
                         height={40}
-                        className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
+                        className="transition-all duration-200 rounded-full group-hover:brightness-0 group-hover:invert"
                       />
                     </div>
                     <div>
@@ -572,10 +585,10 @@ const Index = () => {
 
       {/* Phone Verification Modal */}
       {showPhoneVerification && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">Telefon raqamni tasdiqlash</h3>
-            <p className="text-gray-600 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="max-w-md p-6 mx-4 bg-white rounded-lg w-96">
+            <h3 className="mb-4 text-lg font-semibold">Telefon raqamni tasdiqlash</h3>
+            <p className="mb-4 text-gray-600">
               {newPhone} raqamiga SMS kod yuborildi. Tasdiqlash uchun kodni kiriting.
             </p>
 
@@ -605,7 +618,7 @@ const Index = () => {
                   setSmsCode('')
                   setNewPhone('')
                 }}
-                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm border border-gray-500"
+                className="flex-1 px-4 py-2 text-sm text-white transition-colors bg-gray-500 border border-gray-500 rounded-lg hover:bg-gray-600"
               >
                 Bekor qilish
               </button>

@@ -93,7 +93,7 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
           <IoClose size={22} />
         </button>
 
-        <h2 className="mb-4 text-lg font-semibold text-center">Karra Quiz (Random)</h2>
+        <h2 className="mb-4 text-lg font-semibold text-center">{t('KarraQuiz')} (Random)</h2>
 
         {/* Karra buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-4">

@@ -52,7 +52,7 @@ const MyChildren = () => {
   return (
     <LayoutAdmin title={t('myChildren')}>
       <div className="">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800"></h1>
           <button
             onClick={() => setIsAddModalOpen(true)}
@@ -63,9 +63,9 @@ const MyChildren = () => {
         </div>
 
         {!Array.isArray(children) || children.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center">
-            <div className="text-gray-500 mb-4">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="p-8 text-center bg-white rounded-lg shadow">
+            <div className="mb-4 text-gray-500">
+              <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -74,8 +74,8 @@ const MyChildren = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Farzandlar yo'q</h3>
-            <p className="text-gray-500 mb-4">
+            <h3 className="mb-2 text-lg font-medium text-gray-900">Farzandlar yo'q</h3>
+            <p className="mb-4 text-gray-500">
               Hali hech qanday farzand qo'shilmagan. Farzand qo'shish uchun tugmani bosing.
             </p>
             <button
@@ -86,23 +86,23 @@ const MyChildren = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {Array.isArray(children) &&
               children.map((child, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl shadow-md border border-slate-200 p-6 transition hover:shadow-lg"
+                  className="p-6 transition bg-white border shadow-md rounded-xl border-slate-200 hover:shadow-lg"
                 >
                   {/* User Info */}
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                    <div className="flex items-center justify-center text-2xl font-bold text-white bg-blue-600 rounded-full w-14 h-14">
                       {child.full_name?.charAt(0).toUpperCase() || '?'}
                     </div>
 
                     <div className="flex-1">
                       <h2
                         onClick={() => handleLink(child.id)}
-                        className="text-lg font-bold text-slate-900 hover:underline cursor-pointer"
+                        className="text-lg font-bold cursor-pointer text-slate-900 hover:underline"
                       >
                         {child.full_name}
                       </h2>
@@ -131,7 +131,7 @@ const MyChildren = () => {
                   </div>
 
                   {/* Subscription Info */}
-                  <div className="mt-4 border-t pt-4 text-sm space-y-1">
+                  <div className="pt-4 mt-4 space-y-1 text-sm border-t">
                     <p>
                       <span className="font-medium text-slate-600">Ro'yxatdan o'tgan sana: </span>
                       {child.registration_date}

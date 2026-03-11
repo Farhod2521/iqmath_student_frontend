@@ -267,9 +267,9 @@ input:-webkit-autofill:active {
   background: #f1f1f1;
 }
 
-body.landing-no-scroll {
+/* body.landing-no-scroll {
   overflow: hidden !important;
-}
+} */
 
 /* Pagination button clickable area fix */
 .pagination li {
@@ -319,7 +319,7 @@ body.landing-no-scroll {
 }
 
 /* Specific modal fixes */
-[class*="z-50"] {
+[class*='z-50'] {
   z-index: 9999 !important;
 }
 

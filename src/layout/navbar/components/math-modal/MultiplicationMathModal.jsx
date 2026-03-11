@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { IoClose } from 'react-icons/io5'
 const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const MultiplicationMathModal = ({ open, onClose }) => {
   const [selected, setSelected] = useState(2)
+  const { t } = useTranslation()
 
   if (!open) return null
 
@@ -14,7 +16,7 @@ const MultiplicationMathModal = ({ open, onClose }) => {
           <IoClose size={22} />
         </button>
 
-        <h2 className="mb-4 text-lg font-semibold text-center">Karra jadvali</h2>
+        <h2 className="mb-4 text-lg font-semibold text-center">{t('karraTable')}</h2>
 
         {/* Karra tanlash */}
         <div className="flex flex-wrap gap-2 mb-4">

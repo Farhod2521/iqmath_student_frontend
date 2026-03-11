@@ -5,8 +5,10 @@ import { FaCalculator } from 'react-icons/fa'
 import MultiplicationMathModal from './components/math-modal/MultiplicationMathModal'
 import CalculatorModal from './components/math-modal/CalculatorModal'
 import MultiplicationQuizModal from './components/math-modal/MultiplicationQuizModal'
+import { useTranslation } from 'react-i18next'
 
 const NavbarMathMenu = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [openKarra, setOpenKarra] = useState(false)
   const [openCalculator, setOpenCalculator] = useState(false)
@@ -26,7 +28,7 @@ const NavbarMathMenu = () => {
   }, [])
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative overflow-visible" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center text-blue-600 transition rounded-full w-9 h-9 bg-blue-50 hover:bg-blue-100"
@@ -35,16 +37,23 @@ const NavbarMathMenu = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 bg-white border shadow-lg w-44 max-w-[90vw] rounded-xl">
+        <div
+          className="
+            fixed top-16 left-1/2 -translate-x-1/2
+            z-[9999] w-44 max-w-[calc(100vw-24px)]
+            rounded-xl border bg-white shadow-lg
+            md:absolute md:top-full md:left-auto md:right-0 md:mt-2 md:translate-x-0
+          "
+        >
           <button
             onClick={() => {
               setOpen(false)
               setOpenKarra(true)
             }}
-            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100"
+            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-t-xl"
           >
             <GiAbacus size={16} />
-            Karra jadvali
+            {t('karraTable')}
           </button>
 
           <button
@@ -63,14 +72,13 @@ const NavbarMathMenu = () => {
               setOpen(false)
               setOpenQuiz(true)
             }}
-            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100"
+            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-b-xl"
           >
-            🧩 Karra quiz
+            🧩 {t('KarraQuiz')}
           </button>
         </div>
       )}
 
-      {/* KARAA MODAL */}
       <MultiplicationMathModal open={openKarra} onClose={() => setOpenKarra(false)} />
       <CalculatorModal open={openCalculator} onClose={() => setOpenCalculator(false)} />
       <MultiplicationQuizModal open={openQuiz} onClose={() => setOpenQuiz(false)} />

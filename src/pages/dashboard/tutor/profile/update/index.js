@@ -233,8 +233,8 @@ const Index = () => {
   if (isLoading) {
     return (
       <LayoutAdmin title={t('profile')}>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
         </div>
       </LayoutAdmin>
     )
@@ -248,9 +248,9 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownMain(!showDropdownMain)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
-              <h4 className="font-medium text-[17px]">Asosiy ma'lumotlar</h4>
+              <h4 className="font-medium text-[17px]">{t('basicInformation')}</h4>
               <button>
                 <RightIcon
                   className={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
@@ -324,7 +324,7 @@ const Index = () => {
                         />
                         <button
                           type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          className="absolute -translate-y-1/2 right-3 top-1/2"
                           onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                         >
                           {showCurrentPassword ? (
@@ -356,7 +356,7 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownPassword(!showDropdownPassword)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
               <h4 className="font-medium text-[17px]">Parol o'zgartirish</h4>
               <button>
@@ -385,7 +385,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                       >
                         {showCurrentPassword ? (
@@ -410,7 +410,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowNewPassword(!showNewPassword)}
                       >
                         {showNewPassword ? (
@@ -435,7 +435,7 @@ const Index = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute -translate-y-1/2 right-3 top-1/2"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
                         {showConfirmPassword ? (
@@ -467,7 +467,7 @@ const Index = () => {
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
               onClick={() => setShowDropdownAccount(!showDropdownAccount)}
-              className="flex justify-between items-center cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
             >
               <h4 className="font-medium text-[17px]">Hisob ma'lumotlari</h4>
               <button>
@@ -490,7 +490,7 @@ const Index = () => {
                         alt="user"
                         width={40}
                         height={40}
-                        className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
+                        className="transition-all duration-200 rounded-full group-hover:brightness-0 group-hover:invert"
                       />
                     </div>
 
@@ -521,10 +521,10 @@ const Index = () => {
 
       {/* Phone Verification Modal */}
       {showPhoneVerification && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">Telefon raqamni tasdiqlash</h3>
-            <p className="text-gray-600 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="max-w-md p-6 mx-4 bg-white rounded-lg w-96">
+            <h3 className="mb-4 text-lg font-semibold">Telefon raqamni tasdiqlash</h3>
+            <p className="mb-4 text-gray-600">
               {newPhone} raqamiga SMS kod yuborildi. Tasdiqlash uchun kodni kiriting.
             </p>
 
@@ -555,7 +555,7 @@ const Index = () => {
                   setSmsCode('')
                   setNewPhone('')
                 }}
-                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm border border-gray-500"
+                className="flex-1 px-4 py-2 text-sm text-white transition-colors bg-gray-500 border border-gray-500 rounded-lg hover:bg-gray-600"
               >
                 Bekor qilish
               </button>

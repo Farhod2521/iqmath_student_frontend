@@ -1,10 +1,7 @@
 import MyChildren from '@/modules/parent/children/pages/MyChildren'
 
-
 const MyChildrenPage = () => {
-  return (
-      <MyChildren />
-  )
+  return <MyChildren />
 }
 
 export default MyChildrenPage

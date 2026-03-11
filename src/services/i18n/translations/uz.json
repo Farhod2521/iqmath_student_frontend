@@ -1,4 +1,5 @@
 {
+  "basicInformation": "Asosiy ma'lumotlar",
   "ratings": "Reytinglar",
   "studentRating": "O'quvchilar reytingi",
   "auth": "Kirish / Ro‘yxatdan o‘tish",
@@ -1154,5 +1155,7 @@
       "action": "Harakat",
       "sports": "Sport"
     }
-  }
+  },
+  "karraTable": "Karra jadvali",
+  "KarraQuiz": "Karra quiz"
 }

@@ -248,7 +248,7 @@ const ParentProfile = () => {
               onClick={() => setShowDropdownMain(!showDropdownMain)}
               className="flex items-center justify-between cursor-pointer"
             >
-              <h4 className="font-medium text-[17px]">Asosiy ma'lumotlar</h4>
+              <h4 className="font-medium text-[17px]">{t('basicInformation')}</h4>
               <button>
                 <RightIcon
                   className={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
