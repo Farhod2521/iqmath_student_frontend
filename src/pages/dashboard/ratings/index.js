@@ -57,7 +57,7 @@ const StudentTopLeaderboard = () => {
 
   return (
     <LayoutAdmin title={t('ratings')}>
-      <div className="bg-white dark:bg-[#202936] border rounded-xl p-6 mt-8">
+      <div className="bg-white dark:bg-[#202936] border rounded-xl p-3">
         <h3 className="mb-4 text-lg font-semibold">🏆 {t('studentRating')}</h3>
 
         {/* Filters */}

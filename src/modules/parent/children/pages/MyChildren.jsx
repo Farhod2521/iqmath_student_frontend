@@ -58,7 +58,7 @@ const MyChildren = () => {
             onClick={() => setIsAddModalOpen(true)}
             className="bg-[#5D87FF] text-white px-4 py-2 rounded font-medium"
           >
-            + Farzand qo'shish
+            + {t('childAdd')}
           </button>
         </div>
 
@@ -74,15 +74,13 @@ const MyChildren = () => {
                 />
               </svg>
             </div>
-            <h3 className="mb-2 text-lg font-medium text-gray-900">Farzandlar yo'q</h3>
-            <p className="mb-4 text-gray-500">
-              Hali hech qanday farzand qo'shilmagan. Farzand qo'shish uchun tugmani bosing.
-            </p>
+            <h3 className="mb-2 text-lg font-medium text-gray-900">{t('noChildrenTitle')}</h3>
+            <p className="mb-4 text-gray-500">{t('noChildrenDescriptionAdd')}</p>
             <button
               onClick={() => setIsAddModalOpen(true)}
               className="bg-[#5D87FF] rounded-[12px] text-white px-4 py-2 font-medium"
             >
-              Farzand qo'shish
+              {t('childAdd')}
             </button>
           </div>
         ) : (
@@ -114,18 +112,18 @@ const MyChildren = () => {
                         child.status ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                       }`}
                     >
-                      {child.status ? 'Faol' : 'Faol emas'}
+                      {child.status ? t('statusActive') : t('statusInactive')}
                     </span>
                   </div>
 
                   {/* Extra Info */}
                   <div className="mt-4 space-y-2 text-sm">
                     <p>
-                      <span className="font-medium text-slate-600">Sinf: </span>
+                      <span className="font-medium text-slate-600">{t('class')}: </span>
                       {child.class_num || '—'} sinf
                     </p>
                     <p>
-                      <span className="font-medium text-slate-600">Fan (O'zbek): </span>
+                      <span className="font-medium text-slate-600">{t('subjectUz')}: </span>
                       {child.subject_name_uz || '—'}
                     </p>
                   </div>
@@ -133,22 +131,24 @@ const MyChildren = () => {
                   {/* Subscription Info */}
                   <div className="pt-4 mt-4 space-y-1 text-sm border-t">
                     <p>
-                      <span className="font-medium text-slate-600">Ro'yxatdan o'tgan sana: </span>
+                      <span className="font-medium text-slate-600">{t('loginDate')}: </span>
                       {child.registration_date}
                       {child.registration_time && ` (${child.registration_time})`}
                     </p>
                     <p>
-                      <span className="font-medium text-slate-600">So'nggi kirish: </span>
+                      <span className="font-medium text-slate-600">{t('lastLogin')}: </span>
                       {child.last_login_time || '—'}
                     </p>
                     <p>
-                      <span className="font-medium text-slate-600">Obuna tugash sanasi: </span>
+                      <span className="font-medium text-slate-600">{t('subscriptionEnd')}: </span>
                       {child.subscription_end_date}{' '}
-                      <span className="text-green-600">({child.remaining_days} kun qoldi)</span>
+                      <span className="text-green-600">
+                        ({child.remaining_days} {t('remainingDays')})
+                      </span>
                     </p>
                     <p>
-                      <span className="font-medium text-slate-600">So'nggi to'lov: </span>
-                      {child.last_payment_amount?.toLocaleString()} so'm
+                      <span className="font-medium text-slate-600">{t('lastPayment')}: </span>
+                      {child.last_payment_amount?.toLocaleString()} <span className="lowercase">{t('sum')}</span>
                     </p>
                   </div>
                 </div>

@@ -30,7 +30,18 @@ export const RolesList = {
 }
 
 export const getMenuItems = (t) => [
-  { label: t('main'), roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.TITLE },
+  {
+    label: t('main'),
+    roles: [
+      RolesList.STUDENT,
+      RolesList.ADMIN,
+      RolesList.TUTOR,
+      RolesList.PARENT,
+      RolesList.TEACHER,
+      RolesList.SUPERADMIN
+    ],
+    type: MenuType.TITLE
+  },
   {
     key: 'main',
     path: '/dashboard/student/subjects',
@@ -372,7 +383,7 @@ export const getMenuItems = (t) => [
   },
 
   // Parent role menu items
-  { label: t('main'), roles: [RolesList.PARENT, RolesList.SUPERADMIN], type: MenuType.TITLE },
+  // { label: t('main'), roles: [RolesList.PARENT, RolesList.SUPERADMIN], type: MenuType.TITLE },
   {
     key: 'my-children',
     path: '/dashboard/parent/my-children',

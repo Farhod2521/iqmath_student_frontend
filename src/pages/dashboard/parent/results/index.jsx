@@ -100,14 +100,14 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('myChildren')}>
+      <LayoutAdmin title={t('science_results')}>
         <LoadingState />
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={t('myChildren')}>
+    <LayoutAdmin title={t('science_results')}>
       {!Array.isArray(children) || children.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-6 sm:p-8 text-center">
           <div className="text-gray-500 mb-4">
