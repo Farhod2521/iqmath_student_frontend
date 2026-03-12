@@ -83,13 +83,13 @@ const Subjects = () => {
           <div className="mt-[24px] flex gap-x-[24px]">
             <div className="border border-[#E9E9E9] rounded-[12px] w-full">
               <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <table className="w-full table-auto border-collapse">
+                <table className="w-full border-collapse table-auto">
                   <thead>
                     <tr className="border-b border-b-[#E9E9E9] p-[12px]">
                       <th className="p-[12px] text-center w-[40px]">
                         <button
                           onClick={() => setIsDragEnabled((prev) => !prev)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                          className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100"
                           title="Tartiblash"
                         >
                           <svg
@@ -124,7 +124,7 @@ const Subjects = () => {
                           key={item.id}
                           id={item.id}
                           showDragHandle={isDragEnabled}
-                          className="group border-b hover:bg-gray-50 transition-all"
+                          className="transition-all border-b group hover:bg-gray-50"
                         >
                           <td className="p-[12px] text-center">{index + 1}</td>
 

@@ -23,6 +23,7 @@ export const URLS = {
   schoolClasses: '/api/v1/func_teacher/subject-list/',
   schoolClasses: '/api/v1/func_teacher/subject-list/',
   studentSubjects: '/api/v1/func_student/my-subjects/',
+  teacherSubjects: '/api/v1/func_teacher/my-subjects/',
   subjectNameList: '/api/v1/func_student/subject/name-list/',
   teacherStudents: '/api/v1/func_teacher/my-students/',
   teacherGroups: '/api/v1/func_teacher/my-groups/',
