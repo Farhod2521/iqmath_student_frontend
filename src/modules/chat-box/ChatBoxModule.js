@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ChatsList from './components/ChatsList'
 import RatingModal from './components/RatingModal'
 import TransferModal from './components/TransferModal'
@@ -12,6 +12,7 @@ import { MessageInput } from './components/MessageInput'
 import { NewChatButton } from './components/NewChatButton'
 import { StartChatPrompt } from './components/StartChatPrompt'
 import { useChat } from './hooks/useChat'
+import { useTranslation } from 'react-i18next'
 
 const ChatBoxModule = () => {
   const { t } = useTranslation()

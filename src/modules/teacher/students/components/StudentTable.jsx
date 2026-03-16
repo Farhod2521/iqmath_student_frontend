@@ -16,13 +16,7 @@ import StudentRewardModal from './StudentRewardModal'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
-function StudentTable({ 
-  filterData = {}, 
-  isExportingAll, 
-  onExportStart, 
-  onExportEnd,
-  onStudentsDataChange
-}) {
+function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExportEnd, onStudentsDataChange }) {
   const router = useRouter()
   const { t } = useTranslation()
   const { data: session } = useSession()
@@ -254,9 +248,9 @@ function StudentTable({
         }
       },
       {
-        headerName: "Ro'yxatdan o'tgan qurilma",
+        headerName: t('device'),
         field: 'device',
-        minWidth: 100,
+        maxWidth: 150,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
@@ -265,15 +259,15 @@ function StudentTable({
         }
       },
       {
-        headerName: "Ro'yxatdan o'tgan tili",
+        headerName: t('registeredLanguage'),
         field: 'lang',
-        minWidth: 70,
+        maxWidth: 100,
         cellRenderer: (params) => {
           return params.value
         }
       },
       {
-        headerName: t('register_date') || "Ro'yxatdan o'tish",
+        headerName: t('register_date'),
         field: 'registration_date',
         minWidth: 100,
         cellRenderer: (params) => {

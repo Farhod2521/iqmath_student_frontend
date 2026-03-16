@@ -3,19 +3,28 @@ import { useTranslation } from 'react-i18next'
 
 const formatDate = (dateString) => {
   if (!dateString) return '-'
+
   const date = new Date(dateString)
   const now = new Date()
+
   const diff = now - date
-  const minutes = Math.floor(diff / 60000)
-  const hours = Math.floor(diff / 3600000)
-  const days = Math.floor(diff / 86400000)
+  const hours = diff / 3600000
 
-  if (minutes < 1) return 'hozir'
-  if (minutes < 60) return `${minutes}m`
-  if (hours < 24) return `${hours}h`
-  if (days < 7) return `${days}d`
+  // 1 kundan kichik bo‘lsa vaqt chiqadi
+  if (hours < 24) {
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+  }
 
-  return date.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit' })
+  // 1 kundan katta bo‘lsa sana chiqadi
+  return date.toLocaleDateString('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric'
+  })
 }
 
 const ChatsList = ({ chatsLoading, chats = [], ...props }) => {

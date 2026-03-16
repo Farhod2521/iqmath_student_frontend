@@ -38,3 +38,23 @@ export const removeUrlFromText = (text) => {
   if (!text || typeof text !== 'string') return text
   return text.replace(/https?:\/\/[^\s]+/g, '').trim()
 }
+
+export const formatMessageDateTime = (dateString) => {
+  if (!dateString) return ''
+
+  const date = new Date(dateString)
+
+  const datePart = date.toLocaleDateString('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric'
+  })
+
+  const timePart = date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  })
+
+  return `${datePart} • ${timePart}`
+}

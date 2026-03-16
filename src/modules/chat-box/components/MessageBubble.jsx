@@ -1,6 +1,6 @@
 import React from 'react'
 import { BsCheckAll, BsCheck, BsLink45Deg } from 'react-icons/bs'
-import { extractUrl, formatTime, removeUrlFromText } from '@/shared/utils'
+import { extractUrl, formatMessageDateTime, formatTime, removeUrlFromText } from '@/shared/utils'
 import IndependentResultCard from './IndependentResult'
 import { useTranslation } from 'react-i18next'
 
@@ -33,7 +33,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
                 </div>
               )}
               <div className="flex items-center justify-end gap-1 mt-2">
-                <span className="text-xs text-blue-100">{formatTime(message.created_at)}</span>
+                <span className="text-xs text-blue-100">{formatMessageDateTime(message.created_at)}</span>
                 {message.is_read ? <BsCheckAll className="text-sm" /> : <BsCheck className="text-sm" />}
               </div>
             </div>
@@ -81,7 +81,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
                   </div>
                 )}
               </div>
-              <span className="text-xs text-gray-400">{formatTime(message.created_at)}</span>
+              <span className="text-xs text-gray-400">{formatMessageDateTime(message.created_at)}</span>
             </div>
           </div>
           <ReplyButton position="right" onClick={() => onReply(message)} />
