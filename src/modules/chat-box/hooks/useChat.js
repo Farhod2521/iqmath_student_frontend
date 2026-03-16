@@ -10,12 +10,13 @@ export const useChat = () => {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  // State'lar
   const [activeChat, setActiveChat] = useState(null)
   const [isNewChatMode, setIsNewChatMode] = useState(false)
   const [replyingTo, setReplyingTo] = useState(null)
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
+  const [transferTeacherId, setTransferTeacherId] = useState('')
+  const [transferReason, setTransferReason] = useState('')
 
-  // Foydalanuvchi roli
   const isStudent = ['student', 'superadmin'].includes(session?.role || '')
   const isAdmin = ['superadmin', 'teacher'].includes(session?.role || '')
 
@@ -34,6 +35,17 @@ export const useChat = () => {
     queryKey: ['messages', activeChat?.id],
     queryFn: () => chatAPI.getMessages(activeChat.id),
     enabled: !!activeChat && !activeChat?.is_temp
+  })
+
+  // O'qituvchilar ro'yxati - TransferModal uchun
+  const {
+    data: teachers = [],
+    isLoading: teachersLoading,
+    refetch: refetchTeachers
+  } = useQuery({
+    queryKey: ['teachers-for-transfer'],
+    queryFn: chatAPI.getTeachersForTransfer,
+    enabled: isTransferModalOpen // Faqat modal ochilganda fetch qilish
   })
 
   // 1. BIRINCHI XABAR YUBORISH
@@ -89,6 +101,7 @@ export const useChat = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages', activeChat?.id] })
       refetchChats()
+      closeTransferModal()
       toast.success(t('chatBox.chat_transfer.chat_transferred_successfully'))
     },
     onError: (error) => {
@@ -155,6 +168,19 @@ export const useChat = () => {
     setReplyingTo(null)
   }
 
+  // Transfer modalni ochish
+  const openTransferModal = () => {
+    setIsTransferModalOpen(true)
+    refetchTeachers() // O'qituvchilarni qayta yuklash
+  }
+
+  // Transfer modalni yopish
+  const closeTransferModal = () => {
+    setIsTransferModalOpen(false)
+    setTransferTeacherId('')
+    setTransferReason('')
+  }
+
   return {
     // State'lar
     activeChat,
@@ -167,6 +193,12 @@ export const useChat = () => {
     isNewChatMode,
     replyingTo,
 
+    teachers,
+    teachersLoading,
+    isTransferModalOpen,
+    transferTeacherId,
+    transferReason,
+
     // Handler'lar
     selectChat,
     startNewChat,
@@ -174,6 +206,11 @@ export const useChat = () => {
     handleReply,
     cancelReply,
     isSending: sendMessage.isPending || sendFirstMessage.isPending,
+
+    openTransferModal,
+    closeTransferModal,
+    setTransferTeacherId,
+    setTransferReason,
 
     // Mutation'lar
     closeChat: closeChat.mutate,

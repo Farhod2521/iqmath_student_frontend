@@ -8,12 +8,22 @@ const TransferModal = ({
   transferReason,
   setTransferReason,
   transferMutation,
-  setIsTransferModalOpen,
+  handleCancel,
   activeChat,
   teachers,
   teachersLoading
 }) => {
   const { t, i18n } = useTranslation()
+
+  const handleTransfer = () => {
+    if (!transferTeacherId) return
+
+    transferMutation.mutate({
+      conversation_id: activeChat.id,
+      teacher_id: transferTeacherId,
+      reason: transferReason
+    })
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 duration-200 bg-black/60 backdrop-blur-sm animate-in fade-in">
@@ -26,11 +36,7 @@ const TransferModal = ({
               <p className="mt-1 text-sm text-gray-500">{t('chatBox.chat_transfer.select_teacher_to_transfer')}</p>
             </div>
             <button
-              onClick={() => {
-                setIsTransferModalOpen(false)
-                setTransferTeacherId('')
-                setTransferReason('')
-              }}
+              onClick={handleCancel}
               className="p-2 text-gray-400 transition-all rounded-full hover:bg-gray-100 hover:text-gray-600"
             >
               <X className="w-5 h-5" />
@@ -140,25 +146,13 @@ const TransferModal = ({
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50/50">
           <button
-            onClick={() => {
-              setIsTransferModalOpen(false)
-              setTransferTeacherId('')
-              setTransferReason('')
-            }}
+            onClick={handleCancel}
             className="px-6 py-2.5 text-sm font-medium text-gray-700 transition-all border-2 border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 active:scale-95"
           >
             {t('cancel')}
           </button>
           <button
-            onClick={() => {
-              if (transferTeacherId) {
-                transferMutation.mutate({
-                  conversation_id: activeChat.id,
-                  teacher_id: transferTeacherId,
-                  reason: transferReason
-                })
-              }
-            }}
+            onClick={handleTransfer}
             disabled={!transferTeacherId || transferMutation?.isPending}
             className="relative px-6 py-2.5 text-sm font-semibold text-white transition-all bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-lg shadow-blue-500/30 disabled:shadow-none overflow-hidden group"
           >
@@ -166,11 +160,11 @@ const TransferModal = ({
               {transferMutation?.isPending ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
-                  {t('transferring')}
+                  {t('chatBox.chat_transfer.transferring')}
                 </>
               ) : (
                 <>
-                  {t('transfer')}
+                  {t('chatBox.chat_transfer.transferring')}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </>
               )}

@@ -27,6 +27,13 @@ const ChatBoxModule = () => {
     isAdmin,
     isNewChatMode,
     replyingTo,
+    teachers,
+    teachersLoading,
+    isTransferModalOpen,
+    transferTeacherId,
+    transferReason,
+    setTransferTeacherId,
+    setTransferReason,
     selectChat,
     startNewChat,
     handleSend,
@@ -35,22 +42,21 @@ const ChatBoxModule = () => {
     isSending,
     closeChat,
     transferChat,
-    requestClose
+    requestClose,
+    openTransferModal,
+    closeTransferModal
   } = useChat()
 
   const [showChatList, setShowChatList] = useState(true)
 
   // Modal state
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
-  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
   const [isClosedModalOpen, setIsClosedModalOpen] = useState(false)
 
   // Form state
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
   const [closedComment, setClosedComment] = useState('')
-  const [transferTeacherId, setTransferTeacherId] = useState('')
-  const [transferReason, setTransferReason] = useState('')
 
   // Modal handler'lar
   const handleClose = () => {
@@ -62,7 +68,7 @@ const ChatBoxModule = () => {
   }
 
   const handleTransfer = () => {
-    setIsTransferModalOpen(true)
+    openTransferModal()
   }
 
   // Tugmani ko'rsatish sharti
@@ -137,12 +143,10 @@ const ChatBoxModule = () => {
             />
           </>
         ) : (
-          /* SIZNING EmptyMessage KOMPONENTINGIZ */
           <EmptyMessage />
         )}
       </div>
 
-      {/* SIZNING MODAL KOMPONENTLARINGIZ */}
       {isRatingModalOpen && (
         <RatingModal
           closeMutation={{ mutate: closeChat, isPending: false }}
@@ -170,10 +174,10 @@ const ChatBoxModule = () => {
           transferReason={transferReason}
           setTransferReason={setTransferReason}
           transferMutation={{ mutate: transferChat, isPending: false }}
-          setIsTransferModalOpen={setIsTransferModalOpen}
+          handleCancel={closeTransferModal}
           activeChat={activeChat}
-          teachers={[]}
-          teachersLoading={false}
+          teachers={teachers}
+          teachersLoading={teachersLoading}
         />
       )}
     </div>
