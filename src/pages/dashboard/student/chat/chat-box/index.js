@@ -134,7 +134,7 @@ const ChatBox = () => {
                 onSend={handleSend}
                 onClose={handleClose}
                 isSending={isSending}
-                showCloseButton={true}
+                showCloseButton={!!activeChat}
                 replyingTo={replyingTo}
                 onCancelReply={cancelReply}
               />

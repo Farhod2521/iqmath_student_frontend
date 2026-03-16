@@ -542,6 +542,7 @@
   "inviteFriends": "Пригласить друзей",
   "myFriends": "Мои друзья",
   "inviteLink": "Ссылка для приглашения",
+  "link": "Ссылка",
   "share": "Поделиться",
   "linkCopied": "Ссылка скопирована!",
   "copyError": "Ошибка при копировании ссылки",
@@ -1031,7 +1032,16 @@
       "transfer_reason_hint": "Комментарий к причине передачи",
       "transferring": "Передача...",
       "select_teacher_to_transfer": "Выберите преподавателя для передачи"
-    }
+    },
+    "chat_propt": {
+      "needHelp": "Нужна помощь?",
+      "writeQuestion": "Write your question and our experts will answer soon."
+    },
+    "startConversation": "Начните разговор",
+    "newConversation": "Новый разговор",
+    "loadingMessages": "Загрузка сообщений...",
+    "writeMessage": "Напишите сообщение...",
+    "closeConversation": "Завершить разговор"
   },
   "games": {
     "hero": {

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Button } from '@heroui/react'
+import { useTranslation } from 'react-i18next'
 
 export const ChatHeader = ({ chat, onBack, onTransfer, showTransfer }) => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-200 md:px-6">
       <button onClick={onBack} className="p-2 mr-2 transition-colors rounded-full md:hidden hover:bg-gray-100">
@@ -18,7 +21,7 @@ export const ChatHeader = ({ chat, onBack, onTransfer, showTransfer }) => {
         </div>
         <div>
           <h3 className="text-base font-semibold text-gray-800 md:text-lg">{chat.other_user_name}</h3>
-          {chat.is_temp && <span className="text-xs text-blue-500">Yangi suhbat</span>}
+          {chat.is_temp && <span className="text-xs text-blue-500">{t('chatBox.newConversation')}</span>}
         </div>
       </div>
 

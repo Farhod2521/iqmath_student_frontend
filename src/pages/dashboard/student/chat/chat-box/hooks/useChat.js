@@ -3,8 +3,10 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { chatAPI } from '@/shared/services'
+import { useTranslation } from 'react-i18next'
 
 export const useChat = () => {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
@@ -74,7 +76,10 @@ export const useChat = () => {
       refetchChats()
       setActiveChat(null)
       setIsNewChatMode(false)
-      toast.success('Suhbat yopildi')
+      toast.success(t('chatBox.confirm_close.chat_closed_successfully'))
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.confirm_close.error_closing_chat'))
     }
   })
 
@@ -84,7 +89,10 @@ export const useChat = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages', activeChat?.id] })
       refetchChats()
-      toast.success('Suhbat uzatildi')
+      toast.success(t('chatBox.chat_transfer.chat_transferred_successfully'))
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.chat_transfer.error_transferring_chat'))
     }
   })
 
@@ -94,7 +102,10 @@ export const useChat = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages', activeChat?.id] })
       refetchChats()
-      toast.success("Yopish so'rovi yuborildi")
+      toast.success(t('close_request_sent'))
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.detail || t('chatBox.request_close.error_requesting_close'))
     }
   })
 

@@ -1,6 +1,9 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const StartChatPrompt = () => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex-1 flex items-center justify-center p-6">
       <div className="max-w-md text-center">
@@ -16,8 +19,8 @@ export const StartChatPrompt = () => {
             </svg>
           </div>
         </div>
-        <h3 className="text-2xl font-semibold text-gray-800 mb-3">Yordam kerakmi?</h3>
-        <p className="text-gray-600">Savolingizni yozing va tez orada mutaxassislarimiz javob beradi.</p>
+        <h3 className="text-2xl font-semibold text-gray-800 mb-3">{t('chat_propt.needHelp')}</h3>
+        <p className="text-gray-600">{t('chat_propt.writeQuestion')}</p>
       </div>
     </div>
   )

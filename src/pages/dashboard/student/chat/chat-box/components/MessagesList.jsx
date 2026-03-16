@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { MessageBubble } from './MessageBubble'
+import { useTranslation } from 'react-i18next'
 
 export const MessagesList = ({ messages, otherUserId, otherUserName, onReply, isLoading }) => {
   const messagesEndRef = useRef(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -11,7 +13,7 @@ export const MessagesList = ({ messages, otherUserId, otherUserName, onReply, is
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <p className="text-sm text-gray-400">Xabarlar yuklanmoqda...</p>
+        <p className="text-sm text-gray-400">{t('chatBox.loadingMessages')}</p>
       </div>
     )
   }

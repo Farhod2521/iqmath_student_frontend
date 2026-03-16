@@ -2,8 +2,10 @@ import React from 'react'
 import { BsCheckAll, BsCheck, BsLink45Deg } from 'react-icons/bs'
 import { extractUrl, formatTime, removeUrlFromText } from '@/shared/utils'
 import IndependentResultCard from './IndependentResult'
+import { useTranslation } from 'react-i18next'
 
 export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvatar }) => {
+  const { t } = useTranslation()
   const extractedUrl = extractUrl(message?.url) || extractUrl(message?.text)
   const cleanText = removeUrlFromText(message.text)
 
@@ -22,7 +24,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
               <p className="text-sm whitespace-pre-wrap break-all">{cleanText}</p>
               {extractedUrl && (
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs">Havola:</span>
+                  <span className="text-xs">{t('link')}:</span>
                   <BsLink45Deg
                     size={18}
                     onClick={() => window.open(extractedUrl, '_blank')}
@@ -44,13 +46,13 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
 
   return (
     <div className="flex gap-3">
-      {showAvatar && (
+      {/* {showAvatar && (
         <div className="flex-shrink-0">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white text-sm">
             {otherUserName?.charAt(0) || '?'}
           </div>
         </div>
-      )}
+      )} */}
       <div
         className={`max-w-[70%] group cursor-pointer ${!showAvatar ? 'ml-11' : ''}`}
         onDoubleClick={() => onReply(message)}
@@ -70,7 +72,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
               <div className="flex items-center gap-1">
                 {extractedUrl && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs">Havola:</span>
+                    <span className="text-xs">{t('link')}:</span>
                     <BsLink45Deg
                       size={18}
                       onClick={() => window.open(extractedUrl, '_blank')}

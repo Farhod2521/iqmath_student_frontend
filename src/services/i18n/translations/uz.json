@@ -562,6 +562,7 @@
   "inviteFriends": "Dostlarni taklif qilish",
   "myFriends": "Mening dostlarim",
   "inviteLink": "Taklif havolasi",
+  "link": "Havola",
   "share": "Ulashish",
   "linkCopied": "Havola nusxalandi!",
   "copyError": "Havolani nusxalashda xatolik yuz berdi",
@@ -1124,7 +1125,16 @@
       "transfer_reason_hint": "O'tkazish sababi bo'yicha ko'rsatma",
       "transferring": "O'tkazish",
       "select_teacher_to_transfer": "O'tkazishga o'qituvchini tanlang"
-    }
+    },
+    "chat_propt": {
+      "needHelp": "Yordam kerakmi?",
+      "writeQuestion": "Savolingizni yozing va tez orada mutaxassislarimiz javob beradi."
+    },
+    "startConversation": "Suhbatni boshlash",
+    "newConversation": "Yangi suhbat",
+    "loadingMessages": "Xabarlar yuklanmoqda...",
+    "writeMessage": "Xabar yozing...",
+    "closeConversation": "Suhbatni yopish"
   },
   "games": {
     "hero": {

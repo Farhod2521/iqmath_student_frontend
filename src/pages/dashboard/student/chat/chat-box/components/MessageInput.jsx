@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Button } from '@heroui/react'
 import { IoMdSend } from 'react-icons/io'
 import { FaFlagCheckered } from 'react-icons/fa6'
+import { useTranslation } from 'react-i18next'
 
 export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, replyingTo, onCancelReply }) => {
   const [message, setMessage] = useState('')
+  const { t } = useTranslation()
 
   const handleSend = () => {
     if (!message.trim()) return
@@ -44,7 +46,7 @@ export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, repl
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Xabar yozing..."
+            placeholder={t('chatBox.writeMessage')}
             rows="1"
             className="w-full px-3 py-3 text-sm transition-all border-2 border-gray-200 resize-none md:px-6 md:py-4 rounded-2xl focus:outline-none focus:border-blue-500"
             style={{ minHeight: '56px', maxHeight: '120px' }}
@@ -72,7 +74,7 @@ export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, repl
             >
               <FaFlagCheckered className="text-lg md:text-xl" />
               <span className="absolute px-2 py-1 text-xs text-white transition scale-0 bg-gray-800 rounded -top-8 group-hover:scale-100">
-                Suhbatni yopish
+                {t('chatBox.closeConversation')}
               </span>
             </Button>
           )}
