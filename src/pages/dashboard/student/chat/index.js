@@ -11,7 +11,7 @@ import ChatPagination from '@/modules/student/chat/components/ChatPagination'
 const ChatPage = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
-  
+
   // Custom hooks
   const {
     filteredRequests,
@@ -28,7 +28,7 @@ const ChatPage = () => {
     handlePageSizeChange,
     getLocalizedField
   } = useChatData(session)
-  
+
   const { getStatusColor, getStatusText } = useStatusUtils()
 
   if (isLoading) {
