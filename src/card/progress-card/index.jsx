@@ -1,9 +1,11 @@
 import React from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { useTranslation } from 'react-i18next'
 
 const ProgressCard = () => {
   const percentage = 40
+  const { t } = useTranslation()
 
   return (
     <div className="bg-[#0057FF] text-white p-6 rounded-2xl  text-center flex flex-col">
@@ -31,7 +33,7 @@ const ProgressCard = () => {
       <div className="flex justify-between px-4 mt-auto">
         <div className="text-center">
           <p className="text-2xl font-semibold">6,825</p>
-          <p className="text-sm opacity-80">Общее количество учеников</p>
+          <p className="text-sm opacity-80">{t('totalNumberStudents')}</p>
         </div>
         {/* <div className="text-center">
           <p className="text-2xl font-semibold">6,825</p>

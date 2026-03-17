@@ -1,6 +1,7 @@
 import InputPassword from '@/components/form/input/InputPassword'
 import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
+import { RolesList } from '@/layout/libs/menulist'
 import { useAuthTabStore } from '@/store'
 import { getSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -34,11 +35,11 @@ function AuthSignIn() {
           return
         }
 
-        if (session?.role === 'teacher') {
+        if (session?.role === RolesList.TEACHER) {
           router.push('/dashboard/teacher/statistics')
-        } else if (session?.role === 'parent') {
+        } else if (session?.role === RolesList.PARENT) {
           router.push('/dashboard/parent/my-children')
-        } else if (session?.role === 'tutor') {
+        } else if (session?.role === RolesList.TUTOR) {
           router.push('/dashboard/tutor/referrals')
         } else {
           router.push('/dashboard/student/subjects')

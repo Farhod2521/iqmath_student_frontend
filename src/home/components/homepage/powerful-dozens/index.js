@@ -10,6 +10,7 @@ import { Container } from '@mui/material'
 import Auth from '../../auth/Auth'
 import { Call } from '@mui/icons-material'
 import SimpleLoader from '@/components/loader/simple-loader'
+import { RolesList } from '@/layout/libs/menulist'
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
@@ -294,10 +295,12 @@ function PreAuthCard({ onStart, session }) {
   const handleEnter = async () => {
     setIsLoading(true)
     try {
-      if (session?.role === 'teacher') {
+      if (session?.role === RolesList.TEACHER) {
         router.push('/dashboard/teacher/statistics')
-      } else if (session?.role === 'parent') {
+      } else if (session?.role === RolesList.PARENT) {
         router.push('/dashboard/parent/my-children')
+      } else if (session?.role === RolesList.TUTOR) {
+        router.push('/dashboard/tutor/referrals')
       } else {
         router.push('/dashboard/student/subjects')
       }

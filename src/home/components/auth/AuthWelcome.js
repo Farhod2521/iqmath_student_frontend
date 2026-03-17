@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { getSession, signOut } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import SimpleLoader from '@/components/loader/simple-loader'
+import { RolesList } from '@/layout/libs/menulist'
 
 function AuthWelcome() {
   const { t } = useTranslation()
@@ -13,10 +14,13 @@ function AuthWelcome() {
     setIsLoading(true)
     try {
       const session = await getSession()
-      if (session?.role === 'teacher') {
+
+      if (session?.role === RolesList.TEACHER) {
         router.push('/dashboard/teacher/statistics')
-      } else if (session?.role === 'parent') {
+      } else if (session?.role === RolesList.PARENT) {
         router.push('/dashboard/parent/my-children')
+      } else if (session?.role === RolesList.TUTOR) {
+        router.push('/dashboard/tutor/referrals')
       } else {
         router.push('/dashboard/student/subjects')
       }

@@ -12,6 +12,7 @@ import usePostQuery from '@/hooks/api/usePostQuery'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import { RolesList } from '@/layout/libs/menulist'
 
 const AuthRecieveCode = () => {
   const [timer, setTimer] = useState(120)
@@ -76,11 +77,11 @@ const AuthRecieveCode = () => {
       } else {
         toast.success(t('loggedInSuccessfully'))
 
-        if (selectedRole?.value === 'student') {
+        if (selectedRole?.value === RolesList.STUDENT) {
           router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
-        } else if (selectedRole?.value === 'parent') {
+        } else if (selectedRole?.value === RolesList.PARENT) {
           router.push(`/dashboard/parent/my-children?phone=${phoneTab}`)
-        } else if (selectedRole?.value === 'tutor') {
+        } else if (selectedRole?.value === RolesList.TUTOR) {
           router.push(`/dashboard/tutor/referrals?phone=${phoneTab}`)
         } else {
           window.location.reload()

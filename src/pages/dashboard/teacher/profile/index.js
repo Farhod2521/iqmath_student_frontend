@@ -51,7 +51,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'phone'}
-                    title={'Номер телефона'}
+                    title={t('childPhone')}
                     desc={`+${get(teacherProfile, 'data.phone', '')}`}
                   />
                 </li>
@@ -59,7 +59,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'email'}
-                    title={'Email адрес'}
+                    title={t('childEmail')}
                     desc={get(teacherProfile, 'data.email', '')}
                   />
                 </li>
@@ -67,7 +67,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'calendar'}
-                    title={'Дата рождения'}
+                    title={t('childBirthday')}
                     desc={get(teacherProfile, 'data.brithday', '')}
                   />
                 </li>
@@ -75,7 +75,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'region'}
-                    title={'Регион'}
+                    title={t('region')}
                     desc={get(teacherProfile, 'data.region', '')}
                   />
                 </li>
@@ -83,7 +83,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'region'}
-                    title={'Область'}
+                    title={t('childRegion')}
                     desc={get(teacherProfile, 'data.districts', '')}
                   />
                 </li>
@@ -91,7 +91,7 @@ const Index = () => {
                 <li>
                   <ProfileDetails
                     detailIcon={'address'}
-                    title={'Адрес'}
+                    title={t('childAddress')}
                     desc={get(teacherProfile, 'data.address', '')}
                   />
                 </li>
@@ -101,8 +101,8 @@ const Index = () => {
                 onClick={() => router.push(`/dashboard/teacher/profile/${get(session, 'id', '')}`)}
                 className="border border-[#D1D1D6] flex justify-center items-center p-[12px] gap-x-[8px] rounded-[10px] w-full mt-[8px]"
               >
-                <Image src={`/icons/edit.svg`} alt={`edit`} width={20} height={20} />
-                <p className="font-medium">Изменить</p>
+                <Image src={`/icons/edit.svg`} alt={t('editProfile')} width={20} height={20} />
+                <p className="font-medium">{t('editProfile')}</p>
               </button>
             </div>
           </div>

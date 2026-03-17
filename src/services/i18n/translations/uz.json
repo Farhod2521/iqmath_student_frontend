@@ -615,6 +615,8 @@
   "childInfo": "Farzand ma'lumotlari",
   "childAdd": "Farzand qo'shish",
   "noChildrenTitle": "Farzandlar yo‘q",
+  "totalNumberStudents": "Talabalarning umumiy soni",
+  "moreMonth": "Bu oyda ko'proq",
   "noChildrenDescriptionAdd": "Hali hech qanday farzand qo‘shilmagan. Farzand qo‘shish uchun tugmani bosing.",
   "childId": "ID",
   "statusActive": "Faol",

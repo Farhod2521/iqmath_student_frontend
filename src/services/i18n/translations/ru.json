@@ -610,6 +610,8 @@
   "childEmail": "Email адрес",
   "childBirthday": "Дата рождения",
   "childAddress": "Адрес",
+  "totalNumberStudents": "Общее количество учеников",
+  "moreMonth": "Больше в этом месяце",
   "childRegistrationDate": "Дата регистрации",
   "childLastActivity": "Последняя активность",
   "childStudyTime": "Время обучения",
