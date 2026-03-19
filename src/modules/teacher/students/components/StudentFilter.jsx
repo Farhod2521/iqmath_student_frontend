@@ -58,9 +58,9 @@ const StudentFilter = memo(
     const roleOptions = [
       { value: '', label: 'Hammasi' },
       { value: 'student', label: "O'quvchi" },
-      { value: 'teacher', label: "O'qituvchi" },
+      { value: 'teacher', label: 'Mentor' },
       { value: 'parent', label: 'Ota-ona' },
-      { value: 'tutor', label: 'Tutor' }
+      { value: 'tutor', label: "O'qituvchi" }
     ]
 
     const langOptions = [
