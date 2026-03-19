@@ -700,6 +700,8 @@
   "sixMonths": "6 месяцев",
   "oneYear": "1 год",
   "phoneAlreadyRegistered": "Этот номер телефона уже зарегистрирован.",
+  "phoneRequired": "Введите номер телефона",
+  "phoneNumberMustBe9Digits": "Номер телефона должен состоять из 9 цифр",
   "userTypeRequired": "Выберите тип пользователя",
   "classRequired": "Выберите класс",
   "invalidCredentials": "Неверные данные",

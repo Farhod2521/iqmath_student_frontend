@@ -120,10 +120,11 @@ function AuthSignUp() {
       {/* Ism */}
       <InputText pl {...register('full_name', { required: true })} placeholder={t('full_name')} />
       <InputPhone
-        inputMode="numeric"
-        pattern="[0-9]*"
-        {...register('phone', { required: true })}
-        onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ''))}
+        placeholder="(__) ___-__-__"
+        {...register('phone', {
+          required: t('phoneRequired'),
+          validate: (value) => value?.length === 9 || t('phoneNumberMustBe9Digits')
+        })}
       />
 
       {/* Foydalanuvchi turi */}

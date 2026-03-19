@@ -115,7 +115,7 @@ const AuthRecieveCode = () => {
 
   return (
     <div className="space-y-4 min-h-[220px]">
-      <InputPhone value={phoneTab} disabled={true} placeholder={t('phone number')} />
+      <InputPhone value={phoneTab} disabled={true} />
       <InputPassword value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} placeholder={t('sms code')} />
       <div className="flex justify-between items-center text-sm mt-2">
         <span

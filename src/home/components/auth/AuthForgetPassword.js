@@ -53,7 +53,13 @@ function AuthForgetPassword() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5  rounded-md">
       <div className="min-h-[46px]">
-        <InputPhone {...register('phone', { required: true })} placeholder="Номер телефона" />
+        <InputPhone
+          {...register('phone', {
+            required: t('phoneRequired'),
+            validate: (value) => value?.length === 9 || t('phoneNumberMustBe9Digits')
+          })}
+          placeholder="Номер телефона"
+        />
       </div>
       <div className="flex gap-x-[16px]">
         <button
