@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { IoClose } from 'react-icons/io5'
 
 const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -16,6 +17,7 @@ function shuffle(arr) {
 
 const MultiplicationQuizModal = ({ open, onClose }) => {
   const [currentKarra, setCurrentKarra] = useState(2)
+  const { t } = useTranslation()
 
   // random savollar tartibi (1..10) va hozirgi index
   const [quizOrder, setQuizOrder] = useState(() => shuffle(QUESTIONS))
@@ -117,7 +119,7 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
 
         {/* Savol */}
         <div className="mb-2 text-lg font-semibold text-center">
-          Savol: {currentKarra} × {question} = ?
+          {t('question')}: {currentKarra} × {question} = ?
         </div>
 
         {/* Input + Hint */}
@@ -135,18 +137,20 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
           <button
             onClick={handleHint}
             className="flex items-center justify-center w-12 h-12 text-lg font-bold text-green-800 bg-green-200 rounded-lg hover:bg-green-300"
-            title="Yordam"
+            title={t('footer.support')}
           >
             ?
           </button>
         </div>
 
         {showHint && (
-          <div className="mb-2 text-sm font-semibold text-center text-blue-600">To‘g‘ri javob: {correctAnswer}</div>
+          <div className="mb-2 text-sm font-semibold text-center text-blue-600">
+            {t('correctAnswer')}: {correctAnswer}
+          </div>
         )}
 
         <button onClick={handleNext} className="w-full py-2 mb-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
-          Keyingi
+          {t('next')}
         </button>
       </div>
     </div>

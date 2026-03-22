@@ -75,7 +75,7 @@ const ChatBoxModule = () => {
   const showNewChatButton = isStudent && chats.length === 0
 
   return (
-    <div className="h-[85vh] flex gap-1 bg-white rounded-2xl overflow-hidden">
+    <div className="h-[85vh] flex gap-1 bg-white rounded-2xl overflow-hidden overflow-x-hidden">
       {/* CHAT LIST SIDEBAR */}
       <div
         className={`${
