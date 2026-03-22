@@ -41,6 +41,7 @@ export const KEYS = {
   systemFaqs: 'systemFaqs',
   statistics: 'statistics',
   studentStatistics: 'studentStatistics',
+  universalStatistics: 'universalStatistics',
   studentSubjectChapters: 'studentSubjectChapters',
   // Teacher subjects keys
   chapters: 'chapters',
