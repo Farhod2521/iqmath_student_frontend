@@ -214,6 +214,7 @@
   "groups": "Группы",
   "independent": "Самостоятельные",
   "diagnostics": "Диагностика",
+  "diagnosticsStatus": "Диагностический статус",
   "subjects": "Предметы",
   "retakeDiagnostic": "Пересдать диагностику",
   "chooseLevelForRetake": "Выберите уровень для пересдачи",
@@ -229,6 +230,7 @@
   "reason": "Причина",
   "enterRewardReason": "Введите причину награды...",
   "subscriptionDays": "Дни подписки",
+  "subscriptionDeadline": "Период подписки",
   "fillAllFields": "Заполните все поля",
   "rewardAddedSuccessfully": "Награда успешно добавлена",
   "rewardError": "Ошибка при добавлении награды",
@@ -308,6 +310,8 @@
   "grade": "Оценка",
   "progress": "Прогресс",
   "active": "Активные",
+  "submitted": "Поданный",
+  "doNotSubmit": "Не отправлено",
   "frozen": "Замороженные",
   "ball": "Баллов",
   "topBall": "Самый высокий балл",
@@ -507,6 +511,7 @@
   "elements": "Элементов",
   "noData": "Нет данных",
   "phone": "Телефон",
+  "web": "Веб",
   "registeredDevice": "Зарегистрированное устройство",
   "registeredLanguage": "Язык",
   "loginAsStudent": "Войти как студент",
@@ -1087,5 +1092,6 @@
     }
   },
   "karraTable": "Стол Карра",
-  "KarraQuiz": "Викторина Карра"
+  "KarraQuiz": "Викторина Карра",
+  "errorStudentInformation:": "Ошибка при получении информации о студенте:"
 }

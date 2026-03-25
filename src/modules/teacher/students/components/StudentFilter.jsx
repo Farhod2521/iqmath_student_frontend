@@ -24,47 +24,47 @@ const StudentFilter = memo(
 
     // Sinf raqamlari (5-11)
     const classOptions = [
-      { value: '', label: 'Hammasi' },
-      { value: '5', label: '5-sinf' },
-      { value: '6', label: '6-sinf' },
-      { value: '7', label: '7-sinf' },
-      { value: '8', label: '8-sinf' },
-      { value: '9', label: '9-sinf' },
-      { value: '10', label: '10-sinf' },
-      { value: '11', label: '11-sinf' }
+      { value: '', label: t('all') },
+      { value: '5', label: t('class5') },
+      { value: '6', label: t('class6') },
+      { value: '7', label: t('class7') },
+      { value: '8', label: t('class8') },
+      { value: '9', label: t('class9') },
+      { value: '10', label: t('class10') },
+      { value: '11', label: t('class11') }
     ]
 
     // Fanlar ro'yxati
     const subjectOptions = [
-      { value: '', label: 'Hammasi' },
-      { value: 'Algebra', label: 'Algebra' },
-      { value: 'Matematika', label: 'Matematika' },
-      { value: 'Geometriya', label: 'Geometriya' }
+      { value: '', label: t('all') },
+      { value: 'Algebra', label: t('algebra') },
+      { value: 'Matematika', label: t('math') },
+      { value: 'Geometriya', label: t('geometry') }
     ]
 
     const statusOptions = [
-      { value: 'all', label: 'Hammasi' },
-      { value: 'active', label: 'Faol' },
-      { value: 'inactive', label: 'Faol emas' }
+      { value: 'all', label: t('all') },
+      { value: 'active', label: t('statusActive') },
+      { value: 'inactive', label: t('statusInactive') }
     ]
 
     const deviceOptions = [
-      { value: '', label: 'Hammasi' },
-      { value: 'mobile', label: 'Telefon' },
-      { value: 'web', label: 'Web' }
+      { value: '', label: t('all') },
+      { value: 'mobile', label: t('phone') },
+      { value: 'web', label: t('web') }
     ]
 
     // Role options
     const roleOptions = [
-      { value: '', label: 'Hammasi' },
-      { value: 'student', label: "O'quvchi" },
-      { value: 'teacher', label: 'Mentor' },
-      { value: 'parent', label: 'Ota-ona' },
-      { value: 'tutor', label: "O'qituvchi" }
+      { value: '', label: t('all') },
+      { value: 'student', label: t('student') },
+      { value: 'teacher', label: t('teachers') },
+      { value: 'parent', label: t('parent') },
+      { value: 'tutor', label: t('tutor') }
     ]
 
     const langOptions = [
-      { value: '', label: 'Hammasi' },
+      { value: '', label: t('all') },
       { value: 'uz', label: 'UZ' },
       { value: 'ru', label: 'RU' }
     ]
@@ -275,7 +275,7 @@ const StudentFilter = memo(
               className="w-30"
             />
             <SelectBox
-              label={'Til'}
+              label={t('registeredLanguage')}
               options={langOptions}
               value={langValue}
               onChange={handleLangChange}

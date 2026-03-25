@@ -129,6 +129,7 @@
   "reason": "Sababi",
   "enterRewardReason": "Mukofot berish sababini kiriting...",
   "subscriptionDays": "Obuna kunlari",
+  "subscriptionDeadline": "Obuna muddati",
   "fillAllFields": "Barcha maydonlarni to'ldiring",
   "rewardAddedSuccessfully": "Mukofot muvaffaqiyatli qo'shildi",
   "rewardError": "Mukofot qo'shishda xatolik yuz berdi",
@@ -251,6 +252,7 @@
   "groups": "Guruhlar",
   "independent": "Mustaqil ishlash",
   "diagnostics": "Diagnostika",
+  "diagnosticsStatus": "Diagnostika holati",
   "subjects": "Fanlar",
   "chat": "Chat",
   "mentorRequests": "Mentorga yuborilgan murojaatlar",
@@ -318,6 +320,8 @@
   "grade": "Baho",
   "progress": "Progress",
   "active": "Faol",
+  "submitted": "Topshirdi",
+  "doNotSubmit": "Topshirmadi",
   "frozen": "Muzlatilgan",
   "ball": "Ball",
   "topBall": "Eng ko'p ball",
@@ -516,6 +520,7 @@
   "elements": "Ta element",
   "noData": "Ma'lumot yo'q",
   "phone": "Telefon",
+  "web": "Web",
   "registeredDevice": "Qurilma",
   "registeredLanguage": "Tili",
   "region": "Hudud",
@@ -1178,5 +1183,6 @@
     }
   },
   "karraTable": "Karra jadvali",
-  "KarraQuiz": "Karra quiz"
+  "KarraQuiz": "Karra quiz",
+  "errorStudentInformation:": "O'quvchilar ma'lumotlarini olishda xatolik:"
 }

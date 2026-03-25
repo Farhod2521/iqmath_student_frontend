@@ -60,7 +60,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
           }
         })
         .catch((error) => {
-          console.error("O'quvchilar ma'lumotlarini olishda xatolik:", error)
+          console.error(t('errorStudentInformation'), error)
           setData([])
           if (onStudentsDataChange) {
             onStudentsDataChange([])
@@ -187,6 +187,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
       {
         headerName: 'ID',
         field: 'id',
+        filter: false,
         maxWidth: 80,
         checkboxSelection: true,
         valueGetter: (params) => {
@@ -199,6 +200,8 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         headerName: t('user'),
         field: 'full_name',
         maxWidth: 200,
+        //  filter: 'agNumberColumnFilter',
+        // suppressMenu: true,
         onCellClicked: (params) => {
           router.push(`/dashboard/teacher/pupils/${params.data.id}`)
         },
@@ -223,12 +226,50 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
           return classNumber + '-' + t('class')
         }
       })
+
+      baseColumns.push({
+        headerName: t('diagnosticsStatus'),
+        field: 'has_diagnost',
+        maxWidth: 150,
+        // filter: false,
+        cellClass: 'text-center',
+        cellRenderer: (params) => {
+          return params.value ? t('submitted') : t('doNotSubmit')
+        }
+      })
+
       baseColumns.push({
         headerName: t('subject'),
         field: 'subject_name_uz',
         maxWidth: 150,
+        filter: false,
         cellClass: 'text-center'
       })
+
+      baseColumns.push({
+        headerName: t('subscriptionDeadline'),
+        field: 'remaining_days',
+        maxWidth: 170,
+        filter: false,
+        suppressMenu: false,
+        cellClass: 'text-center',
+        cellRenderer: (params) => {
+          const days = params.data?.remaining_days
+          const endDate = params.data?.subscription_end_date
+
+          if (!days && !endDate) return '-'
+
+          return (
+            <div className="flex flex-col leading-tight">
+              <span className="text-gray-800 text-sm font-medium">{endDate}</span>
+              <span className="text-xs text-gray-500">
+                {days} {t('remainingDays')}
+              </span>
+            </div>
+          )
+        }
+      })
+      // subject_name_uz
     }
 
     // Qolgan ustunlarni qo'shish
@@ -243,14 +284,16 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         field: 'status',
         minWidth: 110,
         flex: 1,
+        filter: false,
         cellRenderer: (params) => {
-          return params.value ? <span>Faol</span> : <span>Faol emas</span>
+          return params.value ? <span>{t('statusActive')}</span> : <span>{t('statusInactive')}</span>
         }
       },
       {
         headerName: t('device'),
         field: 'device',
         maxWidth: 150,
+        filter: false,
         cellRenderer: (params) => {
           if (!params.value) {
             return <span className="text-gray-400">-</span>
@@ -262,6 +305,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         headerName: t('registeredLanguage'),
         field: 'lang',
         maxWidth: 100,
+        filter: false,
         cellRenderer: (params) => {
           return params.value
         }
@@ -271,10 +315,13 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         field: 'registration_date',
         minWidth: 100,
         cellRenderer: (params) => {
+          const registration_date = params.data?.registration_date
+          const registration_time = params.data?.registration_time
+
           if (!params.value) {
             return <span className="text-gray-400">-</span>
           }
-          return <span>{params.value.replaceAll('-', '.')}</span>
+          return <span>{registration_date}</span>
         }
       },
       {
@@ -285,13 +332,14 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
           if (!params.value) {
             return <span className="text-gray-400">-</span>
           }
-          return <span>{params.value.replaceAll('/', '.')}</span>
+          return <span>{params.value}</span>
         }
       },
       {
         headerName: t('action'),
         field: 'actions',
         minWidth: 260,
+        filter: false,
         cellRenderer: (p) => (
           <div className="flex gap-2 justify-end">
             <button
