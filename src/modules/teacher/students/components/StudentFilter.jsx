@@ -13,6 +13,7 @@ const StudentFilter = memo(
     const [classValue, setClassValue] = useState('') // Default: "Hammasi" (empty value)
     const [subjectValue, setSubjectValue] = useState('') // Default: "Hammasi" (empty value)
     const [deviceValue, setDeviceValue] = useState('') // Default: "Hammasi" (empty value)
+    const [diagnosticsValue, setDiagnosticsValue] = useState('') // Default: "Hammasi" (empty value)
     const [statusValue, setStatusValue] = useState('active')
     const [langValue, setLangValue] = useState('')
     const [roleValue, setRoleValue] = useState('student') // Default: "Hammasi"
@@ -51,6 +52,12 @@ const StudentFilter = memo(
     const deviceOptions = [
       { value: '', label: t('all') },
       { value: 'mobile', label: t('phone') },
+      { value: 'web', label: t('web') }
+    ]
+
+    const diagnosticsOptions = [
+      { value: '', label: t('all') },
+      { value: 'mobile', label: t('submitted') },
       { value: 'web', label: t('web') }
     ]
 
@@ -289,6 +296,13 @@ const StudentFilter = memo(
               onChange={handleDeviceChange}
               className="w-30"
             />
+            {/* <SelectBox
+              label={t('diagnosticsStatus')}
+              options={diagnosticsOptions}
+              value={deviceValue}
+              onChange={handleDeviceChange}
+              className="w-30"
+            /> */}
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
