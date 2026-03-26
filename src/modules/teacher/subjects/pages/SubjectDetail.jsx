@@ -57,7 +57,6 @@ const SubjectDetail = () => {
     // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!topicId && !!session?.accessToken
   })
-  console.log('questionList', questionList)
 
   const { mutate: createQuestion } = usePostQuery({ key: 'create-question' })
   const { mutate: updateQuestion } = usePutQuery({ listKeyId: 'edit-created-question' })
