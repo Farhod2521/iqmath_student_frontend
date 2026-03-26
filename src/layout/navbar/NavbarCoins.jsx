@@ -8,6 +8,7 @@ function NavbarCoins() {
   const router = useRouter()
   const { t } = useTranslation()
   const { scoreData } = useScoreStore()
+  console.log('data', scoreData)
 
   return (
     <Button

@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { chatAPI } from '@/shared/services'
 import { useTranslation } from 'react-i18next'
+import { useChatSocket } from './useChatSocket'
 
 export const useChat = () => {
   const { t } = useTranslation()
@@ -16,6 +17,7 @@ export const useChat = () => {
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
   const [transferTeacherId, setTransferTeacherId] = useState('')
   const [transferReason, setTransferReason] = useState('')
+  const [liveMessages, setLiveMessages] = useState([])
 
   const isStudent = ['student', 'superadmin'].includes(session?.role || '')
   const isAdmin = ['superadmin', 'teacher'].includes(session?.role || '')
@@ -35,6 +37,14 @@ export const useChat = () => {
     queryKey: ['messages', activeChat?.id],
     queryFn: () => chatAPI.getMessages(activeChat.id),
     enabled: !!activeChat && !activeChat?.is_temp
+  })
+
+  const socketRef = useChatSocket({
+    chatId: messages?.conversation_id,
+    token: session?.accessToken,
+    onMessage: (newMessage) => {
+      setLiveMessages((prev) => [...prev, newMessage])
+    }
   })
 
   // O'qituvchilar ro'yxati - TransferModal uchun
@@ -142,17 +152,38 @@ export const useChat = () => {
   }
 
   // Xabar yuborish
+  // const handleSend = (text) => {
+  //   if (!activeChat) return
+
+  //   if (isNewChatMode) {
+  //     sendFirstMessage.mutate({ text })
+  //   } else {
+  //     sendMessage.mutate({
+  //       chatId: activeChat.id,
+  //       text,
+  //       reply_to: replyingTo?.id
+  //     })
+  //   }
+
+  //   setReplyingTo(null)
+  // }
+
   const handleSend = (text) => {
     if (!activeChat) return
 
     if (isNewChatMode) {
       sendFirstMessage.mutate({ text })
     } else {
-      sendMessage.mutate({
-        chatId: activeChat.id,
-        text,
-        reply_to: replyingTo?.id
-      })
+      if (socketRef.current?.readyState === WebSocket.OPEN) {
+        socketRef.current.send(
+          JSON.stringify({
+            text,
+            reply_to: replyingTo?.id || null
+          })
+        )
+      } else {
+        console.warn('Socket yopiq')
+      }
     }
 
     setReplyingTo(null)
@@ -181,12 +212,18 @@ export const useChat = () => {
     setTransferReason('')
   }
 
+  useEffect(() => {
+    setLiveMessages([])
+  }, [messages?.conversation_id])
+
+  const allMessages = [...(messages?.messages || []), ...liveMessages]
+
   return {
     // State'lar
     activeChat,
     chats,
     chatsLoading,
-    messages,
+    messages: { messages: allMessages },
     messagesLoading,
     isStudent,
     isAdmin,

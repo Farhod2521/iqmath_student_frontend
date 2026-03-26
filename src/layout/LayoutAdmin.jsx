@@ -39,7 +39,14 @@ const LayoutAdmin = ({ children, title }) => {
   const isTeacherMode = typeof window !== 'undefined' ? sessionStorage.getItem('is_teacher_mode') === 'true' : false
 
   const coinsUrl = isTeacherMode ? URLS.coins : URLS.coins
-  const { data: score, isLoading } = useGetQuery({ key: KEYS.coins, url: coinsUrl })
+  const { data: score, isLoading } = useGetQuery({
+    key: [KEYS.coins, isTeacherMode],
+    url: coinsUrl,
+    options: {
+      staleTime: 0,
+      refetchOnMount: true
+    }
+  })
 
   useEffect(() => {
     if (score) {
