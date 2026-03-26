@@ -52,11 +52,12 @@ const SubjectDetail = () => {
   })
 
   const { data: questionList } = useGetQuery({
-    key: KEYS.questionList,
+    key: [KEYS.questionList, topicId],
     url: `${URLS.questionList}${topicId}/`,
     // headers: { Authorization: `Bearer ${session?.accessToken}` },
     enabled: !!topicId && !!session?.accessToken
   })
+  console.log('questionList', questionList)
 
   const { mutate: createQuestion } = usePostQuery({ key: 'create-question' })
   const { mutate: updateQuestion } = usePutQuery({ listKeyId: 'edit-created-question' })
