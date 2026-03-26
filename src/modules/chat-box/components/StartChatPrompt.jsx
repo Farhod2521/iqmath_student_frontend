@@ -19,8 +19,8 @@ export const StartChatPrompt = () => {
             </svg>
           </div>
         </div>
-        <h3 className="text-2xl font-semibold text-gray-800 mb-3">{t('chat_propt.needHelp')}</h3>
-        <p className="text-gray-600">{t('chat_propt.writeQuestion')}</p>
+        <h3 className="text-2xl font-semibold text-gray-800 mb-3">{t('chatBox.chat_propt.needHelp')}</h3>
+        <p className="text-gray-600">{t('chatBox.chat_propt.writeQuestion')}</p>
       </div>
     </div>
   )

@@ -7,6 +7,23 @@ import Button from '@/components/button'
 import EditIcon from '@/components/icons/edit'
 import TrashIcon from '@/components/icons/trash'
 
+export const fixLatex = (text = '') => {
+  if (!text) return ''
+
+  return (
+    text
+      // mixed fraction → improper fraction
+      .replace(/(\d+)\s*\\frac{(\d+)}{(\d+)}/g, (_, a, b, c) => {
+        const numerator = Number(a) * Number(c) + Number(b)
+        return `\\frac{${numerator}}{${c}}`
+      })
+  )
+}
+
+const MathText = ({ children }) => {
+  return <MathJax dynamic>{fixLatex(children)}</MathJax>
+}
+
 const QuestionTable = ({ questions, onEdit, onDelete }) => {
   const { t, i18n } = useTranslation()
 
@@ -14,18 +31,14 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
     const isUzbek = i18n.language === 'uz'
 
     if (question.question_type === 'text') {
-      return (
-        <MathJax dynamic>
-          {parse(get(question, isUzbek ? 'correct_text_answer_uz' : 'correct_text_answer_ru') || '')}
-        </MathJax>
-      )
+      return <MathText>{get(question, isUzbek ? 'correct_text_answer_uz' : 'correct_text_answer_ru') || ''}</MathText>
     }
 
     if (question.question_type === 'composite') {
       return question.sub_questions.map((item, idx) => (
         <div key={idx} className="flex gap-1">
           <span>{item.text1_uz}</span>
-          <span>{item.correct_answer}</span>
+          <MathText>{item.correct_answer}</MathText>
           <span>{item.text2_uz}</span>
         </div>
       ))
@@ -34,8 +47,8 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
     return question.choices.map((item, idx) => (
       <div key={idx} className="flex gap-1">
         <span className={item.is_correct ? 'text-blue-500' : ''}>{item.letter}</span>
-        <span>{item.text_uz}</span>
-        <span>{item?.image_url}</span>
+        <MathText>{isUzbek ? item.text_uz : item.text_ru}</MathText>
+        {item?.image_url && <img src={item.image_url} alt="" className="w-6 h-6" />}
       </div>
     ))
   }
@@ -54,8 +67,14 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
     <MathJaxContext
       config={{
         loader: { load: ['input/tex', 'output/chtml'] },
-        options: { enableMenu: false },
-        tex: { packages: { '[+]': ['noerrors', 'noundefined'] } }
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          packages: { '[+]': ['noerrors', 'noundefined'] }
+        },
+        options: {
+          enableMenu: false
+        }
       }}
     >
       <div className="col-span-12 border border-[#E9E9E9] rounded-[12px]">
@@ -64,8 +83,8 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
             <tr className="border-b border-b-[#E9E9E9]">
               <th className="p-3 pl-6 text-left">#</th>
               <th className="p-3 text-left">{t('question')}</th>
-              <th className="p-3 text-left">{t('correctAnswers')}</th>
-              <th className="p-3 text-left">{t('correctAnswers')} (latex)</th>
+              <th className="p-3 text-left whitespace-nowrap min-w-[150px]">{t('correctAnswers')}</th>
+              <th className="p-3 text-left min-w-[150px]">{t('correctAnswers')} (latex)</th>
               <th className="p-3 text-center">{t('questionType')}</th>
               <th className="p-3 text-center">{t('action')}</th>
             </tr>
@@ -79,7 +98,7 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
                     {parse(get(question, i18n.language === 'uz' ? 'question_text_uz' : 'question_text_ru') || '')}
                   </MathJax>
                 </td>
-                <td className="p-3">{renderAnswer(question)}</td>
+                <td className="p-3 text-sm">{renderAnswer(question)}</td>
                 <td className="p-3 text-sm">{renderAnswer(question)}</td>
                 <td className="p-3 text-center">{getQuestionTypeLabel(question.question_type)}</td>
                 <td className="py-2 text-center">

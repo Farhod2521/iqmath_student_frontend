@@ -53,10 +53,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
           </div>
         </div>
       )} */}
-      <div
-        className={`max-w-[70%] group cursor-pointer ${!showAvatar ? 'ml-11' : ''}`}
-        onDoubleClick={() => onReply(message)}
-      >
+      <div className={`max-w-[70%] group cursor-pointer`} onDoubleClick={() => onReply(message)}>
         {message.reply_to_text && (
           <div className="p-3 mb-2 bg-gray-100 border-l-4 border-gray-400 rounded-lg">
             <p className="mb-1 text-xs font-semibold text-gray-700">{message.reply_to_sender}</p>
