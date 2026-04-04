@@ -26,7 +26,6 @@ function AuthSignIn() {
       if (result?.ok) {
         const session = await getSession()
 
-        // ✅ return url bo'lsa shu yerga qaytaramiz
         const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
 
         if (returnUrl) {

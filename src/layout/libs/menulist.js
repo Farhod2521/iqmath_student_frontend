@@ -1,7 +1,7 @@
 import { LuBookText, LuUser } from 'react-icons/lu'
 import { TbCheckbox } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
-import { BiDirections } from 'react-icons/bi'
+import { BiDirections, BiTransfer } from 'react-icons/bi'
 import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
 import { PiBooksLight, PiTrophy } from 'react-icons/pi'
@@ -478,6 +478,21 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+
+  {
+    key: 'finance-transfer',
+    path: '/dashboard/student/finance-transfer',
+    label: t('transferMoney'),
+    icon: (isActive) => (
+      <BiTransfer
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
     type: MenuType.LINK
   },
   {

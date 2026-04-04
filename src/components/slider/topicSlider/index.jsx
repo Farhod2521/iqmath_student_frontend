@@ -7,7 +7,7 @@ const TopicDropdown = ({ chapterId, session }) => {
   const [activeId, setActiveId] = useState(null)
 
   const { data: topics, isLoading } = useGetQuery({
-    key: KEYS.studentTopics,
+    key: `${KEYS.studentTopics}-${chapterId}`,
     url: `${URLS.studentTopics}${chapterId}/`,
     // headers: {
     //   Authorization: `Bearer ${session?.accessToken}` || "",

@@ -24,7 +24,7 @@ const StudentSubjectsList = () => {
   const subjects = get(data, 'data', data) || []
 
   const { data: dataD } = useGetQuery({
-    key: ['studentSubjectsD', id],
+    key: `studentSubjectsD-${id}`,
     url: id ? `/api/v1/func_student/diagnost/students/${id}/subjects/` : null,
     enabled: !!id && !!session?.accessToken
   })

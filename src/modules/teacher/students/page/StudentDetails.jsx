@@ -1,158 +1,325 @@
-import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import { useGetQuery } from '@/hooks'
+import { usePostQuery } from '@/hooks'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { get } from 'lodash'
 import ContentLoader from '@/components/loader/content-loader'
 import { useTranslation } from 'react-i18next'
 import Image from 'next/image'
 import StudentSubjectsList from '../components/StudentSubjectsList'
 import StudentRewardModal from '../components/StudentRewardModal'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useUserStore } from '@/store'
 import { RolesList } from '@/layout/libs/menulist'
+
+const getRoleForAPI = (role) => {
+  if (role === 'PARENT') return 'parent'
+  if (role === 'TUTOR') return 'tutor'
+  return 'student'
+}
 
 const StudentDetails = () => {
   const router = useRouter()
   const { user } = useUserStore((state) => state)
-  const { id } = router.query
+  const { id, role } = router.query
   const { data: session } = useSession()
   const { t } = useTranslation()
+
+  const [studentData, setStudentData] = useState(null)
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false)
 
-  const { data, isLoading, isFetching } = useGetQuery({
-    key: [KEYS.studentStatistics, id],
-    url: `${URLS.studentStatistics}${id}/`,
-    // headers: {
-    //   Authorization: `Bearer ${session?.accessToken}`
-    // },
-    enabled: !!id && !!session?.accessToken
+  const hasFetchedRef = useRef(false)
+
+  const apiRole = role || getRoleForAPI(user?.role)
+
+  const { mutate, isLoading } = usePostQuery({
+    hideSuccessToast: true
   })
 
-  const studentData = get(data, 'data', {})
+  // 🚀 FETCH DATA
+  useEffect(() => {
+    if (!id || !session?.accessToken || !apiRole) return
+    if (hasFetchedRef.current) return
 
-  if (isLoading || isFetching) {
-    return (
-      <div>
-        <ContentLoader />
-      </div>
+    hasFetchedRef.current = true
+
+    mutate(
+      {
+        url: `${URLS.universalStatistics}${id}/`,
+        attributes: { role: apiRole }
+      },
+      {
+        onSuccess: (res) => {
+          setStudentData(res.data)
+        }
+      }
     )
+  }, [id, apiRole, session?.accessToken])
+
+  // reset if id changes
+  useEffect(() => {
+    hasFetchedRef.current = false
+  }, [id])
+
+  if (isLoading || !studentData) {
+    return <ContentLoader />
   }
 
   return (
     <div className="p-4 space-y-6">
-      {/* Main Info and Payment Stats */}
-      {user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER ? (
+      {/* ================= ADMIN / TEACHER VIEW ================= */}
+      {(user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER) && apiRole === 'student' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200">
+          {/* LEFT */}
+          <div className="bg-white p-6 rounded-xl border">
             <div className="flex flex-col items-center text-center">
-              <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} className="rounded-full mb-4" />
-              <h1 className="text-xl font-bold">{studentData.full_name}</h1>
+              <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} />
+              <h1 className="text-xl font-bold mt-2">{studentData.full_name}</h1>
+
               <span
-                className={`px-2 xl:px-3 py-1 mt-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  studentData.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                className={`mt-2 px-3 py-1 rounded-full text-xs ${
+                  studentData.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                 }`}
               >
                 {studentData.is_active ? t('active') : t('inactive')}
               </span>
+
               <button
                 onClick={() => setIsRewardModalOpen(true)}
-                className="mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-                  />
-                </svg>
                 {t('giveReward')}
               </button>
             </div>
           </div>
 
-          <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200">
-            <h3 className="font-semibold text-lg mb-4">{t('paymentInfo')}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* RIGHT */}
+          <div className="lg:col-span-2 bg-white p-6 rounded-xl border">
+            <h3 className="font-semibold mb-4">{t('paymentInfo')}</h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-gray-500">{t('lastPayment')}</p>
-                <p className="font-semibold text-lg">{studentData.last_payment_amount?.toLocaleString()} UZS</p>
-                <p className="text-xs text-gray-400">
-                  {studentData.last_payment_date} {studentData.last_payment_time}
-                </p>
+                <p className="text-gray-500 text-sm">{t('coins')}</p>
+                <p className="font-bold">{studentData.coin}</p>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500">{t('totalPaid')}</p>
-                <p className="font-semibold text-lg">{studentData.total_paid_amount?.toLocaleString()} UZS</p>
+                <p className="text-gray-500 text-sm">{t('score')}</p>
+                <p className="font-bold">{studentData.score}</p>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500">{t('paymentStatus')}</p>
-                <div className="flex flex-wrap flex-col gap-x-3 gap-y-1 items-start mt-1">
-                  <span className="flex items-center text-sm text-yellow-600">
-                    <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
-                    {studentData.payment_status_count?.pending} {t('pending')}
-                  </span>
-                  <span className="flex items-center text-sm text-green-600">
-                    <div className="w-2 h-2 rounded-full bg-green-400 mr-2"></div>
-                    {studentData.payment_status_count?.success} {t('success')}
-                  </span>
-                  <span className="flex items-center text-sm text-red-600">
-                    <div className="w-2 h-2 rounded-full bg-red-400 mr-2"></div>
-                    {studentData.payment_status_count?.failed} {t('failed')}
-                  </span>
-                  <span className="flex items-center text-sm text-red-600">
-                    <div className={`w-2 h-2 rounded-full bg-red-400 mr-2`}></div>
-                    {studentData.is_active ? t('active') : t('inactive')}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{t('coins')}</p>
-                <p className="font-semibold text-lg">{studentData.coin}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{t('SumScore')}</p>
-                <p className="font-semibold text-lg">{studentData.score}</p>
+                <p className="text-gray-500 text-sm">{t('totalPaid')}</p>
+                <p className="font-bold">{studentData.total_paid_amount?.toLocaleString()} UZS</p>
               </div>
             </div>
           </div>
         </div>
-      ) : (
-        <></>
       )}
 
-      {user?.role === RolesList.PARENT || user?.role === RolesList.TUTOR ? (
-        <div className="bg-white rounded-lg p-4 flex items-center gap-4 max-w-md w-full">
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-2xl font-semibold">{studentData?.full_name[0]}</span>
+      {/* ================= PARENT VIEW ================= */}
+      {apiRole === RolesList.PARENT && (
+        <div className="space-y-6">
+          {/* Parent Info */}
+          <div className="bg-white p-6 rounded-xl border">
+            <div className="flex items-center justify-between">
+              {/* LEFT */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xl font-bold">{studentData.full_name?.[0]}</span>
+                </div>
+
+                <div>
+                  <h1 className="text-xl font-bold">{studentData.full_name}</h1>
+                  <p className="text-sm text-gray-500">{studentData.phone}</p>
+                  <p className="text-sm text-gray-500">ID: {studentData.identification}</p>
+                </div>
+              </div>
+
+              {/* RIGHT - STATUS */}
+              <div>
+                <span
+                  className={`px-3 py-1 text-xs rounded-full font-medium ${
+                    studentData.status ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                  }`}
+                >
+                  {studentData.status ? t('active') : t('inactive')}
+                </span>
+              </div>
+            </div>
+
+            {/* OPTIONAL: REGISTER DATE */}
+            <div className="mt-4 text-sm text-gray-500">
+              {t('registrationDate')}: <span className="text-gray-800 font-medium">{studentData.registered_at}</span>
+            </div>
           </div>
-          <div className="flex-1">
-            <h1 className="text-xl font-semibold text-gray-900 mb-1">{studentData?.full_name}</h1>
-            <span
-              className={`px-2 xl:px-3 py-1 mt-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                studentData.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}
-            >
-              {studentData.is_active ? t('active') : t('inactive')}
-            </span>
-            <p className="text-gray-500 text">ID: {studentData?.identification || '...'}</p>
+
+          {/* Children */}
+          <div className="bg-white p-6 rounded-xl border">
+            <h2 className="font-semibold mb-4">
+              {t('myChildren')} ({studentData.children_count})
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {studentData.children?.map((child) => (
+                <div
+                  key={child.student_id}
+                  className="border rounded-xl p-4 hover:shadow-md transition cursor-pointer bg-white"
+                  // onClick={() => router.push(`/dashboard/student/subjects/${child.student_id}`)}
+                >
+                  {/* HEADER */}
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold text-gray-900">{child.full_name}</h3>
+
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${
+                        child.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                      }`}
+                    >
+                      {child.is_active ? t('active') : t('inactive')}
+                    </span>
+                  </div>
+
+                  {/* CLASS */}
+                  <p className="text-sm text-gray-500 mb-3">
+                    {t('subject')}: {child.class_name}
+                  </p>
+
+                  {/* STATS */}
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <p className="text-xs text-gray-400">{t('score')}</p>
+                      <p className="font-semibold text-gray-800">{child.score}</p>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <p className="text-xs text-gray-400">{t('coins')}</p>
+                      <p className="font-semibold text-gray-800">{child.coin}</p>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-lg p-2">
+                      <p className="text-xs text-gray-400">{t('remainingDays')}</p>
+                      <p className="font-semibold text-gray-800">{child.remaining_days}</p>
+                    </div>
+                  </div>
+
+                  {/* SUBSCRIPTION */}
+                  <div className="mt-3 text-sm text-gray-600">
+                    {t('subscriptionEnd')}: <span className="font-medium text-gray-800">{child.subscription_end}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      ) : (
-        <></>
       )}
-      <StudentSubjectsList />
 
-      {/* Reward Modal */}
+      {apiRole === 'tutor' && (
+        <div className="space-y-6">
+          {/* ================= TUTOR INFO ================= */}
+          <div className="bg-white p-6 rounded-xl border">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xl font-bold">{studentData.full_name?.[0]}</span>
+                </div>
+
+                <div>
+                  <h1 className="text-xl font-bold">{studentData.full_name}</h1>
+                  <p className="text-sm text-gray-500">{studentData.phone}</p>
+                  <p className="text-sm text-gray-500">ID: {studentData.identification}</p>
+                </div>
+              </div>
+
+              {/* STATUS */}
+              <span
+                className={`px-3 py-1 text-xs rounded-full font-medium ${
+                  studentData.status ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                }`}
+              >
+                {studentData.status ? t('active') : t('inactive')}
+              </span>
+            </div>
+
+            {/* REGISTERED */}
+            <div className="mt-4 text-sm text-gray-500">
+              {t('registrationDate')}: <span className="text-gray-800 font-medium">{studentData.registered_at}</span>
+            </div>
+          </div>
+
+          {/* ================= REFERRAL STUDENTS ================= */}
+          <div className="bg-white p-6 rounded-xl border">
+            <h2 className="font-semibold mb-4">
+              {t('referralStudents')} ({studentData.referral_students_count})
+            </h2>
+
+            {studentData.referral_students?.length === 0 ? (
+              <p className="text-gray-400 text-sm">{t('noData')}</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {studentData.referral_students.map((student) => (
+                  <div key={student.student_id} className="border rounded-xl p-4 hover:shadow-md transition bg-white">
+                    {/* HEADER */}
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{student.full_name}</h3>
+                        <p className="text-sm text-gray-500">{student.phone}</p>
+                        <p className="text-xs text-gray-400">ID: {student.identification}</p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-xs text-gray-400">{t('joinedAt')}</p>
+                        <p className="text-sm font-medium text-gray-800">{student.joined_at}</p>
+                      </div>
+                    </div>
+
+                    {/* STATS */}
+                    <div className="grid grid-cols-2 gap-3 mt-3">
+                      <div className="bg-gray-50 rounded-lg p-3 text-center">
+                        <p className="text-xs text-gray-400">{t('paymentAmount')}</p>
+                        <p className="font-semibold text-gray-800">{student.payment_amount}</p>
+                      </div>
+
+                      <div className="bg-gray-50 rounded-lg p-3 text-center">
+                        <p className="text-xs text-gray-400">{t('bonusAmount')}</p>
+                        <p className="font-semibold text-gray-800">{student.bonus_amount}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* ================= COUPON STUDENTS ================= */}
+          <div className="bg-white p-6 rounded-xl border">
+            <h2 className="font-semibold mb-4">
+              {t('couponStudents')} ({studentData.coupon_students_count})
+            </h2>
+
+            {studentData.coupon_students?.length === 0 ? (
+              <p className="text-gray-400 text-sm">{t('noData')}</p>
+            ) : (
+              <div className="space-y-3">
+                {studentData.coupon_students.map((student) => (
+                  <div key={student.student_id} className="border rounded-lg p-4">
+                    <h3 className="font-semibold">{student.full_name}</h3>
+                    <p className="text-sm text-gray-500">{student.phone}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ================= STUDENT VIEW ================= */}
+      {apiRole === 'student' && <StudentSubjectsList />}
+
+      {/* MODAL */}
       <StudentRewardModal
         isOpen={isRewardModalOpen}
         onClose={() => setIsRewardModalOpen(false)}
-        student={{ id: id, full_name: studentData.full_name }}
-        onSuccess={() => {
-          // Refresh student data if needed - TODO: implement this
-        }}
+        student={{ id, full_name: studentData.full_name }}
       />
     </div>
   )

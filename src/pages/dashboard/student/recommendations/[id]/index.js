@@ -31,14 +31,13 @@ const SubjectsPage = () => {
     isLoading: isLoadingTopic,
     isFetching: isFetchingTopic
   } = useGetQuery({
-    key: ['my-diagnost-chapter', selectedChapterId],
+    key: `${'my-diagnost-chapter'}-${selectedChapterId}`,
     url: selectedChapterId ? `/api/v1/func_student/my-diagnost-chapter/${selectedChapterId}/topics/` : '',
     enabled: !!selectedChapterId && !!session?.accessToken
   })
 
   useEffect(() => {
     if (chapter?.data?.[0]?.id) {
-      console.log(chapter)
       setSelectedChapterId(chapter.data[0].id)
     }
   }, [chapter])

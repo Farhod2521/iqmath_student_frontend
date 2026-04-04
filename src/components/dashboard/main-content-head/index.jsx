@@ -41,7 +41,12 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
     // headers: {
     //   Authorization: `Bearer ${session?.accessToken}`
     // },
-    enabled: !!session?.accessToken
+
+    enabled: !!session?.accessToken,
+    options: {
+      staleTime: 0,
+      refetchOnMount: true
+    }
   })
 
   const handleProfile = () => {

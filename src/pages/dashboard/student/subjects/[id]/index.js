@@ -27,7 +27,7 @@ const SubjectsPage = () => {
     isLoading: isLoadingChapter,
     isFetching: isFetchingChapter
   } = useGetQuery({
-    key: KEYS.studentChapters,
+    key: `${KEYS.studentChapters}-${id}`,
     url: id ? `${URLS.studentChapters}${id}/` : '',
     enabled: !!id && !!session?.accessToken
   })
@@ -37,15 +37,15 @@ const SubjectsPage = () => {
     isLoading: isLoadingTopic,
     isFetching: isFetchingTopic
   } = useGetQuery({
-    key: [KEYS.studentTopics, selectedChapterId],
+    key: `my-diagnost-chapter-${selectedChapterId}`,
     url: selectedChapterId ? `${URLS.studentTopics}${selectedChapterId}/` : '',
     enabled: !!selectedChapterId && !!session?.accessToken
   })
 
   useEffect(() => {
-    if (chapter?.data?.[0]?.id) {
-      setSelectedChapterId(chapter.data[0].id)
-    }
+   if (chapter?.data?.length && !selectedChapterId) {
+     setSelectedChapterId(chapter.data[0].id)
+   }
   }, [chapter])
 
   const [pathList, setPathList] = useState([])

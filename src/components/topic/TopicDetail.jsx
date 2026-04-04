@@ -35,7 +35,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
     isLoading: isLoadingTopic,
     isFetching: isFetchingTopic
   } = useGetQuery({
-    key: KEYS.studentTopics,
+    key: `${KEYS.studentTopics}-${chapterId}-${topicID}`,
     url: `${URLS.studentTopics}${chapterId}/`,
     // headers: {
     //   Authorization: `Bearer ${session?.accessToken}` || ''

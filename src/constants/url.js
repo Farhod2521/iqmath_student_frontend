@@ -111,5 +111,12 @@ export const URLS = {
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',
   tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/',
   chatUnreadTotal: '/api/v1/func_chat/chats/unread-total/',
-  newsTotal: '/api/v1/management/app/elon-list/'
+  newsTotal: '/api/v1/management/app/elon-list/',
+
+  //transform
+
+  studentById: '/api/v1/student/by-identification/',
+  transferConfirm: '/api/v1/student/som-transfer/confirm/ ',
+  transferHistory: '/api/v1/student/som-transfer/history/',
+  transferRequest: '/api/v1/student/som-transfer/request/'
 }

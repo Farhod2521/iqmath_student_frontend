@@ -203,7 +203,14 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         //  filter: 'agNumberColumnFilter',
         // suppressMenu: true,
         onCellClicked: (params) => {
-          router.push(`/dashboard/teacher/pupils/${params.data.id}`)
+          if (filterData.role === 'teacher') return // 🔥 STOP
+
+          router.push({
+            pathname: `/dashboard/teacher/pupils/${params.data.id}`,
+            query: {
+              role: filterData.role
+            }
+          })
         },
         cellRenderer: (params) => (
           <div className="flex items-center gap-2 cursor-pointer">
