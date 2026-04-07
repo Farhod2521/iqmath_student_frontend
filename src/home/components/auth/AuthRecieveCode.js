@@ -67,6 +67,7 @@ const AuthRecieveCode = () => {
       const result = await signIn('credentials', {
         phone: formattedPhone,
         sms_code: verifyCode,
+        device: 'web',
         role: selectedRole?.value || 'student',
         redirect: false // Prevent automatic redirect
       })
