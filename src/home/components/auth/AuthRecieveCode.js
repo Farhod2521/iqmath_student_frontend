@@ -21,7 +21,7 @@ const AuthRecieveCode = () => {
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
   const { setTab, phoneTab, selectedRole } = useAuthTabStore((state) => state)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const router = useRouter()
 
   const { isTeacher, isLoading: roleLoading } = useRoleDetection()
@@ -68,6 +68,7 @@ const AuthRecieveCode = () => {
         phone: formattedPhone,
         sms_code: verifyCode,
         device: 'web',
+        lang: i18n.language,
         role: selectedRole?.value || 'student',
         redirect: false // Prevent automatic redirect
       })

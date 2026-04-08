@@ -14,15 +14,28 @@ function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { setTab } = useAuthTabStore.getState()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const router = useRouter()
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async ({ phone, password }) => {
+    console.log('phone', phone)
+    console.log('password', password)
     setIsLoading(true)
     try {
       const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
-      const result = await signIn('credentials', { phone: formattedPhone, password, device: 'web', redirect: false })
+      const lang = i18n.language
+      const device = 'web'
+
+      const result = await signIn('credentials', {
+        phone: formattedPhone,
+        password,
+        device,
+        lang,
+        redirect: false
+      })
+      console.log('result', result)
+
       if (result?.ok) {
         const session = await getSession()
 
