@@ -1,9 +1,30 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const StatsCards = ({ data }) => {
   const { t } = useTranslation()
+    const router = useRouter()
+
+    const statToFilterMap = {
+      totalStudents: { role: 'student' },
+      totalTeachers: { role: 'teacher' },
+      totalParents: { role: 'parent' },
+      totalTutors: { role: 'tutor' },
+      activeSubscribers: { status: 'active' }
+    }
+
+    const handleNavigate = (key) => {
+      const query = statToFilterMap[key]
+      if (!query) return
+
+      router.push({
+        pathname: '/dashboard/teacher/pupils',
+        query
+      })
+    }
+
 
   const stats = [
     {
@@ -106,25 +127,29 @@ const StatsCards = ({ data }) => {
 
   return (
     <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-      {stats.map((stat) => (
-        <div
-          key={stat.key}
-          className="bg-white dark:bg-[#202936] border border-[#E9E9E9] dark:border-[#232D3A] rounded-[12px] shadow-sm p-4 flex flex-col justify-between min-h-[120px] hover:shadow-md transition-shadow"
-        >
-          <div className="flex items-start gap-3 mb-3">
-            <div className="p-2 bg-gray-50 dark:bg-[#2A3547] rounded-lg">
-              <Image src={stat.icon} alt={stat.key} width={20} height={20} className={stat.iconClass || ''} />
+      {stats.map((stat) => {
+        const isClickable = !!statToFilterMap[stat.key]
+        return (
+          <div
+            key={stat.key}
+            onDoubleClick={() => handleNavigate(stat.key)}
+            className={`bg-white dark:bg-[#202936] border border-[#E9E9E9] dark:border-[#232D3A] rounded-[12px] shadow-sm p-4 flex flex-col justify-between min-h-[120px] hover:shadow-md transition-shadow ${isClickable ? 'cursor-pointer hover:shadow-md' : ''}`}
+          >
+            <div className="flex items-start gap-3 mb-3">
+              <div className="p-2 bg-gray-50 dark:bg-[#2A3547] rounded-lg">
+                <Image src={stat.icon} alt={stat.key} width={20} height={20} className={stat.iconClass || ''} />
+              </div>
+              <div className="flex-1">
+                <p className="text-[#7C8FAC] text-xs font-medium mb-1">{stat.badge.value}</p>
+                <h3 className="text-lg font-bold text-[#2A3547] dark:text-white leading-6 break-words">{stat.value}</h3>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-[#7C8FAC] text-xs font-medium mb-1">{stat.badge.value}</p>
-              <h3 className="text-lg font-bold text-[#2A3547] dark:text-white leading-6 break-words">{stat.value}</h3>
+            <div className="flex items-center justify-between mt-auto">
+              <span className="text-xs text-[#A3AED0]">{t(stat.key)}</span>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-auto">
-            <span className="text-xs text-[#A3AED0]">{t(stat.key)}</span>
-          </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

@@ -7,21 +7,35 @@ import { debounce } from 'lodash'
 import { URLS } from '@/constants/url'
 
 const StudentFilter = memo(
-  ({ onFilterChange, isExportingAll = false, onExportStart, onExportEnd, studentsData = [] }) => {
+  ({ onFilterChange, isExportingAll = false, onExportStart, onExportEnd, studentsData = [], filterData }) => {
     const { t } = useTranslation()
     const [search, setSearch] = useState('')
     const [classValue, setClassValue] = useState('') // Default: "Hammasi" (empty value)
     const [subjectValue, setSubjectValue] = useState('') // Default: "Hammasi" (empty value)
     const [deviceValue, setDeviceValue] = useState('') // Default: "Hammasi" (empty value)
     const [diagnosticsValue, setDiagnosticsValue] = useState('') // Default: "Hammasi" (empty value)
-    const [statusValue, setStatusValue] = useState('active')
     const [langValue, setLangValue] = useState('')
-    const [roleValue, setRoleValue] = useState('student') // Default: "Hammasi"
+    // const [roleValue, setRoleValue] = useState('student') // Default: "Hammasi"
+    // const [statusValue, setStatusValue] = useState('active')
+    const [roleValue, setRoleValue] = useState('')
+    const [statusValue, setStatusValue] = useState('')
     const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-
+    const [isInitialized, setIsInitialized] = useState(false)
     // Debounce funksiyasini ref bilan saqlaymiz
     const debouncedSearchRef = useRef(null)
+
+    useEffect(() => {
+      if (!filterData) return
+
+      setSearch(filterData.search || '')
+      setClassValue(filterData.class_num || '')
+      setSubjectValue(filterData.subject_name || '')
+      setLangValue(filterData.lang || '')
+      setStatusValue(filterData.status || '')
+      setRoleValue(filterData.role || '')
+      setDeviceValue(filterData.device || '')
+    }, [filterData])
 
     // Sinf raqamlari (5-11)
     const classOptions = [

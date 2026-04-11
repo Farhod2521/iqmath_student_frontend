@@ -32,15 +32,23 @@ const ScrollToTop = () => {
     }, []);
 
     return (
-        <> {isVisible ? <Fab color='primary' onClick={scrollToTop} sx={{
-            position: 'fixed',
-            right: '30px',
-            bottom: '30px'
-        }}>
-            <IconArrowUp size={24} />
-        </Fab> : null}</>
-
-    );
+      <>
+        {' '}
+        {isVisible ? (
+          <Fab
+            color="primary"
+            onClick={scrollToTop}
+            sx={{
+              position: 'fixed',
+              right: '25px',
+              bottom: '90px'
+            }}
+          >
+            <IconArrowUp size={25} />
+          </Fab>
+        ) : null}
+      </>
+    )
 };
 
 export default ScrollToTop;

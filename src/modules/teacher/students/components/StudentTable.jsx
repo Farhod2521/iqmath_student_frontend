@@ -26,6 +26,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
   const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
   const [data, setData] = useState([])
 
+
   const getData = useCallback(
     (page = 1, limit = 10, filters = {}) => {
       setIsLoadingData(true)
@@ -72,16 +73,20 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
     [t, onStudentsDataChange]
   )
 
-  useEffect(() => {
-    setPagination((prev) => ({ ...prev, current: 1 }))
-    getData(1, pagination.limit, filterData)
-  }, [filterData, getData, pagination.limit])
+useEffect(() => {
+  if (!filterData) return // 🔥 ENG MUHIM
 
-  useEffect(() => {
-    if (pagination.current > 1) {
-      getData(pagination.current, pagination.limit, filterData)
-    }
-  }, [pagination.current, pagination.limit, filterData, getData])
+  setPagination((prev) => ({ ...prev, current: 1 }))
+  getData(1, pagination.limit, filterData)
+}, [filterData, getData, pagination.limit])
+
+useEffect(() => {
+  if (!filterData) return // 🔥 SHU HAM MUHIM
+
+  if (pagination.current > 1) {
+    getData(pagination.current, pagination.limit, filterData)
+  }
+}, [pagination.current, pagination.limit, filterData, getData])
 
   const handleExportAllStudents = useCallback(async () => {
     onExportStart()
@@ -203,12 +208,12 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         //  filter: 'agNumberColumnFilter',
         // suppressMenu: true,
         onCellClicked: (params) => {
-          if (filterData.role === 'teacher') return // 🔥 STOP
+          if (filterData?.role === 'teacher') return // 🔥 STOP
 
           router.push({
             pathname: `/dashboard/teacher/pupils/${params.data.id}`,
             query: {
-              role: filterData.role
+              role: filterData?.role
             }
           })
         },
@@ -221,7 +226,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
       }
     ]
 
-    if (filterData.role === 'student') {
+    if (filterData?.role === 'student') {
       baseColumns.push({
         headerName: t('class'),
         field: 'class_num',
@@ -376,7 +381,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
     )
 
     return baseColumns
-  }, [filterData.role, t, router, handleGiveReward, handleSignAsStudent])
+  }, [filterData?.role, t, router, handleGiveReward, handleSignAsStudent])
 
   // Loading holatida bo'sh loader ko'rsatmaymiz, chunki table o'rniga overlay ishlatamiz
 

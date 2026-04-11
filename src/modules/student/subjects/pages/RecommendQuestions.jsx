@@ -369,7 +369,7 @@ export default function RecommendQuestions() {
                   <Button
                     className={'!bg-transparent border !text-black'}
                     onPress={() => {
-                      toast.success('Mentorga yuborildi')
+                      toast.success(t('sentToMentor'))
                     }}
                   >
                     {t('sendMentor')}
