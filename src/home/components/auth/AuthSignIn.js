@@ -34,7 +34,6 @@ function AuthSignIn() {
         lang,
         redirect: false
       })
-      console.log('result', result)
 
       if (result?.ok) {
         const session = await getSession()

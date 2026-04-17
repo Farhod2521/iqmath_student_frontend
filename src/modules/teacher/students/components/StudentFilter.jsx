@@ -65,7 +65,8 @@ const StudentFilter = memo(
 
     const deviceOptions = [
       { value: '', label: t('all') },
-      { value: 'mobile', label: t('phone') },
+      { value: 'android', label: t('Android') },
+      { value: 'ios', label: t('IOS') },
       { value: 'web', label: t('web') }
     ]
 
