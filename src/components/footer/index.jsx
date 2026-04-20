@@ -58,14 +58,14 @@ const Footer = () => {
       key: 'telegram',
       icon: <TelegramIcon />,
       name: 'Telegram',
-      href: 'https://t.me/iqmath2025',
+      href: 'https://t.me/iqmathuzz',
       brand: 'telegram'
     },
     {
       key: 'instagram',
       icon: <InstagramIcon />,
       name: 'Instagram',
-      href: 'https://www.instagram.com/iq_mathuz/',
+      href: 'https://www.instagram.com/iqmath__uz/',
       brand: 'instagram'
     },
     {

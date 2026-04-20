@@ -59,8 +59,8 @@ const defaultLinks = {
 }
 
 const socialIcons = [
-  { key: 'telegram', Icon: FaTelegram, size: 20, link_url: 'https://t.me/iqmath2025' },
-  { key: 'instagram', Icon: FaInstagram, size: 20, link_url: 'https://www.instagram.com/iq_mathuz/' },
+  { key: 'telegram', Icon: FaTelegram, size: 20, link_url: 'https://t.me/iqmathuzz' },
+  { key: 'instagram', Icon: FaInstagram, size: 20, link_url: 'https://www.instagram.com/iqmath__uz/' },
   { key: 'youtube', Icon: FaYoutube, size: 20, link_url: 'https://www.youtube.com/@iqmathuz' }
 ]
 
