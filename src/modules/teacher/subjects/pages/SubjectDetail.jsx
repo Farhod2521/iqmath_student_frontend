@@ -146,14 +146,17 @@ const SubjectDetail = () => {
 
   return (
     <>
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-12 gap-4 md:gap-6">
         <TopicHeader
           topic={filteredTopic}
           onWatchVideo={() => setShowPlayer(true)}
           onCreateTest={handleCreateQuestion}
         />
 
-        <LevelTabs activeLevel={levelTab} onLevelChange={setLevelTab} />
+        <div className="col-span-12 md:col-span-12">
+          <LevelTabs activeLevel={levelTab} onLevelChange={setLevelTab} />
+        </div>
+
         <QuestionTable questions={filteredQuestions} onEdit={handleEditQuestion} onDelete={handleDeleteQuestion} />
       </div>
 

@@ -216,6 +216,7 @@
   "diagnostics": "Диагностика",
   "diagnosticsStatus": "Диагностический статус",
   "subjects": "Предметы",
+  "subjectTestPart": "Предметная и тестовая часть",
   "retakeDiagnostic": "Пересдать диагностику",
   "chooseLevelForRetake": "Выберите уровень для пересдачи",
   "retakeTest": "Пересдать тест",
@@ -1056,7 +1057,8 @@
     "newConversation": "Новый разговор",
     "loadingMessages": "Загрузка сообщений...",
     "writeMessage": "Напишите сообщение...",
-    "closeConversation": "Завершить разговор"
+    "closeConversation": "Завершить разговор",
+    "chat_closed_open_warning": "Можете подтвердить, что чат закрыт?"
   },
   "games": {
     "hero": {

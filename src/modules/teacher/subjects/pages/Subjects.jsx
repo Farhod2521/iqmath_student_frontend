@@ -81,12 +81,12 @@ const Subjects = () => {
         <div>
           <div className="text-[16px] uppercase font-semibold">{t('subjectsInArea')}</div>
           <div className="mt-[24px] flex gap-x-[24px]">
-            <div className="border border-[#E9E9E9] rounded-[12px] w-full">
+            <div className="border border-[#E9E9E9] rounded-[12px] w-full overflow-x-auto">
               <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <table className="w-full border-collapse table-auto">
+                <table className="w-full min-w-[900px] border-collapse table-auto">
                   <thead>
-                    <tr className="border-b border-b-[#E9E9E9] p-[12px]">
-                      <th className="p-[12px] text-center w-[40px]">
+                    <tr className="border-b border-b-[#E9E9E9] p-[8px] md:p-[12px]">
+                      <th className="p-[8px] md:p-[12px] text-center w-[40px]">
                         <button
                           onClick={() => setIsDragEnabled((prev) => !prev)}
                           className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100"
@@ -108,13 +108,13 @@ const Subjects = () => {
                           </svg>
                         </button>
                       </th>
-                      <th className="p-[12px] text-center">№</th>
-                      <th className="p-[12px] text-left">{t('class')}</th>
-                      <th className="p-[12px] text-left">{t('title')}</th>
-                      <th className="p-[12px] text-left">{t('chapter')}</th>
-                      <th className="p-[12px] text-left">{t('topic')}</th>
-                      <th className="p-[12px] text-left">{t('examples')}</th>
-                      <th className="p-[12px] text-left">{t('action')}</th>
+                      <th className="p-[8px] md:p-[12px] text-center">№</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('class')}</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('title')}</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('chapter')}</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('topic')}</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('examples')}</th>
+                      <th className="p-[8px] md:p-[12px] text-left">{t('action')}</th>
                     </tr>
                   </thead>
                   <SortableContext items={subjects} strategy={verticalListSortingStrategy} disabled={!isDragEnabled}>
@@ -126,23 +126,31 @@ const Subjects = () => {
                           showDragHandle={isDragEnabled}
                           className="transition-all border-b group hover:bg-gray-50"
                         >
-                          <td className="p-[12px] text-center">{index + 1}</td>
+                          <td className="p-[8px] md:p-[12px] text-center">{index + 1}</td>
 
-                          <td className="p-[12px] text-left text-sm">{get(item, 'class_name')}-sinf</td>
+                          <td className="p-[8px] md:p-[12px] text-left text-xs md:text-sm">
+                            {get(item, 'class_name')}-sinf
+                          </td>
                           <td
-                            className="p-[12px] text-left text-[15px] w-[20%] font-medium transition-all cursor-pointer hover:text-gray-700 hover:underline"
+                            className="p-[8px] md:p-[12px] text-left text-[15px] w-[20%] font-medium transition-all cursor-pointer hover:text-gray-700 hover:underline"
                             onClick={() => router.push(`/dashboard/teacher/subjects/${get(item, 'id')}`)}
                           >
                             {i18n.language === 'uz' ? get(item, 'name_uz') : get(item, 'name_ru')}
                           </td>
-                          <td className="p-[12px] text-left text-sm">{get(item, 'chapter_count')} ta</td>
-                          <td className="p-[12px] text-left text-sm">{get(item, 'topic_count')} ta</td>
-                          <td className="p-[12px] text-left text-sm">{get(item, 'question_count')} ta</td>
-                          <td className="p-[12px] text-left">
+                          <td className="p-[8px] md:p-[12px] text-left text-xs md:text-sm">
+                            {get(item, 'chapter_count')} ta
+                          </td>
+                          <td className="p-[8px] md:p-[12px] text-left text-xs md:text-sm">
+                            {get(item, 'topic_count')} ta
+                          </td>
+                          <td className="p-[8px] md:p-[12px] text-left text-xs md:text-sm">
+                            {get(item, 'question_count')} ta
+                          </td>
+                          <td className="p-[8px] md:p-[12px] text-left">
                             <div className="flex gap-2">
                               <button
                                 onClick={() => router.push(`/dashboard/teacher/subjects/${get(item, 'id')}`)}
-                                className="px-4 p-[8px] bg-[#007AFF] text-white rounded-[10px] hover:bg-blue-600 transition-all text-sm"
+                                className="px-4 p-[8px] bg-[#007AFF] text-white rounded-[10px] hover:bg-blue-600 transition-all text-xs md:text-sm"
                               >
                                 {t('details')}
                               </button>

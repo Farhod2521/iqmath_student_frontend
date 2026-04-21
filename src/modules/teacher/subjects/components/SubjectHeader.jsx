@@ -89,69 +89,93 @@ function SubjectHeader() {
   }
 
   return (
-    <div className="my-[20px] flex gap-2 relative">
-      <button
-        onClick={() => onSubmitImportExcel('text')}
-        className="flex gap-x-[10px] bg-[#00733B] hover:bg-[#00733bf1] scale-100 active:scale-90  lg:py-[9px] py-[10px] lg:px-[20px] px-[10px] items-center rounded-[8px] transform-all duration-200"
+    <div className="my-4 relative">
+      <div
+        className="grid grid-cols-2 sm:grid-cols-3 lg:flex gap-2 lg:items-center
+      overflow-x-auto lg:overflow-visible
+      pb-2
+    "
       >
-        <Image src={'/icons/excel.svg'} alt="excel" width={24} height={24} className="lg:w-[24px] lg:h-[24px]" />
-        <p className="text-xs lg:text-sm font-gilroy text-white ">Tekst savollar</p>
-      </button>
+        <button
+          onClick={() => onSubmitImportExcel('text')}
+          className="flex items-center gap-1 bg-[#00733B] hover:bg-[#00733bf1]
+          active:scale-95 transition-all duration-200
+          py-2 px-3 md:py-[9px] md:px-[20px]
+          rounded-[8px]"
+        >
+          <Image src={'/icons/excel.svg'} alt="excel" width={20} height={20} className="md:w-[24px] md:h-[24px]" />
+          <p className="text-[11px] md:text-sm font-gilroy text-white whitespace-nowrap">Test savollar</p>
+        </button>
 
-      <button
-        onClick={() => onSubmitImportExcel('choice')}
-        className="flex gap-x-[10px] bg-[#00733B] hover:bg-[#00733bf1] scale-100 active:scale-90  lg:py-[9px] py-[10px] lg:px-[20px] px-[10px] items-center rounded-[8px] transform-all duration-200"
-      >
-        <Image src={'/icons/excel.svg'} alt="excel" width={24} height={24} className="lg:w-[24px] lg:h-[24px]" />
-        <p className="text-xs lg:text-sm font-gilroy text-white ">Variantli savollar</p>
-      </button>
+        <button
+          onClick={() => onSubmitImportExcel('choice')}
+          className="flex items-center gap-2 bg-[#00733B] hover:bg-[#00733bf1]
+          active:scale-95 transition-all duration-200
+          py-2 px-3 md:py-[9px] md:px-[20px]
+          rounded-[8px]"
+        >
+          <Image src={'/icons/excel.svg'} alt="excel" width={20} height={20} className="md:w-[24px] md:h-[24px]" />
+          <p className="text-[11px] md:text-sm font-gilroy text-white whitespace-nowrap"> Variantli savollar</p>
+        </button>
 
-      <button
-        onClick={() => onSubmitImportExcel('composite')}
-        className="flex gap-x-[10px] bg-[#00733B] hover:bg-[#00733bf1] scale-100 active:scale-90  lg:py-[9px] py-[10px] lg:px-[20px] px-[10px] items-center rounded-[8px] transform-all duration-200"
-      >
-        <Image src={'/icons/excel.svg'} alt="excel" width={24} height={24} className="lg:w-[24px] lg:h-[24px]" />
-        <p className="text-xs lg:text-sm font-gilroy text-white ">Ko'p kiritmali savollar</p>
-      </button>
+        <button
+          onClick={() => onSubmitImportExcel('composite')}
+          className="flex items-center gap-2 bg-[#00733B] hover:bg-[#00733bf1]
+          active:scale-95 transition-all duration-200
+          py-2 px-3 md:py-[9px] md:px-[20px]
+          rounded-[8px]"
+        >
+          <Image src={'/icons/excel.svg'} alt="excel" width={20} height={20} className="md:w-[24px] md:h-[24px]" />
+          <p className="text-[11px] md:text-sm font-gilroy text-white whitespace-nowrap">Ko'p kiritmali savollar</p>
+        </button>
 
-      <input type="file" accept=".xlsx" ref={inputRef} onChange={onFileChange} className="hidden" />
+        <input type="file" accept=".xlsx" ref={inputRef} onChange={onFileChange} className="hidden" />
 
-      <button
-        onClick={handleClick}
-        className="flex gap-x-[10px] bg-[#653BA0FF] hover:bg-[#7243B5FF] scale-100 active:scale-90 lg:py-[9px] py-[10px] lg:px-[20px] px-[10px] items-center rounded-[8px] transform-all duration-200"
-      >
-        <Image src={'/icons/excel.svg'} alt="excel" width={24} height={24} className="lg:w-[24px] lg:h-[24px]" />
-        <p className="text-xs lg:text-sm font-gilroy text-white">Excel import</p>
-      </button>
+        <button
+          onClick={handleClick}
+          className="flex items-center gap-2 bg-[#653BA0FF] hover:bg-[#7243B5FF]
+          active:scale-95 transition-all duration-200
+          py-2 px-3 md:py-[9px] md:px-[20px]
+          rounded-[8px]"
+        >
+          <Image src={'/icons/excel.svg'} alt="excel" width={20} height={20} className="md:w-[24px] md:h-[24px]" />
+          <p className="text-[11px] md:text-sm font-gilroy text-white whitespace-nowrap">Excel import</p>
+        </button>
 
-      <button onClick={handleShowWarning}>
-        <InfoCircleIcon />
-      </button>
+        <button onClick={handleShowWarning} className="flex-shrink-0 p-2">
+          <InfoCircleIcon />
+        </button>
 
-      {showWarning && (
-        <WarningModal classname="absolute w-full max-w-[351px] top-12 z-50">
-          <button onClick={() => setShowWarning(false)} className="float-right rounded">
-            <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-          </button>
-          <p className="text-sm text-gray-800">
-            <b>
-              <i>“Tekst savollar”, “Variantli savollar” va “Ko'p kiritmali savollar”</i>
-            </b>{' '}
-            tugmalaridan birini bosganingizda, siz turgan sahifadagi <b>mavzu nomi</b> va <b>mavzuga tegishli ID</b>{' '}
-            asosida <b>Excel formatidagi fayl</b> avtomatik tarzda yuklab olinadi. Ushbu faylda savollar va ularga
-            javoblar kiritilishi uchun alohida katakchalar ajratilgan bo‘ladi.{' '}
-            <b>Savollar turi tanlangan tugmaga qarab avtomatik moslashtiriladi.</b>
-            <br />
-            <br />
-            <b>
-              <i>“Excel import”</i>
-            </b>{' '}
-            tugmasi esa — siz mavzu asosida tayyorlagan savol va javoblaringizni faylga to‘ldirganingizdan so‘ng, ushbu
-            faylni tizimga qayta yuklash uchun mo‘ljallangan. Fayl muvaffaqiyatli yuklangach, pastki qismda siz kiritgan
-            savollar ro‘yxati ko‘rsatiladi.
-          </p>
-        </WarningModal>
-      )}
+        {showWarning && (
+          <WarningModal
+            classname="
+            absolute top-12 left-1/2 -translate-x-1/2
+            w-[90%] max-w-[351px] z-50
+          "
+          >
+            <button onClick={() => setShowWarning(false)} className="float-right rounded">
+              <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
+            </button>
+            <p className="text-sm text-gray-800">
+              <b>
+                <i>“Test savollar”, “Variantli savollar” va “Ko'p kiritmali savollar”</i>
+              </b>{' '}
+              tugmalaridan birini bosganingizda, siz turgan sahifadagi <b>mavzu nomi</b> va <b>mavzuga tegishli ID</b>{' '}
+              asosida <b>Excel formatidagi fayl</b> avtomatik tarzda yuklab olinadi. Ushbu faylda savollar va ularga
+              javoblar kiritilishi uchun alohida katakchalar ajratilgan bo‘ladi.{' '}
+              <b>Savollar turi tanlangan tugmaga qarab avtomatik moslashtiriladi.</b>
+              <br />
+              <br />
+              <b>
+                <i>“Excel import”</i>
+              </b>{' '}
+              tugmasi esa — siz mavzu asosida tayyorlagan savol va javoblaringizni faylga to‘ldirganingizdan so‘ng,
+              ushbu faylni tizimga qayta yuklash uchun mo‘ljallangan. Fayl muvaffaqiyatli yuklangach, pastki qismda siz
+              kiritgan savollar ro‘yxati ko‘rsatiladi.
+            </p>
+          </WarningModal>
+        )}
+      </div>
     </div>
   )
 }

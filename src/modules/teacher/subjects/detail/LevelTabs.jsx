@@ -12,12 +12,12 @@ const LevelTabs = ({ activeLevel, onLevelChange }) => {
   ]
 
   return (
-    <div className="col-span-12 flex gap-2">
+    <div className="col-span-12 flex gap-2 overflow-x-auto md:overflow-visible pb-2">
       {levels.map((level) => (
         <button
           key={level.value}
           onClick={() => onLevelChange(level.value)}
-          className={`border px-4 py-2 rounded-md transition-all duration-300 border-[#5D87FF] 
+          className={`px-3 py-1 md:px-4 md:py-2 border rounded-md transition-all duration-300 border-[#5D87FF] whitespace-nowrap text-sm 
             ${
               activeLevel === level.value
                 ? 'bg-[#5D87FF] text-white scale-100'

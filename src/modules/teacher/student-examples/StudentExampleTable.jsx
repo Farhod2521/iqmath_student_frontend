@@ -1,19 +1,28 @@
-import Image from "next/image";
-import React from "react";
-import { AgGridReact } from "ag-grid-react";
-import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
-import ContentLoader from "@/components/loader/content-loader";
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
-import StudentExamplePagination from "./StudentExamplePagination";
-import { FaTelegram } from 'react-icons/fa';
-import { toast } from 'react-hot-toast';
+import Image from 'next/image'
+import React from 'react'
+import { AgGridReact } from 'ag-grid-react'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
+import ContentLoader from '@/components/loader/content-loader'
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
+import StudentExamplePagination from './StudentExamplePagination'
+import { FaTelegram } from 'react-icons/fa'
+import { toast } from 'react-hot-toast'
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule])
 
-function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange, isLoading, actionLoading, onViewDetails, context }) {
-  const router = useRouter();
-  const { t } = useTranslation();
+function StudentExampleTable({
+  data,
+  pagination,
+  onPageChange,
+  onPageSizeChange,
+  isLoading,
+  actionLoading,
+  onViewDetails,
+  context
+}) {
+  const router = useRouter()
+  const { t } = useTranslation()
 
   // Global funksiya sifatida saqlash
   if (typeof window !== 'undefined') {
@@ -22,85 +31,94 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
 
   const formatDate = (dateString) => {
     // "2025 M06 30 20:28" formatini parse qilish
-    const match = dateString.match(/(\d{4})\s+M(\d{2})\s+(\d{2})\s+(\d{2}):(\d{2})/);
-    
+    const match = dateString.match(/(\d{4})\s+M(\d{2})\s+(\d{2})\s+(\d{2}):(\d{2})/)
+
     if (match) {
-      const [, year, month, day, hour, minute] = match;
-      
+      const [, year, month, day, hour, minute] = match
+
       // Oylar nomlari
       const monthNames = {
-        '01': 'yanvar', '02': 'fevral', '03': 'mart', '04': 'aprel',
-        '05': 'may', '06': 'iyun', '07': 'iyul', '08': 'avgust',
-        '09': 'sentabr', '10': 'oktabr', '11': 'noyabr', '12': 'dekabr'
-      };
-      
-      const monthName = monthNames[month] || month;
-      
-      return `${year} ${day}-${monthName} ${hour}:${minute}`;
+        '01': 'yanvar',
+        '02': 'fevral',
+        '03': 'mart',
+        '04': 'aprel',
+        '05': 'may',
+        '06': 'iyun',
+        '07': 'iyul',
+        '08': 'avgust',
+        '09': 'sentabr',
+        10: 'oktabr',
+        11: 'noyabr',
+        12: 'dekabr'
+      }
+
+      const monthName = monthNames[month] || month
+
+      return `${year} ${day}-${monthName} ${hour}:${minute}`
     }
-    
+
     // Agar format to'g'ri kelmasa, asl qiymatni qaytarish
-    return dateString;
-  };
+    return dateString
+  }
 
   const formatTeacherDate = (dateString) => {
     try {
-      const date = new Date(dateString);
-      
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      
-      return `${year}.${month}.${day} ${hours}:${minutes}`;
+      const date = new Date(dateString)
+
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+
+      return `${year}.${month}.${day} ${hours}:${minutes}`
     } catch (error) {
-      return dateString;
+      return dateString
     }
-  };
+  }
 
   const getStatusColor = (status) => {
     switch (status) {
       case 'kutmoqda':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
       case 'tasdiqlangan':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
       case 'rad etilgan':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
       case 'javob berilgan':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
       default:
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
     }
-  };
+  }
 
   const getStatusText = (status) => {
     switch (status) {
       case 'kutmoqda':
-        return t('waiting');
+        return t('waiting')
       case 'tasdiqlangan':
-        return t('approved');
+        return t('approved')
       case 'rad etilgan':
-        return t('rejected');
+        return t('rejected')
       case 'javob berilgan':
-        return 'Javob berilgan';
+        return 'Javob berilgan'
       default:
-        return status;
+        return status
     }
-  };
+  }
 
   const handleTelegramClick = (studentId, studentName) => {
     // Telegram bot linkini yaratish
     const botUsername = 'iqmath_mentor_bot' // Bot username
     const startParam = `start_${studentId}` // Student ID bilan start parametri
     const telegramUrl = `https://t.me/${botUsername}?start=${startParam}`
-    
+
     // Yangi tab da ochish
     window.open(telegramUrl, '_blank')
-    
+
     // Toast xabar
     toast.success(`${studentName} bilan Telegram orqali bog'lanish uchun bot ochildi`)
-  };
+  }
 
   const colDefs = [
     {
@@ -112,14 +130,15 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       flex: 0.5,
       sortable: false,
       checkboxSelection: true,
-      resizable: false
+      resizable: false,
+      suppressSizeToFit: true
     },
     {
       headerName: t('student'),
       field: 'student_name',
-      width: 200,
+      width: 400,
       minWidth: 150,
-      maxWidth: 300,
+      // maxWidth: 300,
       flex: 1.5,
       cellRenderer: (params) => (
         <div className={`flex items-center gap-2 cursor-pointer ${params.data.has_answers ? 'text-green-600' : ''}`}>
@@ -150,6 +169,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
       minWidth: 130,
       maxWidth: 220,
       flex: 1.2,
+      suppressSizeToFit: true,
       cellClass: 'text-center',
       cellRenderer: (params) => {
         return formatDate(params.value)
@@ -250,7 +270,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
           <div className="flex justify-center">
             <button
               onClick={() => handleTelegramClick(params.data.student_id, params.data.student_name)}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg flex justify-center text-xs transition-colors duration-200"
+              className="items-center gap-1 px-2 py-1 rounded-lg flex justify-center text-xs transition-colors duration-200"
               title="Telegram orqali bog'lanish"
             >
               <FaTelegram className="w-5 h-5 text-blue-500 ml-2" />
@@ -284,11 +304,12 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
     }
   ]
 
-
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full min-w-0 overflow-x-hidden">
       <style jsx global>{`
         .custom-grid {
+          width: 100%;
+          min-width: 0;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
           overflow: hidden;
@@ -314,7 +335,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
           padding: 8px 12px;
         }
       `}</style>
-      <div className="w-full">
+      <div className="w-full min-w-0 overflow-x-auto">
         <div className="relative">
           {isLoading && (
             <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
@@ -333,7 +354,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
               sortable: true,
               filter: true,
               suppressSizeToFit: false,
-              flex: 1,
+              flex: 1
             }}
             suppressColumnVirtualisation={false}
             suppressRowVirtualisation={false}
@@ -354,7 +375,7 @@ function StudentExampleTable({ data, pagination, onPageChange, onPageSizeChange,
         isLoading={isLoading}
       />
     </div>
-  );
+  )
 }
 
-export default StudentExampleTable; 
+export default StudentExampleTable

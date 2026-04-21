@@ -18,20 +18,20 @@ function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, 
   const endItem = Math.min(current * limit, total)
 
   return (
-    <div className="flex justify-between items-center mt-[36px]">
-      <div className="relative inline-block">
+    <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mt-[36px]">
+      <div className="relative inline-block w-full md:w-auto">
         <select
-          className="appearance-none bg-white border border-gray-300 rounded-[8px] px-[16px] py-[9px] w-40 text-black text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
+          className="appearance-none w-full md:w-40 bg-white border border-gray-300 rounded-[8px] px-[16px] py-[9px] text-black text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
           value={limit}
           onChange={handlePageSizeChange}
           disabled={isLoading}
         >
-          <option value={100}>{t("showBy100")}</option>
-          <option value={200}>{t("showBy200")}</option>
-          <option value={300}>{t("showBy300")}</option>
-          <option value={400}>{t("showBy400")}</option>
-          <option value={500}>{t("showBy500")}</option>
-          <option value={1000}>{t("showBy1000")}</option>
+          <option value={100}>{t('showBy100')}</option>
+          <option value={200}>{t('showBy200')}</option>
+          <option value={300}>{t('showBy300')}</option>
+          <option value={400}>{t('showBy400')}</option>
+          <option value={500}>{t('showBy500')}</option>
+          <option value={1000}>{t('showBy1000')}</option>
         </select>
         <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none rotate-90 ">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,16 +45,18 @@ function StudentExamplePagination({ pagination, onPageChange, onPageSizeChange, 
         </div>
       </div>
 
-      <Pagination
-        pageCount={totalPages}
-        onPageChange={handlePageChange}
-        currentPage={current - 1}
-        disabled={isLoading}
-      />
+      <div className="flex justify-center md:justify-center w-full md:w-auto">
+        <Pagination
+          pageCount={totalPages}
+          onPageChange={handlePageChange}
+          currentPage={current - 1}
+          disabled={isLoading}
+        />
+      </div>
 
-      <div>
-        <p className="text-[15px] text-[#8a8a8e]">
-          {total > 0 ? `${t("showing")} ${startItem}-${endItem} ${t("of")} ${total} ${t("elements")}` : t("noData")}
+      <div className="text-center md:text-right w-full md:w-auto">
+        <p className="text-[14px] md:text-[15px] text-[#8a8a8e]">
+          {total > 0 ? `${t('showing')} ${startItem}-${endItem} ${t('of')} ${total} ${t('elements')}` : t('noData')}
         </p>
       </div>
     </div>

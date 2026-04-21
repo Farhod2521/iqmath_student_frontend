@@ -80,10 +80,10 @@ const ChatBoxModule = () => {
       <div
         className={`${
           showChatList ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 absolute md:relative w-full md:w-[380px] h-full border-r border-gray-200 flex flex-col bg-white transition-transform duration-300 z-10`}
+        } md:translate-x-0 absolute md:relative w-[360px] md:w-[380px] h-full border-r border-gray-200 flex flex-col bg-white transition-transform duration-300 z-10`}
       >
-        <div className="px-6 pt-6 pb-3 border-b border-gray-100">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800">{t('messages')}</h2>
+        <div className="px-2 sm:px-6 pt-6 pb-3 border-b border-gray-100">
+          <h2 className="mb-4 text-xl sm:text-2xl font-bold text-gray-800">{t('messages')}</h2>
         </div>
 
         {/* SIZNING ChatsList KOMPONENTINGIZ */}

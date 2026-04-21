@@ -8,7 +8,7 @@ export default function Document() {
         <Main />
         <NextScript />
         <script src="https://styleguide.brainly.com/images/math-symbols-icons-76ec20f543.js"></script>
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
               var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -22,7 +22,7 @@ export default function Document() {
               })();
             `
           }}
-        />
+        /> */}
       </body>
     </Html>
   )

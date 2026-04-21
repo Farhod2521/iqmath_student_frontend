@@ -9,13 +9,12 @@ import CommentModal from '@/modules/teacher/student-examples/CommentModal'
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
-
 const StudentExamples = () => {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)  
+  const [error, setError] = useState(null)
   const [actionLoading, setActionLoading] = useState({})
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -36,67 +35,67 @@ const StudentExamples = () => {
   }
 
   // API dan ma'lumotlarni olish
-  const fetchData = 
-    async (page = 1, limit = 100) => {
-      try {
-        setLoading(true)
-        setError(null)
-        const response = await request.get('/api/v1/func_teacher/teacher-independent/list/')
+  const fetchData = async (page = 1, limit = 100) => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await request.get('/api/v1/func_teacher/teacher-independent/list/')
 
-        // Ma'lumotlarni tayyorlash
-        const tableData = []
-        if (response?.data?.results) {
-          response.data.results.forEach((student) => {
-            student.requests.forEach((request) => {
-              tableData.push({
-                id: request.id,
-                student_id: student.student_id,
-                student_name: student.student_full_name,
-                class_name: i18n.language === 'ru' ? request.class_ru : request.class_uz,
-                topic: i18n.language === 'ru' ? request.topics_name_ru[0] : request.topics_name_uz[0],
-                created_at: request.created_at,
-                status: request.status,
-                formatted_date: formatDate(request.created_at),
-                has_answers: request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0,
-                // Teacher ma'lumotlari - API response strukturasiga mos
-                teacher: request.teacher
-              })
+      // Ma'lumotlarni tayyorlash
+      const tableData = []
+      if (response?.data?.results) {
+        response.data.results.forEach((student) => {
+          student.requests.forEach((request) => {
+            tableData.push({
+              id: request.id,
+              student_id: student.student_id,
+              student_name: student.student_full_name,
+              class_name: i18n.language === 'ru' ? request.class_ru : request.class_uz,
+              topic: i18n.language === 'ru' ? request.topics_name_ru[0] : request.topics_name_uz[0],
+              created_at: request.created_at,
+              status: request.status,
+              formatted_date: formatDate(request.created_at),
+              has_answers:
+                request.question_json && Array.isArray(request.question_json) && request.question_json.length > 0,
+              // Teacher ma'lumotlari - API response strukturasiga mos
+              teacher: request.teacher
             })
           })
-        }
-
-        // Filtrlash
-        const filteredData = tableData.filter((item) => {
-          const matchesSearch =
-            search === '' ||
-            item.student_name.toLowerCase().includes(search.toLowerCase()) ||
-            item.class_name.toLowerCase().includes(search.toLowerCase()) ||
-            item.topic.toLowerCase().includes(search.toLowerCase())
-
-          const matchesStatus = statusFilter === '' || item.status === statusFilter
-
-          return matchesSearch && matchesStatus
         })
-
-        const startIndex = (page - 1) * limit
-        const endIndex = startIndex + limit
-        const paginatedData = filteredData.slice(startIndex, endIndex)
-
-        setData(paginatedData)
-        setPagination({
-          current: page,
-          limit,
-          total: filteredData.length,
-          totalPages: Math.ceil(filteredData.length / limit)
-        })
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        setError("Ma'lumotlarni yuklashda xatolik yuz berdi")
-        setData([])
-      } finally {
-        setLoading(false)
       }
+
+      // Filtrlash
+      const filteredData = tableData.filter((item) => {
+        const matchesSearch =
+          search === '' ||
+          item.student_name.toLowerCase().includes(search.toLowerCase()) ||
+          item.class_name.toLowerCase().includes(search.toLowerCase()) ||
+          item.topic.toLowerCase().includes(search.toLowerCase())
+
+        const matchesStatus = statusFilter === '' || item.status === statusFilter
+
+        return matchesSearch && matchesStatus
+      })
+
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedData = filteredData.slice(startIndex, endIndex)
+
+      setData(paginatedData)
+      setPagination({
+        current: page,
+        limit,
+        total: filteredData.length,
+        totalPages: Math.ceil(filteredData.length / limit)
+      })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      setError("Ma'lumotlarni yuklashda xatolik yuz berdi")
+      setData([])
+    } finally {
+      setLoading(false)
     }
+  }
 
   useEffect(() => {
     fetchData(1, 100)
@@ -124,8 +123,6 @@ const StudentExamples = () => {
     setSelectedStudentName(studentName)
     setShowCommentModal(true)
   }
-
-
 
   const statusOptions = [
     { value: '', label: 'Hammasi' },
@@ -175,13 +172,14 @@ const StudentExamples = () => {
     <LayoutAdmin title={t('studentExamples')}>
       <div className="space-y-6">
         {/* Filters - pupils sahifasidagidek */}
-        <div className="flex items-center justify-between py-[16px]">
-          <div className="flex items-center gap-x-[12px]">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 py-4 w-full">
+          {/* <div className="flex items-center gap-x-[12px]"> */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
             <SearchInput
               placeholder="Qidiruv..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-80"
+              className="w-full sm:w-80"
             />
 
             <SelectBox
@@ -189,17 +187,15 @@ const StudentExamples = () => {
               options={statusOptions}
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-40"
+              className="w-full sm:w-40"
             />
           </div>
-          
-
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-gray-800">
+        <div className="bg-white dark:bg-gray-800 w-full min-w-0 overflow-x-auto">
           {data.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 w-full">
               <div className="mx-auto h-12 w-12 text-gray-400">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path

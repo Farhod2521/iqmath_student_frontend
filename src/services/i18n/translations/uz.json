@@ -218,6 +218,7 @@
   "topicName": "Mavzu nomi",
   "deleteTopic": "Mavzuni o'chirish",
   "editTopic": "Mavzuni o'zgartirish",
+
   "createTopic": "Mavzu yaratish",
   "videoLink": "Video link",
   "enterVideoLinkName": "Video linkni nomini kiriting",
@@ -256,6 +257,7 @@
   "diagnostics": "Diagnostika",
   "diagnosticsStatus": "Diagnostika holati",
   "subjects": "Fanlar",
+  "subjectTestPart": "Mavzu va sinov qismi",
   "chat": "Chat",
   "mentorRequests": "Mentorga yuborilgan murojaatlar",
   "mentorRequestsDescription": "Bu yerda mentorga yuborgan barcha murojaatlaringizni ko'rishingiz mumkin",
@@ -1114,6 +1116,7 @@
       "error_closing_chat": "Chat yopilishida xatolik",
       "rate_chat_session": "Chat sessiyasini baholang",
       "very_poor": "Juda yomon",
+
       "poor": "Yomon",
       "average": "O'rtacha",
       "good": "Yaxshi",
@@ -1147,7 +1150,8 @@
     "newConversation": "Yangi suhbat",
     "loadingMessages": "Xabarlar yuklanmoqda...",
     "writeMessage": "Xabar yozing...",
-    "closeConversation": "Suhbatni yopish"
+    "closeConversation": "Suhbatni yopish",
+    "chat_closed_open_warning": "Chat yopiq ochishni tasdiqlayszmi"
   },
   "games": {
     "hero": {

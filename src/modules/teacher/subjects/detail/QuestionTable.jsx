@@ -77,8 +77,8 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
         }
       }}
     >
-      <div className="col-span-12 border border-[#E9E9E9] rounded-[12px]">
-        <table className="w-full">
+      <div className="col-span-12 border border-[#E9E9E9] rounded-[12px] overflow-x-auto">
+        <table className="w-full min-w-[900px] md:min-w-full">
           <thead>
             <tr className="border-b border-b-[#E9E9E9]">
               <th className="p-3 pl-6 text-left">#</th>

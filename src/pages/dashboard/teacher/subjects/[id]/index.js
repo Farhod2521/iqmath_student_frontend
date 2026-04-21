@@ -539,12 +539,12 @@ const Index = () => {
               title: i18n.language === 'uz' ? item.title_uz : item.title_ru
             }))}
           />
-          <div className="grid grid-cols-12 gap-[24px]">
-            <div className="lg:col-span-6 col-span-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-[24px]">
+            <div className="lg:col-span-6 col-span-12 w-full">
               <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-[16px] uppercase ">{t('chapters')}</h2>
                 <Button
-                  py="py-[8px] text-sm"
+                  py="py-[6px] md:py-[8px] text-sm"
                   classname={'hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
                   onclick={() => {
                     setOpenChapterModal(true)
@@ -556,9 +556,9 @@ const Index = () => {
                   {t('createChapter')}
                 </Button>
               </div>
-              <div className=" self-start border border-[#E9E9E9] rounded-[12px]">
+              <div className=" self-start border border-[#E9E9E9] rounded-[12px] overflow-x-auto w-full">
                 <DndContext collisionDetection={closestCenter} onDragEnd={handleChaptersDragEnd}>
-                  <table className="w-full table-auto border-collapse">
+                  <table className="w-full min-w-[300px] lg:min-w-full table-auto border-collapse">
                     <thead>
                       <tr className="border-b border-b-[#E9E9E9] p-[12px]">
                         <th className="p-[12px] text-center">
@@ -623,7 +623,7 @@ const Index = () => {
                                       setNewChapterRu(get(chapter, 'name_ru'))
                                       setModalTypeOfChapter('update')
                                     }}
-                                    py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
+                                    py="py-[6px] md:py-[8px] md:px-[6px] px-[8px] block text-xs md:text-sm bg-[#FF9500FF] hover:bg-[#DB8000FF]  transition-all duration-200 scale-100 active:scale-95"
                                   >
                                     <EditIcon color="white" />
                                   </Button>
@@ -634,7 +634,7 @@ const Index = () => {
                                       setSelectedId(get(chapter, 'id'))
                                       setModalTypeOfChapter('delete')
                                     }}
-                                    classname="py-[8px] px-[8px] text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
+                                    classname="py-[6px] md:py-[8px] md:px-[6px] px-[8px] text-xs md:text-sm bg-[#FF3B30] hover:bg-[#E1332AFF] transition-all duration-300 scale-100 active:scale-95"
                                   >
                                     <TrashIcon color="white" />
                                   </Button>
@@ -655,7 +655,7 @@ const Index = () => {
                 <div className="flex justify-between items-center mb-2 ">
                   <h2 className="font-semibold text-[16px] uppercase">{t('topics')}</h2>
                   <Button
-                    py="py-[8px] text-sm"
+                    py="py-[6px] md:py-[8px] text-sm"
                     onclick={(e) => {
                       e.stopPropagation()
                       setOpenTopicsModal(true)
@@ -674,7 +674,7 @@ const Index = () => {
                   </Button>
                 </div>
                 <div
-                  className={` self-start border border-[#E9E9E9] ${
+                  className={` self-start border border-[#E9E9E9] overflow-x-auto w-full ${
                     topics.length > 0 ? 'border-[#E9E9E9]' : 'border-[#FF9500] bg-[#FFF4E5]'
                   } rounded-[12px]`}
                 >
@@ -684,7 +684,7 @@ const Index = () => {
                     <div>
                       {topics.length > 0 ? (
                         <DndContext collisionDetection={closestCenter} onDragEnd={handleTopicsDragEnd}>
-                          <table className="w-full table-auto border-collapse">
+                          <table className="w-full min-w-[500px] lg:min-w-full table-auto border-collapse">
                             <thead>
                               <tr className="border-b border-b-[#E9E9E9] p-[12px]">
                                 <th className="p-[12px] text-center">
@@ -762,7 +762,7 @@ const Index = () => {
                                             setVideoLinkRu(topic.video_url_ru)
                                             setModalTypeOfTopic('update')
                                           }}
-                                          py="py-[8px] px-[8px] block text-sm bg-[#FF9500FF] border"
+                                          py="py-[6px] md:py-[8px] md:px-[6px] px-[8px] block text-xs md:text-sm bg-[#FF9500FF] border"
                                         >
                                           <EditIcon color="white" />
                                         </Button>
@@ -773,7 +773,7 @@ const Index = () => {
                                             setSelectedTopic(topic)
                                             setModalTypeOfTopic('delete')
                                           }}
-                                          classname="py-[8px] px-[8px] text-sm bg-[#FF3B30]"
+                                          classname="py-[6px] md:py-[8px] md:px-[6px] px-[8px] text-xs md:text-sm bg-[#FF3B30]"
                                         >
                                           <TrashIcon color="white" />
                                         </Button>
@@ -868,7 +868,7 @@ const Index = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-1/2 h-screen overflow-y-auto  font-sf"
+              className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-full sm:w-2/3 lg:w-1/2 h-screen overflow-y-auto  font-sf"
             >
               <div className="flex justify-between px-[16px] py-[18px]">
                 <h3 className="text-[19px] font-semibold">

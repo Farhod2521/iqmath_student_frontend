@@ -295,32 +295,32 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
-  {
-    key: 'my-study',
-    path: '/dashboard/teacher/my-study',
-    label: t('groups'),
-    icon: (isActive) => (
-      <PiGraduationCap
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-  {
-    key: 'individual',
-    path: '/dashboard/teacher/individual',
-    label: t('independent'),
-    icon: (isActive) => (
-      <GoChecklist
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
+  // {
+  //   key: 'my-study',
+  //   path: '/dashboard/teacher/my-study',
+  //   label: t('groups'),
+  //   icon: (isActive) => (
+  //     <PiGraduationCap
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
+  //   type: MenuType.LINK
+  // },
+  // {
+  //   key: 'individual',
+  //   path: '/dashboard/teacher/individual',
+  //   label: t('independent'),
+  //   icon: (isActive) => (
+  //     <GoChecklist
+  //       className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+  //       size={26}
+  //     />
+  //   ),
+  //   roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
+  //   type: MenuType.LINK
+  // },
   {
     key: 'chat',
     path: '/dashboard/student/chat/chat-box',
