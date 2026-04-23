@@ -66,18 +66,18 @@ const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
         <div
           key={chat.id}
           onClick={() => {
-            if (chat.is_closed) {
-              // Yopilgan chatni ochish uchun ogohlantirish
-              if (window.confirm(t('chat_closed_open_warning'))) {
-                props.setActiveChat(chat)
-                props.setShowChatList(false)
-                props.cancelReply()
-              }
-            } else {
-              props.setActiveChat(chat)
-              props.setShowChatList(false)
-              props.cancelReply()
-            }
+            // if (chat.is_closed) {
+            //   // Yopilgan chatni ochish uchun ogohlantirish
+            //   if (window.confirm(t('chatBox.chat_closed_open_warning'))) {
+            //     props.setActiveChat(chat)
+            //     props.setShowChatList(false)
+            //     props.cancelReply()
+            //   }
+            // } else {
+            props.setActiveChat(chat)
+            props.setShowChatList(false)
+            props.cancelReply()
+            // }
           }}
           className={`
           flex items-start gap-3 md:gap-4
@@ -85,7 +85,7 @@ const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
           cursor-pointer transition-all border-l-4
           w-full max-w-full overflow-hidden
           ${props.activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
-        `}
+          `}
           // ${chat.is_closed ? 'opacity-70' : ''}
         >
           <div className="relative flex-shrink-0">

@@ -8,7 +8,7 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
   const { t } = useTranslation()
   const extractedUrl = extractUrl(message?.url) || extractUrl(message?.text)
   const cleanText = removeUrlFromText(message.text)
-
+  // extractMainMessage
   if (isMe) {
     return (
       <div className="flex justify-end">
@@ -22,6 +22,10 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
           <div className="relative">
             <div className="p-4 text-white rounded-tr-sm shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl">
               <p className="text-sm whitespace-pre-wrap break-all">{cleanText}</p>
+              {/* Sizning IndependentResult komponentingiz */}
+              {message?.independent_data && (
+                <IndependentResultCard data={message.independent_data} variant={isMe ? 'dark' : 'light'} />
+              )}
               {extractedUrl && (
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xs">{t('link')}:</span>
@@ -64,7 +68,9 @@ export const MessageBubble = ({ message, isMe, otherUserName, onReply, showAvata
           <div className="p-4 bg-white border border-gray-100 rounded-tl-sm shadow-md rounded-2xl">
             <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">{cleanText}</p>
             {/* Sizning IndependentResult komponentingiz */}
-            {message?.independent_data && <IndependentResultCard data={message.independent_data} />}
+            {message?.independent_data && (
+              <IndependentResultCard data={message.independent_data} variant={isMe ? 'dark' : 'light'} />
+            )}
             <div className="flex items-center justify-between mt-2">
               <div className="flex items-center gap-1">
                 {extractedUrl && (

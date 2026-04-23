@@ -58,3 +58,18 @@ export const formatMessageDateTime = (dateString) => {
 
   return `${datePart} • ${timePart}`
 }
+
+export const extractMainMessage = (text) => {
+  if (!text || typeof text !== 'string') return text
+
+  const targetPhrase = 'O‘quvchi sizga yangi mavzu bo‘yicha yordam so‘radi'
+
+  // agar shu text ichida bo‘lsa → extract qilamiz
+  if (text.includes(targetPhrase)) {
+    const match = text.match(new RegExp(targetPhrase))
+    return match ? match[0] : text
+  }
+
+  // boshqa holatlarda original qaytadi
+  return text
+}

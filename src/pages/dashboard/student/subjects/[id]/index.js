@@ -43,9 +43,9 @@ const SubjectsPage = () => {
   })
 
   useEffect(() => {
-   if (chapter?.data?.length && !selectedChapterId) {
-     setSelectedChapterId(chapter.data[0].id)
-   }
+    if (chapter?.data?.length && !selectedChapterId) {
+      setSelectedChapterId(chapter.data[0].id)
+    }
   }, [chapter])
 
   const [pathList, setPathList] = useState([])
@@ -81,12 +81,12 @@ const SubjectsPage = () => {
               title: i18n.language === 'uz' ? item.title_uz : item.title_ru
             }))}
           />
-          <div className="grid grid-cols-12 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
             {/* BOB (Chapter) Section */}
-            <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
+            <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200 max-h-[45vh] md:max-h-none overflow-y-auto">
               {/* Mobile Header - BOB */}
 
-              <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <div className="sticky top-0 z-10 bg-gray-100 px-4 py-3 border-b border-gray-200">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@ const SubjectsPage = () => {
                   <li
                     key={idx}
                     onClick={() => setSelectedChapterId(chapter.id)}
-                    className={`cursor-pointer border-b  border-gray-200 p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
+                    className={`cursor-pointer border-b  border-gray-200 p-2 sm:p-3  pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
                       selectedChapterId === chapter.id ? 'bg-blue-50' : 'bg-white'
                     }`}
                   >
@@ -135,9 +135,9 @@ const SubjectsPage = () => {
 
             {/* MAVZU (Topic) Section */}
             {selectedChapterId && (
-              <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
+              <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200 max-h-[55vh] md:max-h-none overflow-y-auto">
                 {/* Mobile Header - MAVZU */}
-                <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+                <div className="sticky top-0 z-10 bg-gray-100 px-4 py-3 border-b border-gray-200">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
                       <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

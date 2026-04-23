@@ -39,6 +39,17 @@ export const ChatHeader = ({ chat, onBack, onTransfer, showTransfer }) => {
           </Button>
         </div>
       )}
+
+      {/* {chat?.is_closed && chat?.rating && (
+        <div className="mx-3 mb-2 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 border rounded-xl">
+          <div className="flex justify-between">
+            <span className="text-sm font-semibold">⭐ Rating: {chat.rating.stars}/5</span>
+            <span className="text-xs text-gray-500">{chat.rating.mentor_name}</span>
+          </div>
+
+          <p className="mt-1 text-sm text-gray-600 italic">"{chat.rating.comment}"</p>
+        </div>
+      )} */}
     </div>
   )
 }

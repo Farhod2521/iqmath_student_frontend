@@ -4,8 +4,6 @@ import { URLS } from '@/constants/url'
 import { usePostQuery } from '@/hooks'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
-
-
 const COUNTS = [10, 50, 100, 1000]
 
 const StudentTopLeaderboard = () => {
@@ -57,12 +55,16 @@ const StudentTopLeaderboard = () => {
 
   return (
     <LayoutAdmin title={t('ratings')}>
-      <div className="bg-white dark:bg-[#202936] border rounded-xl p-3">
+      <div className="bg-white dark:bg-[#202936] border rounded-xl p-3 sm:p-4">
         <h3 className="mb-4 text-lg font-semibold">🏆 {t('studentRating')}</h3>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          <select value={type} onChange={(e) => setType(e.target.value)} className="px-3 py-2 border rounded-lg">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full sm:w-auto px-3 py-2 border rounded-lg"
+          >
             {TYPES.map((item) => (
               <option key={item.value} value={item.value}>
                 {item.label}
@@ -73,7 +75,7 @@ const StudentTopLeaderboard = () => {
           <select
             value={topCount}
             onChange={(e) => setTopCount(Number(e.target.value))}
-            className="px-3 py-2 border rounded-lg"
+            className="w-full sm:w-auto px-3 py-2 border rounded-lg"
           >
             {COUNTS.map((n) => (
               <option key={n} value={n}>
@@ -88,7 +90,7 @@ const StudentTopLeaderboard = () => {
           <div className="py-10 text-center">Yuklanmoqda...</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full table-auto min-w-[400px]  text-sm">
               <thead>
                 <tr className="border-b">
                   <th className="py-2 text-left">#</th>
