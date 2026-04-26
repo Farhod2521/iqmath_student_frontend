@@ -28,7 +28,7 @@ const NavbarMathMenu = () => {
   }, [])
 
   return (
-    <div className="relative overflow-visible" ref={dropdownRef}>
+    <div className="relative  " ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center text-blue-600 transition rounded-full w-9 h-9 bg-blue-50 hover:bg-blue-100"
@@ -39,11 +39,11 @@ const NavbarMathMenu = () => {
       {open && (
         <div
           className="
-            fixed top-16 left-1/2 -translate-x-1/2
-            z-[9999] w-44 max-w-[calc(100vw-24px)]
-            rounded-xl border bg-white shadow-lg
-            md:absolute md:top-full md:left-auto md:right-0 md:mt-2 md:translate-x-0
-          "
+    absolute top-full right-auto left-0 mt-2
+    z-[9999]
+    w-44 max-w-[90vw]
+    rounded-xl border bg-white shadow-lg
+  "
         >
           <button
             onClick={() => {

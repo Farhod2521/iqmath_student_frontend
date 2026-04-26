@@ -30,34 +30,6 @@ const formatDate = (dateString) => {
 const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
   const { t } = useTranslation()
 
-  const getChatStatus = (chat) => {
-    if (chat?.is_closed) {
-      return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-full">
-          {t('closed')}
-        </span>
-      )
-    }
-
-    if (chat?.is_transferred) {
-      return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-full">
-          {t('transferred')}
-        </span>
-      )
-    }
-
-    if (chat?.close_requested) {
-      return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-700 bg-orange-100 rounded-full">
-          {t('close_requested')}
-        </span>
-      )
-    }
-
-    return null
-  }
-
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden">
       {chatsLoading && <p className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">{t('loading')}</p>}

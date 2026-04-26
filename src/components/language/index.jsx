@@ -42,13 +42,13 @@ const LanguageDropdown = () => {
     <div className="relative inline-block">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="group flex items-center gap-1 bg-white text-black border rounded-md py-1 px-3 h-8 sm:h-9 hover:bg-[#5d87ff] hover:text-white active:bg-[#5d87ff] active:text-white transition active:scale-90"
+        className="group flex items-center gap-1 bg-white text-black border text-xs sm:text-sm rounded-md py-1 px-2 sm:px-3 h-8 sm:h-9 hover:bg-[#5d87ff] hover:text-white active:bg-[#5d87ff] active:text-white transition active:scale-90"
       >
         <CiGlobe
           className="text-[#5d87ff] group-hover:text-white group-active:text-white transition-colors duration-200"
           size={24}
         />
-        <span className="text-sm uppercase">{selectedLanguage.code}</span>
+        <span className="uppercase">{selectedLanguage.code}</span>
       </button>
 
       {isOpen && (
@@ -59,7 +59,7 @@ const LanguageDropdown = () => {
               <button
                 key={lang.code}
                 onClick={() => handleSelect(lang)}
-                className="w-full py-1 uppercase text-black bg-white hover:bg-[#5d87ff] hover:text-white rounded-md text-center"
+                className="w-full py-1 uppercase text-black text-xs sm:text-sm bg-white hover:bg-[#5d87ff] hover:text-white rounded-md text-center"
               >
                 {lang.code}
               </button>

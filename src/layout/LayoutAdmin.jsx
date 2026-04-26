@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react'
 
 const LayoutAdmin = ({ children, title }) => {
   const router = useRouter()
-    const { data: session } = useSession()
+  const { data: session } = useSession()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
   const [isMounted, setIsMounted] = useState(false)

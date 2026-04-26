@@ -89,7 +89,7 @@ function NavbarProfile() {
     <>
       <button
         ref={buttonRef}
-        className="group w-[36px] h-[36px] border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
+        className="group w-8 h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
         onClick={handleProfile}
       >
         <Image

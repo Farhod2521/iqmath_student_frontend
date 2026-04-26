@@ -42,8 +42,16 @@ export const useChat = () => {
   const socketRef = useChatSocket({
     chatId: messages?.conversation_id,
     token: session?.accessToken,
+    // onMessage: (newMessage) => {
+    //   setLiveMessages((prev) => [...prev, newMessage])
+    // }
     onMessage: (newMessage) => {
-      setLiveMessages((prev) => [...prev, newMessage])
+      setLiveMessages((prev) => {
+        const exists = prev.some((m) => m.id === newMessage.id)
+        if (exists) return prev
+
+        return [...prev, newMessage]
+      })
     }
   })
 
@@ -216,14 +224,28 @@ export const useChat = () => {
     setLiveMessages([])
   }, [messages?.conversation_id])
 
-  const allMessages = [...(messages?.messages || []), ...liveMessages]
+  // const allMessages = [...(messages?.messages || []), ...liveMessages]
+
+  const allMessages = (() => {
+    const map = new Map()
+
+    ;[...(messages?.messages || []), ...liveMessages].forEach((msg) => {
+      map.set(msg.id, msg)
+    })
+
+    return Array.from(map.values())
+  })()
 
   return {
     // State'lar
     activeChat,
     chats,
     chatsLoading,
-    messages: { messages: allMessages },
+    messages: {
+      messages: allMessages,
+      teacher_close_request: messages?.teacher_close_request,
+      student_close_confirm: messages?.student_close_confirm
+    },
     messagesLoading,
     isStudent,
     isAdmin,

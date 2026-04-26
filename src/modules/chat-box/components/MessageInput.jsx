@@ -4,7 +4,7 @@ import { IoMdSend } from 'react-icons/io'
 import { FaFlagCheckered } from 'react-icons/fa6'
 import { useTranslation } from 'react-i18next'
 
-export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, replyingTo, onCancelReply }) => {
+export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, replyingTo, onCancelReply, role }) => {
   const [message, setMessage] = useState('')
   const { t } = useTranslation()
 
@@ -21,8 +21,10 @@ export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, repl
     }
   }
 
+  const isTeacher = role === 'teacher'
+
   return (
-    <div className="px-3 bg-white border-t border-gray-200 md:px-4">
+    <div className="flex-shrink-0 px-3 bg-white border-t border-gray-200 md:px-4">
       {replyingTo && (
         <div className="flex items-start justify-between p-3 mb-3 border-l-4 border-blue-500 rounded-lg bg-blue-50">
           <div className="flex-1 min-w-0">
@@ -65,7 +67,7 @@ export const MessageInput = ({ onSend, onClose, isSending, showCloseButton, repl
             <IoMdSend className="text-lg md:text-xl" />
           </Button>
 
-          {showCloseButton && onClose && (
+          {showCloseButton && onClose && isTeacher && (
             <Button
               color="primary"
               isIconOnly

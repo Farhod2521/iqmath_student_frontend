@@ -23,43 +23,59 @@ const Navbar = ({ title }) => {
 
   return (
     <div className="bg-white border-b">
-      <div className="flex flex-wrap justify-between px-3 pt-3 pb-2 sm:px-6 lg:px-8 gap-y-2">
-        {/* Left */}
-        <div className="flex items-center flex-1 gap-x-3 sm:gap-x-6">
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} aria-label="Toggle sidebar">
-            {isSidebarOpen ? <AiOutlineMenuFold size={20} /> : <AiOutlineMenuUnfold size={20} />}
-          </button>
+      <div className="px-3 sm:px-6 lg:px-8 py-2">
+        {/* 🔹 TOP ROW */}
+        <div className="flex items-center justify-between">
+          {/* LEFT */}
+          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+              {isSidebarOpen ? <AiOutlineMenuFold size={20} /> : <AiOutlineMenuUnfold size={20} />}
+            </button>
 
-          <p className="max-[400px]:text-[16px] max-[640px]:text-[20px] text-[24px] font-semibold text-black">
-            {title}
-          </p>
+            <p className="text-[16px] sm:text-[22px] lg:text-[24px] font-semibold truncate">{title}</p>
 
-          {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
+            {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
+          </div>
+
+          {/*  RIGHT (<430px only) */}
+          <div className="flex items-center gap-2 max-[430px]:flex md:hidden">
+            <LanguageDropdown />
+            <NavbarProfile />
+          </div>
+
+          {/*  RIGHT (>=430px desktop normal) */}
+          <div className="hidden md:flex items-center gap-3">
+            {oldToken && <NavbarBackTeacher />}
+
+            <NavbarMathMenu />
+
+            {currentRole === RolesList.STUDENT && (
+              <>
+                <NavbarSum />
+                <NavbarCoins />
+                <NavbarPoints />
+              </>
+            )}
+
+            <LanguageDropdown />
+            <NavbarProfile />
+          </div>
         </div>
 
-        {/* Right Side */}
-        <div className="flex flex-wrap items-center justify-end gap-x-1 md:gap-x-2 sm:gap-x-4">
-          {oldToken && <NavbarBackTeacher />}
+        {/* 🔹 BOTTOM ROW */}
+        <div className="flex items-center justify-between mt-2">
+          {/* LEFT */}
+          <div className="flex items-center gap-2 max-[430px]:flex md:hidden">
+            <NavbarMathMenu />
 
-          <NavbarMathMenu />
-          {currentRole === RolesList.STUDENT && (
-            <>
-              {/* <NavbarMultiplication /> */}
-              <NavbarSum />
-              <NavbarCoins />
-              <NavbarPoints />
-            </>
-          )}
-
-          {currentRole === 'teacher' && (
-            <div className="mr-2">
-              <NavbarNotification />
-            </div>
-          )}
-
-          <LanguageDropdown />
-
-          <NavbarProfile />
+            {currentRole === RolesList.STUDENT && (
+              <>
+                <NavbarSum />
+                <NavbarCoins />
+                <NavbarPoints />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

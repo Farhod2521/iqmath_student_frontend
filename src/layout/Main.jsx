@@ -12,7 +12,7 @@ function Main({ children, title }) {
       }`}
     >
       {/* Navbar */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 sticky top-0 z-50 bg-white">
         <Navbar title={title} />
       </div>
 

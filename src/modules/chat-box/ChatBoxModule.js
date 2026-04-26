@@ -13,6 +13,7 @@ import { NewChatButton } from './components/NewChatButton'
 import { StartChatPrompt } from './components/StartChatPrompt'
 import { useChat } from './hooks/useChat'
 import { useTranslation } from 'react-i18next'
+import { useUserStore } from '@/store'
 
 const ChatBoxModule = () => {
   const { t } = useTranslation()
@@ -48,6 +49,7 @@ const ChatBoxModule = () => {
   } = useChat()
 
   const [showChatList, setShowChatList] = useState(true)
+  const { user, role: userRole } = useUserStore()
 
   // Modal state
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
@@ -80,10 +82,23 @@ const ChatBoxModule = () => {
       <div
         className={`${
           showChatList ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 absolute md:relative w-[360px] md:w-[380px] h-full border-r border-gray-200 flex flex-col bg-white transition-transform duration-300 z-10`}
+        } md:translate-x-0 absolute md:relative  w-[240px]
+        min-[320px]:w-[280px]
+        min-[360px]:w-[300px]
+        min-[400px]:w-[320px]
+        min-[480px]:w-[340px]
+        min-[640px]:w-[360px]
+        min-[768px]:w-[320px]
+        min-[1024px]:w-[360px]
+        min-[1280px]:w-[380px]
+        min-[1536px]:w-[400px] 
+        h-[87vh]
+        border-r border-gray-200 flex flex-col bg-white transition-transform duration-300 z-10`}
       >
-        <div className="px-2 sm:px-6 pt-6 pb-3 border-b border-gray-100">
-          <h2 className="mb-4 text-xl sm:text-2xl font-bold text-gray-800">{t('messages')}</h2>
+        <div className="px-2 xs:px-3 sm:px-4 md:px-5 lg:px-6 pt-2 xs:pt-3 sm:pt-4 md:pt-5 lg:pt-6 pb-2 xs:pb-2 sm:pb-3 md:pb-3 lg:pb-4 border-b border-gray-100">
+          <h2 className="mb-2 xs:mb-2 sm:mb-3 md:mb-3 lg:mb-4 text-base xs:text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
+            {t('messages')}
+          </h2>
         </div>
 
         {/* SIZNING ChatsList KOMPONENTINGIZ */}
@@ -130,6 +145,9 @@ const ChatBoxModule = () => {
                 otherUserName={activeChat.other_user_name}
                 onReply={handleReply}
                 isLoading={messagesLoading}
+                onRateClick={() => setIsRatingModalOpen(true)}
+                teacher_close_request={messages.teacher_close_request}
+                student_close_confir={messages.student_close_confirm}
               />
             )}
 
@@ -140,6 +158,7 @@ const ChatBoxModule = () => {
               showCloseButton={!!activeChat}
               replyingTo={replyingTo}
               onCancelReply={cancelReply}
+              role={userRole}
             />
           </>
         ) : (

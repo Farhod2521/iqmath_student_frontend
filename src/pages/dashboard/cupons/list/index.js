@@ -18,6 +18,8 @@ const Index = () => {
   const { user } = useUserStore((state) => state)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [discountPercent, setDiscountPercent] = useState('')
+  const [deleteId, setDeleteId] = useState(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const isTeacher = user?.role === RolesList.TEACHER
 
@@ -96,18 +98,35 @@ const Index = () => {
       }
     )
   }
-  // const handleDeleteCoupon = () => {
-  //   if (window.confirm("Bu kuponi o'chirishni xohlaysizmi?")) {
+
+  const handleDeleteClick = (id) => {
+    if (!id) {
+      toast.error('Kupon ID topilmadi')
+      return
+    }
+
+    setDeleteId(id)
+    setIsDeleteModalOpen(true)
+  }
+
+  // const handleDeleteCoupon = (couponId) => {
+  //   if (!couponId) {
+  //     toast.error('Kupon ID topilmadi')
+  //     return
+  //   }
+
+  //   if (window.confirm(t('doYouDeleteCoupon'))) {
   //     deleteCoupon(
-  //       { url: `api/v1/universal/coupon-generate/` },
+  //       // backend shunga mos bo‘lsa: /coupon-generate/{id}/
+  //       { url: `api/v1/universal/coupon-generate/${couponId}/` },
   //       {
-  //         onSuccess: (data) => {
-  //           toast.success("Kupon muvaffaqiyatli o'chirildi")
+  //         onSuccess: () => {
+  //           toast.success(t('couponSuccessfullyRedeemed'))
   //           refetchCoupons()
   //         },
   //         onError: (error) => {
   //           const errorMessage =
-  //             error.response?.data?.error || error.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
+  //             error?.response?.data?.error || error?.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
   //           toast.error(errorMessage)
   //         }
   //       }
@@ -115,29 +134,22 @@ const Index = () => {
   //   }
   // }
 
-  const handleDeleteCoupon = (couponId) => {
-    if (!couponId) {
-      toast.error('Kupon ID topilmadi')
-      return
-    }
-
-    if (window.confirm(t('doYouDeleteCoupon'))) {
-      deleteCoupon(
-        // backend shunga mos bo‘lsa: /coupon-generate/{id}/
-        { url: `api/v1/universal/coupon-generate/${couponId}/` },
-        {
-          onSuccess: () => {
-            toast.success(t('couponSuccessfullyRedeemed'))
-            refetchCoupons()
-          },
-          onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.error || error?.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
-            toast.error(errorMessage)
-          }
+  const confirmDelete = () => {
+    deleteCoupon(
+      { url: `api/v1/universal/coupon-generate/${deleteId}/` },
+      {
+        onSuccess: () => {
+          toast.success(t('couponSuccessfullyRedeemed'))
+          setIsDeleteModalOpen(false)
+          refetchCoupons()
+        },
+        onError: (error) => {
+          const errorMessage =
+            error?.response?.data?.error || error?.response?.data?.message || "Kupon o'chirishda xatolik yuz berdi"
+          toast.error(errorMessage)
         }
-      )
-    }
+      }
+    )
   }
 
   const handleEditCoupon = (coupon) => {}
@@ -162,13 +174,13 @@ const Index = () => {
 
   return (
     <LayoutAdmin title={t('coupons')}>
-      <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
+      <div className="grid grid-cols-12 gap-3 sm:gap-4 md:gap-6 font-sf pb-16 sm:pb-20">
         <div className="col-span-12">
           <div className="flex items-center justify-between mb-6">
             <div></div>
             <Button
               onPress={openCreateModal}
-              className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+              className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg font-medium flex items-center gap-2"
             >
               <PlusIcon className="w-5 h-5" />
               {t('newCoupon')}
@@ -181,6 +193,11 @@ const Index = () => {
             backdrop="blur"
             size="md"
             hideCloseButton
+            placement="center" //ENG MUHIM
+            scrollBehavior="inside"
+            classNames={{
+              base: 'mx-4 my-6' //mobile padding
+            }}
           >
             <ModalContent className="relative overflow-hidden bg-white dark:bg-[#202936] rounded-2xl shadow-2xl border border-[#EAEFF4] dark:border-[#2A3447]">
               {(onClose) => (
@@ -205,7 +222,7 @@ const Index = () => {
                   </ModalHeader>
 
                   {/* Body */}
-                  <ModalBody className="px-6 py-6">
+                  <ModalBody className="px-4 py-4 sm:px-6 sm:py-6">
                     <div className="space-y-3">
                       <Input
                         type="text"
@@ -237,11 +254,11 @@ const Index = () => {
                   </ModalBody>
 
                   {/* Footer */}
-                  <ModalFooter className="px-6 py-4 bg-[#FAFBFF] dark:bg-[#1b2330] border-t border-[#EAEFF4] dark:border-[#2A3447]">
+                  <ModalFooter className="px-4 py-3 sm:px-6 sm:py-4 bg-[#FAFBFF] dark:bg-[#1b2330] border-t border-[#EAEFF4] dark:border-[#2A3447]">
                     <Button
                       variant="flat"
                       onPress={onClose}
-                      className="bg-white dark:bg-[#202936] border border-[#EAEFF4] dark:border-[#2A3447] px-6 py-3 rounded-lg text-[#2A3547] dark:text-white"
+                      className="bg-white dark:bg-[#202936] border border-[#EAEFF4] dark:border-[#2A3447] px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg text-[#2A3547] dark:text-white"
                       isDisabled={isCreating}
                     >
                       {t('cancel')}
@@ -250,7 +267,7 @@ const Index = () => {
                     <Button
                       onPress={handleCreateCoupon}
                       isLoading={isCreating}
-                      className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-6 py-3 rounded-lg font-medium flex items-center gap-2"
+                      className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg font-medium flex items-center gap-2"
                     >
                       {t('create')}
                     </Button>
@@ -268,7 +285,7 @@ const Index = () => {
                   coupon={coupon}
                   onEdit={handleEditCoupon}
                   // endi qaysi kupon o‘chishini biladi
-                  onDelete={() => handleDeleteCoupon(coupon?.id)}
+                  onDelete={() => handleDeleteClick(coupon?.id)}
                 />
               ))}
               {/* <CouponCard
@@ -282,6 +299,38 @@ const Index = () => {
             <EmptyCuponState onAddNew={openCreateModal} />
           )}
         </div>
+
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onOpenChange={setIsDeleteModalOpen}
+          backdrop="blur"
+          size="md"
+          placement="center"
+          scrollBehavior="inside"
+          classNames={{
+            base: 'mx-4 my-6'
+          }}
+          className=" relative overflow-hidden bg-white dark:bg-[#202936] border border-[#EAEFF4] dark:border-[#2A3447] rounded-2xl shadow-2xl"
+        >
+          <ModalContent>
+            <ModalHeader>{t('doYouDeleteCoupon')}</ModalHeader>
+            <ModalFooter className="px-6 py-4 flex gap-3 justify-end">
+              <Button
+                onPress={() => setIsDeleteModalOpen(false)}
+                className="bg-[#F5F7FF] hover:bg-[#E9EDFF] text-[#2A3547] dark:bg-[#1b2330] dark:text-white border border-[#EAEFF4] dark:border-[#2A3447] px-5 py-2 rounded-lg"
+              >
+                {t('no')}
+              </Button>
+
+              <Button
+                onPress={confirmDelete}
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg shadow-sm transition"
+              >
+                {t('yes')}, {t('delete')}
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
     </LayoutAdmin>
   )

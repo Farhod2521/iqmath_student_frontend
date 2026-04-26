@@ -1224,5 +1224,6 @@
   "confirmSuccess": "Muvaffaqiyatli tasdiqlandi",
   "error": "Xatolik yuz berdi",
   "searchUser": "Foydalanuvchini qidirish",
-  "userNotFound": "Foydalanuvchi topilmadi"
+  "userNotFound": "Foydalanuvchi topilmadi",
+  "evaluateCloseChat": "Chatni baholash va yopish"
 }
