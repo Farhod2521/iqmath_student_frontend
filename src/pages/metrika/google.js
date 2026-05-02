@@ -1,7 +1,7 @@
-window.dataLayer = window.dataLayer || []
-function gtag() {
-  dataLayer.push(arguments)
-}
-gtag('js', new Date())
+// window.dataLayer = window.dataLayer || []
+// function gtag() {
+//   dataLayer.push(arguments)
+// }
+// gtag('js', new Date())
 
-gtag('config', 'G-691ESLP31P')
+// gtag('config', 'G-691ESLP31P')

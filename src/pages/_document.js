@@ -8,11 +8,24 @@ export default function Document() {
       <body className="antialiased">
         <Main />
         <NextScript />
-        <script src="https://styleguide.brainly.com/images/math-symbols-icons-76ec20f543.js"></script>
+        <script
+          src="https://styleguide.brainly.com/images/math-symbols-icons-76ec20f543.js"
+          strategy="afterInteractive"
+        ></script>
 
         {/* <!-- Google tag (gtag.js) --> */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-691ESLP31P"></script>
-        <script src="./metrika/google.js" />
+        {/* <script src="./metrika/google.js" /> */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-691ESLP31P');
+            `
+          }}
+        />
         <script src="./metrika/yandex.js" />
         <noscript>
           <div>
