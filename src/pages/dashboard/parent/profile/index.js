@@ -27,7 +27,7 @@ const Index = () => {
   const router = useRouter()
 
   return (
-    <LayoutAdmin title={`${t('profile')}`}>
+    <LayoutAdmin>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div className="col-span-5 border border-[#E9E9E9] rounded-[12px]">
           <div className="flex justify-center items-center flex-col  p-[20px]">

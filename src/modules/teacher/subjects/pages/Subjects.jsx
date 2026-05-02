@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react'
 import SortableTableRow from '../components/sortable-table-row'
 import toast from 'react-hot-toast'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Subjects = () => {
   const { t, i18n } = useTranslation()
@@ -74,12 +75,12 @@ const Subjects = () => {
   }
 
   return (
-    <LayoutAdmin title={t('subjects')}>
+    <LayoutAdmin>
       {isLoadingSubjects || isFetchingSubjects ? (
         <ContentLoader />
       ) : (
         <div>
-          <div className="text-[16px] uppercase font-semibold">{t('subjectsInArea')}</div>
+          <HeaderTitle title={t('subjectsInArea')} />
           <div className="mt-[24px] flex gap-x-[24px]">
             <div className="border border-[#E9E9E9] rounded-[12px] w-full overflow-x-auto">
               <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

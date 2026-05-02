@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Button } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -23,7 +24,8 @@ const Index = () => {
   })
 
   return (
-    <LayoutAdmin title={t('diagnostics')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('diagnostics')} />
       <div className="grid grid-cols-12 gap-[24px] rounded-[12px]">
         <div className="col-span-8 rounded-[12px]">
           <div className="space-y-[12px]">

@@ -15,6 +15,7 @@ import { KEYS } from '@/constants/key'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -236,7 +237,8 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('profile')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('profile')} />
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
         </div>
@@ -245,7 +247,8 @@ const Index = () => {
   }
 
   return (
-    <LayoutAdmin title={t('profile')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('profile')} />
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}

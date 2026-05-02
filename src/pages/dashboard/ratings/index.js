@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { URLS } from '@/constants/url'
 import { usePostQuery } from '@/hooks'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const COUNTS = [10, 50, 100, 1000]
 
@@ -54,9 +55,13 @@ const StudentTopLeaderboard = () => {
   }
 
   return (
-    <LayoutAdmin title={t('ratings')}>
+    <LayoutAdmin>
       <div className="bg-white dark:bg-[#202936] border rounded-xl p-3 sm:p-4">
-        <h3 className="mb-4 text-lg font-semibold">🏆 {t('studentRating')}</h3>
+        {/* <h3 className="mb-4 text-lg font-semibold">{t('studentRating')}</h3> */}
+        <div className="py-2">
+          {' '}
+          <HeaderTitle title={t('studentRating')} />
+        </div>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">

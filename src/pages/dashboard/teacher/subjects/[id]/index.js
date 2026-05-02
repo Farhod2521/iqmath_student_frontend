@@ -32,6 +32,7 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import { request } from '@/services/api'
+import HeaderTitle from '@/components/header-title'
 
 // ClientOnly helper
 function ClientOnly({ children }) {
@@ -523,14 +524,18 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('topics')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('topics')} />
         <ContentLoader />
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={t('topics')}>
+    <LayoutAdmin>
+      <div className="mb-2">
+        <HeaderTitle title={t('topics')} />
+      </div>
       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
         <div className="font-sf">
           <BaseBreadcrumbs

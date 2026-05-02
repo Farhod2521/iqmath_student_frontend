@@ -7,6 +7,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import EmptyUserState from '@/modules/cupons/EmptyUserState'
 import { useTranslation } from 'react-i18next'
+import HeaderTitle from '@/components/header-title'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -59,7 +60,9 @@ const CouponsUsers = () => {
 
   if (isCouponsLoading) {
     return (
-      <LayoutAdmin title={t('users_with_coupons')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('users_with_coupons')} />
+
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
         </div>
@@ -68,8 +71,9 @@ const CouponsUsers = () => {
   }
 
   return (
-    <LayoutAdmin title={t('users_with_coupons')}>
-      <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
+    <LayoutAdmin>
+      <HeaderTitle title={t('users_with_coupons')} />
+      <div className="grid grid-cols-12 gap-[24px] font-sf pt-2 pb-20">
         <div className="col-span-12">
           {data && data.length > 0 ? (
             <>

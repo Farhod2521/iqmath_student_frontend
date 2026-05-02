@@ -89,66 +89,73 @@ function NavbarProfile() {
     <>
       <button
         ref={buttonRef}
-        className="group w-8 h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
+        className="group w-7 h-7 min-[400px]:w-8 min-[400px]:h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
         onClick={handleProfile}
       >
         <Image
           src="/icons/avatar.png"
           alt="user"
-          width={24}
-          height={24}
-          className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200"
+          width={16}
+          height={16}
+          className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200 min-[400px]:w-5 min-[400px]:h-5 sm:w-6 sm:h-6"
         />
       </button>
 
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[300px] shadow-lg top-[60px] right-[30px] p-[30px]"
+          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[250px] min-[400px]:min-w-[280px] sm:min-w-[300px] shadow-lg top-[55px] min-[400px]:top-[60px] right-[15px] min-[400px]:right-[30px] p-4 min-[400px]:p-[25px] sm:p-[30px]"
         >
-          <div className="flex gap-x-[12px]">
-            <div className="space-y-[4px] text-black dark:text-white">
-              {/* <h4 className="">{get(studentProfile, 'data.full_name', 'Student')}</h4>
-              <p className="text-[17px]">
-                {get(studentProfile, 'data.class_name', 'Student')}
-              </p> */}
-              {get(studentProfile, 'data.email') && (
-                <div className="flex gap-x-[4px]">
-                  <Image src={'/icons/mail.svg'} alt={'mail'} width={18} height={18} />
-                  <p className="text-sm text-[#7C8FAC] dark:text-gray-200">{get(studentProfile, 'data.email')}</p>
-                </div>
-              )}
-            </div>
+          <div className="space-y-2">
+            {get(studentProfile, 'data.email') && (
+              <div className="flex gap-x-2">
+                <Image
+                  src={'/icons/mail.svg'}
+                  alt={'mail'}
+                  width={14}
+                  height={14}
+                  className="min-[400px]:w-4 min-[400px]:h-4"
+                />
+                <p className="text-xs min-[400px]:text-sm text-[#7C8FAC] dark:text-gray-200">
+                  {get(studentProfile, 'data.email')}
+                </p>
+              </div>
+            )}
           </div>
 
-          <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
+          <div className="w-full h-px bg-[#EAEFF4] rounded-[4px] my-3 sm:my-[15px]"></div>
 
           <button
             onClick={() => {
-              // Foydalanuvchi rolini tekshirib, to'g'ri sahifaga yo'naltiramiz
               if (currentRole === 'teacher' || currentRole === 'mentor') {
                 router.push('/dashboard/teacher/profile')
               } else {
                 router.push('/dashboard/student/profile')
               }
             }}
-            className="flex gap-x-[12px] text-start cursor-pointer"
+            className="flex gap-x-2 sm:gap-x-3 text-start cursor-pointer w-full"
           >
-            <div className="w-[40px] h-[40px] border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
-              <Image src="/icons/avatar.png" alt="user" width={28} height={28} className="rounded-full" />
+            <div className="w-8 h-8 min-[400px]:w-9 min-[400px]:h-9 sm:w-10 sm:h-10 border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
+              <Image
+                src="/icons/avatar.png"
+                alt="user"
+                width={20}
+                height={20}
+                className="rounded-full min-[400px]:w-6 min-[400px]:h-6 sm:w-7 sm:h-7"
+              />
             </div>
 
-            <div>
-              <p className="text-black dark:text-white font-semibold">{t('myPage')}</p>
-              <p className="text-[#7C8FAC] dark:text-gray-200 text-sm">{t('settings')}</p>
+            <div className="text-left">
+              <p className="text-black dark:text-white font-semibold text-sm sm:text-base">{t('myPage')}</p>
+              <p className="text-[#7C8FAC] dark:text-gray-200 text-xs sm:text-sm">{t('settings')}</p>
             </div>
           </button>
 
-          <div className="w-full h-[1px] bg-[#EAEFF4] rounded-[4px] my-[15px]"></div>
+          <div className="w-full h-px bg-[#EAEFF4] rounded-[4px] my-3 sm:my-[15px]"></div>
 
           <button
             onClick={handleLogoutClick}
-            className="py-3 w-full border border-[#5d87ff] text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
+            className="py-2 sm:py-3 w-full border border-[#5d87ff] text-[13px] sm:text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
           >
             {t('logout')}
           </button>
@@ -158,7 +165,6 @@ function NavbarProfile() {
       {isModalOpen &&
         createPortal(
           <>
-            {/* Modal Backdrop */}
             <div
               className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${
                 isExiting ? 'opacity-0' : 'opacity-40'
@@ -166,25 +172,24 @@ function NavbarProfile() {
               onClick={closeModal}
             ></div>
 
-            {/* Modal Container */}
             <div
               className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${
                 isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
               }`}
             >
-              <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
-                <h2 className="text-xl font-semibold mb-1">{t('exitWeb')}</h2>
-                <p className="text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
-                <div className="flex justify-end gap-x-[10px]">
+              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-[90vw] max-w-[500px] mx-4">
+                <h2 className="text-lg sm:text-xl font-semibold mb-1">{t('exitWeb')}</h2>
+                <p className="text-sm sm:text-base font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
+                <div className="flex justify-end gap-x-2 sm:gap-x-[10px]">
                   <button
                     onClick={handleLogout}
-                    className="bg-[#5D87FF] hover:bg-[#5680f5] w-1/4 text-white py-2 rounded-[8px]"
+                    className="bg-[#5D87FF] hover:bg-[#5680f5] w-1/3 sm:w-1/4 text-white py-1.5 sm:py-2 rounded-[8px] text-sm sm:text-base"
                   >
                     {t('yes')}
                   </button>
                   <button
                     onClick={closeModal}
-                    className="bg-gray-300 hover:bg-[#dddddd] w-1/4 text-black py-2 px-4 rounded-[8px]"
+                    className="bg-gray-300 hover:bg-[#dddddd] w-1/3 sm:w-1/4 text-black py-1.5 sm:py-2 px-3 sm:px-4 rounded-[8px] text-sm sm:text-base"
                   >
                     {t('no')}
                   </button>

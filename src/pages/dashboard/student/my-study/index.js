@@ -1,14 +1,17 @@
 import EmptyPage from '@/components/empty-page'
 import GridExample from '@/components/grid-table'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
+import HeaderTitle from '@/components/header-title'
 import MyStudyAcitve from '@/features/my-study/MyStudyAcitve'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import NavbarStudy from '@/layout/navbar/NavbarStudy'
 import { useMyStudyStore } from '@/store'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 
 const Index = () => {
   const tab = useMyStudyStore((state) => state.tab)
-
+  const router = useRouter()
   const { t } = useTranslation()
 
   const rowData = [
@@ -51,7 +54,11 @@ const Index = () => {
   ]
 
   return (
-    <LayoutAdmin title={t('myLearning')}>
+    <LayoutAdmin>
+      <div className="flex items-center gap-5">
+        <HeaderTitle title={t('myLearning')} />
+        {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
+      </div>
       {tab === 'active' ? (
         <MyStudyAcitve data={rowData} />
       ) : (

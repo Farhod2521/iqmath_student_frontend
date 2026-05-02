@@ -3,8 +3,10 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { IoMdSend } from 'react-icons/io'
 import LayoutAdmin from '@/layout/LayoutAdmin'
-
+import HeaderTitle from '@/components/header-title'
+import { useTranslation } from 'react-i18next'
 const ChatBox = () => {
+  const { t } = useTranslation()
   const messagesEndRef = useRef(null)
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
@@ -31,7 +33,8 @@ const ChatBox = () => {
   }
 
   return (
-    <LayoutAdmin title="Chat">
+    <LayoutAdmin>
+      <HeaderTitle title={t('chat')} />
       <div className="h-[80vh] flex flex-col w-full border-l bg-white border border-[#E9E9E9] rounded-[12px]">
         <div className="flex items-center justify-between px-4 py-3 border-b">
           <div>

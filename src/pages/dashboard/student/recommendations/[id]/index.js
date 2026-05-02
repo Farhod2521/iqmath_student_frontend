@@ -6,8 +6,8 @@ import { useGetQuery } from '@/hooks'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
-import RightIcon from '@/components/icons/right'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -50,7 +50,10 @@ const SubjectsPage = () => {
   const topics = topic?.data || []
 
   return (
-    <LayoutAdmin title={t('subjects')}>
+    <LayoutAdmin>
+      <div className="mb-4 border-b">
+        <HeaderTitle title={t('subjects')} />
+      </div>
       <div className="font-sf">
         <StudentBreadcrumbs mainLink="/dashboard/student/subjects" />
         <div className="grid grid-cols-12 gap-4 md:gap-6">

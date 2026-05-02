@@ -6,6 +6,7 @@ import { useGetQuery } from '@/hooks'
 import { useRouter } from 'next/navigation'
 import { LoadingState } from '@/modules/student/products/components'
 import Link from 'next/link'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -100,14 +101,18 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('science_results')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('science_results')} />
+
         <LoadingState />
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={t('science_results')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('science_results')} />
+
       {!Array.isArray(children) || children.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-6 sm:p-8 text-center">
           <div className="text-gray-500 mb-4">

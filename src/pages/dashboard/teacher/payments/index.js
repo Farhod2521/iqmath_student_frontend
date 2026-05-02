@@ -1,3 +1,4 @@
+import HeaderTitle from '@/components/header-title'
 import { useGetQuery } from '@/hooks'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { LoadingState } from '@/modules/student/products/components'
@@ -15,14 +16,16 @@ function Index() {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('payments')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('payments')} />
         <LoadingState />
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={t('payments')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('payments')} />
       <PaymentsTable payments={data?.data?.rows} />
     </LayoutAdmin>
   )
@@ -83,7 +86,7 @@ export function PaymentsTable({ payments }) {
   }
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow">
+    <div className="overflow-x-auto bg-white rounded-lg mt-2 shadow">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>

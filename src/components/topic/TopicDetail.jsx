@@ -18,6 +18,7 @@ import parse from 'html-react-parser'
 import StudentBreadcrumbs from '@/features/subjects/StudentBreadcrumbs'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { Button } from '@heroui/react'
+import HeaderTitle from '../header-title'
 
 const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjects', showSidebar = false }) => {
   const { t, i18n } = useTranslation()
@@ -87,7 +88,11 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
 
   if (!selectedTopic) {
     return (
-      <LayoutAdmin title={t(title)}>
+      <LayoutAdmin>
+        <div className="mb-4 border-b">
+          {' '}
+          <HeaderTitle title={t(title)} />
+        </div>
         <div className="flex h-48 items-center justify-center">
           <h3 className="text-base font-normal text-gray-500">{t('topicNotFound')}</h3>
         </div>
@@ -100,7 +105,12 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
   const videoUrl = i18n.language === 'uz' ? selectedTopic?.video_url_uz : selectedTopic?.video_url_ru
 
   return (
-    <LayoutAdmin title={t(title)}>
+    <LayoutAdmin>
+      <div className="mb-4 border-b">
+        {' '}
+        <HeaderTitle title={t(title)} />
+      </div>
+
       <StudentBreadcrumbs
         selectTitle={topicName}
         mainLink={basePath}

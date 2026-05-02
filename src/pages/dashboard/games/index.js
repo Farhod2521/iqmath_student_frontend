@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { safekidSeeds } from '@/data/gamesData'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
+import HeaderTitle from '@/components/header-title'
 
 function normalizeTitle(slug) {
   return slug
@@ -48,7 +49,8 @@ export default function MentalGames() {
 
   return (
     <>
-      <LayoutAdmin title={t('games.section.title')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('games.section.title')} />
         <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
         .mg-font       { font-family: 'Nunito', sans-serif; }

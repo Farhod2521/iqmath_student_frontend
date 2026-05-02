@@ -7,6 +7,7 @@ import { useStatusUtils } from '@/modules/student/chat/utils/statusUtils'
 import ChatFilters from '@/modules/student/chat/components/ChatFilters'
 import ChatRequestList from '@/modules/student/chat/components/ChatRequestList'
 import ChatPagination from '@/modules/student/chat/components/ChatPagination'
+import HeaderTitle from '@/components/header-title'
 
 const ChatPage = () => {
   const { t } = useTranslation()
@@ -33,7 +34,9 @@ const ChatPage = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('chat', 'Chat')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('chat')} />
+
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
@@ -42,7 +45,9 @@ const ChatPage = () => {
   }
 
   return (
-    <LayoutAdmin title={t('chat', 'Chat')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('chat')} />
+
       <div className="space-y-6">
         {/* Filters */}
         {/* <ChatFilters

@@ -1,21 +1,16 @@
-import { useRouter } from 'next/router'
 import { useSettingStore } from '@/store'
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai'
 import NavbarPoints from './NavbarPoints'
 import NavbarProfile from './NavbarProfile'
-import NavbarStudy from './NavbarStudy'
 import NavbarCoins from './NavbarCoins'
 import LanguageDropdown from '@/components/language'
 import NavbarBackTeacher from './NavbarBackTeacher'
-import NavbarNotification from './NavbarNotification'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 import NavbarSum from './NavbarSum'
 import { RolesList } from '../libs/menulist'
-import NavbarMultiplication from './NavbarMultiplication'
 import NavbarMathMenu from './NavbatMathMenu'
 
 const Navbar = ({ title }) => {
-  const router = useRouter()
   const { role: currentRole } = useRoleDetection()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
@@ -28,23 +23,22 @@ const Navbar = ({ title }) => {
         <div className="flex items-center justify-between">
           {/* LEFT */}
           <div className="flex items-center gap-3 sm:gap-6 min-w-0">
-            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-              {isSidebarOpen ? <AiOutlineMenuFold size={20} /> : <AiOutlineMenuUnfold size={20} />}
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-1 hover:bg-gray-100 rounded-lg transition"
+            >
+              {isSidebarOpen ? <AiOutlineMenuFold size={18} /> : <AiOutlineMenuUnfold size={18} />}
             </button>
-
-            <p className="text-[16px] sm:text-[22px] lg:text-[24px] font-semibold truncate">{title}</p>
-
-            {router.pathname === '/dashboard/student/my-study' && <NavbarStudy />}
           </div>
 
-          {/*  RIGHT (<430px only) */}
-          <div className="flex items-center gap-2 max-[430px]:flex md:hidden">
+          {/*  RIGHT (<475px only) */}
+          <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden">
             <LanguageDropdown />
             <NavbarProfile />
           </div>
 
-          {/*  RIGHT (>=430px desktop normal) */}
-          <div className="hidden md:flex items-center gap-3">
+          {/*  RIGHT (>=475px desktop normal) */}
+          <div className="hidden min-[475px]:flex items-center  gap-1">
             {oldToken && <NavbarBackTeacher />}
 
             <NavbarMathMenu />
@@ -63,9 +57,9 @@ const Navbar = ({ title }) => {
         </div>
 
         {/* 🔹 BOTTOM ROW */}
-        <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center justify-center mt-2">
           {/* LEFT */}
-          <div className="flex items-center gap-2 max-[430px]:flex md:hidden">
+          <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden">
             <NavbarMathMenu />
 
             {currentRole === RolesList.STUDENT && (

@@ -1,5 +1,18 @@
 import React from 'react'
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue, Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  getKeyValue,
+  Button,
+  Pagination,
+  Progress,
+  Select,
+  SelectItem
+} from '@heroui/react'
 import { useTranslation } from 'react-i18next'
 
 function MyStudyAcitve({ data }) {
@@ -39,6 +52,7 @@ function MyStudyAcitve({ data }) {
 
   const [value, setValue] = React.useState(new Set(['100']))
   const pageSize = Number([...value][0]) || 100
+
   return (
     <div>
       <Table
@@ -86,7 +100,9 @@ function MyStudyAcitve({ data }) {
         </TableHeader>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.id}>{(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}</TableRow>
+            <TableRow className="border" key={row.id}>
+              {(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}
+            </TableRow>
           ))}
         </TableBody>
       </Table>

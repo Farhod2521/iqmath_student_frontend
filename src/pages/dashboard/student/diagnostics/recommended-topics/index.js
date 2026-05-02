@@ -10,6 +10,7 @@ import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import ContentLoader from '@/components/loader/content-loader'
 import InfoCircleIcon from '@/components/icons/info-circle'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -43,7 +44,10 @@ const Index = () => {
   }
 
   return (
-    <LayoutAdmin title={t('subjects')}>
+    <LayoutAdmin>
+      <div className="mb-4 border-b">
+        <HeaderTitle title={t('subjects')} />
+      </div>
       <div className="font-sf">
         <BaseBreadcrumbs data={breadcrumbs} />
         <h1 className="font-semibold text-[20px] mb-[18px]">{t('needToStudy')}</h1>

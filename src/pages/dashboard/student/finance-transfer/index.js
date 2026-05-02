@@ -6,7 +6,7 @@ const TransferPage = () => {
   const { t } = useTranslation()
 
   return (
-    <LayoutAdmin title={t('transferMoney')}>
+    <LayoutAdmin>
       <SomTransfer />
     </LayoutAdmin>
   )

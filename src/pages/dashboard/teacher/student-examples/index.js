@@ -8,6 +8,7 @@ import StudentExampleTable from '@/modules/teacher/student-examples/StudentExamp
 import CommentModal from '@/modules/teacher/student-examples/CommentModal'
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const StudentExamples = () => {
   const { t, i18n } = useTranslation()
@@ -133,7 +134,8 @@ const StudentExamples = () => {
 
   if (loading && data.length === 0) {
     return (
-      <LayoutAdmin title={t('studentExamples')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('studentExamples')} />
         <ContentLoader />
       </LayoutAdmin>
     )
@@ -141,7 +143,8 @@ const StudentExamples = () => {
 
   if (error) {
     return (
-      <LayoutAdmin title={t('studentExamples')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('studentExamples')} />
         <div className="flex items-center justify-center">
           <div className="text-center">
             <div className="mx-auto h-12 w-12 text-red-400 mb-4">
@@ -160,7 +163,7 @@ const StudentExamples = () => {
               onClick={() => fetchData(pagination.current, pagination.limit)}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
             >
-              Qayta urinish
+              {t('retry')}
             </button>
           </div>
         </div>
@@ -169,7 +172,8 @@ const StudentExamples = () => {
   }
 
   return (
-    <LayoutAdmin title={t('studentExamples')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('studentExamples')} />
       <div className="space-y-6">
         {/* Filters - pupils sahifasidagidek */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 py-4 w-full">

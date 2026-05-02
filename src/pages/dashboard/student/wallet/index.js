@@ -1,3 +1,4 @@
+import HeaderTitle from '@/components/header-title'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { Button, Card } from '@heroui/react'
 import { useTranslation } from 'react-i18next'
@@ -5,7 +6,10 @@ import { useTranslation } from 'react-i18next'
 const Index = () => {
   const { t } = useTranslation()
   return (
-    <LayoutAdmin title={t('wallet')}>
+    <LayoutAdmin>
+      <div className="mb-4 border-b">
+        <HeaderTitle title={t('wallet')} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div className="col-span-6 space-y-[12px]">
           <Card className="rounded-[12px] ">

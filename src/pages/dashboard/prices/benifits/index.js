@@ -87,8 +87,6 @@ export default function Benefits() {
     )
   }
 
-  console.log('benefits', benefits)
-
   return (
     <LayoutAdmin>
       <div className="p-4 mx-auto max-w-7xl sm:p-6 lg:p-8">

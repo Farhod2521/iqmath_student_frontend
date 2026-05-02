@@ -28,31 +28,24 @@ const NavbarMathMenu = () => {
   }, [])
 
   return (
-    <div className="relative  " ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-center text-blue-600 transition rounded-full w-9 h-9 bg-blue-50 hover:bg-blue-100"
+        className="flex items-center justify-center text-blue-600 transition rounded-full w-7 h-7 min-[400px]:w-8 min-[400px]:h-8 sm:w-9 sm:h-9 bg-blue-50 hover:bg-blue-100"
       >
-        <MdOutlineCalculate size={18} />
+        <MdOutlineCalculate size={14} className="min-[400px]:size-4 sm:size-5" />
       </button>
 
       {open && (
-        <div
-          className="
-    absolute top-full right-auto left-0 mt-2
-    z-[9999]
-    w-44 max-w-[90vw]
-    rounded-xl border bg-white shadow-lg
-  "
-        >
+        <div className="absolute top-full right-auto left-0 mt-2 z-[9999] w-36 min-[400px]:w-40 sm:w-44 max-w-[90vw] rounded-xl border bg-white shadow-lg">
           <button
             onClick={() => {
               setOpen(false)
               setOpenKarra(true)
             }}
-            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-t-xl"
+            className="flex items-center w-full gap-1.5 px-2 py-1.5 text-xs min-[400px]:text-sm hover:bg-gray-100 rounded-t-xl"
           >
-            <GiAbacus size={16} />
+            <GiAbacus size={12} className="min-[400px]:size-3.5 sm:size-4" />
             {t('karraTable')}
           </button>
 
@@ -61,9 +54,9 @@ const NavbarMathMenu = () => {
               setOpen(false)
               setOpenCalculator(true)
             }}
-            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100"
+            className="flex items-center w-full gap-1.5 px-2 py-1.5 text-xs min-[400px]:text-sm hover:bg-gray-100"
           >
-            <FaCalculator size={16} />
+            <FaCalculator size={12} className="min-[400px]:size-3.5 sm:size-4" />
             Calculator
           </button>
 
@@ -72,7 +65,7 @@ const NavbarMathMenu = () => {
               setOpen(false)
               setOpenQuiz(true)
             }}
-            className="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-b-xl"
+            className="flex items-center w-full gap-1.5 px-2 py-1.5 text-xs min-[400px]:text-sm hover:bg-gray-100 rounded-b-xl"
           >
             🧩 {t('KarraQuiz')}
           </button>

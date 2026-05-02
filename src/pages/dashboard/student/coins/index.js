@@ -11,6 +11,7 @@ import { get } from 'lodash'
 import { useScoreStore } from '@/store'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import CoinConvert from '@/modules/student/coins/CoinConvert'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { data: session } = useSession()
@@ -27,7 +28,10 @@ const Index = () => {
   })
 
   return (
-    <LayoutAdmin title={t('points')}>
+    <LayoutAdmin>
+      <div className="mb-4">
+        <HeaderTitle title={t('points')} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}

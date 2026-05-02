@@ -5,6 +5,7 @@ import Button from '@/components/button'
 import { useTranslation } from 'react-i18next'
 import GridExample from '@/components/grid-table'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -70,7 +71,10 @@ const Index = () => {
     status: 'Открытый'
   })
   return (
-    <LayoutAdmin title={t('group')}>
+    <LayoutAdmin>
+      <div className="mb-4">
+        <HeaderTitle title={t('group')} />
+      </div>
       <div className=" flex items-center justify-between py-[16px]">
         <div className=" flex items-center gap-x-[12px]">
           <SearchInput

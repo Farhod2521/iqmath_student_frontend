@@ -232,7 +232,7 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('profile')}>
+      <LayoutAdmin>
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
         </div>
@@ -241,7 +241,7 @@ const Index = () => {
   }
 
   return (
-    <LayoutAdmin title={t('profile')}>
+    <LayoutAdmin>
       <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
         <div className="col-span-12 sm:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}

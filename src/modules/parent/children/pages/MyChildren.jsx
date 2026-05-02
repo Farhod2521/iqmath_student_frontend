@@ -8,6 +8,7 @@ import ModalConfidentiality from '@/modules/student/subjects/components/modal/Mo
 import { useGetQuery } from '@/hooks'
 import ContentLoader from '@/components/loader/content-loader'
 import { useRouter } from 'next/navigation'
+import HeaderTitle from '@/components/header-title'
 
 const MyChildren = () => {
   const { t } = useTranslation()
@@ -43,14 +44,16 @@ const MyChildren = () => {
 
   if (isLoading) {
     return (
-      <LayoutAdmin title={t('myChildren')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('myChildren')} />
         <ContentLoader></ContentLoader>
       </LayoutAdmin>
     )
   }
 
   return (
-    <LayoutAdmin title={t('myChildren')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('myChildren')} />
       <div className="">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800"></h1>

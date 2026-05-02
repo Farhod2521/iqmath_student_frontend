@@ -20,12 +20,13 @@ function DiagnosticHistory() {
     isError,
     error
   } = useGetQuery({
-    listKeyId: '/api/v1/func_student/my-diagnost/history/progress/',
-    url: '/api/v1/func_student/my-diagnost/history/progress/',
+    key: '/api/v1/func_student/my-diagnost/history/progress/',
+    url: '/api/v1/func_student/my-diagnost/history/progress/'
     // config: token ? { headers: { Authorization: `Bearer ${token}` } } : undefined,
     // Agar sizning hook'ingiz qo'llasa:
-    enabled: !!token
   })
+
+  console.log('histories', histories)
 
   const lang = i18n.language
   const texts = useMemo(() => {

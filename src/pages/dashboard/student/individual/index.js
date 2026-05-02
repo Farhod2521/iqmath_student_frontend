@@ -1,4 +1,4 @@
-
+import HeaderTitle from '@/components/header-title'
 import Individual from '@/features/individual/Individual'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { useTranslation } from 'react-i18next'
@@ -6,11 +6,12 @@ import { useTranslation } from 'react-i18next'
 const Index = () => {
   const { t, i18n } = useTranslation()
   return (
-    <LayoutAdmin title={t('independent')}>
+    <LayoutAdmin>
+      <HeaderTitle title={t('independent')} />
       <Individual data={i18n.language === 'uz' ? rowDataUz : rowData} />
     </LayoutAdmin>
   )
-} 
+}
 
 export default Index
 

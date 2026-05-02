@@ -5,10 +5,8 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import ChatBoxModule from '@/modules/chat-box/ChatBoxModule'
 
 const ChatBox = () => {
-  const { t } = useTranslation()
-
   return (
-    <LayoutAdmin title={t('messages')}>
+    <LayoutAdmin>
       <ChatBoxModule />
     </LayoutAdmin>
   )

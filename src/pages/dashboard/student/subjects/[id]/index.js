@@ -14,6 +14,7 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { request } from '@/services/api'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
+import HeaderTitle from '@/components/header-title'
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -67,7 +68,10 @@ const SubjectsPage = () => {
   const topics = topic?.data || []
 
   return (
-    <LayoutAdmin title={t('subjects')}>
+    <LayoutAdmin>
+      <div className="mb-4 border-b-1">
+        <HeaderTitle title={t('subjects')} />
+      </div>
       <MathJaxContext
         config={{
           loader: { load: ['input/tex', 'output/chtml'] }

@@ -12,6 +12,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from 
 import { useState } from 'react'
 import { useUserStore } from '@/store'
 import { RolesList } from '@/layout/libs/menulist'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -156,7 +157,9 @@ const Index = () => {
 
   if (isCouponsLoading) {
     return (
-      <LayoutAdmin title={t('coupons')}>
+      <LayoutAdmin>
+        <HeaderTitle title={t('coupons')} />
+
         <div className="p-6">
           <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
             <div className="py-12 text-center">
@@ -173,11 +176,11 @@ const Index = () => {
   const coupons = Array.isArray(rawCoupon) ? rawCoupon : rawCoupon ? [rawCoupon] : []
 
   return (
-    <LayoutAdmin title={t('coupons')}>
+    <LayoutAdmin>
       <div className="grid grid-cols-12 gap-3 sm:gap-4 md:gap-6 font-sf pb-16 sm:pb-20">
         <div className="col-span-12">
           <div className="flex items-center justify-between mb-6">
-            <div></div>
+            <HeaderTitle title={t('coupons')} />
             <Button
               onPress={openCreateModal}
               className="bg-[#5d87ff] text-white hover:bg-[#4a6bcc] transition-colors px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg font-medium flex items-center gap-2"

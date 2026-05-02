@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { fractionsData } from '@/dummy-data'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
+import { useTranslation } from 'react-i18next'
 
 const topics = [
   { title: 'Пропорции и проценты', link: 'topic/percentages', locked: false },
@@ -23,6 +25,7 @@ const topics = [
 ]
 
 const Index = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [selectedTopic, setSelectedTopic] = useState(topics[0])
   const [showWarning, setShowWarning] = useState(false)
@@ -51,7 +54,10 @@ const Index = () => {
   }, [])
 
   return (
-    <LayoutAdmin title="Individual Work">
+    <LayoutAdmin>
+      <div className="mb-4">
+        <HeaderTitle title={t('Individual Work')} />
+      </div>
       <div className="my-[24px] relative border border-[#E9E9E9] rounded-[12px] mx-[169px] font-sf" ref={dropdownRef}>
         <div className="py-[12px]">
           <div className="cursor-pointer" onClick={() => setOpen(!open)}>

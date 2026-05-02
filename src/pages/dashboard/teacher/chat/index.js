@@ -1,12 +1,16 @@
 import { useTranslation } from 'react-i18next'
 import { Card, CardBody, CardHeader } from '@heroui/react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
 
   return (
-    <LayoutAdmin title={t('chat')}>
+    <LayoutAdmin>
+      <div className="mb-4">
+        <HeaderTitle title={t('chat')} />
+      </div>
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">{t('chat')}</h2>

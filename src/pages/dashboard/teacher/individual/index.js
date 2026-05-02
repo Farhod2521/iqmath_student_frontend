@@ -3,6 +3,7 @@ import GridExample from '@/components/grid-table'
 import ButtonCellRenderer from '@/components/grid-table/buttonCell'
 import { useTranslation } from 'react-i18next'
 import LayoutAdmin from '@/layout/LayoutAdmin'
+import HeaderTitle from '@/components/header-title'
 
 const Index = () => {
   const { t } = useTranslation()
@@ -91,7 +92,10 @@ const Index = () => {
   ]
 
   return (
-    <LayoutAdmin title={t('independent')}>
+    <LayoutAdmin>
+      <div className="mb-4">
+        <HeaderTitle title={t('independent')} />
+      </div>
       {/* <EmptyPage
         title={"Пока еще нет самостоятельных заданий"}
         desc={" Самостоятельные задания будет назначать ваш учитель"}

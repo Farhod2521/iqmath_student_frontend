@@ -1,5 +1,17 @@
 import React, { useCallback } from 'react'
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, Pagination, Progress, Select, SelectItem } from '@heroui/react'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  Button,
+  Pagination,
+  Progress,
+  Select,
+  SelectItem
+} from '@heroui/react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 
@@ -86,14 +98,16 @@ function Individual({ data }) {
           </div>
         }
       >
-        <TableHeader>
+        <TableHeader className="border">
           {columns.map((column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="border">
           {data.map((row) => (
-            <TableRow key={row.id}>{(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}</TableRow>
+            <TableRow className="border" key={row.id}>
+              {(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}
+            </TableRow>
           ))}
         </TableBody>
       </Table>
