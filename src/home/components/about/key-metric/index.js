@@ -10,6 +10,7 @@ const KeyMetric = () => {
   const language = i18n.language
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     setLoading(true)
     request
@@ -27,6 +28,7 @@ const KeyMetric = () => {
         setLoading(false)
       })
   }, [])
+
   return (
     <Box
       sx={{
@@ -51,7 +53,7 @@ const KeyMetric = () => {
                 }
               }}
               dangerouslySetInnerHTML={{
-                __html: language === 'uz' ? data?.about_uz ?? '' : data?.about_ru ?? ''
+                __html: language === 'uz' ? (data?.about_uz ?? '') : (data?.about_ru ?? '')
               }}
             />
           )}
