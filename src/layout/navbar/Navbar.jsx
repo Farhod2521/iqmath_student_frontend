@@ -33,6 +33,7 @@ const Navbar = ({ title }) => {
 
           {/*  RIGHT (<475px only) */}
           <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden">
+            <NavbarMathMenu />
             <LanguageDropdown />
             <NavbarProfile />
           </div>
@@ -60,10 +61,9 @@ const Navbar = ({ title }) => {
         <div className="flex items-center justify-center mt-2">
           {/* LEFT */}
           <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden">
-            <NavbarMathMenu />
-
             {currentRole === RolesList.STUDENT && (
               <>
+                {/* <NavbarMathMenu /> */}
                 <NavbarSum />
                 <NavbarCoins />
                 <NavbarPoints />
