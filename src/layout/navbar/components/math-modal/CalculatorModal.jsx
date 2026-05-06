@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { IoClose } from 'react-icons/io5'
 
 const buttons = [
@@ -33,8 +34,8 @@ const CalculatorModal = ({ open, onClose }) => {
     }
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 bg-black/40">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center px-3 bg-black/40">
       <div className="bg-white w-full max-w-md rounded-2xl p-4 relative max-h-[90vh] overflow-y-auto shadow-lg">
         {/* Close button */}
         <button onClick={onClose} className="absolute text-gray-500 top-3 right-3">
@@ -62,10 +63,10 @@ const CalculatorModal = ({ open, onClose }) => {
                   ['/', '*', '-', '+', '='].includes(btn)
                     ? 'bg-blue-500 text-white hover:bg-blue-600'
                     : btn === 'C'
-                    ? 'bg-red-500 text-white hover:bg-red-600'
-                    : btn === 'DEL'
-                    ? 'bg-yellow-500 text-white hover:bg-yellow-600'
-                    : 'bg-gray-100 hover:bg-gray-200'
+                      ? 'bg-red-500 text-white hover:bg-red-600'
+                      : btn === 'DEL'
+                        ? 'bg-yellow-500 text-white hover:bg-yellow-600'
+                        : 'bg-gray-100 hover:bg-gray-200'
                 }
               `}
             >
@@ -74,7 +75,8 @@ const CalculatorModal = ({ open, onClose }) => {
           ))}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

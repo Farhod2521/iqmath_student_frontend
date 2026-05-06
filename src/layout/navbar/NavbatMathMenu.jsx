@@ -37,7 +37,7 @@ const NavbarMathMenu = () => {
       </button>
 
       {open && (
-        <div className="absolute top-full right-auto left-0 mt-2 z-[9999] w-36 min-[400px]:w-40 sm:w-44 max-w-[90vw] rounded-xl border bg-white shadow-lg">
+        <div className="absolute top-full right-auto left-0 mt-2 z-[9999999] w-36 min-[400px]:w-40 sm:w-44 max-w-[90vw] rounded-xl border bg-white shadow-lg">
           <button
             onClick={() => {
               setOpen(false)

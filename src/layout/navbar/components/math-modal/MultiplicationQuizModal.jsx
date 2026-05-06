@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { IoClose } from 'react-icons/io5'
@@ -152,8 +153,8 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
 
   if (!open) return null
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 bg-black/40">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center px-3 bg-black/40">
       <div className="bg-white w-full max-w-md rounded-2xl p-4 relative max-h-[85vh] overflow-y-auto">
         <button onClick={handleClose} className="absolute text-gray-500 top-3 right-3">
           <IoClose size={22} />
@@ -278,7 +279,8 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
