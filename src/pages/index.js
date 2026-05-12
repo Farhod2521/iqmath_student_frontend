@@ -21,10 +21,15 @@ export default function LandingPage() {
   useEffect(() => {
     if (!window.Tawk_API) return
 
-    if (isDashboard) {
-      window.Tawk_API.hide()
-    } else {
-      window.Tawk_API.show()
+    // API method'larini tekshirib keyin chaqirish
+    try {
+      if (isDashboard) {
+        if (window.Tawk_API.hide) window.Tawk_API.hide()
+      } else {
+        if (window.Tawk_API.show) window.Tawk_API.show()
+      }
+    } catch (error) {
+      console.log('Tawk API not ready:', error)
     }
   }, [router.asPath])
 

@@ -1226,5 +1226,9 @@
   "error": "Xatolik yuz berdi",
   "searchUser": "Foydalanuvchini qidirish",
   "userNotFound": "Foydalanuvchi topilmadi",
-  "evaluateCloseChat": "Chatni baholash va yopish"
+  "evaluateCloseChat": "Chatni baholash va yopish",
+  "chatsResponsed": "Mentor javob bergan chatlar",
+  "today": "Bugun",
+  "week": "Haftalik",
+  "total": "Jami"
 }

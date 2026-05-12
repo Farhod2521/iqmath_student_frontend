@@ -146,6 +146,7 @@ const ChatBoxModule = () => {
                 onRateClick={() => setIsRatingModalOpen(true)}
                 teacher_close_request={messages.teacher_close_request}
                 student_close_confir={messages.student_close_confirm}
+                role={userRole}
               />
             )}
 
@@ -166,7 +167,19 @@ const ChatBoxModule = () => {
 
       {isRatingModalOpen && (
         <RatingModal
-          closeMutation={{ mutate: closeChat, isPending: false }}
+          // closeMutation={{ mutate: closeChat, isPending: false }}
+          closeMutation={{
+            mutate: (ratingData) => {
+              closeChat(ratingData, {
+                onSuccess: () => {
+                  setIsRatingModalOpen(false)
+                  setRating(0)
+                  setComment('')
+                }
+              })
+            },
+            isPending: false
+          }}
           rating={rating}
           setRating={setRating}
           setComment={setComment}

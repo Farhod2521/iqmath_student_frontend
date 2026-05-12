@@ -2,23 +2,17 @@ import { useEffect, useState } from 'react'
 import { Box, Typography, Grid } from '@mui/material'
 import { MessageSquare, TrendingUp, Star, Calendar, Clock, BarChart3 } from 'lucide-react'
 import { request } from '@/services/api'
-
-const STAT_ITEMS = [
-  { key: 'today', label: 'Bugun', icon: Clock, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-50' },
-  { key: 'week', label: 'Haftalik', icon: Calendar, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-50' },
-  { key: 'month', label: 'Oylik', icon: TrendingUp, color: 'from-green-500 to-green-600', bgColor: 'bg-green-50' },
-  { key: 'year', label: 'Yillik', icon: BarChart3, color: 'from-orange-500 to-orange-600', bgColor: 'bg-orange-50' },
-  { key: 'total', label: 'Jami', icon: MessageSquare, color: 'from-pink-500 to-pink-600', bgColor: 'bg-pink-50' }
-]
+import { useTranslation } from 'react-i18next'
 
 const MentorClosedChatsStats = () => {
+  const { t } = useTranslation()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     request
       .get('/api/v1/func_chat/teacher/closed-chats-stats/')
-      .then((res) => setData(res))
+      .then((res) => setData(res?.data))
       .finally(() => setLoading(false))
 
     // Simulated data for demo
@@ -33,6 +27,26 @@ const MentorClosedChatsStats = () => {
     //   setLoading(false)
     // }, 500)
   }, [])
+
+  const STAT_ITEMS = [
+    { key: 'today', label: t('today'), icon: Clock, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-50' },
+    { key: 'week', label: t('week'), icon: Calendar, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-50' },
+    {
+      key: 'month',
+      label: t('monthly'),
+      icon: TrendingUp,
+      color: 'from-green-500 to-green-600',
+      bgColor: 'bg-green-50'
+    },
+    {
+      key: 'year',
+      label: t('yearly'),
+      icon: BarChart3,
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-50'
+    },
+    { key: 'total', label: t('total'), icon: MessageSquare, color: 'from-pink-500 to-pink-600', bgColor: 'bg-pink-50' }
+  ]
 
   if (loading) {
     return (
@@ -60,7 +74,7 @@ const MentorClosedChatsStats = () => {
           <MessageSquare className="w-5 h-5 text-white" />
         </div>
         <Typography variant="h5" fontWeight={700} sx={{ color: '#1a1a1a' }}>
-          Mentor javob bergan chatlar
+          {t('chatsResponsed')}
         </Typography>
       </div>
 

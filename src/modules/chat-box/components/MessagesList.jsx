@@ -10,7 +10,8 @@ export const MessagesList = ({
   isLoading,
   onRateClick,
   teacher_close_request,
-  student_close_confirm
+  student_close_confirm,
+  role
 }) => {
   const messagesEndRef = useRef(null)
   const { t } = useTranslation()
@@ -19,7 +20,7 @@ export const MessagesList = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const showCloseAction = teacher_close_request === true && student_close_confirm !== true
+  const showCloseAction = teacher_close_request === true && student_close_confirm !== true && role === 'student'
 
   if (isLoading) {
     return (
