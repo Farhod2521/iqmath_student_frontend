@@ -166,7 +166,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
       .filter((q) => q.question_type === 'composite')
       .map((q) => {
         const userSubAnswers = compositeAnswers[q.id] || {}
-        const sub_answers = q.sub_questions.map((sub) => {
+        const sub_answers = q?.sub_questions?.map((sub) => {
           const answer = userSubAnswers[sub.id] || ''
           return wrapPlainMath(answer)
         })
@@ -244,7 +244,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
 
   // Barcha savollar ID'larini o'z ichiga olgan ro'yxat
   const allQuestionsList = useMemo(() => {
-    return testQuestions ? testQuestions.map((q) => String(q.id)) : []
+    return testQuestions ? testQuestions?.map((q) => String(q.id)) : []
   }, [testQuestions])
 
   const isEndQuestion = useMemo(() => {

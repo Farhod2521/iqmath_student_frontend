@@ -93,7 +93,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
           {' '}
           <HeaderTitle title={t(title)} />
         </div>
-        <div className="flex h-48 items-center justify-center">
+        <div className="flex items-center justify-center h-48">
           <h3 className="text-base font-normal text-gray-500">{t('topicNotFound')}</h3>
         </div>
       </LayoutAdmin>
@@ -119,25 +119,25 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
         topicName={topicName}
       />
 
-      <div className="font-sf container mx-auto px-0 sm:px-6 lg:px-8">
+      <div className="container px-0 mx-auto font-sf sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E9E9E9] rounded-xl mx-auto max-w-4xl relative">
           {/* Topic Selection Header */}
-          <div className="relative flex items-center justify-between w-full overflow-hidden p-4">
+          <div className="relative flex items-center justify-between w-full p-4 overflow-hidden">
             <button
-              className="bg-white text-xl p-3 rounded-lg rotate-180 hover:bg-gray-100 transition"
+              className="p-3 text-xl transition rotate-180 bg-white rounded-lg hover:bg-gray-100"
               onClick={() => handleScroll('left')}
             >
               <RightIcon />
             </button>
 
-            <div className="cursor-pointer flex-1 text-center" onClick={() => setOpen(!open)}>
-              <h1 className="text-base sm:text-lg md:text-xl font-medium text-center break-words line-clamp-3">
+            <div className="flex-1 text-center cursor-pointer" onClick={() => setOpen(!open)}>
+              <h1 className="text-base font-medium text-center break-words sm:text-lg md:text-xl line-clamp-3">
                 {topicName}
               </h1>
             </div>
 
             <button
-              className="bg-white text-xl p-3 rounded-lg hover:bg-gray-100 transition"
+              className="p-3 text-xl transition bg-white rounded-lg hover:bg-gray-100"
               onClick={() => handleScroll('right')}
             >
               <RightIcon />
@@ -150,10 +150,10 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
               initial={{ opacity: 0, translateY: '30px' }}
               animate={{ opacity: 1, translateY: '0px' }}
               transition={{ duration: 0.2 }}
-              className="absolute border w-full max-w-md z-20 max-h-48 overflow-y-auto rounded-md shadow-md bg-white top-14 left-0 right-0 mx-auto"
+              className="absolute left-0 right-0 z-20 w-full max-w-md mx-auto overflow-y-auto bg-white border rounded-md shadow-md max-h-48 top-14"
             >
               <ul className="p-2">
-                {topicsList.map((topic) => (
+                {topicsList?.map((topic) => (
                   <li
                     key={topic.id}
                     className={`py-2 px-3 flex justify-between text-sm sm:text-base ${
@@ -172,17 +172,17 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
           <div className="w-full h-px bg-[#F2F2F7]"></div>
 
           {/* Video Section */}
-          <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6 gap-4">
+          <div className="flex flex-col items-center justify-between gap-4 px-6 py-4 sm:flex-row">
             <div
-              className="flex gap-x-4 items-center cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex items-center transition-opacity cursor-pointer gap-x-4 hover:opacity-80"
               onClick={() => setShowPlayer(true)}
             >
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#EDEDF2] flex items-center justify-center rounded-lg">
                 <Image src="/icons/play.svg" alt="play" width={20} height={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-base sm:text-lg font-medium">{t('videoExplanation')}</h3>
-                <p className="text-gray-500 text-sm">{t('watchBeforeStart')}</p>
+                <h3 className="text-base font-medium sm:text-lg">{t('videoExplanation')}</h3>
+                <p className="text-sm text-gray-500">{t('watchBeforeStart')}</p>
               </div>
             </div>
 
@@ -191,14 +191,14 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                 variant="bordered"
                 type="button"
                 onPress={() => setShowPlayer(true)}
-                className="rounded-md text-sm sm:text-base px-4 py-2"
+                className="px-4 py-2 text-sm rounded-md sm:text-base"
               >
                 {t('watch')}
               </Button>
               {/* Faqat subjects sahifasida "Misollar" tugmasini ko'rsatish */}
               {!basePath.includes('recommendations') && (
                 <Link href={`${basePath}/${id}/${chapterId}/${selectedTopic?.id}/question`}>
-                  <Button variant="flat" className="px-4 py-2 rounded-md text-sm sm:text-base" color="primary">
+                  <Button variant="flat" className="px-4 py-2 text-sm rounded-md sm:text-base" color="primary">
                     {t('examples')}
                   </Button>
                 </Link>
@@ -209,7 +209,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
           <div className="w-full h-px bg-[#F2F2F7]"></div>
 
           {/* Content Section */}
-          <div className="py-6 px-6 prose prose-sm sm:prose-base max-w-none">
+          <div className="px-6 py-6 prose-sm prose sm:prose-base max-w-none">
             <div className="mx-auto">{parse(topicContent || '')}</div>
           </div>
 

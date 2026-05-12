@@ -53,7 +53,7 @@ const CalculatorModal = ({ open, onClose }) => {
 
         {/* Buttons grid */}
         <div className="grid grid-cols-4 gap-2">
-          {buttons.flat().map((btn) => (
+          {buttons.flat()?.map((btn) => (
             <button
               key={btn}
               onClick={() => handleButton(btn)}

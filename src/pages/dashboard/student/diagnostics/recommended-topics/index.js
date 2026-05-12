@@ -55,7 +55,7 @@ const Index = () => {
           <div className="col-span-12 md:col-span-6 self-start border border-[#E9E9E9] rounded-[12px] overflow-hidden">
             {get(advisedTopics, 'data.topics', []).length > 0 ? (
               <ul className="w-full">
-                {get(advisedTopics, 'data.topics', [])?.map((item, index) => (
+                {get(advisedTopics, 'data.topics', []).map((item, index) => (
                   <li
                     key={index}
                     onClick={() => {

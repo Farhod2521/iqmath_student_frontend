@@ -35,8 +35,8 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
           loader: { load: ['input/tex', 'output/chtml'] }
         }}
       >
-        {questions.map((question, index) => (
-          <div key={index} className="space-y-2 border border-gray-200 p-4 rounded-md">
+        {questions?.map((question, index) => (
+          <div key={index} className="p-4 space-y-2 border border-gray-200 rounded-md">
             {/* Uzbek Inputs */}
             <div className="grid grid-cols-3 gap-2">
               <div>
@@ -45,7 +45,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.text1_uz}
                   onChange={(e) => handleQuestionChange(index, 'text1_uz', e.target.value)}
                   placeholder="Text 1 (O'zbek)"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.text1_uz}</MathJax>
               </div>
@@ -55,7 +55,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.correct_answer}
                   onChange={(e) => handleQuestionChange(index, 'correct_answer', e.target.value)}
                   placeholder="To'g'ri javob"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.correct_answer}</MathJax>
               </div>
@@ -65,7 +65,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.text2_uz}
                   onChange={(e) => handleQuestionChange(index, 'text2_uz', e.target.value)}
                   placeholder="Text 2 (O'zbek)"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.text2_uz}</MathJax>
               </div>
@@ -79,7 +79,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.text1_ru}
                   onChange={(e) => handleQuestionChange(index, 'text1_ru', e.target.value)}
                   placeholder="Text 1 (Rus)"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.text1_ru}</MathJax>
               </div>
@@ -89,7 +89,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.correct_answer}
                   onChange={(e) => handleQuestionChange(index, 'correct_answer', e.target.value)}
                   placeholder="To'g'ri javob"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.correct_answer}</MathJax>
               </div>
@@ -99,7 +99,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
                   value={question.text2_ru}
                   onChange={(e) => handleQuestionChange(index, 'text2_ru', e.target.value)}
                   placeholder="Text 2 (Rus)"
-                  className="w-full border rounded-lg py-2 px-3"
+                  className="w-full px-3 py-2 border rounded-lg"
                 />
                 <MathJax dynamic>{question.text2_ru}</MathJax>
               </div>
@@ -109,7 +109,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
               <button
                 type="button"
                 onClick={() => handleRemoveQuestion(index)}
-                className="text-red-500 hover:text-red-700 text-lg mt-2"
+                className="mt-2 text-lg text-red-500 hover:text-red-700"
               >
                 ❌ O'chirish
               </button>
@@ -121,7 +121,7 @@ const CompositeAnswerInput = ({ questions, onChange }) => {
       <button
         type="button"
         onClick={handleAddQuestion}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+        className="px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
       >
         {t('addNewQuestion')}
       </button>

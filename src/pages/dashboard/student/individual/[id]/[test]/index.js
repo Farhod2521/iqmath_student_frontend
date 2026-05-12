@@ -115,7 +115,7 @@ const Index = () => {
       <div className="grid grid-cols-12 gap-4 p-[24px]">
         <div className="col-span-6 overflow-y-auto max-h-screen border-r border-r-[#F2F2F7]">
           <ul className="space-y-2">
-            {questions.map((question, index) => (
+            {questions?.map((question, index) => (
               <li
                 key={index}
                 className={`p-3  rounded-md flex items-center gap-x-[12px] cursor-pointer `}
@@ -164,8 +164,8 @@ const Index = () => {
                     <MathJax>{`\\(${input}\\)`}</MathJax>
                   </div>
 
-                  <div className="flex justify-between items-center">
-                    <div className="flex relative">
+                  <div className="flex items-center justify-between">
+                    <div className="relative flex">
                       <Button onPress={() => setShowMistake(true)} className="rounded-md">
                         Проверить
                       </Button>
@@ -206,7 +206,7 @@ const Index = () => {
 
                         <div className="space-y-[32px] p-4">
                           <div className="grid grid-cols-10 gap-2">
-                            {buttons.map((btn, i) => (
+                            {buttons?.map((btn, i) => (
                               <button
                                 key={i}
                                 className={`p-3 w-[60px] h-[50px] text-xl font-normal rounded shadow ${
@@ -268,7 +268,7 @@ const Index = () => {
               )}
             </div>
           ) : (
-            <div className="p-4 text-gray-500 italic">Savolni tanlang...</div>
+            <div className="p-4 italic text-gray-500">Savolni tanlang...</div>
           )}
         </div>
       </div>

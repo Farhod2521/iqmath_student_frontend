@@ -37,7 +37,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {plans.map((item) => {
+      {plans?.map((item) => {
         const catTitle = item.category?.title?.toUpperCase() || ''
         const catGradient = categoryColors[catTitle] || 'from-gray-500 to-gray-400'
         const catStyle = getCategoryStyle(item.category)

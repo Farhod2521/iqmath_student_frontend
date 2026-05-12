@@ -42,7 +42,7 @@ const Header = ({ color = 'white' }) => {
 
           {/* Desktop Navigation */}
           <nav className="items-center justify-center hidden gap-4 lg:flex">
-            {navLinks.map(({ href, label }) =>
+            {navLinks?.map(({ href, label }) =>
               href.startsWith('http') ? (
                 <a
                   key={href}
@@ -170,7 +170,7 @@ const Header = ({ color = 'white' }) => {
         </div>
 
         <nav className="flex flex-col mt-4">
-          {navLinks.map(({ href, label }) => (
+          {navLinks?.map(({ href, label }) => (
             <Link
               key={href}
               href={href}

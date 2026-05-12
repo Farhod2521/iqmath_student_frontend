@@ -53,14 +53,14 @@ const ChoiceAnswerInput = ({ choices, correctAnswers, onChange }) => {
 
   return (
     <div className="space-y-4">
-      {currentOptions.map((option) => (
-        <div key={option} className="space-y-2 px-4">
+      {currentOptions?.map((option) => (
+        <div key={option} className="px-4 space-y-2">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={correctAnswers.includes(option)}
               onChange={() => handleCorrectAnswerToggle(option)}
-              className="h-4 w-4 rounded border-gray-300"
+              className="w-4 h-4 border-gray-300 rounded"
             />
             <span className="font-medium">{option}:</span>
           </div>
@@ -86,7 +86,7 @@ const ChoiceAnswerInput = ({ choices, correctAnswers, onChange }) => {
           type="button"
           onClick={removeOption}
           disabled={optionCount <= 2}
-          className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-red-600 rounded-lg bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           - Variant o'chirish
         </button>
@@ -95,7 +95,7 @@ const ChoiceAnswerInput = ({ choices, correctAnswers, onChange }) => {
           type="button"
           onClick={addOption}
           disabled={optionCount >= 8}
-          className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-blue-600 rounded-lg bg-blue-50 hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           + Variant qo'shish
         </button>

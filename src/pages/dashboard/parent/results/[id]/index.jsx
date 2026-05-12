@@ -90,15 +90,15 @@ function Index() {
           </tr>
         </thead>
         <tbody>
-          {subjects.map((subject) => (
+          {subjects?.map((subject) => (
             <tr key={subject.id} className="border-b last:border-none">
               <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
               <td className="p-4 text-center align-middle">{subject.class_name}</td>
               <td className="p-4">
                 <div className="flex items-center gap-2 min-w-[80px]">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full h-2 bg-gray-200 rounded-full">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="h-2 bg-blue-600 rounded-full"
                       style={{
                         width: `${
                           subject.mastery_percent === null || subject.mastery_percent === undefined
@@ -108,7 +108,7 @@ function Index() {
                       }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">
+                  <span className="text-sm font-semibold">
                     {subject.mastery_percent === null || subject.mastery_percent === undefined
                       ? 0
                       : subject.mastery_percent}
@@ -144,15 +144,15 @@ function Index() {
           </tr>
         </thead>
         <tbody>
-          {subjectsD.map((subject) => (
+          {subjectsD?.map((subject) => (
             <tr key={subject.id} className="border-b last:border-none">
               <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
               <td className="p-4 text-center align-middle">{subject.class_name}</td>
               <td className="p-4">
                 <div className="flex items-center gap-2 min-w-[80px]">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full h-2 bg-gray-200 rounded-full">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="h-2 bg-blue-600 rounded-full"
                       style={{
                         width: `${
                           subject.mastery_percent === null || subject.mastery_percent === undefined
@@ -162,7 +162,7 @@ function Index() {
                       }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">
+                  <span className="text-sm font-semibold">
                     {subject.mastery_percent === null || subject.mastery_percent === undefined
                       ? 0
                       : subject.mastery_percent}
@@ -191,7 +191,7 @@ function Index() {
       <div className="min-h-screen">
         {/* Student Info Header */}
         <div className="bg-white rounded-xl border border-[#E8EBF0] p-4 sm:p-6 mb-6">
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
             {/* Student Info */}
             <div className="flex-shrink-0">
               <h1 className="text-2xl sm:text-3xl font-semibold text-[#1A1D29] mb-1">{data.full_name}</h1>
@@ -201,7 +201,7 @@ function Index() {
             </div>
 
             {/* Stats Badges */}
-            <div className="flex flex-wrap sm:flex-nowrap gap-2 sm:gap-3">
+            <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:gap-3">
               <StatBadge
                 icon={<SiWebmoney size={18} />}
                 value={data.total_paid_amount}
@@ -215,9 +215,9 @@ function Index() {
         </div>
 
         <div>
-          <div className="bg-white rounded-xl border p-4">
+          <div className="p-4 bg-white border rounded-xl">
             {/* Tabs */}
-            <div className="flex border-b mb-4">
+            <div className="flex mb-4 border-b">
               <button
                 onClick={() => handleTabChange('mastery')}
                 className={`px-4 py-2 font-medium text-sm ${
@@ -244,13 +244,13 @@ function Index() {
             <div>
               {activeTab === 'mastery' && (
                 <div>
-                  <h2 className="text-xl font-bold mb-4">{t('subjectMastery')}</h2>
+                  <h2 className="mb-4 text-xl font-bold">{t('subjectMastery')}</h2>
                   {renderTable()}
                 </div>
               )}
               {activeTab === 'diagnostics' && (
                 <div>
-                  <h2 className="text-xl font-bold mb-4">{i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}</h2>
+                  <h2 className="mb-4 text-xl font-bold">{i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}</h2>
                   {renderTableD()}
                 </div>
               )}
@@ -321,13 +321,13 @@ function SubjectRow({ subject, isLast }) {
       <td className="p-4 font-semibold text-[#1A1D29]">
         {i18n.language == 'uz' ? subject.subject_name_uz : subject.subject_name_ru}
       </td>
-      <td className="font-semibold text-sm px-4">{subject.chapters}</td>
-      <td className="font-semibold text-sm px-4">{subject.topics}</td>
+      <td className="px-4 text-sm font-semibold">{subject.chapters}</td>
+      <td className="px-4 text-sm font-semibold">{subject.topics}</td>
       <td className="p-4">
         <div className="flex items-center gap-3">
           <div className="flex-1 bg-gray-200 rounded-full h-2 min-w-[120px] max-w-[300px]">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="h-2 transition-all duration-300 bg-blue-600 rounded-full"
               style={{ width: `${masteryPercent}%` }}
             />
           </div>

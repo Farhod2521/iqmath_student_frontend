@@ -35,7 +35,7 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
     }
 
     if (question.question_type === 'composite') {
-      return question.sub_questions.map((item, idx) => (
+      return question?.sub_questions?.map((item, idx) => (
         <div key={idx} className="flex gap-1">
           <span>{item.text1_uz}</span>
           <MathText>{item.correct_answer}</MathText>
@@ -44,7 +44,7 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
       ))
     }
 
-    return question.choices.map((item, idx) => (
+    return question.choices?.map((item, idx) => (
       <div key={idx} className="flex gap-1">
         <span className={item.is_correct ? 'text-blue-500' : ''}>{item.letter}</span>
         <MathText>{isUzbek ? item.text_uz : item.text_ru}</MathText>
@@ -102,7 +102,7 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
                 <td className="p-3 text-sm">{renderAnswer(question)}</td>
                 <td className="p-3 text-center">{getQuestionTypeLabel(question.question_type)}</td>
                 <td className="py-2 text-center">
-                  <div className="flex items-center gap-2 justify-center">
+                  <div className="flex items-center justify-center gap-2">
                     <Button
                       onclick={() => onEdit(question)}
                       py="p-2"

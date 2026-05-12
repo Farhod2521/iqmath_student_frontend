@@ -226,7 +226,7 @@ const HpHeader = () => {
         <Stack spacing={2} sx={{ px: 2, pb: 2 }}>
           {/* Social Icons */}
           <Stack direction="row" spacing={1} justifyContent="flex-start" flexWrap="wrap">
-            {socialIcons.map(({ key, Icon, size, link_url }) => (
+            {socialIcons?.map(({ key, Icon, size, link_url }) => (
               <IconButton
                 key={key}
                 component="a"

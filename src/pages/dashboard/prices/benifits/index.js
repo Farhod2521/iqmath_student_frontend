@@ -125,7 +125,7 @@ export default function Benefits() {
               </tr>
             </thead>
             <tbody>
-              {benefits.map((item) => (
+              {benefits?.map((item) => (
                 <tr key={item.id} className="border-t">
                   <td className="p-2 sm:p-3">{item.title_uz || '---'}</td>
                   <td className="p-2 sm:p-3">{item.title_ru || '---'}</td>

@@ -57,10 +57,10 @@ const SubjectsPage = () => {
       <div className="font-sf">
         <StudentBreadcrumbs mainLink="/dashboard/student/subjects" />
         <div className="grid grid-cols-12 gap-4 md:gap-6">
-          <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
-            <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+          <div className="self-start col-span-12 overflow-hidden border border-gray-200 md:col-span-6 rounded-xl">
+            <div className="px-4 py-3 bg-gray-100 border-b border-gray-200 ">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -72,12 +72,12 @@ const SubjectsPage = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-gray-800 uppercase">{t('chapters')}</h3>
-                  <p className="text-gray-500 text-xs">{t('select')}</p>
+                  <p className="text-xs text-gray-500">{t('select')}</p>
                 </div>
               </div>
             </div>
             <ul>
-              {chapters.map((chapter, idx) => (
+              {chapters?.map((chapter, idx) => (
                 <li
                   key={idx}
                   onClick={() => setSelectedChapterId(chapter.id)}
@@ -92,10 +92,10 @@ const SubjectsPage = () => {
           </div>
 
           {selectedChapterId && (
-            <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200">
-              <div className=" bg-gray-100 px-4 py-3 border-b border-gray-200">
+            <div className="self-start col-span-12 overflow-hidden border border-gray-200 md:col-span-6 rounded-xl">
+              <div className="px-4 py-3 bg-gray-100 border-b border-gray-200 ">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gray-600 rounded-md flex items-center justify-center">
+                  <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
@@ -107,7 +107,7 @@ const SubjectsPage = () => {
                   </div>
                   <div>
                     <h3 className="text-base font-semibold text-gray-800 uppercase">{t('topic')}</h3>
-                    <p className="text-gray-500 text-xs">{t('topicsList')}</p>
+                    <p className="text-xs text-gray-500">{t('topicsList')}</p>
                   </div>
                 </div>
               </div>
@@ -115,24 +115,24 @@ const SubjectsPage = () => {
                 <ContentLoader />
               ) : topics.length > 0 ? (
                 <ul>
-                  {topics.map((topic, index) => (
+                  {topics?.map((topic, index) => (
                     <li
                       key={index}
                       // key={index}
                       // onClick={() =>
                       //   router.push(`/dashboard/student/recommendations/${id}/${selectedChapterId}/${topic.id}`)
                       // }
-                      className="flex cursor-pointer items-center  justify-between border-b border-gray-200 bg-white p-2 sm:p-3 pl-4 sm:pl-6 text-sm sm:text-md last:border-b-0 hover:bg-blue-50"
+                      className="flex items-center justify-between p-2 pl-4 text-sm bg-white border-b border-gray-200 cursor-pointer sm:p-3 sm:pl-6 sm:text-md last:border-b-0 hover:bg-blue-50"
                     >
                       <span className="uppercase">{i18n.language === 'uz' ? topic.name_uz : topic.name_ru}</span>
-                      {/* <div className="flex min-w-10 items-center justify-center">
+                      {/* <div className="flex items-center justify-center min-w-10">
                         <RightIcon />
                       </div> */}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="flex h-48 items-center justify-center gap-2 bg-orange-50">
+                <div className="flex items-center justify-center h-48 gap-2 bg-orange-50">
                   <InfoCircleIcon />
                   <h3 className="text-base font-normal text-gray-500">{t('noTopicsInThisSection')}</h3>
                 </div>

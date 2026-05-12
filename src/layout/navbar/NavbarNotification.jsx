@@ -119,7 +119,7 @@ const NavbarNotification = () => {
           <div className="max-h-[340px] overflow-auto">
             {(!latest || latest.length === 0) && <div className="p-4 text-sm text-gray-500">{t('noMessage')}</div>}
 
-            {latest.map((item) => (
+            {latest?.map((item) => (
               <button
                 key={item.id}
                 className={`w-full text-left p-3 border-b hover:bg-gray-50 flex items-start gap-3 ${

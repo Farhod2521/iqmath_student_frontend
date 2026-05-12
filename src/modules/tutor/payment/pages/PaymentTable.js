@@ -54,45 +54,45 @@ function PaymentTable() {
   if (convertsLoading) {
     return (
       <div className="flex items-center justify-center p-8 mt-3">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
+        <div className="w-8 h-8 border-4 border-gray-300 rounded-full animate-spin border-t-blue-600"></div>
       </div>
     )
   }
 
   if (!withdrawals.length) {
     return (
-      <div className="rounded-lg mt-3 border border-gray-200 bg-white p-8 text-center">
+      <div className="p-8 mt-3 text-center bg-white border border-gray-200 rounded-lg">
         <p className="text-gray-500">{t('noDataFound')}</p>
       </div>
     )
   }
 
   return (
-    <div className="overflow-hidden mt-3 rounded-lg border border-gray-200 bg-white shadow-sm">
+    <div className="mt-3 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">ID</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                 {t('amount')}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                 {t('status')}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                 {t('date')}
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {withdrawals.map((withdrawal) => (
+          <tbody className="bg-white divide-y divide-gray-200">
+            {withdrawals?.map((withdrawal) => (
               <tr key={withdrawal.id} className="hover:bg-gray-50">
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">#{withdrawal.id}</td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">#{withdrawal.id}</td>
+                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                   {withdrawal.amount.toLocaleString()} {t('currency')}
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm">
+                <td className="px-6 py-4 text-sm whitespace-nowrap">
                   <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
                       withdrawal.status
@@ -101,7 +101,7 @@ function PaymentTable() {
                     {getStatusText(withdrawal.status)}
                   </span>
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{withdrawal.created_at}</td>
+                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{withdrawal.created_at}</td>
               </tr>
             ))}
           </tbody>

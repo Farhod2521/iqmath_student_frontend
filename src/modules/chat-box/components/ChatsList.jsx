@@ -31,10 +31,10 @@ const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex-1 overflow-y-auto overflow-x-hidden">
-      {chatsLoading && <p className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">{t('loading')}</p>}
+    <div className="flex-1 overflow-x-hidden overflow-y-auto">
+      {chatsLoading && <p className="px-4 py-3 text-xs text-gray-400 md:px-6 md:py-4 md:text-sm">{t('loading')}</p>}
 
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <div
           key={chat.id}
           onClick={() => {
@@ -61,13 +61,13 @@ const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
           // ${chat.is_closed ? 'opacity-70' : ''}
         >
           <div className="relative flex-shrink-0">
-            <div className="flex items-center justify-center text-sm md:text-lg font-semibold text-white rounded-full shadow-lg w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-blue-400 to-purple-500">
+            <div className="flex items-center justify-center w-10 h-10 text-sm font-semibold text-white rounded-full shadow-lg md:text-lg md:w-14 md:h-14 bg-gradient-to-br from-blue-400 to-purple-500">
               {chat?.other_user_name?.charAt(0) || '?'}
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1 gap-2">
-              <div className="flex items-center gap-2 min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <div className="flex items-center flex-1 min-w-0 gap-2">
                 <h3 className="font-semibold truncate">{chat.other_user_name}</h3>
               </div>
 

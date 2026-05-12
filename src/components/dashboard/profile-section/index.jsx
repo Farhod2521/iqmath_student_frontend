@@ -34,7 +34,7 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
       <SidebarTitle>{t('account')}</SidebarTitle>
       <div className="flex flex-col justify-between">
         <ul className="mt-[12px] space-y-[8px] px-[24px] mb-[24px]">
-          {menuItems.map((item) => {
+          {menuItems?.map((item) => {
             const isActive = router.pathname === item.path
 
             return (

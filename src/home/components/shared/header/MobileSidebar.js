@@ -37,7 +37,7 @@ const MobileSidebar = () => {
   return (
     <Box p={1}>
       <Stack direction="column" spacing={2}>
-        {navs.map((navlink, i) => {
+        {navs?.map((navlink, i) => {
           const active = isActive(navlink.to)
           return (
             <Button

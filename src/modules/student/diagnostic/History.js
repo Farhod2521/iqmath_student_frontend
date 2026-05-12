@@ -51,19 +51,19 @@ function DiagnosticHistory() {
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md w-full text-center border border-gray-200">
+      <div className="flex flex-col items-center justify-center px-4 py-16">
+        <div className="w-full max-w-md p-12 text-center bg-white border border-gray-200 shadow-lg rounded-2xl">
           <div className="flex justify-center mb-6">
-            <div className="bg-red-100 rounded-full p-6">
+            <div className="p-6 bg-red-100 rounded-full">
               <FileQuestion className="w-16 h-16" aria-hidden="true" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">{texts.error}</h2>
-          <p className="text-gray-600 mb-6">{error?.message || ''}</p>
+          <h2 className="mb-3 text-2xl font-bold text-gray-900">{texts.error}</h2>
+          <p className="mb-6 text-gray-600">{error?.message || ''}</p>
           <button
             type="button"
             onClick={() => router.reload()}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+            className="px-8 py-3 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg"
           >
             Reload
           </button>
@@ -76,19 +76,19 @@ function DiagnosticHistory() {
 
   if (!items || items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md w-full text-center border border-gray-200">
+      <div className="flex flex-col items-center justify-center px-4 py-16">
+        <div className="w-full max-w-md p-12 text-center bg-white border border-gray-200 shadow-lg rounded-2xl">
           <div className="flex justify-center mb-6">
-            <div className="bg-blue-100 rounded-full p-6">
+            <div className="p-6 bg-blue-100 rounded-full">
               <FileQuestion className="w-16 h-16 text-blue-600" aria-hidden="true" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">{texts.title}</h2>
-          <p className="text-gray-600 mb-6">{texts.desc}</p>
+          <h2 className="mb-3 text-2xl font-bold text-gray-900">{texts.title}</h2>
+          <p className="mb-6 text-gray-600">{texts.desc}</p>
           <button
             type="button"
             onClick={() => router.push('/dashboard/student/diagnostics')}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+            className="px-8 py-3 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg"
           >
             {texts.cta}
           </button>
@@ -98,8 +98,8 @@ function DiagnosticHistory() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-      {items.map((subject) => (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+      {items?.map((subject) => (
         <ProgressChart key={subject.id} subject={subject} language={lang} />
       ))}
     </div>

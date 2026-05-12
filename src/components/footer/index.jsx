@@ -117,11 +117,11 @@ const Footer = () => {
               </div>
 
               {/* Footer Links */}
-              {footerLinks.map((section, idx) => (
+              {footerLinks?.map((section, idx) => (
                 <div key={idx} className="lg:col-span-2">
                   <h3 className="mb-4 text-base font-semibold text-white">{section.title}</h3>
                   <ul className="space-y-3">
-                    {section.links.map((link, linkIdx) => (
+                    {section.links?.map((link, linkIdx) => (
                       <li key={linkIdx}>
                         <a
                           href={link.href}
@@ -139,7 +139,7 @@ const Footer = () => {
               <div className="lg:col-span-4">
                 <h3 className="mb-4 text-base font-semibold text-white">{t('connection')}</h3>
                 <ul className="space-y-4">
-                  {contactInfo.map((contact, idx) => (
+                  {contactInfo?.map((contact, idx) => (
                     <li key={idx}>
                       <a
                         href={contact.href}
@@ -183,7 +183,7 @@ const Footer = () => {
               {/* Social Media */}
               <div className="lg:col-span-4">
                 <div className="flex gap-3">
-                  {socialLinks.map((social, idx) => (
+                  {socialLinks?.map((social, idx) => (
                     <a
                       key={idx}
                       href={social.href}

@@ -9,7 +9,7 @@ const MenuSection = ({ title, items, onTabChange }) => {
       <SidebarTitle>{title}</SidebarTitle>
       <div className="flex flex-col justify-between">
         <ul className="my-[12px] space-y-[8px] px-[24px]">
-          {items.map((item) => {
+          {items?.map((item) => {
             const isActive = router.pathname.startsWith(item.path)
 
             return (
@@ -40,4 +40,4 @@ const MenuSection = ({ title, items, onTabChange }) => {
   )
 }
 
-export default MenuSection 
+export default MenuSection

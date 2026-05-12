@@ -138,9 +138,9 @@ const Footer = () => {
         }}
       >
         <Grid container spacing={3} justifyContent="space-between" mb={7}>
-          {footerLinks.map((footerlink, i) => (
+          {footerLinks?.map((footerlink, i) => (
             <Grid size={{ xs: 6, sm: 4, lg: 2 }} key={i}>
-              {footerlink.children.map((child, i) => (
+              {footerlink.children?.map((child, i) => (
                 <React.Fragment key={i}>
                   {child.title ? (
                     <Typography fontSize="17px" fontWeight="600" mb="22px">

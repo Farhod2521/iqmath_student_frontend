@@ -24,7 +24,7 @@ const IndependentResultCard = ({ data, variant = 'light' }) => {
 
     return (
       <div className={`text-sm ${textClass}`}>
-        <b>{label}:</b> {open ? items.map((i) => i[keyName]).join(', ') : items[0][keyName]}
+        <b>{label}:</b> {open ? items?.map((i) => i[keyName]).join(', ') : items[0][keyName]}
         {items.length > 1 && (
           <button onClick={() => setOpen(!open)} className={`ml-2 text-xs ${linkClass} underline`}>
             {open ? t('msgResult.collapse') : `+${items.length - 1} ${t('msgResult.moreCount')}`}

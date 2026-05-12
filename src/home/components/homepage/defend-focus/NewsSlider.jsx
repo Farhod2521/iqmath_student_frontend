@@ -96,7 +96,7 @@ const NewsSlider = ({ news }) => {
             maxWidth: '1300px'
           }}
         >
-          {items.map((item, i) => (
+          {items?.map((item, i) => (
             <Card
               key={`${item.id}-${i}`}
               sx={{

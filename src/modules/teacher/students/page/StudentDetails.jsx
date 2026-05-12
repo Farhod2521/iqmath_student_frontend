@@ -68,12 +68,12 @@ const StudentDetails = () => {
     <div className="p-4 space-y-6">
       {/* ================= ADMIN / TEACHER VIEW ================= */}
       {(user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER) && apiRole === 'student' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* LEFT */}
-          <div className="bg-white p-6 rounded-xl border">
+          <div className="p-6 bg-white border rounded-xl">
             <div className="flex flex-col items-center text-center">
               <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} />
-              <h1 className="text-xl font-bold mt-2">{studentData.full_name}</h1>
+              <h1 className="mt-2 text-xl font-bold">{studentData.full_name}</h1>
 
               <span
                 className={`mt-2 px-3 py-1 rounded-full text-xs ${
@@ -85,7 +85,7 @@ const StudentDetails = () => {
 
               <button
                 onClick={() => setIsRewardModalOpen(true)}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg"
               >
                 {t('giveReward')}
               </button>
@@ -93,10 +93,10 @@ const StudentDetails = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-xl border">
-            <h3 className="font-semibold mb-4">{t('paymentInfo')}</h3>
+          <div className="p-6 bg-white border lg:col-span-2 rounded-xl">
+            <h3 className="mb-4 font-semibold">{t('paymentInfo')}</h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               <div>
                 <p className="text-sm text-gray-500">{t('lastPayment')}</p>
                 <p className="font-semibold text-log">{studentData?.last_payment_amount?.toLocaleString()} UZS</p>
@@ -106,37 +106,37 @@ const StudentDetails = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500">{t('total')}</p>
-                <p className="font-semibold text-lg">{studentData.total_paid_amount?.toLocaleString()} UZS</p>
+                <p className="text-lg font-semibold">{studentData.total_paid_amount?.toLocaleString()} UZS</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">{t('paymentStatus')}</p>
-                <div className="flex flex-wrap flex-col gap-x-3 gap-y-1 items-start mt-1">
+                <div className="flex flex-col flex-wrap items-start mt-1 gap-x-3 gap-y-1">
                   <span className="flex items-center text-sm text-yellow-600">
-                    <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
+                    <div className="w-2 h-2 mr-2 bg-yellow-400 rounded-full"></div>
                     {studentData?.payment_status_count?.pending} {t('pending')}
                   </span>
                   <span className="flex items-center text-sm text-green-600">
-                    <div className="w-2 h-2 rounded-full bg-green-400 mr-2"></div>
+                    <div className="w-2 h-2 mr-2 bg-green-400 rounded-full"></div>
                     {studentData?.payment_status_count?.success} {t('success')}
                   </span>
                   <span className="flex items-center text-sm text-red-600">
-                    <div className="w-2 h-2 rounded-full bg-red-400 mr-2"></div>
+                    <div className="w-2 h-2 mr-2 bg-red-400 rounded-full"></div>
                     {studentData?.payment_status_count?.failed} {t('failed')}
                   </span>
                   <span className="flex items-center text-sm text-red-600">
-                    <div className="w-2 h-2 rounded-full bg-red-400 mr-2"></div>
+                    <div className="w-2 h-2 mr-2 bg-red-400 rounded-full"></div>
                     {studentData?.is_active ? t('active') : t('inactive')}
                   </span>
                 </div>
               </div>
               <div>
                 <p className="text-sm text-gray-500">{t('coins')}</p>
-                <p className="font-semibold text-lg">{studentData.coin}</p>
+                <p className="text-lg font-semibold">{studentData.coin}</p>
               </div>
 
               <div>
                 <p className="text-sm text-gray-500">{t('SumScore')}</p>
-                <p className="font-semibold text-lg">{studentData.score}</p>
+                <p className="text-lg font-semibold">{studentData.score}</p>
               </div>
             </div>
           </div>
@@ -147,12 +147,12 @@ const StudentDetails = () => {
       {apiRole === RolesList.PARENT && (
         <div className="space-y-6">
           {/* Parent Info */}
-          <div className="bg-white p-6 rounded-xl border">
+          <div className="p-6 bg-white border rounded-xl">
             <div className="flex items-center justify-between">
               {/* LEFT */}
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">{studentData.full_name?.[0]}</span>
+                <div className="flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full">
+                  <span className="text-xl font-bold text-white">{studentData.full_name?.[0]}</span>
                 </div>
 
                 <div>
@@ -176,25 +176,25 @@ const StudentDetails = () => {
 
             {/* OPTIONAL: REGISTER DATE */}
             <div className="mt-4 text-sm text-gray-500">
-              {t('registrationDate')}: <span className="text-gray-800 font-medium">{studentData.registered_at}</span>
+              {t('registrationDate')}: <span className="font-medium text-gray-800">{studentData.registered_at}</span>
             </div>
           </div>
 
           {/* Children */}
-          <div className="bg-white p-6 rounded-xl border">
-            <h2 className="font-semibold mb-4">
+          <div className="p-6 bg-white border rounded-xl">
+            <h2 className="mb-4 font-semibold">
               {t('myChildren')} ({studentData.children_count})
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid gap-4 md:grid-cols-2">
               {studentData.children?.map((child) => (
                 <div
                   key={child.student_id}
-                  className="border rounded-xl p-4 hover:shadow-md transition cursor-pointer bg-white"
+                  className="p-4 transition bg-white border cursor-pointer rounded-xl hover:shadow-md"
                   // onClick={() => router.push(`/dashboard/student/subjects/${child.student_id}`)}
                 >
                   {/* HEADER */}
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-900">{child.full_name}</h3>
 
                     <span
@@ -207,23 +207,23 @@ const StudentDetails = () => {
                   </div>
 
                   {/* CLASS */}
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="mb-3 text-sm text-gray-500">
                     {t('subject')}: {child.class_name}
                   </p>
 
                   {/* STATS */}
                   <div className="grid grid-cols-3 gap-3 text-center">
-                    <div className="bg-gray-50 rounded-lg p-2">
+                    <div className="p-2 rounded-lg bg-gray-50">
                       <p className="text-xs text-gray-400">{t('score')}</p>
                       <p className="font-semibold text-gray-800">{child.score}</p>
                     </div>
 
-                    <div className="bg-gray-50 rounded-lg p-2">
+                    <div className="p-2 rounded-lg bg-gray-50">
                       <p className="text-xs text-gray-400">{t('coins')}</p>
                       <p className="font-semibold text-gray-800">{child.coin}</p>
                     </div>
 
-                    <div className="bg-gray-50 rounded-lg p-2">
+                    <div className="p-2 rounded-lg bg-gray-50">
                       <p className="text-xs text-gray-400">{t('remainingDays')}</p>
                       <p className="font-semibold text-gray-800">{child.remaining_days}</p>
                     </div>
@@ -243,11 +243,11 @@ const StudentDetails = () => {
       {apiRole === 'tutor' && (
         <div className="space-y-6">
           {/* ================= TUTOR INFO ================= */}
-          <div className="bg-white p-6 rounded-xl border">
+          <div className="p-6 bg-white border rounded-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">{studentData.full_name?.[0]}</span>
+                <div className="flex items-center justify-center w-16 h-16 bg-purple-600 rounded-full">
+                  <span className="text-xl font-bold text-white">{studentData.full_name?.[0]}</span>
                 </div>
 
                 <div>
@@ -269,24 +269,24 @@ const StudentDetails = () => {
 
             {/* REGISTERED */}
             <div className="mt-4 text-sm text-gray-500">
-              {t('registrationDate')}: <span className="text-gray-800 font-medium">{studentData.registered_at}</span>
+              {t('registrationDate')}: <span className="font-medium text-gray-800">{studentData.registered_at}</span>
             </div>
           </div>
 
           {/* ================= REFERRAL STUDENTS ================= */}
-          <div className="bg-white p-6 rounded-xl border">
-            <h2 className="font-semibold mb-4">
+          <div className="p-6 bg-white border rounded-xl">
+            <h2 className="mb-4 font-semibold">
               {t('referralStudents')} ({studentData.referral_students_count})
             </h2>
 
             {studentData.referral_students?.length === 0 ? (
-              <p className="text-gray-400 text-sm">{t('noData')}</p>
+              <p className="text-sm text-gray-400">{t('noData')}</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {studentData.referral_students.map((student) => (
-                  <div key={student.student_id} className="border rounded-xl p-4 hover:shadow-md transition bg-white">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {studentData?.referral_students?.map((student) => (
+                  <div key={student.student_id} className="p-4 transition bg-white border rounded-xl hover:shadow-md">
                     {/* HEADER */}
-                    <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-start justify-between mb-3">
                       <div>
                         <h3 className="font-semibold text-gray-900">{student.full_name}</h3>
                         <p className="text-sm text-gray-500">{student.phone}</p>
@@ -301,12 +301,12 @@ const StudentDetails = () => {
 
                     {/* STATS */}
                     <div className="grid grid-cols-2 gap-3 mt-3">
-                      <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="p-3 text-center rounded-lg bg-gray-50">
                         <p className="text-xs text-gray-400">{t('paymentAmount')}</p>
                         <p className="font-semibold text-gray-800">{student.payment_amount}</p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="p-3 text-center rounded-lg bg-gray-50">
                         <p className="text-xs text-gray-400">{t('bonusAmount')}</p>
                         <p className="font-semibold text-gray-800">{student.bonus_amount}</p>
                       </div>
@@ -318,17 +318,17 @@ const StudentDetails = () => {
           </div>
 
           {/* ================= COUPON STUDENTS ================= */}
-          <div className="bg-white p-6 rounded-xl border">
-            <h2 className="font-semibold mb-4">
+          <div className="p-6 bg-white border rounded-xl">
+            <h2 className="mb-4 font-semibold">
               {t('couponStudents')} ({studentData.coupon_students_count})
             </h2>
 
             {studentData.coupon_students?.length === 0 ? (
-              <p className="text-gray-400 text-sm">{t('noData')}</p>
+              <p className="text-sm text-gray-400">{t('noData')}</p>
             ) : (
               <div className="space-y-3">
-                {studentData.coupon_students.map((student) => (
-                  <div key={student.student_id} className="border rounded-lg p-4">
+                {studentData?.coupon_students?.map((student) => (
+                  <div key={student.student_id} className="p-4 border rounded-lg">
                     <h3 className="font-semibold">{student.full_name}</h3>
                     <p className="text-sm text-gray-500">{student.phone}</p>
                   </div>

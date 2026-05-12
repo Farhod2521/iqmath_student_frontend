@@ -175,8 +175,8 @@ const Referrals = () => {
 
   if (isReferralsLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
       </div>
     )
   }
@@ -184,7 +184,7 @@ const Referrals = () => {
   return (
     <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
       <div className="col-span-12">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center justify-between mb-6">
           <div></div>
           <Button
             onPress={handleAddNew}
@@ -196,8 +196,8 @@ const Referrals = () => {
         </div>
 
         {referrals.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {referrals.map((referral) => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {referrals?.map((referral) => (
               <ReferralCard
                 key={referral.id}
                 referral={referral}

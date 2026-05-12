@@ -66,7 +66,7 @@ const CTA = () => {
 
   return (
     <>
-      <section className="relative px-4 py-14 sm:py-18 overflow-hidden sm:py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <section className="relative px-4 overflow-hidden py-14 sm:py-18 sm:py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* soft background blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute rounded-full -top-24 -left-24 h-72 w-72 bg-blue-300/30 blur-3xl" />
@@ -125,7 +125,7 @@ const CTA = () => {
               {/* features */}
               {features.length > 0 && (
                 <div className="flex flex-wrap items-center justify-center gap-3 mt-8 text-sm text-white/90">
-                  {features.map((feature, idx) => (
+                  {features?.map((feature, idx) => (
                     <span
                       key={idx}
                       className="inline-flex items-center gap-2 px-3 py-2 border rounded-full bg-white/10 border-white/15 backdrop-blur"

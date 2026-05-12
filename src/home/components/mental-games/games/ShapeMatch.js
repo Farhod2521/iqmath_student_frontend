@@ -30,7 +30,7 @@ export default function ShapeMatch() {
       <div className="mt-2 text-6xl font-black">{target}</div>
 
       <div className="grid grid-cols-2 gap-3 mt-6">
-        {options.map((s) => (
+        {options?.map((s) => (
           <button
             key={s}
             onClick={() => pick(s)}

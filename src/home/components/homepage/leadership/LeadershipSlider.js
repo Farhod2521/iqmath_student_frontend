@@ -141,7 +141,7 @@ const LeadershipSlider = () => {
 
             {/* Indicators */}
             <div className="flex flex-wrap justify-center gap-2 mt-6 sm:gap-3">
-              {scientists.map((_, i) => (
+              {scientists?.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => changeSlide(i)}

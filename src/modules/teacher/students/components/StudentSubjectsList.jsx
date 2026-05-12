@@ -56,15 +56,15 @@ const StudentSubjectsList = () => {
           </tr>
         </thead>
         <tbody>
-          {subjects.map((subject) => (
+          {subjects?.map((subject) => (
             <tr key={subject.id} className="border-b last:border-none">
               <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
               <td className="p-4 text-center align-middle">{subject.class_name}</td>
               <td className="p-4">
                 <div className="flex items-center gap-2 min-w-[80px]">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full h-2 bg-gray-200 rounded-full">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="h-2 bg-blue-600 rounded-full"
                       style={{
                         width: `${
                           subject.mastery_percent === null || subject.mastery_percent === undefined
@@ -74,7 +74,7 @@ const StudentSubjectsList = () => {
                       }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">
+                  <span className="text-sm font-semibold">
                     {subject.mastery_percent === null || subject.mastery_percent === undefined
                       ? 0
                       : subject.mastery_percent}
@@ -110,15 +110,15 @@ const StudentSubjectsList = () => {
           </tr>
         </thead>
         <tbody>
-          {subjectsD.map((subject) => (
+          {subjectsD?.map((subject) => (
             <tr key={subject.id} className="border-b last:border-none">
               <td className="p-4 font-semibold">{i18n.language === 'ru' ? subject.name_ru : subject.name_uz}</td>
               <td className="p-4 text-center align-middle">{subject.class_name}</td>
               <td className="p-4">
                 <div className="flex items-center gap-2 min-w-[80px]">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full h-2 bg-gray-200 rounded-full">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="h-2 bg-blue-600 rounded-full"
                       style={{
                         width: `${
                           subject.mastery_percent === null || subject.mastery_percent === undefined
@@ -128,7 +128,7 @@ const StudentSubjectsList = () => {
                       }}
                     ></div>
                   </div>
-                  <span className="font-semibold text-sm">
+                  <span className="text-sm font-semibold">
                     {subject.mastery_percent === null || subject.mastery_percent === undefined
                       ? 0
                       : subject.mastery_percent}
@@ -154,9 +154,9 @@ const StudentSubjectsList = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-xl border p-4">
+      <div className="p-4 bg-white border rounded-xl">
         {/* Tabs */}
-        <div className="flex border-b mb-4">
+        <div className="flex mb-4 border-b">
           <button
             onClick={() => handleTabChange('mastery')}
             className={`px-4 py-2 font-medium text-sm ${
@@ -181,13 +181,13 @@ const StudentSubjectsList = () => {
         <div>
           {activeTab === 'mastery' && (
             <div>
-              <h2 className="text-xl font-bold mb-4">{t('subjectMastery')}</h2>
+              <h2 className="mb-4 text-xl font-bold">{t('subjectMastery')}</h2>
               {renderTable()}
             </div>
           )}
           {activeTab === 'diagnostics' && (
             <div>
-              <h2 className="text-xl font-bold mb-4">{i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}</h2>
+              <h2 className="mb-4 text-xl font-bold">{i18n.language === 'ru' ? 'Диагностика' : 'Diagnostika'}</h2>
               {renderTableD()}
             </div>
           )}

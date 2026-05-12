@@ -34,11 +34,11 @@ const Subjects = () => {
 
   return (
     <div>
-      {subjectsData.map(({ type, data }, idx) => (
+      {subjectsData?.map(({ type, data }, idx) => (
         <section key={idx} className="pb-4">
           <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
           <div className="flex flex-wrap gap-4 mb-4">
-            {data.map((item, index) =>
+            {data?.map((item, index) =>
               item.is_open ? (
                 <CardSubject
                   onClick={() => router.push(`/dashboard/student/subjects/${get(item, 'id')}`)}

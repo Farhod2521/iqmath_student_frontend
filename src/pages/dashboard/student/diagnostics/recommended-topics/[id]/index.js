@@ -120,7 +120,7 @@ const Index = () => {
             className="absolute border max-w-[438px] max-h-[178px] overflow-y-auto w-full rounded-[4px] shadow-md bg-white top-[52px] left-0 right-0 mx-auto"
           >
             <ul className="p-[4px]">
-              {topicsList.map((topic, index) => (
+              {topicsList?.map((topic, index) => (
                 <li
                   key={index}
                   className={`py-[8px] px-[12px] flex justify-between ${

@@ -7,7 +7,7 @@ const availableMathSymbols = ['²']
 const MathSymbols = ({ onClick }) => {
   return (
     <div className="grid  sm:grid-cols-10 grid-cols-7 gap-1 sm:min-w-[500px] min-w-[360px] ">
-      {symbolsList.map((symbol, idx) => {
+      {symbolsList?.map((symbol, idx) => {
         return (
           <button
             key={idx}

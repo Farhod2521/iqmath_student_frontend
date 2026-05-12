@@ -74,7 +74,7 @@ const Index = () => {
               className="absolute max-w-[438px] max-h-[178px] overflow-y-auto w-full rounded-[4px] shadow-md bg-white top-[52px] left-0 right-0 mx-auto"
             >
               <ul className="p-[4px]">
-                {topics.map((topic, index) => (
+                {topics?.map((topic, index) => (
                   <li
                     key={index}
                     className={`py-[8px] px-[12px] flex justify-between ${
@@ -123,14 +123,14 @@ const Index = () => {
         <div className="w-full h-[1px] bg-[#F2F2F7]"></div>
 
         <div className=" py-[22px] px-[24px]">
-          <div className=" mx-auto p-6 bg-white">
-            {fractionsData.map((section, index) => (
+          <div className="p-6 mx-auto bg-white ">
+            {fractionsData?.map((section, index) => (
               <div key={index} className="mb-6">
-                <h2 className="text-lg font-semibold mb-2">
+                <h2 className="mb-2 text-lg font-semibold">
                   {index + 1}. {section.title}
                 </h2>
-                <ul className="list-disc pl-5 space-y-1">
-                  {section.points.map((point, idx) => (
+                <ul className="pl-5 space-y-1 list-disc">
+                  {section.points?.map((point, idx) => (
                     <li key={idx} className="text-gray-700" dangerouslySetInnerHTML={{ __html: point }} />
                   ))}
                 </ul>

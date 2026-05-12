@@ -18,7 +18,7 @@ export default function Filters({ categories, activeCategory, setActiveCategory 
         >
           {t('allNews')}
         </button>
-        {categories.map((cat) => (
+        {categories?.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}

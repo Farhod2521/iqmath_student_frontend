@@ -46,13 +46,13 @@ const DiagnosticSubjects = () => {
   if (isLoading || isFetching) return <ContentLoader />
 
   return (
-    <div className="font-sf p-4">
+    <div className="p-4 font-sf">
       <div>
-        {subjectsData.map(({ type, data }, idx) => (
+        {subjectsData?.map(({ type, data }, idx) => (
           <section key={idx} className="pb-4">
             <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
             <div className="flex flex-wrap gap-4 mb-4">
-              {data.map((item, index) => (
+              {data?.map((item, index) => (
                 <CardSubjectWithProgress
                   onDiagnosticsClick={() => handleSubjectClick(item)}
                   onRecommendationsClick={() => handleGoToRecommendations(item)}
@@ -68,7 +68,7 @@ const DiagnosticSubjects = () => {
       </div>
 
       {subjectsData.length === 0 && (
-        <div className="text-center py-12">
+        <div className="py-12 text-center">
           <p className="text-gray-500">Fanlar topilmadi</p>
         </div>
       )}

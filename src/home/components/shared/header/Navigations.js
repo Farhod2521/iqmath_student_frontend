@@ -53,7 +53,7 @@ const Navigations = () => {
 
   return (
     <>
-      {navs.map((navlink, i) => (
+      {navs?.map((navlink, i) => (
         <StyledButton
           color="primary"
           component={Link}

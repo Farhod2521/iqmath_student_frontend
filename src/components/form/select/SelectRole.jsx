@@ -14,8 +14,8 @@ const SelectRole = ({ value, onChange, placeholder }) => {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   const options = [
@@ -54,11 +54,11 @@ const SelectRole = ({ value, onChange, placeholder }) => {
           animate={{ opacity: 1, translateY: '0px' }}
           transition={{ duration: 0.3 }}
         >
-          <ul className="absolute w-full top-12 bg-white border border-gray-300 rounded-md shadow-md z-50">
-            {options.map((option, index) => (
+          <ul className="absolute z-50 w-full bg-white border border-gray-300 rounded-md shadow-md top-12">
+            {options?.map((option, index) => (
               <li
                 key={index}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSelect(option)}
               >
                 {option.label}

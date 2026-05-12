@@ -31,7 +31,7 @@ export function useKeyboardShortcut(keys, callback, options = {}) {
     const isMac = typeof navigator !== 'undefined' ? /Mac|iPhone|iPad|iPod/.test(navigator.platform) : false
 
     const keyList = Array.isArray(keys) ? keys : [keys]
-    const normalized = keyList.map((k) => String(k).toLowerCase())
+    const normalized = keyList?.map((k) => String(k).toLowerCase())
 
     const handler = (event) => {
       // input/textarea/contentEditable ichida yozayotgan bo'lsa — e'tiborsiz qoldiramiz

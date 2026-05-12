@@ -4,15 +4,22 @@ import LayoutAdmin from '@/layout/LayoutAdmin'
 import { LoadingState } from '@/modules/student/products/components'
 import { formatDateTime } from '@/shared/utils'
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import React, { useEffect } from 'react'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
 function Index() {
   const { t } = useTranslation()
-  const { data, isLoading, isFetching } = useGetQuery({
+  const { data, isLoading, isFetching, error } = useGetQuery({
     key: '/api/v1/payments/teacher/payments/',
     url: '/api/v1/payments/teacher/payments/'
   })
+
+  console.log('error', error)
+
+  useEffect(() => {
+    if (error?.response?.data?.detail) toast.error(error?.response?.data?.detail)
+  }, [error?.response?.data?.detail])
 
   if (isLoading) {
     return (
@@ -23,10 +30,20 @@ function Index() {
     )
   }
 
+  if (error) {
+    return (
+      <LayoutAdmin>
+        <HeaderTitle title={t('payments')} />
+
+        <div className="p-5 text-red-500">{error?.response?.data?.detail || 'Error'}</div>
+      </LayoutAdmin>
+    )
+  }
+
   return (
     <LayoutAdmin>
       <HeaderTitle title={t('payments')} />
-      <PaymentsTable payments={data?.data?.rows} />
+      <PaymentsTable payments={data?.data?.rows || []} />
     </LayoutAdmin>
   )
 }
@@ -86,7 +103,7 @@ export function PaymentsTable({ payments }) {
   }
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg mt-2 shadow">
+    <div className="mt-2 overflow-x-auto bg-white rounded-lg shadow">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -121,7 +138,7 @@ export function PaymentsTable({ payments }) {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {payments.map((payment, idx) => (
+          {payments?.map((payment, idx) => (
             <tr key={payment.id} className="hover:bg-gray-50">
               <td className="px-6 py-2 text-sm text-gray-900 whitespace-nowrap">{idx + 1}</td>
               <td className="px-6 py-2 text-sm font-medium text-gray-900 whitespace-nowrap">{payment.student_name}</td>
@@ -163,7 +180,7 @@ export function PaymentsTable({ payments }) {
           ))}
         </tbody>
       </table>
-      {payments.length === 0 && (
+      {payments?.length === 0 && (
         <div className="py-12 text-center">
           <p className="text-gray-500">
             {i18n.language === 'ru' ? 'Платежная информация не найдена' : "Hech qanday to'lov ma'lumoti topilmadi"}

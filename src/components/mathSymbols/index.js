@@ -25,7 +25,7 @@ const availableMathSymbols = [
 export default function Symbols({ onClick }) {
   return (
     <div className="grid grid-cols-8 gap-2 p-2 max-w-[500px]">
-      {texSymbols.map((symbol) => (
+      {texSymbols?.map((symbol) => (
         <button
           type="button"
           key={symbol.icon}

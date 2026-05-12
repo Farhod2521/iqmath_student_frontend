@@ -35,12 +35,12 @@ const Recommendations = () => {
   // dashboard/student/recommendations/1
   return (
     <div>
-      {subjectsData.map(({ type, data }, idx) => {
+      {subjectsData?.map(({ type, data }, idx) => {
         return (
           <section key={idx} className="pb-4">
             <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
             <div className="flex flex-wrap gap-4 mb-4">
-              {data.map((item, index) => (
+              {data?.map((item, index) => (
                 <CardSubjectWithProgress
                   onDiagnosticsClick={() => router.push(`/dashboard/student/diagnostics/test/${get(item, 'id')}`)}
                   onRecommendationsClick={() => router.push(`/dashboard/student/recommendations/${get(item, 'id')}`)}

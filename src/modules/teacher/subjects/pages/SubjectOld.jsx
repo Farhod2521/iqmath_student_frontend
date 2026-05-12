@@ -119,7 +119,7 @@ const SubjectDetail = () => {
     setLevelTab(level)
   }
 
-  const formattedChoices = Object.entries(choices).map(([letter, { text_uz, text_ru }]) => ({
+  const formattedChoices = Object.entries(choices)?.map(([letter, { text_uz, text_ru }]) => ({
     letter,
     text_uz,
     text_ru,
@@ -452,7 +452,7 @@ const SubjectDetail = () => {
           </div>
         </div>
 
-        <div className="col-span-12 flex gap-2">
+        <div className="flex col-span-12 gap-2">
           <button
             onClick={() => handleLevelTab('all')}
             className={`border px-[16px] py-[8px] rounded-md scale-100 active:scale-90 transition-all duration-300 border-[#5D87FF] ${
@@ -506,7 +506,7 @@ const SubjectDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredQuestions.map((topic, index) => (
+                {filteredQuestions?.map((topic, index) => (
                   <tr key={index} className="border-t  hover:bg-[#F0F9FF]">
                     <td className="p-[12px] pl-[24px]">{index + 1}</td>
                     <td className="p-[12px] ">
@@ -526,7 +526,7 @@ const SubjectDetail = () => {
                               : parse(get(topic, 'correct_text_answer_ru') || '')}
                           </>
                         ) : topic?.question_type === 'composite' ? (
-                          topic.sub_questions.map((i, idx) => (
+                          topic.sub_questions?.map((i, idx) => (
                             <div key={idx} className="flex gap-1">
                               <span>{i.text1_uz}</span>
                               <span>{i.correct_answer}</span>
@@ -534,7 +534,7 @@ const SubjectDetail = () => {
                             </div>
                           ))
                         ) : (
-                          topic.choices.map((i, idx) => (
+                          topic.choices?.map((i, idx) => (
                             <div key={idx} className="flex gap-1">
                               <span className={`${i.is_correct ? 'text-blue-500' : ''}`}>{i.letter}</span>
                               <span>{i.text_uz}</span>
@@ -551,7 +551,7 @@ const SubjectDetail = () => {
                             : parse(get(topic, 'correct_text_answer_ru') || '')}
                         </>
                       ) : topic?.question_type === 'composite' ? (
-                        topic.sub_questions.map((i, idx) => (
+                        topic.sub_questions?.map((i, idx) => (
                           <div key={idx} className="flex gap-1">
                             <span>{i.text1_uz}</span>
                             <span>{i.correct_answer}</span>
@@ -559,7 +559,7 @@ const SubjectDetail = () => {
                           </div>
                         ))
                       ) : (
-                        topic.choices.map((i, idx) => (
+                        topic.choices?.map((i, idx) => (
                           <div key={idx} className="flex gap-1 text-sm">
                             <span className={`${i.is_correct ? 'text-blue-500' : ''}`}>{i.letter}</span>
                             <span>{i.text_uz}</span>
@@ -580,7 +580,7 @@ const SubjectDetail = () => {
                     </td>
 
                     <td className="py-2 text-center">
-                      <div className="flex items-center gap-2 justify-center">
+                      <div className="flex items-center justify-center gap-2">
                         {/* <Button py="py-[8px] px-[8px] block text-sm  border">
                         Batafsil
                       </Button> */}
@@ -608,7 +608,7 @@ const SubjectDetail = () => {
                                   text_ru: item.text_ru
                                 }
                               })
-                              setCorrectAnswers(correct.filter((i) => i.is_correct).map((i) => i.letter))
+                              setCorrectAnswers(correct.filter((i) => i.is_correct)?.map((i) => i.letter))
                               setChoices(result)
                             } else if (qt === 'composite') {
                               console.log(get(topic, 'sub_questions'))
@@ -748,7 +748,7 @@ const SubjectDetail = () => {
                   </div>
 
                   <div className="px-[16px] w-full space-y-[9px] flex flex-col">
-                    <label className="block  font-medium">{t('questionLevel')}</label>
+                    <label className="block font-medium">{t('questionLevel')}</label>
                     <select
                       value={questionLevel}
                       onChange={(e) => setQuestionLevel(e.target.value)}
@@ -798,7 +798,7 @@ const SubjectDetail = () => {
                 )}
 
                 {questionType === 'choice' &&
-                  ['A', 'B', 'C', 'D'].map((option) => (
+                  ['A', 'B', 'C', 'D']?.map((option) => (
                     <div key={option} className="space-y-2 px-[16px]">
                       <div className="flex items-center space-x-2">
                         <input
@@ -848,7 +848,7 @@ const SubjectDetail = () => {
 
                 {questionType === 'image_choice' && (
                   <div className="mt-4 px-[16px] space-y-2">
-                    {['A', 'B', 'C', 'D'].map((letter) => (
+                    {['A', 'B', 'C', 'D']?.map((letter) => (
                       <div key={letter}>
                         <label>{letter} varianti:</label>
                         <input
@@ -871,8 +871,8 @@ const SubjectDetail = () => {
                         loader: { load: ['input/tex', 'output/chtml'] }
                       }}
                     >
-                      {compositeQuestions.map((question, index) => (
-                        <div key={index} className="space-y-2 border border-gray-200 p-4 rounded-md">
+                      {compositeQuestions?.map((question, index) => (
+                        <div key={index} className="p-4 space-y-2 border border-gray-200 rounded-md">
                           <div className="grid grid-cols-3 gap-2">
                             <div>
                               <input
@@ -949,7 +949,7 @@ const SubjectDetail = () => {
                             <button
                               type="button"
                               onClick={() => handleRemoveQuestion(index)}
-                              className="text-red-500 hover:text-red-700 text-lg mt-2"
+                              className="mt-2 text-lg text-red-500 hover:text-red-700"
                             >
                               ❌ O'chirish
                             </button>
@@ -960,7 +960,7 @@ const SubjectDetail = () => {
                     <button
                       type="button"
                       onClick={handleAddQuestion}
-                      className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md"
+                      className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
                     >
                       {t('addNewQuestion')}
                     </button>
@@ -1080,7 +1080,7 @@ const SubjectDetail = () => {
                   </div>
 
                   <div className="px-[16px] w-full space-y-[9px] flex flex-col">
-                    <label className="block  font-medium">{t('questionLevel')}</label>
+                    <label className="block font-medium">{t('questionLevel')}</label>
                     <select
                       value={questionLevel}
                       onChange={(e) => setQuestionLevel(e.target.value)}
@@ -1130,7 +1130,7 @@ const SubjectDetail = () => {
                 )}
 
                 {questionType === 'choice' &&
-                  ['A', 'B', 'C', 'D'].map((option) => (
+                  ['A', 'B', 'C', 'D']?.map((option) => (
                     <div key={option} className="space-y-2 px-[16px]">
                       <div className="flex items-center space-x-2">
                         <input
@@ -1180,7 +1180,7 @@ const SubjectDetail = () => {
 
                 {questionType === 'image_choice' && (
                   <div className="mt-4 px-[16px] space-y-2">
-                    {['A', 'B', 'C', 'D'].map((letter) => (
+                    {['A', 'B', 'C', 'D']?.map((letter) => (
                       <div key={letter}>
                         <label>{letter} varianti:</label>
                         <input
@@ -1203,8 +1203,8 @@ const SubjectDetail = () => {
                         loader: { load: ['input/tex', 'output/chtml'] }
                       }}
                     >
-                      {compositeQuestions.map((question, index) => (
-                        <div key={index} className="space-y-2 border border-gray-200 p-4 rounded-md">
+                      {compositeQuestions?.map((question, index) => (
+                        <div key={index} className="p-4 space-y-2 border border-gray-200 rounded-md">
                           <div className="grid grid-cols-3 gap-2">
                             <div>
                               <input
@@ -1340,7 +1340,7 @@ const SubjectDetail = () => {
                             <button
                               type="button"
                               onClick={() => handleRemoveQuestion(index)}
-                              className="text-red-500 hover:text-red-700 text-lg mt-2"
+                              className="mt-2 text-lg text-red-500 hover:text-red-700"
                             >
                               ❌ O'chirish
                             </button>
@@ -1352,7 +1352,7 @@ const SubjectDetail = () => {
                     <button
                       type="button"
                       onClick={handleAddQuestion}
-                      className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md"
+                      className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
                     >
                       {t('addNewQuestion')}
                     </button>

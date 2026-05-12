@@ -327,7 +327,7 @@ const Index = () => {
                     >
                       <option value="">Sinfni tanlang</option>
 
-                      {subjectOptions.map((item) => (
+                      {subjectOptions?.map((item) => (
                         <option key={item.id} value={item.id}>
                           {i18n.language === 'uz' ? item.class_name_uz : item.class_name_ru}
                         </option>

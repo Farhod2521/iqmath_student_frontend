@@ -1,23 +1,19 @@
-import React, { useState } from "react";
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import SortableItem from "./sortable";
+import React, { useState } from 'react'
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import SortableItem from './sortable'
 
 const DndList = ({ title, itemsData }) => {
-  const [items, setItems] = useState(itemsData);
+  const [items, setItems] = useState(itemsData)
 
   const handleDragEnd = (event) => {
-    const { active, over } = event;
+    const { active, over } = event
     if (active.id !== over.id) {
-      const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
-      setItems(arrayMove(items, oldIndex, newIndex));
+      const oldIndex = items.findIndex((item) => item.id === active.id)
+      const newIndex = items.findIndex((item) => item.id === over.id)
+      setItems(arrayMove(items, oldIndex, newIndex))
     }
-  };
+  }
 
   return (
     <div className="w-[304px] bg-white rounded-lg border border-[#E9E9E9] ">
@@ -28,29 +24,19 @@ const DndList = ({ title, itemsData }) => {
         </div>
       </div>
       <div className="px-[16px] text-black">
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {items.map((item, index) => (
-              <SortableItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                index={index + 1}
-              />
+            {items?.map((item, index) => (
+              <SortableItem key={item.id} id={item.id} name={item.name} index={index + 1} />
             ))}
           </SortableContext>
         </DndContext>
         <div className="bg-white ">
-          <button className=" w-full bg-gray-200 text-black py-2 rounded-md mb-[12px] mt-[8px]">
-            Посмотреть все
-          </button>
+          <button className=" w-full bg-gray-200 text-black py-2 rounded-md mb-[12px] mt-[8px]">Посмотреть все</button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DndList; 
+export default DndList

@@ -112,33 +112,33 @@ const LeaderShipCarousel = () => {
   }
 
   return (
-    <div className="w-full overflow-hidden py-8">
+    <div className="w-full py-8 overflow-hidden">
       <Slider {...settings} className="leadership-carousel">
-        {leaders.map((leader) => (
+        {leaders?.map((leader) => (
           <div key={leader.id} className="px-3">
             <div
-              className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              className="overflow-hidden transition-all duration-300 transform bg-white shadow-lg cursor-pointer rounded-xl hover:scale-105 hover:shadow-2xl"
               onClick={() => setSelectedLeader(leader)}
               style={{ width: '380px', margin: '0 auto' }}
             >
               <div className="relative overflow-hidden group">
-                <div className="aspect-square overflow-hidden">
+                <div className="overflow-hidden aspect-square">
                   <img
                     src={leader.image}
                     alt={leader.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     draggable="false"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100" />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 transition-colors group-hover:text-blue-600">
+                <h3 className="mb-2 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
                   {leader.name}
                 </h3>
-                <p className="text-blue-600 font-medium mb-3">{leader.position}</p>
-                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{leader.shortBio}</p>
-                <div className="mt-4 text-blue-600 text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="mb-3 font-medium text-blue-600">{leader.position}</p>
+                <p className="text-sm leading-relaxed text-gray-600 line-clamp-2">{leader.shortBio}</p>
+                <div className="flex items-center gap-2 mt-4 text-sm font-medium text-blue-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
                   <span>{t('details')}</span>
                   <ChevronRight className="w-4 h-4" />
                 </div>
@@ -151,7 +151,7 @@ const LeaderShipCarousel = () => {
       {/* Modal */}
       {selectedLeader && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 animate-fadeIn"
           onClick={() => setSelectedLeader(null)}
         >
           <div
@@ -159,11 +159,11 @@ const LeaderShipCarousel = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex justify-between items-center z-10">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">To'liq ma'lumot</h2>
+            <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-4 bg-white border-b border-gray-200 sm:px-6">
+              <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">To'liq ma'lumot</h2>
               <button
                 onClick={() => setSelectedLeader(null)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 transition-colors rounded-full hover:bg-gray-100"
                 aria-label="Close"
               >
                 <X className="w-6 h-6 text-gray-700" />
@@ -172,50 +172,50 @@ const LeaderShipCarousel = () => {
 
             {/* Modal Content */}
             <div className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row gap-6 mb-6">
+              <div className="flex flex-col gap-6 mb-6 sm:flex-row">
                 <div className="sm:w-2/5">
-                  <div className="relative overflow-hidden rounded-xl shadow-xl">
+                  <div className="relative overflow-hidden shadow-xl rounded-xl">
                     <img
                       src={selectedLeader.image}
                       alt={selectedLeader.name}
-                      className="w-full aspect-square object-cover"
+                      className="object-cover w-full aspect-square"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   </div>
                 </div>
                 <div className="sm:w-3/5">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{selectedLeader.name}</h3>
-                  <p className="text-lg sm:text-xl text-blue-600 font-medium mb-4">{selectedLeader.position}</p>
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-4 border border-blue-100">
-                    <p className="text-sm text-gray-600 font-medium mb-1">Faoliyat davri:</p>
-                    <p className="text-lg sm:text-xl text-gray-900 font-semibold">{selectedLeader.yearsActive}</p>
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">{selectedLeader.name}</h3>
+                  <p className="mb-4 text-lg font-medium text-blue-600 sm:text-xl">{selectedLeader.position}</p>
+                  <div className="p-4 mb-4 border border-blue-100 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <p className="mb-1 text-sm font-medium text-gray-600">Faoliyat davri:</p>
+                    <p className="text-lg font-semibold text-gray-900 sm:text-xl">{selectedLeader.yearsActive}</p>
                   </div>
                 </div>
               </div>
 
               <div className="mb-6">
-                <h4 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <h4 className="flex items-center gap-2 mb-3 text-xl font-bold text-gray-900">
                   <span className="w-1 h-6 bg-blue-600 rounded"></span>
                   Biografiya
                 </h4>
-                <p className="text-gray-700 leading-relaxed text-justify">{selectedLeader.fullBio}</p>
+                <p className="leading-relaxed text-justify text-gray-700">{selectedLeader.fullBio}</p>
               </div>
 
               <div>
-                <h4 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <h4 className="flex items-center gap-2 mb-3 text-xl font-bold text-gray-900">
                   <span className="w-1 h-6 bg-blue-600 rounded"></span>
                   Asosiy yutuqlari
                 </h4>
                 <div className="space-y-3">
-                  {selectedLeader.achievements.map((achievement, index) => (
+                  {selectedLeader?.achievements?.map((achievement, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors"
+                      className="flex items-start gap-3 p-3 transition-colors rounded-lg bg-gray-50 hover:bg-blue-50"
                     >
                       <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
                         {index + 1}
                       </span>
-                      <span className="text-gray-700 leading-relaxed">{achievement}</span>
+                      <span className="leading-relaxed text-gray-700">{achievement}</span>
                     </div>
                   ))}
                 </div>
@@ -223,10 +223,10 @@ const LeaderShipCarousel = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-gradient-to-t from-gray-50 to-white border-t border-gray-200 px-4 sm:px-6 py-4">
+            <div className="sticky bottom-0 px-4 py-4 border-t border-gray-200 bg-gradient-to-t from-gray-50 to-white sm:px-6">
               <button
                 onClick={() => setSelectedLeader(null)}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg"
+                className="w-full py-3 font-medium text-white transition-all transform rounded-lg shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:scale-105"
               >
                 Yopish
               </button>

@@ -49,7 +49,7 @@ const Subjects = () => {
       setSubjects(newOrder)
 
       // Send reorder request to backend
-      const orderedIds = newOrder.map((item) => item.id)
+      const orderedIds = newOrder?.map((item) => item.id)
       reorderSubjects(
         {
           url: URLS.reorderSubjects,
@@ -120,7 +120,7 @@ const Subjects = () => {
                   </thead>
                   <SortableContext items={subjects} strategy={verticalListSortingStrategy} disabled={!isDragEnabled}>
                     <tbody>
-                      {subjects.map((item, index) => (
+                      {subjects?.map((item, index) => (
                         <SortableTableRow
                           key={item.id}
                           id={item.id}

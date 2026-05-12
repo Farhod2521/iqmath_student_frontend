@@ -7,22 +7,22 @@ function ExamQuestionList({ questions, selectedList, allQuestionsList, selectedQ
 
   const getQuestionStatus = (question) => {
     const questionId = String(question?.id)
-    
+
     // Tanlangan savol
     if (selectedQuestion?.id === question?.id) {
       return 'selected'
     }
-    
+
     // Javob berilgan savol
     if (selectedList && selectedList.includes(questionId)) {
       return 'answered'
     }
-    
+
     // Javob berilmagan savol (agar savol ko'rilgan bo'lsa)
     if (allQuestionsList && allQuestionsList.includes(questionId)) {
       return 'unanswered'
     }
-    
+
     // Hech qachon ko'rilmagan savol
     return 'unseen'
   }
@@ -43,8 +43,8 @@ function ExamQuestionList({ questions, selectedList, allQuestionsList, selectedQ
   }
 
   return (
-    <ul className=" md:space-y-2 md:block flex flex-wrap ">
-      {questions.map((question, index) => {
+    <ul className="flex flex-wrap  md:space-y-2 md:block">
+      {questions?.map((question, index) => {
         const status = getQuestionStatus(question)
         const classIndex = getQuestionStyle(status)
 

@@ -45,7 +45,7 @@ function Individual({ data }) {
         return (
           <Button
             onPress={() => router.push('/dashboard/student/individual/1')}
-            className="m-0 p-0 h-8 rounded-md w-full"
+            className="w-full h-8 p-0 m-0 rounded-md"
             color={cellValue ? 'primary' : 'default'}
           >
             {cellValue ? t('continueTest') : t('begin')}
@@ -66,7 +66,7 @@ function Individual({ data }) {
         aria-label="Example static collection table"
         selectionMode="single"
         bottomContent={
-          <div className="flex w-full justify-between">
+          <div className="flex justify-between w-full">
             <Select
               size="sm"
               aria-label="Example static collection table"
@@ -99,12 +99,12 @@ function Individual({ data }) {
         }
       >
         <TableHeader className="border">
-          {columns.map((column) => (
+          {columns?.map((column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
           ))}
         </TableHeader>
         <TableBody className="border">
-          {data.map((row) => (
+          {data?.map((row) => (
             <TableRow className="border" key={row.id}>
               {(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}
             </TableRow>

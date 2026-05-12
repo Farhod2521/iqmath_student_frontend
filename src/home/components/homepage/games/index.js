@@ -32,7 +32,7 @@ export default function GamesSection() {
   useEffect(() => setIsVisible(true), [])
 
   const games = useMemo(() => {
-    return (safekidSeeds || []).map((g) => {
+    return (safekidSeeds || [])?.map((g) => {
       const img = g.cover || g.image || null
       const imgSrc = img ? (typeof img === 'string' ? img : img.src) : null
 
@@ -187,7 +187,7 @@ export default function GamesSection() {
                 modules={[Autoplay]}
                 style={{ paddingBottom: '54px' }}
               >
-                {sliderItems.map((g) => (
+                {sliderItems?.map((g) => (
                   <SwiperSlide key={`${g.slug}-${g.__dupId}`} style={{ height: '100%' }}>
                     <Card
                       sx={{

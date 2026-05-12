@@ -129,7 +129,7 @@ const ReviewCarousel = () => {
         }}
         {...settings}
       >
-        {Reviews.map((review, i) => (
+        {Reviews?.map((review, i) => (
           <div key={i}>
             <Paper variant="outlined" sx={{ borderRadius: '16px' }}>
               <CardContent sx={{ p: '48px !important' }}>

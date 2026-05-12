@@ -40,7 +40,7 @@ const Courses = () => {
 
           {/* Chips */}
           <div className="flex flex-wrap justify-center gap-3 mt-8 sm:mt-10 sm:gap-4">
-            {courses.map((name) => (
+            {courses?.map((name) => (
               <div key={name} className="relative cursor-pointer select-none group">
                 {/* glow */}
                 <div className="absolute transition rounded-full opacity-0 -inset-1 bg-white/10 blur-lg group-hover:opacity-100" />

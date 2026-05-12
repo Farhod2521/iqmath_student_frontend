@@ -193,7 +193,7 @@ export default function CarouselGames({
         onTouchMove={onPointerMove}
         onTouchEnd={onPointerUp}
       >
-        {loopItems.map((it, i) => (
+        {loopItems?.map((it, i) => (
           <div key={`${it.slug}-${i}`} data-card="1" className="shrink-0 w-[260px] sm:w-[300px] lg:w-[320px]">
             {renderItem(it)}
           </div>

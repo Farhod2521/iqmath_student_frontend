@@ -7,7 +7,6 @@ import { request } from '@/services/api'
 // Components
 import CreateParentModal from '../components/CreateParentModal'
 
-
 const ParentsManagement = () => {
   const { t } = useTranslation()
 
@@ -17,21 +16,19 @@ const ParentsManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
 
-  
   const fetchStudents = async () => {
     try {
       setIsLoadingStudents(true)
-      
+
       const response = await request.get('/api/v1/auth/student/student_list/', {
         params: {
           page: 1,
           size: 100
         }
       })
-      
+
       const studentsData = response.data.results || []
       setStudents(studentsData)
-      
     } catch (error) {
       console.error('Error fetching students:', error)
       toast.error(t('errorLoadingStudents'))
@@ -42,16 +39,16 @@ const ParentsManagement = () => {
 
   const handleCreateParent = async (parentData) => {
     setIsCreating(true)
-    
+
     try {
       let formattedPhone = parentData.phone.replace(/\D/g, '')
       if (formattedPhone.length === 9) {
         formattedPhone = `998${formattedPhone}`
       }
-      
+
       // Students array'dan faqat ID'larni olamiz
-      const studentIds = parentData.students.map(student => student.value || student.id || student)
-      
+      const studentIds = parentData?.students?.map((student) => student.value || student.id || student)
+
       const payload = {
         full_name: parentData.full_name,
         phone: formattedPhone,
@@ -61,23 +58,23 @@ const ParentsManagement = () => {
 
       console.log('Creating parent with payload:', payload)
 
-      const response = await request.post("/api/v1/auth/parent/create/", payload)
-      
+      const response = await request.post('/api/v1/auth/parent/create/', payload)
+
       console.log('API Response:', response)
-      
+
       if (response.status === 201) {
         const newParent = {
           id: Date.now(),
           full_name: parentData.full_name,
           phone: parentData.phone,
           students_count: parentData.students.length,
-          status: "active",
+          status: 'active',
           registration_date: new Date().toISOString(),
           last_login: null
         }
-        
-        setParents(prevParents => [...prevParents, newParent])
-        
+
+        setParents((prevParents) => [...prevParents, newParent])
+
         setIsCreateModalOpen(false)
         toast.success(t('parentCreatedSuccessfully'))
       }
@@ -86,25 +83,24 @@ const ParentsManagement = () => {
       console.error('Error response:', error?.response)
       console.error('Error status:', error?.response?.status)
       console.error('Error data:', error?.response?.data)
-      
+
       let errorMessage = t('errorCreatingParent')
-      
+
       if (error?.response?.status === 403) {
-        errorMessage = 'Sizda ota-ona yaratish huquqi yo\'q'
+        errorMessage = "Sizda ota-ona yaratish huquqi yo'q"
       } else if (error?.response?.status === 400) {
-        errorMessage = error?.response?.data?.message || 'Noto\'g\'ri ma\'lumotlar'
+        errorMessage = error?.response?.data?.message || "Noto'g'ri ma'lumotlar"
       } else if (error?.response?.status === 401) {
         errorMessage = 'Avtorizatsiya muammosi'
       } else if (error?.response?.data?.message) {
         errorMessage = error.response.data.message
       }
-      
+
       toast.error(errorMessage)
     } finally {
       setIsCreating(false)
     }
   }
-
 
   const handleOpenCreateModal = () => {
     setIsCreateModalOpen(true)
@@ -117,23 +113,16 @@ const ParentsManagement = () => {
     fetchStudents()
   }, [])
 
- 
   return (
     <div>
       <div className="flex justify-between items-center mb-[24px]">
         <div>
           <h1 className="text-[20px] font-semibold text-gray-800"></h1>
         </div>
-        <Button
-          onclick={handleOpenCreateModal}
-          classname="bg-[#5D87FF] hover:bg-[#4570EA] text-white"
-        >
+        <Button onclick={handleOpenCreateModal} classname="bg-[#5D87FF] hover:bg-[#4570EA] text-white">
           {t('createParent')}
         </Button>
       </div>
-
-     
-
 
       <CreateParentModal
         isOpen={isCreateModalOpen}

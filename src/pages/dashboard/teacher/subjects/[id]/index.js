@@ -179,7 +179,7 @@ const Index = () => {
       setChapters(newOrder)
 
       // Send reorder request to backend
-      const orderedIds = newOrder.map((item) => item.id)
+      const orderedIds = newOrder?.map((item) => item.id)
       reorderChapters(
         {
           url: URLS.reorderChapters,
@@ -215,7 +215,7 @@ const Index = () => {
       setTopics(newOrder)
 
       // Send reorder request to backend
-      const orderedIds = newOrder.map((item) => item.id)
+      const orderedIds = newOrder?.map((item) => item.id)
       reorderTopics(
         {
           url: URLS.reorderTopics,
@@ -434,7 +434,7 @@ const Index = () => {
         // Immediate state update - o'zgartirilgan mavzuni darhol yangilash
         if (response.data?.data) {
           setTopics((prevTopics) =>
-            prevTopics.map((topic) => (topic.id === selectedTopic?.id ? response.data.data : topic))
+            prevTopics?.map((topic) => (topic.id === selectedTopic?.id ? response.data.data : topic))
           )
         }
 
@@ -539,14 +539,14 @@ const Index = () => {
       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
         <div className="font-sf">
           <BaseBreadcrumbs
-            data={pathList.map((item) => ({
+            data={pathList?.map((item) => ({
               link: '/dashboard/student/subjects',
               title: i18n.language === 'uz' ? item.title_uz : item.title_ru
             }))}
           />
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-[24px]">
-            <div className="lg:col-span-6 col-span-12 w-full">
-              <div className="flex justify-between items-center mb-2">
+            <div className="w-full col-span-12 lg:col-span-6">
+              <div className="flex items-center justify-between mb-2">
                 <h2 className="font-semibold text-[16px] uppercase ">{t('chapters')}</h2>
                 <Button
                   py="py-[6px] md:py-[8px] text-sm"
@@ -569,7 +569,7 @@ const Index = () => {
                         <th className="p-[12px] text-center">
                           <button
                             onClick={() => setIsChaptersDragEnabled((prev) => !prev)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100"
                             title="Tartiblash"
                           >
                             <svg
@@ -599,7 +599,7 @@ const Index = () => {
                       disabled={!isChaptersDragEnabled}
                     >
                       <tbody>
-                        {chapters.map((chapter, index) => {
+                        {chapters?.map((chapter, index) => {
                           const isActive = selectedId === get(chapter, 'id')
 
                           return (
@@ -609,7 +609,7 @@ const Index = () => {
                               showDragHandle={isChaptersDragEnabled}
                               onClick={() => setSelectedId(get(chapter, 'id'))}
                               isActive={isActive}
-                              className="group border-b"
+                              className="border-b group"
                             >
                               <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
                               <td className="p-[12px] text-left w-[60%] text-[15px] font-medium transition-all">
@@ -656,8 +656,8 @@ const Index = () => {
             </div>
 
             {selectedId && (
-              <div className="lg:col-span-6 col-span-12">
-                <div className="flex justify-between items-center mb-2 ">
+              <div className="col-span-12 lg:col-span-6">
+                <div className="flex items-center justify-between mb-2 ">
                   <h2 className="font-semibold text-[16px] uppercase">{t('topics')}</h2>
                   <Button
                     py="py-[6px] md:py-[8px] text-sm"
@@ -695,7 +695,7 @@ const Index = () => {
                                 <th className="p-[12px] text-center">
                                   <button
                                     onClick={() => setIsTopicsDragEnabled((prev) => !prev)}
-                                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
+                                    className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100"
                                     title="Tartiblash"
                                   >
                                     <svg
@@ -726,12 +726,12 @@ const Index = () => {
                               disabled={!isTopicsDragEnabled}
                             >
                               <tbody>
-                                {topics.map((topic, index) => (
+                                {topics?.map((topic, index) => (
                                   <SortableTableRow
                                     key={topic.id}
                                     id={topic.id}
                                     showDragHandle={isTopicsDragEnabled}
-                                    className="group border-b hover:bg-gray-50 transition-all"
+                                    className="transition-all border-b group hover:bg-gray-50"
                                   >
                                     <td className="p-[12px] text-center w-[40px]">{index + 1}</td>
 

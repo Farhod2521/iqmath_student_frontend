@@ -28,7 +28,7 @@ const StudentExampleDetailPage = () => {
       setData(res.data)
       setSelectedIdx(0)
     } catch (e) {
-      setError(t("loadingError"))
+      setError(t('loadingError'))
     } finally {
       setLoading(false)
     }
@@ -60,7 +60,7 @@ const StudentExampleDetailPage = () => {
   }
 
   // Savollarni index bilan boyitish
-  const questionsWithIndex = questions.map((q, index) => ({
+  const questionsWithIndex = questions?.map((q, index) => ({
     ...q,
     index: index + 1
   }))

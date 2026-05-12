@@ -30,7 +30,7 @@ export default function LogicSequence() {
 
       <div className="mt-6 font-bold text-gray-600">Bo‘sh joyni to‘ldiring:</div>
       <div className="mt-2 text-3xl font-black">
-        {q.seq.map((x, i) => (
+        {q?.seq?.map((x, i) => (
           <span key={i} className="mr-3">
             {x === null ? '__' : x}
           </span>

@@ -40,7 +40,7 @@ function MyStudyAcitve({ data }) {
         )
       case 'buttonType':
         return (
-          <Button className="m-0 p-0 h-8 rounded-md w-full" color="primary">
+          <Button className="w-full h-8 p-0 m-0 rounded-md" color="primary">
             {cellValue}
           </Button>
         )
@@ -61,7 +61,7 @@ function MyStudyAcitve({ data }) {
         aria-label="Example static collection table"
         selectionMode="single"
         bottomContent={
-          <div className="flex w-full justify-between">
+          <div className="flex justify-between w-full">
             <Select
               size="sm"
               aria-label="Example static collection table"
@@ -94,12 +94,12 @@ function MyStudyAcitve({ data }) {
         }
       >
         <TableHeader>
-          {columns.map((column) => (
+          {columns?.map((column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
           ))}
         </TableHeader>
         <TableBody>
-          {data.map((row) => (
+          {data?.map((row) => (
             <TableRow className="border" key={row.id}>
               {(columnKey) => <TableCell>{renderCell(row, columnKey)}</TableCell>}
             </TableRow>

@@ -216,7 +216,7 @@ const PricingContent = () => {
                   </div>
                   {/* BENEFITS */}
                   <ul className="flex-1 mt-7 space-y-3.5">
-                    {item.benefits.map((b) => (
+                    {item.benefits?.map((b) => (
                       <li
                         key={b.id}
                         className={`flex items-center gap-2 text-sm ${

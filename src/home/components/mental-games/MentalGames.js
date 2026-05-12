@@ -19,7 +19,7 @@ export default function MentalGames() {
   const [activeCategory, setActiveCategory] = useState('all')
 
   const games = useMemo(() => {
-    return (safekidSeeds || []).map((g) => {
+    return (safekidSeeds || [])?.map((g) => {
       const img = g.cover || g.image || null
       const imgSrc = img ? (typeof img === 'string' ? img : img.src) : null
 
@@ -31,8 +31,7 @@ export default function MentalGames() {
     })
   }, [])
 
-    const categories = useMemo(() => [...new Set(games.map((g) => g.category))], [games])
-
+  const categories = useMemo(() => [...new Set(games?.map((g) => g.category))], [games])
 
   const filtered = useMemo(() => {
     if (activeCategory === 'all') return games
@@ -40,7 +39,7 @@ export default function MentalGames() {
   }, [games, activeCategory])
 
   const onPlay = (game) => {
-      const returnUrl = `/mental-games/out?to=${encodeURIComponent(game.href)}`
+    const returnUrl = `/mental-games/out?to=${encodeURIComponent(game.href)}`
 
     if (!session) {
       setOpenAuth(true)
@@ -80,7 +79,7 @@ export default function MentalGames() {
             <div className="p-6 text-sm text-gray-500 bg-white border rounded-2xl">{t('games.section.noFound')}</div>
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filtered.map((game) => (
+              {filtered?.map((game) => (
                 <GameCard key={game.slug} game={game} onPlay={() => onPlay(game)} />
               ))}
             </div>

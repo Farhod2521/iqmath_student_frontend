@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
     // faqat safekidgames.com allow
     const results = await Promise.all(
-      safekidSeeds.map(async (seed) => {
+      safekidSeeds?.map(async (seed) => {
         try {
           const r = await fetch(seed.href, {
             headers: {

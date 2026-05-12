@@ -64,11 +64,11 @@ const StudentTopLeaderboard = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+        <div className="flex flex-col gap-3 mb-6 sm:flex-row sm:gap-4">
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="w-full sm:w-auto px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-2 border rounded-lg sm:w-auto"
           >
             {TYPES.map((item) => (
               <option key={item.value} value={item.value}>
@@ -80,7 +80,7 @@ const StudentTopLeaderboard = () => {
           <select
             value={topCount}
             onChange={(e) => setTopCount(Number(e.target.value))}
-            className="w-full sm:w-auto px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-2 border rounded-lg sm:w-auto"
           >
             {COUNTS.map((n) => (
               <option key={n} value={n}>
@@ -104,7 +104,7 @@ const StudentTopLeaderboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {list.map((item, index) => (
+                {list?.map((item, index) => (
                   <tr key={item.student_id} className="border-b last:border-0">
                     <td className="py-2">{index + 1}</td>
                     <td className="py-2">

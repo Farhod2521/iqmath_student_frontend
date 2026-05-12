@@ -52,7 +52,7 @@ const C2a = () => {
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature, index) => (
+              {features?.map((feature, index) => (
                 <div
                   key={index}
                   className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition

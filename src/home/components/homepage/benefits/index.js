@@ -50,8 +50,8 @@ const Benefits = () => {
             <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg">{t('withIQmathTitle')}</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {items.map((item, index) => (
-              <div key={index} className="p-4 sm:p-8 text-center rounded-xl">
+            {items?.map((item, index) => (
+              <div key={index} className="p-4 text-center sm:p-8 rounded-xl">
                 <div className="mb-4 text-6xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text">
                   {item.no}
                 </div>

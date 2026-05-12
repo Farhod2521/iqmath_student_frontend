@@ -241,7 +241,7 @@ const HomePage = () => {
                 modules={[Autoplay]}
                 style={{ paddingBottom: '50px' }}
               >
-                {sliderItems.map((news) => (
+                {sliderItems?.map((news) => (
                   <SwiperSlide key={`${news.id}-${news.__dupId}`} style={{ height: '100%' }}>
                     <Card
                       onClick={() => handleNewsClick(news.id)}

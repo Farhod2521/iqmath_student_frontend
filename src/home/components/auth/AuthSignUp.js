@@ -100,7 +100,7 @@ function AuthSignUp() {
             if (error.response?.data?.errors) {
               const errors = error.response.data.errors
               const errorMessages = Object.values(errors).flat()
-              const translatedMessages = errorMessages.map((msg) => translateErrorMessage(msg))
+              const translatedMessages = errorMessages?.map((msg) => translateErrorMessage(msg))
               toast.error(translatedMessages.join('\n'))
             } else {
               console.log('error occured')

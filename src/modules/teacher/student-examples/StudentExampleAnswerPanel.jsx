@@ -60,9 +60,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
 
   // Composite savollar uchun to'g'ri javoblarni ko'rsatish
   const renderCompositeCorrectAnswers = () => {
-    console.log('selected', selected)
     const correctAnswers = Array.isArray(selected.system_response) ? selected.system_response : []
-    console.log('correctAnswers', correctAnswers)
 
     return (
       <div className="space-y-3">

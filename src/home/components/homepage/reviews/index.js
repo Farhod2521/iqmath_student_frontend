@@ -105,7 +105,7 @@ const Reviews = () => {
             }
           }}
         >
-          {benefits.map((benefit, index) => (
+          {benefits?.map((benefit, index) => (
             <Box
               key={index}
               sx={{

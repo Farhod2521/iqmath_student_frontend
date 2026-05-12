@@ -259,7 +259,7 @@ const ExceptionalFeature = () => {
 
           <StyledAnimationFeature>
             <StyledAnimationContent display="flex" gap="30px">
-              {slide1.map((slide, i) => (
+              {slide1?.map((slide, i) => (
                 <StyledFeatureBox key={i}>
                   <Image src={slide.icon} alt="color" width={24} height={24} />
                   <Typography fontSize="15px" fontWeight={600}>
@@ -272,7 +272,7 @@ const ExceptionalFeature = () => {
 
           <StyledAnimationFeature>
             <StyledAnimationContent2 display="flex" gap="30px">
-              {slide2.map((slide, i) => (
+              {slide2?.map((slide, i) => (
                 <StyledFeatureBox key={i}>
                   <Image src={slide.icon} alt="color" width={24} height={24} />
                   <Typography fontSize="15px" fontWeight={600}>
@@ -285,7 +285,7 @@ const ExceptionalFeature = () => {
 
           <StyledAnimationFeature>
             <StyledAnimationContent display="flex" gap="30px">
-              {slide3.map((slide, i) => (
+              {slide3?.map((slide, i) => (
                 <StyledFeatureBox key={i}>
                   <Image src={slide.icon} alt="color" width={24} height={24} />
                   <Typography fontSize="15px" fontWeight={600}>

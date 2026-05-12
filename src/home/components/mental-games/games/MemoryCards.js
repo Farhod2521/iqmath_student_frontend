@@ -10,7 +10,7 @@ export default function MemoryCards() {
 
   const cards = useMemo(() => {
     const pair = values.slice(0, 6)
-    return shuffle([...pair, ...pair]).map((v, idx) => ({ id: `${seed}-${idx}`, value: v }))
+    return shuffle([...pair, ...pair])?.map((v, idx) => ({ id: `${seed}-${idx}`, value: v }))
   }, [seed])
 
   const reset = () => {
@@ -52,7 +52,7 @@ export default function MemoryCards() {
       </div>
 
       <div className="grid grid-cols-4 gap-3 mt-6">
-        {cards.map((c) => (
+        {cards?.map((c) => (
           <button
             key={c.id}
             onClick={() => click(c)}

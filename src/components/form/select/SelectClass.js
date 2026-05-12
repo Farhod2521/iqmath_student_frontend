@@ -49,7 +49,7 @@ function SelectClass({ option, onChange }) {
     schoolClasses.forEach((c) => {
       if (!map[c.class_name]) map[c.class_name] = c
     })
-    return Object.values(map).map((item) => ({
+    return Object.values(map)?.map((item) => ({
       ...item,
       class_uz: `${item.class_name}-sinf`,
       class_ru: `${item.class_name}-класс`
@@ -90,7 +90,7 @@ function SelectClass({ option, onChange }) {
 
           {!loading && !error && (
             <ul className="overflow-auto max-h-60">
-              {filtered.map((item) => (
+              {filtered?.map((item) => (
                 <li
                   key={item.id}
                   className="px-4 py-2 transition cursor-pointer hover:bg-gray-100"

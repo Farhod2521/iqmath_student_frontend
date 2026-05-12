@@ -1,28 +1,28 @@
-import React from 'react';
-import { Box, Container, MenuItem, Button } from '@mui/material';
-import CustomFormLabel from '../../../forms/theme-elements/CustomFormLabel';
-import CustomTextField from '../../../forms/theme-elements/CustomTextField';
-import CustomSelect from '../../../forms/theme-elements/CustomSelect';
-import Address from './Address';
-import Grid from '@mui/material/Grid2';
+import React from 'react'
+import { Box, Container, MenuItem, Button } from '@mui/material'
+import CustomFormLabel from '../../../forms/theme-elements/CustomFormLabel'
+import CustomTextField from '../../../forms/theme-elements/CustomTextField'
+import CustomSelect from '../../../forms/theme-elements/CustomSelect'
+import Address from './Address'
+import Grid from '@mui/material/Grid2'
 
 const numbers = [
   {
     value: 'one',
-    label: 'General Enquiry',
+    label: 'General Enquiry'
   },
   {
     value: 'two',
-    label: 'General Enquiry 2',
-  },
-];
+    label: 'General Enquiry 2'
+  }
+]
 
 const Form = () => {
-  const [number, setNumber] = React.useState('one');
+  const [number, setNumber] = React.useState('one')
 
   const handleChange3 = (event) => {
-    setNumber(event.target.value);
-  };
+    setNumber(event.target.value)
+  }
 
   return (
     <>
@@ -30,12 +30,12 @@ const Form = () => {
         sx={{
           paddingTop: {
             xs: '40px',
-            lg: '60px',
+            lg: '60px'
           },
           paddingBottom: {
             xs: '40px',
-            lg: '90px',
-          },
+            lg: '90px'
+          }
         }}
       >
         <Container maxWidth="lg">
@@ -71,14 +71,8 @@ const Form = () => {
                     <CustomFormLabel htmlFor="txt-enquire" sx={{ mt: 0 }}>
                       Enquire related to *
                     </CustomFormLabel>
-                    <CustomSelect
-                      fullWidth
-                      id="txt-enquire"
-                      variant="outlined"
-                      value={number}
-                      onChange={handleChange3}
-                    >
-                      {numbers.map((option) => (
+                    <CustomSelect fullWidth id="txt-enquire" variant="outlined" value={number} onChange={handleChange3}>
+                      {numbers?.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
@@ -113,7 +107,7 @@ const Form = () => {
         </Container>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

@@ -73,7 +73,7 @@ const Products = () => {
     return (
       <div className="p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="w-12 h-12 mx-auto mb-4 border-b-2 border-blue-500 rounded-full animate-spin"></div>
           <p className="text-gray-600 dark:text-white">{t('loadingProducts')}</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ const Products = () => {
     return (
       <div className="p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
-          <div className="text-6xl mb-4">❌</div>
+          <div className="mb-4 text-6xl">❌</div>
           <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">{t('errorTitle')}</h2>
           <p className="text-gray-600 dark:text-gray-400">{t('errorDescription')}</p>
         </div>
@@ -98,7 +98,7 @@ const Products = () => {
     return (
       <div className="p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
-          <div className="text-6xl mb-4">🛍️</div>
+          <div className="mb-4 text-6xl">🛍️</div>
           <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">{t('noProductsAvailable')}</h2>
         </div>
       </div>
@@ -107,8 +107,8 @@ const Products = () => {
 
   return (
     <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {productList.map((product) => {
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {productList?.map((product) => {
           const isOutOfStock = product.count === 0
 
           return (
@@ -121,30 +121,30 @@ const Products = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-48 object-contain"
+                  className="object-contain w-full h-48"
                   onError={(e) => {
                     e.target.src = '/images/SHOPITEMS.png'
                   }}
                 />
 
-                <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md flex items-center gap-1">
+                <div className="absolute flex items-center gap-1 px-2 py-1 text-white bg-yellow-500 rounded-md top-2 right-2">
                   <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
                   <span className="text-xs font-medium">{product.coin}</span>
                 </div>
 
                 {isOutOfStock && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span className="text-lg text-white font-bold">{t('outOfStock')}</span>
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                    <span className="text-lg font-bold text-white">{t('outOfStock')}</span>
                   </div>
                 )}
               </div>
 
-              <div className="p-4 flex flex-col justify-between">
+              <div className="flex flex-col justify-between p-4">
                 <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-3 line-clamp-2">
                   {i18n.language === 'uz' ? product.name_uz : product.name_ru}
                 </h3>
 
-                <div className="space-y-3 mb-5">
+                <div className="mb-5 space-y-3">
                   <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#2A3447] rounded-lg">
                     <div className="flex items-center gap-2">
                       <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />

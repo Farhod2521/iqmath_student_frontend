@@ -119,7 +119,7 @@ const StudentSubjectDetails = () => {
                 </tr>
               </thead>
               <tbody>
-                {chapters.map((chapter, index) => (
+                {chapters?.map((chapter, index) => (
                   <tr
                     key={chapter.chapter_id}
                     onClick={() => handleChapterSelect(chapter)}
@@ -206,7 +206,7 @@ const StudentSubjectDetails = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedChapter.topics.map((topic, index) => (
+                  {selectedChapter?.topics?.map((topic, index) => (
                     <tr key={topic.topic_id} className="border-t">
                       <td className="p-3 font-medium text-center text-gray-500">{index + 1}</td>
                       <td className="p-3">{i18n.language === 'ru' ? topic.topic_name_ru : topic.topic_name_uz}</td>
