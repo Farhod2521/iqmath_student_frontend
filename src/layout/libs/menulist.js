@@ -1,5 +1,5 @@
 import { LuBookText, LuUser } from 'react-icons/lu'
-import { TbCheckbox } from 'react-icons/tb'
+import { TbCheckbox, TbCoins } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
 import { BiDirections, BiTransfer } from 'react-icons/bi'
 import { BsBarChart } from 'react-icons/bs'
@@ -472,6 +472,20 @@ export const getMenuItems = (t) => [
     label: t('points'),
     icon: (isActive) => (
       <FaCoins
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'ball-coins-history',
+    path: '/dashboard/student/ball-coins-history',
+    label: t('pointsHistory'),
+    icon: (isActive) => (
+      <TbCoins
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />

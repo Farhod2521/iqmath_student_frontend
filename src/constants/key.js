@@ -30,6 +30,7 @@ export const KEYS = {
   studentTopics: 'studentTopics',
   studentQuestions: 'studentQuestions',
   coins: 'coins',
+  ballCoinsHistory: 'ballCoinsHistory',
   teacherCoins: 'teacherCoins',
   subscription: 'subscription',
   advisedTopics: 'advisedTopics',

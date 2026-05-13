@@ -56,12 +56,13 @@ const StudentTopLeaderboard = () => {
 
   return (
     <LayoutAdmin>
+      <div className="py-2">
+        {' '}
+        <HeaderTitle title={t('studentRating')} />
+      </div>
+
       <div className="bg-white dark:bg-[#202936] border rounded-xl p-3 sm:p-4">
         {/* <h3 className="mb-4 text-lg font-semibold">{t('studentRating')}</h3> */}
-        <div className="py-2">
-          {' '}
-          <HeaderTitle title={t('studentRating')} />
-        </div>
 
         {/* Filters */}
         <div className="flex flex-col gap-3 mb-6 sm:flex-row sm:gap-4">
@@ -96,22 +97,26 @@ const StudentTopLeaderboard = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full table-auto min-w-[400px]  text-sm">
-              <thead>
+              <thead className="bg-gray-50">
                 <tr className="border-b">
-                  <th className="py-2 text-left">#</th>
-                  <th className="py-2 text-left">{t('student')}</th>
-                  <th className="py-2 text-right">{t('value')}</th>
+                  <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">#</th>
+                  <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">
+                    {t('student')}
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold tracking-wider text-right text-gray-500 uppercase">
+                    {t('value')}
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-100">
                 {list?.map((item, index) => (
                   <tr key={item.student_id} className="border-b last:border-0">
-                    <td className="py-2">{index + 1}</td>
-                    <td className="py-2">
+                    <td className="px-6 py-2">{index + 1}</td>
+                    <td className="px-6 py-2">
                       <div className="font-medium">{item.full_name}</div>
                       <div className="text-xs text-gray-500">{item.phone}</div>
                     </td>
-                    <td className="py-2 font-semibold text-right">
+                    <td className="px-6 py-2 font-semibold text-right">
                       {getValueByType(item)?.toLocaleString()} {getUnitByType()}
                     </td>
                   </tr>

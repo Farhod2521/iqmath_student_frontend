@@ -36,6 +36,7 @@ export const URLS = {
   studentQuestions: '/api/v1/func_student/my-question/',
   studentCheckAnswer: '/api/v1/func_student/my-check-answer/',
   coins: '/api/v1/func_student/my-score/',
+  ballCoinsHistory: '/api/v1/func_student/my-score-log/',
   teacherCoins: '/api/v1/func_teacher/my-score/',
   subscription: '/api/v1/payments/subscription/trial_days/',
   advisedTopics: '/api/v1/func_student/my-diagnost-detail/',
