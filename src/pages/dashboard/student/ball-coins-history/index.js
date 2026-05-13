@@ -21,8 +21,6 @@ const BallCoinsHistory = () => {
 
   const historyData = data?.data?.results || []
 
-  console.log('historyData', historyData)
-
   if (coinsLoading) {
     return (
       <LayoutAdmin>
