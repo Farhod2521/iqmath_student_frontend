@@ -74,5 +74,10 @@ export const KEYS = {
   // Tutor referral keys
   tutorReferrals: 'tutorReferrals',
   myCuponers: 'myCuponers',
-  news: 'news-single-data'
+  news: 'news-single-data',
+
+  //
+  libraryBooks: 'libraryBooks',
+  libraryCategories: 'libraryCategories',
+  libraryTags: 'libraryTags'
 }

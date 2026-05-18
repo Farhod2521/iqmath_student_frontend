@@ -1232,5 +1232,68 @@
   "chatsResponsed": "Mentor javob bergan chatlar",
   "today": "Bugun",
   "week": "Haftalik",
-  "total": "Jami"
+  "total": "Jami",
+
+  "library": {
+    "page_title": "Kutubxona",
+
+    "stats": {
+      "total": "Jami kitoblar",
+      "active": "Faol",
+      "inactive": "Faol emas",
+      "free": "Bepul"
+    },
+
+    "filter": {
+      "title": "Filterlar",
+      "clear": "Tozalash",
+      "category_label": "Kategoriya",
+      "category_placeholder": "Barcha kategoriyalar",
+      "tag_label": "Teg",
+      "tag_placeholder": "Barcha teglar",
+      "status_label": "Status",
+      "status_placeholder": "Barcha statuslar",
+      "audience_label": "Kimlar uchun",
+      "loading": "Yuklanmoqda...",
+      "active_filters": "Faol filterlar"
+    },
+
+    "status": {
+      "active": "Faol",
+      "inactive": "Faol emas",
+      "draft": "Qoralama"
+    },
+
+    "audience": {
+      "both": "O'quvchilar va  O'qituvchilar uchun",
+      "student": "O'quvchilar uchun",
+      "teacher": "O'qituvchilar uchun",
+      "general": "Umumiy"
+    },
+
+    "card": {
+      "free": "Bepul",
+      "currency": "so'm",
+      "view": "Kitobni ko'rish",
+      "buy": "Sotib olish",
+      "unavailable": "Mavjud emas",
+      "quantity": "dona",
+      "no_cover": "Rasm mavjud emas",
+      "no_name": "Nomi mavjud emas",
+      "online": "Online",
+      "offline": "Offline"
+    },
+
+    "empty": {
+      "title": "Kitob topilmadi",
+      "description": "Filterlarni o'zgartirib ko'ring"
+    },
+
+    "results": {
+      "count": "ta kitob topildi",
+      "updating": "Yangilanmoqda..."
+    },
+
+    "loading": "Yuklanmoqda..."
+  }
 }

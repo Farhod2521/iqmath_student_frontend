@@ -17,6 +17,7 @@ import { BookOpen } from 'lucide-react'
 import { MdOutlinePayments } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
+import { IoLibraryOutline } from 'react-icons/io5'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -282,6 +283,20 @@ export const getMenuItems = (t) => [
   //   ],
   //   type: MenuType.LINK
   // },
+
+  {
+    key: 'library',
+    path: '/dashboard/library',
+    label: t('library.page_title'),
+    icon: (isActive) => (
+      <IoLibraryOutline
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TUTOR, RolesList.TEACHER, RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
   {
     key: 'subjects',
     path: '/dashboard/teacher/subjects',

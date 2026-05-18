@@ -1139,5 +1139,67 @@
   "chatsResponsed": "Чаты, в которых отвечал наставник.",
   "today": "Сегодня",
   "week": "Еженедельно",
-  "total": "Общий"
+  "total": "Общий",
+  "library": {
+    "page_title": "Библиотека",
+
+    "stats": {
+      "total": "Всего книг",
+      "active": "Активных",
+      "inactive": "Неактивных",
+      "free": "Бесплатных"
+    },
+
+    "filter": {
+      "title": "Фильтры",
+      "clear": "Сбросить",
+      "category_label": "Категория",
+      "category_placeholder": "Все категории",
+      "tag_label": "Тег",
+      "tag_placeholder": "Все теги",
+      "status_label": "Статус",
+      "status_placeholder": "Все статусы",
+      "audience_label": "Для кого",
+      "loading": "Загрузка...",
+      "active_filters": "Активные фильтры"
+    },
+
+    "status": {
+      "active": "Активный",
+      "inactive": "Неактивный",
+      "draft": "Черновик"
+    },
+
+    "audience": {
+      "both": "Для обоих",
+      "student": "Для учеников",
+      "teacher": "Для учителей",
+      "general": "Общий"
+    },
+
+    "card": {
+      "free": "Бесплатно",
+      "currency": "сум",
+      "view": "Просмотреть книгу",
+      "buy": "Купить",
+      "unavailable": "Недоступно",
+      "quantity": "шт.",
+      "no_cover": "Нет обложки",
+      "no_name": "Название отсутствует",
+      "online": "Онлайн",
+      "offline": "Офлайн"
+    },
+
+    "empty": {
+      "title": "Книги не найдены",
+      "description": "Попробуйте изменить фильтры"
+    },
+
+    "results": {
+      "count": "книг найдено",
+      "updating": "Обновление..."
+    },
+
+    "loading": "Загрузка..."
+  }
 }

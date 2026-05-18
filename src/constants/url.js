@@ -119,5 +119,10 @@ export const URLS = {
   studentById: '/api/v1/student/by-identification/',
   transferConfirm: '/api/v1/student/som-transfer/confirm/ ',
   transferHistory: '/api/v1/student/som-transfer/history/',
-  transferRequest: '/api/v1/student/som-transfer/request/'
+  transferRequest: '/api/v1/student/som-transfer/request/',
+
+  // Library endpoints
+  libraryBooks: '/api/v1/book/books/',
+  libraryCategories: '/api/v1/book/categories/',
+  libraryTags: '/api/v1/book/tags/'
 }
