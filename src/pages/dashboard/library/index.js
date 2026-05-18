@@ -2,12 +2,12 @@
 import React, { useState, useMemo } from 'react'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import HeaderTitle from '@/components/header-title'
-import BookCard from './components/BookCard'
-import BookFilter from './components/BookFilter'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useGetQuery } from '@/hooks'
 import { useTranslation } from 'react-i18next'
+import BookFilter from '@/modules/library/components/BookFilter'
+import BookCard from '@/modules/library/components/BookCard'
 
 const LibraryPage = () => {
   const [filters, setFilters] = useState({})
