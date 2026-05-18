@@ -86,7 +86,7 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
       toast.success(t('correct'))
       setStats((prev) => ({ correct: prev.correct + 1, total: prev.total + 1 }))
     } else {
-      toast.error(t('wrongWithAnswer', { answer: currentQuestion.answer }))
+      toast.error(t('wrong', { answer: currentQuestion.answer }))
       setStats((prev) => ({ correct: prev.correct, total: prev.total + 1 }))
     }
 
@@ -200,7 +200,7 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
         {quizMode === 'all' && (
           <button
             onClick={startAllKarraQuiz}
-            className="w-full py-2 mb-4 text-white bg-green-500 rounded-lg hover:bg-green-600 transition"
+            className="w-full py-2 mb-4 text-white transition bg-green-500 rounded-lg hover:bg-green-600"
           >
             {t('newRandomQuiz')}
           </button>
@@ -218,9 +218,9 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
         </div>
 
         <div className="mb-4 text-center">
-          <div className="text-sm text-gray-500 mb-1">
+          <div className="mb-1 text-sm text-gray-500">
             {quizMode === 'all' && currentQuestion?.karra && (
-              <span className="inline-block px-2 py-1 bg-purple-100 rounded-full text-purple-700 text-xs">
+              <span className="inline-block px-2 py-1 text-xs text-purple-700 bg-purple-100 rounded-full">
                 {currentQuestion.karra} {t('karra')}
               </span>
             )}
@@ -244,7 +244,7 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
           />
           <button
             onClick={handleHint}
-            className="flex items-center justify-center w-12 h-12 text-lg font-bold text-green-800 bg-green-200 rounded-lg hover:bg-green-300 transition"
+            className="flex items-center justify-center w-12 h-12 text-lg font-bold text-green-800 transition bg-green-200 rounded-lg hover:bg-green-300"
             title={t('footer.support')}
           >
             ?
@@ -259,17 +259,17 @@ const MultiplicationQuizModal = ({ open, onClose }) => {
 
         <button
           onClick={handleNext}
-          className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition"
+          className="w-full py-2 text-white transition bg-blue-500 rounded-lg hover:bg-blue-600"
         >
           {t('next')} ⏎
         </button>
 
         {quizMode === 'all' && stats.total > 0 && (
-          <div className="mt-3 p-2 bg-gray-100 rounded-lg text-center text-sm">
+          <div className="p-2 mt-3 text-sm text-center bg-gray-100 rounded-lg">
             <span className="font-medium">{t('progress')}:</span>{' '}
-            <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+            <div className="w-full h-2 mt-1 bg-gray-200 rounded-full">
               <div
-                className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                className="h-2 transition-all duration-300 bg-green-500 rounded-full"
                 style={{ width: `${(stats.total / allQuestions.length) * 100}%` }}
               />
             </div>
