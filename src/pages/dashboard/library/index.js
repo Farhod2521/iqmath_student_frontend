@@ -92,7 +92,7 @@ const LibraryPage = () => {
     <LayoutAdmin>
       <HeaderTitle title={t('library.page_title')} />
 
-      <div className="p-4">
+      <div className="pt-4">
         {/* Filter qismi */}
         <BookFilter onFilterChange={handleFilterChange} />
 

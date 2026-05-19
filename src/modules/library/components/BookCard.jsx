@@ -1,10 +1,12 @@
 // components/BookCard.jsx
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // ─── BookCard ─────────────────────────────────────────────────────────────
 const BookCard = ({ book, onBuy }) => {
   const { t, i18n } = useTranslation()
+  const router = useRouter()
 
   const [imgError, setImgError] = useState(false)
 
@@ -68,8 +70,18 @@ const BookCard = ({ book, onBuy }) => {
   const isFree = price === 0
   const isDisabled = book.status === 'inactive'
 
+  const goToDetail = () => {
+    router.push(`/dashboard/library/${book.id}`)
+  }
+
+  // "Sotib olish" va PDF bosilganda karta navigatsiyasi ishlamasligi uchun
+  const stopProp = (e) => e.stopPropagation()
+
   return (
-    <article className="relative flex flex-col overflow-hidden transition-all duration-300 ease-out bg-white border shadow-sm group rounded-2xl border-slate-200/80 hover:shadow-xl hover:-translate-y-1">
+    <article
+      onClick={goToDetail}
+      className="relative flex flex-col overflow-hidden transition-all duration-300 ease-out bg-white border shadow-sm group rounded-2xl border-slate-200/80 hover:shadow-xl hover:-translate-y-1"
+    >
       {/* ── COVER ──────────────────────────────────────────────────── */}
       <div className="relative flex-shrink-0 h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-indigo-50">
         {coverSrc ? (
@@ -114,7 +126,7 @@ const BookCard = ({ book, onBuy }) => {
             {status.label}
           </span>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-black/35 text-white backdrop-blur-sm flex-shrink-0">
-            {book.is_offline ? `📦 ${t('library.card.offline')}` : `🌐 ${t('library.card.online')}`}
+            {book.is_offline ? `📚 ${t('library.card.physical')}` : `📄 ${t('library.card.digital')}`}
           </span>
         </div>
 
@@ -128,6 +140,19 @@ const BookCard = ({ book, onBuy }) => {
               {new Date(book.date).toLocaleDateString('uz-UZ')}
             </span>
           )}
+        </div>
+        {/* Hover overlay — "Batafsil ko'rish" */}
+        <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 bg-indigo-900/0 group-hover:bg-indigo-900/20">
+          <span className="opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[12px] font-bold text-indigo-700 shadow-md">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+              />
+            </svg>
+            Batafsil ko'rish
+          </span>
         </div>
       </div>
 
@@ -206,8 +231,9 @@ const BookCard = ({ book, onBuy }) => {
             <a
               href={fileSrc}
               target="_blank"
+              onClick={stopProp}
               rel="noopener noreferrer"
-              title="Kitobni ko'rish"
+              title={t('library.card.view')}
               className="flex items-center justify-center w-8 h-8 transition-all duration-150 bg-white border rounded-lg border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -223,7 +249,10 @@ const BookCard = ({ book, onBuy }) => {
 
           {/* Buy */}
           <button
-            onClick={() => !isDisabled && onBuy?.(book)}
+            onClick={(e) => {
+              stopProp(e)
+              !isDisabled && onBuy?.(book)
+            }}
             disabled={isDisabled}
             className={`
               flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-bold

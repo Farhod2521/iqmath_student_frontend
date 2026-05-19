@@ -1,3 +1,5 @@
+import lib from 'react-slick'
+
 export const KEYS = {
   login: 'login',
   register: 'register',
@@ -78,6 +80,7 @@ export const KEYS = {
 
   //
   libraryBooks: 'libraryBooks',
+  libraryBook: 'libraryBook',
   libraryCategories: 'libraryCategories',
   libraryTags: 'libraryTags'
 }

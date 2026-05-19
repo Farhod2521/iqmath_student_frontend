@@ -670,6 +670,7 @@
   "noPlansAvailable": "Тарифные планы недоступны",
   "planFeatures": "Особенности тарифа",
   "unlimitedAccess": "Неограниченный доступ",
+  "unlimited": "Безлимит",
   "allSubjects": "Все предметы",
   "videoLessons": "Видеоуроки",
   "practiceTests": "Практические тесты",
@@ -1140,8 +1141,17 @@
   "today": "Сегодня",
   "week": "Еженедельно",
   "total": "Общий",
+  "infoDetails": "Информация",
+
   "library": {
     "page_title": "Библиотека",
+    "bookDetails": "Информация о книге",
+    "backLibrary": "Вернуться в библиотеку",
+    "back": "Назад",
+    "bookPreview": "Предпросмотр книги (PDF)",
+    "bookType": "Тип книги",
+    "extraTime": "Добавленное время",
+    "publishDate": "Дата публикации",
 
     "stats": {
       "total": "Всего книг",
@@ -1183,21 +1193,39 @@
       "view": "Просмотреть книгу",
       "buy": "Купить",
       "unavailable": "Недоступно",
-      "quantity": "шт.",
-      "no_cover": "Нет обложки",
+      "quantity": "шт",
+      "no_cover": "Изображение отсутствует",
       "no_name": "Название отсутствует",
       "online": "Онлайн",
-      "offline": "Офлайн"
+      "offline": "Оффлайн",
+      "physical": "Физическая книга",
+      "digital": "Цифровая книга",
+      "available": "Доступное количество",
+      "physical_library": "Физическая книга (получается в библиотеке)",
+      "digital_pdf": "Цифровая книга (PDF загружается)"
     },
 
     "empty": {
-      "title": "Книги не найдены",
+      "subtitle": "Обложка отсутствует",
+      "descriptionNo": "Описание отсутствует",
+      "title": "Книга не найдена",
       "description": "Попробуйте изменить фильтры"
     },
 
     "results": {
       "count": "книг найдено",
       "updating": "Обновление..."
+    },
+    "payment": {
+      "title": "Покупка книги",
+      "description": "Введите следующие данные для покупки книги",
+      "name_label": "Имя",
+      "name_placeholder": "Ваше полное имя",
+      "phone_label": "Номер телефона",
+      "phone_placeholder": "998901234567",
+      "payment_label": "Безопасная оплата",
+      "guarantee": "Гарантия предоставляется",
+      "fast_delivery": "Быстрая доставка"
     },
 
     "loading": "Загрузка..."
