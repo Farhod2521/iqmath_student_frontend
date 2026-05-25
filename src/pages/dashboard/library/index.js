@@ -8,9 +8,11 @@ import { useGetQuery } from '@/hooks'
 import { useTranslation } from 'react-i18next'
 import BookFilter from '@/modules/library/components/BookFilter'
 import BookCard from '@/modules/library/components/BookCard'
+import toast from 'react-hot-toast'
 
 const LibraryPage = () => {
   const [filters, setFilters] = useState({})
+
   const { t } = useTranslation()
 
   const {
@@ -22,13 +24,13 @@ const LibraryPage = () => {
     url: URLS.libraryBooks
   })
 
-  console.log('Library Books Data:', libraryBooks)
+  const data = libraryBooks?.data
 
   // Filterlangan kitoblar
   const filteredBooks = useMemo(() => {
-    if (!libraryBooks?.data) return []
+    if (!data?.results) return []
 
-    let books = [...libraryBooks.data]
+    let books = [...data?.results]
 
     // Kategoriya bo'yicha filter
     if (filters.category) {
@@ -64,17 +66,14 @@ const LibraryPage = () => {
     }
 
     return books
-  }, [libraryBooks?.data, filters])
+  }, [data?.results, filters])
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters)
   }
 
   const handleBuyBook = (book) => {
-    // Sotib olish logikasi
-    console.log('Sotib olinayotgan kitob:', book)
-    // Bu yerda modal ochish yoki API call qilish mumkin
-    // alert(`${book.name_uz || book.name} kitobini sotib olish uchun tizimga murojaat qiling`)
+    toast.success(book?.detail)
   }
 
   if (isLoading) {

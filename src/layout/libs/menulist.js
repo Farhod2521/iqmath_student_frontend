@@ -294,7 +294,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.TEACHER, RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.TUTOR, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

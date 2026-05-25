@@ -19,8 +19,6 @@ function AuthSignIn() {
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async ({ phone, password }) => {
-    console.log('phone', phone)
-    console.log('password', password)
     setIsLoading(true)
     try {
       const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`

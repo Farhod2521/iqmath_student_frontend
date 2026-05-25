@@ -7,6 +7,8 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useGetQuery } from '@/hooks'
 import { useTranslation } from 'react-i18next'
+import { FaCoins } from 'react-icons/fa6'
+import BuyBookModal from '@/modules/library/modal/BuyBookModal'
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 const API_BASE = 'https://api.iqmath.uz'
@@ -60,6 +62,9 @@ const BookDetail = () => {
   const [qty, setQty] = useState(1)
   const [qtyInput, setQtyInput] = useState('1')
   const [activeTab, setActiveTab] = useState('info')
+  const [buyModalOpen, setBuyModalOpen] = useState(false)
+
+  const [payMethod, setPayMethod] = useState('som') // 'som' | 'coin' | 'score'
 
   const STATUS_CFG = {
     active: {
@@ -116,7 +121,9 @@ const BookDetail = () => {
     i18n.language === 'uz' ? book?.category?.name_uz : book?.category?.name_ru || book?.category?.name || null
   const status = STATUS_CFG[book?.status] || STATUS_CFG.draft
   const audience = getAudience(book?.for_student, book?.for_teacher)
-  const price = parseFloat(book?.price) || 0
+  const price = parseFloat(book?.price_som) || 0
+  const priceCoin = parseFloat(book?.price_coin) || 0
+  const priceScore = parseFloat(book?.price_score) || 0
   const isFree = price === 0
   const isDisabled = book?.status === 'inactive'
   const coverSrc = book?.cover_image && !imgError ? toAbs(book.cover_image) : null
@@ -142,9 +149,9 @@ const BookDetail = () => {
     changeQty(isNaN(n) || n < 1 ? 1 : n)
   }
 
+  // handleBuy ichida
   const handleBuy = () => {
-    console.log('Sotib olish:', { book, qty, totalPrice })
-    // Bu yerda modal yoki API call
+    setBuyModalOpen(true)
   }
 
   const options = [
@@ -152,6 +159,13 @@ const BookDetail = () => {
     { icon: '✅', text: t('library.payment.guarantee') },
     { icon: '📦', text: t('library.payment.fast_delivery') }
   ]
+
+  // Foydalanuvchi balansiga qarab default tanlash (ixtiyoriy)
+  useState(() => {
+    if (price > 0) return 'som'
+    if (priceCoin > 0) return 'coin'
+    return 'score'
+  })
 
   return (
     <LayoutAdmin>
@@ -257,7 +271,7 @@ const BookDetail = () => {
               </div>
 
               {/* PDF button */}
-              {fileSrc && (
+              {/* {fileSrc && (
                 <a
                   href={fileSrc}
                   target="_blank"
@@ -274,7 +288,7 @@ const BookDetail = () => {
                   </svg>
                   {t('library.bookPreview')}
                 </a>
-              )}
+              )} */}
             </div>
 
             {/* ════════════════════════════════════════════════════════
@@ -427,37 +441,108 @@ const BookDetail = () => {
               {/* ── BUY BOX ────────────────────────────────────────────── */}
               <div className="bg-slate-50 rounded-2xl border border-slate-200 p-3.5 sm:p-4 space-y-3 sm:space-y-4">
                 {/* Price row */}
+                {(priceCoin > 0 || priceScore > 0) && (
+                  <div className="space-y-1.5">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                      {t('library.payment.method')}
+                    </p>
+                    <div className="flex gap-2">
+                      {price > 0 && (
+                        <button
+                          onClick={() => setPayMethod('som')}
+                          className={`flex-1 py-2 px-3 rounded-xl border text-[12px] font-bold transition-all duration-150
+            ${
+              payMethod === 'som'
+                ? 'border-indigo-400 bg-indigo-600 text-white shadow-sm'
+                : 'border-slate-200 bg-white text-slate-500 hover:border-indigo-300'
+            }`}
+                        >
+                          💵 {t('sum')}
+                        </button>
+                      )}
+
+                      {priceCoin > 0 && (
+                        <button
+                          onClick={() => setPayMethod('coin')}
+                          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border text-[12px] font-bold transition-all duration-150
+            ${
+              payMethod === 'coin'
+                ? 'border-amber-400 bg-amber-500 text-white shadow-sm'
+                : 'border-slate-200 bg-white text-slate-500 hover:border-amber-300'
+            }`}
+                        >
+                          <FaCoins /> {t('coin')}
+                        </button>
+                      )}
+
+                      {priceScore > 0 && (
+                        <button
+                          onClick={() => setPayMethod('score')}
+                          className={`flex-1 py-2 px-3 rounded-xl border text-[12px] font-bold transition-all duration-150
+            ${
+              payMethod === 'score'
+                ? 'border-violet-400 bg-violet-600 text-white shadow-sm'
+                : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300'
+            }`}
+                        >
+                          ⭐ {t('ball')}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {/* Price row — payMethod ga qarab */}
                 <div className="flex items-end justify-between gap-2">
                   <div>
-                    <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
                       {t('price')}
                     </p>
-                    {isFree ? (
-                      <span className="text-xl font-extrabold sm:text-2xl text-emerald-600">{t('free')}</span>
-                    ) : (
+
+                    {payMethod === 'som' &&
+                      (isFree ? (
+                        <span className="text-2xl font-extrabold text-emerald-600">{t('free')}</span>
+                      ) : (
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-2xl font-extrabold text-slate-900 tabular-nums">
+                            {new Intl.NumberFormat('uz-UZ').format(price)}
+                          </span>
+                          <span className="text-[13px] text-slate-400">
+                            {t('currency')} / {t('library.card.quantity')}
+                          </span>
+                        </div>
+                      ))}
+
+                    {payMethod === 'coin' && (
                       <div className="flex items-baseline gap-1">
-                        <span className="text-xl font-extrabold sm:text-2xl text-slate-900 tabular-nums">
-                          {new Intl.NumberFormat('uz-UZ').format(price)}
+                        <span className="text-2xl font-extrabold text-amber-500 tabular-nums">
+                          {new Intl.NumberFormat('uz-UZ').format(priceCoin)}
                         </span>
-                        <span className="text-[12px] sm:text-[13px] text-slate-400 font-medium">
-                          {t('currency')} / {t('library.card.quantity')}
+                        <span className="flex items-center  gap-2 text-[13px] text-amber-400">
+                          <FaCoins /> coin / {t('library.card.quantity')}
                         </span>
+                      </div>
+                    )}
+
+                    {payMethod === 'score' && (
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-extrabold text-violet-600 tabular-nums">
+                          {new Intl.NumberFormat('uz-UZ').format(priceScore)}
+                        </span>
+                        <span className="text-[13px] text-violet-400">⭐ ball / {t('library.card.quantity')}</span>
                       </div>
                     )}
                   </div>
 
-                  {/* Total — only when qty > 1 */}
-                  {!isFree && qty > 1 && (
-                    <div className="flex-shrink-0 text-right">
-                      <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  {/* Total */}
+                  {payMethod === 'som' && !isFree && qty > 1 && (
+                    <div className="text-right">
+                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
                         {t('totalPrice')}
                       </p>
-                      <div className="flex items-baseline justify-end gap-1">
-                        <span className="text-lg font-extrabold text-indigo-700 sm:text-xl tabular-nums">
-                          {new Intl.NumberFormat('uz-UZ').format(totalPrice)}
-                        </span>
-                        <span className="text-[11px] sm:text-[12px] text-slate-400">{t('currency')}</span>
-                      </div>
+                      <span className="text-xl font-extrabold text-indigo-700 tabular-nums">
+                        {new Intl.NumberFormat('uz-UZ').format(totalPrice)}{' '}
+                        <span className="text-[12px] text-slate-400">{t('currency')}</span>
+                      </span>
                     </div>
                   )}
                 </div>
@@ -573,10 +658,15 @@ const BookDetail = () => {
                           d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
                         />
                       </svg>
+
                       <span className="truncate">
                         {isFree
                           ? t('library.payment.free')
-                          : `${qty} ${t('library.card.quantity')} — ${new Intl.NumberFormat('uz-UZ').format(totalPrice)} ${t('currency')}`}
+                          : payMethod === 'som'
+                            ? `${qty} ${t('library.card.quantity')} — ${new Intl.NumberFormat('uz-UZ').format(totalPrice)} ${t('currency')}`
+                            : payMethod === 'coin'
+                              ? `${qty} ${t('library.card.quantity')} — ${new Intl.NumberFormat('uz-UZ').format(priceCoin * qty)} ${t('coin')}`
+                              : `${qty} ${t('library.card.quantity')} — ${new Intl.NumberFormat('uz-UZ').format(priceScore * qty)} ${t('score')}`}
                       </span>
                     </>
                   )}
@@ -600,6 +690,20 @@ const BookDetail = () => {
           </div>
         )}
       </div>
+
+      <BuyBookModal
+        open={buyModalOpen}
+        onClose={() => setBuyModalOpen(false)}
+        book={{
+          ...book,
+          price_som: price,
+          price_coin: priceCoin,
+          price_score: priceScore
+        }}
+        onSuccess={(data) => {
+          setBuyModalOpen(false)
+        }}
+      />
     </LayoutAdmin>
   )
 }

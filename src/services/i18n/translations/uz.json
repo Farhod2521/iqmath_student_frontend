@@ -1319,7 +1319,8 @@
       "payment_label": "Xavfsiz to'lov",
       "guarantee": "Kafolat beriladi",
       "fast_delivery": "Tez yetkazish",
-      "free": "Bepul olish"
+      "free": "Bepul olish",
+      "method": "To'lov usulini tanlang"
     },
     "loading": "Yuklanmoqda..."
   }

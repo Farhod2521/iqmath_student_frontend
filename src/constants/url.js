@@ -122,7 +122,7 @@ export const URLS = {
   transferRequest: '/api/v1/student/som-transfer/request/',
 
   // Library endpoints
-  libraryBooks: '/api/v1/book/books/',
+  libraryBooks: '/api/v1/book/my-books/',
   libraryCategories: '/api/v1/book/categories/',
   libraryTags: '/api/v1/book/tags/'
 }
