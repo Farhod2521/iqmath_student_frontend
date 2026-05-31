@@ -124,5 +124,8 @@ export const URLS = {
   // Library endpoints
   libraryBooks: '/api/v1/book/my-books/',
   libraryCategories: '/api/v1/book/categories/',
-  libraryTags: '/api/v1/book/tags/'
+  libraryTags: '/api/v1/book/tags/',
+
+  //book-purchase
+  bookMyPurchases: '/api/v1/book/my-purchases/'
 }

@@ -82,5 +82,7 @@ export const KEYS = {
   libraryBooks: 'libraryBooks',
   libraryBook: 'libraryBook',
   libraryCategories: 'libraryCategories',
-  libraryTags: 'libraryTags'
+  libraryTags: 'libraryTags',
+
+  bookMyPurchases: 'book-my-purchases'
 }

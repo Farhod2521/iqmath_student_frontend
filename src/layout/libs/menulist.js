@@ -297,6 +297,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
+
   {
     key: 'subjects',
     path: '/dashboard/teacher/subjects',

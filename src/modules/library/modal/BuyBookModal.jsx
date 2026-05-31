@@ -70,6 +70,9 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
   const [payMethod, setPayMethod] = useState('som')
   const [qty, setQty] = useState(1)
   const [qtyInput, setQtyInput] = useState('1')
+  const [deliveryAddress, setDeliveryAddress] = useState('')
+  const [deliveryPhone, setDeliveryPhone] = useState('')
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [result, setResult] = useState(null) // success response
@@ -80,6 +83,8 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
       setPayMethod(defaultMethod())
       setQty(1)
       setQtyInput('1')
+      setDeliveryAddress('')
+      setDeliveryPhone('')
       setError(null)
       setResult(null)
     }
@@ -132,7 +137,7 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
       onClose() // modalni yopish
     },
     onError: (err) => {
-      const msg = err?.response?.data?.detail || err?.response?.data?.message || t('library.purchase.error')
+      const msg = err?.response?.data?.detail || err?.response?.data?.message
       setError(msg)
     }
   })
@@ -158,10 +163,26 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
   // }
 
   const handleSubmit = async () => {
+    if (book?.is_offline) {
+      if (deliveryPhone.length !== 9) {
+        setError("Telefon raqamini to'liq kiriting")
+        return
+      }
+
+      if (!deliveryAddress.trim()) {
+        setError('Yetkazib berish manzilini kiriting')
+        return
+      }
+    }
+
     const payload = {
       book_id: book.id,
       payment_method: isFree ? 'som' : payMethod,
-      quantity: qty
+      quantity: qty,
+      ...(book?.is_offline && {
+        delivery_address: deliveryAddress,
+        delivery_phone: `+998${deliveryPhone}`
+      })
     }
 
     createMutation.mutate(payload)
@@ -402,7 +423,7 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
                 disabled={qty <= 1}
                 className="flex items-center justify-center text-lg font-bold transition-all bg-white border w-9 h-9 rounded-xl border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                −
+                -
               </button>
 
               <input
@@ -482,6 +503,49 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
               </span>
             </div>
           </div>
+
+          {/* Delivery info */}
+          {book?.is_offline && (
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Yetkazib berish ma'lumotlari
+              </p>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block mb-1 text-xs font-medium text-slate-600">Telefon raqam</label>
+
+                  <div className="flex overflow-hidden border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-indigo-300 focus-within:border-indigo-400">
+                    <div className="flex items-center px-3 text-sm font-semibold border-r bg-slate-50 text-slate-600 border-slate-200">
+                      +998
+                    </div>
+
+                    <input
+                      type="tel"
+                      value={deliveryPhone}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 9)
+                        setDeliveryPhone(value)
+                      }}
+                      placeholder="90 123 45 67"
+                      className="w-full px-3 py-2 text-sm outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block mb-1 text-xs font-medium text-slate-600">Manzil</label>
+                  <textarea
+                    rows={3}
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder="Toshkent shahri, Chilonzor tumani..."
+                    className="w-full px-3 py-2 text-sm border resize-none border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Error */}
           <AnimatePresence>

@@ -9,10 +9,11 @@ import { useTranslation } from 'react-i18next'
 import BookFilter from '@/modules/library/components/BookFilter'
 import BookCard from '@/modules/library/components/BookCard'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
 
 const LibraryPage = () => {
   const [filters, setFilters] = useState({})
-
+  const router = useRouter()
   const { t } = useTranslation()
 
   const {
@@ -100,7 +101,17 @@ const LibraryPage = () => {
           <p className="text-gray-600">
             {filteredBooks.length} {t('library.results.count')}
           </p>
-          {isFetching && <span className="text-sm text-gray-500">{t('library.results.updating')}</span>}
+          {isFetching && <span className="text-sm text-gray-500">{t('library.results.updating')}</span>}{' '}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push('/dashboard/library/history')}
+              className="px-4 py-2 text-sm font-medium text-white transition bg-indigo-600 rounded-lg hover:bg-indigo-700"
+            >
+              {t('library.myBooks')}
+            </button>
+
+            {isFetching && <span className="text-sm text-gray-500">{t('library.results.updating')}</span>}
+          </div>
         </div>
 
         {/* Kitoblar grid ko'rinishida */}

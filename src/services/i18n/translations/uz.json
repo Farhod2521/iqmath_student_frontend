@@ -1237,6 +1237,7 @@
   "infoDetails": "Ma'lumotlar",
 
   "library": {
+    "myBooks": "Mening kitoblarim",
     "page_title": "Kutubxona",
     "bookDetails": "Kitob tafsilotlari",
     "backLibrary": "Kutubxonaga qaytish",
@@ -1322,6 +1323,23 @@
       "free": "Bepul olish",
       "method": "To'lov usulini tanlang"
     },
-    "loading": "Yuklanmoqda..."
+    "loading": "Yuklanmoqda...",
+    "viewBook": "Kitobni ochish",
+    "download": "Yuklab olish",
+    "onlineBooks": "Elektron kitoblar",
+    "offlineBooks": "Qog'oz kitoblar",
+    "purchaseDate": "Sotib olingan sana",
+    "paymentMethod": "To'lov turi",
+    "quantity": "Soni",
+    "noOnlineBooks": "Elektron kitoblar mavjud emas",
+    "noOfflineBooks": "Qog'oz kitoblar mavjud emas",
+    "deliveryStatus": {
+      "NEW": "Yangi",
+      "SEEN": "Ko'rildi",
+      "PREPARING": "Tayyorlanmoqda",
+      "DELIVERING": "Yetkazilmoqda",
+      "DELIVERED": "Yetkazildi",
+      "PENDING": "Kutilmoqda"
+    }
   }
 }

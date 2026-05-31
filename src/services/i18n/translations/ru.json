@@ -1144,6 +1144,7 @@
   "infoDetails": "Информация",
 
   "library": {
+    "myBooks": "Мои книги",
     "page_title": "Библиотека",
     "bookDetails": "Информация о книге",
     "backLibrary": "Вернуться в библиотеку",
@@ -1229,6 +1230,23 @@
       "method": "Выберите способ оплаты"
     },
 
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "viewBook": "Открыть книгу",
+    "download": "Скачать",
+    "onlineBooks": "Электронные книги",
+    "offlineBooks": "Печатные книги",
+    "purchaseDate": "Дата покупки",
+    "paymentMethod": "Способ оплаты",
+    "quantity": "Количество",
+    "noOnlineBooks": "Электронные книги отсутствуют",
+    "noOfflineBooks": "Печатные книги отсутствуют",
+    "deliveryStatus": {
+      "NEW": "Новый",
+      "SEEN": "Просмотрено",
+      "PREPARING": "Готовится",
+      "DELIVERING": "Доставляется",
+      "DELIVERED": "Доставлено",
+      "PENDING": "В ожидании"
+    }
   }
 }
