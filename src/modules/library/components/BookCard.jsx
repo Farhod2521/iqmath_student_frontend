@@ -133,7 +133,7 @@ const BookCard = ({ book, onBuy }) => {
               {status.label}
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-black/35 text-white backdrop-blur-sm flex-shrink-0">
-              {book.is_offline ? `📚 ${t('library.card.physical')}` : `📄 ${t('library.card.digital')}`}
+              {book.is_offline ? `📚 ${t('library.offlineBooks')}` : `📄 ${t('library.onlineBooks')}`}
             </span>
           </div>
 

@@ -1,0 +1,198 @@
+import HeaderTitle from '@/components/header-title'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
+import { useGetQuery, usePostQuery } from '@/hooks'
+import LayoutAdmin from '@/layout/LayoutAdmin'
+import { useSession } from 'next-auth/react'
+import { useTranslation } from 'react-i18next'
+import React, { useEffect, useState } from 'react'
+import SimpleModal from '@/components/modal/simple-modal'
+import toast from 'react-hot-toast'
+
+const Index = () => {
+  const [open, setOpen] = useState(false)
+
+  const { data: session } = useSession()
+  const { t } = useTranslation()
+
+  const role = session?.role
+
+  const { data, isLoading, error } = useGetQuery({
+    key: KEYS.teacherFine,
+    url: URLS.teacherFine
+  })
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.response?.data?.error)
+    }
+  }, [error])
+
+  const fines = data?.data?.results || []
+
+  const { mutate, isLoading: isPosting } = usePostQuery({
+    listKeyId: KEYS.teacherFine
+  })
+
+  const handleSend = () => {
+    if (!message.trim()) {
+      toast.error(t('pleaseEnterComment', 'Iltimos, izoh kiriting!'))
+      return
+    }
+    mutate(
+      {
+        url: URLS.teacherFine,
+        attributes: {
+          student_id: record.id,
+          fine_type: 'behavior',
+          amount: 10000,
+          reason: 'Intizom buzilishi'
+        },
+        config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
+      },
+      {
+        onSuccess: (res) => {
+          setMessage('')
+          onClose()
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.detail || t('errorOccurred', 'Xatolik yuz berdi!'))
+        }
+      }
+    )
+  }
+
+  return (
+    <LayoutAdmin>
+      <HeaderTitle title={t('Jarimalar')} />
+
+      <div className="p-4">
+        <div className="overflow-x-auto bg-white shadow rounded-xl">
+          <table className="min-w-full text-sm text-left text-gray-700">
+            <thead className="text-xs text-gray-600 uppercase bg-gray-100">
+              <tr>
+                <th className="px-4 py-3">{t('#')}</th>
+                <th className="px-4 py-3">{role === 'student' ? t('tutor') : t('teachers')}</th>
+                <th className="px-4 py-3">{t('reason')}</th>
+                <th className="px-4 py-3">{t('type')}</th>
+                <th className="px-4 py-3">{t('amount')}</th>
+                <th className="px-4 py-3">{t('student')}</th>
+                <th className="px-4 py-3">{t('date')}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className="py-10 text-center">
+                    Yuklanmoqda...
+                  </td>
+                </tr>
+              ) : fines.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="py-10 text-center text-gray-400">
+                    Ma’lumot yo‘q
+                  </td>
+                </tr>
+              ) : (
+                fines.map((item, index) => (
+                  <tr key={item.fine_id} className="transition border-b hover:bg-gray-50">
+                    <td className="px-4 py-3">{index + 1}</td>
+                    <td className="px-4 py-3">
+                      {role === 'student' ? (
+                        <div className="flex flex-col leading-tight">
+                          <span className="font-medium text-gray-900">{item?.given_by?.full_name || '-'}</span>
+                          <span className="font-mono text-xs text-gray-400">{item?.given_by?.phone || '-'}</span>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col leading-tight">
+                          <span className="font-medium text-gray-900">{item?.student?.full_name || '-'}</span>
+                          <span className="font-mono text-xs text-gray-400">{item?.student?.phone || '-'}</span>
+                        </div>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3">{item.reason}</td>
+
+                    <td className="px-4 py-3">
+                      <span className="px-2 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
+                        {item.fine_type_display}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3 font-semibold">{item.amount}</td>
+
+                    <td className="px-4 py-3 font-medium">{item.student?.full_name}</td>
+
+                    <td className="px-4 py-3 text-xs text-gray-500">{item.created_at}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* <SimpleModal open={open} onClose={onClose}>
+        <div className="w-full max-w-sm p-0 bg-white shadow-2xl rounded-xl">
+          <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
+            <div className="flex items-center justify-center bg-blue-100 rounded-full w-9 h-9">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">{t('sendToMentor', 'Mentorga yuborish')}</h2>
+              <p className="text-xs text-gray-500">{t('mentorModalSubtitle', 'Savolingiz haqida izoh bering')}</p>
+            </div>
+          </div>
+          <div className="px-6 py-5">
+            <label className="block mb-2 text-sm font-medium text-gray-700">{t('yourComment', 'Izohingiz')}</label>
+            <textarea
+              className="w-full border border-gray-300 rounded-lg p-3 min-h-[90px] text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              placeholder={t('mentorHelpPlaceholder', 'Bu misolni tushunmadim, iltimos tushuntirib bering...')}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <p className="mt-1 text-xs text-gray-400">
+              {t('mentorReadComment', "Mentor sizga yordam berish uchun izohingizni o'qiydi")}
+            </p>
+          </div>
+          <div className="flex justify-end gap-3 px-6 py-4 bg-gray-50 rounded-b-xl">
+            <Button
+              onPress={onClose}
+              className="px-4 py-2 text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg hover:bg-gray-100"
+            >
+              {t('cancel', 'Bekor qilish')}
+            </Button>
+            <Button
+              onPress={handleSend}
+              disabled={isLoading || !message.trim()}
+              className={`px-4 py-2 rounded-lg transition-colors ${
+                isLoading || !message.trim()
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
+                  {t('sending', 'Yuborilmoqda...')}
+                </div>
+              ) : (
+                t('sendToMentor', 'Mentorga yuborish')
+              )}
+            </Button>
+          </div>
+        </div>
+      </SimpleModal> */}
+    </LayoutAdmin>
+  )
+}
+
+export default Index

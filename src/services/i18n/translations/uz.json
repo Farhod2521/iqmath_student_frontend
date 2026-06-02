@@ -1292,11 +1292,11 @@
       "no_name": "Nomi mavjud emas",
       "online": "Online",
       "offline": "Offline",
-      "physical": "Jismoniy kitob",
-      "digital": "Raqamli kitob",
+      "physical": "Qog'oz kitob",
+      "digital": "Elektron kitob",
       "available": "Mavjud miqdor",
-      "physical_library": "Jismoniy kitob (kutubxonadan olinadi)",
-      "digital_pdf": "Raqamli kitob (PDF yuklanadi)"
+      "physical_library": "Qog'oz kitob (kutubxonadan olinadi)",
+      "digital_pdf": "Elektron kitob (PDF yuklanadi)"
     },
 
     "empty": {
@@ -1333,13 +1333,14 @@
     "quantity": "Soni",
     "noOnlineBooks": "Elektron kitoblar mavjud emas",
     "noOfflineBooks": "Qog'oz kitoblar mavjud emas",
-    "deliveryStatus": {
-      "NEW": "Yangi",
-      "SEEN": "Ko'rildi",
-      "PREPARING": "Tayyorlanmoqda",
-      "DELIVERING": "Yetkazilmoqda",
-      "DELIVERED": "Yetkazildi",
-      "PENDING": "Kutilmoqda"
-    }
+    "totalPurchases": "Jami xaridlar"
+  },
+  "deliveryStatus": {
+    "new": "Yangi",
+    "seen": "Ko'rildi",
+    "preparing": "Tayyorlanmoqda",
+    "delivering": "Yetkazilmoqda",
+    "delivered": "Yetkazildi",
+    "pending": "Kutilmoqda"
   }
 }

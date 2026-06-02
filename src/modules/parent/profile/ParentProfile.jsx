@@ -91,12 +91,6 @@ const ParentProfile = () => {
       updateData.password = currentPassword
     }
 
-    console.log('Sending profile update request:', {
-      url: URLS.updateProfile,
-      data: updateData,
-      token: session?.accessToken
-    })
-
     profileUpdate(
       {
         url: URLS.updateProfile,

@@ -14,7 +14,7 @@ import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen } from 'lucide-react'
-import { MdOutlinePayments } from 'react-icons/md'
+import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
 import { IoLibraryOutline } from 'react-icons/io5'
@@ -453,6 +453,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
+
   {
     key: 'cupon-list',
     path: '/dashboard/cupons/list',
@@ -482,6 +483,19 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   { roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.GROUP },
+  {
+    key: 'data-teacher-fine',
+    path: '/dashboard/pages/fine',
+    label: t('Jarimalarim'),
+    icon: (isActive) => (
+      <MdWarning
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
   {
     key: 'coins',
     path: '/dashboard/student/coins',

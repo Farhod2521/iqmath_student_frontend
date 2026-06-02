@@ -354,7 +354,7 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
             )}
             <div className="min-w-0">
               <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">
-                {t('library.purchase.title')}
+                {t('library.payment.title')}
               </p>
               <h3 className="text-[14px] font-extrabold text-slate-800 leading-snug line-clamp-1">{name}</h3>
             </div>

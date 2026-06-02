@@ -127,5 +127,9 @@ export const URLS = {
   libraryTags: '/api/v1/book/tags/',
 
   //book-purchase
-  bookMyPurchases: '/api/v1/book/my-purchases/'
+  bookMyPurchases: '/api/v1/book/my-purchases/',
+
+  // student
+
+  teacherFine: '/api/v1/func_teacher/teacher/fine/'
 }
