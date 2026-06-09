@@ -5,26 +5,25 @@ import { useRouter } from 'next/router'
 
 const StatsCards = ({ data }) => {
   const { t } = useTranslation()
-    const router = useRouter()
+  const router = useRouter()
 
-    const statToFilterMap = {
-      totalStudents: { role: 'student' },
-      totalTeachers: { role: 'teacher' },
-      totalParents: { role: 'parent' },
-      totalTutors: { role: 'tutor' },
-      activeSubscribers: { status: 'active' }
-    }
+  const statToFilterMap = {
+    totalStudents: { role: 'student' },
+    totalTeachers: { role: 'teacher' },
+    totalParents: { role: 'parent' },
+    totalTutors: { role: 'tutor' },
+    activeSubscribers: { status: 'active' }
+  }
 
-    const handleNavigate = (key) => {
-      const query = statToFilterMap[key]
-      if (!query) return
+  const handleNavigate = (key) => {
+    const query = statToFilterMap[key]
+    if (!query) return
 
-      router.push({
-        pathname: '/dashboard/teacher/pupils',
-        query
-      })
-    }
-
+    router.push({
+      pathname: '/dashboard/teacher/pupils',
+      query
+    })
+  }
 
   const stats = [
     {
@@ -132,7 +131,7 @@ const StatsCards = ({ data }) => {
         return (
           <div
             key={stat.key}
-            onDoubleClick={() => handleNavigate(stat.key)}
+            onClick={() => handleNavigate(stat.key)}
             className={`bg-white dark:bg-[#202936] border border-[#E9E9E9] dark:border-[#232D3A] rounded-[12px] shadow-sm p-4 flex flex-col justify-between min-h-[120px] hover:shadow-md transition-shadow ${isClickable ? 'cursor-pointer hover:shadow-md' : ''}`}
           >
             <div className="flex items-start gap-3 mb-3">

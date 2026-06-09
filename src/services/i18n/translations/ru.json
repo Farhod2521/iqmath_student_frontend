@@ -37,7 +37,7 @@
   "score": "Балл",
   "login": "Вход",
   "signIn": "Зарегистрироваться",
-  "phone number": "Номер телефона",
+  "phoneNumber": "Номер телефона",
   "password": "Пароль",
   "remember": "Запоминать",
   "forget password": "Забыли пароль?",
@@ -1249,5 +1249,6 @@
     "DELIVERING": "Доставляется",
     "DELIVERED": "Доставлено",
     "PENDING": "В ожидании"
-  }
+  },
+  "deliveryInfo": "Информация о доставке"
 }

@@ -36,7 +36,7 @@
   "score": "Ball",
   "login": "Tizimga kirish",
   "signIn": "Ro'yxatdan o'tish",
-  "phone number": "Telefon raqam",
+  "phoneNumber": "Telefon raqam",
   "password": "Parol",
   "remember": "Eslab qolsin",
   "forget password": "Parolni unutdingizmi?",
@@ -1342,5 +1342,6 @@
     "delivering": "Yetkazilmoqda",
     "delivered": "Yetkazildi",
     "pending": "Kutilmoqda"
-  }
+  },
+  "deliveryInfo": "Yetkazib berish ma'lumotlari"
 }

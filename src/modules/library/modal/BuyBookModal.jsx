@@ -507,13 +507,11 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
           {/* Delivery info */}
           {book?.is_offline && (
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Yetkazib berish ma'lumotlari
-              </p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{t('deliveryInfo')}</p>
 
               <div className="space-y-3">
                 <div>
-                  <label className="block mb-1 text-xs font-medium text-slate-600">Telefon raqam</label>
+                  <label className="block mb-1 text-xs font-medium text-slate-600">{t('phoneNumber')}</label>
 
                   <div className="flex overflow-hidden border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-indigo-300 focus-within:border-indigo-400">
                     <div className="flex items-center px-3 text-sm font-semibold border-r bg-slate-50 text-slate-600 border-slate-200">
@@ -534,7 +532,7 @@ const BuyBookModal = ({ open, onClose, book, onSuccess }) => {
                 </div>
 
                 <div>
-                  <label className="block mb-1 text-xs font-medium text-slate-600">Manzil</label>
+                  <label className="block mb-1 text-xs font-medium text-slate-600">{t('address')}</label>
                   <textarea
                     rows={3}
                     value={deliveryAddress}
