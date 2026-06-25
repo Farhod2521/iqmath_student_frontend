@@ -149,7 +149,7 @@ function StudentExampleTable({
           >
             {params.value}
           </span>
-          {params.data.has_answers && <div className="w-2 h-2 bg-green-500 rounded-full ml-1 flex-shrink-0"></div>}
+          {params.data.has_answers && <div className="flex-shrink-0 w-2 h-2 ml-1 bg-green-500 rounded-full"></div>}
         </div>
       )
     },
@@ -201,11 +201,11 @@ function StudentExampleTable({
       flex: 1.3,
       cellRenderer: (params) => {
         if (!params.value) {
-          return <span className="text-gray-400 italic text-xs">-</span>
+          return <span className="text-xs italic text-gray-400">-</span>
         }
         return (
           <div className="flex items-center gap-2">
-            <span className="font-medium text-gray-700 text-sm">{params.value}</span>
+            <span className="text-sm font-medium text-gray-700">{params.value}</span>
           </div>
         )
       }
@@ -219,7 +219,7 @@ function StudentExampleTable({
       flex: 1,
       cellRenderer: (params) => {
         if (!params.value) {
-          return <span className="text-gray-400 italic text-xs">-</span>
+          return <span className="text-xs italic text-gray-400">-</span>
         }
         return <span className="text-center">{formatTeacherDate(params.value)}</span>
       }
@@ -233,7 +233,7 @@ function StudentExampleTable({
       flex: 0.5,
       cellRenderer: (params) => {
         if (!params.value) {
-          return <span className="text-gray-400 italic text-xs">-</span>
+          return <span className="text-xs italic text-gray-400">-</span>
         }
 
         return (
@@ -244,7 +244,7 @@ function StudentExampleTable({
                   window.showCommentModal(params.value, params.data.student_name)
                 }
               }}
-              className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition-colors"
+              className="p-2 text-blue-500 transition-colors rounded-full hover:text-blue-700 hover:bg-blue-50"
               title="Izohni ko'rish"
             >
               {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,10 +270,10 @@ function StudentExampleTable({
           <div className="flex justify-center">
             <button
               onClick={() => handleTelegramClick(params.data.student_id, params.data.student_name)}
-              className="items-center gap-1 px-2 py-1 rounded-lg flex justify-center text-xs transition-colors duration-200"
+              className="flex items-center justify-center gap-1 px-2 py-1 text-xs transition-colors duration-200 rounded-lg"
               title="Telegram orqali bog'lanish"
             >
-              <FaTelegram className="w-5 h-5 text-blue-500 ml-2" />
+              <FaTelegram className="w-5 h-5 ml-2 text-blue-500" />
             </button>
           </div>
         )
@@ -291,10 +291,10 @@ function StudentExampleTable({
         const isLoading = actionLoading[params.data.id]
 
         return (
-          <div className="flex gap-2 justify-end">
+          <div className="flex justify-end gap-2">
             <button
               onClick={() => onViewDetails(params.data.id, params.data.student_name)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap"
+              className="px-3 py-1 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 whitespace-nowrap"
             >
               {t('details')}
             </button>
@@ -338,7 +338,7 @@ function StudentExampleTable({
       <div className="w-full min-w-0 overflow-x-auto">
         <div className="relative">
           {isLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white bg-opacity-75">
               <ContentLoader classNames="!min-h-[400px] !w-full" />
             </div>
           )}

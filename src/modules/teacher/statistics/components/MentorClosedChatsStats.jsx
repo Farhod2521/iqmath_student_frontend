@@ -79,78 +79,46 @@ const MentorClosedChatsStats = () => {
       </div>
 
       {/* Stats Grid */}
-      <Grid container spacing={2}>
+
+      <div className="grid grid-cols-1 gap-3 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 -z-10">
         {STAT_ITEMS.map((item) => {
           const Icon = item.icon
           const count = data?.[item.key]?.closed_chats_count ?? 0
           const rating = data?.[item.key]?.average_rating ?? 0
 
           return (
-            <Grid item xs={12} sm={6} md={2.4} key={item.key}>
-              <div className="relative h-full overflow-hidden transition-all duration-300 bg-white border border-gray-100 shadow-sm group rounded-xl hover:shadow-lg hover:-translate-y-1">
-                {/* Gradient Background on Hover */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
-                ></div>
+            <div
+              key={item.key}
+              className="duration-300 bg-white border border-gray-100 shadow-sm ransition-all group rounded-xl hover:shadow-lg hover:-translate-y-1"
+            >
+              <div
+                className={`inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+              />
 
-                <div className="relative p-4">
-                  {/* Icon & Label */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className={`p-2 rounded-lg ${item.bgColor}`}>
-                      <Icon className="w-4 h-4 text-gray-700" />
-                    </div>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        fontWeight: 600,
-                        color: '#6b7280',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        fontSize: '0.7rem'
-                      }}
-                    >
-                      {item.label}
-                    </Typography>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`p-2 rounded-lg ${item.bgColor}`}>
+                    <Icon className="w-4 h-4 text-gray-700" />
                   </div>
 
-                  {/* Count */}
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: 700,
-                      mb: 1,
-                      color: '#1a1a1a',
-                      fontSize: '1.75rem'
-                    }}
-                  >
-                    {count}
-                  </Typography>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-1.5">
-                    <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: '#6b7280',
-                        fontSize: '0.8rem',
-                        fontWeight: 500
-                      }}
-                    >
-                      {rating ? rating.toFixed(1) : '—'}
-                    </Typography>
-                  </div>
+                  <span className="text-xs font-semibold tracking-wide text-gray-500 uppercase">{item.label}</span>
                 </div>
 
-                {/* Bottom Accent Line */}
-                <div
-                  className={`h-1 w-full bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                ></div>
+                <p className="mb-1 text-2xl font-bold text-gray-900">{count}</p>
+
+                <div className="flex items-center gap-1">
+                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  <span className="text-sm font-medium text-gray-600">{rating ? rating : '—'}</span>
+                </div>
               </div>
-            </Grid>
+
+              <div
+                className={`h-1 w-full bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+              />
+            </div>
           )
         })}
-      </Grid>
+      </div>
     </Box>
   )
 }

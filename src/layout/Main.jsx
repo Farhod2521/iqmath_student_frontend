@@ -7,17 +7,17 @@ function Main({ children, title }) {
 
   return (
     <div
-      className={`flex flex-col flex-1 min-h-0 bg-white font-sf transition-all duration-300 ${
+      className={`flex flex-col flex-1 min-h-0 bg-white font-sf  transition-all duration-300 ${
         isSidebarOpen ? 'lg:ml-[300px]' : 'lg:ml-0'
       }`}
     >
       {/* Navbar */}
-      <div className="flex-shrink-0 sticky top-0 bg-white">
+      <div className="sticky top-0 z-[1000]  flex-shrink-0 bg-white">
         <Navbar title={title} />
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-8 [webkit-overflow-scrolling:touch]">{children}</div>
+      <div className="flex-1 overflow-y-auto p-4 md:p-8 [webkit-overflow-scrolling:touch] relative z-0">{children}</div>
     </div>
   )
 }

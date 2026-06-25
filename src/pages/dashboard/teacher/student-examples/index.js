@@ -147,7 +147,7 @@ const StudentExamples = () => {
         <HeaderTitle title={t('studentExamples')} />
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <div className="mx-auto h-12 w-12 text-red-400 mb-4">
+            <div className="w-12 h-12 mx-auto mb-4 text-red-400">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
@@ -157,11 +157,11 @@ const StudentExamples = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Xatolik yuz berdi</h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-4">{error}</p>
+            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">Xatolik yuz berdi</h3>
+            <p className="mb-4 text-gray-500 dark:text-gray-400">{error}</p>
             <button
               onClick={() => fetchData(pagination.current, pagination.limit)}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
             >
               {t('retry')}
             </button>
@@ -176,9 +176,9 @@ const StudentExamples = () => {
       <HeaderTitle title={t('studentExamples')} />
       <div className="space-y-6">
         {/* Filters - pupils sahifasidagidek */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 py-4 w-full">
+        <div className="flex flex-col w-full gap-3 py-4 lg:flex-row lg:items-center lg:justify-between">
           {/* <div className="flex items-center gap-x-[12px]"> */}
-          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <div className="flex flex-col w-full gap-3 sm:flex-row lg:w-auto">
             <SearchInput
               placeholder="Qidiruv..."
               value={search}
@@ -197,10 +197,10 @@ const StudentExamples = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-gray-800 w-full min-w-0 overflow-x-auto">
+        <div className="w-full min-w-0 overflow-x-auto bg-white dark:bg-gray-800">
           {data.length === 0 ? (
-            <div className="text-center py-12 w-full">
-              <div className="mx-auto h-12 w-12 text-gray-400">
+            <div className="w-full py-12 text-center">
+              <div className="w-12 h-12 mx-auto text-gray-400">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path
                     strokeLinecap="round"

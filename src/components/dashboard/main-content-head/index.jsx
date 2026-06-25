@@ -148,7 +148,7 @@ const MainContentHead = ({ toggleSidebar, title, handleTab, tab }) => {
                   <Image src={'/icons/user-square.svg'} alt={'user-settings'} width={20} height={20} />
                 </div>
                 <div>
-                  <p className="text-black dark:text-white font-semibold">{t('myPage')}</p>
+                  <p className="font-semibold text-black dark:text-white">{t('myPage')}</p>
                   <p className="text-[#7C8FAC] dark:text-gray-200 text-sm">{t('settings')}</p>
                 </div>
               </button>

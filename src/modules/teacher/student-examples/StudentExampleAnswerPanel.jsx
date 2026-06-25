@@ -2,6 +2,33 @@ import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 
+// HTML entity'larni tozalash funksiyasi
+const cleanLatex = (text) => {
+  if (!text) return ''
+
+  const entityMap = {
+    '&lt;': '<',
+    '&gt;': '>',
+    '&amp;': '&',
+    '&quot;': '"',
+    '&apos;': "'",
+    '&nbsp;': ' ',
+    '&le;': '≤',
+    '&ge;': '≥',
+    '&ne;': '≠',
+    '&times;': '×',
+    '&divide;': '÷'
+  }
+
+  let cleaned = text
+
+  Object.entries(entityMap).forEach(([entity, value]) => {
+    cleaned = cleaned.replaceAll(entity, value)
+  })
+
+  return cleaned.trim()
+}
+
 const cleanText = (text) =>
   text
     ?.replace(/(<br\s*\/?>|;|\s)+$/g, '') // oxiridagi <br>, ; yoki bo'sh joylarni olib tashlaydi
@@ -45,7 +72,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
               {studentAnswer ? (
                 <span className="flex items-center w-full">
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-                    <MathJax dynamic>{studentAnswer}</MathJax>
+                    <MathJax dynamic>{cleanLatex(studentAnswer)}</MathJax>
                   </MathJaxContext>
                 </span>
               ) : (
@@ -73,7 +100,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
               {correctAnswer ? (
                 <span className="flex items-center w-full">
                   <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-                    <MathJax dynamic>{correctAnswer}</MathJax>
+                    <MathJax dynamic>{cleanLatex(correctAnswer)}</MathJax>
                   </MathJaxContext>
                 </span>
               ) : (
@@ -96,7 +123,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
         {selected.answer_text ? (
           <span className="flex items-center w-full">
             <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-              <MathJax dynamic>{selected.answer_text}</MathJax>
+              <MathJax dynamic>{cleanLatex(selected.answer_text)}</MathJax>
             </MathJaxContext>
           </span>
         ) : (
@@ -116,7 +143,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
         {selected.system_response ? (
           <span className="flex items-center w-full">
             <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
-              <MathJax dynamic>{selected.system_response}</MathJax>
+              <MathJax dynamic>{cleanLatex(selected.system_response)}</MathJax>
             </MathJaxContext>
           </span>
         ) : (

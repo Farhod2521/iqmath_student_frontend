@@ -9,9 +9,9 @@ const StudentExampleQuestionList = ({ questions, selectedIdx, setSelectedIdx, i1
         if (selectedIdx === idx) {
           circleClass = 'border-white shadow-md bg-[#037AFF] text-white'
         } else if (q.answer === true) {
-          circleClass = 'border-[#2EB14F] bg-[#EBF9EEFF] text-[#2EB14F]'
+          circleClass = 'border-green-400 bg-green-50 text-green-700'
         } else if (q.answer === false) {
-          circleClass = 'border-[#FF3B30] bg-[#FFEBEA] text-[#FF3B30]'
+          circleClass = 'border-red-400 bg-red-50 text-red-700'
         } else {
           circleClass = 'border-[#E9E9E9] bg-white'
         }

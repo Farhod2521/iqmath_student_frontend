@@ -18,28 +18,28 @@ const Navbar = ({ title }) => {
 
   return (
     <div className="bg-white border-b">
-      <div className="px-3 sm:px-6 lg:px-8 py-2">
+      <div className="px-3 py-2 sm:px-6 lg:px-8">
         {/* 🔹 TOP ROW */}
         <div className="flex items-center justify-between">
           {/* LEFT */}
-          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+          <div className="flex items-center min-w-0 gap-3 sm:gap-6">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-1 hover:bg-gray-100 rounded-lg transition"
+              className="p-1 transition rounded-lg hover:bg-gray-100"
             >
               {isSidebarOpen ? <AiOutlineMenuFold size={18} /> : <AiOutlineMenuUnfold size={18} />}
             </button>
           </div>
 
           {/*  RIGHT (<475px only) */}
-          <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden">
+          <div className="flex items-center gap-2 max-[475px]:flex min-[475px]:hidden relative">
             <NavbarMathMenu />
             <LanguageDropdown />
             <NavbarProfile />
           </div>
 
           {/*  RIGHT (>=475px desktop normal) */}
-          <div className="hidden min-[475px]:flex items-center  gap-1">
+          <div className="hidden min-[475px]:flex items-center  gap-1 relative">
             {oldToken && <NavbarBackTeacher />}
 
             <NavbarMathMenu />

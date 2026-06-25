@@ -86,7 +86,7 @@ function NavbarProfile() {
   }
 
   return (
-    <>
+    <div className="relative z-[1000] bg-white border-b">
       <button
         ref={buttonRef}
         className="group w-7 h-7 min-[400px]:w-8 min-[400px]:h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
@@ -104,7 +104,7 @@ function NavbarProfile() {
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute bg-white z-40 dark:bg-[#26334A] border rounded-md min-w-[250px] min-[400px]:min-w-[280px] sm:min-w-[300px] shadow-lg top-[55px] min-[400px]:top-[60px] right-[15px] min-[400px]:right-[30px] p-4 min-[400px]:p-[25px] sm:p-[30px]"
+          className="absolute bg-white z-[9999999]  dark:bg-[#26334A] border rounded-md min-w-[250px] min-[400px]:min-w-[280px] sm:min-w-[300px] shadow-lg top-[55px] min-[400px]:top-[50px] right-[15px] min-[400px]:right-[30px] p-4 min-[400px]:p-[25px] sm:p-[30px]"
         >
           <div className="space-y-2">
             {get(studentProfile, 'data.email') && (
@@ -133,7 +133,7 @@ function NavbarProfile() {
                 router.push('/dashboard/student/profile')
               }
             }}
-            className="flex gap-x-2 sm:gap-x-3 text-start cursor-pointer w-full"
+            className="flex w-full cursor-pointer gap-x-2 sm:gap-x-3 text-start"
           >
             <div className="w-8 h-8 min-[400px]:w-9 min-[400px]:h-9 sm:w-10 sm:h-10 border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
               <Image
@@ -146,7 +146,7 @@ function NavbarProfile() {
             </div>
 
             <div className="text-left">
-              <p className="text-black dark:text-white font-semibold text-sm sm:text-base">{t('myPage')}</p>
+              <p className="text-sm font-semibold text-black dark:text-white sm:text-base">{t('myPage')}</p>
               <p className="text-[#7C8FAC] dark:text-gray-200 text-xs sm:text-sm">{t('settings')}</p>
             </div>
           </button>
@@ -178,7 +178,7 @@ function NavbarProfile() {
               }`}
             >
               <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-[90vw] max-w-[500px] mx-4">
-                <h2 className="text-lg sm:text-xl font-semibold mb-1">{t('exitWeb')}</h2>
+                <h2 className="mb-1 text-lg font-semibold sm:text-xl">{t('exitWeb')}</h2>
                 <p className="text-sm sm:text-base font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
                 <div className="flex justify-end gap-x-2 sm:gap-x-[10px]">
                   <button
@@ -199,7 +199,7 @@ function NavbarProfile() {
           </>,
           document.body
         )}
-    </>
+    </div>
   )
 }
 
