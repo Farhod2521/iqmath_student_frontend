@@ -1,6 +1,8 @@
 // components/subject-detail/QuestionModal/index.jsx
-import Image from 'next/image'
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Button from '@/components/button'
 import QuestionForm from './QuestionForm'
@@ -8,28 +10,61 @@ import QuestionForm from './QuestionForm'
 const QuestionModal = ({ isOpen, onClose, formData, onFormChange, onSubmit, isEditMode = false }) => {
   const { t } = useTranslation()
 
-  if (!isOpen) return null
+  useEffect(() => {
+    if (!isOpen) return
 
-  return (
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) return null
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 flex items-center justify-end z-50 bg-black bg-opacity-70"
+        className="fixed inset-0 z-[2000] flex items-center justify-end bg-black bg-opacity-70"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        // onClick={onClose}
       >
+        {/* <button
+          type="button"
+          onClick={onClose}
+          aria-label={t('close') || 'Close'}
+          className="fixed right-4 top-4 z-[2020] flex h-11 w-11 items-center justify-center rounded-full border border-[#D1D5DB] bg-white text-[#111827] shadow-lg transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#5D87FF]"
+        >
+          <X size={24} strokeWidth={2.5} />
+        </button> */}
+
         <motion.div
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 50, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-tl-2xl rounded-bl-2xl shadow-lg w-1/2 h-screen overflow-y-auto"
+          className="relative h-screen w-full overflow-y-auto rounded-tl-2xl rounded-bl-2xl bg-white shadow-lg sm:w-2/3 lg:w-1/2"
+          onClick={(event) => event.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex justify-between px-4 py-5 sticky top-0 bg-white z-10 border-b border-[#E9E9E9]">
+          <div className="sticky top-0 z-[2010] flex items-center justify-between gap-4 border-b border-[#E9E9E9] bg-white px-4 py-4">
             <h3 className="text-lg font-semibold">{isEditMode ? t('editQuestion') : t('createQuestion')}</h3>
-            <button onClick={onClose} className="rounded hover:bg-gray-100 p-1 transition-colors">
-              <Image src="/icons/close.svg" alt="close" width={24} height={24} />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t('close') || 'Close'}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D1D5DB] bg-white text-[#111827] shadow-md transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#5D87FF]"
+            >
+              <X size={22} strokeWidth={2.4} />
             </button>
           </div>
 
@@ -49,7 +84,8 @@ const QuestionModal = ({ isOpen, onClose, formData, onFormChange, onSubmit, isEd
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   )
 }
 

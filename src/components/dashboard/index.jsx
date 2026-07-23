@@ -1,4 +1,3 @@
-import Brand from '../brand'
 import DashboardNav from './dashboard-nav'
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from 'next-themes'
@@ -44,7 +43,7 @@ const Dashboard = ({ children, headerTitle, tab, handleTab }) => {
           </div> */}
           <DashboardNav />
         </Sidebar>
-
+Test
         <MainContent
           headTitle={headerTitle}
           isSidebarOpen={isSidebarOpen}

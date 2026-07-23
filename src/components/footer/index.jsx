@@ -32,9 +32,9 @@ const Footer = () => {
   const contactInfo = [
     {
       icon: '/icons/phone.svg',
-      label: t('footer.contact.phone'),
-      value: '+998 88 198 90 00',
-      href: 'tel:+998881989000',
+      label: t('footer.contact.iqmathCallCenter'),
+      value: '+998 78 888 18 81',
+      href: 'tel:+9987888881881',
       type: 'phone'
     },
     {
@@ -58,7 +58,7 @@ const Footer = () => {
       key: 'telegram',
       icon: <TelegramIcon />,
       name: 'Telegram',
-      href: 'https://t.me/iqmathuzz',
+      href: 'https://t.me/Iqmath_help',
       brand: 'telegram'
     },
     {
@@ -151,7 +151,7 @@ const Footer = () => {
                             alt={contact.label}
                             width={21}
                             height={20}
-                            className="filter brightness-100 invert group-hover:brightness-0"
+                            className="filter brightness-100 text-gray-400 invert group-hover:brightness-0"
                           />
                         </div>
                         <div className="flex-1">

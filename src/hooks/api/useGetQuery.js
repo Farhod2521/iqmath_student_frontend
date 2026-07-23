@@ -18,9 +18,10 @@ const useGetQuery = ({
 }) => {
   const { t } = useTranslation()
   const { data: session } = useSession()
+  const queryKey = Array.isArray(key) ? [...key, params] : [key, params]
 
   const { isLoading, isError, data, error, isFetching, refetch } = useQuery(
-    [key, params],
+    queryKey,
     () =>
       request.get(url, {
         params,

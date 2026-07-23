@@ -10,7 +10,6 @@ import PhoneIcon from '../icons/social-media/phone'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useGetQuery } from '@/hooks'
-import { get, isEmpty } from 'lodash'
 import Image from 'next/image'
 import YoutubeIcon from '../icons/social-media/youtube'
 
@@ -100,8 +99,8 @@ const Header = ({ color = 'white' }) => {
 
             <div className="hidden lg:flex items-center gap-x-[10px]">
               <Image src={'/icons/phone.svg'} alt="phone" width={24} height={24} />
-              <a className="text-[15px] font-medium text-black" href="tel:+998 88 198 90 00">
-                +998 88 198 90 00
+              <a className="text-[15px] font-medium text-black" href="tel:+998 78 888 18 81">
+                +998 78 888 18 81
               </a>
             </div>
 

@@ -6,6 +6,7 @@ import { get } from 'lodash'
 import Button from '@/components/button'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import SimpleModalTeacher from '@/components/modal/simple-modal-teacher'
 import Image from 'next/image'
 import Input from '@/components/input'
@@ -18,7 +19,6 @@ import axios from 'axios'
 import EditIcon from '@/components/icons/edit'
 import TrashIcon from '@/components/icons/trash'
 import usePutQuery from '@/hooks/api/usePutQuery'
-import useDeleteQuery from '@/hooks/api/useDeleteQuery'
 import { config } from '@/config'
 import { useTranslation } from 'react-i18next'
 import InfoCircleIcon from '@/components/icons/info-circle'
@@ -27,7 +27,6 @@ import QuestionCountIcon from '@/components/icons/question-count'
 import { DndContext, closestCenter } from '@dnd-kit/core'
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import SortableTableRow from '@/modules/teacher/subjects/components/sortable-table-row'
-import Link from 'next/link'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
@@ -432,9 +431,11 @@ const Index = () => {
         setContentRu('')
 
         // Immediate state update - o'zgartirilgan mavzuni darhol yangilash
-        if (response.data?.data) {
+        const updatedTopic = response.data?.data ?? response.data
+
+        if (updatedTopic && !Array.isArray(updatedTopic)) {
           setTopics((prevTopics) =>
-            prevTopics?.map((topic) => (topic.id === selectedTopic?.id ? response.data.data : topic))
+            prevTopics?.map((topic) => (topic.id === selectedTopic?.id ? updatedTopic : topic))
           )
         }
 
@@ -452,8 +453,10 @@ const Index = () => {
             }
           })
 
-          if (manualResponse.data?.data) {
-            setTopics(manualResponse.data.data)
+          const refreshedTopics = manualResponse.data?.data ?? manualResponse.data
+
+          if (Array.isArray(refreshedTopics)) {
+            setTopics(refreshedTopics)
           }
         } catch (manualError) {
           console.error('Manual API error:', manualError)
@@ -863,140 +866,148 @@ const Index = () => {
           </div>
         </SimpleModalTeacher>
       )}
-      {openTopicsModal && (
-        <AnimatePresence>
-          <motion.div
-            className={`fixed inset-0 right-0 flex items-center justify-end z-50 transition-all bg-black bg-opacity-70 duration-300 `}
-          >
+      {openTopicsModal &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 50 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-full sm:w-2/3 lg:w-1/2 h-screen overflow-y-auto  font-sf"
+              className={`fixed inset-0 right-0 z-[2000] flex items-center justify-end bg-black bg-opacity-70 transition-all duration-300 `}
+              // onClick={() => setOpenTopicsModal(false)}
             >
-              <div className="flex justify-between px-[16px] py-[18px]">
-                <h3 className="text-[19px] font-semibold">
-                  {modalTypeOfTopic === 'create'
-                    ? `${t('createTopic')}`
-                    : modalTypeOfTopic === 'update'
-                      ? `${t('editTopic')}`
-                      : `${t('deleteTopic')}`}
-                </h3>
-                <button onClick={() => setOpenTopicsModal(false)} className="rounded">
-                  <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
-                </button>
-              </div>
-
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
-
-              {modalTypeOfTopic === 'delete' ? (
-                <div>
-                  <p className="px-[16px] py-[18px]">
-                    Belgilangan mavzuni o'chirganingizdan so'ng, uni tiklab bo'lmaydi.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <div className="px-[16px] mt-[18px] mb-[9px]">
-                    <label>{t('topicName')} (o&apos;zbek tilida)</label>
-                    <Input
-                      value={topicName}
-                      onChange={(e) => setTopicName(e.target.value)}
-                      placeholder={t('enterTopicName')}
-                    />
-                  </div>
-
-                  <div className="px-[16px] mt-[18px] mb-[9px]">
-                    <label>{t('topicName')} (rus tilida)</label>
-                    <Input
-                      value={topicNameRu}
-                      onChange={(e) => setTopicNameRu(e.target.value)}
-                      placeholder={t('enterTopicName')}
-                    />
-                  </div>
-                  <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
-
-                  <div className="px-[16px]  mb-[9px]">
-                    <label>{t('videoLink')} (o&apos;zbek tilida)</label>
-                    <Input
-                      value={videoLink}
-                      onChange={(e) => setVideoLink(e.target.value)}
-                      placeholder={t('enterVideoLinkName')}
-                    />
-                  </div>
-
-                  <div className="px-[16px] mt-[18px] mb-[9px]">
-                    <label>{t('videoLink')} (rus tilida)</label>
-                    <Input
-                      value={videoLinkRu}
-                      onChange={(e) => setVideoLinkRu(e.target.value)}
-                      placeholder={t('enterVideoLinkName')}
-                    />
-                  </div>
-
-                  <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
-
-                  <div className="px-[16px]">
-                    <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (o&apos;zbek tilida)</h3>
-                    <ClientOnly>
-                      {ClassicEditor && (
-                        <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
-                          <CKEditor
-                            editor={ClassicEditor}
-                            data={content}
-                            onChange={(event, editor) => {
-                              const data = editor.getData()
-                              setContent(data)
-                            }}
-                            config={mentorCKEditorConfig}
-                          />
-                        </div>
-                      )}
-                    </ClientOnly>
-                  </div>
-
-                  <div className="px-[16px] mt-[15px]">
-                    <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (rus tilida)</h3>
-                    <ClientOnly>
-                      {ClassicEditor && (
-                        <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
-                          <CKEditor
-                            editor={ClassicEditor}
-                            data={contentRu}
-                            onChange={(event, editor) => {
-                              const data = editor.getData()
-                              setContentRu(data)
-                            }}
-                            config={mentorCKEditorConfig}
-                          />
-                        </div>
-                      )}
-                    </ClientOnly>
-                  </div>
-                </>
-              )}
-
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
-
-              <div className="px-[16px] py-[12px] flex items-center justify-end">
-                <Button
-                  onclick={
-                    modalTypeOfTopic === 'create'
-                      ? onSubmitCreateTopic
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-full sm:w-2/3 lg:w-1/2 h-screen overflow-y-auto  font-sf"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="sticky top-0 z-[2010] flex items-center justify-between gap-4 border-b border-[#E9E9E9] bg-white px-[16px] py-[14px]">
+                  <h3 className="text-[19px] font-semibold">
+                    {modalTypeOfTopic === 'create'
+                      ? `${t('createTopic')}`
                       : modalTypeOfTopic === 'update'
-                        ? onSubmitUpdateTopic
-                        : () => onSubmitDeleteTopic(selectedTopic?.id)
-                  }
-                  classname={'!py-2 hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
-                >
-                  {modalTypeOfTopic === 'delete' ? t('delete') : t('complete')}
-                </Button>
-              </div>
+                        ? `${t('editTopic')}`
+                        : `${t('deleteTopic')}`}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setOpenTopicsModal(false)}
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D1D5DB] bg-white shadow-md transition-colors hover:bg-gray-100"
+                    aria-label={t('close') || 'Close'}
+                  >
+                    <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
+                  </button>
+                </div>
+
+                {modalTypeOfTopic === 'delete' ? (
+                  <div>
+                    <p className="px-[16px] py-[18px]">
+                      Belgilangan mavzuni o'chirganingizdan so'ng, uni tiklab bo'lmaydi.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="px-[16px] mt-[18px] mb-[9px]">
+                      <label>{t('topicName')} (o&apos;zbek tilida)</label>
+                      <Input
+                        value={topicName}
+                        onChange={(e) => setTopicName(e.target.value)}
+                        placeholder={t('enterTopicName')}
+                      />
+                    </div>
+
+                    <div className="px-[16px] mt-[18px] mb-[9px]">
+                      <label>{t('topicName')} (rus tilida)</label>
+                      <Input
+                        value={topicNameRu}
+                        onChange={(e) => setTopicNameRu(e.target.value)}
+                        placeholder={t('enterTopicName')}
+                      />
+                    </div>
+                    <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
+
+                    <div className="px-[16px]  mb-[9px]">
+                      <label>{t('videoLink')} (o&apos;zbek tilida)</label>
+                      <Input
+                        value={videoLink}
+                        onChange={(e) => setVideoLink(e.target.value)}
+                        placeholder={t('enterVideoLinkName')}
+                      />
+                    </div>
+
+                    <div className="px-[16px] mt-[18px] mb-[9px]">
+                      <label>{t('videoLink')} (rus tilida)</label>
+                      <Input
+                        value={videoLinkRu}
+                        onChange={(e) => setVideoLinkRu(e.target.value)}
+                        placeholder={t('enterVideoLinkName')}
+                      />
+                    </div>
+
+                    <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
+
+                    <div className="px-[16px]">
+                      <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (o&apos;zbek tilida)</h3>
+                      <ClientOnly>
+                        {ClassicEditor && (
+                          <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
+                            <CKEditor
+                              editor={ClassicEditor}
+                              data={content}
+                              onChange={(event, editor) => {
+                                const data = editor.getData()
+                                setContent(data)
+                              }}
+                              config={mentorCKEditorConfig}
+                            />
+                          </div>
+                        )}
+                      </ClientOnly>
+                    </div>
+
+                    <div className="px-[16px] mt-[15px]">
+                      <h3 className="text-[16px] font-normal mb-[10px]">{t('topicContent')} (rus tilida)</h3>
+                      <ClientOnly>
+                        {ClassicEditor && (
+                          <div className="ck-editor-wrapper" style={{ minHeight: '250px' }}>
+                            <CKEditor
+                              editor={ClassicEditor}
+                              data={contentRu}
+                              onChange={(event, editor) => {
+                                const data = editor.getData()
+                                setContentRu(data)
+                              }}
+                              config={mentorCKEditorConfig}
+                            />
+                          </div>
+                        )}
+                      </ClientOnly>
+                    </div>
+                  </>
+                )}
+
+                <div className="bg-[#E9E9E9] w-full h-[1px] p-0 my-[18px]"></div>
+
+                <div className="px-[16px] py-[12px] flex items-center justify-end">
+                  <Button
+                    onclick={
+                      modalTypeOfTopic === 'create'
+                        ? onSubmitCreateTopic
+                        : modalTypeOfTopic === 'update'
+                          ? onSubmitUpdateTopic
+                          : () => onSubmitDeleteTopic(selectedTopic?.id)
+                    }
+                    classname={'!py-2 hover:bg-[#2F66FF] transition-all duration-300 scale-100 active:scale-95'}
+                  >
+                    {modalTypeOfTopic === 'delete' ? t('delete') : t('complete')}
+                  </Button>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      )}
+          </AnimatePresence>,
+          document.body
+        )}
     </LayoutAdmin>
   )
 }

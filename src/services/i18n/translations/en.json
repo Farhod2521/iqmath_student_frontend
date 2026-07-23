@@ -317,6 +317,7 @@
   "last": "Last",
   "invalidLogin": "Invalid login",
   "statistics": "Statistics",
+  "kpiDashboard": "KPI dashboard",
   "totalTeachers": "Total Teachers",
   "totalStudents": "Total Students",
   "totalParents": "Total Parents",
@@ -362,6 +363,8 @@
   "start": "Start",
   "diagnosis_history": "Diagnosis history",
   "questionCount": "Question Count",
+  "createQuestion": "Create question",
+  "editQuestion": "Edit question",
   "myChildren": "My children",
   "common": {
     "loading": "Loading...",
@@ -570,7 +573,9 @@
     "contact": {
       "phone": "Phone",
       "email": "Email",
-      "address": "Address"
+      "address": "Address",
+      "iqmathCallCenter": "IQmath call center",
+      "telegram": "Telegram"
     },
     "copyright": "All rights reserved",
     "madeWith": "Made with",
@@ -630,6 +635,27 @@
       "mostPopular": "Most popular"
     }
   },
+  "dailyTaskCompleted": "Daily task completed",
+  "dailyTasks": "Daily tasks",
+  "currentWeek": "Current week",
+  "weekdays": {
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "studentId": "Student ID",
+  "applyFilter": "Apply filter",
+  "weekNumber": "Week",
+  "yearFilter": "Year",
+  "monthFilter": "Month",
+  "day": "Day",
+  "completedTasks": "Completed tasks",
+  "tasksNotCompleted": "Tasks not completed",
+  "completed": "Completed",
   "authCard": {
     "badge": "Get started fast",
     "title": "Sign up in just 2 minutes",

@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { URLS } from '@/constants/url'
 import { usePostQuery } from '@/hooks'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import HeaderTitle from '@/components/header-title'
+import { request } from '@/services/api'
+import toast from 'react-hot-toast'
+import { useSession } from 'next-auth/react'
+import { RolesList } from '@/layout/libs/menulist'
 
 const COUNTS = [10, 50, 100, 1000]
 
 const StudentTopLeaderboard = () => {
+  const session = useSession()
   const { t } = useTranslation()
   const [type, setType] = useState('coin')
   const [topCount, setTopCount] = useState(10)
@@ -54,10 +59,34 @@ const StudentTopLeaderboard = () => {
     return ''
   }
 
+  function downloadCertificate(student_id) {
+    if (!student_id) return
+    request
+      .post(
+        URLS.downloadCertificate,
+        {
+          student_id
+        },
+        { responseType: 'blob' }
+      )
+      .then((res) => {
+        if (res.status !== 200 || !res.data) return
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'Certificate_file.pdf')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      })
+      .catch((err) => {
+        toast.error(err?.message || err?.data?.message || t('downloadCertificateError'))
+      })
+  }
+
   return (
     <LayoutAdmin>
       <div className="py-2">
-        {' '}
         <HeaderTitle title={t('studentRating')} />
       </div>
 
@@ -89,6 +118,15 @@ const StudentTopLeaderboard = () => {
               </option>
             ))}
           </select>
+
+          {session?.data?.role === RolesList.STUDENT ? (
+            <button
+              className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+              onClick={() => downloadCertificate(session?.data?.id)}
+            >
+              {t('downloadCertificate')}
+            </button>
+          ) : null}
         </div>
 
         {/* Table */}
@@ -103,6 +141,11 @@ const StudentTopLeaderboard = () => {
                   <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">
                     {t('student')}
                   </th>
+                  {session?.data?.role !== RolesList.STUDENT && session?.data?.role !== RolesList.PARENT ? (
+                    <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">
+                      {t('certificate')}
+                    </th>
+                  ) : null}
                   <th className="px-6 py-4 text-xs font-bold tracking-wider text-right text-gray-500 uppercase">
                     {t('value')}
                   </th>
@@ -116,6 +159,16 @@ const StudentTopLeaderboard = () => {
                       <div className="font-medium">{item.full_name}</div>
                       <div className="text-xs text-gray-500">{item.phone}</div>
                     </td>
+                    {session?.data?.role !== RolesList.STUDENT && session?.data?.role !== RolesList.PARENT ? (
+                      <td className="px-6 py-2 font-semibold text-left">
+                        <button
+                          className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+                          onClick={() => downloadCertificate(item?.student_id)}
+                        >
+                          {t('downloadCertificate')}
+                        </button>
+                      </td>
+                    ) : null}
                     <td className="px-6 py-2 font-semibold text-right">
                       {getValueByType(item)?.toLocaleString()} {getUnitByType()}
                     </td>

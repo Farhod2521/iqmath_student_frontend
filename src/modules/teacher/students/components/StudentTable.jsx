@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
@@ -13,6 +13,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import StudentPagination from './StudentPagination'
 import { postLoginAsStudent } from '@/services/controllers'
 import StudentRewardModal from './StudentRewardModal'
+import cn from 'clsx'
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -49,6 +50,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
         })
         .then((res) => {
           const newData = res.data.results || []
+          
           setData(newData)
           setPagination({
             current: page,
@@ -174,6 +176,17 @@ useEffect(() => {
     setIsRewardModalOpen(true)
   }
 
+  const handleOpenDailyTasks = useCallback(
+    (student) => {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('teacher_daily_tasks_student', JSON.stringify(student))
+      }
+
+      router.push(`/dashboard/teacher/pupils/tasks/${student?.id}`)
+    },
+    [router]
+  )
+
   const handleRewardSuccess = () => {
     // Refresh data if needed
     getData(pagination.current, pagination.limit, filterData)
@@ -226,6 +239,52 @@ useEffect(() => {
       }
     ]
 
+      baseColumns.push(
+      {
+        headerName: t('dailyTaskCompleted'),
+        field: 'completed_today', 
+        filter: false,
+        cellRenderer: (params) => (
+          <div className='flex w-full gap-2 justify-end'>
+          <button
+              disabled
+              className={cn('flex-1 text-white px-3 py-1 rounded-lg text-sm',
+                params?.value ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+              )}
+            >
+              {t(params?.value ? 'yes' : 'no')}
+            </button>
+          <button
+              onClick={(event) => {
+                event.stopPropagation()
+                handleOpenDailyTasks(params.data)
+              }}
+              className="bg-blue-500 hover:bg-blue-600 flex-1 text-white px-3 py-1 rounded-lg text-sm"
+            >
+              {t('details')}
+            </button>
+          </div>
+        )
+      })
+      baseColumns.push(
+      {
+        headerName: t('phone'),
+        field: 'phone',
+        minWidth: 120
+      },
+    )
+
+      baseColumns.push({
+        headerName: t('diagnosticsStatus'),
+        field: 'has_diagnost',
+        maxWidth: 150,
+        // filter: false,
+        cellClass: 'text-center',
+        cellRenderer: (params) => {
+          return params.value ? t('submitted') : t('doNotSubmit')
+        }
+      }) 
+
     if (filterData?.role === 'student') {
       baseColumns.push({
         headerName: t('class'),
@@ -236,17 +295,6 @@ useEffect(() => {
           const classText = params.value || ''
           const classNumber = classText.split(' ')[0]
           return classNumber + '-' + t('class')
-        }
-      })
-
-      baseColumns.push({
-        headerName: t('diagnosticsStatus'),
-        field: 'has_diagnost',
-        maxWidth: 150,
-        // filter: false,
-        cellClass: 'text-center',
-        cellRenderer: (params) => {
-          return params.value ? t('submitted') : t('doNotSubmit')
         }
       })
 
@@ -377,11 +425,11 @@ useEffect(() => {
             </button>
           </div>
         )
-      }
+      },
     )
 
     return baseColumns
-  }, [filterData?.role, t, router, handleGiveReward, handleSignAsStudent])
+  }, [filterData?.role, t, router, handleGiveReward, handleSignAsStudent, handleOpenDailyTasks])
 
   // Loading holatida bo'sh loader ko'rsatmaymiz, chunki table o'rniga overlay ishlatamiz
 

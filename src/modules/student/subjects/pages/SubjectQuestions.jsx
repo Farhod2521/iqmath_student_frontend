@@ -23,7 +23,7 @@ import ExamAnswerChoice from '../components/exam/ExamAnswerChoice'
 import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
 import ExamAnswerImage from '../components/exam/ExamAnswerImage'
 import ExamAnswerText from '../components/exam/ExamAnswerText'
-import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
+import { normalizeAnswerForBackend, wrapMathAnswer } from '../utils/wrapAnswer'
 import ActionSolution from '../components/actions/ActionSolution'
 import ActionInfo from '../components/actions/ActionInfo'
 import ActionCalculator from '../components/actions/ActionCalculator'
@@ -187,7 +187,7 @@ export default function SubjectQuestions() {
       .map((q) => ({
         question_id: q.id,
         // answers: q.sub_questions.map((sub) => wrapPlainMath((compositeAnswers[q.id] || {})[sub.id] || ''))
-        answers: q.sub_questions.map((sub) => (compositeAnswers[q.id] || {})[sub.id] || '')
+        answers: q.sub_questions.map((sub) => normalizeAnswerForBackend((compositeAnswers[q.id] || {})[sub.id] || ''))
       }))
 
     checkMyResults(

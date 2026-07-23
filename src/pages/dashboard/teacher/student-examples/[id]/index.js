@@ -6,6 +6,18 @@ import StudentExampleDetailLayout from '@/modules/teacher/student-examples/Stude
 import ContentLoader from '@/components/loader/content-loader'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 
+const parseMaybeJson = (value) => {
+  if (typeof value !== 'string') return value
+
+  try {
+    return JSON.parse(value)
+  } catch (error) {
+    return value
+  }
+}
+
+const getArray = (...values) => values.find((value) => Array.isArray(value)) || []
+
 const StudentExampleDetailPage = () => {
   const router = useRouter()
   const { id } = router.query
@@ -42,26 +54,29 @@ const StudentExampleDetailPage = () => {
   }
   if (!data) return null
 
-  // Yangi API strukturasi bilan ishlash
-  let questions = []
-  let result = []
+  const questionJson = parseMaybeJson(data.question_json)
+  const resultJson = parseMaybeJson(data.result_json)
 
-  if (data.question_json) {
-    // Yangi strukturani tekshirish
-    if (data.question_json.question && Array.isArray(data.question_json.question)) {
-      // Yangi struktura: question_json.question array
-      questions = data.question_json.question
-      result = data.question_json.result || []
-    } else if (Array.isArray(data.question_json)) {
-      // Eski struktura: question_json to'g'ridan-to'g'ri array
-      questions = data.question_json
-      result = data.result_json || []
-    }
-  }
+  const questions = getArray(
+    questionJson?.question,
+    questionJson?.questions,
+    questionJson?.data?.question,
+    questionJson?.data?.questions,
+    questionJson,
+    data.questions
+  )
 
-  // Savollarni index bilan boyitish
-  const questionsWithIndex = questions?.map((q, index) => ({
-    ...q,
+  const result = getArray(
+    questionJson?.result,
+    questionJson?.results,
+    questionJson?.data?.result,
+    questionJson?.data?.results,
+    resultJson,
+    data.result
+  )
+
+  const questionsWithIndex = questions.map((q, index) => ({
+    ...(q || {}),
     index: index + 1
   }))
 

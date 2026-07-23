@@ -1,8 +1,6 @@
-import React from 'react'
 import { ThemeSettings } from './theme/Theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import ScrollToTop from './components/shared/scroll-to-top'
-import BannerHeader from './components/homepage/banner/BannerHeader'
 import Features from './components/homepage/features/Features'
 import Footer from '@/components/footer'
 import C2a from './components/shared/c2a'

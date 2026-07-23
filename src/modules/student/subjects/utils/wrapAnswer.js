@@ -3,6 +3,11 @@
 // -------------------- Math answer formatting utils --------------------
 
 /** Delimiterlarni ( \( ... \), \[ ... \], $...$, $$...$$ ) olib tashlash */
+const normalizeMultiplicationForBackend = (value) => {
+  return String(value ?? '').replace(/\\+times/g, '*').replace(/\\+cdot/g, '*').replace(/\u00d7/g, '*').replace(/\u00b7/g, '*')
+}
+
+export const normalizeAnswerForBackend = (value) => normalizeMultiplicationForBackend(value)
 const stripDelimiters = (raw) => {
   let s = raw.trim()
 
@@ -28,7 +33,7 @@ const stripDelimiters = (raw) => {
 
 /** Oddiy tozalash/normalizatsiya: unicode minus, bo'shliqlar, notekis buyruqlar */
 const normalizeLatex = (raw) => {
-  let s = stripDelimiters(raw)
+  let s = normalizeMultiplicationForBackend(stripDelimiters(raw))
 
   // Unicode minus/dashlarni normal minusga
   s = s
@@ -99,7 +104,7 @@ export const wrapMathAnswer = (value) => {
 
   const formatted = normalizeLatex(raw)
   // Allaqachon o'ralgan bo'lsa, qayta o'ramaymiz
-  if (isWrapped(raw)) return addWrapper(stripDelimiters(raw))
+  if (isWrapped(raw)) return addWrapper(normalizeLatex(raw))
 
   return addWrapper(formatted)
 }

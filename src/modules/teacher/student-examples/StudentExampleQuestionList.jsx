@@ -1,6 +1,8 @@
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import parse from 'html-react-parser'
 
+const parseHtml = (text) => (typeof text === 'string' && text.trim() ? parse(text) : '')
+
 const StudentExampleQuestionList = ({ questions, selectedIdx, setSelectedIdx, i18n }) => (
   <div className="w-full border-r border-r-[#F2F2F7] bg-white max-h-[80vh] overflow-y-auto py-8 px-4">
     <ul className="flex flex-col">
@@ -60,7 +62,7 @@ const StudentExampleQuestionList = ({ questions, selectedIdx, setSelectedIdx, i1
             <div className="ml-4 flex-1 flex items-center min-h-[40px]">
               <MathJaxContext>
                 <span className="text-gray-900 text-[15px] leading-snug text-left break-words w-full flex items-center">
-                  <MathJax dynamic>{parse(i18n.language === 'ru' ? q.question_ru : q.question_uz)}</MathJax>
+                  <MathJax dynamic>{parseHtml(i18n.language === 'ru' ? q.question_ru : q.question_uz)}</MathJax>
                 </span>
               </MathJaxContext>
             </div>

@@ -18,7 +18,8 @@ const StudentExampleDetailLayout = ({
   currentStatus,
   onCommentSubmitted
 }) => {
-  const selected = questions[selectedIdx] || {}
+  const safeQuestions = Array.isArray(questions) ? questions : []
+  const selected = safeQuestions[selectedIdx] || {}
   const router = useRouter()
   const { t } = useTranslation()
   const { student_name } = router.query
@@ -99,11 +100,17 @@ const StudentExampleDetailLayout = ({
             </button>
           </div>
         </div>
+        {safeQuestions.length === 0 ? (
+          <div className="flex items-center justify-center h-[calc(100vh-80px)] bg-white text-gray-500">
+            {t('noData')}
+          </div>
+        ) : (
+          <>
         {/* Desktop Layout - hozirgi holatida */}
         <div className="hidden md:flex flex-row h-[calc(100vh-80px)] bg-white">
           <div className="flex items-center flex-shrink-0 w-1/2">
             <StudentExampleQuestionList
-              questions={questions}
+              questions={safeQuestions}
               selectedIdx={selectedIdx}
               setSelectedIdx={setSelectedIdx}
               i18n={i18n}
@@ -119,7 +126,7 @@ const StudentExampleDetailLayout = ({
           {/* Questions Numbers - Tepada */}
           <div className="p-4 border-b border-gray-200">
             <div className="flex flex-wrap justify-center gap-2">
-              {questions?.map((q, idx) => {
+              {safeQuestions.map((q, idx) => {
                 let circleClass = ''
                 if (selectedIdx === idx) {
                   circleClass = 'border-white shadow-md bg-[#037AFF] text-white'
@@ -149,6 +156,8 @@ const StudentExampleDetailLayout = ({
             <StudentExampleAnswerPanel selected={selected} result={result} i18n={i18n} />
           </div>
         </div>
+          </>
+        )}
 
         {/* Comment Modal */}
         {isModalOpen && (

@@ -6,6 +6,14 @@ import parse from 'html-react-parser'
 const cleanLatex = (text) => {
   if (!text) return ''
 
+  if (Array.isArray(text)) {
+    return text.map((item) => cleanLatex(item)).join(', ')
+  }
+
+  if (typeof text !== 'string') {
+    return String(text)
+  }
+
   const entityMap = {
     '&lt;': '<',
     '&gt;': '>',
@@ -13,11 +21,11 @@ const cleanLatex = (text) => {
     '&quot;': '"',
     '&apos;': "'",
     '&nbsp;': ' ',
-    '&le;': '≤',
-    '&ge;': '≥',
-    '&ne;': '≠',
-    '&times;': '×',
-    '&divide;': '÷'
+    '&le;': '\u2264',
+    '&ge;': '\u2265',
+    '&ne;': '\u2260',
+    '&times;': '\u00d7',
+    '&divide;': '\u00f7'
   }
 
   let cleaned = text
@@ -28,11 +36,14 @@ const cleanLatex = (text) => {
 
   return cleaned.trim()
 }
-
 const cleanText = (text) =>
-  text
-    ?.replace(/(<br\s*\/?>|;|\s)+$/g, '') // oxiridagi <br>, ; yoki bo'sh joylarni olib tashlaydi
-    ?.replace(/^\s+/, '') // boshidagi bo'sh joylarni olib tashlaydi
+  typeof text === 'string'
+    ? text
+        .replace(/(<br\s*\/?>|;|\s)+$/g, '') // oxiridagi <br>, ; yoki bo'sh joylarni olib tashlaydi
+        .replace(/^\s+/, '') // boshidagi bo'sh joylarni olib tashlaydi
+    : ''
+
+const parseHtml = (text) => (typeof text === 'string' && text.trim() ? parse(text) : '')
 
 const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
   const { t } = useTranslation()
@@ -160,7 +171,7 @@ const StudentExampleAnswerPanel = ({ selected, result, i18n }) => {
         <div className="mb-6 text-base font-semibold text-center text-gray-900">
           <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
             <span className="text-gray-900 text-[15px] leading-snug text-center break-words w-full flex justify-center items-center">
-              <MathJax dynamic>{parse(questionText)}</MathJax>
+              <MathJax dynamic>{parseHtml(questionText)}</MathJax>
             </span>
           </MathJaxContext>
         </div>

@@ -9,6 +9,9 @@ import { useGetQuery } from '@/hooks'
 import ContentLoader from '@/components/loader/content-loader'
 import { useRouter } from 'next/navigation'
 import HeaderTitle from '@/components/header-title'
+import { URLS } from '@/constants/url'
+import { request } from '@/services/api'
+import toast from 'react-hot-toast'
 
 const MyChildren = () => {
   const { t } = useTranslation()
@@ -40,6 +43,33 @@ const MyChildren = () => {
 
   const handleLink = (id) => {
     router.push(`/dashboard/parent/my-children/${id}`)
+  }
+
+  const downloadCertificate = (student_id) => {
+    if (!student_id) return
+
+    request
+      .post(
+        URLS.downloadCertificate,
+        {
+          student_id
+        },
+        { responseType: 'blob' }
+      )
+      .then((res) => {
+        if (res.status !== 200 || !res.data) return
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'Certificate_file.pdf')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+      })
+      .catch((err) => {
+        toast.error(err?.message || err?.data?.message || t('downloadCertificateError'))
+      })
   }
 
   if (isLoading) {
@@ -154,6 +184,15 @@ const MyChildren = () => {
                       {child.last_payment_amount?.toLocaleString()} <span className="lowercase">{t('sum')}</span>
                     </p>
                   </div>
+
+                  {child.status ? (
+                    <button
+                      onClick={() => downloadCertificate(child.id)}
+                      className="w-full mt-4 bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-[8px] transition-colors text-sm font-medium"
+                    >
+                      {t('downloadCertificate')}
+                    </button>
+                  ) : null}
                 </div>
               ))}
           </div>

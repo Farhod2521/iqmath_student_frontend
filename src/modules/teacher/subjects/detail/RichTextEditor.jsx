@@ -1,10 +1,5 @@
 // components/subject-detail/QuestionModal/RichTextEditor.jsx
-import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
-
-const CKEditor = dynamic(() => import('@ckeditor/ckeditor5-react').then((mod) => mod.CKEditor), {
-  ssr: false
-})
+import { useEffect, useRef } from 'react'
 
 let ClassicEditor
 if (typeof window !== 'undefined') {
@@ -13,12 +8,23 @@ if (typeof window !== 'undefined') {
 
 const editorConfig = {
   toolbar: [
-    'bold', 'italic', 'strikethrough', '|',
-    'bulletedList', 'numberedList', 'outdent', 'indent', 'blockQuote', '|',
-    'imageUpload', 'table', 'specialCharacters', '|',
-    'link', 'unlink', '|',
-    'maximize', 'sourceEditing', '|',
-    'undo', 'redo'
+    'bold',
+    'italic',
+    'strikethrough',
+    '|',
+    'bulletedList',
+    'numberedList',
+    'outdent',
+    'indent',
+    'blockQuote',
+    '|',
+    'imageUpload',
+    'insertTable',
+    '|',
+    'link',
+    '|',
+    'undo',
+    'redo'
   ],
   removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage'],
   image: {
@@ -31,25 +37,61 @@ const editorConfig = {
 }
 
 const RichTextEditor = ({ value, onChange }) => {
-  const [mounted, setMounted] = useState(false)
+  const editorElementRef = useRef(null)
+  const editorInstanceRef = useRef(null)
+  const onChangeRef = useRef(onChange)
 
   useEffect(() => {
-    setMounted(true)
+    onChangeRef.current = onChange
+  }, [onChange])
+
+  useEffect(() => {
+    if (!ClassicEditor || !editorElementRef.current) return undefined
+
+    let isMounted = true
+
+    ClassicEditor.create(editorElementRef.current, {
+      ...editorConfig,
+      initialData: value || ''
+    })
+      .then((editor) => {
+        if (!isMounted) {
+          editor.destroy()
+          return
+        }
+
+        editorInstanceRef.current = editor
+        editor.model.document.on('change:data', () => {
+          onChangeRef.current(editor.getData())
+        })
+      })
+      .catch((error) => {
+        console.error('CKEditor initialization error:', error)
+      })
+
+    return () => {
+      isMounted = false
+
+      if (editorInstanceRef.current) {
+        editorInstanceRef.current.destroy().catch((error) => {
+          console.error('CKEditor destroy error:', error)
+        })
+        editorInstanceRef.current = null
+      }
+    }
   }, [])
 
-  if (!mounted || !ClassicEditor) return null
+  useEffect(() => {
+    const editor = editorInstanceRef.current
+
+    if (editor && value !== editor.getData()) {
+      editor.setData(value || '')
+    }
+  }, [value])
 
   return (
-    <div style={{ minHeight: '200px' }}>
-      <CKEditor
-        editor={ClassicEditor}
-        data={value}
-        onChange={(event, editor) => {
-          const data = editor.getData()
-          onChange(data)
-        }}
-        config={editorConfig}
-      />
+    <div className="ck-editor-wrapper" style={{ minHeight: '200px' }}>
+      <div ref={editorElementRef} />
     </div>
   )
 }

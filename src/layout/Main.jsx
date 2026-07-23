@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from './navbar/Navbar'
 import { useSettingStore } from '@/store'
 
@@ -12,7 +11,7 @@ function Main({ children, title }) {
       }`}
     >
       {/* Navbar */}
-      <div className="sticky top-0 z-[1000]  flex-shrink-0 bg-white">
+      <div className="sticky top-0 z-[900]  flex-shrink-0 bg-white">
         <Navbar title={title} />
       </div>
 

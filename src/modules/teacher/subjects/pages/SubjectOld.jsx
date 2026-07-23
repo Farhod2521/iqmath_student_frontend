@@ -652,7 +652,7 @@ const SubjectDetail = () => {
       {openTestModal && (
         <AnimatePresence>
           <motion.div
-            className={`fixed inset-0 right-0 flex items-center justify-end z-50 transition-all bg-black bg-opacity-70 duration-300 `}
+            className={`fixed inset-0 right-0 z-[2000] flex items-center justify-end bg-black bg-opacity-70 transition-all duration-300 `}
           >
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -661,14 +661,17 @@ const SubjectDetail = () => {
               transition={{ duration: 0.3 }}
               className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-1/2 h-screen overflow-y-auto font-sf"
             >
-              <div className="flex justify-between px-[16px] py-[18px]">
+              <div className="sticky top-0 z-[2010] flex items-center justify-between gap-4 border-b border-[#E9E9E9] bg-white px-[16px] py-[14px]">
                 <h3 className="text-[19px] font-semibold">{t('createQuestion')}</h3>
-                <button onClick={() => setOpenTestModal(false)} className="rounded">
+                <button
+                  type="button"
+                  onClick={() => setOpenTestModal(false)}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D1D5DB] bg-white shadow-md transition-colors hover:bg-gray-100"
+                  aria-label="Close"
+                >
                   <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
                 </button>
               </div>
-
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
               <div className="space-y-[15px] my-[20px]">
                 <div className="px-[16px] mt-[18px] mb-[9px]">
@@ -984,7 +987,7 @@ const SubjectDetail = () => {
       {editModal && (
         <AnimatePresence>
           <motion.div
-            className={`fixed inset-0 right-0 flex items-center justify-end z-50 transition-all bg-black bg-opacity-70 duration-300 `}
+            className={`fixed inset-0 right-0 z-[2000] flex items-center justify-end bg-black bg-opacity-70 transition-all duration-300 `}
           >
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -993,14 +996,17 @@ const SubjectDetail = () => {
               transition={{ duration: 0.3 }}
               className="bg-white rounded-bl-[16px]  rounded-tl-[16px] right-0 shadow-lg w-1/2 h-screen overflow-y-auto font-sf"
             >
-              <div className="flex justify-between px-[16px] py-[18px]">
+              <div className="sticky top-0 z-[2010] flex items-center justify-between gap-4 border-b border-[#E9E9E9] bg-white px-[16px] py-[14px]">
                 <h3 className="text-[19px] font-semibold">{t('createQuestion')}</h3>
-                <button onClick={() => setEditModal(false)} className="rounded">
+                <button
+                  type="button"
+                  onClick={() => setEditModal(false)}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D1D5DB] bg-white shadow-md transition-colors hover:bg-gray-100"
+                  aria-label="Close"
+                >
                   <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
                 </button>
               </div>
-
-              <div className="bg-[#E9E9E9] w-full h-[1px] p-0"></div>
 
               <div className="space-y-[15px] my-[20px]">
                 <div className="px-[16px] mt-[18px] mb-[9px]">

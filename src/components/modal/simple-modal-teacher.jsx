@@ -1,10 +1,13 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { createPortal } from 'react-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const SimpleModalTeacher = ({ children, classname }) => {
-  return (
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <AnimatePresence>
       <motion.div
-        className={`fixed inset-0 flex items-center justify-center z-50 transition-all bg-black bg-opacity-70 duration-300 ${classname}`}
+        className={`fixed inset-0 z-[2000] flex items-center justify-center bg-black bg-opacity-70 transition-all duration-300 ${classname}`}
       >
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -16,8 +19,9 @@ const SimpleModalTeacher = ({ children, classname }) => {
           {children}
         </motion.div>
       </motion.div>
-    </AnimatePresence>
-  );
-};
+    </AnimatePresence>,
+    document.body
+  )
+}
 
-export default SimpleModalTeacher;
+export default SimpleModalTeacher

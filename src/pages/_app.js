@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { SessionProvider } from 'next-auth/react'
-import React from 'react'
 
 import reactQueryClient from '@/config/react-query'
 import '@/assets/styles/globals.css'
@@ -11,7 +10,6 @@ import '@/services/i18n'
 
 import { UserProfileProvider } from '@/context/responseProvider'
 import { HeroUIProvider } from '@heroui/react'
-import { useRouter } from 'next/router'
 
 // function TawkManager() {
 //   const router = useRouter()

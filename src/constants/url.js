@@ -27,8 +27,11 @@ export const URLS = {
   subjectNameList: '/api/v1/func_student/subject/name-list/',
   teacherStudents: '/api/v1/func_teacher/my-students/',
   teacherGroups: '/api/v1/func_teacher/my-groups/',
+  downloadCertificate: '/api/v1/func_student/certificate/download/',
   // Student list endpoints
   studentList: '/api/v1/auth/student/student_list/',
+  studentWeeklyStudyStats: '/api/v1/func_student/student/weklystudystats/app',
+  studentStudyStatsByDate: '/api/v1/func_student/student/studystats-by-date/app',
   beginTest: '/api/v1/func_student/my-generate-test/',
   checkMyResults: '/api/v1/func_student/my-generate-check-answer/',
   studentChapters: '/api/v1/func_student/my-chapter/',
@@ -131,5 +134,9 @@ export const URLS = {
 
   // student
 
-  teacherFine: '/api/v1/func_teacher/teacher/fine/'
+  teacherFine: '/api/v1/func_teacher/teacher/fine/',
+
+  // Landing (reklama) sahifasi lead formasi.
+  // TODO: backend tayyor bo'lganda shu manzilni almashtiring.
+  leadCreate: '/api/v1/lead/'
 }

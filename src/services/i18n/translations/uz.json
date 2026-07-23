@@ -142,7 +142,6 @@
   "noRewardsYet": "Hali mukofot berilmagan",
   "noRewardsDescription": "O'quvchilarga mukofot berishni boshlang",
   "errorLoadingRewards": "Mukofotlar yuklanmadi",
-  "date": "Sana",
   "days": "Kun",
   "close": "Yopish",
   "loading": "Yuklanmoqda...",
@@ -241,6 +240,7 @@
   "question": "Savol",
   "questionType": "Savol turi",
   "createQuestion": "Savol yaratish",
+  "editQuestion": "Savolni tahrirlash",
   "questionPreview": "Savol ko‘rinishi",
   "selectType": "Tipni tanlang",
   "questionLevel": "Savol darajasi:",
@@ -408,6 +408,7 @@
   "phone_number": "Telefon raqam",
   "contactus": "Aloqa",
   "statistics": "Statistika",
+  "kpiDashboard": "KPI paneli",
   "totalTeachers": "Jami o'qituvchilar",
   "totalStudents": "Jami o'quvchilar",
   "totalParents": "Jami ota-onalar",
@@ -1094,7 +1095,9 @@
     "contact": {
       "phone": "Telefon",
       "email": "Email",
-      "address": "Manzil"
+      "address": "Manzil",
+      "iqmathCallCenter": "IQmath call markazi",
+      "telegram": "Telegram"
     },
     "copyright": "Barcha huquqlar himoyalangan",
     "madeWith": "Made with",
@@ -1343,5 +1346,104 @@
     "delivered": "Yetkazildi",
     "pending": "Kutilmoqda"
   },
-  "deliveryInfo": "Yetkazib berish ma'lumotlari"
+  "deliveryInfo": "Yetkazib berish ma'lumotlari",
+  "dailyTaskCompleted": "Kunlik vazifa bajarildi",
+  "dailyTasks": "Kunlik vazifalar",
+  "currentWeek": "Joriy hafta",
+  "weekdays": {
+    "sunday": "Yakshanba",
+    "monday": "Dushanba",
+    "tuesday": "Seshanba",
+    "wednesday": "Chorshanba",
+    "thursday": "Payshanba",
+    "friday": "Juma",
+    "saturday": "Shanba"
+  },
+  "studentId": "O'quvchi ID",
+  "applyFilter": "Filterlash",
+  "weekNumber": "Hafta",
+  "yearFilter": "Yil",
+  "monthFilter": "Oy",
+  "day": "Kun",
+  "completedTasks": "Bajarilgan vazifalar",
+  "tasksNotCompleted": "Tasklar bajarilmagan",
+  "download": "Yuklab olish",
+  "downloadCertificate": "Sertifikatni yuklab olish",
+  "downloadCertificateError": "Sertifikatni yuklab olishda xatolik yuz berdi",
+  "promo": {
+    "brand": "MATH",
+    "nav": { "cta": "Bepul dars" },
+    "hero": {
+      "badge": "Yangi guruhlarga qabul boshlandi",
+      "titleStart": "Matematika bilan",
+      "titleAccent": "kelajakni",
+      "titleEnd": "zabt eting",
+      "subtitle": "Murakkab mavzularni oson va qiziqarli usulda o'rganing. Zamonaviy platforma, shaxsiy o'quv yo'li va tajribali ustozlar bilan maqsadingizga tezroq yeting.",
+      "ctaPrimary": "Bepul konsultatsiya",
+      "ctaSecondary": "Videoni ko'rish",
+      "trust": "10 000+ o'quvchi allaqachon bizni tanladi"
+    },
+    "benefits": {
+      "title": "IQmath nima beradi?",
+      "subtitle": "Ta'lim jarayonini samarali va qulay qilish uchun barcha imkoniyatlar bir joyda.",
+      "items": [
+        { "title": "Shaxsiy o'quv yo'li", "desc": "O'quvchining bilim darajasiga moslashtirilgan individual dastur va tavsiyalar." },
+        { "title": "Video darslar banki", "desc": "Istalgan vaqtda qayta ko'rish mumkin bo'lgan yuqori sifatli video materiallar." },
+        { "title": "Ota-onalar nazorati", "desc": "Farzandingizning o'zlashtirishini real vaqt rejimida kuzatib boring." },
+        { "title": "Test va olimpiada", "desc": "Milliy sertifikat va xalqaro olimpiadalarga maxsus tayyorgarlik." }
+      ]
+    },
+    "stats": {
+      "items": [
+        { "label": "O'quvchilar" },
+        { "label": "Video darslar" },
+        { "label": "Mamnunlik" },
+        { "label": "Yillik tajriba" }
+      ]
+    },
+    "segments": {
+      "title": "Kimlar uchun?",
+      "subtitle": "Har bir yosh toifasi uchun alohida ishlab chiqilgan dasturlar.",
+      "cta": "Batafsil",
+      "items": [
+        { "title": "1–4 sinflar", "desc": "Boshlang'ich tushunchalarni o'yin va qiziqarli mashqlar orqali mustahkamlash." },
+        { "title": "5–9 sinflar", "desc": "Mantiqiy fikrlash, algebra va geometriya asoslarini chuqur o'zlashtirish." },
+        { "title": "10–11 sinflar", "desc": "OTMga kirish imtihonlariga intensiv va natijaga yo'naltirilgan tayyorgarlik." },
+        { "title": "Ota-onalar", "desc": "Farzandingiz ta'limini nazorat qilish va sifatini baholash vositalari." }
+      ]
+    },
+    "form": {
+      "title": "Birinchi qadamni tashlang",
+      "subtitle": "Ma'lumotlaringizni qoldiring — biz sizga mos o'quv dasturini tanlashda yordam beramiz va bepul dars taqdim etamiz.",
+      "contactTitle": "Bog'lanish",
+      "phone": "+998 78 888 18 81",
+      "phoneCaption": "IQmath call markazi",
+      "email": "info@iqmath.uz",
+      "emailCaption": "Email",
+      "address": "Toshkent, O'zbekiston",
+      "addressCaption": "Manzil",
+      "nameLabel": "Ism va familiya",
+      "namePlaceholder": "Abdulla Oripov",
+      "phoneLabel": "Telefon raqam",
+      "regionLabel": "Viloyat",
+      "roleLabel": "Siz kimsiz?",
+      "select": "Tanlang...",
+      "submit": "Ariza qoldirish",
+      "submitting": "Yuborilmoqda...",
+      "agreementStart": "Tugmani bosish orqali siz ",
+      "agreementLink": "Maxfiylik siyosati",
+      "agreementEnd": "ga rozilik bildirasiz.",
+      "successTitle": "Arizangiz qabul qilindi!",
+      "successText": "Menejerlarimiz tez orada siz bilan bog'lanadi.",
+      "error": "Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.",
+      "invalidPhone": "Telefon raqamni to'liq kiriting.",
+      "requiredName": "Ismingizni kiriting.",
+      "roles": { "student": "O'quvchi", "parent": "Ota-ona", "teacher": "O'qituvchi" },
+      "regions": ["Toshkent shahri", "Toshkent viloyati", "Andijon", "Buxoro", "Farg'ona", "Jizzax", "Xorazm", "Namangan", "Navoiy", "Qashqadaryo", "Qoraqalpog'iston", "Samarqand", "Sirdaryo", "Surxondaryo"]
+    },
+    "footer": {
+      "tagline": "Aniqlik bilan o'rganish.",
+      "rights": "Barcha huquqlar himoyalangan."
+    }
+  }
 }
