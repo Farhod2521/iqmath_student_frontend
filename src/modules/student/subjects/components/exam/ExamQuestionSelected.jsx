@@ -8,7 +8,7 @@ function ExamQuestionSelected({ selectedQuestion, selectedIndex }) {
   const textQ =
     i18n.language === 'uz' ? selectedQuestion?.question_text_uz || '' : selectedQuestion?.question_text_ru || ''
   return (
-    <div className="text-black text-[19px]  font-medium text-center">
+    <div className="text-black text-[16px] md:text-[19px] font-medium">
       <MathJaxContext config={{ loader: { load: ['input/tex', 'output/chtml'] } }}>
         <MathJax dynamic>
           <div className="flex gap-1">
@@ -17,8 +17,12 @@ function ExamQuestionSelected({ selectedQuestion, selectedIndex }) {
             >
               {selectedIndex + 1}
             </div>
-            <div className="flex flex-col justify-center items-center w-full">
-              <div dangerouslySetInnerHTML={{ __html: textQ }} />
+            {/* Mobil ekranda kesilib qolmasligi uchun: oddiy matn normal o'raladi,
+                uzun formulalar (mjx-container) esa o'zi alohida gorizontal scroll qiladi. */}
+            <div className="w-full overflow-x-auto">
+              <div className="text-center [&_img]:max-w-full [&_mjx-container]:max-w-full [&_mjx-container]:overflow-x-auto [&_mjx-container]:overflow-y-hidden [&_p]:m-0">
+                <div dangerouslySetInnerHTML={{ __html: textQ }} />
+              </div>
             </div>
           </div>
         </MathJax>

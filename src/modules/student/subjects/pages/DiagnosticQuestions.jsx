@@ -270,11 +270,11 @@ const DiagnosticQuestions = ({ subjectId }) => {
     return <div className="w-full p-4 italic text-center text-gray-500">{t('chooseQueation')}</div>
 
   return (
-    <div className="font-sf">
+    <div className="font-sf md:h-full">
       <ModalLevel handleTabChange={(tab) => setTab(tab)} tab={tab} />
 
-      <div className="grid grid-cols-1 md:grid-cols-12 p-4 md:p-[24px] gap-6">
-        <div className="md:col-span-6 md:overflow-y-auto md:max-h-[80vh] border-r border-r-[#F2F2F7]">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 p-4 md:p-0 md:h-full md:overflow-hidden">
+        <div className="md:col-span-6 md:h-full md:overflow-y-auto border-r border-r-[#F2F2F7] md:p-6">
           <ExamQuestionList
             questions={testQuestions || []}
             selectedList={selectedList}
@@ -284,7 +284,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
             setSelectedIndex={setSelectedIndex}
           />
         </div>
-        <div className="md:col-span-6 py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
+        <div className="md:col-span-6 md:h-full md:overflow-y-auto py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
           <ExamQuestionSelected selectedQuestion={selectedQuestion} selectedIndex={selectedIndex} />
 
           <div className="flex flex-col items-center w-full">

@@ -11,14 +11,17 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'uz',
-    lng: 'uz',
+    // lng ni qattiq belgilamaymiz — aks holda detector (querystring/localStorage) ishlamaydi.
     resources: {
       uz: { translation: uz },
       ru: { translation: ru },
       en: { translation: en }
     },
     detection: {
-      order: ['localStorage'], // Tilni aniqlash tartibi
+      // URL'dagi ?lang=ru | ?lang=uz birinchi o'qiladi (landing reklama havolalari uchun),
+      // bo'lmasa localStorage'dagi saqlangan til ishlatiladi.
+      order: ['querystring', 'localStorage'],
+      lookupQuerystring: 'lang',
       caches: ['localStorage'] // Tanlangan tilni shu yerda saqlaydi
     },
     interpolation: {

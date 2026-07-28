@@ -1,0 +1,5 @@
+allowBuilds:
+  '@heroui/shared-utils': true
+  canvas: true
+  core-js: true
+  sharp: true

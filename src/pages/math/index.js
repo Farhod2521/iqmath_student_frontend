@@ -23,7 +23,7 @@ export default function MatematikaPage() {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content="https://api.iqmath.uz/system/logo/logo.png" />
-        <meta property="og:url" content="https://iqmath.uz/matematika" />
+        <meta property="og:url" content="https://iqmath.uz/math" />
         <meta name="twitter:card" content="summary_large_image" />
 
         {/* Fonts */}
@@ -34,7 +34,7 @@ export default function MatematikaPage() {
           rel="stylesheet"
         />
       </Head>
-      <MatematikaLanding />
+      <MatematikaLanding lang="uz" />
     </>
   )
 }

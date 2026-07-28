@@ -67,7 +67,12 @@ const LangSwitcher = () => {
   const current = i18nInstance.language?.startsWith('ru') ? 'ru' : 'uz'
 
   const change = (lng) => {
-    if (lng !== current) i18n.changeLanguage(lng)
+    if (lng === current) return
+    i18n.changeLanguage(lng)
+    // URL'ni ham /math/<lng> ko'rinishida yangilaymiz (sahifani qayta yuklamasdan).
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', `/math/${lng}`)
+    }
   }
 
   return (
@@ -226,7 +231,7 @@ const LeadForm = () => {
       region: region || null,
       role: role || null,
       lang,
-      source: 'landing:matematika',
+      source: 'landing:math',
       utm_source: q.get('utm_source') || null,
       utm_medium: q.get('utm_medium') || null,
       utm_campaign: q.get('utm_campaign') || null,
@@ -399,8 +404,16 @@ const LeadForm = () => {
 /* Main                                                                */
 /* ------------------------------------------------------------------ */
 
-const MatematikaLanding = () => {
+const MatematikaLanding = ({ lang }) => {
   const { t } = useTranslation()
+
+  // Route'dan kelgan tilga qarab sahifa tilini o'rnatamiz.
+  // Reklama havolalari uchun: /math/ru — to'liq ruscha, /math/uz — to'liq o'zbekcha.
+  useEffect(() => {
+    if ((lang === 'ru' || lang === 'uz') && i18n.language !== lang) {
+      i18n.changeLanguage(lang)
+    }
+  }, [lang])
 
   const benefits = t('promo.benefits.items', { returnObjects: true }) || []
   const statLabels = t('promo.stats.items', { returnObjects: true }) || []
@@ -425,9 +438,9 @@ const MatematikaLanding = () => {
 
       <main>
         {/* ---------- Hero ---------- */}
-        <section className="relative overflow-hidden bg-white px-5 pb-20 pt-14 md:px-10 lg:pb-28 lg:pt-24">
-          <div className="relative z-10 mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            <div className="max-w-xl space-y-7">
+        <section className="relative overflow-hidden bg-white px-5 pb-12 pt-8 md:px-10 md:pb-20 md:pt-14 lg:pb-28 lg:pt-24">
+          <div className="relative z-10 mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-8 md:gap-12 lg:grid-cols-2">
+            <div className="order-2 max-w-xl space-y-5 md:space-y-7 lg:order-1">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#4F46E5]/20 bg-[#4F46E5]/5 px-4 py-1.5 text-sm font-semibold text-[#4F46E5]">
                 <Sparkles size={16} /> {t('promo.hero.badge')}
               </span>
@@ -448,14 +461,16 @@ const MatematikaLanding = () => {
                 <Check size={16} className="text-[#16A34A]" /> {t('promo.hero.trust')}
               </p>
             </div>
-            <HeroVisual />
+            <div className="order-1 lg:order-2">
+              <HeroVisual />
+            </div>
           </div>
         </section>
 
         {/* ---------- Benefits ---------- */}
-        <section className="bg-white px-5 py-20 md:px-10">
+        <section className="bg-white px-5 py-12 md:px-10 md:py-20">
           <div className="mx-auto max-w-[1200px]">
-            <div className="mb-14 text-center">
+            <div className="mb-8 text-center md:mb-14">
               <h2 className="mb-3 font-[Space_Grotesk] text-3xl font-bold text-[#0F172A] sm:text-4xl">
                 {t('promo.benefits.title')}
               </h2>
@@ -482,7 +497,7 @@ const MatematikaLanding = () => {
         </section>
 
         {/* ---------- Stats ---------- */}
-        <section className="border-y border-[#E2E1F0] bg-[#F5F4FF] px-5 py-16 md:px-10">
+        <section className="border-y border-[#E2E1F0] bg-[#F5F4FF] px-5 py-12 md:px-10 md:py-16">
           <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-8 md:grid-cols-4">
             {STATS.map((s, i) => (
               <div key={i} className="text-center">
@@ -498,9 +513,9 @@ const MatematikaLanding = () => {
         </section>
 
         {/* ---------- Segments ---------- */}
-        <section className="bg-white px-5 py-20 md:px-10">
+        <section className="bg-white px-5 py-12 md:px-10 md:py-20">
           <div className="mx-auto max-w-[1200px]">
-            <div className="mb-12">
+            <div className="mb-8 md:mb-12">
               <h2 className="mb-3 font-[Space_Grotesk] text-3xl font-bold text-[#0F172A] sm:text-4xl">
                 {t('promo.segments.title')}
               </h2>
@@ -539,7 +554,7 @@ const MatematikaLanding = () => {
         </section>
 
         {/* ---------- Lead form ---------- */}
-        <section id="lead" className="scroll-mt-20 border-t border-[#E2E1F0] bg-[#EEF0FF] px-5 py-20 md:px-10">
+        <section id="lead" className="scroll-mt-20 border-t border-[#E2E1F0] bg-[#EEF0FF] px-5 py-12 md:px-10 md:py-20">
           <div className="mx-auto max-w-4xl">
             <LeadForm />
           </div>
@@ -573,6 +588,12 @@ const MatematikaLanding = () => {
           }
           50% {
             transform: translateY(-14px);
+          }
+        }
+        /* Mobilda tebranish animatsiyasini o'chiramiz — bo'shliq/uzilish taassurotini oldini oladi */
+        @media (max-width: 767px) {
+          .promo-hero {
+            animation: none;
           }
         }
         .h-13 {
