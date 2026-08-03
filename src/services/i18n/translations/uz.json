@@ -1312,7 +1312,8 @@
       "digital": "Elektron kitob",
       "available": "Mavjud miqdor",
       "physical_library": "Qog'oz kitob (kutubxonadan olinadi)",
-      "digital_pdf": "Elektron kitob (PDF yuklanadi)"
+      "digital_pdf": "Elektron kitob (PDF yuklanadi)",
+      "purchased": "Sotib olingan"
     },
 
     "empty": {
@@ -1339,6 +1340,31 @@
       "free": "Bepul olish",
       "method": "To'lov usulini tanlang"
     },
+    "purchase": {
+      "success_label": "Muvaffaqiyatli sotib olindi",
+      "error": "Sotib olishda xatolik yuz berdi",
+      "processing": "Amalga oshirilmoqda...",
+      "quantity": "Soni",
+      "unit_price": "Dona narxi",
+      "paid": "To'landi",
+      "date": "Sana",
+      "balance": "Qolgan balans",
+      "download": "Yuklab olish",
+      "phone_invalid": "Telefon raqamini to'liq kiriting",
+      "address_required": "Yetkazib berish manzilini kiriting",
+      "checkout_url_missing": "To'lov havolasi topilmadi. Birozdan so'ng qayta urinib ko'ring",
+      "insufficient_title": "{{method}} balansingiz yetarli emas",
+      "insufficient_hint": "Kitobni to'liq summasi bilan karta orqali sotib olishingiz mumkin",
+      "your_balance": "Sizdagi balans",
+      "shortage": "Yetishmayapti",
+      "pay_by_card_amount": "Karta orqali to'lanadi",
+      "pay_by_card": "Karta orqali to'lash",
+      "redirect_title": "To'lov sahifasiga yo'naltirildingiz",
+      "redirect_hint": "To'lovni yakunlaganingizdan so'ng kitob avtomatik ravishda \"Mening kitoblarim\" bo'limiga qo'shiladi",
+      "check_payment": "To'lovni tekshirish",
+      "payment_pending": "To'lov hali tasdiqlanmagan. To'lovni yakunlab, qayta tekshiring",
+      "payment_failed": "To'lov amalga oshmadi. Iltimos, qaytadan urinib ko'ring"
+    },
     "loading": "Yuklanmoqda...",
     "viewBook": "Kitobni ochish",
     "download": "Yuklab olish",
@@ -1349,7 +1375,12 @@
     "quantity": "Soni",
     "noOnlineBooks": "Elektron kitoblar mavjud emas",
     "noOfflineBooks": "Qog'oz kitoblar mavjud emas",
-    "totalPurchases": "Jami xaridlar"
+    "totalPurchases": "Jami xaridlar",
+    "allBooks": "Barcha kitoblar",
+    "paymentCard": "Karta",
+    "fileNotAvailable": "Fayl mavjud emas",
+    "noPurchases": "Siz hali kitob sotib olmagansiz",
+    "noPurchasesHint": "\"Barcha kitoblar\" bo'limidan o'zingizga kerakli kitobni tanlang"
   },
   "deliveryStatus": {
     "new": "Yangi",

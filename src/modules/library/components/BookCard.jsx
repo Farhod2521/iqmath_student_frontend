@@ -6,7 +6,7 @@ import { FaCoins } from 'react-icons/fa6'
 import BuyBookModal from '../modal/BuyBookModal'
 
 // ─── BookCard ─────────────────────────────────────────────────────────────
-const BookCard = ({ book, onBuy }) => {
+const BookCard = ({ book, onBuy, isPurchased = false }) => {
   const [buyModal, setBuyModal] = useState(false)
 
   const { t, i18n } = useTranslation()
@@ -280,14 +280,22 @@ const BookCard = ({ book, onBuy }) => {
               </a>
             )} */}
 
-            {/* Buy */}
-            <button
-              onClick={(e) => {
-                stopProp(e)
-                setBuyModal(true)
-              }}
-              disabled={isDisabled}
-              className={`
+            {/* Buy — allaqachon sotib olingan bo'lsa o'rniga belgi chiqadi */}
+            {isPurchased ? (
+              <span className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 select-none">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {t('library.card.purchased')}
+              </span>
+            ) : (
+              <button
+                onClick={(e) => {
+                  stopProp(e)
+                  setBuyModal(true)
+                }}
+                disabled={isDisabled}
+                className={`
               flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-bold
               transition-all duration-150 active:scale-95 select-none
               ${
@@ -296,16 +304,17 @@ const BookCard = ({ book, onBuy }) => {
                   : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200'
               }
             `}
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                />
-              </svg>
-              {isDisabled ? t('library.card.unavailable') : t('library.card.buy')}
-            </button>
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                  />
+                </svg>
+                {isDisabled ? t('library.card.unavailable') : t('library.card.buy')}
+              </button>
+            )}
           </div>
         </div>
       </article>

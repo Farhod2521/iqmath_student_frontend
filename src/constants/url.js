@@ -131,6 +131,10 @@ export const URLS = {
 
   //book-purchase
   bookMyPurchases: '/api/v1/book/my-purchases/',
+  bookPurchase: '/api/v1/book/purchase/',
+  // Balans (tanga/ball/so'm) yetmaganda karta orqali to'lash
+  bookInitiatePayment: '/api/v1/book/initiate-payment/',
+  bookPayments: '/api/v1/book/my-payments/',
 
   // student
 

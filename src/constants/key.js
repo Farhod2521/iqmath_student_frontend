@@ -85,6 +85,7 @@ export const KEYS = {
   libraryTags: 'libraryTags',
 
   bookMyPurchases: 'book-my-purchases',
+  bookPayments: 'book-payments',
 
   teacherFine: 'data-teacher-fine'
 }

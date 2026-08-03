@@ -61,7 +61,7 @@ const Index = () => {
               <div className="flex items-center gap-2 mt-2 mb-2">
                 <CoinsIcon color="white" />
                 <p className="text-[22px] sm:text-[26px] font-semibold">
-                  {get(coins, 'data.score')} {t('ball')}
+                  {get(scoreData, 'score', 0)} {t('ball')}
                 </p>
               </div>
             </div>
