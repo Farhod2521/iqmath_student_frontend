@@ -1,7 +1,7 @@
 import { LuBookText, LuUser } from 'react-icons/lu'
 import { TbCheckbox, TbCoins } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
-import { BiDirections, BiTransfer } from 'react-icons/bi'
+import { BiDirections } from 'react-icons/bi'
 import { BsBarChart, BsGraphUpArrow } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
 import { PiBooksLight, PiTrophy } from 'react-icons/pi'
@@ -450,7 +450,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -495,7 +495,7 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TUTOR, RolesList.ADMIN],
     type: MenuType.LINK
   },
-  { roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.GROUP },
+  { roles: [RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.GROUP },
   {
     key: 'data-teacher-fine',
     path: '/dashboard/pages/fine',
@@ -506,7 +506,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -520,7 +520,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -534,22 +534,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-
-  {
-    key: 'finance-transfer',
-    path: '/dashboard/student/finance-transfer',
-    label: t('transferMoney'),
-    icon: (isActive) => (
-      <BiTransfer
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT],
+    roles: [RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

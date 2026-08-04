@@ -44,7 +44,7 @@ const PODIUM_STYLES = {
     winner: true,
     tierKey: 'tierGold',
     medalColor: '#fbbf24',
-    medalSize: 68,
+    medalSize: 'clamp(40px, 14vw, 68px)',
     avatarBorder: '#fbbf24',
     barTrack: '#f2f4f6',
     barFill: 'linear-gradient(90deg, #fde68a, #d97706)',
@@ -58,7 +58,7 @@ const PODIUM_STYLES = {
     winner: false,
     tierKey: 'tierSilver',
     medalColor: '#a8adb5',
-    medalSize: 52,
+    medalSize: 'clamp(30px, 10vw, 52px)',
     avatarBorder: '#cbd5e1',
     barTrack: '#f2f4f6',
     barFill: '#94a3b8',
@@ -72,7 +72,7 @@ const PODIUM_STYLES = {
     winner: false,
     tierKey: 'tierBronze',
     medalColor: '#bc6c25',
-    medalSize: 52,
+    medalSize: 'clamp(30px, 10vw, 52px)',
     avatarBorder: '#dba36c',
     barTrack: '#f2f4f6',
     barFill: '#bc6c25',
@@ -215,6 +215,7 @@ const StudentTopLeaderboard = () => {
   return (
     <LayoutAdmin>
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -270,7 +271,7 @@ const StudentTopLeaderboard = () => {
           <>
             {/* Podium */}
             {top3.length > 0 ? (
-              <div className="flex items-end justify-center gap-4 pb-6 mb-6 border-b border-gray-100 sm:gap-6">
+              <div className="flex items-end justify-center gap-2 pb-6 mb-6 border-b border-gray-100 sm:gap-6">
                 {top3.map((item, index) => {
                   const rank = index + 1
                   const style = PODIUM_STYLES[rank]
@@ -283,20 +284,20 @@ const StudentTopLeaderboard = () => {
                       key={item.student_id}
                       className={`relative flex flex-col items-center transition-transform duration-500 hover:-translate-y-1 ${
                         style.order
-                      } ${isWinner ? 'w-32 sm:w-40 z-10 rating-animate-float' : 'w-28 sm:w-32'}`}
+                      } ${isWinner ? 'w-28 sm:w-40 z-10 rating-animate-float' : 'w-24 sm:w-32'}`}
                     >
                       <div
                         ref={isWinner ? goldCardRef : undefined}
                         onMouseMove={handleTilt}
                         onMouseLeave={resetTilt}
                         className={`rating-glass-card relative w-full text-center transition-transform ${
-                          isWinner ? 'rating-luminous-gold rounded-[1.5rem] p-4 sm:p-5' : 'rounded-xl p-3 sm:p-4'
+                          isWinner ? 'rating-luminous-gold rounded-2xl sm:rounded-[1.5rem] p-2.5 sm:p-5' : 'rounded-xl p-2 sm:p-4'
                         }`}
                       >
                         {/* Medal badge */}
                         <div
                           className={`absolute rating-medal-icon ${
-                            isWinner ? '-top-7 -left-5 sm:-top-8 sm:-left-6' : '-top-5 -left-3 sm:-top-6 sm:-left-4'
+                            isWinner ? '-top-5 -left-3 sm:-top-8 sm:-left-6' : '-top-4 -left-2 sm:-top-6 sm:-left-4'
                           }`}
                         >
                           <div
@@ -342,12 +343,12 @@ const StudentTopLeaderboard = () => {
                           <div className="h-full rounded-full" style={{ width: `${barPct}%`, background: style.barFill }} />
                         </div>
                         <div
-                          className={`flex items-center justify-between font-bold uppercase tracking-widest ${
-                            isWinner ? 'text-[9px] mb-3' : 'text-[8px] mb-2'
+                          className={`flex flex-col items-center gap-0.5 sm:flex-row sm:items-center sm:justify-between font-bold uppercase tracking-wide sm:tracking-widest ${
+                            isWinner ? 'text-[8px] sm:text-[9px] mb-2 sm:mb-3' : 'text-[7px] sm:text-[8px] mb-1.5 sm:mb-2'
                           }`}
                           style={{ color: style.tierTextColor }}
                         >
-                          <span>{t(style.tierKey)}</span>
+                          <span className="truncate max-w-full">{t(style.tierKey)}</span>
                           <span>{getUnitByType()}</span>
                         </div>
 

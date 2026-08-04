@@ -266,13 +266,6 @@ useEffect(() => {
           </div>
         )
       })
-      baseColumns.push(
-      {
-        headerName: t('phone'),
-        field: 'phone',
-        minWidth: 120
-      },
-    )
 
       baseColumns.push({
         headerName: t('diagnosticsStatus'),
