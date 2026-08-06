@@ -1,147 +1,88 @@
-import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Video, Sparkles, ShieldCheck, Users } from 'lucide-react'
-import { useRouter } from 'next/router'
-import { signOut, useSession } from 'next-auth/react'
+import { Rocket, Sparkles } from 'lucide-react'
 import { Container } from '@mui/material'
-import Auth from '../../auth/Auth'
-import SimpleLoader from '@/components/loader/simple-loader'
-import { RolesList } from '@/layout/libs/menulist'
 import AppStoreButtons from '@/components/app-store-buttons'
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
-  // const [session, setSession] = useState(null)
-  const [showAuth, setShowAuth] = useState(false)
-  const { data: session, status } = useSession()
-
-  const router = useRouter()
-  const authRef = useRef(null)
-
-  // useEffect(() => {
-  //   getSession().then((sess) => setSession(sess))
-  // }, [])
-
-  const openAuthPanel = () => {
-    setShowAuth(true)
-    // keyin panelga yumshoq scroll
-    // setTimeout(() => authRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
-  }
-
-  const handleAuthRedirect = () => {
-    window.location.href = 'tel:+998881989000'
-  }
-
-  const handleAboutRedirect = () => router.push('/about')
 
   return (
     <section className="relative w-full overflow-hidden">
       {/* ================= BACKGROUND ================= */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-[#F5F8FF]">
         <div
           className="absolute inset-0 bg-center bg-cover"
-          style={{
-            backgroundImage: 'url(https://api.iqmath.uz/Media/BANNER/bg-img.jpg)',
-            filter: 'blur(6px)',
-            transform: 'scale(1.08)',
-            transition: 'filter .4s ease'
-          }}
+          style={{ backgroundImage: 'url(/images/homepagebacgkround.png)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/85" />
-        <div className="absolute -top-44 -left-44 h-[520px] w-[520px] rounded-full bg-blue-500/25 blur-3xl" />
-        <div className="absolute -bottom-44 -right-44 h-[520px] w-[520px] rounded-full bg-purple-500/25 blur-3xl" />
+        {/* Matn tomonini o'qish uchun yengil oq gradient (rasmning o'zidagi fade'ni kuchaytiradi) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/15 to-transparent" />
       </div>
 
       <Container sx={{ maxWidth: '1400px !important', py: { xs: '18px', sm: '24px', md: '32px', lg: '36px' } }}>
-        <div className="relative">
-          <div className="grid gap-8 lg:grid-cols-12 items-center min-h-[calc(100vh-120px)] md:min-h-[calc(80vh-60px)] py-10 md:py-16">
-            {/* LEFT / HERO */}
-            <div className="lg:col-span-7 space-y-7">
-              <div className="inline-flex items-center gap-2 px-4 py-2 text-sm text-white border rounded-full border-white/15 bg-white/10 backdrop-blur-md">
-                <span className="font-semibold">🚀 {t('headerInfo')}</span>
-              </div>
-
-              <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
-                {t('newMatem')}{' '}
-                <span className="text-transparent bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text">
-                  {t('learn')}
-                </span>
-              </h1>
-
-              <p className="max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg md:text-xl">
-                {t('iqMathHeartitle')}
-              </p>
-
-              {/* Buttons */}
-              {/* <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:gap-4">
-                <button
-                  onClick={handleAuthRedirect}
-                  className="
-                    group inline-flex items-center justify-center gap-2
-                    rounded-[8px] bg-[#5D87FF]
-                    px-8 py-3 font-semibold text-white shadow-lg shadow-blue-600/20
-                    transition hover:shadow-xl hover:shadow-purple-600/25 active:scale-[0.98]
-                  "
-                >
-                  <span> {t('connection')}</span>
-                  <Call className="w-5 h-5 transition" />
-                </button>
-
-                <button
-                  onClick={handleAboutRedirect}
-                  className="
-                    inline-flex items-center justify-center rounded-[8px]
-                    border-2 border-white/70 px-8 py-3 font-semibold text-white
-                    transition hover:bg-white hover:text-black active:scale-[0.98]
-                  "
-                >
-                  {t('moreInfo')}
-                </button>
-              </div> */}
-
-              <AppStoreButtons />
-
-              {/* Stats (qoldiravering) */}
-              <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
-                <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                    <p>8,000</p> <span>+</span>
-                  </div>
-                  <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('activeReader')}</div>
-                </div>
-                <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                    <p>400</p>
-                    <span>+</span>
-                  </div>
-                  <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('VideoTutorials')}</div>
-                </div>
-                <div className="p-4 text-white border rounded-2xl border-white/15 bg-white/10 backdrop-blur-md">
-                  <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                    <p>4.9</p>
-                    <span>⭐</span>
-                  </div>
-                  <div className="mt-1 text-xs text-white/75 sm:text-sm">{t('ratings')}</div>
-                </div>
-              </div>
+        <div className="relative min-h-[calc(100vh-120px)] py-10 md:min-h-[calc(80vh-60px)] md:py-16 flex items-center">
+          <div className="max-w-3xl space-y-7">
+            <div className="inline-flex items-center gap-2 px-4 py-2 text-sm text-[#1E2A4A] border rounded-full border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
+              <Rocket className="w-4 h-4 text-[#5D87FF]" />
+              <span className="font-semibold">{t('headerInfo')}</span>
             </div>
 
-            {/* RIGHT / AUTH AREA */}
-            <div className="lg:col-span-5" ref={authRef}>
-              <div className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto lg:sticky lg:top-24">
-                {!showAuth ? (
-                  <PreAuthCard onStart={openAuthPanel} session={session} />
-                ) : (
-                  <div className="duration-300 animate-in fade-in slide-in-from-bottom-2">
-                    <Auth background={true} />
-                    <button
-                      onClick={() => setShowAuth(false)}
-                      className="w-full mt-3 text-sm text-center transition text-white/70 hover:text-white"
-                    >
-                      ← {t('back')}
-                    </button>
-                  </div>
-                )}
+            <h1 className="text-3xl font-extrabold leading-[1.15] text-[#1E2A4A] sm:text-4xl md:text-5xl lg:text-6xl">
+              <span className="block">{t('newMatem')}</span>
+              <span className="text-transparent bg-gradient-to-r from-[#048ffd] to-[#272efc] bg-clip-text">
+                {t('learnPrefix') ? `${t('learnPrefix')} ` : ''}
+                <span className="relative inline-block">
+                  {t('learn')}
+                  <svg
+                    className="absolute -bottom-1 left-0 h-2 w-full sm:h-2.5"
+                    viewBox="0 0 200 12"
+                    preserveAspectRatio="none"
+                    fill="none"
+                  >
+                    <path
+                      d="M2 6C40 10 160 10 198 6"
+                      stroke="url(#heroUnderlineGradient)"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                    />
+                    <defs>
+                      <linearGradient id="heroUnderlineGradient" x1="0" y1="0" x2="200" y2="0">
+                        <stop stopColor="#048ffd" />
+                        <stop offset="1" stopColor="#272efc" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <Sparkles className="absolute -right-6 -top-3 h-5 w-5 text-[#272efc] sm:h-6 sm:w-6" />
+                </span>
+              </span>
+            </h1>
+
+            <p className="max-w-2xl text-base leading-relaxed text-[#4B5670] sm:text-lg md:text-xl">
+              {t('iqMathHeartitle')}
+            </p>
+
+            <AppStoreButtons />
+
+            {/* Stats (qoldiravering) */}
+            <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
+              <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
+                <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
+                  <p>8,000</p> <span>+</span>
+                </div>
+                <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('activeReader')}</div>
+              </div>
+              <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
+                <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
+                  <p>400</p>
+                  <span>+</span>
+                </div>
+                <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('VideoTutorials')}</div>
+              </div>
+              <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
+                <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
+                  <p>4.9</p>
+                  <span>⭐</span>
+                </div>
+                <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('ratings')}</div>
               </div>
             </div>
           </div>
@@ -152,110 +93,3 @@ const PowerfulDozens = () => {
 }
 
 export default PowerfulDozens
-
-function PreAuthCard({ onStart, session }) {
-  const { t } = useTranslation()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleEnter = async () => {
-    setIsLoading(true)
-    try {
-      if (session?.role === RolesList.TEACHER) {
-        router.push('/dashboard/teacher/statistics')
-      } else if (session?.role === RolesList.PARENT) {
-        router.push('/dashboard/parent/my-children')
-      } else if (session?.role === RolesList.TUTOR) {
-        router.push('/dashboard/tutor/referrals')
-      } else {
-        router.push('/dashboard/student/subjects')
-      }
-    } catch (e) {
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: '/' })
-  }
-
-  // Loading matnini aniqlash
-  const getLoadingText = () => {
-    if (isLoading) return <SimpleLoader /> || 'Loading...'
-    return t('enter')
-  }
-
-  return (
-    <div className="relative p-[1px] rounded-3xl bg-gradient-to-r from-white/25 via-white/10 to-white/25">
-      <div className="p-5 border shadow-2xl rounded-3xl border-white/10 bg-white/10 backdrop-blur-xl sm:p-6">
-        {/* Top badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white border rounded-full border-white/15 bg-white/10">
-          <Sparkles className="w-4 h-4" />
-          {t('authCard.badge')}
-        </div>
-
-        <h3 className="mt-4 text-xl font-extrabold text-white">{t('authCard.title')}</h3>
-        <p className="mt-2 text-sm text-white/75">{t('authCard.subtitle')}</p>
-
-        {/* mini features */}
-        <div className="grid gap-3 mt-5">
-          <div className="flex items-center gap-3 p-3 border rounded-2xl border-white/10 bg-white/5">
-            <ShieldCheck className="w-5 h-5 text-white/90" />
-            <div className="text-sm text-white/85"> {t('authCard.features.secure')}</div>
-          </div>
-
-          <div className="flex items-center gap-3 p-3 border rounded-2xl border-white/10 bg-white/5">
-            <Video className="w-5 h-5 text-white/90" />
-            <div className="text-sm text-white/85"> {t('authCard.features.videos')}</div>
-          </div>
-
-          <div className="flex items-center gap-3 p-3 border rounded-2xl border-white/10 bg-white/5">
-            <Users className="w-5 h-5 text-white/90" />
-            <div className="text-sm text-white/85"> {t('authCard.features.roles')}</div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        {!session ? (
-          <>
-            <button
-              onClick={onStart}
-              className="
-            mt-6 w-full rounded-[8px]
-            bg-[#5D87FF]
-            px-5 py-3 font-semibold text-white
-            shadow-lg shadow-blue-600/20 transition
-            hover:shadow-xl hover:shadow-purple-600/25 active:scale-[0.99]
-            "
-            >
-              {t('authCard.cta')}
-            </button>
-
-            <p className="mt-3 text-xs text-center text-white/60"> {t('authCard.cta')}</p>
-          </>
-        ) : (
-          <div className="flex flex-col gap-3 mt-6 sm:flex-row">
-            <button
-              onClick={handleEnter}
-              className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${
-                isLoading ? 'opacity-70' : ''
-              }`}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <span>{getLoadingText()}</span>
-                </div>
-              ) : (
-                t('enter')
-              )}
-            </button>
-            <button onClick={handleLogout} className="w-full sm:w-1/2 bg-[#EDEDF2] text-black py-3 rounded-md">
-              {t('left')}
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
