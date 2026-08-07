@@ -9,7 +9,9 @@ const PowerfulDozens = () => {
   return (
     <section className="relative w-full overflow-hidden">
       {/* ================= BACKGROUND ================= */}
-      <div className="absolute inset-0 bg-[#F5F8FF]">
+      {/* Mobil: rasm juda "cover"lanib matn ustiga chiqib ketmasligi uchun faqat yumshoq gradient ko'rsatamiz. */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#EAF1FF] to-[#F5F8FF] md:hidden" />
+      <div className="absolute inset-0 hidden bg-[#F5F8FF] md:block">
         <div
           className="absolute inset-0 bg-center bg-cover"
           style={{ backgroundImage: 'url(/images/homepagebacgkround.png)' }}
@@ -19,7 +21,7 @@ const PowerfulDozens = () => {
       </div>
 
       <Container sx={{ maxWidth: '1400px !important', py: { xs: '18px', sm: '24px', md: '32px', lg: '36px' } }}>
-        <div className="relative min-h-[calc(100vh-120px)] py-10 md:min-h-[calc(80vh-60px)] md:py-16 flex items-center">
+        <div className="relative flex items-center py-10 md:min-h-[calc(80vh-60px)] md:py-16 lg:min-h-[calc(100vh-120px)]">
           <div className="max-w-3xl space-y-7">
             <div className="inline-flex items-center gap-2 px-4 py-2 text-sm text-[#1E2A4A] border rounded-full border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
               <Rocket className="w-4 h-4 text-[#5D87FF]" />
