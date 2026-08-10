@@ -1,7 +1,9 @@
 const SidebarTitle = ({ children }) => {
   return (
-    <div className="text-[#8A8A8E] mb-2 dark:text-white text-[15px] font-medium capitalize  pt-[24px] px-[24px]">
-      <h2>{children}</h2>
+    <div className="pt-[20px] pb-1 first:pt-0">
+      <h2 className="text-[11px] font-semibold uppercase tracking-wider text-[#A0AEC0] dark:text-gray-400">
+        {children}
+      </h2>
     </div>
   )
 }

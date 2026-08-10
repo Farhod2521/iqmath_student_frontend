@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { Button } from '@heroui/react'
 import { useScoreStore } from '@/store'
 
 function NavbarCoins() {
@@ -10,25 +9,22 @@ function NavbarCoins() {
   const { scoreData } = useScoreStore()
 
   return (
-    <Button
-      isLoading={scoreData.isLoading}
-      variant="bordered"
-      onPress={() => router.push('/dashboard/student/coins')}
-      className="border-[#E9E9E9] rounded-md border shadow-sm flex items-center gap-0.5 min-[400px]:gap-1 sm:gap-2 hover:bg-[#5d87ff] hover:text-white hover:border-white transition-all duration-200 py-0.5 px-1.5 min-[400px]:px-2 sm:px-3 h-7 min-[400px]:h-8 sm:h-9"
+    <button
+      onClick={() => router.push('/dashboard/student/coins')}
+      className="flex items-center gap-1.5 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-3 transition-colors hover:bg-[#EEF1F6]"
     >
       <Image
-        src="/icons/ball.svg"
-        alt="Points logo"
-        width={12}
-        height={12}
-        className="min-[400px]:w-3.5 min-[400px]:h-3.5 sm:w-[22px] sm:h-[22px]"
+        src="/images/homepage/tanga.png"
+        alt="Tanga"
+        width={28}
+        height={28}
+        className="h-6 w-6 shrink-0 sm:h-7 sm:w-7"
       />
-      <p className="text-xs min-[400px]:text-sm sm:text-md font-medium flex gap-0.5 min-[400px]:gap-1">
-        {scoreData.coin}
-        <span className="hidden min-[320px]:block sm:hidden">{t('coin')}</span>
-        <span className="hidden sm:block">{t('coin')}</span>
-      </p>
-    </Button>
+      <span className="flex items-baseline gap-1 leading-none">
+        <span className="text-sm font-bold text-[#191C1D] sm:text-base">{scoreData.coin}</span>
+        <span className="text-xs font-medium text-[#8A8A8E]">{t('coin')}</span>
+      </span>
+    </button>
   )
 }
 

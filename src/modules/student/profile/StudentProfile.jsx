@@ -7,6 +7,7 @@ import CoinsTab from './tabs/CoinsTab'
 import CoinsHistoryTab from './tabs/CoinsHistoryTab'
 import TransferTab from './tabs/TransferTab'
 import ReferralTab from './tabs/ReferralTab'
+import CouponsTab from './tabs/CouponsTab'
 
 const StudentProfile = () => {
   const { t } = useTranslation()
@@ -19,7 +20,8 @@ const StudentProfile = () => {
       { key: 'coins', label: t('points'), Component: CoinsTab },
       { key: 'coinsHistory', label: t('pointsHistory'), Component: CoinsHistoryTab },
       { key: 'transfer', label: t('transferMoney'), Component: TransferTab },
-      { key: 'referral', label: t('via_link'), Component: ReferralTab }
+      { key: 'referral', label: t('via_link'), Component: ReferralTab },
+      { key: 'coupons', label: t('coupons'), Component: CouponsTab }
     ],
     [t]
   )

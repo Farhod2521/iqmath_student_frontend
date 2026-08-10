@@ -1,4 +1,5 @@
 import React from 'react'
+import { ChevronRight } from 'lucide-react'
 import { useSettingStore, useCouponStore, usePricingModalStore } from '@/store'
 import SidebarMenu from './SidebarMenu'
 import SidebarLogo from './SidebarLogo'
@@ -20,6 +21,15 @@ function Sidebar() {
         }`}
         onClick={() => setIsSidebarOpen(false)}
       ></div>
+
+      {!isSidebarOpen && (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed left-0 top-4 z-50 flex h-9 w-6 items-center justify-center rounded-r-lg border border-l-0 border-[#E9E9E9] bg-white text-[#5A6A85] shadow-sm hover:bg-gray-50"
+        >
+          <ChevronRight size={14} />
+        </button>
+      )}
 
       <div
         className={`fixed p-0 left-0 top-0 h-full bg-white dark:bg-[#202936] border-r border-[#EAEFF4] dark:border-[#2A3447FF] 

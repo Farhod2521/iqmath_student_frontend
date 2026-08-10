@@ -3,7 +3,6 @@ import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -22,7 +21,6 @@ const AuthRecieveCode = () => {
 
   const { setTab, phoneTab, selectedRole } = useAuthTabStore((state) => state)
   const { t, i18n } = useTranslation()
-  const router = useRouter()
 
   const { isTeacher, isLoading: roleLoading } = useRoleDetection()
 
@@ -80,11 +78,11 @@ const AuthRecieveCode = () => {
         toast.success(t('loggedInSuccessfully'))
 
         if (selectedRole?.value === RolesList.STUDENT) {
-          router.push(`/dashboard/student/subjects?phone=${phoneTab}`)
+          window.location.href = `/dashboard/student/home?phone=${phoneTab}`
         } else if (selectedRole?.value === RolesList.PARENT) {
-          router.push(`/dashboard/parent/my-children?phone=${phoneTab}`)
+          window.location.href = `/dashboard/parent/my-children?phone=${phoneTab}`
         } else if (selectedRole?.value === RolesList.TUTOR) {
-          router.push(`/dashboard/tutor/referrals?phone=${phoneTab}`)
+          window.location.href = `/dashboard/tutor/referrals?phone=${phoneTab}`
         } else {
           window.location.reload()
         }

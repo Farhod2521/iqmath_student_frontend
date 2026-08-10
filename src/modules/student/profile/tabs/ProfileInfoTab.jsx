@@ -66,10 +66,12 @@ const ProfileInfoTab = () => {
   const region = get(studentProfile, 'data.region', '')
   const districts = get(studentProfile, 'data.districts', '')
   const phone = get(studentProfile, 'data.phone', '')
-  const className =
-    i18n.language === 'uz'
-      ? get(studentProfile, 'data.class_name_uz', '').split(' ')[0]
-      : get(studentProfile, 'data.class_name_ru', '').split(' ')[0]
+  const className = (
+    (i18n.language === 'uz'
+      ? get(studentProfile, 'data.class_name_uz', '')
+      : get(studentProfile, 'data.class_name_ru', '')
+    ).match(/\d+/) || []
+  )[0]
 
   // TODO: static placeholder until the backend exposes a per-metric ranking endpoint
   const rankStats = [

@@ -38,22 +38,22 @@ function AuthSignIn() {
 
         const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
 
+        toast.success(t('loggedInSuccessfully'))
+
         if (returnUrl) {
-          router.replace(returnUrl)
-          toast.success(t('loggedInSuccessfully'))
+          window.location.href = returnUrl
           return
         }
 
         if (session?.role === RolesList.TEACHER) {
-          router.push('/dashboard/teacher/statistics')
+          window.location.href = '/dashboard/teacher/statistics'
         } else if (session?.role === RolesList.PARENT) {
-          router.push('/dashboard/parent/my-children')
+          window.location.href = '/dashboard/parent/my-children'
         } else if (session?.role === RolesList.TUTOR) {
-          router.push('/dashboard/tutor/referrals')
+          window.location.href = '/dashboard/tutor/referrals'
         } else {
-          router.push('/dashboard/student/subjects')
+          window.location.href = '/dashboard/student/home'
         }
-        toast.success(t('loggedInSuccessfully'))
       } else {
         toast.error(t('invalidLogin'))
       }

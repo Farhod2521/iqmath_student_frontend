@@ -70,7 +70,7 @@ const SidebarMenu = () => {
 
   return (
     <div className={`font-sf overflow-y-auto sidebar-menu mb-[16px] h-full ${hasScrollbar ? 'pr-[32px]' : ''}`}>
-      <ul className="space-y-[12px] px-[24px]">
+      <ul className="space-y-[12px] px-[24px] pt-[20px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(userRole))
           .map(({ key, path, label, icon, disabled, type, children, activePatterns }, idx) => {

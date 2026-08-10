@@ -1,11 +1,10 @@
-import { request } from '@/services/api'
-import { getPaymentInitiate, getPaymentTrailDays } from '@/services/controllers'
-import { Button } from '@heroui/react'
+import { getPaymentTrailDays } from '@/services/controllers'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ArrowRight, Gem } from 'lucide-react'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useCouponStore, usePricingModalStore } from '@/store'
+import { usePricingModalStore } from '@/store'
 import { RolesList } from '../libs/menulist'
 
 function SidebarPlan() {
@@ -33,55 +32,33 @@ function SidebarPlan() {
     return <></>
   }
 
-  return (
-    <div className="border-t px-[24px] py-[24px] !text-white">
-      <div
-        className=" p-[16px] rounded-[16px] bg-no-repeat bg-cover bg-center"
-        style={{ backgroundImage: `url(/images/bg-img.png)` }}
-      >
-        <h3 className="text-[13px] font-medium">{t('tariffPlan')}</h3>
-        <p className="text-[24px] font-semibold my-[12px]">
-          {data.payment_amount} {t('sum')}
-        </p>
-        {data.current_plan?.plan_name && (
-          <p className="text-[15px] font-medium pb-[12px]">
-            {t('paymentType')} 1 oylik {data.current_plan?.plan_name}
-          </p>
-        )}
-        {data.is_paid || data.days_until_next_payment > 0 ? (
-          <p className="text-[15px] font-medium">
-            {t('nextCharge')} {data.end_date}
-          </p>
-        ) : null}
-        {data.is_paid ? (
-          <p className="text-[15px] font-medium my-[12px]">
-            {t('daysTrialPayment', { day: data.days_until_next_payment })}
-          </p>
-        ) : (
-          <p className="text-[15px] font-medium my-[12px]">
-            {!data.days_until_next_payment
-              ? t('makeToPayment')
-              : t('daysNextPayment', { day: data.days_until_next_payment })}
-          </p>
-        )}
+  const isActive = data.is_paid || data.days_until_next_payment > 0
 
-        {!data.is_paid ? (
-          <Button
-            onPress={handleInitiatePayment}
-            variant="bordered"
-            className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
-          >
-            {t('payment')}
-          </Button>
-        ) : (
-          <Button
-            onPress={() => router.push('/dashboard/student/subjects')}
-            variant="bordered"
-            className="border border-[#D1D1D6] rounded-[8px] text-[15px] py-[9px] w-full mt-[24px]"
-          >
-            {t('subjects')}
-          </Button>
-        )}
+  return (
+    <div className="border-t px-[24px] py-[24px]">
+      <div
+        className="rounded-[16px] bg-cover bg-right bg-no-repeat p-[16px] text-white"
+        style={{ backgroundImage: `url(/images/homepage/tolovbacground.png)` }}
+      >
+        <div className="flex items-center gap-1.5 text-[13px] font-bold tracking-wide">
+          <Gem size={14} />
+          {t('premiumLabel')}
+        </div>
+
+        <p className="mt-2 text-[13px] font-medium text-white/85">
+          {isActive ? t('premiumActive') : t('premiumExpired')}
+          {data.days_until_next_payment > 0 && <> • {t('premiumDaysLeft', { day: data.days_until_next_payment })}</>}
+        </p>
+
+        {data.end_date && <p className="text-[13px] text-white/70">{t('premiumUntil', { date: data.end_date })}</p>}
+
+        <button
+          onClick={isActive ? () => router.push('/dashboard/student/subjects') : handleInitiatePayment}
+          className="mt-4 flex w-1/2 items-center justify-center gap-1.5 rounded-[10px] bg-white/95 py-2 text-[12px] font-semibold text-[#5453f4] transition hover:bg-white"
+        >
+          {isActive ? t('extendPlan') : t('makePayment')}
+          <ArrowRight size={15} />
+        </button>
       </div>
     </div>
   )

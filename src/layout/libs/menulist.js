@@ -1,7 +1,6 @@
-import { LuBookText, LuUser } from 'react-icons/lu'
+import { LuBookText, LuUser, LuHouse } from 'react-icons/lu'
 import { TbCheckbox, TbCoins } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
-import { BiDirections } from 'react-icons/bi'
 import { BsBarChart, BsGraphUpArrow } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
 import { PiBooksLight, PiTrophy } from 'react-icons/pi'
@@ -32,15 +31,23 @@ export const RolesList = {
 
 export const getMenuItems = (t) => [
   {
-    label: t('main'),
-    roles: [
-      RolesList.STUDENT,
-      RolesList.ADMIN,
-      RolesList.TUTOR,
-      RolesList.PARENT,
-      RolesList.TEACHER,
-      RolesList.SUPERADMIN
-    ],
+    key: 'home',
+    path: '/dashboard/student/home',
+    label: t('studentHome.menuLabel'),
+    icon: (isActive) => (
+      <LuHouse
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'development-section',
+    label: t('studentHome.developmentSection'),
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.TITLE
   },
   {
@@ -116,7 +123,6 @@ export const getMenuItems = (t) => [
   },
   {
     key: 'diagnostics',
-    path: '/dashboard/student/diagnostics',
     label: t('diagnostics'),
     icon: (isActive) => (
       <TbCheckbox
@@ -126,34 +132,43 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK
+    type: MenuType.LINK,
+    children: [
+      {
+        key: 'diagnostics-start',
+        path: '/dashboard/student/diagnostics',
+        label: t('diagnostics'),
+        icon: (isActive) => (
+          <TbCheckbox
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'diagnostics-history',
+        path: '/dashboard/student/diagnostics/history',
+        label: t('diagnosis_history'),
+        icon: (isActive) => (
+          <BookOpen
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      }
+    ]
   },
   {
-    key: 'diagnostics-history',
-    path: '/dashboard/student/diagnostics/history',
-    label: t('diagnosis_history'),
+    key: 'library',
+    path: '/dashboard/library',
+    label: t('library.page_title'),
     icon: (isActive) => (
-      <BookOpen
+      <IoLibraryOutline
         className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
         size={26}
       />
     ),
-    disabled: false,
-    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-  {
-    key: 'recommended', // Diqqat: bu yerda "recommended" bo'lishi kerak
-    path: '/dashboard/student/recommendations',
-    label: t('recommended'),
-    icon: (isActive) => (
-      <BiDirections
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    disabled: false,
-    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.TUTOR, RolesList.STUDENT, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   // {
@@ -186,6 +201,12 @@ export const getMenuItems = (t) => [
   //   type: MenuType.LINK
   // },
 
+  {
+    key: 'other-section',
+    label: t('studentHome.otherSection'),
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.TITLE
+  },
   {
     key: 'products',
     label: t('products'),
@@ -296,20 +317,6 @@ export const getMenuItems = (t) => [
   //   ],
   //   type: MenuType.LINK
   // },
-
-  {
-    key: 'library',
-    path: '/dashboard/library',
-    label: t('library.page_title'),
-    icon: (isActive) => (
-      <IoLibraryOutline
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.TUTOR, RolesList.STUDENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
 
   {
     key: 'subjects',
@@ -463,7 +470,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.STUDENT, RolesList.SUPERADMIN],
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
 
@@ -478,7 +485,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.STUDENT, RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
+    roles: [RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -609,10 +616,10 @@ export const getMenuItems = (t) => [
 
 export const getMenuItemClasses = (isActive, disabled) => {
   const base =
-    'flex gap-x-[10px] items-center py-[10px] px-[12px] rounded-[8px] transition-all duration-300 font-medium text-[15px] group'
-  const active = 'bg-[#5D87FF] text-white'
+    'flex gap-x-[10px] items-center py-[11px] px-[14px] rounded-[14px] transition-all duration-300 font-medium text-[14px] group'
+  const active = 'bg-[#5d87ff] text-white font-semibold shadow-md shadow-[#5d87ff]/25'
   const inactive =
-    'text-[#5A6A85] dark:bg-[#202936] hover:bg-[#4463bb] hover:text-white dark:hover:bg-[#4463bb] dark:text-white'
+    'text-[#5A6A85] hover:bg-[#F1F4FF] dark:bg-transparent dark:hover:bg-[#26334A] dark:text-white'
   const disabledCls = 'opacity-50 cursor-not-allowed pointer-events-none'
   return `${base} ${disabled ? disabledCls : isActive ? active : inactive}`
 }

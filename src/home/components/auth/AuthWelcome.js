@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import { getSession, signOut } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import SimpleLoader from '@/components/loader/simple-loader'
@@ -7,7 +6,6 @@ import { RolesList } from '@/layout/libs/menulist'
 
 function AuthWelcome() {
   const { t } = useTranslation()
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleEnter = async () => {
@@ -16,13 +14,13 @@ function AuthWelcome() {
       const session = await getSession()
 
       if (session?.role === RolesList.TEACHER) {
-        router.push('/dashboard/teacher/statistics')
+        window.location.href = '/dashboard/teacher/statistics'
       } else if (session?.role === RolesList.PARENT) {
-        router.push('/dashboard/parent/my-children')
+        window.location.href = '/dashboard/parent/my-children'
       } else if (session?.role === RolesList.TUTOR) {
-        router.push('/dashboard/tutor/referrals')
+        window.location.href = '/dashboard/tutor/referrals'
       } else {
-        router.push('/dashboard/student/subjects')
+        window.location.href = '/dashboard/student/home'
       }
     } catch (e) {
     } finally {
