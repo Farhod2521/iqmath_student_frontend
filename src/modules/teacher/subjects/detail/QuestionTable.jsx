@@ -7,6 +7,8 @@ import Button from '@/components/button'
 import EditIcon from '@/components/icons/edit'
 import TrashIcon from '@/components/icons/trash'
 
+export const stripHtml = (html = '') => html.replace(/<[^>]*>/g, '').trim()
+
 export const fixLatex = (text = '') => {
   if (!text) return ''
 
@@ -21,7 +23,7 @@ export const fixLatex = (text = '') => {
 }
 
 const MathText = ({ children }) => {
-  return <MathJax dynamic>{fixLatex(children)}</MathJax>
+  return <MathJax dynamic>{parse(fixLatex(children))}</MathJax>
 }
 
 const QuestionTable = ({ questions, onEdit, onDelete }) => {
@@ -31,15 +33,16 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
     const isUzbek = i18n.language === 'uz'
 
     if (question.question_type === 'text') {
-      return <MathText>{get(question, isUzbek ? 'correct_text_answer_uz' : 'correct_text_answer_ru') || ''}</MathText>
+      const answer = get(question, isUzbek ? 'correct_text_answer_uz' : 'correct_text_answer_ru') || ''
+      return <MathText>{stripHtml(answer)}</MathText>
     }
 
     if (question.question_type === 'composite') {
       return question?.sub_questions?.map((item, idx) => (
-        <div key={idx} className="flex gap-1">
-          <span>{item.text1_uz}</span>
-          <MathText>{item.correct_answer}</MathText>
-          <span>{item.text2_uz}</span>
+        <div key={idx} className="flex items-center gap-1">
+          <MathText>{stripHtml(isUzbek ? item.text1_uz : item.text1_ru)}</MathText>
+          <MathText>{stripHtml(item.correct_answer)}</MathText>
+          <MathText>{stripHtml(isUzbek ? item.text2_uz : item.text2_ru)}</MathText>
         </div>
       ))
     }
@@ -65,8 +68,9 @@ const QuestionTable = ({ questions, onEdit, onDelete }) => {
 
   return (
     <MathJaxContext
+      src="/mathjax/tex-mml-svg.js"
       config={{
-        loader: { load: ['input/tex', 'output/chtml'] },
+        loader: { load: ['input/tex', 'output/svg'] },
         tex: {
           inlineMath: [['\\(', '\\)']],
           displayMath: [['\\[', '\\]']],
