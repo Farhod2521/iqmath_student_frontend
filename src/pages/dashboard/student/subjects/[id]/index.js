@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -15,6 +15,52 @@ import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { request } from '@/services/api'
 import BaseBreadcrumbs from '@/components/breadcrumb/Breadcrumbs'
 import HeaderTitle from '@/components/header-title'
+import PanelCard from '@/modules/student/subjects/components/panel/PanelCard'
+import ProgressMeter from '@/modules/student/subjects/components/panel/ProgressMeter'
+import MotivationCard from '@/modules/student/subjects/components/panel/MotivationCard'
+
+const ChapterIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
+    <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 15.5z" />
+    <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5z" />
+  </svg>
+)
+
+const TopicIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
+    <path d="M8 6h12M8 12h12M8 18h12" strokeLinecap="round" />
+    <circle cx="4" cy="6" r="1.3" fill="white" stroke="none" />
+    <circle cx="4" cy="12" r="1.3" fill="white" stroke="none" />
+    <circle cx="4" cy="18" r="1.3" fill="white" stroke="none" />
+  </svg>
+)
+
+/** Mavzu tartib raqami — bajarilganda yashil belgi, boshlanganda binafsha. */
+const TopicBadge = ({ index, score }) => {
+  const done = Number(score) >= 100
+  const started = Number(score) > 0
+
+  const style = done
+    ? 'bg-[#e3f5e8] text-[#16a34a]'
+    : started
+      ? 'bg-[#efeaff] text-[#7c5cfc]'
+      : 'bg-[#f2f3f7] text-[#9aa1b9] dark:bg-[#3a4658] dark:text-gray-400'
+
+  return (
+    <span
+      className={`flex items-center justify-center w-7 h-7 rounded-lg text-[11px] font-bold shrink-0 ${style}`}
+      aria-hidden="true"
+    >
+      {done ? (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+          <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : (
+        index + 1
+      )}
+    </span>
+  )
+}
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
@@ -60,174 +106,148 @@ const SubjectsPage = () => {
     if (id) fetchData()
   }, [id])
 
+  const chapters = chapter?.data || []
+  const topics = topic?.data || []
+
+  // Fan bo'yicha umumiy progress — barcha boblarning o'rtachasi
+  const subjectProgress = useMemo(() => {
+    if (!chapters.length) return 0
+    const sum = chapters.reduce((acc, item) => acc + (Number(item?.progress) || 0), 0)
+    return sum / chapters.length
+  }, [chapters])
+
+  // Mavzular paneli tanlangan bobning progressini ko'rsatadi
+  const chapterProgress = useMemo(
+    () => Number(chapters.find((item) => item.id === selectedChapterId)?.progress) || 0,
+    [chapters, selectedChapterId]
+  )
+
   if (isLoadingChapter || isFetchingChapter) {
     return <ContentLoader />
   }
-
-  const chapters = chapter?.data || []
-  const topics = topic?.data || []
 
   return (
     <LayoutAdmin>
       <div className="mb-4 border-b-1">
         <HeaderTitle title={t('subjects')} />
       </div>
+
       <MathJaxContext
         config={{
           loader: { load: ['input/tex', 'output/chtml'] }
         }}
       >
         <div className="font-sf">
-          {/* <StudentBreadcrumbs mainLink="/dashboard/student/subjects" /> */}
-          <BaseBreadcrumbs
-            data={pathList?.map((item) => ({
-              link: '/dashboard/student/subjects',
-              title: i18n.language === 'uz' ? item.title_uz : item.title_ru
-            }))}
-          />
+          <div className="mb-6 pb-3 border-b border-[#eceaf4] dark:border-[#374151]">
+            <div className="flex items-center gap-2 [&>div]:!mb-0">
+              <span className="w-[6px] h-[20px] rounded-full bg-[#ff5b8d] shrink-0" />
+              <BaseBreadcrumbs
+                data={pathList?.map((item) => ({
+                  link: '/dashboard/student/subjects',
+                  title: i18n.language === 'uz' ? item.title_uz : item.title_ru
+                }))}
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
-            {/* BOB (Chapter) Section */}
-            <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200 max-h-[45vh] md:max-h-none overflow-y-auto">
-              {/* Mobile Header - BOB */}
+            {/* BOB (Chapter) */}
+            <div className="flex flex-col col-span-12 gap-4 md:col-span-6 self-start">
+              <PanelCard icon={<ChapterIcon />} title={t('chapter')} subtitle={t('select')} progress={subjectProgress}>
+                <ul>
+                  {chapters?.map((item, idx) => {
+                    const isActive = selectedChapterId === item.id
 
-              <div className="sticky top-0 z-10 px-4 py-3 bg-gray-100 border-b border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-800 uppercase">{t('chapter')}</h3>
-                    <p className="text-xs text-gray-500">{t('select')}</p>
-                  </div>
-                </div>
-              </div>
+                    return (
+                      <li
+                        key={idx}
+                        onClick={() => setSelectedChapterId(item.id)}
+                        className={`flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 border-l-[3px] transition-colors ${
+                          isActive
+                            ? 'border-l-[#7c5cfc] bg-[#f6f3ff] dark:bg-[#2b3648]'
+                            : 'border-l-transparent hover:bg-[#faf9ff] dark:hover:bg-[#2b3648]'
+                        }`}
+                      >
+                        <MathJax>
+                          <span
+                            className={`break-words ${isActive ? 'font-semibold text-[#1f2a5b] dark:text-white' : 'text-[#4a5273] dark:text-gray-300'}`}
+                          >
+                            {i18n.language === 'uz' ? item?.name_uz : item?.name_ru}
+                          </span>
+                        </MathJax>
+                        <ProgressMeter value={item?.progress} />
+                      </li>
+                    )
+                  })}
+                </ul>
+              </PanelCard>
 
-              <ul>
-                {chapters?.map((chapter, idx) => (
-                  <li
-                    key={idx}
-                    onClick={() => setSelectedChapterId(chapter.id)}
-                    className={`cursor-pointer border-b  border-gray-200 p-2 sm:p-3  pl-4 sm:pl-6 text-sm sm:text-md uppercase last:border-b-0 hover:bg-blue-50 ${
-                      selectedChapterId === chapter.id ? 'bg-blue-50' : 'bg-white'
-                    }`}
-                  >
-                    <div className="flex justify-between gap-2">
-                      <MathJax>{i18n.language === 'uz' ? chapter?.name_uz : chapter?.name_ru}</MathJax>
-                      <div className="flex items-center gap-1 min-w-[120px]">
-                        <div className="w-[80px] h-1.5 bg-gray-200 rounded">
-                          <div
-                            className="h-1.5 bg-green-500 rounded"
-                            style={{ width: `${chapter?.progress === null ? 0 : chapter?.progress}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-xs text-gray-600 font-medium min-w-[24px]">
-                          {chapter?.progress === null ? 0 : chapter?.progress}%
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <MotivationCard />
             </div>
 
-            {/* MAVZU (Topic) Section */}
+            {/* MAVZU (Topic) */}
             {selectedChapterId && (
-              <div className="col-span-12 md:col-span-6 self-start overflow-hidden rounded-xl border border-gray-200 max-h-[55vh] md:max-h-none overflow-y-auto">
-                {/* Mobile Header - MAVZU */}
-                <div className="sticky top-0 z-10 px-4 py-3 bg-gray-100 border-b border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-md">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-base font-semibold text-gray-800 uppercase">{t('topic')}</h3>
-                      <p className="text-xs text-gray-500">{t('topicsList')}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {isLoadingTopic || isFetchingTopic ? (
-                  <ContentLoader />
-                ) : topics.length > 0 ? (
-                  <ul>
-                    {topics?.map((topic, index) =>
-                      topic.is_open ? (
-                        <li
-                          key={index}
-                          onClick={() =>
-                            router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${topic.id}`)
-                          }
-                          className="flex flex-col justify-between gap-1 p-2 pl-4 text-sm bg-white border-b border-gray-200 cursor-pointer sm:p-3 sm:pl-6 sm:text-md last:border-b-0 hover:bg-blue-50"
-                        >
-                          <div className="flex items-center justify-between gap-2">
-                            <MathJax>
-                              <span className="uppercase break-words">
-                                {i18n.language === 'uz' ? topic.name_uz : topic.name_ru}
-                              </span>
-                            </MathJax>
-
-                            {(typeof topic.score === 'number' || topic.score === null) && (
-                              <div className="flex items-center gap-1 min-w-[120px]">
-                                <div className="w-[80px] h-1.5 bg-gray-200 rounded">
-                                  <div
-                                    className="h-1.5 bg-green-500 rounded"
-                                    style={{ width: `${topic.score === null ? 0 : topic.score}%` }}
-                                  ></div>
-                                </div>
-                                <span className="text-xs text-gray-600 font-medium min-w-[24px]">
-                                  {topic.score === null ? 0 : topic.score}%
+              <div className="col-span-12 md:col-span-6 self-start">
+                <PanelCard
+                  icon={<TopicIcon />}
+                  title={t('topic')}
+                  subtitle={t('topicsList')}
+                  progress={chapterProgress}
+                  accent="green"
+                >
+                  {isLoadingTopic || isFetchingTopic ? (
+                    <ContentLoader />
+                  ) : topics.length > 0 ? (
+                    <ul>
+                      {topics?.map((item, index) =>
+                        item.is_open ? (
+                          <li
+                            key={index}
+                            onClick={() => router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${item.id}`)}
+                            className="flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 hover:bg-[#f6fbf7] dark:hover:bg-[#2b3648] transition-colors"
+                          >
+                            <div className="flex items-center min-w-0 gap-3">
+                              <TopicBadge index={index} score={item.score} />
+                              <MathJax>
+                                <span className="break-words text-[#4a5273] dark:text-gray-300">
+                                  {i18n.language === 'uz' ? item.name_uz : item.name_ru}
                                 </span>
-                              </div>
-                            )}
-                          </div>
-                        </li>
-                      ) : (
-                        <Popover
-                          key={index}
-                          size="md"
-                          showArrow
-                          backdrop="opaque"
-                          classNames={{ content: 'max-w-[400px]' }}
-                        >
-                          <PopoverTrigger>
-                            <li className="flex justify-between p-2 pl-4 text-sm border-b border-gray-200 opacity-50 sm:p-3 sm:pl-6 sm:text-md last:border-b-0">
-                              <span className="uppercase">
-                                {i18n.language === 'uz' ? topic.name_uz : topic.name_ru}
-                              </span>
-                              <div className="flex items-center justify-center min-w-10">
-                                <Image src="/icons/lock.svg" alt="lock" width={19} height={19} />
-                              </div>
-                            </li>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <div className="px-1 py-2">
-                              <p className="text-sm">{t('toUnlock')}</p>
+                              </MathJax>
                             </div>
-                          </PopoverContent>
-                        </Popover>
-                      )
-                    )}
-                  </ul>
-                ) : (
-                  <div className="flex items-center justify-center h-48 gap-2 bg-orange-50">
-                    <InfoCircleIcon />
-                    <h3 className="text-base font-normal text-gray-500">{t('noTopicsInThisSection')}</h3>
-                  </div>
-                )}
+
+                            {(typeof item.score === 'number' || item.score === null) && (
+                              <ProgressMeter value={item.score} />
+                            )}
+                          </li>
+                        ) : (
+                          <Popover key={index} size="md" showArrow backdrop="opaque" classNames={{ content: 'max-w-[400px]' }}>
+                            <PopoverTrigger>
+                              <li className="flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 opacity-50 cursor-pointer">
+                                <div className="flex items-center min-w-0 gap-3">
+                                  <TopicBadge index={index} score={0} />
+                                  <span className="break-words text-[#4a5273] dark:text-gray-300">
+                                    {i18n.language === 'uz' ? item.name_uz : item.name_ru}
+                                  </span>
+                                </div>
+                                <Image src="/icons/lock.svg" alt="lock" width={18} height={18} />
+                              </li>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <p className="text-sm">{t('toUnlock')}</p>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        )
+                      )}
+                    </ul>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-48 gap-2 px-4 text-center">
+                      <InfoCircleIcon />
+                      <h3 className="text-sm font-normal text-[#8189a8]">{t('noTopicsInThisSection')}</h3>
+                    </div>
+                  )}
+                </PanelCard>
               </div>
             )}
           </div>

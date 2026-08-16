@@ -1,16 +1,13 @@
-import HeaderTitle from '@/components/header-title'
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality'
+import SubjectsBanner from '@/modules/student/subjects/components/banner/SubjectsBanner'
 import Subjects from '@/modules/student/subjects/pages/Subjects'
-import { useTranslation } from 'react-i18next'
 
 const Index = () => {
-  const { t } = useTranslation()
-
   return (
     <LayoutAdmin>
-      <div className="mb-4 border-b-1">
-        <HeaderTitle title={t('subjects')} />
+      <div className="mb-6">
+        <SubjectsBanner />
       </div>
       <ModalConfidentiality />
       <Subjects />

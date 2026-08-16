@@ -35,8 +35,11 @@ const Subjects = () => {
   return (
     <div>
       {subjectsData?.map(({ type, data }, idx) => (
-        <section key={idx} className="pb-4">
-          <h2 className="font-bold mb-2 text-[20px]">{type}</h2>
+        <section key={idx} className="pb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-[6px] h-[22px] rounded-full bg-[#ff5b8d]" />
+            <h2 className="font-bold text-[18px] sm:text-[20px] text-[#1f2a5b] dark:text-white">{type}</h2>
+          </div>
           <div className="flex flex-wrap gap-4 mb-4">
             {data?.map((item, index) =>
               item.is_open ? (
