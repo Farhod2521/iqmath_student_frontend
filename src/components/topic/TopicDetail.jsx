@@ -32,7 +32,7 @@ const formatDuration = (seconds) => {
 
 const StatTile = ({ icon, label, value, valueClass = '' }) => (
   <div className="flex items-center gap-3 px-4 py-3 bg-white border rounded-2xl border-[#eceaf4] dark:bg-[#252f3f] dark:border-[#374151]">
-    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#f3f0ff] text-[#7c5cfc] shrink-0">
+    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#F1F4FF] text-[#5d87ff] shrink-0">
       {icon}
     </div>
     <div className="min-w-0">
@@ -166,7 +166,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                   aria-label={t('previous')}
                   disabled={selectedIndex === 0}
                   onClick={() => handleScroll('left')}
-                  className="flex items-center justify-center w-10 h-10 rotate-180 transition border rounded-xl border-[#eceaf4] hover:bg-[#f6f3ff] disabled:opacity-40 disabled:hover:bg-transparent dark:border-[#374151]"
+                  className="flex items-center justify-center w-10 h-10 rotate-180 transition border rounded-xl border-[#eceaf4] hover:bg-[#F1F4FF] disabled:opacity-40 disabled:hover:bg-transparent dark:border-[#374151]"
                 >
                   <RightIcon />
                 </button>
@@ -175,14 +175,14 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                   aria-label={t('next')}
                   disabled={selectedIndex === topicsList.length - 1}
                   onClick={() => handleScroll('right')}
-                  className="flex items-center justify-center w-10 h-10 transition border rounded-xl border-[#eceaf4] hover:bg-[#f6f3ff] disabled:opacity-40 disabled:hover:bg-transparent dark:border-[#374151]"
+                  className="flex items-center justify-center w-10 h-10 transition border rounded-xl border-[#eceaf4] hover:bg-[#F1F4FF] disabled:opacity-40 disabled:hover:bg-transparent dark:border-[#374151]"
                 >
                   <RightIcon />
                 </button>
 
                 {!basePath.includes('recommendations') && (
                   <Link href={`${basePath}/${id}/${chapterId}/${selectedTopic?.id}/question`}>
-                    <Button className="h-10 px-5 text-sm font-semibold text-white rounded-xl bg-[#7c5cfc]">
+                    <Button className="h-10 px-5 text-sm font-semibold text-white rounded-xl bg-[#5d87ff]">
                       {t('examples')}
                     </Button>
                   </Link>
@@ -192,8 +192,8 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
 
             {/* Video — sahifa ochilishi bilan ko'rinib turadi */}
             <div className="overflow-hidden bg-white border rounded-2xl border-[#eceaf4] dark:bg-[#252f3f] dark:border-[#374151]">
-              <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#eceaf4] bg-[#faf9ff] dark:bg-[#2b3648] dark:border-[#374151]">
-                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#7c5cfc]">
+              <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#eceaf4] bg-[#F1F4FF] dark:bg-[#2b3648] dark:border-[#374151]">
+                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#5d87ff]">
                   <Image src="/icons/play.svg" alt="" width={14} height={14} />
                   {t('videoExplanation')}
                 </span>
@@ -214,7 +214,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                   />
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center w-full gap-2 aspect-video bg-[#faf9ff] dark:bg-[#2b3648]">
+                <div className="flex flex-col items-center justify-center w-full gap-2 aspect-video bg-[#F1F4FF] dark:bg-[#2b3648]">
                   <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white text-[#b3b8cc] dark:bg-white/10">
                     <ClockIcon />
                   </div>
@@ -242,8 +242,8 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
             {/* Mavzu matni */}
             {topicContent ? (
               <div className="mt-4 overflow-hidden bg-white border rounded-2xl border-[#eceaf4] dark:bg-[#252f3f] dark:border-[#374151]">
-                <div className="flex items-center gap-3 px-5 py-3 border-b border-[#eceaf4] bg-[#faf9ff] dark:bg-[#2b3648] dark:border-[#374151]">
-                  <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-[#a78bfa] to-[#7c5cfc] shrink-0">
+                <div className="flex items-center gap-3 px-5 py-3 border-b border-[#eceaf4] bg-[#F1F4FF] dark:bg-[#2b3648] dark:border-[#374151]">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-[#84a9ff] to-[#5d87ff] shrink-0">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
                       <path d="M12 4 2 9l10 5 10-5z" strokeLinejoin="round" />
                       <path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5" strokeLinecap="round" />
@@ -279,13 +279,13 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                       className={`flex items-center gap-3 px-4 py-3 border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 transition-colors ${
                         isLocked
                           ? 'opacity-50 cursor-not-allowed'
-                          : `cursor-pointer ${isActive ? 'bg-[#f6f3ff] dark:bg-[#2b3648]' : 'hover:bg-[#faf9ff] dark:hover:bg-[#2b3648]'}`
+                          : `cursor-pointer ${isActive ? 'bg-[#F1F4FF] dark:bg-[#2b3648]' : 'hover:bg-[#F1F4FF] dark:hover:bg-[#2b3648]'}`
                       }`}
                     >
                       <span
                         className={`flex items-center justify-center w-7 h-7 rounded-lg text-[11px] font-bold shrink-0 ${
                           isActive
-                            ? 'bg-[#7c5cfc] text-white'
+                            ? 'bg-[#5d87ff] text-white'
                             : 'bg-[#f2f3f7] text-[#9aa1b9] dark:bg-[#3a4658] dark:text-gray-400'
                         }`}
                       >
@@ -295,7 +295,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                       <span
                         className={`flex-1 min-w-0 text-sm break-words ${
                           isActive
-                            ? 'font-semibold text-[#7c5cfc]'
+                            ? 'font-semibold text-[#5d87ff]'
                             : 'text-[#4a5273] dark:text-gray-300'
                         }`}
                       >
@@ -322,8 +322,8 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
 
               {/* Umumiy progress */}
               <div className="p-4 border-t border-[#eceaf4] dark:border-[#374151]">
-                <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#f6f3ff] dark:bg-[#2b3648]">
-                  <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-white text-[#7c5cfc] shrink-0 dark:bg-white/10">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#F1F4FF] dark:bg-[#2b3648]">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-white text-[#5d87ff] shrink-0 dark:bg-white/10">
                     <ChartIcon />
                   </div>
 
@@ -331,7 +331,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                     <p className="text-xs font-semibold text-[#1f2a5b] dark:text-white">{t('overallProgress')}</p>
                     <div className="h-[6px] mt-1.5 rounded-full bg-white dark:bg-[#3a4658] overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[#a78bfa] to-[#7c5cfc] transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-[#84a9ff] to-[#5d87ff] transition-all duration-500"
                         style={{
                           width: `${topicsList.length ? (completedCount / topicsList.length) * 100 : 0}%`
                         }}
