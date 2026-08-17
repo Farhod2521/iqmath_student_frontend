@@ -87,7 +87,7 @@ const Navbar = () => {
 
           <div className="relative shrink-0">
             <NavbarProfile />
-            <span className="pointer-events-none absolute -bottom-1.5 left-1/2 -translate-x-1/2 rounded-full bg-[#F97316] px-1.5 py-[1px] text-[8px] font-bold text-white">
+            <span className="pointer-events-none absolute -bottom-1.5 left-1/2 z-[1001] -translate-x-1/2 rounded-full bg-[#F97316] px-1.5 py-[1px] text-[8px] font-bold text-white">
               {t('studentHome.proLabel')}
             </span>
           </div>

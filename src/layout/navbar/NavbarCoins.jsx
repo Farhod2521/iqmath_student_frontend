@@ -18,7 +18,7 @@ function NavbarCoins() {
         alt="Tanga"
         width={28}
         height={28}
-        className="h-6 w-6 shrink-0 sm:h-7 sm:w-7"
+        className="h-6 w-6 shrink-0 object-contain sm:h-7 sm:w-7"
       />
       <span className="flex items-baseline gap-1 leading-none">
         <span className="text-sm font-bold text-[#191C1D] sm:text-base">{scoreData.coin}</span>
