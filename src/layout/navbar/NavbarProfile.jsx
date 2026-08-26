@@ -11,6 +11,7 @@ import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
+import { ChevronRight, Gem, LogOut } from 'lucide-react'
 
 function NavbarProfile() {
   const { t } = useTranslation()
@@ -85,8 +86,12 @@ function NavbarProfile() {
     }, 300)
   }
 
+  const fullName = get(studentProfile, 'data.full_name', '')
+  const email = get(studentProfile, 'data.email', '')
+  const identification = get(studentProfile, 'data.identification', '')
+
   return (
-    <div className="relative z-[1000] bg-white border-b">
+    <div className="relative z-[1000]">
       <button
         ref={buttonRef}
         className="group w-7 h-7 min-[400px]:w-8 min-[400px]:h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
@@ -104,61 +109,79 @@ function NavbarProfile() {
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute bg-white z-[9999999]  dark:bg-[#26334A] border rounded-md min-w-[250px] min-[400px]:min-w-[280px] sm:min-w-[300px] shadow-lg top-[55px] min-[400px]:top-[50px] right-[15px] min-[400px]:right-[30px] p-4 min-[400px]:p-[25px] sm:p-[30px]"
+          className="absolute z-[9999999] min-w-[270px] min-[400px]:min-w-[300px] sm:min-w-[320px] overflow-hidden rounded-2xl border border-[#EAEFF4] bg-white shadow-[0_16px_40px_-12px_rgba(93,135,255,0.35)] top-[55px] min-[400px]:top-[50px] right-[15px] min-[400px]:right-[30px] dark:bg-[#26334A] dark:border-[#374151]"
         >
-          <div className="space-y-2">
-            {get(studentProfile, 'data.email') && (
-              <div className="flex gap-x-2">
-                <Image
-                  src={'/icons/mail.svg'}
-                  alt={'mail'}
-                  width={14}
-                  height={14}
-                  className="min-[400px]:w-4 min-[400px]:h-4"
-                />
-                <p className="text-xs min-[400px]:text-sm text-[#7C8FAC] dark:text-gray-200">
-                  {get(studentProfile, 'data.email')}
-                </p>
+          {/* Profil sarlavhasi */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#EEF1FF] to-white px-5 py-5 dark:from-[#2b3648] dark:to-[#26334A]">
+            <div className="pointer-events-none absolute -right-6 -top-8 h-24 w-24 rounded-full bg-[#5d87ff]/10" />
+            <div className="relative flex items-start gap-3">
+              <div className="flex shrink-0 flex-col items-center gap-1.5">
+                <div className="w-12 h-12 border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
+                  <Image src="/icons/avatar.png" alt="user" width={26} height={26} className="rounded-full" />
+                </div>
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#DCE2FF] bg-white px-2 py-0.5 text-[10px] font-bold text-[#5d87ff]">
+                  <Gem size={10} />
+                  {t('studentHome.proLabel')}
+                </span>
               </div>
-            )}
+
+              <div className="min-w-0 pt-1">
+                {fullName && (
+                  <p className="truncate text-sm font-bold text-[#191C1D] dark:text-white sm:text-base">
+                    {fullName}
+                  </p>
+                )}
+                {identification && (
+                  <p className="truncate text-xs text-[#7C8FAC] dark:text-gray-300">ID: #{identification}</p>
+                )}
+                {email && (
+                  <div className="mt-1.5 flex items-center gap-1.5">
+                    <Image src={'/icons/mail.svg'} alt="mail" width={13} height={13} />
+                    <p className="truncate text-xs text-[#4A5273] dark:text-gray-200">{email}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          <div className="w-full h-px bg-[#EAEFF4] rounded-[4px] my-3 sm:my-[15px]"></div>
+          <div className="p-2 min-[400px]:p-3">
+            <button
+              onClick={() => {
+                if (currentRole === 'teacher' || currentRole === 'mentor') {
+                  router.push('/dashboard/teacher/profile')
+                } else {
+                  router.push('/dashboard/student/profile')
+                }
+              }}
+              className="group/item flex w-full cursor-pointer items-center gap-x-3 rounded-xl px-2.5 py-2.5 text-start transition-colors hover:bg-[#F1F4FF] dark:hover:bg-[#2b3648]"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F1F4FF] text-[#5d87ff] dark:bg-white/10">
+                <Image src="/icons/avatar.png" alt="user" width={18} height={18} className="rounded-full" />
+              </div>
 
-          <button
-            onClick={() => {
-              if (currentRole === 'teacher' || currentRole === 'mentor') {
-                router.push('/dashboard/teacher/profile')
-              } else {
-                router.push('/dashboard/student/profile')
-              }
-            }}
-            className="flex w-full cursor-pointer gap-x-2 sm:gap-x-3 text-start"
-          >
-            <div className="w-8 h-8 min-[400px]:w-9 min-[400px]:h-9 sm:w-10 sm:h-10 border-2 border-[#5d87ff] bg-white rounded-full flex items-center justify-center">
-              <Image
-                src="/icons/avatar.png"
-                alt="user"
-                width={20}
-                height={20}
-                className="rounded-full min-[400px]:w-6 min-[400px]:h-6 sm:w-7 sm:h-7"
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-black dark:text-white sm:text-base">
+                  {t('myPage')}
+                </p>
+                <p className="truncate text-xs text-[#7C8FAC] dark:text-gray-300 sm:text-sm">{t('settings')}</p>
+              </div>
+
+              <ChevronRight
+                size={16}
+                className="shrink-0 text-[#B0B6C9] transition-transform group-hover/item:translate-x-0.5 group-hover/item:text-[#5d87ff]"
               />
-            </div>
+            </button>
+          </div>
 
-            <div className="text-left">
-              <p className="text-sm font-semibold text-black dark:text-white sm:text-base">{t('myPage')}</p>
-              <p className="text-[#7C8FAC] dark:text-gray-200 text-xs sm:text-sm">{t('settings')}</p>
-            </div>
-          </button>
-
-          <div className="w-full h-px bg-[#EAEFF4] rounded-[4px] my-3 sm:my-[15px]"></div>
-
-          <button
-            onClick={handleLogoutClick}
-            className="py-2 sm:py-3 w-full border border-[#5d87ff] text-[13px] sm:text-[15px] text-[#5d87ff] bg-[#EDEDF2] rounded-md transform hover:bg-[#5d87ff] hover:text-white transition-all duration-200"
-          >
-            {t('logout')}
-          </button>
+          <div className="p-2 pt-0 min-[400px]:p-3 min-[400px]:pt-0">
+            <button
+              onClick={handleLogoutClick}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#FFD9D9] bg-[#FFF5F5] py-2.5 text-[13px] font-semibold text-[#E5484D] transition-all duration-200 hover:bg-[#E5484D] hover:text-white sm:text-[15px]"
+            >
+              <LogOut size={16} />
+              {t('logout')}
+            </button>
+          </div>
         </div>
       )}
 

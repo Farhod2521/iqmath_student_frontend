@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
-import { Bell, Flame, Search } from 'lucide-react'
+import { Bell, Flame, Gem, Search } from 'lucide-react'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
@@ -87,7 +87,8 @@ const Navbar = () => {
 
           <div className="relative shrink-0">
             <NavbarProfile />
-            <span className="pointer-events-none absolute -bottom-1.5 left-1/2 z-[1001] -translate-x-1/2 rounded-full bg-[#F97316] px-1.5 py-[1px] text-[8px] font-bold text-white">
+            <span className="pointer-events-none absolute -bottom-1.5 left-1/2 z-[1001] flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-[#DCE2FF] bg-[#EEF1FF] px-1.5 py-[1px] text-[8px] font-bold text-[#5d87ff]">
+              <Gem size={8} className="shrink-0" />
               {t('studentHome.proLabel')}
             </span>
           </div>
