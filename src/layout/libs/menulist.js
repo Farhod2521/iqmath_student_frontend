@@ -12,7 +12,7 @@ import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Swords, Trophy, History } from 'lucide-react'
 import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
@@ -151,6 +151,55 @@ export const getMenuItems = (t) => [
         label: t('diagnosis_history'),
         icon: (isActive) => (
           <BookOpen
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      }
+    ]
+  },
+  {
+    key: 'battle',
+    path: '/dashboard/student/battle',
+    label: t('battle.menuLabel'),
+    icon: (isActive) => (
+      <Swords
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={24}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
+    type: MenuType.LINK,
+    children: [
+      {
+        key: 'battle-play',
+        path: '/dashboard/student/battle',
+        label: t('battle.menuLabel'),
+        icon: (isActive) => (
+          <Swords
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'battle-leaderboard',
+        path: '/dashboard/student/battle/leaderboard',
+        label: t('battle.leaderboardTitle'),
+        icon: (isActive) => (
+          <Trophy
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'battle-history',
+        path: '/dashboard/student/battle/history',
+        label: t('battle.historyTitle'),
+        icon: (isActive) => (
+          <History
             className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
             size={20}
           />

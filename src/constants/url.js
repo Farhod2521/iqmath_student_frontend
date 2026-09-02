@@ -145,5 +145,17 @@ export const URLS = {
 
   // Landing (reklama) sahifasi lead formasi.
   // TODO: backend tayyor bo'lganda shu manzilni almashtiring.
-  leadCreate: '/api/v1/lead/'
+  leadCreate: '/api/v1/lead/',
+
+  // Battle (1v1 math duel)
+  battleSubjects: '/api/v1/func_teacher/subject-list/',
+  battleRoomCreate: '/api/v1/battle/rooms/create/',
+  battleRoomJoin: '/api/v1/battle/rooms/join/',
+  battleRoomDetail: '/api/v1/battle/rooms/',
+  battleRoomCancel: '/api/v1/battle/rooms/',
+  battleRatingMe: '/api/v1/battle/rating/me/',
+  battleLeaderboard: '/api/v1/battle/leaderboard/',
+  battleHistory: '/api/v1/battle/history/',
+  battleEloHistory: '/api/v1/battle/elo-history/',
+  battleGradeStats: '/api/v1/battle/grade-stats/'
 }
