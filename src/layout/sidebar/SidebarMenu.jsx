@@ -88,10 +88,13 @@ const SidebarMenu = () => {
               }
 
               if (children) {
-                const isExpanded = isMenuExpanded(key)
                 const hasActiveChild = children?.some(
                   (child) => router.pathname === child.path || router.pathname.endsWith(child.path)
                 )
+                // Auto-open a group when the current page is one of its
+                // children — still toggleable by hand afterwards (once the
+                // user explicitly clicks, that choice wins over auto-open).
+                const isExpanded = isMenuExpanded(key) ?? hasActiveChild
 
                 return (
                   <li key={key}>
