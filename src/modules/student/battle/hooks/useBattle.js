@@ -128,6 +128,19 @@ export const useBattle = (roomId) => {
     [socketRef]
   )
 
+  // Self-heal nudge: our own countdown hit zero but no `next_question`
+  // ever arrived (the server's scheduled timeout task may have been
+  // lost) — ask the server to advance directly. Safe to send more than
+  // once; the server no-ops if the question already moved on.
+  const sendTimeoutCheck = useCallback(
+    (questionOrder) => {
+      if (socketRef.current?.readyState === WebSocket.OPEN) {
+        socketRef.current.send(JSON.stringify({ type: 'timeout_check', question_order: questionOrder }))
+      }
+    },
+    [socketRef]
+  )
+
   const { me, opponent } = useMemo(() => {
     const participants = room?.participants || []
     return {
@@ -155,6 +168,7 @@ export const useBattle = (roomId) => {
     chatEnabled: !!room?.chat_enabled,
     sendAnswer,
     sendSkip,
-    sendChat
+    sendChat,
+    sendTimeoutCheck
   }
 }

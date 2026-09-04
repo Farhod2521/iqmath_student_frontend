@@ -28,7 +28,8 @@ const BattleArena = ({ roomId }) => {
     chatEnabled,
     sendAnswer,
     sendSkip,
-    sendChat
+    sendChat,
+    sendTimeoutCheck
   } = battle
 
   // "connecting" (WebSocket handshake) and "waiting" (queued for an
@@ -56,16 +57,18 @@ const BattleArena = ({ roomId }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <div className="space-y-4 lg:col-span-2">
+    <div className="grid items-stretch grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="flex flex-col gap-4 lg:col-span-2">
         <BattleVsHeader
           me={me}
           opponent={opponent}
+          room={room}
           total={room?.question_count}
           myAnswered={myAnswered}
           opponentAnswered={opponentAnswered}
           questionStartedAt={questionStartedAt}
           secondsPerQuestion={secondsPerQuestion}
+          onTimerExpire={() => question && sendTimeoutCheck(question.order)}
         />
 
         {question ? (
@@ -78,18 +81,18 @@ const BattleArena = ({ roomId }) => {
             onSkip={sendSkip}
           />
         ) : (
-          <div className="flex items-center justify-center py-16 text-gray-300">
+          <div className="flex items-center justify-center flex-1 py-16 text-gray-300">
             <Loader2 className="animate-spin" size={22} />
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-300">
+        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-300 mt-auto pt-1">
           <Flag size={12} />
           {t('battle.ruleDisconnect')}
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div>
         {chatEnabled ? (
           <BattleChat messages={chatMessages} myParticipantId={me?.participant_id} onSend={sendChat} />
         ) : null}
