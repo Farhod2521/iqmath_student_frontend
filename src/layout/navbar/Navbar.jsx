@@ -35,28 +35,33 @@ const Navbar = () => {
   )[0]
 
   const isStudent = currentRole === RolesList.STUDENT
+  const ROLE_LABEL_KEY = { teacher: 'tutor', tutor: 'tutor', parent: 'parent', student: 'student' }
+  const roleLabel = t(ROLE_LABEL_KEY[currentRole] || 'student')
 
   return (
     <div className="border-b border-[#F0F0F0] bg-white px-3 py-3 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-        <div className="shrink-0">
-          <h1 className="text-lg font-bold text-[#191C1D] sm:text-xl">
-            {t('studentHome.greeting', { name: fullName || t('studentHome.you') })} 👋
-          </h1>
-          {isStudent && (
+        {isStudent && (
+          <div className="shrink-0">
+            <h1 className="text-lg font-bold text-[#191C1D] sm:text-xl">
+              {t('studentHome.greeting', { name: fullName || t('studentHome.you') })} 👋
+            </h1>
             <p className="mt-0.5 text-xs text-[#8A8A8E] sm:text-sm">
               {t('studentHome.dailyGoal', { classNum: classNum || '', minutes: 15 })}
             </p>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="relative order-last flex-1 sm:order-none sm:max-w-md">
           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A8A8E]" />
           <input
             type="text"
             placeholder={t('studentHome.searchPlaceholder')}
-            className="w-full rounded-full border border-[#EDEDED] bg-[#F7F8FA] py-2.5 pl-10 pr-4 text-sm text-[#191C1D] outline-none placeholder:text-[#B0B0B0] focus:border-[#5D87FF]"
+            className="w-full rounded-full border border-[#EDEDED] bg-gradient-to-r from-[#EFF6FD] to-[#F0F6FE] py-2.5 pl-10 pr-16 text-sm text-[#191C1D] outline-none placeholder:text-[#B0B0B0] focus:border-[#5D87FF]"
           />
+          <span className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-md border border-[#E5E5E5] bg-white px-1.5 py-0.5 text-[10px] font-semibold text-[#B0B0B0] sm:inline-block">
+            Ctrl K
+          </span>
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -85,12 +90,22 @@ const Navbar = () => {
 
           <LanguageDropdown />
 
-          <div className="relative shrink-0">
-            <NavbarProfile />
-            <span className="pointer-events-none absolute -bottom-1.5 left-1/2 z-[1001] flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-[#DCE2FF] bg-[#EEF1FF] px-1.5 py-[1px] text-[8px] font-bold text-[#5d87ff]">
-              <Gem size={8} className="shrink-0" />
-              {t('studentHome.proLabel')}
-            </span>
+          <div className="flex shrink-0 items-center gap-2">
+            {fullName && (
+              <div className="hidden text-right leading-tight sm:block">
+                <p className="text-sm font-bold text-[#191C1D]">{fullName}</p>
+                <p className="text-xs text-[#8A8A8E]">{roleLabel}</p>
+              </div>
+            )}
+            <div className="relative shrink-0">
+              <NavbarProfile />
+              {isStudent && (
+                <span className="pointer-events-none absolute -bottom-1.5 left-1/2 z-[1001] flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-[#DCE2FF] bg-[#EEF1FF] px-1.5 py-[1px] text-[8px] font-bold text-[#5d87ff]">
+                  <Gem size={8} className="shrink-0" />
+                  {t('studentHome.proLabel')}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -10,7 +10,6 @@ import { FiLayers } from 'react-icons/fi'
 import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
-import { PiShareNetwork } from 'react-icons/pi'
 import { RiCoupon5Line } from 'react-icons/ri'
 import { BookOpen, Swords, Trophy, History } from 'lucide-react'
 import { MdOutlinePayments, MdWarning } from 'react-icons/md'
@@ -30,6 +29,19 @@ export const RolesList = {
 }
 
 export const getMenuItems = (t) => [
+  {
+    key: 'tutor-home',
+    path: '/dashboard/tutor/referrals',
+    label: t('tutorHome.menuLabel'),
+    icon: (isActive) => (
+      <LuHouse
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
   {
     key: 'home',
     path: '/dashboard/student/home',
@@ -494,19 +506,6 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.PARENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-  {
-    key: 'tutor-referrals',
-    path: '/dashboard/tutor/referrals',
-    label: t('via_link'),
-    icon: (isActive) => (
-      <PiShareNetwork
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
