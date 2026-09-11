@@ -1146,7 +1146,28 @@
     "currency": "so‘m",
     "next": "Keyingi",
     "bestValue": "Eng foydali",
-    "mostPopular": "Eng ommabop"
+    "mostPopular": "Eng ommabop",
+    "nasiya": {
+      "payFull": "To'liq to'lash",
+      "payInstallment": "Uzum Nasiya",
+      "recommended": "Tavsiya",
+      "oneTimeAmount": "To'lov summasi",
+      "oneTimeLabel": "Bir martalik to'lov",
+      "installmentSubtitle": "Bo'lib to'lash · 3, 6, 12 oy",
+      "title": "Uzum Nasiya orqali bo'lib to'lang",
+      "subtitle": "Hoziroq oling, keyin qulay muddatlarda to'lang",
+      "details": "Batafsil",
+      "noExtraFees": "Qo'shimcha to'lovlarsiz",
+      "noMarkup": "Ustamasiz",
+      "perMonth": "oyiga",
+      "convenientTerm": "Qulay muddat",
+      "bigOpportunity": "Katta imkoniyat",
+      "totalPayable": "Jami to'lov",
+      "totalPayableSubtitle": "Tanlangan muddat bo'yicha umumiy summa",
+      "disclaimer": "Ko'rsatilgan summalar taxminiy. Uzum Nasiya ulangach, aniq hisob-kitob avtomatik ko'rsatiladi.",
+      "allFeaturesIncluded": "Barcha imkoniyatlarga to'liq kirish",
+      "featuresIncluded": "{{count}} ta imkoniyat kiritilgan"
+    }
   },
   "cta": {
     "title": "Matematika sayohatingizni bugun boshlang!",

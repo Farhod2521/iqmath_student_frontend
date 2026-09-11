@@ -642,7 +642,28 @@
       "currency": "UZS",
       "next": "Next",
       "bestValue": "Best value",
-      "mostPopular": "Most popular"
+      "mostPopular": "Most popular",
+      "nasiya": {
+        "payFull": "Pay in full",
+        "payInstallment": "Uzum Nasiya",
+        "recommended": "Recommended",
+        "oneTimeAmount": "Amount due",
+        "oneTimeLabel": "One-time payment",
+        "installmentSubtitle": "Installments · 3, 6, 12 mo",
+        "title": "Pay in installments with Uzum Nasiya",
+        "subtitle": "Get it now, pay in convenient terms",
+        "details": "Details",
+        "noExtraFees": "No extra fees",
+        "noMarkup": "No markup",
+        "perMonth": "per month",
+        "convenientTerm": "Convenient term",
+        "bigOpportunity": "Best flexibility",
+        "totalPayable": "Total payable",
+        "totalPayableSubtitle": "Total amount for the selected term",
+        "disclaimer": "Amounts shown are estimates. Once Uzum Nasiya is connected, the exact calculation will be shown automatically.",
+        "allFeaturesIncluded": "Full access to all features",
+        "featuresIncluded": "{{count}} features included"
+      }
     }
   },
   "dailyTaskCompleted": "Daily task completed",

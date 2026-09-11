@@ -1055,7 +1055,28 @@
     "currency": "сум",
     "next": "Далее",
     "bestValue": "Лучшая выгода",
-    "mostPopular": "Популярный"
+    "mostPopular": "Популярный",
+    "nasiya": {
+      "payFull": "Полная оплата",
+      "payInstallment": "Uzum Nasiya",
+      "recommended": "Рекомендуем",
+      "oneTimeAmount": "Сумма к оплате",
+      "oneTimeLabel": "Единоразовый платёж",
+      "installmentSubtitle": "Рассрочка · 3, 6, 12 мес",
+      "title": "Оплата в рассрочку через Uzum Nasiya",
+      "subtitle": "Получите сейчас, платите удобными частями",
+      "details": "Подробнее",
+      "noExtraFees": "Без дополнительных платежей",
+      "noMarkup": "Без наценки",
+      "perMonth": "в месяц",
+      "convenientTerm": "Удобный срок",
+      "bigOpportunity": "Больше возможностей",
+      "totalPayable": "Итого к оплате",
+      "totalPayableSubtitle": "Общая сумма по выбранному сроку",
+      "disclaimer": "Указанные суммы приблизительные. После подключения Uzum Nasiya расчёт будет отображаться автоматически.",
+      "allFeaturesIncluded": "Полный доступ ко всем возможностям",
+      "featuresIncluded": "Включено функций: {{count}}"
+    }
   },
   "cta": {
     "title": "Начните своё путешествие в мир математики уже сегодня!",
