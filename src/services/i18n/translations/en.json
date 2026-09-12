@@ -725,6 +725,7 @@
     "statSubjects": "Chapters in progress",
     "statSubjectsOf": "Out of {{total}} chapters",
     "statLessons": "Lessons completed",
+    "statTopics": "Topics completed",
     "statLessonsOf": "Out of {{total}} lessons",
     "statAccuracy": "Correct answers",
     "statAccuracyAvg": "average score",
@@ -774,6 +775,7 @@
     "statStudents": "Students",
     "statGroups": "Groups",
     "statLessons": "Lessons held",
+    "statTopics": "Topics completed",
     "statAverageResult": "Average result"
   },
   "tutorGroups": {
@@ -796,6 +798,7 @@
     "statGroups": "Groups",
     "statStudentsInGroups": "Students in groups",
     "statStudentsWithoutGroup": "Without a group",
+    "averageScore": "Average result",
     "studentsCount": "{{count}} students",
     "selectedCount": "{{count}} selected",
     "open": "Open",
@@ -864,6 +867,9 @@
     "statAverageResultSub": "+{{percent}}% growth",
     "statTodayLessons": "Today's lessons",
     "statTodayLessonsSub": "On schedule",
+    "statCompletedTopics": "Topics completed",
+    "statCompletedTopicsSub": "+{{count}} vs previous period",
+    "resultsChartEmpty": "No results yet",
     "recentStudentsTitle": "Recently added students",
     "recentStudentsEmpty": "No students added yet",
     "viewAll": "View all",

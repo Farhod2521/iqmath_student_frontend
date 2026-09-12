@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, MoreVertical, Pencil, Trash2, Users2 } from 'lucide-react'
+import { ArrowRight, MoreVertical, Pencil, Trash2, TrendingUp, Users2 } from 'lucide-react'
 
 const CARD_COLORS = [
   'bg-[#EAF0FF] text-[#5D87FF]',
@@ -10,8 +10,16 @@ const CARD_COLORS = [
   'bg-[#FCE7F3] text-[#DB2777]'
 ]
 
+const averageColorFor = (percent) => {
+  if (percent >= 75) return '#22C55E'
+  if (percent >= 50) return '#5D87FF'
+  return '#F59E0B'
+}
+
 const GroupCard = ({ group, index, onOpen, onEdit, onDelete }) => {
   const { t } = useTranslation()
+  const averagePercent = Math.round(group.average_score || 0)
+  const averageColor = averageColorFor(averagePercent)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
@@ -83,9 +91,19 @@ const GroupCard = ({ group, index, onOpen, onEdit, onDelete }) => {
       </p>
 
       <div className="mt-3 flex items-center justify-between border-t border-[#F5F5F5] pt-3">
-        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#5A6A85]">
-          <Users2 size={15} className="text-[#8A8A8E]" />
-          {t('tutorGroups.studentsCount', { count: group.student_count || 0 })}
+        <span className="inline-flex items-center gap-2.5">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#5A6A85]">
+            <Users2 size={15} className="text-[#8A8A8E]" />
+            {group.student_count || 0}
+          </span>
+          <span
+            className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold"
+            style={{ color: averageColor, backgroundColor: `${averageColor}1A` }}
+            title={t('tutorGroups.averageScore')}
+          >
+            <TrendingUp size={11} />
+            {averagePercent}%
+          </span>
         </span>
         <button
           type="button"

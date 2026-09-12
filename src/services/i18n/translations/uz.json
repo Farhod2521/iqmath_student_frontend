@@ -1066,6 +1066,7 @@
     "statSubjects": "O'rganilayotgan boblar",
     "statSubjectsOf": "Jami {{total}} bobdan",
     "statLessons": "Bajarilgan darslar",
+    "statTopics": "O'tilgan mavzular",
     "statLessonsOf": "Jami {{total}} darsdan",
     "statAccuracy": "To'g'ri javoblar",
     "statAccuracyAvg": "o'rtacha natija",
@@ -1115,6 +1116,7 @@
     "statStudents": "O'quvchilar",
     "statGroups": "Guruhlar",
     "statLessons": "O'tkazilgan darslar",
+    "statTopics": "O'tilgan mavzular",
     "statAverageResult": "O'rtacha natija"
   },
   "tutorGroups": {
@@ -1137,6 +1139,7 @@
     "statGroups": "Guruhlar",
     "statStudentsInGroups": "Guruhdagi o'quvchilar",
     "statStudentsWithoutGroup": "Guruhsiz o'quvchilar",
+    "averageScore": "O'rtacha natija",
     "studentsCount": "{{count}} ta o'quvchi",
     "selectedCount": "{{count}} ta tanlandi",
     "open": "Ochish",
@@ -1205,6 +1208,9 @@
     "statAverageResultSub": "+{{percent}}% o'sish",
     "statTodayLessons": "Bugungi darslar",
     "statTodayLessonsSub": "Reja bo'yicha",
+    "statCompletedTopics": "O'tilgan mavzular",
+    "statCompletedTopicsSub": "+{{count}} oldingi davrga nisbatan",
+    "resultsChartEmpty": "Hali natija yo'q",
     "recentStudentsTitle": "So'nggi qo'shilgan o'quvchilar",
     "recentStudentsEmpty": "Hali o'quvchi qo'shilmagan",
     "viewAll": "Barchasini ko'rish",

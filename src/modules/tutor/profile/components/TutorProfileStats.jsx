@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { get } from 'lodash'
 import { ArrowUp, BarChart3, BookOpen, Star, Users, Users2 } from 'lucide-react'
-import { mockProfileStatsByPeriod } from '../mock'
+import { useGetQuery } from '@/hooks'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
 
 const PERIODS = [7, 30, 90]
 
@@ -29,7 +32,17 @@ const TutorProfileStats = () => {
   const { t } = useTranslation()
   const [period, setPeriod] = useState(30)
 
-  const stats = mockProfileStatsByPeriod[period]
+  const { data, isLoading } = useGetQuery({
+    key: [KEYS.tutorResultsOverview, period],
+    url: URLS.tutorResultsOverview,
+    params: { period }
+  })
+
+  const overview = get(data, 'data', null)
+  const students = get(overview, 'students', {})
+  const groups = get(overview, 'groups', {})
+  const topics = get(overview, 'topics', {})
+  const averageResult = get(overview, 'average_result', {})
 
   const tiles = [
     {
@@ -37,37 +50,37 @@ const TutorProfileStats = () => {
       icon: <Users size={20} />,
       tileClass: 'bg-[#F1F6FF]',
       iconClass: 'text-[#205FFE]',
-      value: stats.students,
+      value: students.total || 0,
       label: t('tutorProfile.statStudents'),
-      delta: stats.students_growth ? `+${stats.students_growth}` : null
+      delta: students.new_in_period ? `+${students.new_in_period}` : null
     },
     {
       key: 'groups',
       icon: <Users2 size={20} />,
       tileClass: 'bg-[#F5F1FF]',
       iconClass: 'text-[#7626FB]',
-      value: stats.groups,
+      value: groups.total || 0,
       label: t('tutorProfile.statGroups'),
-      delta: stats.groups_growth ? `+${stats.groups_growth}` : null
+      delta: groups.new_in_period ? `+${groups.new_in_period}` : null
     },
     {
-      key: 'lessons',
+      key: 'topics',
       icon: <BookOpen size={20} />,
       tileClass: 'bg-[#EFFBF4]',
       iconClass: 'text-[#0D875E]',
-      value: stats.lessons,
-      label: t('tutorProfile.statLessons'),
-      delta: stats.lessons_growth ? `+${stats.lessons_growth}` : null
+      value: topics.completed_in_period || 0,
+      label: t('tutorProfile.statTopics'),
+      delta: topics.growth > 0 ? `+${topics.growth}` : null
     },
     {
       key: 'average',
       icon: <Star size={20} />,
       tileClass: 'bg-[#FFF7E8]',
       iconClass: 'text-[#F59E0B]',
-      value: `${stats.average_result_percent}%`,
+      value: `${Math.round(averageResult.overall_percent || 0)}%`,
       valueClass: 'text-[#F59E0B]',
       label: t('tutorProfile.statAverageResult'),
-      delta: stats.average_result_growth ? `+${stats.average_result_growth}%` : null
+      delta: averageResult.growth > 0 ? `+${Math.round(averageResult.growth)}%` : null
     }
   ]
 
@@ -96,11 +109,19 @@ const TutorProfileStats = () => {
         </select>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {tiles.map((tile) => (
-          <Tile key={tile.key} {...tile} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {[1, 2, 3, 4].map((index) => (
+            <div key={index} className="h-[76px] animate-pulse rounded-2xl bg-gray-100" />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {tiles.map((tile) => (
+            <Tile key={tile.key} {...tile} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

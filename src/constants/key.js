@@ -98,5 +98,6 @@ export const KEYS = {
   tutorMyStudents: 'tutorMyStudents',
   tutorGroupResults: 'tutorGroupResults',
   tutorResultsOverview: 'tutorResultsOverview',
-  tutorResultsStudents: 'tutorResultsStudents'
+  tutorResultsStudents: 'tutorResultsStudents',
+  tutorResultsChart: 'tutorResultsChart'
 }

@@ -976,6 +976,7 @@
     "statSubjects": "Изучаемые главы",
     "statSubjectsOf": "Всего из {{total}} глав",
     "statLessons": "Пройденные уроки",
+    "statTopics": "Пройденные темы",
     "statLessonsOf": "Из {{total}} уроков",
     "statAccuracy": "Правильные ответы",
     "statAccuracyAvg": "средний результат",
@@ -1025,6 +1026,7 @@
     "statStudents": "Ученики",
     "statGroups": "Группы",
     "statLessons": "Проведённые уроки",
+    "statTopics": "Пройденные темы",
     "statAverageResult": "Средний результат"
   },
   "tutorGroups": {
@@ -1047,6 +1049,7 @@
     "statGroups": "Группы",
     "statStudentsInGroups": "Учеников в группах",
     "statStudentsWithoutGroup": "Без группы",
+    "averageScore": "Средний результат",
     "studentsCount": "{{count}} учеников",
     "selectedCount": "Выбрано: {{count}}",
     "open": "Открыть",
@@ -1115,6 +1118,9 @@
     "statAverageResultSub": "+{{percent}}% рост",
     "statTodayLessons": "Уроки сегодня",
     "statTodayLessonsSub": "По плану",
+    "statCompletedTopics": "Пройденные темы",
+    "statCompletedTopicsSub": "+{{count}} к прошлому периоду",
+    "resultsChartEmpty": "Результатов пока нет",
     "recentStudentsTitle": "Недавно добавленные ученики",
     "recentStudentsEmpty": "Пока нет добавленных учеников",
     "viewAll": "Смотреть все",

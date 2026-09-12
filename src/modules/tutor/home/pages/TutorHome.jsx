@@ -14,7 +14,6 @@ import TutorStatsGrid from '../components/TutorStatsGrid'
 import TutorRecentStudents from '../components/TutorRecentStudents'
 import TutorGroupsCard from '../components/TutorGroupsCard'
 import TutorResultsChart from '../components/TutorResultsChart'
-import { mockTutorStats, mockTutorGroups, mockResultsChart } from '../mock'
 
 const TutorHome = () => {
   const { t } = useTranslation()
@@ -28,7 +27,26 @@ const TutorHome = () => {
     url: URLS.myReferrals
   })
 
+  const { data: groupsData, isLoading: isLoadingGroups } = useGetQuery({
+    key: KEYS.tutorGroups,
+    url: URLS.tutorGroups
+  })
+
+  const { data: overviewData, isLoading: isLoadingOverview } = useGetQuery({
+    key: KEYS.tutorResultsOverview,
+    url: URLS.tutorResultsOverview
+  })
+
+  const { data: chartData, isLoading: isLoadingChart } = useGetQuery({
+    key: KEYS.tutorResultsChart,
+    url: URLS.tutorResultsChart
+  })
+
   const students = get(referralsData, 'data', [])
+  const groups = get(groupsData, 'data', [])
+  const overview = get(overviewData, 'data', null)
+  const chart = get(chartData, 'data', null)
+
   const fullName = get(user, 'user.full_name', '')
   const firstName = fullName ? fullName.split(' ')[0] : ''
 
@@ -82,17 +100,22 @@ const TutorHome = () => {
         </div>
       </div>
 
-      <TutorStatsGrid totalStudents={students.length} stats={mockTutorStats} />
+      <TutorStatsGrid overview={overview} isLoading={isLoadingOverview} />
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <TutorRecentStudents students={students} isLoading={isLoadingReferrals} />
         </div>
         <div className="lg:col-span-3">
-          <TutorGroupsCard groups={mockTutorGroups} />
+          <TutorGroupsCard groups={groups} isLoading={isLoadingGroups} />
         </div>
         <div className="lg:col-span-4">
-          <TutorResultsChart labels={mockResultsChart.labels} values={mockResultsChart.values} compact />
+          <TutorResultsChart
+            labels={get(chart, 'labels', [])}
+            values={get(chart, 'values', [])}
+            isLoading={isLoadingChart}
+            compact
+          />
         </div>
       </div>
 

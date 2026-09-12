@@ -119,6 +119,7 @@ export const URLS = {
   tutorMyStudents: '/api/v1/tutor/tutor/my-students/',
   tutorResultsOverview: '/api/v1/tutor/tutor/results/overview/',
   tutorResultsStudents: '/api/v1/tutor/tutor/results/students/',
+  tutorResultsChart: '/api/v1/tutor/tutor/results/chart/',
 
   // Tutor referrals endpoints
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',

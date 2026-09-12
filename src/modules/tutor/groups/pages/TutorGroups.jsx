@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
@@ -29,6 +29,16 @@ const TutorGroups = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingGroup, setEditingGroup] = useState(null)
   const [deletingGroup, setDeletingGroup] = useState(null)
+
+  // Bosh sahifadan ?create=1 bilan kelsa, yaratish oynasini darhol ochamiz
+  useEffect(() => {
+    if (!router.isReady) return
+    if (router.query.create) {
+      setEditingGroup(null)
+      setIsFormOpen(true)
+      router.replace('/dashboard/tutor/groups', undefined, { shallow: true })
+    }
+  }, [router.isReady, router.query.create])
 
   const { data: groupsData, isLoading } = useGetQuery({
     key: KEYS.tutorGroups,

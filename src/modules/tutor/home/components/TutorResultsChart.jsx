@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 const AXIS_TICKS = [0, 25, 50, 75, 100]
 
-const TutorResultsChart = ({ labels, values, compact }) => {
+const TutorResultsChart = ({ labels, values, compact, isLoading }) => {
   const { t } = useTranslation()
 
   const WIDTH = compact ? 320 : 560
@@ -43,6 +43,17 @@ const TutorResultsChart = ({ labels, values, compact }) => {
     compact && labels && labels.length > 3
       ? labels.filter((_, i) => i === 0 || i === labels.length - 1 || i === Math.floor((labels.length - 1) / 2))
       : labels
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-[#F0F0F0] bg-white p-3 shadow-sm sm:p-4">
+        <div className="h-5 w-40 animate-pulse rounded bg-gray-100" />
+        <div className="mt-3 h-[150px] w-full animate-pulse rounded-xl bg-gray-100" />
+      </div>
+    )
+  }
+
+  const hasData = Array.isArray(values) && values.some((value) => value > 0)
 
   return (
     <div className="rounded-2xl border border-[#F0F0F0] bg-white p-3 shadow-sm sm:p-4">
@@ -98,6 +109,10 @@ const TutorResultsChart = ({ labels, values, compact }) => {
           <span key={label}>{label}</span>
         ))}
       </div>
+
+      {!hasData ? (
+        <p className="mt-2 text-center text-xs text-[#8A8A8E]">{t('tutorHome.resultsChartEmpty')}</p>
+      ) : null}
     </div>
   )
 }
