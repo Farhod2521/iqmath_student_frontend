@@ -114,6 +114,12 @@ export const URLS = {
   // Mentor requests endpoints
   mentorRequestsList: '/api/v1/func_student/my-unsolved-question/list/',
 
+  // Tutor guruhlari va o'quvchilari
+  tutorGroups: '/api/v1/tutor/tutor/groups/',
+  tutorMyStudents: '/api/v1/tutor/tutor/my-students/',
+  tutorResultsOverview: '/api/v1/tutor/tutor/results/overview/',
+  tutorResultsStudents: '/api/v1/tutor/tutor/results/students/',
+
   // Tutor referrals endpoints
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',
   tutorReferrals: '/api/v1/tutor/tutor/referral-transactions/',

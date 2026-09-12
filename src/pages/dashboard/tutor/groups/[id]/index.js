@@ -1,10 +1,10 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
-import TutorProfile from '@/modules/tutor/profile/pages/TutorProfile'
+import TutorGroupDetail from '@/modules/tutor/groups/pages/TutorGroupDetail'
 
 const Index = () => {
   return (
     <LayoutAdmin>
-      <TutorProfile />
+      <TutorGroupDetail />
     </LayoutAdmin>
   )
 }

@@ -90,5 +90,13 @@ export const KEYS = {
   bookMyPurchases: 'book-my-purchases',
   bookPayments: 'book-payments',
 
-  teacherFine: 'data-teacher-fine'
+  teacherFine: 'data-teacher-fine',
+
+  // Tutor guruhlari
+  tutorGroups: 'tutorGroups',
+  tutorGroupDetail: 'tutorGroupDetail',
+  tutorMyStudents: 'tutorMyStudents',
+  tutorGroupResults: 'tutorGroupResults',
+  tutorResultsOverview: 'tutorResultsOverview',
+  tutorResultsStudents: 'tutorResultsStudents'
 }

@@ -43,6 +43,19 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
+    key: 'tutor-groups',
+    path: '/dashboard/tutor/groups',
+    label: t('tutorGroups.menuLabel'),
+    icon: (isActive) => (
+      <PiUsers
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TUTOR],
+    type: MenuType.LINK
+  },
+  {
     key: 'home',
     path: '/dashboard/student/home',
     label: t('studentHome.menuLabel'),
@@ -518,7 +531,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
+    roles: [RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
 
@@ -533,7 +546,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TEACHER, RolesList.TUTOR, RolesList.ADMIN, RolesList.SUPERADMIN],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {
@@ -547,7 +560,7 @@ export const getMenuItems = (t) => [
       />
     ),
     disabled: false,
-    roles: [RolesList.TUTOR, RolesList.ADMIN],
+    roles: [RolesList.ADMIN],
     type: MenuType.LINK
   },
   { roles: [RolesList.TEACHER, RolesList.SUPERADMIN], type: MenuType.GROUP },
