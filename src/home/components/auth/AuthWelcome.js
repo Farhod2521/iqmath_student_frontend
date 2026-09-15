@@ -16,7 +16,7 @@ function AuthWelcome() {
       if (session?.role === RolesList.TEACHER) {
         window.location.href = '/dashboard/teacher/statistics'
       } else if (session?.role === RolesList.PARENT) {
-        window.location.href = '/dashboard/parent/my-children'
+        window.location.href = '/dashboard/parent/home'
       } else if (session?.role === RolesList.TUTOR) {
         window.location.href = '/dashboard/tutor/referrals'
       } else {

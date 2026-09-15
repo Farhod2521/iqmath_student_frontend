@@ -48,7 +48,7 @@ const CTA = () => {
       if (session?.role === RolesList.TEACHER) {
         router.push('/dashboard/teacher/statistics')
       } else if (session?.role === RolesList.PARENT) {
-        router.push('/dashboard/parent/my-children')
+        router.push('/dashboard/parent/home')
       } else if (session?.role === RolesList.TUTOR) {
         router.push('/dashboard/tutor/referrals')
       } else {

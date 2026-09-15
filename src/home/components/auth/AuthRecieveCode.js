@@ -80,7 +80,7 @@ const AuthRecieveCode = () => {
         if (selectedRole?.value === RolesList.STUDENT) {
           window.location.href = `/dashboard/student/home?phone=${phoneTab}`
         } else if (selectedRole?.value === RolesList.PARENT) {
-          window.location.href = `/dashboard/parent/my-children?phone=${phoneTab}`
+          window.location.href = `/dashboard/parent/home?phone=${phoneTab}`
         } else if (selectedRole?.value === RolesList.TUTOR) {
           window.location.href = `/dashboard/tutor/referrals?phone=${phoneTab}`
         } else {

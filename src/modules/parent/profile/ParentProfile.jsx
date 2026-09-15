@@ -1,30 +1,29 @@
 import { useState, useEffect } from 'react'
-import RightIcon from '@/components/icons/right'
-import Input from '@/components/input'
-import Image from 'next/image'
-import TrashIcon from '@/components/icons/trash'
-import ImageUploader from '@/components/image-uploader'
-import AnimateUp from '@/components/motion-animation'
-import usePostQuery from '@/hooks/api/usePostQuery'
-import { URLS } from '@/constants/url'
-import toast from 'react-hot-toast'
-import { KEYS } from '@/constants/key'
+import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { get } from 'lodash'
-import { Button, Card } from '@heroui/react'
-import LayoutAdmin from '@/layout/LayoutAdmin'
-import { useTranslation } from 'react-i18next'
-import { request } from '@/services/api'
+import toast from 'react-hot-toast'
 import { useGetQuery } from '@/hooks'
+import usePostQuery from '@/hooks/api/usePostQuery'
+import { URLS } from '@/constants/url'
+import { KEYS } from '@/constants/key'
+import { request } from '@/services/api'
+import Input from '@/components/input'
+import ContentLoader from '@/components/loader/content-loader'
+import ParentProfileHero from './components/ParentProfileHero'
+import ParentProfileInfoCard from './components/ParentProfileInfoCard'
+import ParentProfileSecurityCard from './components/ParentProfileSecurityCard'
+import ParentProfileQuickActions from './components/ParentProfileQuickActions'
+import ParentEditInfoModal from './components/ParentEditInfoModal'
+import ParentChangePasswordModal from './components/ParentChangePasswordModal'
 
 const ParentProfile = () => {
   const { t } = useTranslation()
   const { data: session } = useSession()
-  const [showDropdownMain, setShowDropdownMain] = useState(false)
-  const [showDropdownPassword, setShowDropdownPassword] = useState(false)
-  const [showDropdownAccount, setShowDropdownAccount] = useState(false)
 
-  // Form states - faqat API'da mavjud bo'lgan fieldlar
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
@@ -33,21 +32,14 @@ const ParentProfile = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  // Phone verification states
   const [newPhone, setNewPhone] = useState('')
   const [smsCode, setSmsCode] = useState('')
   const [showPhoneVerification, setShowPhoneVerification] = useState(false)
 
   const { data: parentProfile, isLoading } = useGetQuery({
-    key: KEYS.parentProfile,
-    url: URLS.parentProfile,
-    // headers: {
-    //   Authorization: `Bearer ${session?.accessToken}`
-    // },
+    key: KEYS.studentProfile,
+    url: URLS.studentProfile,
     enabled: !!session?.accessToken
   })
 
@@ -60,31 +52,23 @@ const ParentProfile = () => {
     }
   }, [parentProfile])
 
-  const { mutate: profileUpdate } = usePostQuery({
-    listKeyId: 'profile-update'
-  })
+  const { mutate: profileUpdate } = usePostQuery({ listKeyId: 'profile-update' })
+  const { mutate: changePassword, isLoading: isChangingPassword } = usePostQuery({ listKeyId: 'change-password' })
+  const { mutate: verifyPhoneChange, isLoading: isVerifyingPhone } = usePostQuery({ listKeyId: 'verify-phone-change' })
 
-  const { mutate: changePassword, isLoading: isChangingPassword } = usePostQuery({
-    listKeyId: 'change-password'
-  })
-
-  const { mutate: verifyPhoneChange, isLoading: isVerifyingPhone } = usePostQuery({
-    listKeyId: 'verify-phone-change'
-  })
+  const savedPhone = get(parentProfile, 'data.phone', '')
+  const phoneChanged = phoneNumber !== savedPhone
+  const identification = get(parentProfile, 'data.identification') || get(parentProfile, 'data.id', '')
+  const parentDate = get(parentProfile, 'data.parent_date', '')
+  const parentTime = get(parentProfile, 'data.parent_time', '')
+  const createdAtRaw = parentDate ? `${parentDate}${parentTime ? ` ${parentTime}` : ''}` : ''
 
   const handleProfileUpdate = () => {
-    console.log('handleProfileUpdate called', { fullName, email, address, phoneNumber })
+    const updateData = { full_name: fullName, email, address }
 
-    const updateData = {
-      full_name: fullName,
-      email: email,
-      address: address
-    }
-
-    // Agar telefon raqam o'zgargan bo'lsa, parol ham kerak
-    if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
+    if (phoneChanged) {
       if (!currentPassword) {
-        toast.error("Telefon raqamni o'zgartirish uchun joriy parolni kiriting")
+        toast.error(t('parentProfile.phoneChangePasswordHint'))
         return
       }
       updateData.phone = phoneNumber
@@ -96,24 +80,20 @@ const ParentProfile = () => {
         url: URLS.updateProfile,
         attributes: updateData,
         config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
+          headers: { Authorization: `Bearer ${session?.accessToken}`, 'Content-Type': 'application/json' }
         }
       },
       {
-        onSuccess: (data) => {
-          console.log('Profile update success:', data)
-          toast.success('Profil muvaffaqiyatli yangilandi')
-          if (phoneNumber !== get(parentProfile, 'data.phone', '')) {
+        onSuccess: () => {
+          toast.success(t('save'))
+          setIsEditModalOpen(false)
+          if (phoneChanged) {
             setShowPhoneVerification(true)
             setNewPhone(phoneNumber)
           }
         },
         onError: (error) => {
-          console.log('Profile update error:', error)
-          toast.error(error.response?.data?.error || 'Profil yangilashda xatolik yuz berdi')
+          toast.error(error.response?.data?.error || 'Xatolik yuz berdi')
         }
       }
     )
@@ -121,52 +101,39 @@ const ParentProfile = () => {
 
   const handlePasswordChange = () => {
     if (!currentPassword) {
-      toast.error('Joriy parolni kiriting')
+      toast.error(t('parentProfile.currentPasswordLabel'))
       return
     }
-
     if (!newPassword) {
-      toast.error('Yangi parolni kiriting')
+      toast.error(t('parentProfile.newPasswordLabel'))
       return
     }
-
     if (newPassword.length < 6) {
       toast.error("Yangi parol kamida 6 ta belgi bo'lishi kerak")
       return
     }
-
     if (newPassword !== confirmPassword) {
       toast.error('Yangi parollar mos kelmadi')
       return
     }
 
-    const passwordData = {
-      old_password: currentPassword,
-      new_password: newPassword
-    }
-
     changePassword(
       {
         url: URLS.changePasswordNew,
-        attributes: passwordData,
+        attributes: { old_password: currentPassword, new_password: newPassword },
         config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
+          headers: { Authorization: `Bearer ${session?.accessToken}`, 'Content-Type': 'application/json' }
         }
       },
       {
-        onSuccess: (data) => {
-          console.log('Password change success:', data)
+        onSuccess: () => {
           toast.success("Parol muvaffaqiyatli o'zgartirildi")
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
-          setShowDropdownPassword(false)
+          setIsPasswordModalOpen(false)
         },
         onError: (error) => {
-          console.log('Password change error:', error)
           toast.error(error.response?.data?.error || "Parol o'zgartirishda xatolik yuz berdi")
         }
       }
@@ -179,25 +146,16 @@ const ParentProfile = () => {
       return
     }
 
-    const verificationData = {
-      sms_code: smsCode,
-      new_phone: newPhone
-    }
-
     verifyPhoneChange(
       {
         url: URLS.verifyPhoneChange,
-        attributes: verificationData,
+        attributes: { sms_code: smsCode, new_phone: newPhone },
         config: {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            'Content-Type': 'application/json'
-          }
+          headers: { Authorization: `Bearer ${session?.accessToken}`, 'Content-Type': 'application/json' }
         }
       },
       {
-        onSuccess: (data) => {
-          console.log('Phone verification success:', data)
+        onSuccess: () => {
           toast.success('Telefon raqam muvaffaqiyatli tasdiqlandi')
           setSmsCode('')
           setNewPhone('')
@@ -205,7 +163,6 @@ const ParentProfile = () => {
           setPhoneNumber(newPhone)
         },
         onError: (error) => {
-          console.log('Phone verification error:', error)
           toast.error(error.response?.data?.error || "SMS kod noto'g'ri")
         }
       }
@@ -213,303 +170,76 @@ const ParentProfile = () => {
   }
 
   const handleDelete = () => {
+    if (!window.confirm(t('parentProfile.deleteConfirm'))) return
     request
       .delete('/api/v1/auth/student/delete-profile/')
-      .then((res) => {
+      .then(() => {
         toast.success("Hisob o'chirildi")
         window.location.reload()
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("O'chirib bo'lmadi")
       })
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
-      </div>
-    )
+    return <ContentLoader classNames="!min-h-[400px] !w-full" />
   }
 
   return (
-    <>
-      <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
-          {/* Asosiy ma'lumotlar */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
-            <div
-              onClick={() => setShowDropdownMain(!showDropdownMain)}
-              className="flex items-center justify-between cursor-pointer"
-            >
-              <h4 className="font-medium text-[17px]">{t('basicInformation')}</h4>
-              <button>
-                <RightIcon
-                  className={`${!showDropdownMain ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
-                  color="#BCBFC2"
-                />
-              </button>
-            </div>
+    <div className="flex flex-col gap-3 pb-4">
+      <ParentProfileHero fullName={fullName} identification={identification} />
 
-            {showDropdownMain && (
-              <AnimateUp>
-                <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
-
-                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      To'liq ism <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <Input
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="To'liq ismingizni kiriting"
-                    />
-                  </div>
-
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Telefon raqam <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <Input
-                      type="text"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="+998901234567"
-                    />
-                  </div>
-
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Email <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <Input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="email@example.com"
-                    />
-                  </div>
-
-                  <div>
-                    <p className="text-[15px] mb-[8px]">Manzil</p>
-                    <Input
-                      type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Manzilingizni kiriting"
-                    />
-                  </div>
-
-                  {phoneNumber !== get(parentProfile, 'data.phone', '') && (
-                    <div>
-                      <p className="text-[15px] mb-[8px]">
-                        Joriy parol (telefon raqamni o'zgartirish uchun) <span className="text-[#FF3B30]">*</span>
-                      </p>
-                      <div className="relative">
-                        <Input
-                          type={showCurrentPassword ? 'text' : 'password'}
-                          value={currentPassword}
-                          onChange={(e) => setCurrentPassword(e.target.value)}
-                          placeholder="Joriy parolingizni kiriting"
-                        />
-                        <button
-                          type="button"
-                          className="absolute -translate-y-1/2 right-3 top-1/2"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        >
-                          {showCurrentPassword ? (
-                            <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
-                          ) : (
-                            <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log("Saqlash button clicked - Asosiy ma'lumotlar")
-                      handleProfileUpdate()
-                    }}
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
-                  >
-                    Saqlash
-                  </button>
-                </form>
-              </AnimateUp>
-            )}
-          </div>
-
-          {/* Parol */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
-            <div
-              onClick={() => setShowDropdownPassword(!showDropdownPassword)}
-              className="flex items-center justify-between cursor-pointer"
-            >
-              <h4 className="font-medium text-[17px]">Parol o'zgartirish</h4>
-              <button>
-                <RightIcon
-                  className={`${!showDropdownPassword ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
-                  color="#BCBFC2"
-                />
-              </button>
-            </div>
-
-            {showDropdownPassword && (
-              <AnimateUp>
-                <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
-
-                <form className="space-y-[24px]" onSubmit={(e) => e.preventDefault()}>
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Joriy parol <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <div className="relative">
-                      <Input
-                        type={showCurrentPassword ? 'text' : 'password'}
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        placeholder="Joriy parolingizni kiriting"
-                      />
-                      <button
-                        type="button"
-                        className="absolute -translate-y-1/2 right-3 top-1/2"
-                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                      >
-                        {showCurrentPassword ? (
-                          <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
-                        ) : (
-                          <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Yangi parol <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <div className="relative">
-                      <Input
-                        type={showNewPassword ? 'text' : 'password'}
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        placeholder="Yangi parolni kiriting"
-                      />
-                      <button
-                        type="button"
-                        className="absolute -translate-y-1/2 right-3 top-1/2"
-                        onClick={() => setShowNewPassword(!showNewPassword)}
-                      >
-                        {showNewPassword ? (
-                          <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
-                        ) : (
-                          <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-[15px] mb-[8px]">
-                      Yangi parolni tasdiqlang <span className="text-[#FF3B30]">*</span>
-                    </p>
-                    <div className="relative">
-                      <Input
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Yangi parolni qayta kiriting"
-                      />
-                      <button
-                        type="button"
-                        className="absolute -translate-y-1/2 right-3 top-1/2"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      >
-                        {showConfirmPassword ? (
-                          <Image src="/icons/eye.svg" alt="eye" width={24} height={24} />
-                        ) : (
-                          <Image src="/icons/eye-off.svg" alt="eye-off" width={24} height={24} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log('Saqlash button clicked - Parol')
-                      handlePasswordChange()
-                    }}
-                    disabled={isChangingPassword}
-                    className="bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
-                  >
-                    {isChangingPassword ? 'Saqlanmoqda...' : 'Saqlash'}
-                  </button>
-                </form>
-              </AnimateUp>
-            )}
-          </div>
-
-          {/* Hisob ma'lumotlari */}
-          <div className="border py-[17px] px-[24px] rounded-[12px]">
-            <div
-              onClick={() => setShowDropdownAccount(!showDropdownAccount)}
-              className="flex items-center justify-between cursor-pointer"
-            >
-              <h4 className="font-medium text-[17px]">Hisob ma'lumotlari</h4>
-              <button>
-                <RightIcon
-                  className={`${!showDropdownAccount ? 'rotate-90' : '-rotate-90'} transition-all duration-200`}
-                  color="#BCBFC2"
-                />
-              </button>
-            </div>
-
-            {showDropdownAccount && (
-              <div>
-                <div className="w-full h-[1px] bg-[#E9E9E9] my-[16px]"></div>
-
-                <div className="flex justify-between gap-[8px] flex-wrap">
-                  <div className="flex items-center gap-x-[15px]">
-                    <Image
-                      src={'/images/avatar-profile.png'}
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                      className="bg-black rounded-full"
-                    />
-
-                    <div>
-                      <h3 className="text-[17px] font-semibold">{get(parentProfile, 'data.full_name', '')}</h3>
-                      <p className="text-[#8A8A8E] text-[15px]">ID: {get(parentProfile, 'data.id', '')}</p>
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={handleDelete}
-                    variant="bordered"
-                    className={'flex bg-transparent !text-black gap-x-[8px] border border-[#FF3B30]'}
-                  >
-                    <TrashIcon color="#FF3B30" />
-                    <p>Hisobni o'chirish</p>
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div className="lg:col-span-8">
+          <ParentProfileInfoCard
+            fullName={fullName}
+            phone={phoneNumber}
+            identification={identification}
+            createdAt={createdAtRaw}
+            onEdit={() => setIsEditModalOpen(true)}
+          />
         </div>
-
-        <div className="col-span-12 sm:col-span-6">
-          <ImageUploader />
+        <div className="flex flex-col gap-3 lg:col-span-4">
+          <ParentProfileSecurityCard />
+          <ParentProfileQuickActions
+            onEditInfo={() => setIsEditModalOpen(true)}
+            onChangePassword={() => setIsPasswordModalOpen(true)}
+            onDeleteAccount={handleDelete}
+          />
         </div>
       </div>
 
-      {/* Phone Verification Modal */}
+      <ParentEditInfoModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        fullName={fullName}
+        setFullName={setFullName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        email={email}
+        setEmail={setEmail}
+        address={address}
+        setAddress={setAddress}
+        phoneChanged={phoneChanged}
+        currentPassword={currentPassword}
+        setCurrentPassword={setCurrentPassword}
+        onSave={handleProfileUpdate}
+      />
+
+      <ParentChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        currentPassword={currentPassword}
+        setCurrentPassword={setCurrentPassword}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
+        isSaving={isChangingPassword}
+        onSave={handlePasswordChange}
+      />
+
       {showPhoneVerification && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="max-w-md p-6 mx-4 bg-white rounded-lg w-96">
@@ -530,10 +260,7 @@ const ParentProfile = () => {
 
             <div className="flex gap-2">
               <button
-                onClick={() => {
-                  console.log('Tasdiqlash button clicked')
-                  handlePhoneVerification()
-                }}
+                onClick={handlePhoneVerification}
                 disabled={isVerifyingPhone}
                 className="flex-1 bg-[#5d87ff] text-white py-2 px-4 rounded-lg hover:bg-[#4a6bcc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm border border-[#5d87ff]"
               >
@@ -553,7 +280,7 @@ const ParentProfile = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

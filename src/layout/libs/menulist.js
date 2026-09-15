@@ -56,6 +56,19 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
+    key: 'parent-home',
+    path: '/dashboard/parent/home',
+    label: t('parentHome.menuLabel'),
+    icon: (isActive) => (
+      <LuHouse
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.PARENT, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
     key: 'home',
     path: '/dashboard/student/home',
     label: t('studentHome.menuLabel'),

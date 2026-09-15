@@ -5,6 +5,7 @@ export const KEYS = {
   register: 'register',
   studentProfile: 'studentProfile',
   teacherProfile: 'teacherProfile',
+  parentProfile: 'parentProfile',
   olimpiadaQuizList: 'olimpiadaQuizList',
   quizTest: 'quizTest',
   submitAnswers: 'submitAnswers',
