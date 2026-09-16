@@ -936,6 +936,23 @@
     "confirmPasswordLabel": "Confirm new password",
     "phoneChangePasswordHint": "Enter your current password to change your phone number"
   },
+  "aboutBanner": {
+    "badge": "IQmath platform",
+    "titleLine1": "About",
+    "titleHighlight": "us",
+    "description": "Meet the innovative educational platform that teaches mathematics with modern and effective methods."
+  },
+  "aboutContent": {
+    "badge": "About IQmath",
+    "headingLine1": "Our goal —",
+    "headingLine2": "making mathematics close and engaging for every student",
+    "goalTitle": "Our goal",
+    "goalDesc": "To deliver quality mathematics education to every student in a convenient and effective way.",
+    "audienceTitle": "Who is it for?",
+    "audienceDesc": "For students, teachers, parents, and anyone interested in mathematics.",
+    "offerTitle": "What do we offer?",
+    "offerDesc": "Interactive lessons, tests, practical exercises, video lessons, and progress tracking."
+  },
   "battle": {
     "menuLabel": "Battle",
     "pageTitle": "Math Battle",

@@ -39,7 +39,7 @@ const Navbar = () => {
   const roleLabel = t(ROLE_LABEL_KEY[currentRole] || 'student')
 
   return (
-    <div className="border-b border-[#F0F0F0] bg-white px-3 py-3 sm:px-6 lg:px-8">
+    <div className="border-b border-[#F0F0F0] bg-white py-3 pl-12 pr-3 sm:pl-16 sm:pr-6 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
         {isStudent && (
           <div className="shrink-0">

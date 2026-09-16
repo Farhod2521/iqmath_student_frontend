@@ -21,7 +21,7 @@ import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
 import AuthModal from '../../auth/AuthModal'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import Auth from '../../auth/Auth'
 import { useRouter } from 'next/router'
@@ -70,7 +70,6 @@ const HpHeader = () => {
   const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'))
   const [open, setOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
-  const { data: session, status } = useSession()
   const router = useRouter()
 
   const handleDrawerOpen = () => setOpen(true)
@@ -81,7 +80,7 @@ const HpHeader = () => {
     router.replace(
       {
         pathname: router.pathname,
-        query: { ...router.query, tab: 'signUp' }
+        query: { ...router.query, tab: 'signIn' }
       },
       undefined,
       { shallow: true }
@@ -125,7 +124,7 @@ const HpHeader = () => {
                   background: '#5D87FF'
                 }}
               >
-                {session ? t('login', 'Kirish') : t('signIn')}
+                {t('login', 'Kirish')}
               </Button>
 
               <IconButton color="inherit" aria-label="menu" onClick={handleDrawerOpen}>
@@ -173,7 +172,7 @@ const HpHeader = () => {
                     // boxShadow: '0 10px 20px rgba(99,102,241,0.20)'
                   }}
                 >
-                  {session ? t('login', 'Kirish') : t('signIn')}
+                  {t('login', 'Kirish')}
                 </Button>
               </Stack>
             </>

@@ -1277,6 +1277,23 @@
     "confirmPasswordLabel": "Yangi parolni tasdiqlang",
     "phoneChangePasswordHint": "Telefon raqamni o'zgartirish uchun joriy parolni kiriting"
   },
+  "aboutBanner": {
+    "badge": "IQmath platformasi",
+    "titleLine1": "Biz",
+    "titleHighlight": "haqimizda",
+    "description": "Matematikani zamonaviy va samarali usullar bilan o'rgatuvchi innovatsion ta'lim platformasi bilan tanishing."
+  },
+  "aboutContent": {
+    "badge": "IQmath haqida",
+    "headingLine1": "Bizning maqsadimiz —",
+    "headingLine2": "matematikani har bir o'quvchi uchun yaqin va qiziqarli qilish",
+    "goalTitle": "Bizning maqsadimiz",
+    "goalDesc": "Har bir o'quvchi uchun sifatli matematika ta'limini qulay va samarali shaklda taqdim etish.",
+    "audienceTitle": "Kimlar uchun?",
+    "audienceDesc": "O'quvchilar, o'qituvchilar, ota-onalar va matematika sohasiga qiziquvchi har bir foydalanuvchi uchun.",
+    "offerTitle": "Nimalarni taqdim etamiz?",
+    "offerDesc": "Interaktiv darslar, testlar, amaliy masalalar, video darsliklar va rivojlanishni kuzatish imkoniyati."
+  },
   "featuresSection": {
     "adaptive": {
       "title": "Moslashuvchan ta’lim tizimi",

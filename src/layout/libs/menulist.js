@@ -693,7 +693,7 @@ export const getMenuItemClasses = (isActive, disabled) => {
     'flex gap-x-[10px] items-center py-[11px] px-[14px] rounded-[14px] transition-all duration-300 font-medium text-[14px] group'
   const active = 'bg-[#5d87ff] text-white font-semibold shadow-md shadow-[#5d87ff]/25'
   const inactive =
-    'text-[#5A6A85] hover:bg-[#F1F4FF] dark:bg-transparent dark:hover:bg-[#26334A] dark:text-white'
+    'text-[#5A6A85] hover:bg-[#5d87ff] hover:text-white dark:bg-transparent dark:hover:bg-[#5d87ff] dark:text-white'
   const disabledCls = 'opacity-50 cursor-not-allowed pointer-events-none'
   return `${base} ${disabled ? disabledCls : isActive ? active : inactive}`
 }

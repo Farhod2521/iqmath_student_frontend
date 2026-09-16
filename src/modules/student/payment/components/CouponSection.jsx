@@ -76,8 +76,8 @@ const CouponSection = ({
         </div>
       )}
 
-      {/* Payment method: full payment or Uzum Nasiya installments */}
-      {selectedPlan && <NasiyaInstallmentOption price={selectedPlan.price} />}
+      {/* Uzum Nasiya temporarily disabled — Uzum-side integration issue, re-enable once resolved */}
+      {/* {selectedPlan && <NasiyaInstallmentOption price={selectedPlan.price} />} */}
 
       {/* Coupon Input */}
       <div className="mb-4">
