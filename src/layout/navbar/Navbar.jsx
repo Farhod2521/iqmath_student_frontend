@@ -64,7 +64,7 @@ const Navbar = () => {
           </span>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        <div className="flex flex-wrap shrink-0 items-center justify-end gap-1.5 sm:gap-2">
           {isStudent && (
             <>
               <div className="flex items-center gap-1.5 rounded-full bg-[#F7F8FA] py-1 pl-1.5 pr-3">
@@ -83,9 +83,9 @@ const Navbar = () => {
             </>
           )}
 
-          <button className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#F0F0F0] text-[#5A6A85] hover:bg-gray-50">
-            <Bell size={16} />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#EF4444]" />
+          <button className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-[#F0F0F0] text-[#5A6A85] hover:bg-gray-50 min-[400px]:h-8 min-[400px]:w-8 sm:h-9 sm:w-9">
+            <Bell size={14} className="min-[400px]:size-4" />
+            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#EF4444] min-[400px]:right-2 min-[400px]:top-2" />
           </button>
 
           <LanguageDropdown />

@@ -1,50 +1,55 @@
 import React from 'react'
+import ReactECharts from 'echarts-for-react'
 import { useTranslation } from 'react-i18next'
 
 const MonthlySubscriptionsChart = ({ data }) => {
   const { t } = useTranslation()
 
   const monthNames = [
-    'Yanvar',
-    'Fevral',
-    'Mart',
-    'Aprel',
+    'Yan',
+    'Fev',
+    'Mar',
+    'Apr',
     'May',
     'Iyun',
     'Iyul',
-    'Avgust',
-    'Sentabr',
-    'Oktabr',
-    'Noyabr',
-    'Dekabr'
+    'Avg',
+    'Sen',
+    'Okt',
+    'Noy',
+    'Dek'
   ]
 
-  const maxCount = Math.max(...data.monthly_subscriptions?.map((sub) => sub.count))
+  const subscriptions = data?.monthly_subscriptions || []
+
+  const option = {
+    grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    xAxis: {
+      type: 'category',
+      data: subscriptions.map((sub) => monthNames[sub.month - 1] || `${sub.month}`),
+      axisTick: { show: false },
+      axisLine: { lineStyle: { color: '#E9E9E9' } }
+    },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: '#F0F0F0' } } },
+    series: [
+      {
+        type: 'bar',
+        data: subscriptions.map((sub) => sub.count),
+        barWidth: '55%',
+        itemStyle: { color: '#13DEB9', borderRadius: [6, 6, 0, 0] }
+      }
+    ]
+  }
 
   return (
     <div className="bg-white dark:bg-[#202936] border border-[#E9E9E9] dark:border-[#232D3A] rounded-[12px] shadow-sm p-6">
-      <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-4">{t('monthlySubscriptions')}</h3>
-      <div className="space-y-4">
-        {data.monthly_subscriptions?.map((subscription, index) => {
-          const percentage = maxCount > 0 ? (subscription.count / maxCount) * 100 : 0
-          const monthName = monthNames[subscription.month - 1] || `Oy ${subscription.month}`
-
-          return (
-            <div key={index} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-[#2A3547] dark:text-white">{monthName}</span>
-                <span className="text-sm font-semibold text-[#13DEB9]">{subscription.count} ta</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-[#2A3547] rounded-full h-2">
-                <div
-                  className="h-2 rounded-full bg-[#13DEB9] transition-all duration-500"
-                  style={{ width: `${percentage}%` }}
-                ></div>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-2">{t('monthlySubscriptions')}</h3>
+      {subscriptions.length > 0 ? (
+        <ReactECharts option={option} style={{ height: '260px' }} />
+      ) : (
+        <div className="flex h-[260px] items-center justify-center text-sm text-[#7C8FAC]">{t('noData')}</div>
+      )}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import StatsCards from './components/StatsCards'
 import PlansRevenueChart from './components/PlansRevenueChart'
 import MonthlySubscriptionsChart from './components/MonthlySubscriptionsChart'
 import RevenueSummary from './components/RevenueSummary'
+import StatisticsHero from './components/StatisticsHero'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
@@ -33,9 +34,11 @@ const Statistics = () => {
   }
 
   return (
-    <div className="p-6 md:p-8 font-sf">
+    <div className="font-sf">
+      <StatisticsHero />
+
       <StatsCards data={statisticsData?.data} isLoading={isLoading} />
-      <div className="my-8">
+      <div className="mb-8">
         <MentorClosedChatsStats />
       </div>
 
@@ -50,22 +53,28 @@ const Statistics = () => {
           <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-4">{t('cashbackReport')}</h3>
           <div className="space-y-4">
             <div className="flex justify-between items-center p-4 bg-[#E9F9EC] rounded-lg">
-              <div>
-                <p className="text-sm text-[#7C8FAC]">{t('studentCashbackAmount')}</p>
-                <p className="text-lg font-bold text-[#13DEB9]">
-                  {statisticsData?.data?.total_student_cashback?.toLocaleString() || 0} so'm
-                </p>
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-lg">🎓</span>
+                <div>
+                  <p className="text-sm text-[#7C8FAC]">{t('studentCashbackAmount')}</p>
+                  <p className="text-lg font-bold text-[#13DEB9]">
+                    {statisticsData?.data?.total_student_cashback?.toLocaleString() || 0} so'm
+                  </p>
+                </div>
               </div>
-              <span className="text-2xl">🎓</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-[#E6F4FF] rounded-lg">
-              <div>
-                <p className="text-sm text-[#7C8FAC]">{t('teacherCashbackAmount')}</p>
-                <p className="text-lg font-bold text-[#5D87FF]">
-                  {statisticsData?.data?.total_teacher_cashback?.toLocaleString() || 0} so'm
-                </p>
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-lg">
+                  👨‍🏫
+                </span>
+                <div>
+                  <p className="text-sm text-[#7C8FAC]">{t('teacherCashbackAmount')}</p>
+                  <p className="text-lg font-bold text-[#5D87FF]">
+                    {statisticsData?.data?.total_teacher_cashback?.toLocaleString() || 0} so'm
+                  </p>
+                </div>
               </div>
-              <span className="text-2xl">👨‍🏫</span>
             </div>
           </div>
         </div>
