@@ -48,13 +48,13 @@ const CardLockedSubject = ({ item }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 p-2.5">
-          <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#F3F5F9] px-3 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
-            <BookOpen size={13} className="text-[#5D87FF]" />
+        <div className="flex min-w-0 flex-nowrap items-center gap-1 p-2.5">
+          <span className="inline-flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-lg bg-[#F3F5F9] px-2 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
+            <BookOpen size={13} className="shrink-0 text-[#5D87FF]" />
             {topicsCount} {t('subjectLessonsUnit')}
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#F3F5F9] px-3 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
-            <FileText size={13} className="text-[#5D87FF]" />
+          <span className="inline-flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-lg bg-[#F3F5F9] px-2 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
+            <FileText size={13} className="shrink-0 text-[#5D87FF]" />
             {questionsCount} {t('subjectExercisesUnit')}
           </span>
         </div>
