@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
@@ -6,71 +6,58 @@ import { ArrowLeft, ArrowRightLeft, Pencil, Trash2, UserMinus, UserPlus, Users2 
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import GroupStudentsTable from '../components/GroupStudentsTable'
-import AddStudentsModal from '../components/AddStudentsModal'
-import InviteStudentModal from '../components/InviteStudentModal'
-import PendingInvitationsList from '../components/PendingInvitationsList'
-import MoveStudentsModal from '../components/MoveStudentsModal'
-import GroupFormModal from '../components/GroupFormModal'
-import ConfirmModal from '../components/ConfirmModal'
-import useGroupMutation from '../useGroupMutation'
+import GroupStudentsTable from '@/modules/tutor/groups/components/GroupStudentsTable'
+import MoveStudentsModal from '@/modules/tutor/groups/components/MoveStudentsModal'
+import GroupFormModal from '@/modules/tutor/groups/components/GroupFormModal'
+import ConfirmModal from '@/modules/tutor/groups/components/ConfirmModal'
+import useGroupMutation from '@/modules/tutor/groups/useGroupMutation'
+import UngroupedStudentsModal from '../components/UngroupedStudentsModal'
+import { GROUPS_PATH, TEACHER_GROUP_KEYS } from '../constants'
 
-const TutorGroupDetail = () => {
+const TeacherGroupDetail = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const groupId = router.query.id
 
   const [selectedIds, setSelectedIds] = useState([])
   const [isAddOpen, setIsAddOpen] = useState(false)
-  const [isInviteOpen, setIsInviteOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [movingStudents, setMovingStudents] = useState(null)
   const [removingStudents, setRemovingStudents] = useState(null)
 
+  // Yangi yaratilgan guruhdan ?add=1 bilan kelsa — qo'shish oynasini darhol ochamiz
+  useEffect(() => {
+    if (!router.isReady || !router.query.add) return
+    setIsAddOpen(true)
+    router.replace(`${GROUPS_PATH}/${groupId}`, undefined, { shallow: true })
+  }, [router.isReady, router.query.add])
+
   const { data: groupData, isLoading } = useGetQuery({
-    key: [KEYS.tutorGroupDetail, groupId],
-    url: `${URLS.tutorGroups}${groupId}/`,
+    key: [KEYS.teacherGroupDetail, groupId],
+    url: `${URLS.teacherMyGroups}${groupId}/`,
     enabled: Boolean(groupId)
   })
 
   const { data: groupsData } = useGetQuery({
-    key: KEYS.tutorGroups,
-    url: URLS.tutorGroups
+    key: KEYS.teacherMyGroups,
+    url: URLS.teacherMyGroups
   })
 
   const group = get(groupData, 'data', null)
   const groups = get(groupsData, 'data', [])
   const students = useMemo(() => get(group, 'students', []) || [], [group])
-
   const numericGroupId = group?.id ?? (groupId ? Number(groupId) : null)
-
-  const { data: invitationsData, isLoading: isLoadingInvitations } = useGetQuery({
-    key: [KEYS.tutorGroupInvitations, groupId],
-    url: `${URLS.tutorGroups}${groupId}/invitations/`,
-    enabled: Boolean(groupId)
-  })
-  const invitations = get(invitationsData, 'data', [])
-  const [cancellingId, setCancellingId] = useState(null)
-
-  const cancelInvite = useGroupMutation({
-    method: 'delete',
-    successMessage: t('tutorGroups.inviteCancelled'),
-    errorMessage: t('tutorGroups.errorGeneric'),
-    onDone: () => setCancellingId(null)
-  })
-
-  const handleCancelInvite = (invitationId) => {
-    setCancellingId(invitationId)
-    cancelInvite.mutate({ url: `${URLS.tutorInvitationCancel}${invitationId}/` })
-  }
+  const studentsUrl = `${URLS.teacherMyGroups}${numericGroupId}/students/`
 
   const resetSelection = () => setSelectedIds([])
 
+  const mutationOptions = { errorMessage: t('tutorGroups.errorGeneric'), invalidateKeys: TEACHER_GROUP_KEYS }
+
   const addStudents = useGroupMutation({
+    ...mutationOptions,
     method: 'post',
     successMessage: t('tutorGroups.studentsAdded'),
-    errorMessage: t('tutorGroups.errorGeneric'),
     onDone: () => {
       setIsAddOpen(false)
       resetSelection()
@@ -78,9 +65,9 @@ const TutorGroupDetail = () => {
   })
 
   const moveStudents = useGroupMutation({
+    ...mutationOptions,
     method: 'post',
     successMessage: t('tutorGroups.studentsMoved'),
-    errorMessage: t('tutorGroups.errorGeneric'),
     onDone: () => {
       setMovingStudents(null)
       resetSelection()
@@ -88,9 +75,9 @@ const TutorGroupDetail = () => {
   })
 
   const removeStudents = useGroupMutation({
+    ...mutationOptions,
     method: 'delete',
     successMessage: t('tutorGroups.studentsRemoved'),
-    errorMessage: t('tutorGroups.errorGeneric'),
     onDone: () => {
       setRemovingStudents(null)
       resetSelection()
@@ -98,17 +85,17 @@ const TutorGroupDetail = () => {
   })
 
   const updateGroup = useGroupMutation({
+    ...mutationOptions,
     method: 'patch',
     successMessage: t('tutorGroups.groupUpdated'),
-    errorMessage: t('tutorGroups.errorGeneric'),
     onDone: () => setIsEditOpen(false)
   })
 
   const deleteGroup = useGroupMutation({
+    ...mutationOptions,
     method: 'delete',
     successMessage: t('tutorGroups.groupDeleted'),
-    errorMessage: t('tutorGroups.errorGeneric'),
-    onDone: () => router.push('/dashboard/tutor/groups')
+    onDone: () => router.push(GROUPS_PATH)
   })
 
   const toggleStudent = (studentId) => {
@@ -123,22 +110,17 @@ const TutorGroupDetail = () => {
 
   const selectedStudents = students.filter((student) => selectedIds.includes(student.id))
 
+  // Boshqa guruhga o'tkazish = maqsad guruhga qo'shish (backend eski guruhdan o'zi chiqaradi)
   const handleMove = (targetGroupId) => {
     const ids = (movingStudents || []).map((student) => student.id)
     if (!targetGroupId || ids.length === 0) return
-    moveStudents.mutate({
-      url: `${URLS.tutorGroups}${targetGroupId}/students/`,
-      data: { student_ids: ids }
-    })
+    moveStudents.mutate({ url: `${URLS.teacherMyGroups}${targetGroupId}/students/`, data: { student_ids: ids } })
   }
 
   const handleRemove = () => {
     const ids = (removingStudents || []).map((student) => student.id)
     if (ids.length === 0) return
-    removeStudents.mutate({
-      url: `${URLS.tutorGroups}${numericGroupId}/students/`,
-      data: { student_ids: ids }
-    })
+    removeStudents.mutate({ url: studentsUrl, data: { student_ids: ids } })
   }
 
   if (!isLoading && !group) {
@@ -150,7 +132,7 @@ const TutorGroupDetail = () => {
         <p className="mt-3 text-base font-semibold text-[#191C1D]">{t('tutorGroups.groupNotFound')}</p>
         <button
           type="button"
-          onClick={() => router.push('/dashboard/tutor/groups')}
+          onClick={() => router.push(GROUPS_PATH)}
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#5D87FF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4570EA]"
         >
           <ArrowLeft size={16} />
@@ -164,7 +146,7 @@ const TutorGroupDetail = () => {
     <div className="flex flex-col gap-3 pb-4 sm:gap-4">
       <button
         type="button"
-        onClick={() => router.push('/dashboard/tutor/groups')}
+        onClick={() => router.push(GROUPS_PATH)}
         className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-[#5A6A85] transition hover:text-[#5D87FF]"
       >
         <ArrowLeft size={16} />
@@ -180,9 +162,6 @@ const TutorGroupDetail = () => {
             <h1 className="truncate text-xl font-extrabold text-[#191C1D] sm:text-2xl">
               {isLoading ? '...' : group?.name}
             </h1>
-            <p className="mt-0.5 truncate text-sm text-[#8A8A8E]">
-              {group?.description || t('tutorGroups.noDescription')}
-            </p>
             <p className="mt-1 text-xs font-semibold text-[#5A6A85]">
               {t('tutorGroups.studentsCount', { count: students.length })}
               {group?.created_at ? ` · ${group.created_at}` : ''}
@@ -198,14 +177,6 @@ const TutorGroupDetail = () => {
           >
             <UserPlus size={16} />
             {t('tutorGroups.addStudents')}
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsInviteOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#D7E2FF] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#5D87FF] transition hover:bg-[#EAF0FF]"
-          >
-            <UserPlus size={15} />
-            <span className="hidden sm:inline">{t('tutorGroups.inviteStudent')}</span>
           </button>
           <button
             type="button"
@@ -272,36 +243,11 @@ const TutorGroupDetail = () => {
         />
       </div>
 
-      {invitations.length > 0 || isLoadingInvitations ? (
-        <div className="rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm sm:p-5">
-          <h2 className="mb-3 text-sm font-bold text-[#191C1D]">{t('tutorGroups.pendingInvitations')}</h2>
-          <PendingInvitationsList
-            invitations={invitations}
-            isLoading={isLoadingInvitations}
-            onCancel={handleCancelInvite}
-            cancellingId={cancellingId}
-          />
-        </div>
-      ) : null}
-
-      <InviteStudentModal
-        isOpen={isInviteOpen}
-        onClose={() => setIsInviteOpen(false)}
-        groupId={numericGroupId}
-        groupName={group?.name}
-      />
-
-      <AddStudentsModal
+      <UngroupedStudentsModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={(studentIds) =>
-          addStudents.mutate({
-            url: `${URLS.tutorGroups}${numericGroupId}/students/`,
-            data: { student_ids: studentIds }
-          })
-        }
+        onSubmit={(studentIds) => addStudents.mutate({ url: studentsUrl, data: { student_ids: studentIds } })}
         isLoading={addStudents.isLoading}
-        groupId={numericGroupId}
         groupName={group?.name}
       />
 
@@ -332,20 +278,16 @@ const TutorGroupDetail = () => {
       <GroupFormModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
-        onSubmit={({ name, description }) =>
-          updateGroup.mutate({
-            url: `${URLS.tutorGroups}${numericGroupId}/`,
-            data: { name, description }
-          })
-        }
+        onSubmit={({ name }) => updateGroup.mutate({ url: `${URLS.teacherMyGroups}${numericGroupId}/`, data: { name } })}
         isLoading={updateGroup.isLoading}
         group={group}
+        showDescription={false}
       />
 
       <ConfirmModal
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
-        onConfirm={() => deleteGroup.mutate({ url: `${URLS.tutorGroups}${numericGroupId}/` })}
+        onConfirm={() => deleteGroup.mutate({ url: `${URLS.teacherMyGroups}${numericGroupId}/` })}
         isLoading={deleteGroup.isLoading}
         title={t('tutorGroups.deleteGroup')}
         message={t('tutorGroups.deleteGroupConfirm', { name: group?.name || '' })}
@@ -355,4 +297,4 @@ const TutorGroupDetail = () => {
   )
 }
 
-export default TutorGroupDetail
+export default TeacherGroupDetail

@@ -1113,6 +1113,34 @@
     "studentsAdded": "Ученики добавлены в группу",
     "studentsMoved": "Ученики переведены в другую группу",
     "studentsRemoved": "Ученики исключены из группы",
+    "errorGeneric": "Произошла ошибка. Попробуйте ещё раз.",
+    "inviteStudent": "Добавить другого ученика",
+    "inviteStudentSubtitle": "Найдите по номеру телефона или ID и отправьте приглашение",
+    "searchByPhone": "Номер телефона",
+    "searchById": "ID номер",
+    "searchPlaceholderPhone": "901234567",
+    "searchPlaceholderId": "Например: 202501234567",
+    "search": "Поиск",
+    "searching": "Поиск...",
+    "enterQuery": "Введите номер телефона или ID",
+    "studentNotFound": "Такой ученик не найден",
+    "sendInvite": "Отправить приглашение",
+    "inviteSent": "Приглашение отправлено",
+    "inviteCancelled": "Приглашение отменено",
+    "pendingInvitations": "Отправленные приглашения",
+    "cancelInvite": "Отменить",
+    "noPendingInvitations": "Пока нет отправленных приглашений",
+    "waitingResponse": "Ожидается ответ"
+  },
+  "studentInvitations": {
+    "title": "Приглашение в группу",
+    "subtitle": "Репетитор приглашает вас в свою группу",
+    "fromTutor": "Репетитор",
+    "group": "Группа",
+    "accept": "Принять",
+    "reject": "Отклонить",
+    "accepted": "Вы присоединились к группе",
+    "rejected": "Приглашение отклонено",
     "errorGeneric": "Произошла ошибка. Попробуйте ещё раз."
   },
   "tutorHome": {
@@ -1791,5 +1819,12 @@
     "levelWidgetTitle": "Ваш уровень",
     "maxLevelReached": "Максимальный уровень",
     "toNextLevel": "до следующего уровня"
+  },
+  "teacherGroups": {
+    "subtitle": "Создайте группу и добавьте учеников, которые ещё не в группе",
+    "emptyDescription": "Создайте первую группу, затем добавьте в неё учеников без группы.",
+    "searchUngrouped": "Поиск по имени, ID или телефону...",
+    "ungroupedTotal": "Ученики без группы: {{count}}",
+    "noUngrouped": "Учеников без группы не осталось"
   }
 }

@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { Users2 } from 'lucide-react'
 import Modal from './Modal'
 
-const GroupFormModal = ({ isOpen, onClose, onSubmit, isLoading, group }) => {
+const GroupFormModal = ({ isOpen, onClose, onSubmit, isLoading, group, showDescription = true }) => {
   const { t } = useTranslation()
   const isEdit = Boolean(group)
 
@@ -74,18 +74,20 @@ const GroupFormModal = ({ isOpen, onClose, onSubmit, isLoading, group }) => {
           />
         </div>
 
-        <div>
-          <label className="mb-1.5 block text-sm font-semibold text-[#191C1D]">
-            {t('tutorGroups.groupDescription')}
-          </label>
-          <textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder={t('tutorGroups.groupDescriptionPlaceholder')}
-            rows={3}
-            className="w-full resize-none rounded-xl border border-[#E9E9E9] bg-white px-4 py-3 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF]"
-          />
-        </div>
+        {showDescription ? (
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-[#191C1D]">
+              {t('tutorGroups.groupDescription')}
+            </label>
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder={t('tutorGroups.groupDescriptionPlaceholder')}
+              rows={3}
+              className="w-full resize-none rounded-xl border border-[#E9E9E9] bg-white px-4 py-3 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF]"
+            />
+          </div>
+        ) : null}
       </div>
     </Modal>
   )

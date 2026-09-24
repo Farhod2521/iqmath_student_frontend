@@ -3,7 +3,8 @@ import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'
 import Sidebar from './sidebar/Sidebar'
 import Main from './Main'
-import { useScoreStore, useSettingStore } from '@/store'
+import StudentInvitationsModal from '@/modules/student/invitations/StudentInvitationsModal'
+import { useScoreStore, useSettingStore, useUserStore } from '@/store'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
@@ -15,6 +16,7 @@ const LayoutAdmin = ({ children, title }) => {
   const { data: session } = useSession()
   const isSidebarOpen = useSettingStore((state) => state.isSidebarOpen)
   const setIsSidebarOpen = useSettingStore((state) => state.setIsSidebarOpen)
+  const { role } = useUserStore()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -70,6 +72,8 @@ const LayoutAdmin = ({ children, title }) => {
         <div className="flex flex-col flex-1 min-w-0 min-h-0">
           <Main title={title}>{children}</Main>
         </div>
+
+        {role === 'student' ? <StudentInvitationsModal /> : null}
       </div>
     </ThemeProvider>
   )

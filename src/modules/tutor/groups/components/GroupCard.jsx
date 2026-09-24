@@ -16,7 +16,7 @@ const averageColorFor = (percent) => {
   return '#F59E0B'
 }
 
-const GroupCard = ({ group, index, onOpen, onEdit, onDelete }) => {
+const GroupCard = ({ group, index, onOpen, onEdit, onDelete, showDescription = true }) => {
   const { t } = useTranslation()
   const averagePercent = Math.round(group.average_score || 0)
   const averageColor = averageColorFor(averagePercent)
@@ -86,9 +86,13 @@ const GroupCard = ({ group, index, onOpen, onEdit, onDelete }) => {
       </div>
 
       <h3 className="mt-3 truncate text-base font-bold text-[#191C1D]">{group.name}</h3>
-      <p className="mt-1 line-clamp-2 min-h-[32px] text-xs leading-relaxed text-[#8A8A8E]">
-        {group.description || t('tutorGroups.noDescription')}
-      </p>
+      {showDescription ? (
+        <p className="mt-1 line-clamp-2 min-h-[32px] text-xs leading-relaxed text-[#8A8A8E]">
+          {group.description || t('tutorGroups.noDescription')}
+        </p>
+      ) : (
+        <p className="mt-1 text-xs text-[#8A8A8E]">{group.created_at}</p>
+      )}
 
       <div className="mt-3 flex items-center justify-between border-t border-[#F5F5F5] pt-3">
         <span className="inline-flex items-center gap-2.5">

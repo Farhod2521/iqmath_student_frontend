@@ -30,6 +30,8 @@ export const URLS = {
   subjectNameList: '/api/v1/func_student/subject/name-list/',
   teacherStudents: '/api/v1/func_teacher/my-students/',
   teacherGroups: '/api/v1/func_teacher/my-groups/',
+  teacherMyGroups: '/api/v1/func_teacher/groups/',
+  teacherUngroupedStudents: '/api/v1/func_teacher/groups/students-without-group/',
   downloadCertificate: '/api/v1/func_student/certificate/download/',
   // Student list endpoints
   studentList: '/api/v1/auth/student/student_list/',
@@ -120,6 +122,11 @@ export const URLS = {
   tutorResultsOverview: '/api/v1/tutor/tutor/results/overview/',
   tutorResultsStudents: '/api/v1/tutor/tutor/results/students/',
   tutorResultsChart: '/api/v1/tutor/tutor/results/chart/',
+
+  // Tutor guruhga taklif oqimi (telefon/ID orqali qidirib taklif yuborish)
+  tutorStudentSearch: '/api/v1/tutor/tutor/students/search/',
+  tutorInvitationCancel: '/api/v1/tutor/tutor/invitations/',
+  studentMyInvitations: '/api/v1/tutor/student/my-invitations/',
 
   // Tutor referrals endpoints
   tutorCoupons: '/api/v1/tutor/tutor/coupon-transactions/',

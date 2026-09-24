@@ -840,6 +840,34 @@
     "studentsAdded": "Students added to the group",
     "studentsMoved": "Students moved to another group",
     "studentsRemoved": "Students removed from the group",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "inviteStudent": "Add another student",
+    "inviteStudentSubtitle": "Search by phone number or ID and send an invitation",
+    "searchByPhone": "Phone number",
+    "searchById": "ID number",
+    "searchPlaceholderPhone": "901234567",
+    "searchPlaceholderId": "e.g. 202501234567",
+    "search": "Search",
+    "searching": "Searching...",
+    "enterQuery": "Enter a phone number or ID",
+    "studentNotFound": "No such student found",
+    "sendInvite": "Send invitation",
+    "inviteSent": "Invitation sent",
+    "inviteCancelled": "Invitation cancelled",
+    "pendingInvitations": "Sent invitations",
+    "cancelInvite": "Cancel",
+    "noPendingInvitations": "No invitations sent yet",
+    "waitingResponse": "Awaiting response"
+  },
+  "studentInvitations": {
+    "title": "Group invitation",
+    "subtitle": "A tutor is inviting you to their group",
+    "fromTutor": "Tutor",
+    "group": "Group",
+    "accept": "Accept",
+    "reject": "Reject",
+    "accepted": "You joined the group",
+    "rejected": "Invitation rejected",
     "errorGeneric": "Something went wrong. Please try again."
   },
   "tutorHome": {
@@ -1032,5 +1060,12 @@
     "levelWidgetTitle": "Your level",
     "maxLevelReached": "Max level reached",
     "toNextLevel": "to next level"
+  },
+  "teacherGroups": {
+    "subtitle": "Create groups and add students who are not in any group yet",
+    "emptyDescription": "Create your first group, then add students without a group.",
+    "searchUngrouped": "Search by name, ID or phone...",
+    "ungroupedTotal": "Students without a group: {{count}}",
+    "noUngrouped": "No students without a group left"
   }
 }

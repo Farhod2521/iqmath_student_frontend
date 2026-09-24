@@ -1203,6 +1203,34 @@
     "studentsAdded": "O'quvchilar guruhga qo'shildi",
     "studentsMoved": "O'quvchilar boshqa guruhga o'tkazildi",
     "studentsRemoved": "O'quvchilar guruhdan chiqarildi",
+    "errorGeneric": "Xatolik yuz berdi. Qayta urinib ko'ring.",
+    "inviteStudent": "Boshqa o'quvchi qo'shish",
+    "inviteStudentSubtitle": "Telefon raqami yoki ID bo'yicha qidiring va taklif yuboring",
+    "searchByPhone": "Telefon raqami",
+    "searchById": "ID raqami",
+    "searchPlaceholderPhone": "901234567",
+    "searchPlaceholderId": "Masalan: 202501234567",
+    "search": "Qidirish",
+    "searching": "Qidirilmoqda...",
+    "enterQuery": "Telefon raqami yoki ID kiriting",
+    "studentNotFound": "Bunday o'quvchi topilmadi",
+    "sendInvite": "Taklif yuborish",
+    "inviteSent": "Taklif yuborildi",
+    "inviteCancelled": "Taklif bekor qilindi",
+    "pendingInvitations": "Yuborilgan takliflar",
+    "cancelInvite": "Bekor qilish",
+    "noPendingInvitations": "Hozircha yuborilgan taklif yo'q",
+    "waitingResponse": "Javob kutilmoqda"
+  },
+  "studentInvitations": {
+    "title": "Guruhga taklif",
+    "subtitle": "Sizni repetitor guruhiga taklif qilmoqda",
+    "fromTutor": "Repetitor",
+    "group": "Guruh",
+    "accept": "Qabul qilish",
+    "reject": "Rad etish",
+    "accepted": "Siz guruhga qo'shildingiz",
+    "rejected": "Taklif rad etildi",
     "errorGeneric": "Xatolik yuz berdi. Qayta urinib ko'ring."
   },
   "tutorHome": {
@@ -1880,5 +1908,12 @@
     "levelWidgetTitle": "Sizning darajangiz",
     "maxLevelReached": "Eng yuqori daraja",
     "toNextLevel": "keyingi darajagacha"
+  },
+  "teacherGroups": {
+    "subtitle": "Guruh yarating va guruhga kiritilmagan o'quvchilarni qo'shing",
+    "emptyDescription": "Birinchi guruhni yarating, so'ng guruhsiz o'quvchilardan qo'shasiz.",
+    "searchUngrouped": "Ism, ID yoki telefon bo'yicha qidirish...",
+    "ungroupedTotal": "Guruhsiz o'quvchilar: {{count}} ta",
+    "noUngrouped": "Guruhsiz o'quvchi qolmadi"
   }
 }

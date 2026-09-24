@@ -384,6 +384,19 @@ export const getMenuItems = (t) => [
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
+  {
+    key: 'teacher-groups',
+    path: '/dashboard/teacher/groups',
+    label: t('tutorGroups.menuLabel'),
+    icon: (isActive) => (
+      <PiUsers
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    roles: [RolesList.TEACHER],
+    type: MenuType.LINK
+  },
   // {
   //   key: 'mental-games',
   //   path: '/dashboard/games',

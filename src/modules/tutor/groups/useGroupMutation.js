@@ -12,20 +12,21 @@ const METHODS = {
   delete: (url, data) => request.delete(url, data ? { data } : undefined)
 }
 
+const TUTOR_KEYS = [KEYS.tutorGroups, KEYS.tutorGroupDetail, KEYS.tutorMyStudents, KEYS.tutorGroupInvitations]
+
 /**
- * Tutor guruhlari uchun mutatsiya. Muvaffaqiyatda guruh/o'quvchi keshlarini yangilaydi
+ * Guruhlar uchun mutatsiya. Muvaffaqiyatda guruh/o'quvchi keshlarini yangilaydi
  * va backenddan kelgan aniq xato matnini ko'rsatadi.
+ * invalidateKeys — yangilanadigan keshlar (default: tutor guruhlari; teacher o'z kalitlarini beradi).
  */
-const useGroupMutation = ({ method = 'post', successMessage, errorMessage, onDone }) => {
+const useGroupMutation = ({ method = 'post', successMessage, errorMessage, onDone, invalidateKeys = TUTOR_KEYS }) => {
   const queryClient = useQueryClient()
 
   return useMutation(({ url, data }) => METHODS[method](url, data), {
     onSuccess: (response, variables) => {
       if (successMessage) toast.success(successMessage)
 
-      queryClient.invalidateQueries(KEYS.tutorGroups)
-      queryClient.invalidateQueries(KEYS.tutorGroupDetail)
-      queryClient.invalidateQueries(KEYS.tutorMyStudents)
+      invalidateKeys.forEach((key) => queryClient.invalidateQueries(key))
 
       if (onDone) onDone(response, variables)
     },

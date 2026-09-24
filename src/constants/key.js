@@ -30,6 +30,9 @@ export const KEYS = {
   teacherSubjects: 'teacherSubjects',
   teacherStudents: 'teacherStudents',
   teacherGroups: 'teacherGroups',
+  teacherMyGroups: 'teacherMyGroups',
+  teacherGroupDetail: 'teacherGroupDetail',
+  teacherUngroupedStudents: 'teacherUngroupedStudents',
   // Student list keys
   studentList: 'studentList',
   studentChapters: 'studentChapters',
@@ -100,5 +103,7 @@ export const KEYS = {
   tutorGroupResults: 'tutorGroupResults',
   tutorResultsOverview: 'tutorResultsOverview',
   tutorResultsStudents: 'tutorResultsStudents',
-  tutorResultsChart: 'tutorResultsChart'
+  tutorResultsChart: 'tutorResultsChart',
+  tutorGroupInvitations: 'tutorGroupInvitations',
+  studentMyInvitations: 'studentMyInvitations'
 }
