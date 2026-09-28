@@ -1,13 +1,13 @@
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality'
-import SubjectsBanner from '@/modules/student/subjects/components/banner/SubjectsBanner'
+import SubjectsStats from '@/modules/student/subjects/components/stats/SubjectsStats'
 import Subjects from '@/modules/student/subjects/pages/Subjects'
 
 const Index = () => {
   return (
     <LayoutAdmin>
       <div className="mb-6">
-        <SubjectsBanner />
+        <SubjectsStats />
       </div>
       <ModalConfidentiality />
       <Subjects />

@@ -2,74 +2,99 @@
 import { config } from '@/config'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, BookOpen, FileText } from 'lucide-react'
-import { useImageAccentColor } from '../../utils/useImageAccentColor'
+import { ArrowRight, BookOpen, FileText, Lock } from 'lucide-react'
 
-// Rasmning o'zidan rang olib bo'lmagan hollarda (masalan, CORS cheklovi)
-// ishlatiladigan zaxira palitra — guruh ichida aylanib turadi.
-export const CARD_ACCENTS = ['#EC4899', '#F97316', '#3B82F6', '#8B5CF6', '#10B981', '#06B6D4']
+const DEFAULT_THEME = { accent: '#3B6FF6', soft: '#EAF0FF' }
 
-const CardSubject = ({ item, onClick, accent = CARD_ACCENTS[0] }) => {
+/**
+ * Fan kartasi: tepada rasm (to'liq, kesilmagan), pastida sinf, fan nomi,
+ * dars/mashq soni va progress. `locked` — obuna yo'q: rasm ustida qulf.
+ */
+// children berilsa — pastki qism (dars/mashq, progress) o'rniga shu ko'rsatiladi (masalan, diagnostika kartasi)
+const CardSubject = ({ item, onClick, theme = DEFAULT_THEME, locked = false, children }) => {
   const { t, i18n } = useTranslation()
+  const { accent, soft } = theme
 
   // Til almashtirilganda rasm o'zgarmasligi kerak — shu sababli har doim
   // faqat image_uz ishlatiladi, tilga qarab faqat matn (nom, sinf) o'zgaradi.
   const imageUrl = `${config.API_URL}${get(item, 'image_uz')}`
 
-  // Kartaning haqiqiy aksent rangi — rasmning o'z rangidan avtomatik
-  // olinadi, shu bilan har doim rasm bilan mos keladi. O'qib bo'lmasa,
-  // guruhdan kelgan zaxira rangga (`accent`) qaytiladi.
-  const resolvedAccent = useImageAccentColor(imageUrl, accent)
-
-  const gradeLabel = i18n.language === 'uz' ? `${get(item, 'class_name')}-sinf` : `${get(item, 'class_name')}-класс`
+  // Sinf raqam bo'lmasa (masalan "Testlar") — "-sinf" qo'shmaymiz
+  const className = String(get(item, 'class_name') ?? '')
+  const isGrade = /^\d+$/.test(className)
+  const gradeLabel = isGrade ? `${className}-${i18n.language === 'uz' ? 'sinf' : 'класс'}` : className
   const subjectName = i18n.language === 'uz' ? get(item, 'name_uz') : get(item, 'name_ru')
   const topicsCount = get(item, 'topics_count', 0)
   const questionsCount = get(item, 'questions_count', 0)
+  const progress = Math.min(100, Math.max(0, Math.round(get(item, 'progress', 0) || 0)))
 
   return (
-    <div onClick={onClick} className="group cursor-pointer">
-      <div className="overflow-hidden rounded-2xl bg-white shadow-[0px_3px_17px_-5px_#00000038] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0px_10px_28px_-8px_#00000055] dark:bg-[#202936]">
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
-          <img
-            alt={subjectName}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            src={imageUrl}
-            onError={(e) => {
-              e.target.src = '/images/education.png'
-            }}
-          />
-          <div className="absolute inset-x-0 top-0 flex flex-col items-start gap-1.5 p-3">
-            <span
-              className="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-bold text-white shadow-sm"
-              style={{ backgroundColor: resolvedAccent }}
-            >
+    <div
+      onClick={onClick}
+      className="group flex cursor-pointer flex-col rounded-[18px] bg-white p-1.5 shadow-[0_6px_24px_-10px_rgba(15,27,61,0.18)] ring-1 ring-[#EDF0F5] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_-12px_rgba(15,27,61,0.28)] dark:bg-[#202936] dark:ring-[#2A3547]"
+    >
+      <div className="relative aspect-[1920/819] w-full overflow-hidden rounded-[14px] bg-[#F4F7FC] dark:bg-[#2A3547]">
+        <img
+          alt={subjectName}
+          src={imageUrl}
+          loading="lazy"
+          decoding="async"
+          className={`absolute inset-0 h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] ${
+            locked ? 'grayscale-[35%]' : ''
+          }`}
+          onError={(e) => {
+            e.target.src = '/images/education.png'
+          }}
+        />
+        {locked ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow-lg">
+              <Lock size={18} style={{ color: accent }} />
+            </span>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="flex flex-1 flex-col px-2.5 pb-2.5 pt-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="truncate text-[17px] font-extrabold leading-tight text-[#0F1B3D] dark:text-white">
               {gradeLabel}
-            </span>
-            <h3 className="w-fit rounded-lg border border-white/50 bg-white/35 px-2.5 py-1 text-base font-extrabold leading-tight text-[#191C1D] shadow-md backdrop-blur-md break-words">
-              {subjectName}
             </h3>
+            <p className="mt-0.5 truncate text-sm font-medium text-[#5B6478] dark:text-gray-300">{subjectName}</p>
           </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-1 p-2.5">
-          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1">
-            <span className="inline-flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-lg bg-[#F3F5F9] px-2 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
-              <BookOpen size={13} className="shrink-0 text-[#5D87FF]" />
-              {topicsCount} {t('subjectLessonsUnit')}
-            </span>
-            <span className="inline-flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-lg bg-[#F3F5F9] px-2 py-1.5 text-xs font-semibold text-[#4B5768] dark:bg-[#2A3547] dark:text-gray-200">
-              <FileText size={13} className="shrink-0 text-[#5D87FF]" />
-              {questionsCount} {t('subjectExercisesUnit')}
-            </span>
-          </div>
-
-          <div
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm transition-transform group-hover:scale-110"
-            style={{ backgroundColor: resolvedAccent }}
+          <span
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5"
+            style={{ backgroundColor: soft, color: accent }}
           >
-            <ArrowRight size={14} className="text-white" />
-          </div>
+            {locked ? <Lock size={15} /> : <ArrowRight size={16} strokeWidth={2.4} />}
+          </span>
         </div>
+
+        {children || (
+        <>
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-[#6B7385] dark:text-gray-300">
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <BookOpen size={14} className="shrink-0" style={{ color: accent }} />
+            {topicsCount} {t('subjectLessonsUnit')}
+          </span>
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <FileText size={14} className="shrink-0" style={{ color: accent }} />
+            {questionsCount} {t('subjectExercisesUnit')}
+          </span>
+        </div>
+
+        <div className="mt-3 flex items-center gap-3">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#EDF0F5] dark:bg-[#2A3547]">
+            <div
+              className="h-full rounded-full transition-[width] duration-500"
+              style={{ width: `${progress}%`, backgroundColor: accent }}
+            />
+          </div>
+          <span className="w-9 text-right text-xs font-semibold text-[#5B6478] dark:text-gray-300">{progress}%</span>
+        </div>
+        </>
+        )}
       </div>
     </div>
   )

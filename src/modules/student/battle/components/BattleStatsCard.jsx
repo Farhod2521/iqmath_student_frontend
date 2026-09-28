@@ -29,13 +29,13 @@ const BattleStatsCard = () => {
   return (
     <div className="p-5 bg-white border border-gray-100 rounded-2xl">
       <div className="flex items-center gap-2 mb-4">
-        <Target size={18} className="text-indigo-500" />
+        <Target size={18} className="text-[#3B6FF6]" />
         <p className="text-sm font-bold text-gray-700">{t('battle.statsWidgetTitle')}</p>
       </div>
       <div className="grid grid-cols-3 gap-2">
-        <Tile icon={<Swords size={18} className="text-indigo-500" />} value={total} label={t('battle.totalMatches')} />
-        <Tile icon={<Target size={18} className="text-emerald-500" />} value={`${winRate}%`} label={t('battle.winRate')} />
-        <Tile icon={<Flame size={18} className="text-amber-500" />} value={rating?.win_streak ?? 0} label={t('battle.winStreak')} />
+        <Tile icon={<Swords size={18} className="text-[#3B6FF6]" />} value={total} label={t('battle.totalMatches')} />
+        <Tile icon={<Target size={18} className="text-[#3B6FF6]" />} value={`${winRate}%`} label={t('battle.winRate')} />
+        <Tile icon={<Flame size={18} className="text-[#3B6FF6]" />} value={rating?.win_streak ?? 0} label={t('battle.winStreak')} />
       </div>
     </div>
   )
