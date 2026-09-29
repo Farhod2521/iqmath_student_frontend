@@ -1939,5 +1939,26 @@
     "searchUngrouped": "Ism, ID yoki telefon bo'yicha qidirish...",
     "ungroupedTotal": "Guruhsiz o'quvchilar: {{count}} ta",
     "noUngrouped": "Guruhsiz o'quvchi qolmadi"
+  },
+  "questionPage": {
+    "back": "Orqaga",
+    "questions": "Savollar",
+    "filterAll": "Barchasi",
+    "filterAnswered": "Javob berilgan",
+    "filterUnanswered": "Javob berilmagan",
+    "filterMarked": "Belgilangan",
+    "gridView": "Raqamlar ko'rinishi",
+    "listView": "Ro'yxat ko'rinishi",
+    "empty": "Bu filtr bo'yicha savol yo'q",
+    "questionNumber": "{{number}} - savol",
+    "level": "{{level}}-daraja",
+    "hint": "Maslahat",
+    "mark": "Belgilab qo‘yish",
+    "unmark": "Belgini olib tashlash",
+    "typeAnswer": "Javobingizni kiriting",
+    "prev": "Oldingi savol",
+    "next": "Keyingi savol",
+    "finish": "Tekshirish",
+    "timeSpent": "Sarflangan vaqt"
   }
 }

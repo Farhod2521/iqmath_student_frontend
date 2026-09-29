@@ -1067,5 +1067,26 @@
     "searchUngrouped": "Search by name, ID or phone...",
     "ungroupedTotal": "Students without a group: {{count}}",
     "noUngrouped": "No students without a group left"
+  },
+  "questionPage": {
+    "back": "Back",
+    "questions": "Questions",
+    "filterAll": "All",
+    "filterAnswered": "Answered",
+    "filterUnanswered": "Unanswered",
+    "filterMarked": "Marked",
+    "gridView": "Number grid",
+    "listView": "List",
+    "empty": "No questions for this filter",
+    "questionNumber": "Question {{number}}",
+    "level": "Level {{level}}",
+    "hint": "Hint",
+    "mark": "Mark",
+    "unmark": "Remove mark",
+    "typeAnswer": "Enter your answer",
+    "prev": "Previous question",
+    "next": "Next question",
+    "finish": "Check",
+    "timeSpent": "Time spent"
   }
 }

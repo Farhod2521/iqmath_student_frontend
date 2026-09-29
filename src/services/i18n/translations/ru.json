@@ -1850,5 +1850,26 @@
     "searchUngrouped": "Поиск по имени, ID или телефону...",
     "ungroupedTotal": "Ученики без группы: {{count}}",
     "noUngrouped": "Учеников без группы не осталось"
+  },
+  "questionPage": {
+    "back": "Назад",
+    "questions": "Вопросы",
+    "filterAll": "Все",
+    "filterAnswered": "Отвеченные",
+    "filterUnanswered": "Без ответа",
+    "filterMarked": "Отмеченные",
+    "gridView": "Сетка номеров",
+    "listView": "Список",
+    "empty": "По этому фильтру вопросов нет",
+    "questionNumber": "Вопрос {{number}}",
+    "level": "Уровень {{level}}",
+    "hint": "Подсказка",
+    "mark": "Отметить",
+    "unmark": "Снять отметку",
+    "typeAnswer": "Введите ваш ответ",
+    "prev": "Предыдущий вопрос",
+    "next": "Следующий вопрос",
+    "finish": "Проверить",
+    "timeSpent": "Затраченное время"
   }
 }
