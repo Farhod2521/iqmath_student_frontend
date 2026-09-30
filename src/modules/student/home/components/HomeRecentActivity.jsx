@@ -14,7 +14,7 @@ const HomeRecentActivity = ({ activities, isLoading }) => {
       <div className="flex items-center justify-between">
         <h3 className="text-base font-bold text-[#191C1D]">{t('studentHome.recentActivity')}</h3>
         <button
-          onClick={() => router.push('/dashboard/student/diagnostics/history')}
+          onClick={() => router.push('/dashboard/student/diagnostics')}
           className="text-sm font-semibold text-[#5D87FF] hover:underline"
         >
           {t('studentHome.viewAll')}

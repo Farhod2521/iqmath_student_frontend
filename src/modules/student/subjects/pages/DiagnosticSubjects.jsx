@@ -31,7 +31,7 @@ const DiagnosticSubjects = () => {
   // Faqat birinchi yuklanishda loader — keyingi yangilanishlarda eski ma'lumot ko'rinib turadi
   const { data: subjects, isLoading } = useGetQuery({
     key: KEYS.diagnosticSubjects,
-    url: URLS.recommendations,
+    url: URLS.diagnosticSubjects,
     // Testdan qaytganda yangi natija darhol ko'rinsin
     refetchOnMount: true
   })
@@ -123,7 +123,7 @@ const DiagnosticSubjects = () => {
                   item={item}
                   theme={section.theme}
                   onStart={() => router.push(`/dashboard/student/diagnostics/test/${item.id}`)}
-                  onRecommendations={() => router.push(`/dashboard/student/recommendations/${item.id}`)}
+                  onMistakes={() => router.push(`/dashboard/student/diagnostics/mistakes/${item.id}`)}
                 />
               ))}
             </div>

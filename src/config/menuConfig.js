@@ -27,13 +27,6 @@ export const createMenuConfig = (t) => ({
         activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
       },
       {
-        key: 'recommendation',
-        path: '/dashboard/student/recommendations',
-        label: t('recommendation'),
-        icon: <IndividualIcon />,
-        activeIcon: <Image src="/icons/chevron-down.svg" alt="chevron-down" width={24} height={24} />
-      },
-      {
         key: 'products',
         label: t('products'),
         icon: <ProductsIcon />,

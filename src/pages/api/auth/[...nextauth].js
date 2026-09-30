@@ -12,7 +12,7 @@ export default NextAuth({
       credentials: {},
       async authorize(credentials) {
         try {
-          const { phone, password, sms_code = null, role } = credentials
+          const { phone, password, sms_code = null, role, device_id, user_agent, replace_device_id } = credentials
           const formData = new FormData()
           let url = 'https://api.iqmath.uz/api/v1/auth/student/login/'
 
@@ -24,6 +24,10 @@ export default NextAuth({
             formData.append('phone', phone)
             formData.append('password', password)
           }
+          // Qurilma: brauzer identifikatori va haqiqiy User-Agent (so'rov serverdan ketadi)
+          if (device_id) formData.append('device_id', device_id)
+          if (user_agent) formData.append('user_agent', user_agent)
+          if (replace_device_id) formData.append('replace_device_id', replace_device_id)
 
           const response = await fetch(url, {
             method: 'POST',
@@ -34,6 +38,13 @@ export default NextAuth({
           })
 
           const data = await response.json()
+
+          // 2 ta qurilma chegarasi — frontend qurilmani tanlash oynasini ochadi
+          if (response.status === 409 && data?.code === 'device_limit') {
+            throw new Error(
+              'DEVICE_LIMIT::' + JSON.stringify({ devices: data.devices, max_devices: data.max_devices })
+            )
+          }
 
           if (!response.ok) {
             throw new Error(data.message || 'Login failed')

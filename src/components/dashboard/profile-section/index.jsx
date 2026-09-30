@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { signOut } from 'next-auth/react'
+import { logout } from '@/shared/utils/logout'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/router'
@@ -12,9 +12,7 @@ const ProfileSection = ({ menuItems, onTabChange }) => {
   const [isExiting, setIsExiting] = useState(false)
 
   const handleLogout = async () => {
-    await signOut({
-      callbackUrl: '/'
-    })
+    await logout('/')
   }
 
   const handleLogoutClick = () => {

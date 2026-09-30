@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { CalendarDays, Eye, Play, RotateCcw, Target } from 'lucide-react'
+import { CalendarDays, ChartColumn, Play, RotateCcw, Target } from 'lucide-react'
 import CardSubject from './CardSubject'
 
 // Natija rangi: yaxshi — yashil, o'rtacha — fan rangi, past — sariq
@@ -8,10 +8,10 @@ const scoreColor = (score, accent) => (score >= 80 ? '#22C55E' : score >= 50 ? a
 
 /**
  * Diagnostika kartasi: fan kartasining rasm/sarlavha qismi + diagnostika holati.
- * Topshirilgan bo'lsa — natija, sana, urinishlar va "Qayta topshirish" / "Tavsiyalar";
+ * Topshirilgan bo'lsa — natija, sana, urinishlar va "Natijalarim" / "Qayta topshirish";
  * topshirilmagan bo'lsa — "Boshlash".
  */
-const CardDiagnostic = ({ item, theme, onStart, onRecommendations }) => {
+const CardDiagnostic = ({ item, theme, onStart, onMistakes }) => {
   const { t } = useTranslation()
   const { accent, soft } = theme
 
@@ -73,12 +73,16 @@ const CardDiagnostic = ({ item, theme, onStart, onRecommendations }) => {
       <div className="mt-auto flex gap-2 pt-3">
         <button
           type="button"
-          onClick={stop(taken ? onRecommendations : onStart)}
+          onClick={stop(taken ? onMistakes : onStart)}
           className="inline-flex h-9 min-w-0 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-2 text-xs font-semibold text-white transition hover:opacity-90"
           style={{ backgroundColor: accent }}
         >
-          {taken ? <Eye size={14} className="shrink-0" /> : <Play size={13} className="shrink-0" fill="currentColor" />}
-          <span className="truncate">{taken ? t('diagRecommendations') : t('diagStart')}</span>
+          {taken ? (
+            <ChartColumn size={14} className="shrink-0" />
+          ) : (
+            <Play size={13} className="shrink-0" fill="currentColor" />
+          )}
+          <span className="truncate">{taken ? t('diagMistakes') : t('diagStart')}</span>
         </button>
         {taken ? (
           <button

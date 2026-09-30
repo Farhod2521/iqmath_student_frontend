@@ -17,21 +17,13 @@ import SuccessPopup from '@/components/modal/SuccessPopup'
 import { Button } from '@heroui/react'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import ModalLevel from '../components/modal/ModalLevel'
-import { ArrowLeft, ArrowRight, Bookmark, Box, Calculator as CalculatorIcon, CheckCheck, Lightbulb } from 'lucide-react'
-import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
-import ExamAnswerText from '../components/exam/ExamAnswerText'
+import { Lightbulb } from 'lucide-react'
 import { normalizeAnswerForBackend, wrapMathAnswer } from '../utils/wrapAnswer'
 import ActionSolution from '../components/actions/ActionSolution'
-import ActionInfo from '../components/actions/ActionInfo'
-import Calculator from '../components/calculator/Calculator'
 import QuestionTopBar from '../components/question/QuestionTopBar'
-import QuestionSidebar from '../components/question/QuestionSidebar'
-import QuestionChoiceGrid from '../components/question/QuestionChoiceGrid'
-
-const mathConfig = { loader: { load: ['input/tex', 'output/chtml'] } }
-const iconButton =
-  'inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FA] text-[#6B7385] transition hover:bg-[#EAF1FF] hover:text-[#2563EB] dark:bg-[#1F2A3C] dark:text-gray-300'
+import QuestionWorkspace from '../components/question/QuestionWorkspace'
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
+import { usePersistentTimer } from '../hooks/usePersistentTimer'
 import SuccessPopupSendChat from '@/components/modal/SuccessPopupSendChat'
 
 export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
@@ -57,8 +49,6 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
   const [compositeAnswers, setCompositeAnswers] = useState({})
   const [results, setResults] = useState()
   const [score, setScore] = useState()
-  const [markedIds, setMarkedIds] = useState(() => new Set())
-  const [elapsed, setElapsed] = useState(0)
 
   const { data: questions, isLoading } = useGetQuery({
     key: KEYS.studentQuestions,
@@ -138,16 +128,18 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
     }
   }, [questions])
 
-  // Sarflangan vaqt: daraja almashsa 0 dan boshlanadi, natija oynasi ochiq paytda to'xtaydi
-  useEffect(() => {
-    setElapsed(0)
-  }, [tab])
+  // Sarflangan vaqt: har bir mavzu va daraja uchun alohida; sahifa yangilansa ham davom etadi.
+  // Tekshirilganda to'xtaydi, natija oynasi yopilgach (qayta ishlash) 0 dan boshlanadi.
+  const {
+    elapsed,
+    finish: finishTimer,
+    reset: resetTimer
+  } = usePersistentTimer(topicId ? `subject-${topicId}-${tab}` : null)
 
-  useEffect(() => {
-    if (showResult) return undefined
-    const timer = setInterval(() => setElapsed((prev) => prev + 1), 1000)
-    return () => clearInterval(timer)
-  }, [showResult])
+  const closeResult = () => {
+    setShowResult(false)
+    resetTimer()
+  }
 
   const handleTabChange = (level) => setTab(level)
 
@@ -209,13 +201,14 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
     checkMyResults(
       {
         url: URLS.studentCheckAnswer,
-        attributes: { choice_answers, composite_answers, text_answers },
+        attributes: { choice_answers, composite_answers, text_answers, duration_seconds: elapsed },
         config: { headers: { Authorization: `Bearer ${session?.accessToken}` } }
       },
       {
         onSuccess: (res) => {
           setScore(res)
           setResults(res)
+          finishTimer()
           setShowResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
@@ -311,26 +304,9 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
 
   const questionList = Array.isArray(getQuestionsData()) ? getQuestionsData() : []
   const total = questionList.length
-  const questionType = selectedQuestion?.question_type
-  const selectedId = String(selectedQuestion?.id)
-  const isMarked = markedIds.has(selectedId)
   const answeredIds = new Set(selectedList)
   const topic = questions?.data?.topic
   const topicName = i18n.language === 'ru' ? topic?.name_ru || topic?.name_uz : topic?.name_uz
-  const questionText =
-    (i18n.language === 'uz' ? selectedQuestion?.question_text_uz : selectedQuestion?.question_text_ru) ||
-    selectedQuestion?.question_text_uz ||
-    ''
-
-  const toggleMark = () => {
-    if (!selectedQuestion?.id) return
-    setMarkedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(selectedId)) next.delete(selectedId)
-      else next.add(selectedId)
-      return next
-    })
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F4F7FC] font-sf dark:bg-[#0B1220]">
@@ -348,183 +324,49 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
       {isLoading ? (
         <div className="w-full p-10 text-center italic text-gray-500">{t('chooseQueation')}</div>
       ) : (
-        <div className="mx-auto grid w-full max-w-[1760px] flex-1 grid-cols-1 gap-5 p-3 md:p-6 lg:grid-cols-[minmax(300px,420px)_minmax(0,1fr)] lg:gap-6">
-          <div className="lg:sticky lg:top-[92px] lg:h-[calc(100vh-116px)]">
-            <QuestionSidebar
-              questions={questionList}
-              selectedIndex={selectedIndex}
-              answeredIds={answeredIds}
-              markedIds={markedIds}
-              onSelect={setSelectedIndex}
-            />
-          </div>
-
-          <section className="flex min-w-0 flex-col rounded-3xl border border-[#EEF1F6] bg-white p-4 shadow-[0_8px_30px_-18px_rgba(15,23,42,0.25)] dark:border-[#1F2A3C] dark:bg-[#111A2B] sm:p-6 lg:p-8">
-            {/* Savol raqami, mavzu va amallar */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex h-11 items-center rounded-xl bg-[#2563EB] px-5 text-[15px] font-bold text-white shadow-[0_8px_20px_-10px_rgba(37,99,235,0.9)]">
-                {t('questionPage.questionNumber', { number: total ? selectedIndex + 1 : 0 })}
-              </span>
-              <span className="inline-flex h-11 min-w-0 max-w-full items-center gap-2 rounded-xl bg-[#EEF3FF] px-4 text-[15px] font-semibold text-[#2563EB] dark:bg-[#1E2B48]">
-                <Box size={18} className="shrink-0" />
-                <span className="truncate">{topicName || t('questionPage.level', { level: tab })}</span>
-              </span>
-
-              <div className="ml-auto flex items-center gap-2">
-                {['composite', 'text'].includes(questionType) && (
-                  <button
-                    type="button"
-                    onClick={() => setShowCalculator((prev) => !prev)}
-                    title="Ctrl + K"
-                    className={`${iconButton} ${showCalculator ? '!bg-[#EAF1FF] !text-[#2563EB]' : ''}`}
-                  >
-                    <CalculatorIcon size={20} />
-                  </button>
-                )}
-                <div className={iconButton}>
-                  <ActionInfo />
-                </div>
-                <button
-                  type="button"
-                  onClick={toggleMark}
-                  title={isMarked ? t('questionPage.unmark') : t('questionPage.mark')}
-                  aria-pressed={isMarked}
-                  className={`${iconButton} ${isMarked ? '!bg-[#FFF4E0] !text-[#F59E0B]' : ''}`}
-                >
-                  <Bookmark size={20} className={isMarked ? 'fill-current' : ''} />
-                </button>
-                {questions?.data?.subject_is_active ? (
-                  <ActionSolution
-                    selectedQuestion={selectedQuestion}
-                    className="h-11 min-w-0 rounded-xl bg-[#EEF3FF] px-4 text-[15px] font-semibold text-[#2563EB] dark:bg-[#1E2B48]"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Lightbulb size={19} />
-                      {t('questionPage.hint')}
-                    </span>
-                  </ActionSolution>
-                ) : null}
-              </div>
-            </div>
-
-            {/* Savol matni */}
-            <div
-              key={selectedQuestion?.id}
-              className="mt-7 overflow-x-auto text-xl font-semibold leading-snug text-[#0F172A] dark:text-white md:text-[26px] [&_img]:mx-auto [&_img]:my-6 [&_img]:block [&_img]:max-h-[300px] [&_img]:max-w-full [&_mjx-container]:max-w-full [&_mjx-container]:overflow-x-auto [&_mjx-container]:overflow-y-hidden [&_p]:m-0"
-            >
-              <MathJaxContext config={mathConfig}>
-                <MathJax dynamic>
-                  <div dangerouslySetInnerHTML={{ __html: questionText }} />
-                </MathJax>
-              </MathJaxContext>
-            </div>
-
-            {/* Javob */}
-            <div className="mt-8 flex-1">
-              {(() => {
-                switch (questionType) {
-                  case 'image_choice':
-                    return (
-                      <QuestionChoiceGrid
-                        image
-                        selectedQuestion={selectedQuestion}
-                        answers={choiceAnswers}
-                        setAnswers={setChoiceAnswers}
-                      />
-                    )
-                  case 'choice':
-                    return (
-                      <QuestionChoiceGrid
-                        selectedQuestion={selectedQuestion}
-                        answers={choiceAnswers}
-                        setAnswers={setChoiceAnswers}
-                      />
-                    )
-                  case 'composite':
-                    return (
-                      <div className="overflow-x-auto rounded-3xl border border-[#E9EEF6] bg-[#F8FAFD] p-5 dark:border-[#26324A] dark:bg-[#0F172A]">
-                        <ExamAnswerComposite
-                          selectedQuestion={selectedQuestion}
-                          setCompositeAnswers={setCompositeAnswers}
-                          compositeAnswers={compositeAnswers}
-                          setActiveInputId={setActiveInputId}
-                          mathFieldRefs={mathFieldRefs}
-                        />
-                      </div>
-                    )
-                  case 'text':
-                    return (
-                      <div className="rounded-3xl border border-[#E9EEF6] bg-[#F8FAFD] p-5 dark:border-[#26324A] dark:bg-[#0F172A]">
-                        <p className="mb-3 text-sm font-semibold text-[#6B7385]">{t('questionPage.typeAnswer')}</p>
-                        <div className="rounded-xl bg-white">
-                          <ExamAnswerText
-                            mathFieldRef={mathFieldRef}
-                            setTextAnswers={setTextAnswers}
-                            textAnswers={textAnswers}
-                            selectedQuestion={selectedQuestion}
-                          />
-                        </div>
-                      </div>
-                    )
-                  default:
-                    return null
-                }
-              })()}
-
-              {showCalculator && (
-                <div className="mt-6">
-                  <Calculator
-                    mathFieldRef={mathFieldRef}
-                    mathFieldRefs={mathFieldRefs}
-                    selectedQuestion={selectedQuestion}
-                    setCompositeAnswers={setCompositeAnswers}
-                    setTextAnswers={setTextAnswers}
-                    activeInputId={activeInputId}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Navigatsiya */}
-            <div className="mt-8 flex items-center justify-between gap-3 border-t border-[#EEF1F6] pt-6 dark:border-[#1F2A3C]">
-              <button
-                type="button"
-                onClick={handlePrev}
-                disabled={selectedIndex === 0}
-                className="inline-flex h-14 items-center gap-3 rounded-2xl border-2 border-[#D6DEEA] bg-white px-5 text-base font-semibold text-[#191C1D] transition hover:border-[#2563EB] hover:text-[#2563EB] disabled:pointer-events-none disabled:opacity-40 dark:border-[#33415A] dark:bg-transparent dark:text-white sm:px-10"
+        <QuestionWorkspace
+          questions={questionList}
+          selectedIndex={selectedIndex}
+          onSelect={setSelectedIndex}
+          selectedQuestion={selectedQuestion}
+          answeredIds={answeredIds}
+          badge={topicName || t('questionPage.level', { level: tab })}
+          extraActions={
+            questions?.data?.subject_is_active ? (
+              <ActionSolution
+                selectedQuestion={selectedQuestion}
+                className="h-11 min-w-0 rounded-xl bg-[#EEF3FF] px-4 text-[15px] font-semibold text-[#2563EB] dark:bg-[#1E2B48]"
               >
-                <ArrowLeft size={20} />
-                {t('questionPage.prev')}
-              </button>
-
-              {isEndQuestion ? (
-                <button
-                  type="button"
-                  onClick={handleCheckMyResults}
-                  className="inline-flex h-14 items-center gap-3 rounded-2xl bg-[#16A34A] px-6 text-base font-semibold text-white shadow-[0_10px_24px_-12px_rgba(22,163,74,0.9)] transition hover:bg-[#15803D] sm:px-12"
-                >
-                  {t('questionPage.finish')}
-                  <CheckCheck size={20} />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="inline-flex h-14 items-center gap-3 rounded-2xl bg-[#2563EB] px-6 text-base font-semibold text-white shadow-[0_10px_24px_-12px_rgba(37,99,235,0.9)] transition hover:bg-[#1D4ED8] sm:px-12"
-                >
-                  {t('questionPage.next')}
-                  <ArrowRight size={20} />
-                </button>
-              )}
-            </div>
-          </section>
-        </div>
+                <span className="flex items-center gap-2">
+                  <Lightbulb size={19} />
+                  {t('questionPage.hint')}
+                </span>
+              </ActionSolution>
+            ) : null
+          }
+          choiceAnswers={choiceAnswers}
+          setChoiceAnswers={setChoiceAnswers}
+          textAnswers={textAnswers}
+          setTextAnswers={setTextAnswers}
+          compositeAnswers={compositeAnswers}
+          setCompositeAnswers={setCompositeAnswers}
+          mathFieldRef={mathFieldRef}
+          mathFieldRefs={mathFieldRefs}
+          activeInputId={activeInputId}
+          setActiveInputId={setActiveInputId}
+          showCalculator={showCalculator}
+          setShowCalculator={setShowCalculator}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onFinish={handleCheckMyResults}
+          isEnd={isEndQuestion}
+        />
       )}
 
       {showResult && (
-        <SimpleModal open={showResult} onClose={() => setShowResult(false)} classname="modal-lg">
+        <SimpleModal open={showResult} onClose={closeResult} classname="modal-lg">
           <div className="relative">
-            <button onClick={() => setShowResult(false)} className="absolute right-0 float-right p-[24px]">
+            <button onClick={closeResult} className="absolute right-0 float-right p-[24px]">
               <Image src={'/icons/close.svg'} alt="circle" width={24} height={24} />
             </button>
           </div>
@@ -552,10 +394,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
               >
                 {t('myResults')}
               </Button>
-              <Button
-                className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md"
-                onPress={() => setShowResult(false)}
-              >
+              <Button className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md" onPress={closeResult}>
                 {t('retakeTest')}
               </Button>
               <Button

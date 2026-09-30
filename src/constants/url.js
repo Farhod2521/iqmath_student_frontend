@@ -61,8 +61,14 @@ export const URLS = {
   verifyPhoneChange: '/api/v1/auth/user/verify-phone-change/',
   // Tutor coupon URLs
   diagnosticsTopics: '/api/v1/func_student/my-diagnost-topic-detail/',
-  recommendations: '/api/v1/func_student/my-diagnost-subjects/',
+  diagnosticSubjects: '/api/v1/func_student/my-diagnost-subjects/',
+  // + `${subjectId}/attempts/`
+  diagnosticAttempts: '/api/v1/func_student/my-diagnost/subjects/',
+  // + `${diagnostId}/mistakes/`
+  diagnosticMistakes: '/api/v1/func_student/my-diagnost/',
   refreshToken: '/api/v1/auth/token/refresh/',
+  // Qurilmalar: GET ro'yxat (?status=all), DELETE `${myDevices}${id}/`
+  myDevices: '/api/v1/auth/user/devices/',
   // Parent management endpoints
   parentCreate: '/api/v1/auth/parent/create/',
   parentProfile: '/api/v1/auth/parent/profile/',

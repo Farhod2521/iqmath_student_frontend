@@ -1,26 +1,18 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { MessageCircleQuestion } from 'lucide-react'
 
 export const StartChatPrompt = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex-1 flex items-center justify-center p-6">
-      <div className="max-w-md text-center">
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
-            <svg className="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          </div>
-        </div>
-        <h3 className="text-2xl font-semibold text-gray-800 mb-3">{t('chatBox.chat_propt.needHelp')}</h3>
-        <p className="text-gray-600">{t('chatBox.chat_propt.writeQuestion')}</p>
+    <div className="flex flex-1 items-center justify-center p-6">
+      <div className="max-w-md rounded-3xl bg-white/85 px-8 py-10 text-center shadow-[0_20px_50px_-30px_rgba(15,23,42,0.5)] backdrop-blur dark:bg-[#111A2B]/90">
+        <span className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#EAF1FF] text-[#2F6BFF]">
+          <MessageCircleQuestion size={36} />
+        </span>
+        <h3 className="mb-2 text-xl font-bold text-[#0F172A] dark:text-white">{t('chatBox.chat_propt.needHelp')}</h3>
+        <p className="text-sm text-[#6B7385]">{t('chatBox.chat_propt.writeQuestion')}</p>
       </div>
     </div>
   )
