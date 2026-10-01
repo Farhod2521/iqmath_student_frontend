@@ -262,8 +262,8 @@ const Index = () => {
       <div className="mb-4 border-b">
         <HeaderTitle title={t('profile')} />
       </div>
-      <div className="grid grid-cols-12 gap-[24px] font-sf pb-20">
-        <div className="col-span-12 sm:col-span-6 space-y-[12px]">
+      <div className="grid grid-cols-12 gap-4 sm:gap-[24px] font-sf pb-20">
+        <div className="col-span-12 lg:col-span-6 space-y-[12px]">
           {/* Asosiy ma'lumotlar */}
           <div className="border py-[17px] px-[24px] rounded-[12px]">
             <div
@@ -585,7 +585,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="col-span-12 sm:col-span-6 ">
+        <div className="col-span-12 lg:col-span-6">
           <ImageUploader />
         </div>
       </div>
@@ -593,7 +593,7 @@ const Index = () => {
       {/* Phone Verification Modal */}
       {showPhoneVerification && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="max-w-md p-6 mx-4 bg-white rounded-lg w-96">
+          <div className="w-full max-w-md p-4 sm:p-6 mx-4 bg-white rounded-lg">
             <h3 className="mb-4 text-lg font-semibold">Telefon raqamni tasdiqlash</h3>
             <p className="mb-4 text-gray-600">
               {newPhone} raqamiga SMS kod yuborildi. Tasdiqlash uchun kodni kiriting.

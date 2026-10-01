@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { Bookmark, Check, ChevronDown, ChevronRight, LayoutGrid, List } from 'lucide-react'
@@ -21,6 +21,15 @@ function QuestionSidebar({ questions = [], selectedIndex, answeredIds, markedIds
   const { t, i18n } = useTranslation()
   const [filter, setFilter] = useState('all')
   const [view, setView] = useState('list')
+  const stripRef = useRef(null)
+
+  // Mobil lentada faol savol doim ko'rinib tursin
+  useEffect(() => {
+    const strip = stripRef.current
+    const active = strip?.querySelector('[data-active="true"]')
+    if (!strip || !active) return
+    strip.scrollTo({ left: active.offsetLeft - strip.clientWidth / 2 + active.clientWidth / 2, behavior: 'smooth' })
+  }, [selectedIndex, filter])
 
   const items = useMemo(
     () =>
@@ -58,6 +67,33 @@ function QuestionSidebar({ questions = [], selectedIndex, answeredIds, markedIds
                 : answered
                   ? 'bg-[#E7F8EE] text-[#16A34A] hover:bg-[#D5F3E1]'
                   : 'bg-[#F2F4F8] text-[#191C1D] hover:bg-[#E6EBF3] dark:bg-[#1F2A3C] dark:text-white'
+            }`}
+          >
+            {index + 1}
+            {marked ? <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-[#F59E0B]" /> : null}
+          </button>
+        )
+      })}
+    </div>
+  )
+
+  // Mobil: bir qatorli gorizontal lenta — savolni pastga surib yubormaydi
+  const strip = (
+    <div ref={stripRef} className="no-scrollbar relative flex gap-2 overflow-x-auto px-3 py-3">
+      {items.map(({ index, answered, marked }) => {
+        const active = index === selectedIndex
+        return (
+          <button
+            key={index}
+            type="button"
+            data-active={active}
+            onClick={() => onSelect(index)}
+            className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold transition ${
+              active
+                ? 'bg-[#2563EB] text-white shadow-[0_6px_16px_-6px_rgba(37,99,235,0.7)]'
+                : answered
+                  ? 'bg-[#E7F8EE] text-[#16A34A]'
+                  : 'bg-[#F2F4F8] text-[#191C1D] dark:bg-[#1F2A3C] dark:text-white'
             }`}
           >
             {index + 1}
@@ -116,16 +152,16 @@ function QuestionSidebar({ questions = [], selectedIndex, answeredIds, markedIds
   )
 
   return (
-    <aside className="flex max-h-full flex-col overflow-hidden rounded-3xl border border-[#EEF1F6] bg-white shadow-[0_8px_30px_-18px_rgba(15,23,42,0.25)] dark:border-[#1F2A3C] dark:bg-[#111A2B]">
-      <div className="flex items-center justify-between gap-2 border-b border-[#F0F2F6] px-5 py-4 dark:border-[#1F2A3C]">
-        <h2 className="text-lg font-bold text-[#191C1D] dark:text-white">{t('questionPage.questions')}</h2>
+    <aside className="flex max-h-full flex-col overflow-hidden rounded-2xl lg:rounded-3xl border border-[#EEF1F6] bg-white shadow-[0_8px_30px_-18px_rgba(15,23,42,0.25)] dark:border-[#1F2A3C] dark:bg-[#111A2B]">
+      <div className="flex items-center justify-between gap-2 border-b border-[#F0F2F6] px-3 py-2.5 dark:border-[#1F2A3C] lg:px-5 lg:py-4">
+        <h2 className="text-base font-bold lg:text-lg text-[#191C1D] dark:text-white">{t('questionPage.questions')}</h2>
 
         <div className="flex items-center gap-2">
           <div className="relative">
             <select
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
-              className="h-10 cursor-pointer appearance-none rounded-xl border border-[#E5EAF2] bg-white pl-3.5 pr-9 text-sm font-medium text-[#191C1D] outline-none focus:border-[#3B6FF6] dark:border-[#26324A] dark:bg-[#111A2B] dark:text-white"
+              className="h-9 cursor-pointer appearance-none rounded-xl lg:h-10 border border-[#E5EAF2] bg-white pl-3.5 pr-9 text-sm font-medium text-[#191C1D] outline-none focus:border-[#3B6FF6] dark:border-[#26324A] dark:bg-[#111A2B] dark:text-white"
             >
               {FILTERS.map((key) => (
                 <option key={key} value={key}>
@@ -153,7 +189,7 @@ function QuestionSidebar({ questions = [], selectedIndex, answeredIds, markedIds
       <div className="min-h-0 flex-1 overflow-y-auto">
         {items.length ? (
           <>
-            <div className="lg:hidden">{grid}</div>
+            <div className="lg:hidden">{strip}</div>
             <div className="hidden lg:block">{view === 'list' ? list : grid}</div>
           </>
         ) : (

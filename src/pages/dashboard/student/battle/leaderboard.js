@@ -37,19 +37,19 @@ const BattleLeaderboardPage = () => {
         ) : (
           <>
             {top3.length ? (
-              <div className="flex items-end justify-center gap-3 pb-6 mb-6 border-b border-gray-100 sm:gap-6">
+              <div className="flex items-end justify-center gap-2 pb-5 mb-5 border-b border-gray-100 sm:gap-6 sm:pb-6 sm:mb-6">
                 {top3.map((item, index) => (
                   <div
                     key={item.student_id}
-                    className={`flex flex-col items-center text-center p-4 rounded-2xl border ${
+                    className={`flex min-w-0 flex-col items-center text-center p-2.5 sm:p-4 rounded-2xl border ${
                       index === 0
-                        ? 'border-amber-300 bg-amber-50 w-36 sm:w-44 order-2'
-                        : 'border-gray-200 w-28 sm:w-36 ' + (index === 1 ? 'order-1' : 'order-3')
+                        ? 'border-amber-300 bg-amber-50 flex-[1.2] max-w-[176px] sm:flex-none sm:w-44 order-2'
+                        : 'border-gray-200 flex-1 max-w-[144px] sm:flex-none sm:w-36 ' + (index === 1 ? 'order-1' : 'order-3')
                     }`}
                   >
                     <span className="mb-2 text-xs font-bold text-gray-400">#{item.rank}</span>
                     <BattlePlayerAvatar name={item.full_name} size={index === 0 ? 64 : 52} />
-                    <p className="mt-2 text-sm font-bold text-gray-800 truncate max-w-full">{item.full_name}</p>
+                    <p className="mt-2 w-full truncate text-xs font-bold text-gray-800 sm:text-sm">{item.full_name}</p>
                     <p className="mb-2 text-[11px] text-gray-400">
                       {item.class_uz ? `${item.class_uz}-${t('battle.gradeSuffix')}` : ''}
                     </p>
@@ -75,8 +75,8 @@ const BattleLeaderboardPage = () => {
                         {item.wins}W / {item.losses}L / {item.draws}D
                       </p>
                     </div>
-                    <BattleLevelBadge level={item.level} size="sm" />
-                    <span className="flex items-center gap-1 px-3 py-1 text-sm font-bold text-indigo-600 rounded-full shrink-0 bg-indigo-50">
+                    <span className="hidden sm:inline-flex"><BattleLevelBadge level={item.level} size="sm" /></span>
+                    <span className="flex items-center gap-1 px-2.5 sm:px-3 py-1 text-sm font-bold text-indigo-600 rounded-full shrink-0 bg-indigo-50">
                       <Zap size={13} />
                       {item.elo}
                     </span>

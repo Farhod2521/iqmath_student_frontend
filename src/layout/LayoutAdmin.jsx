@@ -65,7 +65,7 @@ const LayoutAdmin = ({ children, title }) => {
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
       {/* ROOT LAYOUT */}
-      <div className="flex h-screen overflow-hidden bg-white dark:bg-[#202936]">
+      <div className="flex h-screen h-[100dvh] overflow-hidden bg-white dark:bg-[#202936]">
         <Sidebar />
 
         {/* MAIN AREA */}

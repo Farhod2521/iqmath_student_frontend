@@ -55,16 +55,16 @@ const CardSubject = ({ item, onClick, theme = DEFAULT_THEME, locked = false, chi
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col px-2.5 pb-2.5 pt-3">
+      <div className="flex flex-1 flex-col px-1.5 pb-2 pt-2.5 sm:px-2.5 sm:pb-2.5 sm:pt-3">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="truncate text-[17px] font-extrabold leading-tight text-[#0F1B3D] dark:text-white">
+            <h3 className="truncate text-[15px] font-extrabold sm:text-[17px] leading-tight text-[#0F1B3D] dark:text-white">
               {gradeLabel}
             </h3>
-            <p className="mt-0.5 truncate text-sm font-medium text-[#5B6478] dark:text-gray-300">{subjectName}</p>
+            <p className="mt-0.5 truncate text-xs font-medium text-[#5B6478] sm:text-sm dark:text-gray-300">{subjectName}</p>
           </div>
           <span
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-transform sm:h-9 sm:w-9 duration-300 group-hover:translate-x-0.5"
             style={{ backgroundColor: soft, color: accent }}
           >
             {locked ? <Lock size={15} /> : <ArrowRight size={16} strokeWidth={2.4} />}
@@ -73,7 +73,7 @@ const CardSubject = ({ item, onClick, theme = DEFAULT_THEME, locked = false, chi
 
         {children || (
         <>
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-[#6B7385] dark:text-gray-300">
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:mt-3 sm:gap-x-4 sm:text-xs font-medium text-[#6B7385] dark:text-gray-300">
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             <BookOpen size={14} className="shrink-0" style={{ color: accent }} />
             {topicsCount} {t('subjectLessonsUnit')}
@@ -84,7 +84,7 @@ const CardSubject = ({ item, onClick, theme = DEFAULT_THEME, locked = false, chi
           </span>
         </div>
 
-        <div className="mt-3 flex items-center gap-3">
+        <div className="mt-2.5 flex items-center gap-2 sm:mt-3 sm:gap-3">
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#EDF0F5] dark:bg-[#2A3547]">
             <div
               className="h-full rounded-full transition-[width] duration-500"

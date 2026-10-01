@@ -25,7 +25,7 @@ const TransferConfirm = ({ transferId, onSuccess, onBack }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow space-y-4">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow space-y-4">
       <button onClick={onBack} className="text-sm text-gray-500">
         ← {t('back')}
       </button>

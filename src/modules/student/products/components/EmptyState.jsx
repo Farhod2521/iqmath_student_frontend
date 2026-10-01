@@ -5,7 +5,7 @@ const EmptyState = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="p-6">
+    <div className="sm:p-2 lg:p-6">
       <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📦</div>

@@ -37,7 +37,7 @@ const Subjects = () => {
   if (isLoading) return <ContentLoader />
 
   return (
-    <div className="flex flex-col gap-9">
+    <div className="flex flex-col gap-7 sm:gap-9">
       {subjectsData?.map(({ type, data }, idx) => {
         const theme = getSubjectTheme(get(data, '[0].name_uz') || type, idx)
         const grades = data.map((item) => Number(get(item, 'class_name'))).filter((n) => !Number.isNaN(n))
@@ -56,7 +56,7 @@ const Subjects = () => {
             <SectionHeader title={type} subtitle={gradeRangeLabel} accent={theme.accent} />
 
             <div
-              className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 md:grid-cols-3 xl:[grid-template-columns:repeat(var(--subject-cols),minmax(0,1fr))]"
+              className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:[grid-template-columns:repeat(var(--subject-cols),minmax(0,1fr))]"
               style={{ '--subject-cols': columns }}
             >
               {data?.map((item, index) =>

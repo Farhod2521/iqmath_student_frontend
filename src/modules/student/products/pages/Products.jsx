@@ -71,7 +71,7 @@ const Products = () => {
 
   if (isLoading) {
     return (
-      <div className="p-6">
+      <div className="sm:p-2 lg:p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
           <div className="w-12 h-12 mx-auto mb-4 border-b-2 border-blue-500 rounded-full animate-spin"></div>
           <p className="text-gray-600 dark:text-white">{t('loadingProducts')}</p>
@@ -82,7 +82,7 @@ const Products = () => {
 
   if (error) {
     return (
-      <div className="p-6">
+      <div className="sm:p-2 lg:p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
           <div className="mb-4 text-6xl">❌</div>
           <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">{t('errorTitle')}</h2>
@@ -96,7 +96,7 @@ const Products = () => {
 
   if (!productList.length) {
     return (
-      <div className="p-6">
+      <div className="sm:p-2 lg:p-6">
         <div className="bg-white dark:bg-[#202936] rounded-[10px] p-6 text-center border">
           <div className="mb-4 text-6xl">🛍️</div>
           <h2 className="text-2xl font-semibold mb-2 text-[#2A3547] dark:text-white">{t('noProductsAvailable')}</h2>
@@ -106,8 +106,8 @@ const Products = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="sm:p-2 lg:p-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {productList?.map((product) => {
           const isOutOfStock = product.count === 0
 
@@ -121,7 +121,7 @@ const Products = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="object-contain w-full h-48"
+                  className="object-contain w-full h-28 sm:h-48"
                   onError={(e) => {
                     e.target.src = '/images/SHOPITEMS.png'
                   }}
@@ -134,39 +134,39 @@ const Products = () => {
 
                 {isOutOfStock && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-                    <span className="text-lg font-bold text-white">{t('outOfStock')}</span>
+                    <span className="text-sm sm:text-lg font-bold text-white">{t('outOfStock')}</span>
                   </div>
                 )}
               </div>
 
-              <div className="flex flex-col justify-between p-4">
-                <h3 className="text-lg font-semibold text-[#2A3547] dark:text-white mb-3 line-clamp-2">
+              <div className="flex flex-col justify-between p-2.5 sm:p-4">
+                <h3 className="text-sm sm:text-lg font-semibold text-[#2A3547] dark:text-white mb-3 line-clamp-2">
                   {i18n.language === 'uz' ? product.name_uz : product.name_ru}
                 </h3>
 
-                <div className="mb-5 space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#2A3447] rounded-lg">
+                <div className="mb-3 space-y-2 sm:mb-5 sm:space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-1 p-2 sm:p-3 bg-gray-50 dark:bg-[#2A3447] rounded-lg">
                     <div className="flex items-center gap-2">
                       <Image src="/icons/coins-logo.svg" alt="Coins" width={18} height={18} />
-                      <span className="text-sm font-medium">{t('onePiece')}</span>
+                      <span className="text-xs sm:text-sm font-medium">{t('onePiece')}</span>
                     </div>
-                    <div className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300">
                       {product.coin} {t('coin')}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#2A3447] rounded-lg">
-                    <div className="flex items-center gap-2 text-sm font-medium dark:text-gray-100">
+                  <div className="flex flex-wrap items-center justify-between gap-1 p-2 sm:p-3 bg-gray-50 dark:bg-[#2A3447] rounded-lg">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium dark:text-gray-100">
                       <FaBoxOpen size={18} color="#eab30a" /> {t('inStock')}
                     </div>
-                    <div className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300">
                       {isOutOfStock ? '0' : product.count} {t('piece')}
                     </div>
                   </div>
                 </div>
 
                 <Button
-                  classname={`w-full font-medium rounded-lg py-2 ${
+                  classname={`w-full text-sm sm:text-base font-medium rounded-lg py-2 ${
                     isOutOfStock ? 'bg-gray-400 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
                   }`}
                   disabled={exchangingProduct === product.id || isOutOfStock}

@@ -2,7 +2,7 @@ import React from 'react'
 
 const LoadingState = () => {
   return (
-    <div className="p-6">
+    <div className="sm:p-2 lg:p-6">
       <div className="bg-white dark:bg-[#202936] rounded-[10px] dark:border-[#2A3447FF] p-6">
         <div className="py-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5D87FF] mx-auto"></div>

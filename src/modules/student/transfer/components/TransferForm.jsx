@@ -43,7 +43,7 @@ const TransferForm = ({ onSuccess }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow space-y-4">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow space-y-4">
       <input
         placeholder={t('enterIdentification')}
         value={id}

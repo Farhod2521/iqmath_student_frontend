@@ -58,9 +58,9 @@ const HomeStatsGrid = ({ stats, isLoading }) => {
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       {cards.map((stat) => (
-        <div key={stat.key} className="rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden">
+        <div key={stat.key} className="min-w-0 rounded-2xl border border-[#F0F0F0] bg-white p-3 shadow-sm sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="relative flex h-10 w-10 shrink-0 sm:h-14 sm:w-14 items-center justify-center overflow-hidden">
               <Image
                 src={stat.icon}
                 alt=""
@@ -69,16 +69,16 @@ const HomeStatsGrid = ({ stats, isLoading }) => {
                 style={stat.iconScale ? { transform: `scale(${stat.iconScale})` } : undefined}
               />
             </div>
-            <div>
+            <div className="min-w-0">
               {isLoading ? (
                 <div className="h-6 w-10 animate-pulse rounded bg-gray-100" />
               ) : (
-                <p className="text-xl font-extrabold text-[#191C1D] sm:text-2xl">{stat.value}</p>
+                <p className="text-lg font-extrabold leading-tight text-[#191C1D] sm:text-2xl">{stat.value}</p>
               )}
-              <p className="text-[11px] text-[#8A8A8E] sm:text-xs">{stat.sub}</p>
+              <p className="text-[10px] leading-tight text-[#8A8A8E] sm:text-xs">{stat.sub}</p>
             </div>
           </div>
-          <p className="mt-3 text-[11px] font-medium text-[#5A6A85] sm:text-xs">{stat.title}</p>
+          <p className="mt-2.5 truncate text-[11px] font-medium text-[#5A6A85] sm:text-xs">{stat.title}</p>
           <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#F5F5F5]">
             <div className={`h-full rounded-full ${stat.barColor}`} style={{ width: `${stat.barPercent}%` }} />
           </div>

@@ -108,32 +108,32 @@ function CoinConvert() {
   return (
     <div className="max-w-2xl mx-auto mt-4">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <Coins className="w-10 h-10 text-indigo-600" />
-          <h1 className="text-4xl font-bold text-gray-800">{t('converterTitle')}</h1>
+      <div className="text-center mb-5 sm:mb-8">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+          <Coins className="w-7 h-7 sm:w-10 sm:h-10 shrink-0 text-indigo-600" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-800">{t('converterTitle')}</h1>
         </div>
-        <p className="text-gray-600">{t('converterDesc')}</p>
+        <p className="text-sm sm:text-base text-gray-600">{t('converterDesc')}</p>
       </div>
 
       {/* Conversion Rates Info */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">{t('ratesTitle')}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-xl">
-            <Award className="w-8 h-8 text-amber-600" />
+        <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-amber-50 rounded-xl">
+            <Award className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 text-amber-600" />
             <div>
-              <div className="text-2xl font-bold text-amber-700">{RATES.BALL_PER_TANGA}</div>
+              <div className="text-xl sm:text-2xl font-bold text-amber-700">{RATES.BALL_PER_TANGA}</div>
               <div className="text-xs text-amber-600">{t('ball')}</div>
             </div>
           </div>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center px-1">
             <div className="text-gray-400 text-xl">=</div>
           </div>
-          <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
-            <Coins className="w-8 h-8 text-blue-600" />
+          <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-blue-50 rounded-xl">
+            <Coins className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 text-blue-600" />
             <div>
-              <div className="text-2xl font-bold text-blue-700">1</div>
+              <div className="text-xl sm:text-2xl font-bold text-blue-700">1</div>
               <div className="text-xs text-blue-600">{t('tanga')}</div>
             </div>
           </div>
@@ -145,9 +145,9 @@ function CoinConvert() {
       </div>
 
       {/* Converter Card */}
-      <div className="bg-white rounded-2xl shadow-xl p-8">
+      <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8">
         {/* Selections */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
           {/* 1-selection: qaysidan */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">{t('selectFromLabel')}</label>
@@ -188,7 +188,7 @@ function CoinConvert() {
         </div>
 
         {/* Amount input (from-unit bo‘yicha) */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">
             {fromUnit === 'ball' ? t('amountFromBall') : t('amountFromTanga')}
           </label>
@@ -198,11 +198,11 @@ function CoinConvert() {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0"
-              className="w-full px-6 py-4 text-2xl font-semibold border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+              className="w-full pl-4 pr-28 sm:pl-6 sm:pr-32 py-3 sm:py-4 text-xl sm:text-2xl font-semibold border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
               min="0"
               step="0.01"
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
+            <div className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-lg">
               {fromUnit === 'ball' ? (
                 <>
                   <Award className="w-5 h-5 text-amber-600" />
@@ -219,7 +219,7 @@ function CoinConvert() {
         </div>
 
         {/* Switch (ixtiyoriy) */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4 sm:mb-6">
           <button
             onClick={() => {
               setMessage(null)
@@ -240,15 +240,15 @@ function CoinConvert() {
         </div>
 
         {/* Natija (to-unit bo‘yicha) */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label className="block text-sm font-semibold text-gray-700 mb-3">
             {fromUnit === 'ball' ? (toUnit === 'tanga' ? t('toTanga') : t('toSum')) : t('toSum')}
           </label>
           <div className="relative">
-            <div className="w-full px-6 py-4 text-2xl font-semibold border-2 border-gray-200 rounded-xl bg-gray-50 text-gray-600">
+            <div className="w-full truncate pl-4 pr-28 sm:pl-6 sm:pr-32 py-3 sm:py-4 text-xl sm:text-2xl font-semibold border-2 border-gray-200 rounded-xl bg-gray-50 text-gray-600">
               {convertedAmount}
             </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg">
+            <div className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-gray-200 rounded-lg">
               {toUnit === 'tanga' ? (
                 <>
                   <Coins className="w-5 h-5 text-blue-600" />
@@ -264,11 +264,11 @@ function CoinConvert() {
         </div>
 
         {/* So'm ekvivalenti */}
-        <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-          <div className="flex items-center justify-between">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-sm font-medium text-gray-600">{t('sumEquivalentLabel')}</span>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-green-700">
+              <span className="text-lg sm:text-xl font-bold text-green-700">
                 {sumEquivalent} {t('sum')}
               </span>
             </div>
@@ -279,7 +279,7 @@ function CoinConvert() {
         <button
           onClick={handleConvert}
           disabled={isConvertLoading || !amount || parsed <= 0}
-          className="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
+          className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
         >
           {isConvertLoading ? (
             <div className="flex items-center justify-center gap-2">

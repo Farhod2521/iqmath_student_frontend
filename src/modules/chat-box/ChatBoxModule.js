@@ -98,19 +98,19 @@ const ChatBoxModule = () => {
   const showNewChatButton = isStudent && chats.length === 0
 
   return (
-    <div className="relative flex h-[calc(100vh-112px)] min-h-[520px] gap-4">
+    <div className="relative flex h-full min-h-[420px] gap-4 md:min-h-[520px]">
       {/* CHAT RO'YXATI */}
       <aside
         className={`${
           showChatList ? 'flex' : 'hidden'
         } w-full shrink-0 flex-col overflow-hidden rounded-3xl border border-[#EEF1F6] bg-white shadow-[0_8px_30px_-20px_rgba(15,23,42,0.3)] dark:border-[#1F2A3C] dark:bg-[#111A2B] md:flex md:w-[330px] lg:w-[370px] xl:w-[400px]`}
       >
-        <div className="px-5 pb-3 pt-5">
+        <div className="px-3 pb-3 pt-3 sm:px-5 sm:pt-5">
           <div className="mb-4 flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2F6BFF] text-white shadow-[0_8px_18px_-8px_rgba(47,107,255,0.9)]">
               <MessagesSquare size={22} />
             </span>
-            <h2 className="text-2xl font-bold text-[#0F172A] dark:text-white">{t('chatUi.title')}</h2>
+            <h2 className="text-xl font-bold text-[#0F172A] dark:text-white sm:text-2xl">{t('chatUi.title')}</h2>
           </div>
 
           <label className="flex h-12 items-center gap-3 rounded-2xl bg-[#F1F5FB] px-4 text-[#6B7385] focus-within:ring-2 focus-within:ring-[#2F6BFF]/40 dark:bg-[#1A2436]">

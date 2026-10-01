@@ -133,7 +133,7 @@ const DiagnosticMistakes = () => {
 
   return (
     <MathJaxContext config={mathConfig}>
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_400px]">
         {/* ASOSIY USTUN */}
         <div className="flex min-w-0 flex-col gap-5">
           {/* Sarlavha */}
@@ -146,12 +146,12 @@ const DiagnosticMistakes = () => {
               <ArrowLeft size={17} />
               {t('questionPage.back')}
             </button>
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1D4ED8] text-white shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]">
+            <span className="flex h-12 w-12 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1D4ED8] text-white shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]">
               <LayoutGrid size={28} />
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-base font-bold text-[#191C1D] dark:text-white">{t('mistakes.analysisTitle')}</p>
-              <h1 className="truncate text-2xl font-bold text-[#2563EB] md:text-[26px]">{subjectName}</h1>
+              <h1 className="truncate text-xl font-bold text-[#2563EB] sm:text-2xl md:text-[26px]">{subjectName}</h1>
               <p className="text-sm text-[#6B7385]">{t('mistakes.subtitle')}</p>
             </div>
             {attempts.length ? (

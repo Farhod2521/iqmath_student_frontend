@@ -77,7 +77,8 @@ const Friends = () => {
     {
       headerName: '№',
       field: 'index',
-      maxWidth: 80,
+      maxWidth: 70,
+      minWidth: 56,
       cellClass: 'text-center',
       sortable: false,
       filter: false
@@ -103,11 +104,11 @@ const Friends = () => {
   if (isLoadingReferrals || isFetchingReferrals) return <ContentLoader />
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="flex items-center justify-end">
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-[10px] font-medium"
+          className="w-full sm:w-auto bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-[10px] font-medium"
         >
           <UserPlus size={20} className="mr-2" />
           {t('inviteFriends')}
@@ -123,12 +124,12 @@ const Friends = () => {
           <>
             {!data || data.length === 0 ? (
               <Card className="border-none shadow-sm">
-                <div className="text-center py-16">
+                <div className="text-center py-10 px-4 sm:py-16">
                   <div className="w-20 h-20 bg-[#F8F9FA] rounded-full flex items-center justify-center mx-auto mb-6">
                     <UserPlus size={40} className="text-[#5A6A85]" />
                   </div>
-                  <h3 className="text-[20px] font-semibold text-black mb-3">{t('noReferralsYet')}</h3>
-                  <p className="text-[16px] text-[#5A6A85] mb-8 max-w-md mx-auto">{t('noReferralsDescription')}</p>
+                  <h3 className="text-lg sm:text-[20px] font-semibold text-black mb-3">{t('noReferralsYet')}</h3>
+                  <p className="text-sm sm:text-[16px] text-[#5A6A85] mb-6 sm:mb-8 max-w-md mx-auto">{t('noReferralsDescription')}</p>
                   <Button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-6 py-3 rounded-[10px] font-medium text-[16px]"

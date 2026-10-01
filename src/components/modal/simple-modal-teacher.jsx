@@ -14,7 +14,7 @@ const SimpleModalTeacher = ({ children, classname }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.3 }}
-          className="bg-white  rounded-[16px] shadow-lg w-[497px] font-sf"
+          className="bg-white rounded-[16px] shadow-lg w-[calc(100vw-24px)] max-w-[497px] max-h-[90vh] overflow-y-auto font-sf"
         >
           {children}
         </motion.div>

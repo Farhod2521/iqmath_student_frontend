@@ -48,9 +48,9 @@ const StudentHome = () => {
   const firstName = fullName ? fullName.split(' ')[0] : ''
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-        <div className="flex flex-col gap-5 lg:col-span-9">
+    <div className="flex flex-col gap-4 sm:gap-5">
+      <div className="grid grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-12">
+        <div className="flex min-w-0 flex-col gap-4 sm:gap-5 xl:col-span-9">
           <HomeHero
             activeClass={activeClassId}
             onSelectClass={setActiveClassId}
@@ -63,7 +63,7 @@ const StudentHome = () => {
           <HomeRecentActivity activities={recentActivity} isLoading={isDashboardLoading} />
         </div>
 
-        <div className="flex flex-col gap-5 lg:col-span-3">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 xl:col-span-3 xl:flex xl:flex-col">
           <HomeCalendarCard />
           <HomeRemindersCard />
           <HomeTopStudents

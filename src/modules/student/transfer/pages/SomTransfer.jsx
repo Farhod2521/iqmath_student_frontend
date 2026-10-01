@@ -18,10 +18,10 @@ const SomTransfer = () => {
   const [transferId, setTransferId] = useState(null)
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
       {/* HEADER */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{t('transferMoney')}</h1>
+      <div className="flex flex-wrap justify-between items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold">{t('transferMoney')}</h1>
 
         {step !== STEPS.HISTORY && (
           <button onClick={() => setStep(STEPS.HISTORY)} className="text-indigo-600 font-medium">

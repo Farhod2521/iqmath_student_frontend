@@ -29,12 +29,12 @@ function AttemptPicker({ attempts, activeId, onSelect }) {
   const numberOf = (i) => attempts.length - i
 
   return (
-    <div className="flex items-center gap-2">
-      <div ref={ref} className="relative">
+    <div className="flex w-full items-center gap-2 sm:w-auto">
+      <div ref={ref} className="relative w-full sm:w-auto">
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex h-14 min-w-[240px] items-center gap-3 rounded-2xl border border-[#EEF1F6] bg-white px-4 text-left shadow-sm dark:border-[#26324A] dark:bg-[#111A2B]"
+          className="flex h-12 w-full items-center gap-3 sm:h-14 sm:w-auto sm:min-w-[240px] rounded-2xl border border-[#EEF1F6] bg-white px-4 text-left shadow-sm dark:border-[#26324A] dark:bg-[#111A2B]"
         >
           <CalendarDays size={24} className="shrink-0 text-[#2563EB]" />
           <span className="min-w-0 flex-1">
@@ -51,7 +51,7 @@ function AttemptPicker({ attempts, activeId, onSelect }) {
         </button>
 
         {open ? (
-          <ul className="absolute right-0 top-16 z-30 max-h-72 w-full min-w-[260px] overflow-y-auto rounded-2xl border border-[#EEF1F6] bg-white py-1.5 shadow-xl dark:border-[#26324A] dark:bg-[#111A2B]">
+          <ul className="absolute right-0 top-16 z-30 max-h-72 w-full overflow-y-auto sm:min-w-[260px] rounded-2xl border border-[#EEF1F6] bg-white py-1.5 shadow-xl dark:border-[#26324A] dark:bg-[#111A2B]">
             {attempts.map((item, i) => (
               <li key={item.id}>
                 <button

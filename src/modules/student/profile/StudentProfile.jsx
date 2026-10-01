@@ -32,12 +32,12 @@ const StudentProfile = () => {
 
   return (
     <Card className="rounded-[12px] w-full overflow-hidden shadow-sm">
-      <div className="border-b border-[#E9E9E9] flex overflow-x-auto">
+      <div className="no-scrollbar border-b border-[#E9E9E9] flex overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2.5 text-[13px] whitespace-nowrap transition-colors border-b-2 ${
+            className={`shrink-0 px-3 sm:px-4 py-2.5 text-[13px] whitespace-nowrap transition-colors border-b-2 ${
               activeTab === tab.key
                 ? 'text-[#5D87FF] border-[#5D87FF] font-bold'
                 : 'text-[#8A8A8E] border-transparent hover:text-[#191C1D] hover:bg-gray-50'
@@ -48,7 +48,7 @@ const StudentProfile = () => {
         ))}
       </div>
 
-      <div className="p-4">{ActiveComponent && <ActiveComponent />}</div>
+      <div className="p-3 sm:p-4">{ActiveComponent && <ActiveComponent />}</div>
     </Card>
   )
 }

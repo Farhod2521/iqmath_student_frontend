@@ -31,13 +31,13 @@ const formatDuration = (seconds) => {
 }
 
 const StatTile = ({ icon, label, value, valueClass = '' }) => (
-  <div className="flex items-center gap-3 px-4 py-3 bg-white border rounded-2xl border-[#eceaf4] dark:bg-[#252f3f] dark:border-[#374151]">
-    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#F1F4FF] text-[#5d87ff] shrink-0">
+  <div className="flex min-w-0 items-center gap-3 px-2.5 py-2.5 sm:px-4 sm:py-3 bg-white border rounded-xl sm:rounded-2xl border-[#eceaf4] dark:bg-[#252f3f] dark:border-[#374151]">
+    <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-xl bg-[#F1F4FF] text-[#5d87ff] shrink-0">
       {icon}
     </div>
     <div className="min-w-0">
       <p className="text-[11px] text-[#8189a8] dark:text-gray-400 truncate">{label}</p>
-      <p className={`text-sm font-semibold text-[#1f2a5b] dark:text-white truncate ${valueClass}`}>{value}</p>
+      <p className={`text-xs sm:text-sm font-semibold text-[#1f2a5b] dark:text-white truncate ${valueClass}`}>{value}</p>
     </div>
   </div>
 )
@@ -151,12 +151,12 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
       <div className="font-sf">
         <StudentBreadcrumbs selectTitle={topicName} mainLink={basePath} />
 
-        <div className="grid grid-cols-12 gap-5 lg:gap-6">
+        <div className="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
           {/* ============ CHAP USTUN ============ */}
           <div className="col-span-12 lg:col-span-8">
             {/* Sarlavha + navigatsiya */}
-            <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-              <h1 className="text-[22px] sm:text-[26px] lg:text-[30px] font-bold leading-tight text-[#1f2a5b] dark:text-white break-words min-w-0">
+            <div className="flex flex-wrap items-start justify-between gap-3 mb-4 sm:mb-5">
+              <h1 className="text-xl sm:text-[26px] lg:text-[30px] font-bold leading-tight text-[#1f2a5b] dark:text-white break-words min-w-0">
                 {topicName}
               </h1>
 
@@ -224,7 +224,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
             </div>
 
             {/* Statistika plitkalari */}
-            <div className="grid grid-cols-1 gap-3 mt-4 sm:grid-cols-3">
+            <div className="grid grid-cols-3 gap-2 mt-3 sm:gap-3 sm:mt-4">
               <StatTile icon={<ClockIcon />} label={t('videoDuration')} value={formatDuration(duration)} />
               <StatTile
                 icon={<ChartIcon />}
@@ -252,7 +252,7 @@ const TopicDetail = ({ basePath = '/dashboard/student/subjects', title = 'subjec
                   <h2 className="text-[15px] font-bold text-[#1f2a5b] dark:text-white">{t('aboutTopic')}</h2>
                 </div>
 
-                <div className="px-5 py-5 prose-sm prose sm:prose-base max-w-none dark:prose-invert">
+                <div className="px-3 py-4 sm:px-5 sm:py-5 overflow-x-auto prose-sm prose sm:prose-base max-w-none dark:prose-invert">
                   {parse(topicContent)}
                 </div>
               </div>

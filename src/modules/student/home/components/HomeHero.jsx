@@ -29,14 +29,15 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative overflow-hidden rounded-2xl bg-[#0B1030] px-5 py-6 sm:px-8 sm:py-8">
+      <div className="relative overflow-hidden rounded-2xl bg-[#0B1030] px-4 py-5 sm:px-8 sm:py-8">
         <div
           className="absolute inset-0 bg-cover bg-right"
           style={{ backgroundImage: 'url(/images/homepage/raketa.png)' }}
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1030] via-[#0B1030]/75 to-[#0B1030]/10 sm:hidden" />
 
         <div className="relative flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
-          <div className="max-w-md">
+          <div className="w-full max-w-md">
             <span className="inline-block rounded-full bg-[#5D5FEF]/30 px-3 py-1 text-[11px] font-semibold tracking-wide text-[#B7B9FF]">
               {t('studentHome.continuing')}
             </span>
@@ -45,12 +46,12 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
               <div className="mt-3 h-12 w-56 animate-pulse rounded-lg bg-white/10" />
             ) : continueLearning ? (
               <>
-                <h2 className="mt-3 text-xl font-extrabold leading-tight text-white sm:text-2xl">
+                <h2 className="mt-3 text-lg font-extrabold leading-tight text-white sm:text-2xl">
                   {currentClassName}-sinf {subjectName}
                   <br />
                   {chapterName}
                 </h2>
-                <p className="mt-2 text-sm text-white/60">
+                <p className="mt-2 text-xs text-white/60 sm:text-sm">
                   {chapterOrder}-{t('studentHome.topicUnit')} • {topicsDone}/{topicsTotal}{' '}
                   {t('studentHome.lessonsDone')}
                 </p>
@@ -63,7 +64,7 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
 
             {!isLoading && continueLearning && (
               <div className="mt-4 flex items-center gap-3">
-                <div className="h-2 w-48 overflow-hidden rounded-full bg-white/15 sm:w-64">
+                <div className="h-2 w-full max-w-[16rem] overflow-hidden rounded-full bg-white/15">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-[#7C6FF5] to-[#5D87FF]"
                     style={{ width: `${percent}%` }}
@@ -76,7 +77,7 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
 
           <button
             onClick={handleContinue}
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-[#5453f4] transition hover:bg-white/90"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-4 py-2.5 sm:px-5 text-sm font-semibold text-[#5453f4] transition hover:bg-white/90"
           >
             {t('studentHome.continueButton')}
             <ArrowRight size={16} />
@@ -84,10 +85,10 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
         </div>
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="no-scrollbar -mx-3 flex items-center gap-2 overflow-x-auto px-3 sm:mx-0 sm:px-0">
         <button
           onClick={() => onSelectClass('my')}
-          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition ${
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] sm:px-4 sm:text-sm font-semibold transition ${
             activeClass === 'my'
               ? 'bg-[#5D87FF] text-white'
               : 'border border-[#E9E9E9] bg-white text-[#191C1D] hover:bg-gray-50'
@@ -100,7 +101,7 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
           <button
             key={cls.id}
             onClick={() => onSelectClass(cls.id)}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${
+            className={`shrink-0 rounded-full px-3.5 py-2 text-[13px] sm:px-4 sm:text-sm font-semibold transition ${
               activeClass === cls.id
                 ? 'bg-[#5D87FF] text-white'
                 : 'border border-[#E9E9E9] bg-white text-[#191C1D] hover:bg-gray-50'

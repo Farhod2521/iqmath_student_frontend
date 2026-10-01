@@ -41,7 +41,7 @@ function SidebarFooter() {
           <>
             {/* Modal Backdrop */}
             <div
-              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${
+              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[2000] duration-300 ${
                 isExiting ? 'opacity-0' : 'opacity-40'
               }`}
               onClick={closeModal}
@@ -49,13 +49,13 @@ function SidebarFooter() {
 
             {/* Modal Container */}
             <div
-              className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${
+              className={`fixed inset-0 flex items-center justify-center z-[2000] p-4 transition-all duration-300 ${
                 isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
               }`}
             >
-              <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
-                <h2 className="mb-1 text-xl font-semibold">{t('exitWeb')}</h2>
-                <p className="text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
+              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-[500px]">
+                <h2 className="mb-1 text-lg sm:text-xl font-semibold">{t('exitWeb')}</h2>
+                <p className="text-sm sm:text-lg font-medium text-[#7C8FAC] mb-4">{t('exitWebDesc')}</p>
                 <div className="flex justify-end gap-x-[10px]">
                   <button
                     onClick={handleLogout}

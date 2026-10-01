@@ -14,15 +14,15 @@ const ChatPagination = ({
   if (totalPages <= 1) return null
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
-      <div className="flex items-center justify-between">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {/* Ma'lumotlar soni */}
         <div className="text-sm text-gray-500 dark:text-gray-400">
           {t('showing', 'Ko\'rsatilmoqda')}: {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, totalItems)} {t('of', 'dan')} {totalItems}
         </div>
         
         {/* Pagination kontrolleri */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Sahifa o'lchami */}
           <select
             value={pageSize}

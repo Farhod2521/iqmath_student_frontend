@@ -33,11 +33,11 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-3 sm:p-4">
+      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] sm:max-h-[80vh] overflow-y-auto">
         <ModalHeader activeTab={activeTab} onClose={handleClose} />
 
-        <div className="p-4 overflow-hidden">
+        <div className="p-3 sm:p-4 overflow-hidden">
           {activeTab === 'plans' ? (
             <>
               {isLoadingPlans ? (
@@ -55,7 +55,7 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
                   {selectedPlan && (
                     <div className="text-center">
                       <Button
-                        classname="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-12 py-4 text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                        classname="w-full sm:w-auto bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 sm:px-12 py-3 sm:py-4 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
                         onclick={handleNext}
                       >
                         {t('proceedToPayment')} - {selectedPlan.price.toLocaleString()} {t('sum')}

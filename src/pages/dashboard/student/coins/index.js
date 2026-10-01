@@ -32,57 +32,43 @@ const Index = () => {
       <div className="mb-4">
         <HeaderTitle title={t('points')} />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4 lg:gap-x-[24px]">
+      <div>
         <div
           style={{ backgroundImage: `url(/images/bg-img-2.png)` }}
-          className="
-      col-span-12 
-      p-6 
-      rounded-[12px] 
-      text-white 
-      bg-no-repeat bg-cover 
-      relative 
-      overflow-hidden
-    "
+          className="relative overflow-hidden rounded-[12px] bg-cover bg-no-repeat p-4 text-white sm:p-6"
         >
           {/* Info blocks */}
           <div
-            className="
-        flex flex-col 
-        sm:flex-row 
-        sm:flex-wrap 
-        gap-6 
-        mb-6
-      "
+            className="mb-3 grid grid-cols-3 gap-3 sm:mb-6 sm:flex sm:flex-row sm:flex-wrap sm:gap-6"
           >
             {/* Ball */}
-            <div className="w-full sm:w-[180px]">
-              <p className="text-[16px] sm:text-[17px] font-medium">{t('yourballs')}</p>
-              <div className="flex items-center gap-2 mt-2 mb-2">
-                <CoinsIcon color="white" />
-                <p className="text-[22px] sm:text-[26px] font-semibold">
+            <div className="relative z-10 min-w-0 sm:w-[180px]">
+              <p className="truncate text-xs sm:text-[17px] font-medium">{t('yourballs')}</p>
+              <div className="flex items-center gap-2 mt-1.5 mb-2 sm:mt-2">
+                <span className="hidden sm:block"><CoinsIcon color="white" /></span>
+                <p className="text-base sm:text-[26px] font-semibold leading-tight">
                   {get(scoreData, 'score', 0)} {t('ball')}
                 </p>
               </div>
             </div>
 
             {/* Coins */}
-            <div className="w-full sm:w-[180px]">
-              <p className="text-[16px] sm:text-[17px] font-medium">{t('yourcoins')}</p>
-              <div className="flex items-center gap-2 mt-2 mb-2">
-                <CoinsIcon color="white" />
-                <p className="text-[22px] sm:text-[26px] font-semibold">
+            <div className="relative z-10 min-w-0 sm:w-[180px]">
+              <p className="truncate text-xs sm:text-[17px] font-medium">{t('yourcoins')}</p>
+              <div className="flex items-center gap-2 mt-1.5 mb-2 sm:mt-2">
+                <span className="hidden sm:block"><CoinsIcon color="white" /></span>
+                <p className="text-base sm:text-[26px] font-semibold leading-tight">
                   {get(scoreData, 'coin', 0)} {t('coin')}
                 </p>
               </div>
             </div>
 
             {/* Sums */}
-            <div className="w-full sm:w-[180px]">
-              <p className="text-[16px] sm:text-[17px] font-medium">{t('yoursums')}</p>
-              <div className="flex items-center gap-2 mt-2 mb-2">
-                <CoinsIcon color="white" />
-                <p className="text-[22px] sm:text-[26px] font-semibold">
+            <div className="relative z-10 min-w-0 sm:w-[180px]">
+              <p className="truncate text-xs sm:text-[17px] font-medium">{t('yoursums')}</p>
+              <div className="flex items-center gap-2 mt-1.5 mb-2 sm:mt-2">
+                <span className="hidden sm:block"><CoinsIcon color="white" /></span>
+                <p className="text-base sm:text-[26px] font-semibold leading-tight">
                   {get(scoreData, 'sum', 0)} {t('sum')}
                 </p>
               </div>
@@ -90,7 +76,7 @@ const Index = () => {
           </div>
 
           {/* Description */}
-          <p className="text-[15px] sm:text-[17px] text-[#DCDCDD] w-full lg:w-3/5">{t('descballs')}</p>
+          <p className="relative z-10 text-[13px] sm:text-[17px] text-[#DCDCDD] w-full lg:w-3/5">{t('descballs')}</p>
 
           {/* Images */}
           <Image
@@ -98,7 +84,7 @@ const Index = () => {
             alt="wallet-img"
             width={254}
             height={266}
-            className="absolute right-0 bottom-0 hidden sm:block"
+            className="absolute right-0 bottom-0 hidden md:block"
           />
 
           <Image
@@ -106,7 +92,7 @@ const Index = () => {
             alt="wallet-img"
             width={153}
             height={159}
-            className="absolute right-[140px] bottom-0 hidden sm:block"
+            className="absolute right-[140px] bottom-0 hidden lg:block"
           />
 
           <Image
@@ -114,7 +100,7 @@ const Index = () => {
             alt="wallet-img"
             width={90}
             height={90}
-            className="absolute right-[160px] top-0 hidden sm:block"
+            className="absolute right-[160px] top-0 hidden lg:block"
           />
 
           <Image

@@ -51,12 +51,12 @@ const CoinsHistoryTab = () => {
 
   return (
     <div className="overflow-x-auto border border-[#E9E9E9] rounded-lg">
-      <table className="w-full table-auto min-w-[400px] text-sm">
+      <table className="w-full table-auto text-sm">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">#</th>
-            <th className="px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">{t('type')}</th>
-            <th className="w-48 px-6 py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">
+            <th className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">#</th>
+            <th className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">{t('type')}</th>
+            <th className="w-48 px-3 sm:px-6 py-3 sm:py-4 text-xs font-bold tracking-wider text-left text-gray-500 uppercase">
               {t('date')}
             </th>
           </tr>
@@ -66,12 +66,12 @@ const CoinsHistoryTab = () => {
             const isCoin = item.award_type === 'coin'
             return (
               <tr key={item.id} className="transition hover:bg-gray-50">
-                <td className="px-6 py-3">
+                <td className="px-3 sm:px-6 py-3">
                   <div className="text-sm font-semibold text-gray-800">{index + 1}</div>
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-3 sm:px-6 py-3">
                   <span
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold ${
                       isCoin ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
                     }`}
                   >
@@ -79,9 +79,9 @@ const CoinsHistoryTab = () => {
                     {isCoin ? t('coin') : t('score')}
                   </span>
                 </td>
-                <td className="px-6 py-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <HiOutlineClock size={16} />
+                <td className="px-3 sm:px-6 py-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-500">
+                    <HiOutlineClock size={16} className="hidden shrink-0 sm:block" />
                     {item.awarded_at}
                   </div>
                 </td>

@@ -138,7 +138,7 @@ const SubjectsPage = () => {
         }}
       >
         <div className="font-sf">
-          <div className="mb-6 pb-3 border-b border-[#eceaf4] dark:border-[#374151]">
+          <div className="mb-4 sm:mb-6 pb-3 border-b border-[#eceaf4] dark:border-[#374151]">
             <div className="flex items-center gap-2 [&>div]:!mb-0">
               <span className="w-[6px] h-[20px] rounded-full bg-[#ff5b8d] shrink-0" />
               <BaseBreadcrumbs
@@ -161,8 +161,15 @@ const SubjectsPage = () => {
                     return (
                       <li
                         key={idx}
-                        onClick={() => setSelectedChapterId(item.id)}
-                        className={`flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 border-l-[3px] transition-colors ${
+                        onClick={() => {
+                          setSelectedChapterId(item.id)
+                          if (window.innerWidth < 768) {
+                            setTimeout(() => {
+                              document.getElementById('topics-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                            }, 50)
+                          }
+                        }}
+                        className={`flex items-center justify-between gap-3 px-3 sm:px-4 py-3 text-[13px] sm:text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 border-l-[3px] transition-colors ${
                           isActive
                             ? 'border-l-[#7c5cfc] bg-[#f6f3ff] dark:bg-[#2b3648]'
                             : 'border-l-transparent hover:bg-[#faf9ff] dark:hover:bg-[#2b3648]'
@@ -182,12 +189,14 @@ const SubjectsPage = () => {
                 </ul>
               </PanelCard>
 
-              <MotivationCard />
+              <div className="hidden md:block">
+                <MotivationCard />
+              </div>
             </div>
 
             {/* MAVZU (Topic) */}
             {selectedChapterId && (
-              <div className="col-span-12 md:col-span-6 self-start">
+              <div id="topics-panel" className="col-span-12 md:col-span-6 self-start scroll-mt-4">
                 <PanelCard
                   icon={<TopicIcon />}
                   title={t('topic')}
@@ -204,7 +213,7 @@ const SubjectsPage = () => {
                           <li
                             key={index}
                             onClick={() => router.push(`/dashboard/student/subjects/${id}/${selectedChapterId}/${item.id}`)}
-                            className="flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 hover:bg-[#f6fbf7] dark:hover:bg-[#2b3648] transition-colors"
+                            className="flex items-center justify-between gap-3 px-3 sm:px-4 py-3 text-[13px] sm:text-sm uppercase cursor-pointer border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 hover:bg-[#f6fbf7] dark:hover:bg-[#2b3648] transition-colors"
                           >
                             <div className="flex items-center min-w-0 gap-3">
                               <TopicBadge index={index} score={item.score} />
@@ -220,9 +229,9 @@ const SubjectsPage = () => {
                             )}
                           </li>
                         ) : (
-                          <Popover key={index} size="md" showArrow backdrop="opaque" classNames={{ content: 'max-w-[400px]' }}>
+                          <Popover key={index} size="md" showArrow backdrop="opaque" classNames={{ content: 'max-w-[calc(100vw-32px)] sm:max-w-[400px]' }}>
                             <PopoverTrigger>
-                              <li className="flex items-center justify-between gap-3 px-4 py-3 text-sm uppercase border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 opacity-50 cursor-pointer">
+                              <li className="flex items-center justify-between gap-3 px-3 sm:px-4 py-3 text-[13px] sm:text-sm uppercase border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 opacity-50 cursor-pointer">
                                 <div className="flex items-center min-w-0 gap-3">
                                   <TopicBadge index={index} score={0} />
                                   <span className="break-words text-[#4a5273] dark:text-gray-300">

@@ -17,7 +17,7 @@ const SimpleModal = ({ children, classname, open, onClose }) => {
   return (
     <AnimatePresence >
       <motion.div
-        className={`fixed inset-0 min-h-screen  top-[-32px] flex items-center  justify-center  bg-black bg-opacity-60 ${classname || ''}`}
+        className={`fixed inset-0 z-[2000] flex items-center justify-center bg-black bg-opacity-60 p-3 sm:p-4${classname || ''}`}
         onClick={handleBackdropClick}
       >
         <motion.div
@@ -25,7 +25,7 @@ const SimpleModal = ({ children, classname, open, onClose }) => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.95 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className={`bg-white rounded-xl shadow-2xl w-full ${sizeClass} max-h-[80vh] overflow-y-auto`}
+          className={`bg-white rounded-xl shadow-2xl w-full ${sizeClass} max-h-[90vh] overflow-y-auto sm:max-h-[85vh]`}
         >
           {children}
         </motion.div>

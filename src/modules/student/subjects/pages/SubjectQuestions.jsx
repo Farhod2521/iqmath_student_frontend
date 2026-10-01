@@ -322,7 +322,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
       <ModalLevel handleTabChange={handleTabChange} tab={tab} />
 
       {isLoading ? (
-        <div className="w-full p-10 text-center italic text-gray-500">{t('chooseQueation')}</div>
+        <div className="w-full p-6 sm:p-10 text-center italic text-gray-500">{t('chooseQueation')}</div>
       ) : (
         <QuestionWorkspace
           questions={questionList}
@@ -335,7 +335,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
             questions?.data?.subject_is_active ? (
               <ActionSolution
                 selectedQuestion={selectedQuestion}
-                className="h-11 min-w-0 rounded-xl bg-[#EEF3FF] px-4 text-[15px] font-semibold text-[#2563EB] dark:bg-[#1E2B48]"
+                className="h-9 min-w-0 rounded-xl bg-[#EEF3FF] px-2.5 text-sm font-semibold text-[#2563EB] dark:bg-[#1E2B48] sm:h-11 sm:px-4 sm:text-[15px]"
               >
                 <span className="flex items-center gap-2">
                   <Lightbulb size={19} />
@@ -374,10 +374,10 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
           <div className="flex flex-col items-center justify-center ">
             <Image src={'/icons/award.svg'} alt="circle" width={84} height={118} className="mt-[24px]" />
 
-            <p className="text-[22px] font-semibold mt-[24px] mb-[16px] ">
+            <p className="text-lg sm:text-[22px] font-semibold mt-[24px] mb-[16px] px-4 text-center">
               {t('yourScore', { score: get(score, 'data.result[0].correct_answers') })}
             </p>
-            <p className="text-center">
+            <p className="text-center px-4 text-sm sm:text-base">
               {t('yourAnswer', {
                 answer: get(score, 'data.result[0].correct_answers'),
                 total: get(score, 'data.result[0].total_answers')
@@ -387,7 +387,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
 
             <div className="bg-[#E9E9E9] w-full h-[1px] my-[24px]"></div>
 
-            <div className="flex flex-wrap justify-center gap-3 pb-[24px] text-sm">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-3 pb-[24px] text-sm">
               <Button
                 className="bg-[#007AFF] text-white hover:bg-[#007AFF]/80 rounded-md"
                 onPress={() => setShowMistake(true)}
@@ -421,14 +421,14 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
 
       {showMistake && (
         <SimpleModal open={showMistake} onClose={() => setShowMistake(false)} classname="modal-lg">
-          <div className="px-8 py-6 border-b border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900">{t('myResults')}</h3>
+          <div className="px-4 py-4 sm:px-8 sm:py-6 border-b border-gray-200">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t('myResults')}</h3>
           </div>
-          <div className="px-8 py-6 space-y-4">
+          <div className="px-3 py-4 sm:px-8 sm:py-6 space-y-3 sm:space-y-4">
             {get(results, 'data.question', []).map((question, index) => (
-              <div key={index} className="flex items-start gap-4 p-4 bg-white rounded-lg">
+              <div key={index} className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-lg">
                 <div
-                  className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-lg
+                  className={`w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center rounded-full font-bold text-base sm:text-lg
                       ${
                         !question?.answer
                           ? 'bg-red-100 text-red-600 border-red-400'
@@ -449,7 +449,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
               </div>
             ))}
           </div>
-          <div className="flex justify-end gap-3 px-8 pb-6">
+          <div className="flex flex-wrap justify-end gap-2 sm:gap-3 px-4 pb-4 sm:px-8 sm:pb-6">
             <Button
               className="px-4 py-2 text-white transition-colors bg-gray-500 rounded-md hover:bg-gray-600"
               onPress={() => setShowMistake(false)}

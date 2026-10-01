@@ -8,6 +8,7 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { groupSubjectsByType } from '../../utils/groupSubjectsByType'
 import { getSubjectTheme } from '../../utils/subjectTheme'
+import StatsCarousel from './StatsCarousel'
 
 // Legenda ranglari (maket bo'yicha); "Jami darslar" — fan rangida
 export const COMPLETED_COLOR = '#2BC4A0'
@@ -30,7 +31,7 @@ const Donut = ({ value, color }) => {
   const radius = 34
   const circumference = 2 * Math.PI * radius
   return (
-    <div className="relative h-[92px] w-[92px] shrink-0">
+    <div className="relative h-[80px] w-[80px] shrink-0 sm:h-[92px] sm:w-[92px]">
       <svg viewBox="0 0 84 84" className="h-full w-full -rotate-90">
         <circle cx="42" cy="42" r={radius} fill="none" stroke="#EEF1F6" strokeWidth="8" />
         <circle
@@ -46,7 +47,7 @@ const Donut = ({ value, color }) => {
           className="transition-[stroke-dashoffset] duration-700"
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-[22px] font-extrabold text-[#0F1B3D] dark:text-white">
+      <span className="absolute inset-0 flex items-center justify-center text-lg font-extrabold text-[#0F1B3D] sm:text-[22px] dark:text-white">
         {value}%
       </span>
     </div>
@@ -69,7 +70,8 @@ const GradeBars = ({ grades, color }) => {
   const maxIndex = grades.findIndex((g) => g.value === maxValue)
 
   return (
-    <div className="flex h-[118px] min-w-0 flex-1 items-end gap-1.5 sm:gap-2">
+    // Mobilda (ustun joylashuvda) flex-1 balandlikni 0 ga tushirmasin — shrink-0, flex-1 faqat md+ (qator) da
+    <div className="flex h-[110px] min-w-0 shrink-0 items-end gap-1.5 pt-6 sm:h-[130px] sm:gap-2 md:flex-1 md:shrink">
       {grades.map((grade, index) => {
         const isTop = index === maxIndex && maxValue > 0
         // Bo'sh sinf ham ko'rinib tursin — kamida 12% balandlik
@@ -107,20 +109,20 @@ export const StatsCard = ({ title, theme, gradesLabel, overall, overallLabel, le
 
   return (
     <div
-      className="flex flex-col gap-4 rounded-[20px] bg-white bg-[linear-gradient(180deg,var(--stats-tint)_0%,#FFFFFF_55%)] p-4 ring-1 ring-[#EDF0F5] sm:p-5 dark:bg-[#202936] dark:bg-none dark:ring-[#2A3547]"
+      className="flex h-full flex-col gap-4 rounded-[20px] bg-white bg-[linear-gradient(180deg,var(--stats-tint)_0%,#FFFFFF_55%)] p-4 ring-1 ring-[#EDF0F5] sm:p-5 dark:bg-[#202936] dark:bg-none dark:ring-[#2A3547]"
       style={{ '--stats-tint': `${soft}99` }}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-sm"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white sm:h-12 sm:w-12 shadow-sm"
             style={{ backgroundColor: accent }}
           >
             <SubjectIcon name={title} />
           </span>
           <div className="min-w-0">
-            <h3 className="truncate text-[20px] font-extrabold leading-tight text-[#0F1B3D] dark:text-white">{title}</h3>
-            {gradesLabel ? <p className="mt-0.5 text-sm text-[#6B7385] dark:text-gray-400">{gradesLabel}</p> : null}
+            <h3 className="truncate text-lg font-extrabold sm:text-[20px] leading-tight text-[#0F1B3D] dark:text-white">{title}</h3>
+            {gradesLabel ? <p className="mt-0.5 text-xs text-[#6B7385] sm:text-sm dark:text-gray-400">{gradesLabel}</p> : null}
           </div>
         </div>
         <button
@@ -140,14 +142,14 @@ export const StatsCard = ({ title, theme, gradesLabel, overall, overallLabel, le
             <Donut value={overall} color={accent} />
             <span className="text-[11px] font-medium text-[#8A93A6]">{overallLabel}</span>
           </div>
-          <div className="flex min-w-[150px] flex-1 flex-col gap-2.5">
+          <div className="flex min-w-0 flex-1 flex-col gap-2.5 sm:min-w-[150px]">
             {legend.map((row) => (
               <LegendRow key={row.label} color={row.color || accent} label={row.label} value={row.value} />
             ))}
           </div>
         </div>
 
-        <div className="hidden h-[118px] w-px shrink-0 bg-[#EDF0F5] md:block dark:bg-[#2A3547]" />
+        <div className="hidden h-[130px] w-px shrink-0 bg-[#EDF0F5] md:block dark:bg-[#2A3547]" />
 
         <GradeBars grades={grades} color={accent} />
       </div>
@@ -218,11 +220,11 @@ const SubjectsStats = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 min-[1700px]:grid-cols-3">
+    <StatsCarousel>
       {cards.map((card) => (
         <StatsCard key={card.title} {...card} onSeeAll={() => scrollToSection(card.sectionIndex)} />
       ))}
-    </div>
+    </StatsCarousel>
   )
 }
 

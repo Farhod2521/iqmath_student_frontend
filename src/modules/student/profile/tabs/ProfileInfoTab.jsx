@@ -32,16 +32,16 @@ const InfoRow = ({ icon: Icon, title, desc }) => {
       <div className="w-7 h-7 rounded-full bg-[#EEF2FF] flex items-center justify-center flex-shrink-0">
         <Icon size={14} className="text-[#5D87FF]" />
       </div>
-      <div>
+      <div className="min-w-0">
         <p className="text-[12px] text-[#8A8A8E] mb-0.5">{title}</p>
-        <p className="text-[14px] text-[#191C1D] font-medium leading-tight">{desc}</p>
+        <p className="text-[14px] text-[#191C1D] font-medium leading-tight break-words">{desc}</p>
       </div>
     </div>
   )
 }
 
 const SectionCard = ({ icon: Icon, title, children, className = '' }) => (
-  <div className={`bg-white rounded-xl shadow-sm p-5 ${className}`}>
+  <div className={`bg-white rounded-xl shadow-sm p-4 sm:p-5 ${className}`}>
     <div className="flex items-center gap-2 mb-3">
       <Icon size={16} className="text-[#5D87FF]" />
       <h3 className="text-[14px] font-semibold text-[#191C1D]">{title}</h3>
@@ -91,17 +91,17 @@ const ProfileInfoTab = () => {
   ]
 
   return (
-    <div className="flex flex-col gap-4 bg-[#F7F8FA] -m-4 p-4">
+    <div className="flex flex-col gap-3 sm:gap-4 bg-[#F7F8FA] -m-3 p-3 sm:-m-4 sm:p-4">
       {/* Header banner */}
-      <div className="bg-gradient-to-br from-[#EEF3FF] via-[#F5F8FF] to-white rounded-xl shadow-sm p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-          <div className="flex items-center gap-4">
+      <div className="bg-gradient-to-br from-[#EEF3FF] via-[#F5F8FF] to-white rounded-xl shadow-sm p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-5">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <div className="relative flex-shrink-0">
-              <Avatar size="lg" className="w-20 h-20 ring-4 ring-white shadow-sm" icon={<AvatarIcon />} />
+              <Avatar size="lg" className="w-16 h-16 sm:w-20 sm:h-20 ring-4 ring-white shadow-sm" icon={<AvatarIcon />} />
               <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full ring-2 ring-white" />
             </div>
-            <div>
-              <h2 className="text-[22px] font-bold text-[#191C1D] leading-tight">
+            <div className="min-w-0">
+              <h2 className="text-lg sm:text-[22px] font-bold text-[#191C1D] leading-tight break-words">
                 {get(studentProfile, 'data.full_name', '')}
               </h2>
               <div className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 bg-white/70 text-[#8A8A8E] rounded-md border border-[#E9E9E9] text-[11px] font-medium">
@@ -123,7 +123,7 @@ const ProfileInfoTab = () => {
 
           <button
             onClick={() => router.push('/dashboard/student/profile/update')}
-            className="bg-[#5D87FF] hover:bg-[#4570EA] text-white flex justify-center items-center py-2.5 px-5 gap-x-[6px] rounded-[8px] text-[13px] font-semibold transition-colors shadow-sm flex-shrink-0"
+            className="w-full sm:w-auto bg-[#5D87FF] hover:bg-[#4570EA] text-white flex justify-center items-center py-2.5 px-5 gap-x-[6px] rounded-[8px] text-[13px] font-semibold transition-colors shadow-sm flex-shrink-0"
           >
             <Pencil size={14} />
             {t('editProfile')}
@@ -132,8 +132,8 @@ const ProfileInfoTab = () => {
       </div>
 
       {/* Personal info + education (left) / location & ranking (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
-        <div className="lg:col-span-2 flex flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch">
+        <div className="lg:col-span-2 flex flex-col gap-3 sm:gap-4">
           <SectionCard icon={Users} title={t('personalInfo')}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
               <InfoRow icon={Phone} title={t('childPhone')} desc={phone ? `+${phone}` : ''} />
@@ -156,7 +156,7 @@ const ProfileInfoTab = () => {
           </SectionCard>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-5 flex flex-col">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-5 flex flex-col">
           <h3 className="text-[14px] font-semibold text-[#191C1D] mb-0.5">{t('territorialLocation')}</h3>
           <p className="text-[12px] text-[#5D87FF] font-medium mb-3">
             {[region, districts].filter(Boolean).join(', ')}

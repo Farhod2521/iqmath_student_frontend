@@ -92,7 +92,7 @@ function NavbarProfile() {
     <div className="relative z-[1000]">
       <button
         ref={buttonRef}
-        className="group w-7 h-7 min-[400px]:w-8 min-[400px]:h-8 sm:w-9 sm:h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
+        className="group w-9 h-9 border-2 border-[#5d87ff] bg-white hover:bg-[#5d87ff] rounded-full flex items-center justify-center transition-colors duration-200"
         onClick={handleProfile}
       >
         <Image
@@ -100,14 +100,14 @@ function NavbarProfile() {
           alt="user"
           width={16}
           height={16}
-          className="rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200 min-[400px]:w-5 min-[400px]:h-5 sm:w-6 sm:h-6"
+          className="h-5 w-5 rounded-full group-hover:brightness-0 group-hover:invert transition-all duration-200 sm:w-6 sm:h-6"
         />
       </button>
 
       {openProfile && (
         <div
           ref={profileRef}
-          className="absolute z-[9999999] min-w-[270px] min-[400px]:min-w-[300px] sm:min-w-[320px] overflow-hidden rounded-2xl border border-[#EAEFF4] bg-white shadow-[0_16px_40px_-12px_rgba(93,135,255,0.35)] top-[55px] min-[400px]:top-[50px] right-[15px] min-[400px]:right-[30px] dark:bg-[#26334A] dark:border-[#374151]"
+          className="absolute z-[9999999] w-[calc(100vw-24px)] max-w-[320px] overflow-hidden rounded-2xl border border-[#EAEFF4] bg-white shadow-[0_16px_40px_-12px_rgba(93,135,255,0.35)] top-[calc(100%+12px)] -right-1 dark:bg-[#26334A] dark:border-[#374151]"
         >
           {/* Profil sarlavhasi */}
           <div className="relative overflow-hidden bg-gradient-to-br from-[#EEF1FF] to-white px-5 py-5 dark:from-[#2b3648] dark:to-[#26334A]">
@@ -187,14 +187,14 @@ function NavbarProfile() {
         createPortal(
           <>
             <div
-              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[60] duration-300 ${
+              className={`fixed inset-0 w-full h-full bg-black transition-opacity z-[2000] duration-300 ${
                 isExiting ? 'opacity-0' : 'opacity-40'
               }`}
               onClick={closeModal}
             ></div>
 
             <div
-              className={`fixed inset-0 flex items-center justify-center z-[60] transition-all duration-300 ${
+              className={`fixed inset-0 flex items-center justify-center z-[2000] transition-all duration-300 ${
                 isExiting ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
               }`}
             >

@@ -11,7 +11,7 @@ function NavbarSum() {
   return (
     <button
       onClick={() => router.push('/dashboard/student/coins')}
-      className="flex items-center gap-1.5 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-3 transition-colors hover:bg-[#EEF1F6]"
+      className="flex min-w-0 items-center justify-center gap-1 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-2 transition-colors hover:bg-[#EEF1F6] sm:gap-1.5 sm:pr-3"
     >
       <Image
         src="/images/homepage/som.png"
@@ -20,9 +20,9 @@ function NavbarSum() {
         height={28}
         className="h-6 w-6 shrink-0 object-contain sm:h-7 sm:w-7"
       />
-      <span className="flex items-baseline gap-1 leading-none">
+      <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
         <span className="text-sm font-bold text-[#191C1D] sm:text-base">{scoreData.sum ?? 0}</span>
-        <span className="text-xs font-medium text-[#8A8A8E]">{t('sum')}</span>
+        <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">{t('sum')}</span>
       </span>
     </button>
   )

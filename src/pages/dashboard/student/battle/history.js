@@ -57,8 +57,8 @@ const BattleHistoryPage = () => {
       {loading ? (
         <div className="py-10 text-center text-gray-400">{t('loading')}</div>
       ) : (
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
             <StatTile icon={<Swords size={18} />} label={t('battle.totalMatches')} value={stats?.total_matches ?? 0} />
             <StatTile icon={<Trophy size={18} />} label={t('battle.wins')} value={stats?.wins ?? 0} />
             <StatTile icon={<XCircle size={18} />} label={t('battle.losses')} value={stats?.losses ?? 0} />
@@ -88,13 +88,13 @@ const BattleHistoryPage = () => {
             <p className="px-4 pt-4 mb-2 text-sm font-bold text-gray-700 sm:px-5">{t('battle.matchHistory')}</p>
             <div className="divide-y divide-gray-100">
               {(history?.results || []).map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 px-4 py-3 sm:px-5">
+                <div key={idx} className="flex items-center gap-2.5 sm:gap-3 px-3 py-3 sm:px-5">
                   <BattlePlayerAvatar name={item.opponent?.name || '?'} size={36} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800 truncate">{item.opponent?.name || '—'}</p>
                     <p className="text-xs text-gray-400 truncate">{(item.subjects || []).join(', ')}</p>
                   </div>
-                  <BattleLevelBadge level={item.opponent?.level} size="sm" />
+                  <span className="hidden sm:inline-flex"><BattleLevelBadge level={item.opponent?.level} size="sm" /></span>
                   <span
                     className={`px-2.5 py-1 rounded-full text-xs font-bold shrink-0 ${RESULT_COLOR[item.result] || ''}`}
                   >
@@ -106,7 +106,7 @@ const BattleHistoryPage = () => {
                     </span>
                   ) : (
                     <span
-                      className={`text-sm font-bold shrink-0 w-12 text-right ${
+                      className={`text-sm font-bold shrink-0 w-10 sm:w-12 text-right ${
                         item.elo_change > 0 ? 'text-emerald-500' : item.elo_change < 0 ? 'text-red-500' : 'text-gray-400'
                       }`}
                     >

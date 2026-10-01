@@ -17,6 +17,7 @@ import {
 } from '../components/stats/SubjectsStats'
 import { groupSubjectsByType } from '../utils/groupSubjectsByType'
 import { getSubjectTheme } from '../utils/subjectTheme'
+import StatsCarousel from '../components/stats/StatsCarousel'
 
 const MIN_COLUMNS = 5
 const MAX_COLUMNS = 6
@@ -97,13 +98,13 @@ const DiagnosticSubjects = () => {
   const statsCards = sections.filter((section) => section.stats)
 
   return (
-    <div className="flex flex-col gap-9">
+    <div className="flex flex-col gap-7 sm:gap-9">
       {statsCards.length ? (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 min-[1700px]:grid-cols-3">
+        <StatsCarousel>
           {statsCards.map((section) => (
             <StatsCard key={section.type} {...section.stats} onSeeAll={() => scrollToSection(section.index)} />
           ))}
-        </div>
+        </StatsCarousel>
       ) : null}
 
       {sections.map((section) => {
@@ -114,7 +115,7 @@ const DiagnosticSubjects = () => {
             <SectionHeader title={section.type} subtitle={section.subtitle} accent={section.theme.accent} />
 
             <div
-              className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 md:grid-cols-3 xl:[grid-template-columns:repeat(var(--subject-cols),minmax(0,1fr))]"
+              className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:[grid-template-columns:repeat(var(--subject-cols),minmax(0,1fr))]"
               style={{ '--subject-cols': columns }}
             >
               {section.data.map((item) => (

@@ -38,7 +38,7 @@ const ConfirmPurchaseModal = ({ isOpen, onClose, onConfirm, product, paymentType
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-md w-full p-6">
+      <div className="bg-white dark:bg-[#202936] rounded-2xl shadow-xl max-w-md w-full p-4 sm:p-6">
         {/* Header */}
         <div className="text-center mb-6">
           <div className="mx-auto w-16 h-16 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mb-4">

@@ -26,21 +26,21 @@ const Index = () => {
   return (
     <LayoutAdmin>
       <HeaderTitle title={t('diagnostics')} />
-      <div className="grid grid-cols-12 gap-[24px] rounded-[12px]">
-        <div className="col-span-8 rounded-[12px]">
+      <div className="grid grid-cols-12 gap-4 sm:gap-[24px] rounded-[12px]">
+        <div className="col-span-12 xl:col-span-8 rounded-[12px]">
           <div className="space-y-[12px]">
             {get(levelStatistics, 'data', []).map((item, index) => (
               <div
                 key={index}
-                className="border border-[#E9E9E9] py-[12px] px-[24px] rounded-[12px] bg-white flex justify-between items-center"
+                className="border border-[#E9E9E9] py-[12px] px-3 sm:px-[24px] rounded-[12px] bg-white flex flex-wrap justify-between items-center gap-3"
               >
-                <div className="w-1/3">
-                  <p className="text-[17px] font-medium">
+                <div className="sm:w-1/3">
+                  <p className="text-[15px] sm:text-[17px] font-medium">
                     {get(item, 'level')} - {t('degree')}
                   </p>
                 </div>
 
-                <div className="w-1/3 flex items-center gap-x-[10px]">
+                <div className="sm:w-1/3 flex items-center gap-x-[10px]">
                   <div className="w-[80px] bg-gray-200 rounded-full h-[12px] overflow-hidden">
                     <div
                       className="bg-[#FF9500] h-full transition-all duration-300 rounded-full"
@@ -54,7 +54,7 @@ const Index = () => {
                   </p>
                 </div>
 
-                <div className="w-1/3 flex justify-end">
+                <div className="w-full sm:w-1/3 flex justify-end">
                   {get(item, 'message', '') ? (
                     <Button
                       isDisabled={get(item, 'level') != '1'}

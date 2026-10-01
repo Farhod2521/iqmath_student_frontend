@@ -35,7 +35,7 @@ export default function VideoPlayer({
   return (
     <div
       ref={containerRef}
-      className="fixed bottom-4 right-4 w-[460px] rounded-xl overflow-hidden shadow-lg z-50 bg-black text-white"
+      className="fixed bottom-3 right-3 w-[calc(100vw-24px)] max-w-[460px] sm:bottom-4 sm:right-4 rounded-xl overflow-hidden shadow-lg z-50 bg-black text-white"
     >
       <div className="relative pt-[56.25%]">
         <ReactPlayer

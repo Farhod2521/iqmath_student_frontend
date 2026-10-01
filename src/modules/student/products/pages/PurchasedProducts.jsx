@@ -16,7 +16,7 @@ const PurchasedProducts = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="sm:p-2 lg:p-6">
       <ProductGrid exchanges={exchanges} />
     </div>
   )

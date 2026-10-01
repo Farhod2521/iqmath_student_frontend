@@ -21,8 +21,39 @@ const FinesTab = () => {
 
   const fines = data?.data?.results || []
 
+  const statusRow = isLoading ? t('loading') : fines.length === 0 ? t('noData') : null
+
   return (
-    <div className="overflow-x-auto border border-[#E9E9E9] rounded-lg">
+    <>
+      {/* Mobil: kartalar */}
+      <div className="flex flex-col gap-2.5 sm:hidden">
+        {statusRow ? (
+          <div className="rounded-lg border border-[#E9E9E9] py-10 text-center text-sm text-gray-400">{statusRow}</div>
+        ) : (
+          fines.map((item, index) => (
+            <div key={item.fine_id} className="rounded-xl border border-[#E9E9E9] bg-white p-3 text-sm">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-gray-900">
+                    {index + 1}. {item?.given_by?.full_name || '-'}
+                  </p>
+                  <p className="text-xs text-gray-400">{item?.given_by?.phone || '-'}</p>
+                </div>
+                <span className="shrink-0 font-bold text-gray-900">{item.amount}</span>
+              </div>
+              {item.reason ? <p className="mt-2 break-words text-gray-700">{item.reason}</p> : null}
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <span className="rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#5D87FF]">
+                  {item.fine_type_display}
+                </span>
+                <span className="text-xs text-gray-500">{item.created_at}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+    <div className="hidden overflow-x-auto border border-[#E9E9E9] rounded-lg sm:block">
       <table className="w-full text-left border-collapse min-w-[700px] text-sm">
         <thead className="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide border-b border-[#E9E9E9]">
           <tr>
@@ -71,6 +102,7 @@ const FinesTab = () => {
         </tbody>
       </table>
     </div>
+    </>
   )
 }
 

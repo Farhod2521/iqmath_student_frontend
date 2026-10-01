@@ -38,7 +38,7 @@ const HomeRecentActivity = ({ activities, isLoading }) => {
             const iconColor = isMastered ? 'text-[#22C55E]' : 'text-[#5D87FF]'
 
             return (
-              <div key={activity.topic_id} className="flex items-center gap-3 py-3">
+              <div key={activity.topic_id} className="flex items-center gap-2.5 py-3 sm:gap-3">
                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}>
                   <Icon size={16} className={iconColor} />
                 </div>
@@ -51,8 +51,8 @@ const HomeRecentActivity = ({ activities, isLoading }) => {
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1">
-                  <span className="text-xs text-[#8A8A8E]">{activity.completed_at}</span>
-                  <div className="flex items-center gap-1">
+                  <span className="text-[11px] text-[#8A8A8E] sm:text-xs">{activity.completed_at}</span>
+                  <div className="flex flex-wrap items-center justify-end gap-1">
                     {activity.ball_earned > 0 && (
                       <span className="rounded-md bg-[#E7F8EF] px-1.5 py-0.5 text-[11px] font-semibold text-[#22C55E]">
                         +{activity.ball_earned} {t('ball')}

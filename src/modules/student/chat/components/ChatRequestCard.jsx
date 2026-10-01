@@ -17,19 +17,19 @@ const ChatRequestCard = ({ request, getLocalizedField, getStatusColor, getStatus
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h3 className="min-w-0 break-words text-base font-semibold text-gray-900 dark:text-white">
           {subjectName || t('subject', 'Fan')}
         </h3>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
+        <span className={`shrink-0 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
           {getStatusText(request.status)}
         </span>
       </div>
       
       <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col gap-0.5 sm:block">
           {chapterName && (
-            <span className="mr-4">{t('chapter', 'Bo\'lim')}: {chapterName}</span>
+            <span className="sm:mr-4">{t('chapter', 'Bo\'lim')}: {chapterName}</span>
           )}
           {topicName && (
             <span>{t('topic', 'Mavzu')}: {topicName}</span>
@@ -37,9 +37,9 @@ const ChatRequestCard = ({ request, getLocalizedField, getStatusColor, getStatus
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         {request.result && request.result.length > 0 ? (
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
             <div className="flex items-center gap-1">
               <span className="text-gray-500">Ball:</span>
               <span className="font-medium">{request.result[0].score}</span>

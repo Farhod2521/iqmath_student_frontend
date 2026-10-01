@@ -15,7 +15,7 @@ const TransferHistory = ({ onBack }) => {
   if (isLoading) return <div>{t('loading')}</div>
 
   return (
-    <div className="p-6 space-y-6 bg-white shadow rounded-xl">
+    <div className="p-4 sm:p-6 space-y-6 bg-white shadow rounded-xl">
       <button onClick={onBack} className="text-sm text-gray-500">
         ← {t('back')}
       </button>
@@ -26,7 +26,7 @@ const TransferHistory = ({ onBack }) => {
         <div className="space-y-2">
           {history?.sent?.length ? (
             history?.sent?.map((item) => (
-              <div key={item.id} className="flex justify-between p-3 border rounded">
+              <div key={item.id} className="flex flex-wrap justify-between gap-x-3 gap-y-1 p-3 border rounded">
                 <div>
                   <p className="font-medium">{item.other_party}</p>
                   <p className="text-xs text-gray-400">{item.confirmed_at}</p>
@@ -46,7 +46,7 @@ const TransferHistory = ({ onBack }) => {
         <div className="space-y-2">
           {history.received?.length ? (
             history.received?.map((item) => (
-              <div key={item.id} className="flex justify-between p-3 border rounded">
+              <div key={item.id} className="flex flex-wrap justify-between gap-x-3 gap-y-1 p-3 border rounded">
                 <div>
                   <p className="font-medium">{item.other_party}</p>
                   <p className="text-xs text-gray-400">{item.confirmed_at}</p>

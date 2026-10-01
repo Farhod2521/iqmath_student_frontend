@@ -11,12 +11,12 @@ function Main({ children, title }) {
       }`}
     >
       {/* Navbar */}
-      <div className="sticky top-0 z-[900]  flex-shrink-0 bg-white">
+      <div className="sticky top-0 z-40 flex-shrink-0 bg-white">
         <Navbar title={title} />
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-8 [webkit-overflow-scrolling:touch] relative z-0">{children}</div>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 xl:p-8 [webkit-overflow-scrolling:touch] relative">{children}</div>
     </div>
   )
 }
