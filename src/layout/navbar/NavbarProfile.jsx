@@ -2,7 +2,7 @@ import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
-import { signOut } from 'next-auth/react'
+import { logout } from '@/shared/utils/logout'
 import { useTranslation } from 'react-i18next'
 
 import Image from 'next/image'
@@ -69,9 +69,7 @@ function NavbarProfile() {
   }
 
   const handleLogout = async () => {
-    await signOut({
-      callbackUrl: '/'
-    })
+    await logout('/')
   }
 
   const handleLogoutClick = () => {

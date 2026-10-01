@@ -9,6 +9,8 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import DeviceLimitModal from '@/components/devices/DeviceLimitModal'
+import { getDeviceCredentials, parseDeviceLimitError } from '@/shared/utils/device'
 
 function AuthSignIn() {
   const [isChecked, setIsChecked] = useState(false)
@@ -17,50 +19,82 @@ function AuthSignIn() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const { register, handleSubmit } = useForm()
+  // 2 ta qurilma chegarasi: tanlash oynasi va qayta kirish uchun login ma'lumotlari
+  const [deviceLimit, setDeviceLimit] = useState(null)
+  const [pendingLogin, setPendingLogin] = useState(null)
+  const [removingId, setRemovingId] = useState(null)
 
-  const onSubmit = async ({ phone, password }) => {
+  const login = async ({ phone, password }, replaceDeviceId) => {
+    const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
+    const result = await signIn('credentials', {
+      phone: formattedPhone,
+      password,
+      device: 'web',
+      lang: i18n.language,
+      ...getDeviceCredentials(),
+      ...(replaceDeviceId ? { replace_device_id: replaceDeviceId } : {}),
+      redirect: false
+    })
+
+    const limit = parseDeviceLimitError(result?.error)
+    if (limit) {
+      setPendingLogin({ phone, password })
+      setDeviceLimit(limit)
+      return
+    }
+    setDeviceLimit(null)
+    setPendingLogin(null)
+    await handleResult(result)
+  }
+
+  const onSubmit = async (values) => {
     setIsLoading(true)
     try {
-      const formattedPhone = `998${phone.replace(/[^0-9]/g, '')}`
-      const lang = i18n.language
-      const device = 'web'
-
-      const result = await signIn('credentials', {
-        phone: formattedPhone,
-        password,
-        device,
-        lang,
-        redirect: false
-      })
-
-      if (result?.ok) {
-        const session = await getSession()
-
-        const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
-
-        toast.success(t('loggedInSuccessfully'))
-
-        if (returnUrl) {
-          window.location.href = returnUrl
-          return
-        }
-
-        if (session?.role === RolesList.TEACHER) {
-          window.location.href = '/dashboard/teacher/statistics'
-        } else if (session?.role === RolesList.PARENT) {
-          window.location.href = '/dashboard/parent/home'
-        } else if (session?.role === RolesList.TUTOR) {
-          window.location.href = '/dashboard/tutor/referrals'
-        } else {
-          window.location.href = '/dashboard/student/home'
-        }
-      } else {
-        toast.error(t('invalidLogin'))
-      }
+      await login(values)
     } catch (error) {
       toast.error(t('loginError'))
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  // Tanlangan qurilma chiqarib yuboriladi va shu qurilmadan kiriladi
+  const replaceDevice = async (device) => {
+    if (!pendingLogin) return
+    setRemovingId(device.id)
+    try {
+      await login(pendingLogin, device.id)
+    } catch (error) {
+      toast.error(t('loginError'))
+    } finally {
+      setRemovingId(null)
+    }
+  }
+
+  const handleResult = async (result) => {
+    if (result?.ok) {
+      const session = await getSession()
+
+      const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
+
+      toast.success(t('loggedInSuccessfully'))
+
+      if (returnUrl) {
+        window.location.href = returnUrl
+        return
+      }
+
+      if (session?.role === RolesList.TEACHER) {
+        window.location.href = '/dashboard/teacher/statistics'
+      } else if (session?.role === RolesList.PARENT) {
+        window.location.href = '/dashboard/parent/home'
+      } else if (session?.role === RolesList.TUTOR) {
+        window.location.href = '/dashboard/tutor/referrals'
+      } else {
+        window.location.href = '/dashboard/student/home'
+      }
+    } else {
+      toast.error(t('invalidLogin'))
     }
   }
 
@@ -72,6 +106,15 @@ function AuthSignIn() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px]">
+      <DeviceLimitModal
+        info={deviceLimit}
+        removingId={removingId}
+        onRemove={replaceDevice}
+        onClose={() => {
+          setDeviceLimit(null)
+          setPendingLogin(null)
+        }}
+      />
       <InputPhone
         {...register('phone', {
           required: t('phoneRequired'),

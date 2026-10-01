@@ -11,7 +11,7 @@ import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { RiCoupon5Line } from 'react-icons/ri'
-import { BookOpen, Swords, Trophy, History } from 'lucide-react'
+import { Swords, Trophy, History } from 'lucide-react'
 import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
@@ -161,6 +161,7 @@ export const getMenuItems = (t) => [
   },
   {
     key: 'diagnostics',
+    path: '/dashboard/student/diagnostics',
     label: t('diagnostics'),
     icon: (isActive) => (
       <TbCheckbox
@@ -170,31 +171,7 @@ export const getMenuItems = (t) => [
     ),
     disabled: false,
     roles: [RolesList.STUDENT, RolesList.SUPERADMIN],
-    type: MenuType.LINK,
-    children: [
-      {
-        key: 'diagnostics-start',
-        path: '/dashboard/student/diagnostics',
-        label: t('diagnostics'),
-        icon: (isActive) => (
-          <TbCheckbox
-            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-            size={20}
-          />
-        )
-      },
-      {
-        key: 'diagnostics-history',
-        path: '/dashboard/student/diagnostics/history',
-        label: t('diagnosis_history'),
-        icon: (isActive) => (
-          <BookOpen
-            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-            size={20}
-          />
-        )
-      }
-    ]
+    type: MenuType.LINK
   },
   {
     key: 'battle',

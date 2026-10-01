@@ -1,5 +1,6 @@
+import { logout } from '@/shared/utils/logout'
 import React, { useState } from 'react'
-import { getSession, signOut } from 'next-auth/react'
+import {getSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { RolesList } from '@/layout/libs/menulist'
@@ -29,7 +30,7 @@ function AuthWelcome() {
   }
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/' })
+    await logout('/')
   }
 
   // Loading matnini aniqlash

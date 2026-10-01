@@ -3,6 +3,7 @@ import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
 import { signIn } from 'next-auth/react'
+import { getDeviceCredentials, parseDeviceLimitError } from '@/shared/utils/device'
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -68,11 +69,13 @@ const AuthRecieveCode = () => {
         device: 'web',
         lang: i18n.language,
         role: selectedRole?.value || 'student',
+        ...getDeviceCredentials(),
         redirect: false // Prevent automatic redirect
       })
 
       if (result?.error) {
-        toast.error(t('invalidCredentials'))
+        // Qurilmalar chegarasi — parol bilan kirib, qurilmalardan birini chiqarish kerak
+        toast.error(parseDeviceLimitError(result.error) ? t('devices.limitTitle') : t('invalidCredentials'))
         setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
         toast.success(t('loggedInSuccessfully'))

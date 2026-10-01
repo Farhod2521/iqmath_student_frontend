@@ -1974,10 +1974,10 @@
     "semantic_hash": "6195ee0d3f5ba72d25536d85d293df95"
   },
   "src/modules/student/battle/components/BattleRatingWidget.jsx": {
-    "mtime": 1788438532.326524,
-    "seen": 1790226525.185945,
-    "ast_hash": "211045c24773b8ae9a45397a5be9c35c",
-    "semantic_hash": "211045c24773b8ae9a45397a5be9c35c"
+    "mtime": 1790591808.4845014,
+    "seen": 1790591832.2150664,
+    "ast_hash": "fa1d7a6014915be79698698e61af2683",
+    "semantic_hash": ""
   },
   "src/modules/student/battle/components/BattleResultModal.jsx": {
     "mtime": 1788343539.0456874,
@@ -1986,10 +1986,10 @@
     "semantic_hash": "9d00276d2e8a1c27cf242af0edf15d71"
   },
   "src/modules/student/battle/components/BattleRulesCard.jsx": {
-    "mtime": 1788350678.5733385,
-    "seen": 1790226525.1859462,
-    "ast_hash": "b0c230b3fa3cb6e2fee885665286427f",
-    "semantic_hash": "b0c230b3fa3cb6e2fee885665286427f"
+    "mtime": 1790591808.5093005,
+    "seen": 1790591832.2150683,
+    "ast_hash": "b2433ef3526221b6b3865a3d90cfdd7b",
+    "semantic_hash": ""
   },
   "src/modules/student/battle/components/BattleSearching.jsx": {
     "mtime": 1788348532.7365665,
@@ -2382,16 +2382,16 @@
     "semantic_hash": "3f621eafa800cd451c14d280d7333b4f"
   },
   "src/modules/student/subjects/components/card/CardLockedSubject.jsx": {
-    "mtime": 1789715652.232051,
-    "seen": 1790226525.185983,
-    "ast_hash": "bca5ea7899c997ab599866d17bcf8b95",
-    "semantic_hash": "bca5ea7899c997ab599866d17bcf8b95"
+    "mtime": 1790574011.9276085,
+    "seen": 1790574046.3741894,
+    "ast_hash": "7a0f8be865df58c0db82d7992edd5788",
+    "semantic_hash": ""
   },
   "src/modules/student/subjects/components/card/CardSubject.jsx": {
-    "mtime": 1789715642.262461,
-    "seen": 1790226525.1859834,
-    "ast_hash": "be70ee7cb60b07cc5d851c7ba9e592fd",
-    "semantic_hash": "be70ee7cb60b07cc5d851c7ba9e592fd"
+    "mtime": 1790581769.9036903,
+    "seen": 1790581856.3924737,
+    "ast_hash": "92c350c3baf65ae99bb3ee29b7d4e239",
+    "semantic_hash": ""
   },
   "src/modules/student/subjects/components/card/CardSubjectWithProgress.jsx": {
     "mtime": 1785298804.6540022,
@@ -2496,10 +2496,10 @@
     "semantic_hash": "5410d6665edbd1915c52f51969444bb5"
   },
   "src/modules/student/subjects/pages/DiagnosticSubjects.jsx": {
-    "mtime": 1785298804.656002,
-    "seen": 1790226525.185993,
-    "ast_hash": "c76e4179037ce9da7971a5cb55ea542e",
-    "semantic_hash": "c76e4179037ce9da7971a5cb55ea542e"
+    "mtime": 1790590895.7089033,
+    "seen": 1790591832.2151387,
+    "ast_hash": "ffb9e0b78979c6a90a44471c4b0c6bd7",
+    "semantic_hash": ""
   },
   "src/modules/student/subjects/pages/DiagnosticTest.jsx": {
     "mtime": 1785298804.656002,
@@ -2526,10 +2526,10 @@
     "semantic_hash": "0d2d308dba38fe884554b75c0c53572f"
   },
   "src/modules/student/subjects/pages/Subjects.jsx": {
-    "mtime": 1789714148.3056965,
-    "seen": 1790226525.1859958,
-    "ast_hash": "28135a1a02821a87fbbba66dcb3bfe75",
-    "semantic_hash": "28135a1a02821a87fbbba66dcb3bfe75"
+    "mtime": 1790581816.4609227,
+    "seen": 1790581856.3925092,
+    "ast_hash": "e94cb89157a7438062f9a76e59f64c73",
+    "semantic_hash": ""
   },
   "src/modules/student/subjects/utils/groupSubjectsByType.js": {
     "mtime": 1785298804.657106,
@@ -3504,10 +3504,10 @@
     "semantic_hash": "2a2760f8fcc0e634835fcdf6de76d03b"
   },
   "src/pages/dashboard/student/subjects/index.js": {
-    "mtime": 1786962804.7497969,
-    "seen": 1790226525.1860828,
-    "ast_hash": "12ac5f45b6a0783cebef29d8e37aeeb4",
-    "semantic_hash": "12ac5f45b6a0783cebef29d8e37aeeb4"
+    "mtime": 1790574331.751274,
+    "seen": 1790574342.0097656,
+    "ast_hash": "91a0adbf0eeb9f3cfbd97d2a1549e784",
+    "semantic_hash": ""
   },
   "src/pages/dashboard/student/wallet/index.js": {
     "mtime": 1785298804.6794598,
@@ -3828,15 +3828,15 @@
     "semantic_hash": ""
   },
   "src/services/i18n/translations/ru.json": {
-    "mtime": 1790234824.1180067,
-    "seen": 1790234854.6662402,
-    "ast_hash": "6d7b6546a73a3fbfce4315639afc09b1",
+    "mtime": 1790581785.2541702,
+    "seen": 1790581856.3928742,
+    "ast_hash": "9fc533129c5d3acbfebddb2eab157f14",
     "semantic_hash": ""
   },
   "src/services/i18n/translations/uz.json": {
-    "mtime": 1790234824.0967095,
-    "seen": 1790234854.666241,
-    "ast_hash": "a2929a4f951f1ac5f559640a4d2da483",
+    "mtime": 1790581785.2437258,
+    "seen": 1790581856.3928761,
+    "ast_hash": "d9aba4ec7cebdd342410cfa104ea027b",
     "semantic_hash": ""
   },
   "src/services/storage/index.js": {
@@ -6219,6 +6219,60 @@
     "mtime": 1785298804.5994923,
     "seen": 1790234854.666502,
     "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": ""
+  },
+  "src/modules/student/subjects/utils/subjectTheme.js": {
+    "mtime": 1790573991.7373822,
+    "seen": 1790574046.3742118,
+    "ast_hash": "b6425ed0ab6cd741a251d1de116b42af",
+    "semantic_hash": ""
+  },
+  "src/modules/student/subjects/components/stats/SubjectsStats.jsx": {
+    "mtime": 1790581760.2781873,
+    "seen": 1790581856.3924983,
+    "ast_hash": "5a21f8b2067d886957ec4098abf089a0",
+    "semantic_hash": ""
+  },
+  "src/modules/student/subjects/components/card/CardDiagnostic.jsx": {
+    "mtime": 1790590640.0356033,
+    "seen": 1790591832.2151194,
+    "ast_hash": "ddb132b3ffb9a49ef756ff9de61b0e73",
+    "semantic_hash": ""
+  },
+  "src/modules/student/subjects/components/section/SectionHeader.jsx": {
+    "mtime": 1790581812.0169559,
+    "seen": 1790581856.392496,
+    "ast_hash": "437dff5ca16c71a43c468813749df2a5",
+    "semantic_hash": ""
+  },
+  "public/videos/iqmath-battle-yangilik.mp4": {
+    "mtime": 1790581016.8241498,
+    "seen": 1790581856.3934643,
+    "ast_hash": "a8d43e8b2599af6de0e5def0953932f1",
+    "semantic_hash": ""
+  },
+  "public/images/battle-back.png": {
+    "mtime": 1790591542.8934407,
+    "seen": 1790591832.215407,
+    "ast_hash": "624e7fe3796aaa95f86cd437f2e6eb8c",
+    "semantic_hash": ""
+  },
+  "public/images/battle-back.webp": {
+    "mtime": 1790591775.819322,
+    "seen": 1790591832.2154076,
+    "ast_hash": "83a82cac7a01cdb3cd7de78199a0603d",
+    "semantic_hash": ""
+  },
+  "public/images/battle-qoida.png": {
+    "mtime": 1790591703.4473686,
+    "seen": 1790591832.2154083,
+    "ast_hash": "3f07b53b8cd51d71fb448e8c00e9a1f9",
+    "semantic_hash": ""
+  },
+  "public/images/battle-qoida.webp": {
+    "mtime": 1790591775.863486,
+    "seen": 1790591832.2154088,
+    "ast_hash": "9a3931154fb25b0628bc4029e05bb0f5",
     "semantic_hash": ""
   }
 }

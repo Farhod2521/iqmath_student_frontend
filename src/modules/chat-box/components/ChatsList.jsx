@@ -1,99 +1,94 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Users } from 'lucide-react'
 
 const formatDate = (dateString) => {
-  if (!dateString) return '-'
+  if (!dateString) return ''
 
   const date = new Date(dateString)
   const now = new Date()
-
-  const diff = now - date
-  const hours = diff / 3600000
+  const hours = (now - date) / 3600000
 
   // 1 kundan kichik bo‘lsa vaqt chiqadi
   if (hours < 24) {
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
   }
 
   // 1 kundan katta bo‘lsa sana chiqadi
-  return date.toLocaleDateString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  })
+  return date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
 }
+
+export const ChatAvatar = ({ chat, size = 'h-14 w-14 text-xl' }) =>
+  chat?.chat_type === 'group' ? (
+    <span className={`flex shrink-0 items-center justify-center rounded-full bg-[#EAF1FF] text-[#2F6BFF] ${size}`}>
+      <Users size={24} />
+    </span>
+  ) : (
+    <span
+      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#3B82F6] font-semibold text-white shadow-[0_6px_16px_-8px_rgba(99,102,241,0.9)] ${size}`}
+    >
+      {chat?.other_user_name?.charAt(0)?.toUpperCase() || '?'}
+    </span>
+  )
 
 const ChatsList = ({ chatsLoading, chats = [], ...props }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex-1 overflow-x-hidden overflow-y-auto">
-      {chatsLoading && <p className="px-4 py-3 text-xs text-gray-400 md:px-6 md:py-4 md:text-sm">{t('loading')}</p>}
+    <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-3">
+      {chatsLoading && <p className="px-3 py-4 text-sm text-gray-400">{t('loading')}</p>}
 
-      {chats?.map((chat) => (
-        <div
-          key={chat.id}
-          onClick={() => {
-            // if (chat.is_closed) {
-            //   // Yopilgan chatni ochish uchun ogohlantirish
-            //   if (window.confirm(t('chatBox.chat_closed_open_warning'))) {
-            //     props.setActiveChat(chat)
-            //     props.setShowChatList(false)
-            //     props.cancelReply()
-            //   }
-            // } else {
-            props.setActiveChat(chat)
-            props.setShowChatList(false)
-            props.cancelReply()
-            // }
-          }}
-          className={`
-          flex items-start gap-3 md:gap-4
-          px-3 md:px-4 py-3 md:py-4
-          cursor-pointer transition-all border-l-4
-          w-full max-w-full overflow-hidden
-          ${props.activeChat?.id === chat.id ? 'bg-blue-50 border-blue-500' : 'border-transparent hover:bg-gray-50'}
-          `}
-          // ${chat.is_closed ? 'opacity-70' : ''}
-        >
-          <div className="relative flex-shrink-0">
-            <div className="flex items-center justify-center w-10 h-10 text-sm font-semibold text-white rounded-full shadow-lg md:text-lg md:w-14 md:h-14 bg-gradient-to-br from-blue-400 to-purple-500">
-              {chat?.other_user_name?.charAt(0) || '?'}
-            </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <div className="flex items-center flex-1 min-w-0 gap-2">
-                <h3 className="font-semibold truncate">{chat.other_user_name}</h3>
+      {!chatsLoading && !chats?.length ? (
+        <p className="px-3 py-10 text-center text-sm text-[#8A93A6]">{t('chatUi.noChats')}</p>
+      ) : null}
+
+      {chats?.map((chat) => {
+        const active = props.activeChat?.id === chat.id
+        const unread = chat.unread_count > 0
+        return (
+          <button
+            type="button"
+            key={chat.id}
+            onClick={() => {
+              props.setActiveChat(chat)
+              props.setShowChatList(false)
+              props.cancelReply()
+            }}
+            className={`relative flex w-full items-center gap-3.5 rounded-2xl px-3 py-3.5 text-left transition ${
+              active ? 'bg-[#EAF1FF] dark:bg-[#1E2B48]' : 'hover:bg-[#F6F8FC] dark:hover:bg-[#162033]'
+            }`}
+          >
+            {active ? <span className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-[#2F6BFF]" /> : null}
+
+            <ChatAvatar chat={chat} />
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="truncate text-[15px] font-bold text-[#0F172A] dark:text-white">
+                  {chat.other_user_name}
+                </h3>
+                <span className="shrink-0 text-xs text-[#8A93A6]">{formatDate(chat.last_message_at)}</span>
               </div>
 
-              <span className="flex-shrink-0 text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
-                {formatDate(chat.last_message_at)}
-              </span>
-            </div>
+              <div className="mt-1 flex items-center justify-between gap-2">
+                <p
+                  className={`flex-1 truncate text-sm ${
+                    unread ? 'font-semibold text-[#191C1D] dark:text-white' : 'text-[#6B7385] dark:text-gray-400'
+                  }`}
+                >
+                  {chat.last_message || '—'}
+                </p>
 
-            <div className="flex items-center justify-between gap-2">
-              <p
-                className={`flex-1 text-xs md:text-sm truncate ${
-                  chat.unread_count > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
-                }`}
-              >
-                {chat.last_message}
-              </p>
-
-              {chat.unread_count > 0 && (
-                <span className="flex-shrink-0 min-w-[18px] h-4 md:min-w-[20px] md:h-5 px-1 flex items-center justify-center text-[9px] md:text-[10px] font-bold text-white bg-blue-500 rounded-full">
-                  {chat.unread_count > 99 ? '99+' : chat.unread_count}
-                </span>
-              )}
+                {unread && (
+                  <span className="flex h-6 min-w-[28px] shrink-0 items-center justify-center rounded-full bg-[#2F6BFF] px-2 text-xs font-bold text-white">
+                    {chat.unread_count > 99 ? '99+' : chat.unread_count}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          </button>
+        )
+      })}
     </div>
   )
 }

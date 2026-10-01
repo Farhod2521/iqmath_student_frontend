@@ -4,6 +4,7 @@ import { signOut, getSession } from 'next-auth/react'
 import { URLS } from '../../constants/url'
 import { useUserStore } from '@/store/userStore'
 import { useAuthTabStore } from '@/store'
+import { DEVICE_ID_KEY } from '@/shared/utils/device'
 
 const request = axios.create({
   baseURL: config.API_URL,
@@ -24,7 +25,10 @@ const clearUserData = () => {
   setRole(null)
   clearCredentials()
 
+  // Qurilma identifikatori saqlanadi — aks holda keyingi kirish yangi qurilma deb hisoblanadi
+  const deviceId = localStorage.getItem(DEVICE_ID_KEY)
   localStorage.clear()
+  if (deviceId) localStorage.setItem(DEVICE_ID_KEY, deviceId)
   sessionStorage.clear()
 }
 

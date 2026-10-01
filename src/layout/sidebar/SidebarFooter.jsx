@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 
-import { signOut } from 'next-auth/react'
+import { logout } from '@/shared/utils/logout'
 
 function SidebarFooter() {
   const { t } = useTranslation()
@@ -10,9 +10,7 @@ function SidebarFooter() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const handleLogout = async () => {
-    await signOut({
-      callbackUrl: '/'
-    })
+    await logout('/')
   }
 
   // Function to handle showing the modal

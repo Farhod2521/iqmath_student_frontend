@@ -24,16 +24,8 @@ import BattleStatsCard from './BattleStatsCard'
 const QUESTION_COUNT_OPTIONS = [5, 10, 15, 20]
 const SECONDS_OPTIONS = [30, 45, 60, 90, 120]
 
-const GRADE_ICON_STYLES = [
-  { bg: 'bg-sky-50', text: 'text-sky-500' },
-  { bg: 'bg-emerald-50', text: 'text-emerald-500' },
-  { bg: 'bg-violet-50', text: 'text-violet-500' },
-  { bg: 'bg-amber-50', text: 'text-amber-500' },
-  { bg: 'bg-cyan-50', text: 'text-cyan-500' },
-  { bg: 'bg-rose-50', text: 'text-rose-500' },
-  { bg: 'bg-indigo-50', text: 'text-indigo-500' },
-  { bg: 'bg-teal-50', text: 'text-teal-500' }
-]
+// Sinf ikonkalari — sahifaning yagona ko'k rangida
+const GRADE_ICON_STYLE = { bg: 'bg-[#EAF0FF]', text: 'text-[#3B6FF6]' }
 
 const SUBJECT_ICON_RULES = [
   { match: /algebr/i, Icon: Sigma },
@@ -147,8 +139,8 @@ const BattleSetupForm = ({ onRoomReady }) => {
       <div className="grid items-start grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="p-4 bg-white border border-gray-100 lg:col-span-2 rounded-2xl sm:p-6">
           <div className="flex items-start gap-3 mb-6">
-            <div className="flex items-center justify-center bg-indigo-50 rounded-xl w-11 h-11 shrink-0">
-              <Swords className="text-indigo-500" size={22} />
+            <div className="flex items-center justify-center bg-[#EAF0FF] rounded-xl w-11 h-11 shrink-0">
+              <Swords className="text-[#3B6FF6]" size={22} />
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-800">{t('battle.setupTitle')}</h2>
@@ -160,7 +152,7 @@ const BattleSetupForm = ({ onRoomReady }) => {
             <button
               onClick={() => setMode('create')}
               className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
-                mode === 'create' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-400'
+                mode === 'create' ? 'border-[#3B6FF6] text-[#2563EB]' : 'border-transparent text-gray-400'
               }`}
             >
               {t('battle.createRoom')}
@@ -168,7 +160,7 @@ const BattleSetupForm = ({ onRoomReady }) => {
             <button
               onClick={() => setMode('join')}
               className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
-                mode === 'join' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-400'
+                mode === 'join' ? 'border-[#3B6FF6] text-[#2563EB]' : 'border-transparent text-gray-400'
               }`}
             >
               {t('battle.joinRoom')}
@@ -183,7 +175,7 @@ const BattleSetupForm = ({ onRoomReady }) => {
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                 maxLength={8}
                 placeholder="ABC123"
-                className="w-full px-4 py-2 tracking-widest uppercase border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 tracking-widest uppercase border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3B6FF6]"
               />
             </div>
           ) : (
@@ -191,16 +183,16 @@ const BattleSetupForm = ({ onRoomReady }) => {
               <div className="mb-6">
                 <p className="mb-3 text-sm font-semibold text-gray-700">1. {t('battle.selectGrade')}</p>
                 <div className="flex gap-3 pb-2 overflow-x-auto -mx-1 px-1 [scrollbar-width:thin]">
-                  {grades.map((g, idx) => {
+                  {grades.map((g) => {
                     const active = String(gradeId) === String(g)
                     const stats = gradeStatsByName.get(String(g))
-                    const iconStyle = GRADE_ICON_STYLES[idx % GRADE_ICON_STYLES.length]
+                    const iconStyle = GRADE_ICON_STYLE
                     return (
                       <button
                         key={g}
                         onClick={() => setGradeId(g)}
                         className={`shrink-0 w-32 p-3 text-left border rounded-2xl transition-all ${
-                          active ? 'border-indigo-500 bg-indigo-50 shadow-sm' : 'border-gray-200 hover:border-indigo-300'
+                          active ? 'border-[#3B6FF6] bg-[#EAF0FF] shadow-sm' : 'border-gray-200 hover:border-[#A9C1FF]'
                         }`}
                       >
                         <div className={`flex items-center justify-center w-10 h-10 mb-2 rounded-xl ${iconStyle.bg}`}>
@@ -242,12 +234,12 @@ const BattleSetupForm = ({ onRoomReady }) => {
                           key={s.id}
                           onClick={() => toggleSubject(s.id)}
                           className={`flex items-center gap-2.5 p-3 border rounded-xl text-left transition-colors ${
-                            active ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 hover:border-indigo-300'
+                            active ? 'border-[#3B6FF6] bg-[#EAF0FF]' : 'border-gray-200 hover:border-[#A9C1FF]'
                           }`}
                         >
-                          <Icon size={18} className={active ? 'text-indigo-500' : 'text-gray-400'} />
+                          <Icon size={18} className={active ? 'text-[#3B6FF6]' : 'text-gray-400'} />
                           <span className="flex-1 text-sm font-medium text-gray-800 truncate">{name}</span>
-                          {active ? <CheckCircle2 size={16} className="text-indigo-500 shrink-0" /> : null}
+                          {active ? <CheckCircle2 size={16} className="text-[#3B6FF6] shrink-0" /> : null}
                         </button>
                       )
                     })}
@@ -287,7 +279,7 @@ const BattleSetupForm = ({ onRoomReady }) => {
           <button
             disabled={primaryDisabled}
             onClick={primaryAction}
-            className="flex items-center justify-center w-full gap-1 py-3 font-semibold text-white transition-opacity bg-indigo-500 rounded-xl disabled:opacity-40 hover:opacity-90"
+            className="flex items-center justify-center w-full gap-1 py-3 font-semibold text-white transition-opacity bg-[#3B6FF6] rounded-xl disabled:opacity-40 hover:opacity-90"
           >
             {primaryBusy ? t('battle.creating') : primaryLabel}
             {!primaryBusy ? <ChevronRight size={18} /> : null}

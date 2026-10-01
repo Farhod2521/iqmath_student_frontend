@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { MessagesSquare, Search } from 'lucide-react'
 import ChatsList from './components/ChatsList'
 import RatingModal from './components/RatingModal'
 import TransferModal from './components/TransferModal'
@@ -73,35 +74,75 @@ const ChatBoxModule = () => {
     openTransferModal()
   }
 
+  // Qidiruv va filtr (Barchasi / O'qituvchilar yoki O'quvchilar / Guruhlar)
+  const [search, setSearch] = useState('')
+  const [tab, setTab] = useState('all')
+  const peopleRole = isStudent ? 'teacher' : 'student'
+  const tabs = [
+    { key: 'all', label: t('chatUi.tabAll') },
+    { key: 'people', label: isStudent ? t('chatUi.tabTeachers') : t('chatUi.tabStudents') },
+    { key: 'group', label: t('chatUi.tabGroups') }
+  ]
+
+  const visibleChats = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    return (chats || []).filter((chat) => {
+      if (tab === 'group' && chat.chat_type !== 'group') return false
+      if (tab === 'people' && (chat.chat_type === 'group' || chat.other_user_role !== peopleRole)) return false
+      if (!query) return true
+      return `${chat.other_user_name || ''} ${chat.last_message || ''}`.toLowerCase().includes(query)
+    })
+  }, [chats, search, tab, peopleRole])
+
   // Tugmani ko'rsatish sharti
   const showNewChatButton = isStudent && chats.length === 0
 
   return (
-    <div className="flex h-full gap-1 bg-white rounded-2xl overflow-hidden overflow-x-hidden">
-      {/* CHAT LIST SIDEBAR */}
-      <div
+    <div className="relative flex h-[calc(100vh-112px)] min-h-[520px] gap-4">
+      {/* CHAT RO'YXATI */}
+      <aside
         className={`${
-          showChatList ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 absolute min-[640px]:relative  w-[240px]
-        min-[640px]:w-[280px]
-        min-[768px]:w-[320px]
-        min-[1024px]:w-[360px]
-        min-[1280px]:w-[380px]
-        min-[1536px]:w-[400px] 
-        max-[640px]:max-w-none
-        max-[640px]:w-[95%]  
-        h-[87vh]
-        border-r border-gray-200 flex flex-col bg-white transition-transform duration-300 z-10`}
+          showChatList ? 'flex' : 'hidden'
+        } w-full shrink-0 flex-col overflow-hidden rounded-3xl border border-[#EEF1F6] bg-white shadow-[0_8px_30px_-20px_rgba(15,23,42,0.3)] dark:border-[#1F2A3C] dark:bg-[#111A2B] md:flex md:w-[330px] lg:w-[370px] xl:w-[400px]`}
       >
-        <div className="px-2 xs:px-3 sm:px-4 md:px-5 lg:px-6 pb-2 xs:pb-2 sm:pb-3 md:pb-3 lg:pb-4 border-b border-gray-100">
-          <h2 className="mb-2 xs:mb-2 sm:mb-3 md:mb-3 lg:mb-4 text-base xs:text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
-            {t('messages')}
-          </h2>
+        <div className="px-5 pb-3 pt-5">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2F6BFF] text-white shadow-[0_8px_18px_-8px_rgba(47,107,255,0.9)]">
+              <MessagesSquare size={22} />
+            </span>
+            <h2 className="text-2xl font-bold text-[#0F172A] dark:text-white">{t('chatUi.title')}</h2>
+          </div>
+
+          <label className="flex h-12 items-center gap-3 rounded-2xl bg-[#F1F5FB] px-4 text-[#6B7385] focus-within:ring-2 focus-within:ring-[#2F6BFF]/40 dark:bg-[#1A2436]">
+            <Search size={19} className="shrink-0" />
+            <input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t('chatUi.searchPlaceholder')}
+              className="h-full w-full bg-transparent text-sm text-[#191C1D] outline-none placeholder:text-[#8A93A6] dark:text-white"
+            />
+          </label>
+
+          <div className="mt-4 flex gap-2 overflow-x-auto [scrollbar-width:none]">
+            {tabs.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setTab(item.key)}
+                className={`h-10 shrink-0 rounded-xl px-5 text-sm font-semibold transition ${
+                  tab === item.key
+                    ? 'bg-[#2F6BFF] text-white shadow-[0_8px_18px_-10px_rgba(47,107,255,0.9)]'
+                    : 'bg-[#F1F5FB] text-[#5B6478] hover:text-[#2F6BFF] dark:bg-[#1A2436] dark:text-gray-300'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* SIZNING ChatsList KOMPONENTINGIZ */}
         <ChatsList
-          chats={chats}
+          chats={visibleChats}
           chatsLoading={chatsLoading}
           setActiveChat={(chat) => {
             selectChat(chat)
@@ -121,17 +162,23 @@ const ChatBoxModule = () => {
             }}
           />
         )}
-      </div>
+      </aside>
 
-      {/* MAIN CHAT AREA */}
-      <div className="flex flex-col flex-1 bg-gray-50">
+      {/* SUHBAT OYNASI */}
+      <section
+        className={`${
+          showChatList ? 'hidden' : 'flex'
+        } relative min-w-0 flex-1 flex-col overflow-hidden rounded-3xl border border-[#E3EBF8] bg-[#EEF4FF] bg-[url('/images/chat-back.webp')] bg-cover bg-center shadow-[0_8px_30px_-20px_rgba(15,23,42,0.3)] dark:border-[#1F2A3C] dark:bg-[#0F172A] dark:bg-none md:flex`}
+      >
         {activeChat ? (
           <>
             <ChatHeader
               chat={activeChat}
+              isStudent={isStudent}
               onBack={() => setShowChatList(true)}
               onTransfer={isAdmin ? handleTransfer : undefined}
               showTransfer={isAdmin}
+              onCloseChat={userRole === 'teacher' ? handleClose : undefined}
             />
 
             {isNewChatMode ? (
@@ -163,7 +210,7 @@ const ChatBoxModule = () => {
         ) : (
           <EmptyMessage />
         )}
-      </div>
+      </section>
 
       {isRatingModalOpen && (
         <RatingModal

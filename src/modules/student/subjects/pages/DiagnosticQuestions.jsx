@@ -7,23 +7,15 @@ import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@heroui/react'
 import ModalLevel from '../components/modal/ModalLevel'
-import ExamQuestionList from '../components/exam/ExamQuestionList'
-import ExamQuestionSelected from '../components/exam/ExamQuestionSelected'
-import ExamAnswerChoice from '../components/exam/ExamAnswerChoice'
-import ExamAnswerComposite from '../components/exam/ExamAnswerComposite'
-import ExamAnswerText from '../components/exam/ExamAnswerText'
-import ActionCalculator from '../components/actions/ActionCalculator'
-import ActionInfo from '../components/actions/ActionInfo'
-import ActionSolution from '../components/actions/ActionSolution'
-import Calculator from '../components/calculator/Calculator'
 import DiagnosticResultModal from '../components/modal/DiagnosticResultModal'
+import QuestionTopBar from '../components/question/QuestionTopBar'
+import QuestionWorkspace from '../components/question/QuestionWorkspace'
 import { wrapMathAnswer, wrapPlainMath } from '../utils/wrapAnswer'
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut'
-import ExamAnswerImage from '../components/exam/ExamAnswerImage'
+import { usePersistentTimer } from '../hooks/usePersistentTimer'
 
-const DiagnosticQuestions = ({ subjectId }) => {
+const DiagnosticQuestions = ({ subjectId, title, subtitle, onBack, onClose }) => {
   const { t, i18n } = useTranslation()
   const { data: session } = useSession()
   const mathFieldRef = useRef(null)
@@ -44,6 +36,14 @@ const DiagnosticQuestions = ({ subjectId }) => {
   const [compositeAnswers, setCompositeAnswers] = useState({})
 
   const setTopic = useTopicStore((state) => state.setTopic)
+
+  // Sarflangan vaqt: sahifa yangilansa ham davom etadi (boshlanish vaqti sessionStorage da),
+  // test tekshirilganda to'xtaydi, "Qayta topshirish" da 0 dan boshlanadi
+  const {
+    elapsed,
+    finish: finishTimer,
+    reset: resetTimer
+  } = usePersistentTimer(subjectId ? `diag-${subjectId}-${tab}` : null, !!testQuestions?.length)
 
   useEffect(() => {
     import('react-mathquill').then((mq) => {
@@ -183,7 +183,8 @@ const DiagnosticQuestions = ({ subjectId }) => {
         attributes: {
           text_answers,
           choice_answers,
-          composite_answers
+          composite_answers,
+          duration_seconds: elapsed
         },
         config: {
           headers: { Authorization: `Bearer ${session?.accessToken}` }
@@ -194,6 +195,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
           setResults(res)
           setScore(res)
           setTopic(tab)
+          finishTimer()
           setShowDiagnosticResult(true)
           toast.success('Siz testni yakunladingiz!')
         },
@@ -212,6 +214,7 @@ const DiagnosticQuestions = ({ subjectId }) => {
     setSelectedIndex(0)
     setResults(null)
     setScore(null)
+    resetTimer()
     handleBeginTest()
   }
 
@@ -266,125 +269,61 @@ const DiagnosticQuestions = ({ subjectId }) => {
   useKeyboardShortcut('ArrowRight', handleNextEnter)
   useKeyboardShortcut('Enter', handleNextEnter, { ignoreInput: false })
 
-  if (isLoading || !testQuestions)
-    return <div className="w-full p-4 italic text-center text-gray-500">{t('chooseQueation')}</div>
+  const questionList = testQuestions || []
+  const total = questionList.length
 
   return (
-    <div className="font-sf md:h-full">
-      <ModalLevel handleTabChange={(tab) => setTab(tab)} tab={tab} />
+    <div className="flex min-h-screen flex-col bg-[#F4F7FC] font-sf dark:bg-[#0B1220]">
+      <QuestionTopBar
+        title={title}
+        subtitle={subtitle}
+        current={total ? selectedIndex + 1 : 0}
+        total={total}
+        elapsed={elapsed}
+        onBack={onBack}
+        onClose={onClose}
+      />
+      <ModalLevel handleTabChange={(level) => setTab(level)} tab={tab} />
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 p-4 md:p-0 md:h-full md:overflow-hidden">
-        <div className="md:col-span-6 md:h-full md:overflow-y-auto border-r border-r-[#F2F2F7] md:p-6">
-          <ExamQuestionList
-            questions={testQuestions || []}
-            selectedList={selectedList}
-            allQuestionsList={allQuestionsList}
-            selectedQuestion={selectedQuestion}
-            setSelectedQuestion={setSelectedQuestion}
-            setSelectedIndex={setSelectedIndex}
-          />
-        </div>
-        <div className="md:col-span-6 md:h-full md:overflow-y-auto py-4 md:py-[24px] px-4 md:px-[50px] space-y-6 md:space-y-[32px]">
-          <ExamQuestionSelected selectedQuestion={selectedQuestion} selectedIndex={selectedIndex} />
+      {isLoading || !testQuestions ? (
+        <div className="w-full p-10 text-center italic text-gray-500">{t('chooseQueation')}</div>
+      ) : (
+        <QuestionWorkspace
+          questions={questionList}
+          selectedIndex={selectedIndex}
+          onSelect={setSelectedIndex}
+          selectedQuestion={selectedQuestion}
+          answeredIds={new Set(selectedList)}
+          badge={`${t('diagnostics')} · ${t('questionPage.level', { level: tab })}`}
+          choiceAnswers={choiceAnswers}
+          setChoiceAnswers={setChoiceAnswers}
+          textAnswers={textAnswers}
+          setTextAnswers={setTextAnswers}
+          compositeAnswers={compositeAnswers}
+          setCompositeAnswers={setCompositeAnswers}
+          mathFieldRef={mathFieldRef}
+          mathFieldRefs={mathFieldRefs}
+          activeInputId={activeInputId}
+          setActiveInputId={setActiveInputId}
+          showCalculator={showCalculator}
+          setShowCalculator={setShowCalculator}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onFinish={handleCheckMyResults}
+          isEnd={isEndQuestion}
+          finishing={isLoadingCheck}
+        />
+      )}
 
-          <div className="flex flex-col items-center w-full">
-            {(() => {
-              switch (selectedQuestion?.question_type) {
-                case 'image_choice':
-                  return (
-                    <ExamAnswerImage
-                      selectedQuestion={selectedQuestion}
-                      setImageAnswers={setChoiceAnswers}
-                      imageAnswers={choiceAnswers}
-                    />
-                  )
-                case 'choice':
-                  return (
-                    <ExamAnswerChoice
-                      selectedQuestion={selectedQuestion}
-                      setChoiceAnswers={setChoiceAnswers}
-                      choiceAnswers={choiceAnswers}
-                    />
-                  )
-                case 'composite':
-                  return (
-                    <ExamAnswerComposite
-                      selectedQuestion={selectedQuestion}
-                      setCompositeAnswers={setCompositeAnswers}
-                      compositeAnswers={compositeAnswers}
-                      setActiveInputId={setActiveInputId}
-                      mathFieldRefs={mathFieldRefs}
-                    />
-                  )
-                case 'text':
-                  return (
-                    <ExamAnswerText
-                      mathFieldRef={mathFieldRef}
-                      setTextAnswers={setTextAnswers}
-                      textAnswers={textAnswers}
-                      selectedQuestion={selectedQuestion}
-                    />
-                  )
-                default:
-                  return ''
-              }
-            })()}
-          </div>
-
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex gap-4">
-              <Button
-                onPress={handlePrev}
-                disabled={selectedIndex === 0}
-                className={`px-4 py-2 rounded-md ${
-                  selectedIndex === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-500 text-white'
-                }`}
-              >
-                {t('back')}
-              </Button>
-
-              {isEndQuestion ? (
-                <Button onPress={handleCheckMyResults} className="px-4 py-2 text-white bg-blue-500 rounded-md">
-                  {t('check')}
-                </Button>
-              ) : (
-                <Button className="px-4 py-2 text-white bg-blue-500 rounded-md" onPress={handleNext}>
-                  {t('next')}
-                </Button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              {/* {questions?.data?.subject_is_active ? <ActionSolution selectedQuestion={selectedQuestion} /> : <></>} */}
-              <ActionInfo />
-              {['composite', 'text'].includes(selectedQuestion?.question_type) && (
-                <ActionCalculator setShowCalculator={setShowCalculator} />
-              )}
-            </div>
-          </div>
-
-          {showCalculator && (
-            <Calculator
-              mathFieldRef={mathFieldRef}
-              mathFieldRefs={mathFieldRefs}
-              selectedQuestion={selectedQuestion}
-              setCompositeAnswers={setCompositeAnswers}
-              setTextAnswers={setTextAnswers}
-              activeInputId={activeInputId}
-            />
-          )}
-
-          <DiagnosticResultModal
-            isOpen={showDiagnosticResult}
-            onClose={() => setShowDiagnosticResult(false)}
-            results={results}
-            score={score}
-            onRetake={handleRetakeTest}
-            showRetakeButton={true}
-            subjectId={subjectId}
-          />
-        </div>
-      </div>
+      <DiagnosticResultModal
+        isOpen={showDiagnosticResult}
+        onClose={() => setShowDiagnosticResult(false)}
+        results={results}
+        score={score}
+        onRetake={handleRetakeTest}
+        showRetakeButton={true}
+        subjectId={subjectId}
+      />
     </div>
   )
 }

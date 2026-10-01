@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 import { request } from '@/services/api'
 
-function ActionSolution({ selectedQuestion }) {
+function ActionSolution({ selectedQuestion, className, children }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { t, i18n } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
@@ -45,8 +45,11 @@ function ActionSolution({ selectedQuestion }) {
 
   return (
     <>
-      <Button 
-        className="px-8 rounded-md bg-[#EDEDF2] !text-black mx-4 transition-all duration-300 hover:bg-[#D1D1D6] hover:scale-105 active:scale-95 shadow-md hover:shadow-lg" 
+      <Button
+        className={
+          className ||
+          'px-8 rounded-md bg-[#EDEDF2] !text-black mx-4 transition-all duration-300 hover:bg-[#D1D1D6] hover:scale-105 active:scale-95 shadow-md hover:shadow-lg'
+        }
         onPress={handleSolution}
         isLoading={isLoading}
         disabled={isLoading}
@@ -56,6 +59,8 @@ function ActionSolution({ selectedQuestion }) {
             <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
             <span>{t('loading')}</span>
           </div>
+        ) : children ? (
+          children
         ) : (
           <div className="flex items-center gap-2">
             {/* <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,17 +70,17 @@ function ActionSolution({ selectedQuestion }) {
           </div>
         )}
       </Button>
-      <Modal 
-        size="3xl" 
-        isOpen={isOpen} 
-        onOpenChange={onOpenChange} 
+      <Modal
+        size="3xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
         backdrop="blur"
         classNames={{
-          backdrop: "bg-black/50 backdrop-blur-sm transition-all duration-300",
-          base: "bg-white border border-gray-200 shadow-xl transition-all duration-300 transform",
-          header: "bg-white",
-          body: "bg-white",
-          footer: "bg-white"
+          backdrop: 'bg-black/50 backdrop-blur-sm transition-all duration-300',
+          base: 'bg-white border border-gray-200 shadow-xl transition-all duration-300 transform',
+          header: 'bg-white',
+          body: 'bg-white',
+          footer: 'bg-white'
         }}
         motionProps={{
           variants: {
@@ -84,7 +89,7 @@ function ActionSolution({ selectedQuestion }) {
               scale: 1,
               transition: {
                 duration: 0.3,
-                ease: "easeOut"
+                ease: 'easeOut'
               }
             },
             exit: {
@@ -92,7 +97,7 @@ function ActionSolution({ selectedQuestion }) {
               scale: 0.95,
               transition: {
                 duration: 0.2,
-                ease: "easeIn"
+                ease: 'easeIn'
               }
             }
           }

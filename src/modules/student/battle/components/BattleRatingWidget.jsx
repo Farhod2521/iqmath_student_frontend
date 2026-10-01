@@ -3,7 +3,24 @@ import { useTranslation } from 'react-i18next'
 import { TrendingUp, Target } from 'lucide-react'
 import { URLS } from '@/constants/url'
 import { request } from '@/services/api'
-import BattleLevelBadge, { LEVEL_COLORS } from './BattleLevelBadge'
+
+// Kartaning foni — tog'lar va o'sish ustunlari tasviri, o'z holatida (ustiga qatlam qo'yilmaydi)
+const WidgetShell = ({ icon, title, children }) => (
+  <div className="relative h-full min-h-[230px] overflow-hidden rounded-2xl sm:min-h-[260px] border border-[#E6ECFA] bg-[#EEF4FF] dark:border-[#2A3547]">
+    <img
+      src="/images/battle-back.webp"
+      alt=""
+      className="absolute inset-0 h-full w-full select-none object-cover object-right pointer-events-none"
+    />
+    <div className="relative z-10 flex h-full flex-col justify-center p-6 sm:max-w-[58%] sm:p-7">
+      <div className="mb-4 flex items-center gap-2">
+        {icon}
+        <p className="text-sm font-bold text-[#0F1B3D] dark:text-white">{title}</p>
+      </div>
+      {children}
+    </div>
+  </div>
+)
 
 const BattleRatingWidget = () => {
   const { t } = useTranslation()
@@ -22,78 +39,76 @@ const BattleRatingWidget = () => {
     const total = rating.matches_played + rating.matches_left_for_placement
 
     return (
-      <div className="flex flex-col justify-center h-full p-4 bg-white border border-gray-100 rounded-2xl">
-        <div className="flex items-center gap-2 mb-3">
-          <Target size={16} className="text-indigo-500" />
-          <p className="text-xs font-bold text-gray-700">{t('battle.levelWidgetTitle')}</p>
-        </div>
-
-        <div className="flex items-center gap-3 mb-3">
-          <div className="flex items-center justify-center text-lg font-extrabold text-gray-400 bg-gray-100 rounded-full shrink-0 w-11 h-11">
+      <WidgetShell icon={<Target size={18} className="text-[#3B6FF6]" />} title={t('battle.levelWidgetTitle')}>
+        <div className="mb-4 flex items-center gap-3.5">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white text-xl font-extrabold text-[#A0A8BA] shadow-[0_6px_16px_-6px_rgba(59,111,246,0.45)] ring-4 ring-white/70">
             ?
           </div>
           <div>
-            <p className="text-xl font-extrabold leading-none text-gray-900">{t('battle.placement')}</p>
-            <p className="mt-1 text-xs text-gray-400">{t('battle.placementProgress', { played: rating.matches_played, total })}</p>
+            <p className="text-2xl font-extrabold leading-none text-[#0F1B3D] dark:text-white">{t('battle.placement')}</p>
+            <p className="mt-1.5 text-xs font-medium text-[#6B7385]">
+              {t('battle.placementProgress', { played: rating.matches_played, total })}
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-1.5">
-          {Array.from({ length: total }).map((_, i) => {
-            const played = i < rating.matches_played
-            return (
-              <div
-                key={i}
-                className={`h-1.5 flex-1 rounded-full transition-all ${played ? 'bg-indigo-500' : 'bg-gray-100'}`}
-              />
-            )
-          })}
+          {Array.from({ length: total }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-2 flex-1 rounded-full transition-all ${i < rating.matches_played ? 'bg-[#3B6FF6]' : 'bg-white/80'}`}
+            />
+          ))}
         </div>
-      </div>
+      </WidgetShell>
     )
   }
 
   const progress = rating.level_progress
-  const color = LEVEL_COLORS[rating.level] || '#9ca3af'
   const isTopLevel = !progress || progress.pct_to_next === null
 
   return (
-    <div className="flex flex-col justify-center h-full p-4 bg-white border border-gray-100 rounded-2xl">
-      <div className="flex items-center gap-2 mb-3">
-        <TrendingUp size={16} className="text-indigo-500" />
-        <p className="text-xs font-bold text-gray-700">{t('battle.levelWidgetTitle')}</p>
-      </div>
-
-      <div className="flex items-center gap-3 mb-3">
+    <WidgetShell icon={<TrendingUp size={18} className="text-[#3B6FF6]" />} title={t('battle.levelWidgetTitle')}>
+      <div className="mb-4 flex items-center gap-3.5">
         <div
-          className="flex items-center justify-center text-lg font-extrabold text-white rounded-full shrink-0 w-11 h-11"
-          style={{ background: color, boxShadow: `0 0 0 3px ${color}22` }}
+          className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full border-[3px] border-white text-2xl font-extrabold text-white"
+          style={{
+            background: 'linear-gradient(145deg, #6FA0FF 0%, #3B6FF6 45%, #1D4ED8 100%)',
+            boxShadow: '0 8px 18px -6px rgba(37, 99, 235, 0.7), inset 0 2px 3px rgba(255,255,255,0.5)'
+          }}
         >
           {rating.level}
         </div>
         <div>
-          <p className="text-2xl font-extrabold leading-none text-gray-900">{rating.elo}</p>
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="flex items-baseline gap-1.5 leading-none">
+            <span className="text-[34px] font-extrabold tracking-tight text-[#0F1B3D] dark:text-white">{rating.elo}</span>
+            <span className="text-lg font-extrabold text-[#2563EB]">XP</span>
+          </p>
+          <p className="mt-1.5 text-xs font-medium text-[#6B7385]">
             {rating.wins}W / {rating.losses}L / {rating.draws}D
           </p>
         </div>
       </div>
 
-      <div className="h-2 overflow-hidden bg-gray-100 rounded-full mb-1.5">
+      <div className="mb-2 h-3 overflow-hidden rounded-full border border-[#D6E2FF] bg-white shadow-[inset_0_1px_2px_rgba(15,27,61,0.08)]">
         <div
-          className="h-full transition-all rounded-full"
-          style={{ width: `${isTopLevel ? 100 : progress.pct_to_next}%`, background: color }}
+          className="h-full rounded-full transition-all duration-700"
+          style={{
+            width: `${isTopLevel ? 100 : progress.pct_to_next}%`,
+            background: 'linear-gradient(90deg, #1D4ED8 0%, #2563EB 55%, #3B82F6 100%)'
+          }}
         />
       </div>
-      <div className="flex items-center justify-between text-[11px] text-gray-400">
-        <span>{isTopLevel ? t('battle.maxLevelReached') : `${progress.pct_to_next}%`}</span>
+      <div className="flex items-center justify-between text-xs font-medium text-[#6B7385]">
+        <span className="font-bold text-[#2563EB]">{isTopLevel ? t('battle.maxLevelReached') : `${progress.pct_to_next}%`}</span>
         {!isTopLevel ? (
           <span>
-            +{progress.ceiling - rating.elo + 1} {t('battle.toNextLevel')}
+            <b className="font-bold text-[#0F1B3D] dark:text-white">+{progress.ceiling - rating.elo + 1} XP</b>{' '}
+            {t('battle.toNextLevel')}
           </span>
         ) : null}
       </div>
-    </div>
+    </WidgetShell>
   )
 }
 
