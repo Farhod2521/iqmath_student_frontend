@@ -458,14 +458,7 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [
-      RolesList.TEACHER,
-      RolesList.ADMIN,
-      RolesList.SUPERADMIN,
-      RolesList.TUTOR,
-      RolesList.STUDENT,
-      RolesList.PARENT
-    ],
+    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN, RolesList.TUTOR, RolesList.STUDENT],
     type: MenuType.LINK
   },
   {
@@ -521,7 +514,8 @@ export const getMenuItems = (t) => [
         size={26}
       />
     ),
-    roles: [RolesList.PARENT, RolesList.SUPERADMIN],
+    // Ota-ona menyusidan olib tashlangan (ma'lumotlar farzand sahifasida)
+    roles: [RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

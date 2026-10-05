@@ -1,16 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
-import {
-  Plus,
-  ChevronRight,
-  GraduationCap,
-  BookOpen,
-  Calendar,
-  Clock,
-  Coins,
-  UserPlus,
-  Award
-} from 'lucide-react'
+import { Plus, ChevronRight, GraduationCap, BookOpen, Calendar, Clock, Coins, UserPlus, Award } from 'lucide-react'
 
 const AVATAR_COLORS = ['#5D87FF', '#8B5CF6', '#22C55E', '#F59E0B', '#EC4899']
 

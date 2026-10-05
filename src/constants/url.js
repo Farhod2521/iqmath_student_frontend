@@ -69,6 +69,11 @@ export const URLS = {
   refreshToken: '/api/v1/auth/token/refresh/',
   // Qurilmalar: GET ro'yxat (?status=all), DELETE `${myDevices}${id}/`
   myDevices: '/api/v1/auth/user/devices/',
+  parentDashboard: '/api/v1/func_student/parent/dashboard/',
+  // + `${id}/overview/`
+  parentChildOverview: '/api/v1/func_student/parent/children/',
+  // ?student=<id> — ota-ona uchun farzand yutuqlari
+  achievements: '/api/v1/func_student/achievements/',
   // Parent management endpoints
   parentCreate: '/api/v1/auth/parent/create/',
   parentProfile: '/api/v1/auth/parent/profile/',

@@ -1,114 +1,118 @@
 import { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { get } from 'lodash'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
-import { request } from '@/services/api'
 import AddChildModal from '@/modules/parent/children/components/AddChildModal'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality'
-import ParentHomeHero from '../components/ParentHomeHero'
-import ParentStatsGrid from '../components/ParentStatsGrid'
-import ParentChildrenCard from '../components/ParentChildrenCard'
-import ParentQuickActions from '../components/ParentQuickActions'
+import { ParentHero } from '../dashboard/HeroAndStats'
+import { ChildrenCard, RecentCard, SubjectsResultCard } from '../dashboard/MiddleRow'
+import { AchievementsCard, TopTopicsCard } from '../dashboard/BottomRow'
 
+/** Ota-ona bosh sahifasi: barcha ma'lumot bitta API'dan (parent/dashboard) olinadi */
 const ParentHome = () => {
-  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [period, setPeriod] = useState('all')
 
-  const { data: profileData } = useGetQuery({
-    key: KEYS.studentProfile,
-    url: URLS.studentProfile
+  const {
+    data: response,
+    isLoading,
+    isError
+  } = useGetQuery({
+    key: KEYS.parentDashboard,
+    url: URLS.parentDashboard,
+    params: { period },
+    refetchOnMount: true
   })
 
-  const { data: childrenData, isLoading } = useGetQuery({
+  // Zaxira: dashboard API ishlamasa (masalan, backend hali yangilanmagan), farzandlar
+  // eski ro'yxat API'sidan olinadi — sahifa bo'sh qolmaydi
+  const { data: childrenResponse } = useGetQuery({
     key: 'parent-children',
     url: '/api/v1/auth/parent/confirm-child/list/',
     showErrorMsg: false
   })
 
-  const fullName = get(profileData, 'data.full_name', '')
-
-  const children = useMemo(() => {
-    if (!childrenData) return []
-    if (Array.isArray(childrenData)) return childrenData
-    if (Array.isArray(childrenData.data)) return childrenData.data
-    if (Array.isArray(childrenData.results)) return childrenData.results
-    return []
-  }, [childrenData])
-
-  const activeSubjects = useMemo(() => {
-    const names = new Set(
-      children.filter((c) => c.status && c.subject_name_uz).map((c) => c.subject_name_uz)
-    )
-    return Array.from(names)
-  }, [children])
-
-  const remainingDays = useMemo(() => {
-    const values = children.map((c) => c.remaining_days).filter((v) => typeof v === 'number')
-    return values.length ? Math.max(...values) : null
-  }, [children])
-
-  const lastLoginText = useMemo(() => {
-    const withLogin = children.filter((c) => c.last_login_time)
-    if (!withLogin.length) return ''
-    return withLogin[0].last_login_time
-  }, [children])
+  const data = useMemo(() => {
+    const dashboard = response?.data
+    if (dashboard?.summary) return dashboard
+    const list = Array.isArray(childrenResponse?.data) ? childrenResponse.data : []
+    const subjects = []
+    list.forEach((child) => {
+      if (child.subject_name_uz && !subjects.some((s) => s.name_uz === child.subject_name_uz)) {
+        subjects.push({ name_uz: child.subject_name_uz, name_ru: child.subject_name_ru })
+      }
+    })
+    return {
+      summary: {
+        children_count: list.length,
+        subjects,
+        activity: { percent: 0, delta: null },
+        solved: { count: 0, delta: null }
+      },
+      children: list.map((child) => ({
+        id: child.id,
+        full_name: child.full_name,
+        class_name: child.class_num,
+        is_active: typeof child.remaining_days === 'number' ? child.remaining_days > 0 : !!child.status,
+        subjects: []
+      })),
+      subjects_overall: [],
+      activity_days: [],
+      recent: [],
+      top_topics: [],
+      achievements: []
+    }
+  }, [response, childrenResponse])
 
   const handleAddChildSuccess = () => {
+    queryClient.invalidateQueries([KEYS.parentDashboard])
     queryClient.invalidateQueries(['parent-children'])
   }
 
-  const handleDownloadCertificate = (studentId) => {
-    if (!studentId) return
-    request
-      .post(URLS.downloadCertificate, { student_id: studentId }, { responseType: 'blob' })
-      .then((res) => {
-        if (res.status !== 200 || !res.data) return
-        const url = window.URL.createObjectURL(new Blob([res.data]))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', 'Certificate_file.pdf')
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        window.URL.revokeObjectURL(url)
-      })
-      .catch((err) => {
-        toast.error(err?.message || err?.data?.message || t('downloadCertificateError'))
-      })
+  if (isLoading && !isError && !response) {
+    return (
+      <div className="flex flex-col gap-4 pb-4">
+        <div className="h-[230px] animate-pulse rounded-3xl bg-[#EAF1FF]" />
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-24 animate-pulse rounded-2xl bg-gray-100" />
+          ))}
+        </div>
+        <div className="h-64 animate-pulse rounded-2xl bg-gray-100" />
+      </div>
+    )
   }
 
   return (
-    <div className="flex flex-col gap-3 pb-4">
-      <ParentHomeHero fullName={fullName} onAddChild={() => setIsAddModalOpen(true)} />
+    <div className="flex flex-col gap-4 pb-4">
+      <ParentHero data={data} />
 
-      <ParentStatsGrid
-        childrenCount={children.length}
-        activeSubjectsCount={activeSubjects.length}
-        activeSubjectsLabel={activeSubjects.join(', ')}
-        remainingDays={remainingDays}
-        lastLoginText={lastLoginText}
-      />
-
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
-        <div className="lg:col-span-8">
-          <ParentChildrenCard
-            children={children}
-            isLoading={isLoading}
-            onAddChild={() => setIsAddModalOpen(true)}
-            onDownloadCertificate={handleDownloadCertificate}
-          />
+      {/* Chapda 2×2 kartalar, o'ng chetda "Fanlar bo'yicha natija" ikki qator bo'ylab */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,0.9fr)]">
+        <div className="xl:col-start-1 xl:row-start-1">
+          <ChildrenCard items={data?.children} onAddChild={() => setIsAddModalOpen(true)} />
         </div>
-        <div className="lg:col-span-4">
-          <ParentQuickActions />
+        <div className="xl:col-start-2 xl:row-start-1">
+          <RecentCard items={data?.recent} />
+        </div>
+        <div className="xl:col-start-1 xl:row-start-2">
+          <TopTopicsCard items={data?.top_topics} />
+        </div>
+        <div className="xl:col-start-2 xl:row-start-2">
+          <AchievementsCard items={data?.achievements} child={data?.achievements_child} />
+        </div>
+        <div className="md:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:row-start-1">
+          <SubjectsResultCard items={data?.subjects_overall} period={period} onPeriod={setPeriod} />
         </div>
       </div>
 
-      <AddChildModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onSuccess={handleAddChildSuccess} />
+      <AddChildModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={handleAddChildSuccess}
+      />
       <ModalConfidentiality />
     </div>
   )
