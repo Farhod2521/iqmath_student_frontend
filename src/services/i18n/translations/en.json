@@ -1247,6 +1247,7 @@
   },
   "childPage": {
     "extendModal": {
+      "redirecting": "Redirecting to the payment page...",
       "leftTitle": "Extend your subscription",
       "leftText": "Continuity matters in learning. Extend the subscription so your child can use every feature.",
       "f1": "All lessons and topics",
@@ -1295,6 +1296,8 @@
     },
     "pay": {
       "receipt": {
+        "payer": "Paid by",
+        "byParent": "Paid by parent",
         "title": "Payment receipt",
         "subtitle": "Invoice and transaction details",
         "success": "Successful payment",

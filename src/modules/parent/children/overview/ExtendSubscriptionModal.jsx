@@ -87,7 +87,9 @@ const ExtendSubscriptionModal = ({ open, onClose, childId }) => {
 
   const planName = (plan) => (i18n.language === 'ru' ? plan.name_ru || plan.name_uz : plan.name_uz)
   const price = Number(selected?.sale_price || 0)
-  const total = coupon ? Math.round(price * (1 - (Number(coupon.discount_percent) || 0) / 100)) : price
+  // Promokod summasi backend'da hisoblanadi (to'lovdagi summa bilan bir xil bo'lishi uchun)
+  const total = coupon ? Math.max(0, Math.round(Number(coupon.sale_price ?? price))) : price
+  const saved = Math.max(0, price - total)
 
   const applyPromo = async () => {
     if (!promo.trim() || !selected) return
@@ -122,14 +124,13 @@ const ExtendSubscriptionModal = ({ open, onClose, childId }) => {
         student_id: childId,
         ...(coupon?.code ? { coupon_code: coupon.code } : {})
       })
-      const url = res.data?.payment_data?.data?.checkout_url
+      const url = res.data?.checkout_url || res.data?.payment_data?.data?.checkout_url
       if (!url) throw new Error('no url')
-      window.open(url, '_blank')
-      toast.success(e('opened'))
-      onClose()
+      // To'lov sahifasiga shu oynada o'tiladi; to'lovdan keyin farzand sahifasiga qaytadi
+      toast.success(e('redirecting'))
+      window.location.href = url
     } catch (err) {
       toast.error(err?.response?.data?.error || e('payError'))
-    } finally {
       setPaying(false)
     }
   }
@@ -271,6 +272,7 @@ const ExtendSubscriptionModal = ({ open, onClose, childId }) => {
                     {coupon ? (
                       <span className="font-semibold text-[#16A34A]">
                         {e('applied', { n: coupon.discount_percent })}
+                        {saved ? ` (−${formatMoney(saved)} ${som})` : ''}
                       </span>
                     ) : (
                       e('promoText')

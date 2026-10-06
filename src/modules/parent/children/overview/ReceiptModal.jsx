@@ -158,6 +158,14 @@ const ReceiptModal = ({ payment, onClose }) => {
                 <Row icon={User} label={r('student')}>
                   {payment.student_name}
                 </Row>
+                <Row icon={User} label={r('payer')}>
+                  {payment.payer_name}
+                  {payment.paid_by === 'parent' ? (
+                    <span className="ml-2 inline-flex rounded-md bg-[#F1EBFF] px-1.5 py-0.5 text-[11px] font-semibold text-[#7C3AED]">
+                      {r('byParent')}
+                    </span>
+                  ) : null}
+                </Row>
                 <Row icon={FileText} label={r('invoice')}>
                   {payment.invoice_uuid}
                 </Row>
@@ -175,6 +183,7 @@ const ReceiptModal = ({ payment, onClose }) => {
                 </Row>
                 <Row icon={CreditCard} label={r('gateway')}>
                   {payment.gateway}
+                  {payment.card_pan ? <span className="ml-2 text-[#64748B]">{payment.card_pan}</span> : null}
                 </Row>
                 <Row icon={Info} label={r('status')}>
                   <span

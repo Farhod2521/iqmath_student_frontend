@@ -337,7 +337,14 @@ const PaymentsTab = ({ childId, onExtend }) => {
                       return (
                         <tr key={row.id} className="border-t border-[#EEF1F6] dark:border-[#26324A]">
                           <td className="px-3 py-2.5 text-[#64748B]">{row.number}</td>
-                          <td className="px-3 py-2.5 text-[#334155] dark:text-gray-200">{formatDate(row.date)}</td>
+                          <td className="px-3 py-2.5 text-[#334155] dark:text-gray-200">
+                            {formatDate(row.date)}
+                            {row.paid_by === 'parent' ? (
+                              <span className="ml-2 inline-flex rounded-md bg-[#F1EBFF] px-1.5 py-0.5 text-[11px] font-semibold text-[#7C3AED]">
+                                {t('childPage.pay.receipt.byParent')}
+                              </span>
+                            ) : null}
+                          </td>
                           <td className="px-3 py-2.5 font-bold text-[#0F172A] dark:text-white">
                             {formatMoney(row.amount)} {t('childPage.som')}
                           </td>

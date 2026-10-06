@@ -2120,6 +2120,7 @@
   },
   "childPage": {
     "extendModal": {
+      "redirecting": "To'lov sahifasiga o'tilmoqda...",
       "leftTitle": "Obunani uzaytiring",
       "leftText": "Ta'limda uzluksizlik muhim. Farzandingiz barcha imkoniyatlardan foydalanishi uchun obunani uzaytiring.",
       "f1": "Barcha darslar va mavzular",
@@ -2168,6 +2169,8 @@
     },
     "pay": {
       "receipt": {
+        "payer": "To'lovchi",
+        "byParent": "Ota-ona to'lagan",
         "title": "To'lov kvitansiyasi",
         "subtitle": "Hisob-faktura va tranzaksiya ma'lumotlari",
         "success": "Muvaffaqiyatli to'lov",
