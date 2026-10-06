@@ -10,6 +10,7 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { get } from 'lodash'
 import { useSession } from 'next-auth/react'
+import ActingParentBar from '@/components/child-switch/ActingParentBar'
 
 const LayoutAdmin = ({ children, title }) => {
   const router = useRouter()
@@ -70,6 +71,8 @@ const LayoutAdmin = ({ children, title }) => {
 
         {/* MAIN AREA */}
         <div className="flex flex-col flex-1 min-w-0 min-h-0">
+          {/* Ota-ona farzand profiliga o'tgan bo'lsa — qaytish paneli */}
+          <ActingParentBar />
           <Main title={title}>{children}</Main>
         </div>
 

@@ -1,4 +1,6 @@
 import { URLS } from '@/constants/url'
+import { GraduationCap } from 'lucide-react'
+import { fieldBorder, fieldBox, fieldIcon } from '../field/fieldStyles'
 import { get } from 'lodash'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -61,9 +63,14 @@ function SelectClass({ option, onChange }) {
       {/* Selected */}
       <div
         onClick={() => setOpen((p) => !p)}
-        className="w-full text-left px-4 py-2 border border-[#EAEFF4] rounded-xl bg-white cursor-pointer flex items-center justify-between"
+        className={`${fieldBox} ${fieldBorder} cursor-pointer pr-4 text-left`}
       >
-        <span className="truncate">{option?.label || t('selectClass')}</span>
+        <span className={fieldIcon}>
+          <GraduationCap size={20} />
+        </span>
+        <span className={`flex-1 truncate px-4 text-[15px] ${option ? 'text-[#0F172A]' : 'text-[#94A3B8]'}`}>
+          {option?.label || t('selectClass')}
+        </span>
 
         <svg
           className={`w-5 h-5 transition-transform ${open ? 'rotate-180' : ''}`}
@@ -82,18 +89,18 @@ function SelectClass({ option, onChange }) {
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute z-50 w-full bg-white border border-gray-200 rounded-md shadow-md top-12"
+          className="absolute top-[58px] z-50 w-full overflow-hidden rounded-xl border border-[#E3E8F2] bg-white shadow-xl"
         >
           {loading && <div className="p-3 text-sm text-center text-gray-500">{t('loading')}...</div>}
 
           {error && <div className="p-3 text-sm text-center text-red-500">{error}</div>}
 
           {!loading && !error && (
-            <ul className="overflow-auto max-h-60">
+            <ul className="max-h-52 overflow-auto py-1 [scrollbar-width:thin]">
               {filtered?.map((item) => (
                 <li
                   key={item.id}
-                  className="px-4 py-2 transition cursor-pointer hover:bg-gray-100"
+                  className="cursor-pointer px-4 py-2.5 text-[15px] transition hover:bg-[#F1F5FF]"
                   onClick={() => {
                     const label = i18n.language === 'uz' ? item.class_uz : item.class_ru
                     onChange({ label, value: item.id })

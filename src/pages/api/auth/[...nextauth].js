@@ -12,11 +12,31 @@ export default NextAuth({
       credentials: {},
       async authorize(credentials) {
         try {
-          const { phone, password, sms_code = null, role, device_id, user_agent, replace_device_id } = credentials
+          const {
+            phone,
+            password,
+            sms_code = null,
+            role,
+            device_id,
+            user_agent,
+            replace_device_id,
+            switch_child_id,
+            return_to_parent,
+            current_token
+          } = credentials
           const formData = new FormData()
           let url = 'https://api.iqmath.uz/api/v1/auth/student/login/'
+          const headers = { Accept: 'application/json' }
 
-          if (sms_code) {
+          if (switch_child_id) {
+            // Ota-ona farzand profiliga o'tadi (ota-ona tokeni bilan)
+            url = `https://api.iqmath.uz/api/v1/auth/parent/children/${encodeURIComponent(switch_child_id)}/switch/`
+            headers.Authorization = `Bearer ${current_token}`
+          } else if (return_to_parent) {
+            // Farzand profilidan ota-ona hisobiga qaytish (farzand tokeni bilan)
+            url = 'https://api.iqmath.uz/api/v1/auth/child/return-to-parent/'
+            headers.Authorization = `Bearer ${current_token}`
+          } else if (sms_code) {
             formData.append('phone', phone)
             formData.append('sms_code', sms_code)
             url = 'https://api.iqmath.uz/api/v1/auth/student/register-verify-sms/'
@@ -31,9 +51,7 @@ export default NextAuth({
 
           const response = await fetch(url, {
             method: 'POST',
-            headers: {
-              Accept: 'application/json'
-            },
+            headers,
             body: formData
           })
 
@@ -47,7 +65,7 @@ export default NextAuth({
           }
 
           if (!response.ok) {
-            throw new Error(data.message || 'Login failed')
+            throw new Error(data.message || data.detail || 'Login failed')
           }
 
           // Get password from API response if using sms_code
@@ -56,11 +74,14 @@ export default NextAuth({
           return {
             token: data.access_token,
             refreshToken: data.refresh_token,
-            phone,
-            login: data.login || phone, // Assuming `login` exists in response
+            phone: data.phone || phone || '',
+            login: data.login || phone || '', // Assuming `login` exists in response
             password: userPassword, // Use password from API response or credentials
             id: data.id,
-            role: data.role || 'student' // Role ni qo'shamiz, default student
+            role: data.role || 'student', // Role ni qo'shamiz, default student
+            full_name: data.full_name,
+            // Ota-ona farzand profiliga o'tgan bo'lsa — qaytish uchun
+            actingParent: data.acting_parent || null
           }
         } catch (error) {
           console.error('Login Error:', error.message)
@@ -81,6 +102,7 @@ export default NextAuth({
         token.role = user.role // Role ni JWT ga qo'shamiz
         token.full_name = user.full_name
         token.children = user.children // Parent uchun farzandlar ma'lumotlari
+        token.actingParent = user.actingParent || null
       }
       return token
     },
@@ -97,6 +119,7 @@ export default NextAuth({
       session.role = token.role // Role ni session ga qo'shamiz
       session.full_name = token.full_name
       session.children = token.children // Parent uchun farzandlar ma'lumotlari
+      session.actingParent = token.actingParent || null
       return session
     },
     async redirect({ url, baseUrl }) {

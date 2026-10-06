@@ -49,10 +49,10 @@ const AuthNewPassword = () => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <p className="text-xl  font-extrabold sm:text-[26px] text-white text-center mb-6">{t('resetPassword')}</p>
+      <p className="text-xl  font-extrabold sm:text-[26px] text-[#0B1B3F] text-center mb-6">{t('resetPassword')}</p>
       <div>
         <div className="border border-[#EAEFF4] flex gap-x-2 items-center rounded-[12px] px-[16px] py-[10px]">
-          <p className="text-[17px] font-medium text-white">+998</p>
+          <p className="text-[17px] font-medium text-[#0F172A]">+998</p>
           <div className="w-px h-[20px] bg-[#59626B] mx-2"></div>
 
           <input
@@ -60,7 +60,7 @@ const AuthNewPassword = () => {
             maxLength="9"
             value={phoneTab}
             disabled
-            className="w-full bg-transparent outline-none placeholder:text-white text-white text-sm sm:text-[17px]  "
+            className="w-full bg-transparent outline-none placeholder:text-[#94A3B8] text-[#0F172A] text-sm sm:text-[17px]  "
           />
         </div>
       </div>
@@ -70,7 +70,7 @@ const AuthNewPassword = () => {
           type={showPassword ? 'text' : 'password'}
           {...register('new_password', { required: true })}
           placeholder={`${t('newPassword')}`}
-          className="border border-[#EAEFF4] outline-none text-white bg-transparent placeholder:text-white rounded-[12px] text-sm sm:text-[17px]  w-full px-[16px] py-[10px] min-h-[46px]"
+          className="border border-[#EAEFF4] outline-none text-[#0F172A] bg-white placeholder:text-[#94A3B8] rounded-[12px] text-sm sm:text-[17px]  w-full px-[16px] py-[10px] min-h-[46px]"
         />
         <div
           onClick={() => setShowPassword((prev) => !prev)}
@@ -89,11 +89,11 @@ const AuthNewPassword = () => {
             setTab('signIn')
             setPhoneTab('')
           }}
-          className="bg-[#EDEDF2] hover:bg-[#EDEDF2] text-black py-2 sm:py-3 w-full rounded-md transition-all duration-300"
+          className="bg-[#F1F5FB] hover:bg-[#E6ECF7] text-[#0F172A] font-semibold py-2 sm:py-3 w-full rounded-md transition-all duration-300"
         >
           {t('back')}
         </button>
-        <button className="bg-[#5D87FF] hover:bg-[#4570EA] text-white py-2 sm:py-3 w-full rounded-md transition-all duration-300">
+        <button className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white py-2 sm:py-3 w-full rounded-md transition-all duration-300">
           {t('finish')}
         </button>
       </div>

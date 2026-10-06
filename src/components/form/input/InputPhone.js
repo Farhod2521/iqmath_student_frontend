@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Phone } from 'lucide-react'
+import { fieldBorder, fieldBox, fieldIcon, fieldInput } from '../field/fieldStyles'
 
 const getDigits = (value = '') => value.replace(/\D/g, '').slice(0, 9)
 
@@ -88,15 +90,13 @@ const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, .
 
   return (
     <div className="flex flex-col">
-      <div
-        className={`flex items-center border rounded-[8px] px-3 py-2.5 ${error ? 'border-red-500' : ''}`}
-        style={{
-          background: 'rgba(255,255,255,0.4)',
-          borderColor: error ? '#ef4444' : 'rgba(255,255,255,0.7)'
-        }}
-      >
-        <span className="text-sm font-medium text-white">+998</span>
-        <div className="w-px h-5 mx-3" style={{ background: 'rgba(255,255,255,0.7)' }} />
+      <div className={`${fieldBox} ${error ? 'border-[#EF4444]' : fieldBorder}`}>
+        <span className={fieldIcon}>
+          <Phone size={20} />
+        </span>
+        <span className="flex h-full shrink-0 items-center border-r border-[#EEF1F6] px-4 text-[15px] font-semibold text-[#0F172A]">
+          +998
+        </span>
 
         <input
           ref={ref}
@@ -105,8 +105,7 @@ const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, .
           type="tel"
           inputMode="numeric"
           placeholder="(__) ___-__-__"
-          className={`w-full text-sm bg-transparent text-white placeholder-[#ffffee] border-none focus:outline-none ${className}`}
-          style={{ border: 'none' }}
+          className={`${fieldInput} disabled:text-[#64748B] ${className}`}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
@@ -114,7 +113,7 @@ const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, .
         />
       </div>
 
-      {error && <p className="text-red-500 text-xs mt-1">{t('phoneNumberMustBe9Digits')}</p>}
+      {error && <p className="mt-1 text-xs text-red-500">{t('phoneNumberMustBe9Digits')}</p>}
     </div>
   )
 })

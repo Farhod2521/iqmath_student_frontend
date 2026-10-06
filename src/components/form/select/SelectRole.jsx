@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { Info, UsersRound } from 'lucide-react'
+import { fieldBorder, fieldBox, fieldIcon } from '../field/fieldStyles'
 
 const SelectRole = ({ value, onChange, placeholder }) => {
   const { t } = useTranslation()
@@ -33,9 +34,14 @@ const SelectRole = ({ value, onChange, placeholder }) => {
     <div className="relative text-[#2A3547] cursor-pointer" ref={dropdownRef}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left px-[16px] py-[10px] border border-[#EAEFF4] rounded-[12px] bg-white focus:outline-none flex items-center justify-between"
+        className={`${fieldBox} ${fieldBorder} pr-4 text-left`}
       >
-        <span>{value?.label || placeholder || t('selectUserType')}</span>
+        <span className={fieldIcon}>
+          <UsersRound size={20} />
+        </span>
+        <span className={`flex-1 px-4 text-[15px] ${value ? 'text-[#0F172A]' : 'text-[#94A3B8]'}`}>
+          {value?.label || placeholder || t('selectUserType')}
+        </span>
         <svg
           className={`w-5 h-5 transform ${isOpen ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"
@@ -48,25 +54,30 @@ const SelectRole = ({ value, onChange, placeholder }) => {
       </div>
 
       {/* Dropdown options */}
+      {/* Ro'yxat to'g'ridan-to'g'ri (animatsiyasiz) ochiladi — tugmalar ostida qolib ketmasin */}
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, translateY: '0px' }}
-          animate={{ opacity: 1, translateY: '0px' }}
-          transition={{ duration: 0.3 }}
-        >
-          <ul className="absolute z-50 w-full bg-white border border-gray-300 rounded-md shadow-md top-12">
-            {options?.map((option, index) => (
-              <li
-                key={index}
-                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSelect(option)}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
+        <ul className="absolute top-[58px] z-50 w-full overflow-hidden rounded-xl border border-[#E3E8F2] bg-white py-1 shadow-xl">
+          {options.map((option) => (
+            <li
+              key={option.value}
+              className={`cursor-pointer px-4 py-2.5 text-[15px] hover:bg-[#F1F5FF] ${
+                value?.value === option.value ? 'font-semibold text-[#2563EB]' : ''
+              }`}
+              onClick={() => handleSelect(option)}
+            >
+              {option.label}
+            </li>
+          ))}
+        </ul>
       )}
+
+      {/* Tanlangan rol uchun qisqa izoh — ota-onalar adashib qolmasligi uchun */}
+      {value?.value === 'parent' ? (
+        <p className="mt-2 flex items-start gap-2 rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2.5 text-left text-[13px] font-medium leading-snug text-[#92400E]">
+          <Info size={16} className="mt-px shrink-0 text-[#D97706]" />
+          {t('roleHint.parent')}
+        </p>
+      ) : null}
     </div>
   )
 }

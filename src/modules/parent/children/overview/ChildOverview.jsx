@@ -13,6 +13,8 @@ import ChildHero from './ChildHero'
 import PaymentsTab from './PaymentsTab'
 import DevicesTab from './DevicesTab'
 import ExtendSubscriptionModal from './ExtendSubscriptionModal'
+import SetPhoneModal from './SetPhoneModal'
+import { useQueryClient } from '@tanstack/react-query'
 import { ChildRecent, ChildStats, DevicesCard, SubjectResults, SubscriptionCard } from './Sections'
 
 const TABS = [
@@ -60,6 +62,8 @@ const ChildOverview = () => {
   const { id } = router.query
   const [tab, setTab] = useState('overview')
   const [extendOpen, setExtendOpen] = useState(false)
+  const [phoneOpen, setPhoneOpen] = useState(false)
+  const queryClient = useQueryClient()
 
   const {
     data: response,
@@ -97,6 +101,7 @@ const ChildOverview = () => {
         subscription={data.subscription}
         onDetails={() => setTab('payments')}
         onExtend={() => setExtendOpen(true)}
+        onSetPhone={() => setPhoneOpen(true)}
         tabLabel={tab === 'overview' ? '' : t(`childPage.tabs.${tab}`)}
       />
 
@@ -154,6 +159,15 @@ const ChildOverview = () => {
         </div>
       ) : null}
       <ExtendSubscriptionModal open={extendOpen} onClose={() => setExtendOpen(false)} childId={id} />
+      <SetPhoneModal
+        open={phoneOpen}
+        onClose={() => setPhoneOpen(false)}
+        childId={id}
+        onDone={() => {
+          queryClient.invalidateQueries([KEYS.parentChildOverview, id])
+          queryClient.invalidateQueries(['parent-children'])
+        }}
+      />
     </div>
   )
 }

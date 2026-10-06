@@ -1,14 +1,18 @@
 import React from 'react'
+import { UserRound } from 'lucide-react'
+import { fieldBorder, fieldBox, fieldIcon, fieldInput } from '../field/fieldStyles'
 
-const InputText = React.forwardRef(({ className = '', ...props }, ref) => {
+const InputText = React.forwardRef(({ className = '', icon: Icon = UserRound, ...props }, ref) => {
   return (
-    <input
-      ref={ref}
-      {...props}
-      className={`w-full border rounded-[8px] px-3 py-2.5  text-sm text-white placeholder-[#ffffee] focus:outline-none ${className}`}
-      style={{ background: 'rgba(255,255,255,0.4)', borderColor: 'rgba(255,255,255,0.7)' }}
-    />
+    <div className={`${fieldBox} ${fieldBorder}`}>
+      <span className={fieldIcon}>
+        <Icon size={20} />
+      </span>
+      <input ref={ref} {...props} className={`${fieldInput} ${className}`} />
+    </div>
   )
 })
 
-export default InputText;
+InputText.displayName = 'InputText'
+
+export default InputText

@@ -11,8 +11,9 @@ import AuthVerifySms from './AuthVerifySms'
 import AuthNewPassword from './AuthNewPassword'
 import CredentialsPopup from '@/components/modal/CredentialsPopup'
 import { getSession } from 'next-auth/react'
+import { UserRound, UserRoundPlus } from 'lucide-react'
 
-function Auth({ background = false }) {
+function Auth() {
   const { t } = useTranslation()
   const router = useRouter()
   const { currentTab } = useAuthTabStore((state) => state)
@@ -58,46 +59,36 @@ function Auth({ background = false }) {
     getAuth()
   }, [router.isReady, router.query.tab, router.query.referral_code])
 
+  const tabClass = (active) =>
+    `flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-1 text-[13px] font-semibold min-[400px]:text-[14px] sm:gap-2.5 sm:text-[15px] transition ${
+      active
+        ? 'bg-[#2563EB] text-white shadow-[0_10px_24px_-12px_rgba(37,99,235,0.9)]'
+        : 'bg-white text-[#0F172A] hover:bg-[#F1F5FF]'
+    }`
+
   return (
-    <div className="relative flex items-center justify-center w-full ">
-      <div
-        className={`w-full max-w-xl md:min-w-[550px]   ${background ? 'bg-white/5 border-white/10 border shadow-lg' : ''} rounded-lg p-8 md:p-12 `}
-        // style={{ background: 'rgba(255,255,255,0.4)', boxShadow: '0 0 15px 1px #00000040' }}
-      >
-        <div>
-          {currentTab === 'signIn' || currentTab === 'signUp' ? (
-            <div>
-              <div className="flex flex-col gap-2 p-2 mb-8 rounded-md tab-row" style={{ background: '#ECF2FF' }}>
-                <button
-                  onClick={() => handleTabChange('signIn')}
-                  className={`[400px]-w-1/2 w-full py-1.5 text-sm font-medium rounded-md transition ${
-                    currentTab === 'signIn'
-                      ? 'bg-[#5D87FF] hover:bg-[#4570EA] shadow-md text-white'
-                      : 'text-[#222] hover:bg-[#ECF2FF]'
-                  }`}
-                >
-                  {t('login')}
-                </button>
-                <button
-                  onClick={() => handleTabChange('signUp')}
-                  className={`[400px]-w-1/2 py-1.5 w-full text-sm font-medium rounded-md transition ${
-                    currentTab === 'signUp'
-                      ? 'bg-[#5D87FF] hover:bg-[#4570EA] text-white shadow-md'
-                      : 'text-[#222] hover:bg-[#ECF2FF]'
-                  }`}
-                >
-                  {t('signIn')}
-                </button>
-              </div>
-              {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}
+    <div className="relative w-full">
+      <div>
+        {currentTab === 'signIn' || currentTab === 'signUp' ? (
+          <div>
+            <div className="mb-6 grid grid-cols-2 gap-1.5 rounded-2xl bg-[#F1F5FB] p-1.5">
+              <button type="button" onClick={() => handleTabChange('signIn')} className={tabClass(currentTab === 'signIn')}>
+                <UserRound size={19} className="hidden shrink-0 min-[400px]:block" />
+                {t('login')}
+              </button>
+              <button type="button" onClick={() => handleTabChange('signUp')} className={tabClass(currentTab === 'signUp')}>
+                <UserRoundPlus size={19} className="hidden shrink-0 min-[400px]:block" />
+                {t('signIn')}
+              </button>
             </div>
-          ) : null}
-          {currentTab === 'forgetPassword' ? <AuthForgetPassword /> : null}
-          {currentTab === 'receiveCode' ? <AuthRecieveCode /> : null}
-          {currentTab === 'verifySms' ? <AuthVerifySms /> : null}
-          {currentTab === 'newPassword' ? <AuthNewPassword /> : null}
-          {currentTab === 'welcome' ? <AuthWelcome /> : null}
-        </div>
+            {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}
+          </div>
+        ) : null}
+        {currentTab === 'forgetPassword' ? <AuthForgetPassword /> : null}
+        {currentTab === 'receiveCode' ? <AuthRecieveCode /> : null}
+        {currentTab === 'verifySms' ? <AuthVerifySms /> : null}
+        {currentTab === 'newPassword' ? <AuthNewPassword /> : null}
+        {currentTab === 'welcome' ? <AuthWelcome /> : null}
       </div>
 
       {/* Login/parol ko'rsatadigan popup */}
@@ -113,14 +104,9 @@ function Auth({ background = false }) {
         input:-webkit-autofill:active {
           -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
           box-shadow: 0 0 0 1000px transparent inset !important;
-          -webkit-text-fill-color: white !important;
+          -webkit-text-fill-color: #0f172a !important;
           transition: background-color 5000s ease-in-out 0s;
           background-color: transparent !important;
-        }
-        @media (min-width: 400px) {
-          .tab-row {
-            flex-direction: row;
-          }
         }
       `}</style>
     </div>

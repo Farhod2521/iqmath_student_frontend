@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
+import SwitchToChildButton from '@/modules/parent/children/components/SwitchToChildButton'
 import { useTranslation } from 'react-i18next'
 import {
   ArrowRight,
   BookOpen,
-  ChevronRight,
   CircleCheck,
   ClipboardList,
   Network,
@@ -67,11 +67,14 @@ export const ChildrenCard = ({ items = [], onAddChild }) => {
       ) : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {items.map((child) => (
-            <button
+            // Ichida "Kirish" tugmasi bor — shuning uchun karta <div role="button">
+            <div
               key={child.id}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => router.push(`/dashboard/parent/my-children/${child.id}`)}
-              className="group overflow-hidden rounded-2xl border border-[#E3EBFA] bg-gradient-to-br from-[#F5F8FF] via-white to-white text-left transition hover:-translate-y-0.5 hover:border-[#BFD3FF] hover:shadow-[0_16px_30px_-20px_rgba(37,99,235,0.6)] dark:border-[#26324A] dark:from-[#16213A] dark:via-[#111A2B] dark:to-[#111A2B]"
+              onKeyDown={(event) => event.key === 'Enter' && router.push(`/dashboard/parent/my-children/${child.id}`)}
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-[#E3EBFA] bg-gradient-to-br from-[#F5F8FF] via-white to-white text-left transition hover:-translate-y-0.5 hover:border-[#BFD3FF] hover:shadow-[0_16px_30px_-20px_rgba(37,99,235,0.6)] dark:border-[#26324A] dark:from-[#16213A] dark:via-[#111A2B] dark:to-[#111A2B]"
             >
               <div className="flex items-center gap-3 p-4 pb-3">
                 <Initials name={child.full_name} className="h-12 w-12 text-base" />
@@ -97,9 +100,7 @@ export const ChildrenCard = ({ items = [], onAddChild }) => {
                     </span>
                   </div>
                 </div>
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[#2563EB] shadow-sm transition group-hover:bg-[#2563EB] group-hover:text-white dark:bg-[#1A2436]">
-                  <ChevronRight size={16} />
-                </span>
+                <SwitchToChildButton childId={child.id} variant="icon" className="bg-white shadow-sm" />
               </div>
 
               {child.subjects?.length ? (
@@ -135,7 +136,7 @@ export const ChildrenCard = ({ items = [], onAddChild }) => {
                   {t('parentDash.noSubjects')}
                 </p>
               )}
-            </button>
+            </div>
           ))}
         </div>
       )}

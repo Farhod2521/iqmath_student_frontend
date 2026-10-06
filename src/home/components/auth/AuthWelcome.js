@@ -41,11 +41,11 @@ function AuthWelcome() {
 
   return (
     <div className="text-center">
-      <h1 className="mb-5 text-2xl font-medium text-white">{t('welcome')}!</h1>
+      <h1 className="mb-5 text-2xl font-bold text-[#0B1B3F]">{t('welcome')}!</h1>
       <div className="flex flex-col gap-3 sm:flex-row">
         <button
           onClick={handleEnter}
-          className={`w-full sm:w-1/2 bg-[#5D87FF] hover:bg-[#4570EA] text-white py-3 rounded-md ${
+          className={`w-full sm:w-1/2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white py-3 rounded-md ${
             isLoading ? 'opacity-70' : ''
           }`}
         >

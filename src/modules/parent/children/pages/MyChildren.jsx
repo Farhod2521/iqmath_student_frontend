@@ -19,15 +19,19 @@ import {
   Search,
   Sigma,
   Triangle,
-  UserPlus
+  UserPlus,
+  UserMinus
 } from 'lucide-react'
 
 import LayoutAdmin from '@/layout/LayoutAdmin'
 import AddChildModal from '@/modules/parent/children/components/AddChildModal.jsx'
+import SwitchToChildButton from '@/modules/parent/children/components/SwitchToChildButton'
+import RemoveChildModal from '@/modules/parent/children/components/RemoveChildModal'
 import ModalConfidentiality from '@/modules/student/subjects/components/modal/ModalConfidentiality.jsx'
 import { Initials } from '@/modules/parent/home/dashboard/shared'
 import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
+import { KEYS } from '@/constants/key'
 import { request } from '@/services/api'
 
 const PAGE_SIZE = 10
@@ -66,7 +70,7 @@ const toTimestamp = (value) => {
 
 const isActive = (child) => !!child.status
 
-const RowMenu = ({ onCertificate, label }) => {
+const RowMenu = ({ onCertificate, label, onRemove, removeLabel }) => {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
@@ -98,6 +102,19 @@ const RowMenu = ({ onCertificate, label }) => {
             <Download size={16} className="text-[#2563EB]" />
             {label}
           </button>
+          {onRemove ? (
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false)
+                onRemove()
+              }}
+              className="flex w-full items-center gap-2 border-t border-[#EEF1F6] px-3 py-2.5 text-left text-sm font-medium text-[#DC2626] hover:bg-[#FEF2F2] dark:border-[#26324A]"
+            >
+              <UserMinus size={16} />
+              {removeLabel}
+            </button>
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -109,6 +126,7 @@ const MyChildren = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [removing, setRemoving] = useState(null)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [sort, setSort] = useState('login')
@@ -432,6 +450,11 @@ const MyChildren = () => {
                                   {child.full_name}
                                 </span>
                                 <span className="text-xs text-[#64748B]">ID: {child.identification}</span>
+                                {child.has_phone === false ? (
+                                  <span className="ml-1.5 rounded-md bg-[#FEF3C7] px-1.5 py-0.5 text-[10.5px] font-semibold text-[#B45309]">
+                                    {t('childSwitch.noPhone')}
+                                  </span>
+                                ) : null}
                               </span>
                             </button>
                           </td>
@@ -467,8 +490,14 @@ const MyChildren = () => {
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-2">
+                              <SwitchToChildButton childId={child.id} label={t('childSwitch.enterShort')} />
                               <DetailsButton child={child} />
-                              <RowMenu label={c('certificate')} onCertificate={() => downloadCertificate(child.id)} />
+                              <RowMenu
+                          label={c('certificate')}
+                          onCertificate={() => downloadCertificate(child.id)}
+                          removeLabel={t('childSwitch.remove')}
+                          onRemove={() => setRemoving(child)}
+                        />
                             </div>
                           </td>
                         </tr>
@@ -516,11 +545,17 @@ const MyChildren = () => {
                           <SubEnd child={child} />
                         </div>
                       </div>
-                      <div className="mt-4 flex items-center gap-2">
+                      <SwitchToChildButton childId={child.id} className="mt-4 w-full" />
+                      <div className="mt-2 flex items-center gap-2">
                         <div className="flex-1 [&>button]:w-full [&>button]:justify-center">
                           <DetailsButton child={child} />
                         </div>
-                        <RowMenu label={c('certificate')} onCertificate={() => downloadCertificate(child.id)} />
+                        <RowMenu
+                          label={c('certificate')}
+                          onCertificate={() => downloadCertificate(child.id)}
+                          removeLabel={t('childSwitch.remove')}
+                          onRemove={() => setRemoving(child)}
+                        />
                       </div>
                     </div>
                   )
@@ -570,6 +605,15 @@ const MyChildren = () => {
         </div>
       </div>
 
+      <RemoveChildModal
+        child={removing}
+        onClose={() => setRemoving(null)}
+        onDone={() => {
+          setRemoving(null)
+          queryClient.invalidateQueries(['parent-children'])
+          queryClient.invalidateQueries([KEYS.parentDashboard])
+        }}
+      />
       <AddChildModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

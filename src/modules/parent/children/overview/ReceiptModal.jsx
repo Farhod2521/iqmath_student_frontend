@@ -24,6 +24,8 @@ import {
 } from 'lucide-react'
 import { formatMoney } from './format'
 
+const MULTICARD_CHECK_URL = 'https://checkout.multicard.uz/check/'
+
 const LOGO = 'https://api.iqmath.uz/system/logo/logo.png'
 
 const pad = (n) => String(n).padStart(2, '0')
@@ -89,10 +91,12 @@ const ReceiptModal = ({ payment, onClose }) => {
   const { date, time } = dateParts(payment.date)
   const success = payment.status === 'success'
   const money = (value) => `${formatMoney(value)},00 ${som}`
+  // Chek havolasi invoys ID'dan yasaladi (bazadagi eski receipt_url'lar ochilmaydi)
+  const receiptUrl = payment.invoice_uuid ? `${MULTICARD_CHECK_URL}${payment.invoice_uuid}` : payment.receipt_url
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(payment.receipt_url)
+      await navigator.clipboard.writeText(receiptUrl)
       toast.success(r('copied'))
     } catch {
       // brauzer ruxsat bermasa — jim
@@ -276,10 +280,10 @@ const ReceiptModal = ({ payment, onClose }) => {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-[#0F172A]">{r('link')}</p>
-                  {payment.receipt_url ? (
+                  {receiptUrl ? (
                     <div className="mt-2 flex items-center gap-2">
                       <span className="min-w-0 flex-1 truncate rounded-lg bg-[#EEF3FF] px-3 py-2 text-xs text-[#334155]">
-                        {payment.receipt_url}
+                        {receiptUrl}
                       </span>
                       <button
                         type="button"
@@ -295,9 +299,9 @@ const ReceiptModal = ({ payment, onClose }) => {
                   )}
                 </div>
               </div>
-              {payment.receipt_url ? (
+              {receiptUrl ? (
                 <div className="flex items-center gap-4 md:border-l md:border-dashed md:border-[#DCE3F0] md:pl-6">
-                  <QRCodeSVG value={payment.receipt_url} size={76} level="M" />
+                  <QRCodeSVG value={receiptUrl} size={76} level="M" />
                   <div className="max-w-[180px]">
                     <p className="font-semibold text-[#0F172A]">{r('qr')}</p>
                     <p className="text-xs text-[#64748B]">{r('qrText')}</p>
@@ -325,12 +329,12 @@ const ReceiptModal = ({ payment, onClose }) => {
                   {r('close')}
                 </button>
                 <a
-                  href={payment.receipt_url || undefined}
+                  href={receiptUrl || undefined}
                   target="_blank"
                   rel="noreferrer"
-                  aria-disabled={!payment.receipt_url}
+                  aria-disabled={!receiptUrl}
                   className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl px-7 font-semibold text-white shadow-[0_12px_24px_-12px_rgba(37,99,235,0.9)] ${
-                    payment.receipt_url ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'pointer-events-none bg-[#93B4FA]'
+                    receiptUrl ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'pointer-events-none bg-[#93B4FA]'
                   }`}
                 >
                   <Download size={20} />

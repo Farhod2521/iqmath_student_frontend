@@ -1,5 +1,6 @@
 import { request } from '@/services/api'
 import Auth from '../../auth/Auth'
+import AuthCard from '../../auth/AuthCard'
 import { URLS } from '@/constants/url'
 import { useEffect, useState } from 'react'
 
@@ -31,8 +32,12 @@ function BannerHeader() {
         filter: loading ? 'blur(10px)' : 'none'
       }}
     >
-      <div className="flex items-center justify-center w-full h-full px-4 py-6 pb-24 bg-black/30">
-        <Auth />
+      <div className="w-full h-full overflow-y-auto bg-[#0F172A]/40">
+        <div className="flex min-h-full items-center justify-center px-3 py-6">
+          <AuthCard>
+            <Auth />
+          </AuthCard>
+        </div>
       </div>
     </section>
   )

@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import AuthButton from './AuthButton'
 import DeviceLimitModal from '@/components/devices/DeviceLimitModal'
 import { getDeviceCredentials, parseDeviceLimitError } from '@/shared/utils/device'
 
@@ -123,31 +124,24 @@ function AuthSignIn() {
       />
       <InputPassword {...register('password', { required: true })} placeholder={t('password')} />
       <div className="flex items-center justify-between mt-2 text-sm">
-        <label className="flex items-center gap-2 text-white">
+        <label className="flex cursor-pointer items-center gap-2 text-[#334155]">
           <input
             type="checkbox"
             checked={isChecked}
-            className="placeholder-[#ffffee] "
+            className="h-4 w-4 accent-[#2563EB]"
             onChange={() => setIsChecked(!isChecked)}
           />
           <span>{t('remember')}</span>
         </label>
         <div
-          className="hover:text-[#5D87FF] cursor-pointer font-medium text-white"
+          className="cursor-pointer font-semibold text-[#2563EB] hover:underline"
           onClick={() => setTab('forgetPassword')}
         >
           {t('forget password')}
         </div>
       </div>
-      <div className="flex items-center justify-center w-full">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`w-full sm:w-[70%] md:w-[60%] lg:w-[50%] border mt-2 py-2 mx-auto text-sm sm:text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
-            isLoading ? 'opacity-70' : ''
-          }`}
-          style={{ boxShadow: '0 0 15px 1px #00000040' }}
-        >
+      <div className="pt-2">
+        <AuthButton type="submit" disabled={isLoading}>
           {isLoading ? (
             <div className="flex items-center justify-center gap-1 sm:gap-2">
               <SimpleLoader />
@@ -156,7 +150,7 @@ function AuthSignIn() {
           ) : (
             t('login')
           )}
-        </button>
+        </AuthButton>
       </div>
     </form>
   )

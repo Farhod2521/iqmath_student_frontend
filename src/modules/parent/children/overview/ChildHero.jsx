@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { CalendarDays, ChevronRight, Clock3, Crown, ChartColumnIncreasing, BadgeCheck } from 'lucide-react'
+import { CalendarDays, ChevronRight, Clock3, Crown, ChartColumnIncreasing, BadgeCheck, Smartphone } from 'lucide-react'
+import SwitchToChildButton from '../components/SwitchToChildButton'
 import { Initials } from '@/modules/parent/home/dashboard/shared'
 import { formatDate, formatDateTime, formatDuration } from './format'
 
@@ -15,7 +16,7 @@ const InfoChip = ({ icon: Icon, label, value }) => (
 )
 
 /** Yuqori qism: breadcrumb, profil, uchta ma'lumot va obuna kartasi */
-const ChildHero = ({ profile, subscription, onDetails, onExtend, tabLabel }) => {
+const ChildHero = ({ profile, subscription, onDetails, onExtend, onSetPhone, tabLabel }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const sub = subscription
@@ -75,6 +76,25 @@ const ChildHero = ({ profile, subscription, onDetails, onExtend, tabLabel }) => 
                   <BadgeCheck size={14} />
                   {profile.is_active ? t('childPage.activeStudent') : t('childPage.inactiveStudent')}
                 </span>
+                {profile.has_phone === false ? (
+                  <span className="ml-2 mt-2 inline-flex items-center gap-1 rounded-lg bg-[#FEF3C7] px-2.5 py-1 text-xs font-semibold text-[#B45309]">
+                    <Smartphone size={14} />
+                    {t('childSwitch.noPhone')}
+                  </span>
+                ) : null}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <SwitchToChildButton childId={profile.id} />
+                  {profile.has_phone === false && onSetPhone ? (
+                    <button
+                      type="button"
+                      onClick={onSetPhone}
+                      className="inline-flex h-10 items-center gap-2 rounded-xl bg-white/90 px-4 text-sm font-semibold text-[#2563EB] shadow-sm backdrop-blur transition hover:bg-white"
+                    >
+                      <Smartphone size={17} />
+                      {t('childSwitch.attachPhone')}
+                    </button>
+                  ) : null}
+                </div>
               </div>
             </div>
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3 xl:max-w-[640px]">

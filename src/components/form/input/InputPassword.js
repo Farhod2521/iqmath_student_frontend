@@ -1,27 +1,33 @@
-import Eye from '@/components/icons/eye/Eye'
-import EyeOff from '@/components/icons/eye/EyeOff'
 import React, { useState } from 'react'
+import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
+import { fieldBorder, fieldBox, fieldIcon, fieldInput } from '../field/fieldStyles'
 
 const InputPassword = React.forwardRef(({ className = '', ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="relative">
+    <div className={`${fieldBox} ${fieldBorder}`}>
+      <span className={fieldIcon}>
+        <LockKeyhole size={20} />
+      </span>
       <input
         ref={ref}
         type={showPassword ? 'text' : 'password'}
-        className={`w-full border rounded-[8px] px-3 py-2.5 text-sm text-white placeholder-[#ffffee] focus:outline-none ${className}`}
-        style={{ background: 'rgba(255,255,255,0.4)', borderColor: 'rgba(255,255,255,0.7)' }}
+        className={`${fieldInput} ${className}`}
         {...props}
       />
-      <div
+      <button
+        type="button"
         onClick={() => setShowPassword((prev) => !prev)}
-        className="absolute top-0 bottom-0 right-3 cursor-pointer flex items-center"
+        className="flex h-full shrink-0 items-center px-4 text-[#64748B] hover:text-[#2563EB]"
+        aria-label="toggle password"
       >
-        {showPassword ? <Eye width={24} height={24} /> : <EyeOff width={24} height={24} />}
-      </div>
+        {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+      </button>
     </div>
   )
 })
+
+InputPassword.displayName = 'InputPassword'
 
 export default InputPassword

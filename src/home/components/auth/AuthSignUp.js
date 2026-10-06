@@ -15,6 +15,7 @@ import { useAuthTabStore } from '@/store'
 import { URLS } from '@/constants/url'
 import SimpleLoader from '@/components/loader/simple-loader'
 import toast from 'react-hot-toast'
+import AuthButton from './AuthButton'
 // import UserAgreement from '@/components/oferta'
 
 function AuthSignUp() {
@@ -118,7 +119,7 @@ function AuthSignUp() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-h-[220px] rounded-[4px]">
       {/* Ism */}
-      <InputText className="pl-4" {...register('full_name', { required: true })} placeholder={t('full_name')} />
+      <InputText {...register('full_name', { required: true })} placeholder={t('full_name')} />
       <InputPhone
         placeholder="(__) ___-__-__"
         {...register('phone', {
@@ -143,16 +144,10 @@ function AuthSignUp() {
 
       {/* <UserAgreement /> */}
 
-      <div className="flex items-center justify-center w-full">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`w-full sm:w-[70%] md:w-[60%] lg:w-[50%] border py-2 mt-2 font-medium text-sm sm:text-lg rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
-            isLoading ? 'opacity-70' : ''
-          }`}
-        >
+      <div className="pt-2">
+        <AuthButton type="submit" disabled={isLoading}>
           {isLoading ? <SimpleLoader /> : t('login')}
-        </button>
+        </AuthButton>
       </div>
     </form>
   )

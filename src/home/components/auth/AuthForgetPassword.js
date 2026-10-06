@@ -65,13 +65,13 @@ function AuthForgetPassword() {
         <button
           type="button"
           onClick={() => setTab('signIn')}
-          className="bg-[#EDEDF2] hover:bg-[#EDEDF2] text-black py-2 sm:py-[13px] w-1/2 rounded-[10px] transition-all duration-300"
+          className="bg-[#F1F5FB] hover:bg-[#E6ECF7] text-[#0F172A] font-semibold py-2 sm:py-[13px] w-1/2 rounded-[10px] transition-all duration-300"
         >
           {t('back')}
         </button>
         <button
           type="submit"
-          className="bg-[#5D87FF] hover:bg-[#4570EA] text-white py-2 sm:py-3 w-1/2 rounded-md transition-all duration-300"
+          className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white py-2 sm:py-3 w-1/2 rounded-md transition-all duration-300"
         >
           {t('sendCode')}
         </button>

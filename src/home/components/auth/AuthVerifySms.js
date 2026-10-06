@@ -104,8 +104,8 @@ const AuthVerifySms = () => {
 
   return (
     <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-transparent mx-auto rounded-lg">
-      <h3 className="font-extrabold text-[26px] text-center text-white">{t('confirmPhoneNumber')}</h3>
-      <p className="text-sm sm:text-[19px] text-white font-medium text-center mt-[8px] mb-[32px]">
+      <h3 className="font-extrabold text-[26px] text-center text-[#0B1B3F]">{t('confirmPhoneNumber')}</h3>
+      <p className="text-sm sm:text-[17px] text-[#64748B] font-medium text-center mt-[8px] mb-[32px]">
         {t('confirmPhoneNumberSubtitle')} <br />
         {formattedPhone}
       </p>
@@ -118,12 +118,12 @@ const AuthVerifySms = () => {
                 type="text"
                 onChange={(e) => setVerifyCode(e.target.value)}
                 placeholder={t('authCode')}
-                className="border placeholder:text-white border-[#E9E9E9] bg-transparent rounded-[12px] text-white w-full px-3 min-h-[46px] focus:outline-none relative text-[17px] placeholder:text-[17px]"
+                className="border placeholder:text-[#94A3B8] border-[#E9E9E9] bg-white rounded-[12px] text-[#0F172A] w-full px-3 min-h-[46px] focus:outline-none relative text-[17px] placeholder:text-[17px]"
               />
             </div>
 
             <div className="flex justify-center items-center">
-              <span className="text-white  text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
+              <span className="text-[#0F172A]  text-sm sm:text-[22px] py-[9px] px-[27px] border border-[#D1D1D6] rounded-[10px]">
                 {formattedTime}
               </span>
             </div>
@@ -132,7 +132,7 @@ const AuthVerifySms = () => {
           <div className="flex gap-x-[16px]">
             <button
               onClick={() => setTab('forgetPassword')}
-              className="bg-[#EDEDF2] hover:bg-[#EDEDF2] text-black py-2 sm:py-[13px] w-1/2 rounded-[10px] transition-all duration-300"
+              className="bg-[#F1F5FB] hover:bg-[#E6ECF7] text-[#0F172A] font-semibold py-2 sm:py-[13px] w-1/2 rounded-[10px] transition-all duration-300"
             >
               {t('back')}
             </button>

@@ -1,4 +1,5 @@
 import InputPassword from '@/components/form/input/InputPassword'
+import AuthButton from './AuthButton'
 import InputPhone from '@/components/form/input/InputPhone'
 import SimpleLoader from '@/components/loader/simple-loader'
 import { useAuthTabStore } from '@/store'
@@ -122,7 +123,7 @@ const AuthRecieveCode = () => {
       <InputPassword value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} placeholder={t('sms code')} />
       <div className="flex justify-between items-center text-sm mt-2">
         <span
-          className={`text-white ${timer === 0 ? 'cursor-pointer hover:text-[#5D87FF]' : 'opacity-50'}`}
+          className={`font-semibold ${timer === 0 ? 'cursor-pointer text-[#2563EB] hover:underline' : 'text-[#94A3B8]'}`}
           onClick={() => {
             if (timer === 0) {
               resendSMSCode(
@@ -144,17 +145,10 @@ const AuthRecieveCode = () => {
         >
           {t('resend code')}
         </span>
-        <span className="text-white">{formattedTime}</span>
+        <span className="font-semibold text-[#0F172A]">{formattedTime}</span>
       </div>
-      <div className="w-full flex justify-center items-center">
-        <button
-          onClick={onSubmit}
-          disabled={isButtonLoading || !verifyCode.trim()}
-          className={`w-[60%] border mt-2 py-2 mx-auto text-lg font-medium rounded-[8px] transition bg-[#5D87FF] text-white hover:bg-[#4570EA] ${
-            isButtonLoading || !verifyCode.trim() ? 'opacity-70' : ''
-          }`}
-          style={{ boxShadow: '0 0 15px 1px #00000040' }}
-        >
+      <div className="pt-2">
+        <AuthButton type="button" onClick={onSubmit} disabled={isButtonLoading || !verifyCode.trim()}>
           {isButtonLoading ? (
             <div className="flex items-center justify-center gap-2">
               <SimpleLoader />
@@ -163,7 +157,7 @@ const AuthRecieveCode = () => {
           ) : (
             t('verify')
           )}
-        </button>
+        </AuthButton>
       </div>
     </div>
   )
