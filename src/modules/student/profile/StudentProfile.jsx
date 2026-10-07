@@ -9,6 +9,7 @@ import TransferTab from './tabs/TransferTab'
 import ReferralTab from './tabs/ReferralTab'
 import CouponsTab from './tabs/CouponsTab'
 import DevicesTab from './tabs/DevicesTab'
+import PaymentsTab from './tabs/PaymentsTab'
 
 const StudentProfile = () => {
   const { t } = useTranslation()
@@ -17,6 +18,7 @@ const StudentProfile = () => {
   const tabs = useMemo(
     () => [
       { key: 'profile', label: t('myProfile'), Component: ProfileInfoTab },
+      { key: 'payments', label: t('myPayments'), Component: PaymentsTab },
       { key: 'fines', label: t('Jarimalarim'), Component: FinesTab },
       { key: 'coins', label: t('points'), Component: CoinsTab },
       { key: 'coinsHistory', label: t('pointsHistory'), Component: CoinsHistoryTab },

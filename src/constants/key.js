@@ -51,6 +51,7 @@ export const KEYS = {
   parentDashboard: 'parentDashboard',
   parentChildOverview: 'parentChildOverview',
   parentChildPayments: 'parentChildPayments',
+  studentMyPayments: 'studentMyPayments',
   achievements: 'achievements',
   diagnosticMistakes: 'diagnosticMistakes',
   systemSettings: 'systemSettings',

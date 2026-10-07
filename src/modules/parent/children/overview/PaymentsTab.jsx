@@ -126,17 +126,21 @@ const MonthlyChart = ({ items = [] }) => {
   )
 }
 
-const PaymentsTab = ({ childId, onExtend }) => {
+/**
+ * To'lovlar tabi. Ota-ona sahifasida `childId` bilan, o'quvchi profilida esa
+ * `url` + `queryKey` bilan (o'z to'lovlari) ishlatiladi.
+ */
+const PaymentsTab = ({ childId, onExtend, url, queryKey }) => {
   const { t, i18n } = useTranslation()
   const [months, setMonths] = useState('6')
   const [showAll, setShowAll] = useState(false)
   const [receipt, setReceipt] = useState(null)
 
   const { data: response, isLoading } = useGetQuery({
-    key: [KEYS.parentChildPayments, childId],
-    url: `${URLS.parentChildOverview}${childId}/payments/`,
+    key: [queryKey || KEYS.parentChildPayments, childId],
+    url: url || `${URLS.parentChildOverview}${childId}/payments/`,
     params: { months },
-    enabled: !!childId
+    enabled: !!(url || childId)
   })
   const data = response?.data
 

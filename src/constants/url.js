@@ -72,6 +72,7 @@ export const URLS = {
   parentDashboard: '/api/v1/func_student/parent/dashboard/',
   // + `${id}/overview/`
   parentChildOverview: '/api/v1/func_student/parent/children/',
+  studentMyPayments: '/api/v1/func_student/my-payments/',
   // ?student=<id> — ota-ona uchun farzand yutuqlari
   achievements: '/api/v1/func_student/achievements/',
   // Parent management endpoints
