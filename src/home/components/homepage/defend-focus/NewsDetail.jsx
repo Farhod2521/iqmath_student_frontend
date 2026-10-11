@@ -1,18 +1,9 @@
-// HomePage.jsx
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Container, Box, Typography, Card, CardContent, Button, Chip, Skeleton } from '@mui/material'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ZapIcon from '@mui/icons-material/Bolt'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
-import { request } from '@/services/api'
+import { ArrowRight, CalendarDays, Gift, GraduationCap, Newspaper, Zap } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { formatDate } from '@/shared/utils'
+import { request } from '@/services/api'
 
 const newsApi = {
   getAll: async () => {
@@ -21,388 +12,172 @@ const newsApi = {
   }
 }
 
+const TEXTS = {
+  uz: {
+    badge: 'So‘nggi yangiliklar',
+    title: 'Yangiliklar',
+    subtitle: 'IQmath olamidagi so‘nggi yangiliklar, yangilanishlar va muhim e’lonlar bilan doim xabardor bo‘lib turing.',
+    all: 'Barcha yangiliklar',
+    details: 'Batafsil',
+    empty: 'Hozircha yangiliklar yo‘q',
+    update: 'Yangilanish',
+    announce: 'E’lon',
+    article: 'Foydali maqola',
+    news: 'Yangilik'
+  },
+  ru: {
+    badge: 'Последние новости',
+    title: 'Новости',
+    subtitle: 'Будьте в курсе последних новостей, обновлений и важных объявлений IQmath.',
+    all: 'Все новости',
+    details: 'Подробнее',
+    empty: 'Пока новостей нет',
+    update: 'Обновление',
+    announce: 'Объявление',
+    article: 'Полезная статья',
+    news: 'Новость'
+  }
+}
+
+// API'da toifa maydoni yo'q — sarlavhaga qarab yorliq tanlanadi
+const categoryOf = (news) => {
+  const title = `${news.title_uz || ''} ${news.title_ru || ''}`.toLowerCase()
+  if (/versiya|yangila|верси|обнов/.test(title)) return { key: 'update', Icon: Zap, color: '#1D6BFF', from: '#5B9BFF' }
+  if (/bonus|chegirma|aksiya|sovg|бонус|скидк|акци|подар/.test(title)) return { key: 'announce', Icon: Gift, color: '#EA580C', from: '#FFAA4D' }
+  if (/maqola|maslahat|qanday|стать|совет|как /.test(title)) return { key: 'article', Icon: GraduationCap, color: '#1D4ED8', from: '#5B9BFF' }
+  return { key: 'news', Icon: Newspaper, color: '#1D6BFF', from: '#5B9BFF' }
+}
+
+const LIMIT = 3
+
+/** Bosh sahifa: so'nggi yangiliklar (3 ta karta) */
 const HomePage = () => {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const router = useRouter()
+  const lang = i18n.language === 'ru' ? 'ru' : 'uz'
+  const text = TEXTS[lang]
 
-  const [isVisible, setIsVisible] = useState(false)
-  const swiperRef = useRef(null)
-
-  const {
-    data: newsData,
-    isLoading,
-    isError
-  } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['data-news'],
     queryFn: newsApi.getAll,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     retry: 2
   })
+  const news = (Array.isArray(data) ? data : []).slice(0, LIMIT)
 
-  useEffect(() => setIsVisible(true), [])
-
-  // ✅ LOOP barqaror bo‘lishi uchun: yetarli slide + unique key (dupId)
-  const sliderItems = useMemo(() => {
-    if (!newsData?.length) return []
-    const MIN = 18 // 1200 breakpoint'da slidesPerView=3 -> loop uchun yaxshi zaxira
-    const out = []
-    let dup = 0
-
-    while (out.length < MIN) {
-      for (const item of newsData) {
-        out.push({ ...item, __dupId: dup++ })
-        if (out.length >= MIN) break
-      }
-    }
-    return out
-  }, [newsData])
-
-  const handleNewsClick = (newsId) => {
-    // router.push('/news')
-    // agar detail route bo‘lsa:
-    router.push(`/news/${newsId}`)
-  }
-
-  const SliderSkeleton = () => (
-    <Box
-      sx={{
-        height: { xs: 240, sm: 300, md: 360 },
-        borderRadius: 4,
-        background: 'rgba(0,0,0,0.03)',
-        border: '1px solid rgba(17,24,39,0.08)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <Skeleton variant="rectangular" width="100%" height="100%" animation="wave" sx={{ borderRadius: 4 }} />
-    </Box>
-  )
-
-  const reviveLoopAndAutoplay = () => {
-    const sw = swiperRef.current
-    if (!sw) return
-    try {
-      sw.update()
-      // loop ba’zan “stuck” bo‘ladi — qayta yaratib yuboramiz
-      sw.loopDestroy()
-      sw.loopCreate()
-      sw.loopFix()
-      sw.autoplay?.stop()
-      sw.autoplay?.start()
-    } catch (e) {}
-  }
-
-  if (isError) {
-    return (
-      <Box
-        sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}
-      >
-        <Box sx={{ textAlign: 'center', color: '#111827', px: 2 }}>
-          <ErrorOutlineIcon sx={{ fontSize: 70, color: '#ef4444', mb: 2 }} />
-          <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
-            {t('isError.title')}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 3, color: 'rgba(17,24,39,0.7)' }}>
-            {t('isError.description')}
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={() => window.location.reload()}
-            sx={{
-              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-              px: 4,
-              py: 1.3,
-              borderRadius: 999,
-              textTransform: 'none',
-              fontWeight: 800
-            }}
-          >
-            {t('isError.reload')}
-          </Button>
-        </Box>
-      </Box>
-    )
-  }
+  const open = (id) => router.push(`/news/${id}`)
 
   return (
-    <Box
-      id="news-detail"
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'linear-gradient(180deg, #F6F7FF 0%, #FFFFFF 45%, #F7FAFF 100%)',
-        minHeight: '50vh'
-      }}
-    >
-      <div className="py-10 md:py-16">
-        {/* Soft background */}
-        <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: -120,
-              right: -120,
-              width: 360,
-              height: 360,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 72%)'
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: -140,
-              left: -140,
-              width: 420,
-              height: 420,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 72%)'
-            }}
-          />
-        </Box>
+    <section id="news-detail" className="relative overflow-hidden bg-gradient-to-b from-[#F7F9FE] via-white to-[#F8FAFE] py-14 md:py-20">
+      <span className="pointer-events-none absolute -right-40 -top-24 h-[420px] w-[420px] rounded-full bg-[#EEF3FF]/80 blur-3xl" />
 
-        <Container
-          sx={{
-            maxWidth: '1400px !important',
-            py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' },
-            position: 'relative',
-            zIndex: 1
-          }}
-        >
-          {/* Header */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: { xs: 'flex-start', sm: 'center' },
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: { xs: 1.5, sm: 0 },
-              mb: 1
-            }}
+      <div className="relative mx-auto max-w-[1320px] px-4">
+        {/* Sarlavha */}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-[680px]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#E8F0FF] px-4 py-2 text-[13px] font-bold uppercase tracking-wide text-[#1E4FD8]">
+              <Zap size={16} className="fill-[#1D6BFF] text-[#1D6BFF]" />
+              {text.badge}
+            </span>
+            <h2 className="mt-4 text-[36px] font-extrabold leading-[1.05] tracking-tight text-[#0B1B3F] sm:text-[48px] lg:text-[58px]">
+              {text.title}
+            </h2>
+            <p className="mt-3 text-[16px] leading-relaxed text-[#64748B] sm:text-[19px]">{text.subtitle}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push('/news')}
+            className="inline-flex h-12 w-fit shrink-0 items-center gap-2.5 rounded-full bg-[#1D6BFF] px-6 text-[15px] font-semibold text-white shadow-[0_14px_26px_-14px_rgba(29,107,255,0.9)] transition hover:bg-[#1557D6]"
           >
-            <Typography variant="h1" fontWeight={600} sx={{ fontSize: { xs: '1.4rem', sm: '2rem' } }}>
-              {t('news')}
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => router.push('/news')}
-              sx={{ borderRadius: '8px', textTransform: 'none', backgroundColor: '#5D87FF', fontWeight: 800 }}
-            >
-              {t('allNews')}
-            </Button>
-          </Box>
+            {text.all}
+            <ArrowRight size={18} />
+          </button>
+        </div>
 
-          {/* Slider */}
-          {isLoading ? (
-            <SliderSkeleton />
-          ) : (
-            <Box
-              sx={{
-                mt: 2,
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(18px)',
-                transition: 'all 0.6s ease'
-              }}
-            >
-              <Swiper
-                onSwiper={(sw) => {
-                  swiperRef.current = sw
-                  // mount bo‘lganda loop/autoplay 100% ishga tushsin
-                  setTimeout(reviveLoopAndAutoplay, 120)
-                }}
-                onResize={() => setTimeout(reviveLoopAndAutoplay, 120)}
-                onSlideChangeTransitionEnd={() => {
-                  const sw = swiperRef.current
-                  if (sw?.autoplay && sw.autoplay.running === false) setTimeout(reviveLoopAndAutoplay, 80)
-                }}
-                slidesPerView={1.05}
-                spaceBetween={12}
-                breakpoints={{
-                  480: { slidesPerView: 1.2, spaceBetween: 12 },
-                  600: { slidesPerView: 1.6, spaceBetween: 14 },
-                  900: { slidesPerView: 2.4, spaceBetween: 16 },
-                  1200: { slidesPerView: 3, spaceBetween: 16 }
-                }}
-                loop={sliderItems.length > 1}
-                loopPreventsSliding={false}
-                speed={650}
-                autoplay={{
-                  delay: 2500,
-                  disableOnInteraction: false,
-                  pauseOnMouseEnter: true,
-                  stopOnLastSlide: false
-                }}
-                observer
-                observeParents
-                watchOverflow={false}
-                modules={[Autoplay]}
-                style={{ paddingBottom: '50px' }}
+        {/* Kartalar */}
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {isLoading
+            ? [1, 2, 3].map((i) => <div key={i} className="h-[460px] animate-pulse rounded-[26px] bg-[#EEF2F8]" />)
+            : null}
+
+          {!isLoading && !news.length ? (
+            <p className="col-span-full py-10 text-center text-[#64748B]">{text.empty}</p>
+          ) : null}
+
+          {news.map((item) => {
+            const category = categoryOf(item)
+            const title = lang === 'ru' ? item.title_ru || item.title_uz : item.title_uz
+            const body = ((lang === 'ru' ? item.text_ru || item.text_uz : item.text_uz) || '').replace(/<[^>]+>/g, ' ')
+            return (
+              <article
+                key={item.id}
+                onClick={() => open(item.id)}
+                className="group flex cursor-pointer flex-col rounded-[26px] border border-[#EDF1F7] bg-white p-3.5 shadow-[0_22px_50px_-38px_rgba(15,23,42,0.5)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-36px_rgba(37,99,235,0.45)]"
               >
-                {sliderItems?.map((news) => (
-                  <SwiperSlide key={`${news.id}-${news.__dupId}`} style={{ height: '100%' }}>
-                    <Card
-                      onClick={() => handleNewsClick(news.id)}
-                      sx={{
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        borderRadius: 3,
-                        overflow: 'hidden',
-                        cursor: 'pointer',
-                        border: '1px solid rgba(17,24,39,0.08)',
-                        background: '#fff',
-                        // boxShadow: '0 6px 16px rgba(17,24,39,0.06)',
-                        transition: 'all .2s ease',
-                        '&:hover': {
-                          // boxShadow: '0 10px 24px rgba(17,24,39,0.10)',
-                          borderColor: 'rgba(99,102,241,0.25)'
-                        }
+                <div className="relative h-[220px] overflow-hidden rounded-[20px] bg-[#EEF2F8] sm:h-[240px]">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                    />
+                  ) : (
+                    // Rasm yuklanmagan yangilik uchun zaxira fon
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#EAF1FF] via-[#E3ECFF] to-[#F1EBFF]">
+                      <span className="absolute left-10 top-14 h-14 w-14 rotate-12 rounded-2xl bg-white/60" />
+                      <span className="absolute bottom-10 right-12 h-10 w-10 rounded-full bg-white/70" />
+                      <span
+                        className="relative flex h-24 w-24 items-center justify-center rounded-[28px] text-white"
+                        style={{
+                          background: `linear-gradient(145deg, ${category.from} 0%, ${category.color} 100%)`,
+                          boxShadow: `0 20px 36px -16px ${category.color}, inset 0 -8px 14px rgba(0,0,0,0.12), inset 0 8px 12px rgba(255,255,255,0.35)`
+                        }}
+                      >
+                        <category.Icon size={44} className="fill-current" />
+                      </span>
+                    </div>
+                  )}
+                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-[13px] font-bold text-[#0B1B3F] shadow-sm backdrop-blur">
+                    <category.Icon size={16} style={{ color: category.color }} className="fill-current" />
+                    {text[category.key]}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col px-2 pb-1 pt-5">
+                  <h3 className="line-clamp-2 text-[20px] font-extrabold leading-snug text-[#0B1B3F]">{title}</h3>
+                  <p
+                    className="mb-5 mt-2.5 line-clamp-3 text-[15.5px] leading-relaxed text-[#64748B]"
+                    dangerouslySetInnerHTML={{ __html: body }}
+                  />
+
+                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-[#EEF1F6] pt-4">
+                    <span className="inline-flex items-center gap-2.5 text-[14px] text-[#475569]">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF3FF] text-[#1D6BFF]">
+                        <CalendarDays size={17} />
+                      </span>
+                      {String(item.created_at || '').slice(0, 10)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        open(item.id)
                       }}
+                      className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#1D6BFF] px-5 text-[15px] font-semibold text-white shadow-[0_12px_22px_-12px_rgba(29,107,255,0.9)] transition group-hover:bg-[#1557D6]"
                     >
-                      {/* Media (doim bir xil height) */}
-                      <Box
-                        sx={{
-                          position: 'relative',
-                          height: { xs: 150, sm: 170, md: 190 },
-                          flexShrink: 0,
-                          backgroundColor: '#f3f4f6',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            inset: 0,
-                            backgroundImage: `url(${news.image})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center'
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            inset: 0,
-                            background:
-                              'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.0) 35%, rgba(0,0,0,0.15) 100%)'
-                          }}
-                        />
-                        <Box sx={{ position: 'absolute', left: 12, top: 12 }}>
-                          <Chip
-                            icon={<ZapIcon sx={{ fontSize: 18 }} />}
-                            label="Yangilik"
-                            sx={{
-                              background: 'rgba(255,255,255,0.92)',
-                              color: '#111827',
-                              fontWeight: 800,
-                              border: '1px solid rgba(17,24,39,0.10)',
-                              '& .MuiChip-icon': { color: '#6366f1' }
-                            }}
-                          />
-                        </Box>
-                      </Box>
-
-                      {/* Content (hammasi tekis) */}
-                      <CardContent
-                        sx={{
-                          pt: { xs: 2, sm: 2.25 },
-                          paddingBottom: { xs: 1, sm: 0.25 },
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 1.2,
-                          flexGrow: 1
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontWeight: 900,
-                            color: '#111827',
-                            fontSize: { xs: '0.95rem', sm: '1.02rem' },
-                            lineHeight: 1.25,
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            minHeight: '2.5em'
-                          }}
-                        >
-                          {i18n.language === 'uz' ? news.title_uz : news.title_ru}
-                        </Typography>
-
-                        <Typography
-                          sx={{
-                            color: 'rgba(17,24,39,0.65)',
-                            fontSize: { xs: '0.8rem', sm: '0.85rem' },
-                            lineHeight: 1.5,
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            minHeight: '3em'
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: ((i18n.language === 'uz' ? news.text_uz : news.text_ru) || '').replace(
-                              /<[^>]+>/g,
-                              ''
-                            )
-                          }}
-                        />
-
-                        {/* Bottom row (doim pastda) */}
-                        <Box
-                          sx={{
-                            mt: 'auto',
-                            pt: 1.2,
-                            borderTop: '1px solid rgba(17,24,39,0.08)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            gap: 1.5
-                          }}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <AccessTimeIcon sx={{ fontSize: 18, color: 'rgba(17,24,39,0.45)' }} />
-                            <Typography sx={{ fontSize: 13, color: 'rgba(17,24,39,0.55)', fontWeight: 600 }}>
-                              {formatDate(news.created_at)}
-                            </Typography>
-                          </Box>
-
-                          <Button
-                            variant="contained"
-                            endIcon={<ArrowForwardIcon />}
-                            sx={{
-                              textTransform: 'none',
-                              fontWeight: 600,
-                              borderRadius: '8px',
-                              px: 2,
-                              py: 0.6,
-                              fontSize: { xs: '0.8rem', sm: '0.85rem' },
-                              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-                              boxShadow: '0 10px 20px rgba(99,102,241,0.25)',
-                              '&:hover': {
-                                background: 'linear-gradient(135deg, #585cf0 0%, #9f4ff2 100%)'
-                              }
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleNewsClick(news.id)
-                            }}
-                          >
-                            {t('details')}
-                          </Button>
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </Box>
-          )}
-        </Container>
+                      {text.details}
+                      <ArrowRight size={17} />
+                    </button>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
       </div>
-    </Box>
+    </section>
   )
 }
 

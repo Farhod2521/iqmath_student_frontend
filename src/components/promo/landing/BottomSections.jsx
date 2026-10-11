@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { FaApple, FaGooglePlay, FaInstagram, FaTelegramPlane, FaYoutube } from 'react-icons/fa'
+import { FaApple, FaInstagram, FaTelegramPlane, FaYoutube } from 'react-icons/fa'
 import {
   ArrowRight,
   BadgeCheck,
   BarChart3,
-  Check,
   ChevronDown,
   CircleCheck,
   Coins,
@@ -16,8 +15,8 @@ import {
   Trophy,
   X
 } from 'lucide-react'
-import { useGetQuery } from '@/hooks'
-import { URLS } from '@/constants/url'
+import { QRCodeSVG } from 'qrcode.react'
+import PricingContent from '@/pages/prices/components/PricingContent'
 import { LINKS } from './content'
 import { Container, PrimaryButton, Reveal, SectionTag, SectionTitle, scrollToId } from './ui'
 import { FlameArt, GemArt, PhoneMock, TrophyArt } from './Illustrations'
@@ -214,170 +213,101 @@ export const MotivationSection = ({ c }) => {
 /* Mobil ilova                                                        */
 /* ------------------------------------------------------------------ */
 
-const StoreButton = ({ href, Icon, lines }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noreferrer"
-    className="inline-flex h-14 items-center gap-3 rounded-xl bg-[#0B1B3F] px-5 text-white transition hover:bg-[#13285C]"
-  >
-    <Icon size={24} />
-    <span className="leading-tight">
-      <span className="block text-[15px] font-bold">{lines[0]}</span>
-      <span className="block text-[11px] text-white/70">{lines[1]}</span>
-    </span>
-  </a>
+// Rangli Google Play belgisi (QR markazi va tugma uchun)
+const PlayLogo = ({ size = 28 }) => (
+  <svg viewBox="0 0 48 48" width={size} height={size} aria-hidden="true">
+    <path fill="#00D7FE" d="M7.6 4.3 26.4 24 7.6 43.7c-.6-.4-1-1.1-1-2V6.3c0-.9.4-1.6 1-2Z" />
+    <path fill="#FFCE00" d="m33 30.6-6.6-6.6 6.6-6.6 7.9 4.5c1.9 1.1 1.9 3.3 0 4.3L33 30.6Z" />
+    <path fill="#FF3A44" d="M33 30.6 26.4 24 7.6 43.7c.7.5 1.7.5 2.6 0L33 30.6Z" />
+    <path fill="#00F076" d="M33 17.4 10.2 4.3c-.9-.5-1.9-.5-2.6 0L26.4 24 33 17.4Z" />
+  </svg>
+)
+
+const StoreCard = ({ href, logo, lines, hint }) => (
+  <div className="w-full rounded-[26px] bg-white p-3 shadow-[0_24px_50px_-30px_rgba(15,23,42,0.45)] ring-1 ring-[#EEF1F6] sm:w-[280px]">
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="flex h-[66px] items-center gap-3 rounded-2xl bg-[#0B0F19] px-5 text-white transition hover:bg-[#1A2235]"
+    >
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center">{logo}</span>
+      <span className="leading-tight">
+        <span className="block text-[12px] text-white/80">{lines[0]}</span>
+        <span className="block text-[20px] font-bold tracking-tight">{lines[1]}</span>
+      </span>
+    </a>
+    <div className="flex items-center gap-4 px-2 pb-1 pt-3">
+      <span className="relative flex h-[96px] w-[96px] shrink-0 items-center justify-center rounded-xl bg-white">
+        <QRCodeSVG value={href} size={96} level="H" />
+        <span className="absolute flex h-7 w-7 items-center justify-center rounded-md bg-white shadow-sm">
+          {logo}
+        </span>
+      </span>
+      <p className="text-[14px] leading-snug text-[#2563EB]">{hint}</p>
+    </div>
+  </div>
 )
 
 export const AppSection = ({ c }) => (
-  <section id="app" className="scroll-mt-20 overflow-hidden bg-white py-16 md:py-24">
-    <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+  <section id="app" className="scroll-mt-20 overflow-hidden bg-white py-14 md:py-20">
+    <Container className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
       <Reveal>
         <SectionTag>{c.app.tag}</SectionTag>
         <SectionTitle className="mt-4">{c.app.title}</SectionTitle>
-        <p className="mt-4 text-[17px] leading-relaxed text-[#475569]">{c.app.text}</p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <StoreButton href={LINKS.googlePlay} Icon={FaGooglePlay} lines={c.app.google} />
-          <StoreButton href={LINKS.appStore} Icon={FaApple} lines={c.app.apple} />
+        <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-[#475569]">{c.app.text}</p>
+        <ul className="mt-5 space-y-2">
+          {c.app.points.map((point) => (
+            <li key={point} className="flex items-center gap-2.5 text-[15px] text-[#334155]">
+              <CircleCheck size={18} className="shrink-0 text-[#16A34A]" />
+              {point}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+          <StoreCard href={LINKS.googlePlay} logo={<PlayLogo size={26} />} lines={c.app.google} hint={c.app.qrHint} />
+          <StoreCard
+            href={LINKS.appStore}
+            logo={<FaApple size={26} className="text-current" />}
+            lines={c.app.apple}
+            hint={c.app.qrHint}
+          />
         </div>
       </Reveal>
       <Reveal
         delay={120}
-        className="relative mx-auto flex h-[300px] w-full max-w-[480px] items-end justify-center sm:h-[380px]"
+        className="relative mx-auto hidden h-[380px] w-full max-w-[480px] items-end justify-center lg:flex"
       >
         <div className="absolute inset-x-6 bottom-6 top-16 rounded-[40px] bg-gradient-to-br from-[#DCE8FF] to-[#EDE7FF]" />
-        <PhoneMock variant={0} className="relative z-10 mb-10 w-[96px] -rotate-6 sm:w-[130px]" />
-        <PhoneMock variant={1} className="relative z-20 -mx-3 mb-16 w-[112px] sm:-mx-4 sm:w-[150px]" />
-        <PhoneMock variant={2} className="relative z-10 mb-8 w-[96px] rotate-6 sm:w-[130px]" />
+        <PhoneMock variant={0} className="relative z-10 mb-10 w-[130px] -rotate-6" />
+        <PhoneMock variant={1} className="relative z-20 -mx-4 mb-16 w-[150px]" />
+        <PhoneMock variant={2} className="relative z-10 mb-8 w-[130px] rotate-6" />
       </Reveal>
     </Container>
   </section>
 )
 
 /* ------------------------------------------------------------------ */
-/* Tariflar (haqiqiy API)                                             */
+/* Tariflar — bosh sahifadagi bilan bir xil kartalar (haqiqiy API)    */
 /* ------------------------------------------------------------------ */
 
-const formatMoney = (value) =>
-  Math.round(Number(value) || 0)
-    .toLocaleString('ru-RU')
-    .replace(/,/g, ' ')
-
-export const PricingSection = ({ c, lang }) => {
+export const PricingSection = ({ c }) => {
   const pr = c.pricing
-  const { data, isLoading } = useGetQuery({ key: 'landing-plans', url: URLS.paymentPlans })
-  const plans = Array.isArray(data?.data) ? data.data : []
-  // Kategoriyasi bor ("Popular") yoki o'rtadagi tarif ajratib ko'rsatiladi
-  const highlightId =
-    plans.find((plan) => /popular|попул/i.test(plan.category?.title_uz || plan.category?.title_ru || ''))?.id ||
-    plans[Math.floor(plans.length / 2)]?.id
-
   return (
-    <section id="pricing" className="scroll-mt-20 bg-gradient-to-b from-[#F5F8FF] to-white py-16 md:py-24">
+    <section id="pricing" className="scroll-mt-20 bg-gradient-to-b from-[#F5F8FF] to-white pt-16 md:pt-24">
       <Container>
         <Reveal className="text-center">
           <SectionTag>{pr.tag}</SectionTag>
-          <SectionTitle className="mt-4">{pr.title}</SectionTitle>
-          <p className="mt-2 text-[17px] text-[#475569]">{pr.subtitle}</p>
+          <SectionTitle className="mt-4">
+            {pr.title}{' '}
+            <span className="bg-gradient-to-r from-[#1D6BFF] to-[#3B8BFF] bg-clip-text text-transparent">
+              {pr.accent}
+            </span>
+          </SectionTitle>
+          <p className="mx-auto mt-3 max-w-2xl text-[17px] text-[#475569]">{pr.subtitle}</p>
         </Reveal>
-
-        {isLoading ? (
-          <p className="mt-10 text-center text-[#64748B]">{pr.loading}</p>
-        ) : !plans.length ? (
-          <div className="mt-10 text-center">
-            <p className="text-[#64748B]">{pr.empty}</p>
-            <PrimaryButton onClick={scrollToId('lead')} className="mt-4">
-              {c.cta.button}
-            </PrimaryButton>
-          </div>
-        ) : (
-          <div className="mx-auto mt-12 grid max-w-[1000px] grid-cols-1 gap-5 md:grid-cols-3">
-            {plans.map((plan, index) => {
-              const highlighted = plan.id === highlightId
-              const name = (lang === 'ru' ? plan.name_ru : plan.name_uz) || plan.name_uz
-              const badge = plan.category ? (lang === 'ru' ? plan.category.title_ru : plan.category.title_uz) : null
-              const period = lang === 'ru' ? `${plan.months} мес.` : plan.months_display
-              const hasDiscount = Number(plan.discount_percent) > 0
-              return (
-                <Reveal key={plan.id} delay={index * 100}>
-                  <div
-                    className={`relative flex h-full flex-col rounded-3xl bg-white p-6 transition duration-300 hover:-translate-y-1 ${
-                      highlighted
-                        ? 'shadow-[0_30px_60px_-30px_rgba(37,99,235,0.7)] ring-2 ring-[#2563EB]'
-                        : 'shadow-[0_20px_50px_-35px_rgba(15,23,42,0.45)] ring-1 ring-[#E3EAF6]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <p className={`text-base font-bold ${highlighted ? 'text-[#2563EB]' : 'text-[#0B1B3F]'}`}>
-                        {name}
-                      </p>
-                      {highlighted ? (
-                        <span className="rounded-full bg-[#2563EB] px-3 py-1 text-[11px] font-bold text-white">
-                          {pr.popular}
-                        </span>
-                      ) : badge ? (
-                        <span className="rounded-full bg-[#EEF3FF] px-3 py-1 text-[11px] font-bold text-[#2563EB]">
-                          {badge}
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="mt-4 flex flex-wrap items-baseline gap-x-2">
-                      <span className="text-[32px] font-extrabold tracking-tight text-[#0B1B3F]">
-                        {formatMoney(plan.sale_price)}
-                      </span>
-                      <span className="text-sm font-semibold text-[#64748B]">
-                        {pr.currency} / {period}
-                      </span>
-                    </div>
-                    {hasDiscount ? (
-                      <p className="mt-1 flex items-center gap-2 text-sm">
-                        <span className="text-[#94A3B8] line-through">
-                          {formatMoney(plan.price_per_month)} {pr.currency}
-                        </span>
-                        <span className="rounded-md bg-[#DCFCE7] px-1.5 text-xs font-bold text-[#16A34A]">
-                          {pr.discount.replace('{{n}}', plan.discount_percent)}
-                        </span>
-                      </p>
-                    ) : (
-                      <p className="mt-1 h-5" />
-                    )}
-
-                    <ul className="mt-5 flex-1 space-y-2.5 border-t border-[#EEF2F8] pt-5">
-                      {(plan.benefits || []).map((benefit) => (
-                        <li
-                          key={benefit.id}
-                          className={`flex items-center gap-2 text-sm ${
-                            benefit.is_selected ? 'text-[#334155]' : 'text-[#CBD5E1] line-through'
-                          }`}
-                        >
-                          {benefit.is_selected ? (
-                            <Check size={16} strokeWidth={3} className="shrink-0 text-[#16A34A]" />
-                          ) : (
-                            <X size={16} className="shrink-0" />
-                          )}
-                          {(lang === 'ru' ? benefit.title_ru : benefit.title_uz) || benefit.title_uz}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <button
-                      type="button"
-                      onClick={scrollToId('lead')}
-                      className={`mt-6 h-11 w-full rounded-xl text-sm font-semibold transition ${
-                        highlighted
-                          ? 'bg-[#2563EB] text-white shadow-[0_12px_24px_-12px_rgba(37,99,235,0.9)] hover:bg-[#1D4ED8]'
-                          : 'border border-[#D6E2FF] text-[#0B1B3F] hover:border-[#2563EB] hover:text-[#2563EB]'
-                      }`}
-                    >
-                      {pr.choose}
-                    </button>
-                  </div>
-                </Reveal>
-              )
-            })}
-          </div>
-        )}
       </Container>
+      <PricingContent />
     </section>
   )
 }
@@ -480,7 +410,7 @@ export const SiteFooter = ({ c }) => (
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2">
             <img src={LOGO} alt="IQMath" className="h-8 w-8 object-contain" />
-            <span className="text-xl font-extrabold text-[#0B1B3F]">IQMath</span>
+            <span className="text-xl font-extrabold text-[#0B1B3F]">MATH</span>
           </div>
           <p className="mt-3 max-w-xs text-sm text-[#64748B]">{c.footer.tagline}</p>
         </div>

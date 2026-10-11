@@ -35,6 +35,8 @@ export const URLS = {
   downloadCertificate: '/api/v1/func_student/certificate/download/',
   // Student list endpoints
   studentList: '/api/v1/auth/student/student_list/',
+  // Oylik hisobot (PPTX): ?year=&month=
+  monthlyUsersReport: '/api/v1/auth/student/monthly-report/',
   studentWeeklyStudyStats: '/api/v1/func_student/student/weklystudystats/app',
   studentStudyStatsByDate: '/api/v1/func_student/student/studystats-by-date/app',
   beginTest: '/api/v1/func_student/my-generate-test/',

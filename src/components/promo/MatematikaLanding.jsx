@@ -47,13 +47,14 @@ const MatematikaLanding = ({ lang: routeLang }) => {
 
       <main>
         <Hero c={c} onVideo={() => setVideoOpen(true)} />
-        <ResultsSection c={c} />
+        {/* Bo'limlar yuqori menyu tartibida: Platforma → Qanday ishlaydi → Fanlar → Natijalar → Tariflar → Ilova → Savollar */}
+        <PlatformSection c={c} />
         <HowSection c={c} />
         <SubjectsSection c={c} />
-        <PlatformSection c={c} />
+        <ResultsSection c={c} />
         <MotivationSection c={c} />
+        <PricingSection c={c} />
         <AppSection c={c} />
-        <PricingSection c={c} lang={lang} />
         <FaqSection c={c} />
 
         {/* Ariza formasi */}

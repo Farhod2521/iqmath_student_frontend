@@ -35,11 +35,35 @@ export const scrollToId = (id) => (event) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-/** Ekranga chiqqanda 0 dan qiymatgacha sanaydigan raqam */
+/**
+ * Ekranga chiqqanda 0 dan qiymatgacha sanaydigan raqam. Qiymat keyinroq
+ * o'zgarsa (masalan, bazadan kelsa) — joriy raqamdan yangisiga silliq o'tadi.
+ */
 export const Counter = ({ target, suffix = '' }) => {
   const ref = useRef(null)
   const [value, setValue] = useState(0)
   const started = useRef(false)
+  const valueRef = useRef(0)
+  const targetRef = useRef(target)
+  const frame = useRef(null)
+
+  const animate = (from, to) => {
+    cancelAnimationFrame(frame.current)
+    const start = performance.now()
+    const tick = (now) => {
+      const p = Math.min((now - start) / 1400, 1)
+      const next = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)))
+      valueRef.current = next
+      setValue(next)
+      if (p < 1) frame.current = requestAnimationFrame(tick)
+    }
+    frame.current = requestAnimationFrame(tick)
+  }
+
+  useEffect(() => {
+    targetRef.current = target
+    if (started.current) animate(valueRef.current, target)
+  }, [target])
 
   useEffect(() => {
     const node = ref.current
@@ -49,20 +73,17 @@ export const Counter = ({ target, suffix = '' }) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting || started.current) return
           started.current = true
-          const start = performance.now()
-          const tick = (now) => {
-            const p = Math.min((now - start) / 1400, 1)
-            setValue(Math.round(target * (1 - Math.pow(1 - p, 3))))
-            if (p < 1) requestAnimationFrame(tick)
-          }
-          requestAnimationFrame(tick)
+          animate(0, targetRef.current)
         })
       },
       { threshold: 0.4 }
     )
     io.observe(node)
-    return () => io.disconnect()
-  }, [target])
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(frame.current)
+    }
+  }, [])
 
   return (
     <span ref={ref}>

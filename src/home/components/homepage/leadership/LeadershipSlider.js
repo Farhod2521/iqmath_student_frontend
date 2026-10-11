@@ -1,6 +1,5 @@
-import { useEffect, useState, useMemo } from 'react'
-import Image from 'next/image'
-import { ChevronLeft, ChevronRight, Award, X, Calendar } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { request } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
@@ -17,228 +16,238 @@ const leadershipApi = {
   }
 }
 
-const CircleImage = ({ src, alt, size = 160, className = '' }) => {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-full bg-white/60 ring-4 ring-blue-100 shadow-lg ${className}`}
-      style={{ width: size, height: size }}
-    >
-      <Image src={src} alt={alt} fill sizes={`${size}px`} className="object-cover" unoptimized />
-    </div>
-  )
-}
+// API'da kasb maydoni yo'q — ma'lum olimlar uchun nomiga qarab ko'rsatiladi
+const PROFESSIONS = [
+  { match: /beruni|бируни/i, uz: 'Astronom · Matematik · Geograf', ru: 'Астроном · Математик · Географ' },
+  { match: /xorazm|хорезм/i, uz: 'Matematik · Astronom · Geograf', ru: 'Математик · Астроном · Географ' },
+  { match: /pifagor|пифагор/i, uz: 'Faylasuf · Matematik', ru: 'Философ · Математик' },
+  { match: /arximed|архимед/i, uz: 'Matematik · Fizik · Muhandis', ru: 'Математик · Физик · Инженер' },
+  { match: /nyuton|ньютон/i, uz: 'Fizik · Matematik · Astronom', ru: 'Физик · Математик · Астроном' },
+  { match: /eyler|эйлер/i, uz: 'Matematik · Fizik', ru: 'Математик · Физик' },
+  { match: /gauss|гаусс/i, uz: 'Matematik · Fizik · Astronom', ru: 'Математик · Физик · Астроном' },
+  { match: /ulug.?bek|улугбек/i, uz: 'Astronom · Matematik', ru: 'Астроном · Математик' }
+]
+
+const AUTOPLAY_MS = 6000
 
 const LeadershipSlider = () => {
   const { t, i18n } = useTranslation()
-  const [scientists, setScientists] = useState([])
-  const [selectedScientist, setSelectedScientist] = useState(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const lang = i18n.language === 'ru' ? 'ru' : 'uz'
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [selected, setSelected] = useState(null)
 
   const { data } = useQuery({
     queryKey: ['data-leadership'],
     queryFn: leadershipApi.getAll,
     refetchOnWindowFocus: false
   })
-
-  useEffect(() => {
-    if (data?.length) setScientists(data)
-  }, [data])
+  const scientists = Array.isArray(data) ? data : []
+  const count = scientists.length
 
   const { data: detailData } = useQuery({
-    queryKey: ['data-leadership-detail', selectedScientist?.id],
-    queryFn: () => (selectedScientist ? leadershipApi.getDetail(selectedScientist.id) : null),
-    enabled: !!selectedScientist,
+    queryKey: ['data-leadership-detail', selected?.id],
+    queryFn: () => leadershipApi.getDetail(selected.id),
+    enabled: !!selected,
     refetchOnWindowFocus: false
   })
 
+  // Avtomatik aylanish (sichqoncha ustida yoki oyna ochiq bo'lsa to'xtaydi)
   useEffect(() => {
-    if (!scientists?.length) return
-    const timer = setInterval(() => changeSlide((currentIndex + 1) % scientists.length), 6000)
-    return () => clearInterval(timer)
-  }, [scientists, currentIndex])
+    if (count < 2 || paused || selected) return undefined
+    const timer = setTimeout(() => setIndex((i) => (i + 1) % count), AUTOPLAY_MS)
+    return () => clearTimeout(timer)
+  }, [count, index, paused, selected])
 
-  const changeSlide = (nextIndex) => {
-    setIsAnimating(true)
-    setTimeout(() => {
-      setCurrentIndex(nextIndex)
-      setIsAnimating(false)
-    }, 260)
+  if (!count) {
+    return <div className="mx-auto h-[330px] max-w-[880px] animate-pulse rounded-[28px] bg-[#EEF2F8]" />
   }
 
-  const handlePrev = () => changeSlide((currentIndex - 1 + scientists.length) % scientists.length)
-  const handleNext = () => changeSlide((currentIndex + 1) % scientists.length)
+  const at = (offset) => scientists[(index + offset + count) % count]
+  const title = (s) => (lang === 'ru' ? s?.title_ru || s?.title_uz : s?.title_uz) || ''
+  const subtitle = (s) => (lang === 'ru' ? s?.subtitle_ru || s?.subtitle_uz : s?.subtitle_uz) || ''
+  const years = (s) => (lang === 'ru' ? s?.life_years_ru || s?.life_years_uz : s?.life_years_uz) || ''
+  const profession = (s) => PROFESSIONS.find((p) => p.match.test(`${s?.title_uz} ${s?.title_ru}`))?.[lang]
 
-  const current = scientists[currentIndex]
+  const go = (next) => setIndex((next + count) % count)
+  const current = at(0)
 
-  const getTitle = (obj) => (i18n.language === 'ru' ? obj?.title_ru : obj?.title_uz)
-  const getSubtitle = (obj) => (i18n.language === 'ru' ? obj?.subtitle_ru : obj?.subtitle_uz)
-  const getYears = (obj) => (i18n.language === 'ru' ? obj?.life_years_ru : obj?.life_years_uz)
+  /** Yon tomondagi xira karta (bosilsa o'sha olimga o'tadi) */
+  const SideCard = ({ scientist, side }) => (
+    <button
+      type="button"
+      onClick={() => go(index + (side === 'left' ? -1 : 1))}
+      className={`absolute top-1/2 hidden w-[360px] items-center gap-5 rounded-[26px] border border-[#EEF1F6] bg-white/80 p-4 text-left opacity-60 shadow-[0_20px_50px_-40px_rgba(15,23,42,0.5)] transition hover:opacity-80 lg:flex xl:w-[440px] ${
+        side === 'left'
+          ? 'right-[calc(50%+370px)] [transform:translateY(-50%)_perspective(900px)_rotateY(10deg)]'
+          : 'left-[calc(50%+370px)] [transform:translateY(-50%)_perspective(900px)_rotateY(-10deg)]'
+      }`}
+    >
+      <img
+        src={scientist.image}
+        alt={title(scientist)}
+        loading="lazy"
+        className="h-[220px] w-[140px] shrink-0 rounded-[18px] xl:h-[250px] xl:w-[160px] object-cover object-top grayscale-[35%]"
+      />
+      <span className="min-w-0">
+        <span className="block text-[20px] font-extrabold leading-tight text-[#334155] xl:text-[24px]">{title(scientist)}</span>
+        <span className="mt-1 flex items-center gap-1.5 text-[14px] text-[#64748B]">
+          <CalendarDays size={15} />
+          {years(scientist)}
+        </span>
+        <span className="mt-3 line-clamp-3 block text-[14px] leading-relaxed text-[#64748B]">{subtitle(scientist)}</span>
+        <span className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#93B4FA] px-4 py-2.5 text-[13px] font-semibold text-white">
+          {t('leadership.more')}
+          <ArrowRight size={15} />
+        </span>
+      </span>
+    </button>
+  )
+
+  const NavButton = ({ direction }) => (
+    <button
+      type="button"
+      onClick={() => go(index + (direction === 'prev' ? -1 : 1))}
+      aria-label={direction === 'prev' ? 'Previous' : 'Next'}
+      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#0B1B3F] shadow-[0_10px_28px_-10px_rgba(15,23,42,0.35)] transition hover:bg-[#1D6BFF] hover:text-white sm:h-14 sm:w-14"
+    >
+      {direction === 'prev' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+    </button>
+  )
 
   return (
-    <div className="relative max-w-5xl mx-auto">
-      {/* Main Card */}
-      {current && (
-        <div className="relative overflow-hidden bg-white border border-gray-100 shadow-[0_30px_70px_rgba(0,0,0,0.10)] rounded-3xl">
-          <div className="absolute inset-0 pointer-events-none opacity-60 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div className="relative flex items-center justify-center lg:min-h-[360px]">
+        {count > 2 ? <SideCard scientist={at(-1)} side="left" /> : null}
+        {count > 1 ? <SideCard scientist={at(1)} side="right" /> : null}
 
-          <div className="relative p-5 sm:p-6 md:p-10">
-            <div className="flex flex-col items-center gap-6 md:flex-row">
-              {/* Image */}
-              <div
-                className={`transition-all duration-500 ease-out ${isAnimating ? 'opacity-0 scale-[0.96]' : 'opacity-100 scale-100'}`}
-              >
-                <CircleImage
-                  src={current.image}
-                  alt={getTitle(current) || 'Scientist'}
-                  className="w-[160px] h-[160px] sm:w-[190px] sm:h-[190px] lg:w-[210px] lg:h-[210px]"
-                />
-              </div>
+        {/* Strelkalar (kompyuterda yon kartalar ustida) */}
+        <div className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 lg:block xl:left-[2%]">
+          <NavButton direction="prev" />
+        </div>
+        <div className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 lg:block xl:right-[2%]">
+          <NavButton direction="next" />
+        </div>
 
-              {/* Content */}
-              <div className="flex-1 min-w-0 text-center md:text-left">
-                <div
-                  className={`transition-all duration-500 ease-out ${isAnimating ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'}`}
-                >
-                  {/* <div className="inline-flex items-center gap-2 px-4 py-2 mb-3 text-xs font-semibold text-blue-700 border border-blue-100 rounded-full bg-blue-50">
-                    <Award className="w-4 h-4" />
-                    {getSubtitle(current)}
-                  </div> */}
-
-                  <h2 className="mb-4 text-2xl font-black tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                    {getTitle(current)}
-                  </h2>
-
-                  <p className="mb-5 text-sm font-semibold text-gray-600 sm:text-base md:text-lg">
-                    {getSubtitle(current)}
-                  </p>
-
-                  <div className="flex items-center justify-center gap-2 mb-4 text-gray-600 md:justify-start">
-                    <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full">
-                      <Calendar className="w-4 h-4" />
-                    </span>
-                    <span className="text-sm font-semibold sm:text-base">{getYears(current)}</span>
-                  </div>
-
-                  <div className="flex flex-col justify-center gap-2 sm:flex-row sm:items-center sm:gap-3 md:justify-start">
-                    <button
-                      onClick={() => setSelectedScientist(current)}
-                      className="px-6 py-2.5 text-sm font-semibold text-white transition rounded-[8px] bg-[#5D87FF] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      {t('leadership.more')}
-                    </button>
-
-                    <button
-                      onClick={handleNext}
-                      className="px-6 py-2.5 text-sm font-semibold text-gray-900 transition rounded-xl bg-gray-100 hover:bg-gray-200 active:scale-[0.98] sm:hidden"
-                    >
-                      {t('leadership.next') || 'Next'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Indicators */}
-            <div className="flex flex-wrap justify-center gap-2 mt-6 sm:gap-3">
-              {scientists?.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => changeSlide(i)}
-                  className={`h-9 px-3 rounded-full text-xs sm:text-sm font-semibold transition border ${
-                    i === currentIndex
-                      ? 'bg-[#5D87FF] text-white border-[#5D87FF] shadow-md scale-[1.03]'
-                      : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
+        {/* Markaziy karta */}
+        <div
+          key={current.id}
+          className="relative z-10 grid w-full max-w-[780px] animate-[leaderFade_.45s_ease-out] grid-cols-1 gap-6 rounded-[28px] border border-[#E6EBF5] bg-gradient-to-br from-white via-white to-[#F6F2FF] p-4 shadow-[0_34px_70px_-40px_rgba(37,99,235,0.45)] sm:p-5 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:items-center md:gap-8"
+        >
+          <img
+            src={current.image}
+            alt={title(current)}
+            className="h-[280px] w-full rounded-[20px] object-cover object-top sm:h-[320px]"
+          />
+          <div className="px-1 pb-2 md:px-0 md:pb-0 md:pr-4">
+            {profession(current) ? (
+              <span className="inline-flex rounded-full bg-[#EEF2FF] px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-[#475569]">
+                {profession(current)}
+              </span>
+            ) : null}
+            <h3 className="mt-3 text-[28px] font-extrabold leading-tight text-[#0B1B3F] sm:text-[34px]">
+              {title(current)}
+            </h3>
+            <p className="mt-3 flex items-center gap-2.5 text-[16px] font-medium text-[#0B1B3F]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F1F4F9]">
+                <CalendarDays size={16} />
+              </span>
+              {years(current)}
+            </p>
+            <p className="mt-4 text-[16px] leading-relaxed text-[#334155]">{subtitle(current)}</p>
+            <button
+              type="button"
+              onClick={() => setSelected(current)}
+              className="mt-6 inline-flex h-12 items-center gap-2.5 rounded-xl bg-[#1D6BFF] px-5 text-[15px] font-semibold text-white shadow-[0_14px_26px_-14px_rgba(29,107,255,0.9)] transition hover:bg-[#1557D6]"
+            >
+              {t('leadership.more')}
+              <ArrowRight size={17} />
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Navigation Buttons (desktop) */}
-      <button
-        onClick={handlePrev}
-        className="hidden lg:flex absolute left-2 xl:left-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-[#5D87FF] hover:text-white hover:border-[#5D87FF] transition"
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
+      {/* Sahifalash: telefonda strelkalar ham shu yerda */}
+      <div className="mt-7 flex items-center justify-center gap-3">
+        <div className="lg:hidden">
+          <NavButton direction="prev" />
+        </div>
+        <div className="flex flex-wrap justify-center gap-2.5">
+          {scientists.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => go(i)}
+              aria-label={title(s)}
+              className={`flex h-10 w-10 items-center justify-center rounded-full text-[15px] font-semibold transition sm:h-11 sm:w-11 ${
+                i === index
+                  ? 'bg-[#1D6BFF] text-white shadow-[0_10px_22px_-10px_rgba(29,107,255,0.9)]'
+                  : 'border border-[#E6EBF5] bg-white text-[#0B1B3F] hover:border-[#BFD3FF]'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        <div className="lg:hidden">
+          <NavButton direction="next" />
+        </div>
+      </div>
 
-      <button
-        onClick={handleNext}
-        className="hidden lg:flex absolute right-2 xl:right-[-52px] top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-white border border-gray-200 rounded-full shadow-lg hover:bg-[#5D87FF] hover:text-white hover:border-[#5D87FF] transition"
-        aria-label="Next"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
-
-      {/* Modal */}
-      {selectedScientist && detailData && (
+      {/* Batafsil ma'lumot oynasi */}
+      {selected && detailData ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          onClick={() => setSelectedScientist(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1B3F]/50 p-4 backdrop-blur-sm"
+          onClick={() => setSelected(null)}
         >
           <MathJaxContext config={mathJaxConfig}>
             <div
-              className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+              className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[28px] bg-white shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 md:text-2xl">{t('leadership.modalTitle')}</h2>
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#EEF1F6] bg-white px-6 py-4">
+                <h2 className="text-xl font-bold text-[#0B1B3F] md:text-2xl">{t('leadership.modalTitle')}</h2>
                 <button
-                  onClick={() => setSelectedScientist(null)}
-                  className="p-2 transition rounded-full hover:bg-gray-100"
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  className="rounded-full p-2 transition hover:bg-[#F1F4F9]"
                 >
-                  <X className="w-5 h-5 text-gray-600 md:w-6 md:h-6" />
+                  <X className="h-5 w-5 text-[#475569] md:h-6 md:w-6" />
                 </button>
               </div>
-              {/* Modal Content */}
               <div className="p-6">
-                <div className="flex flex-col gap-6 mb-6 md:flex-row">
-                  <div className="flex justify-center sm:w-2/5">
-                    <CircleImage
-                      src={detailData.image}
-                      alt={getTitle(detailData) || 'Scientist'}
-                      size={200}
-                      className="sm:!w-[220px] sm:!h-[220px]"
-                    />
-                  </div>
-                  <div className="space-y-4 md:w-3/5">
-                    <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-                      {i18n.language === 'ru' ? detailData.title_ru : detailData.title_uz}
-                    </h3>
-                    <p className="text-lg text-blue-600 md:text-xl">
-                      {i18n.language === 'ru' ? detailData.subtitle_ru : detailData.subtitle_uz}
-                    </p>
-                    <div className="p-4 bg-gray-50 rounded-xl">
-                      <p className="mb-1 text-sm text-gray-500">{t('leadership.periodLabel')}</p>
-                      <p className="text-xl font-bold text-gray-900 md:text-2xl">
-                        {i18n.language === 'ru' ? detailData.life_years_ru : detailData.life_years_uz}
-                      </p>
+                <div className="mb-6 flex flex-col gap-6 md:flex-row">
+                  <img
+                    src={detailData.image}
+                    alt={title(detailData)}
+                    className="mx-auto h-[280px] w-full max-w-[240px] rounded-[20px] object-cover object-top md:mx-0"
+                  />
+                  <div className="flex-1 space-y-3">
+                    {profession(detailData) ? (
+                      <span className="inline-flex rounded-full bg-[#EEF2FF] px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-[#475569]">
+                        {profession(detailData)}
+                      </span>
+                    ) : null}
+                    <h3 className="text-2xl font-extrabold text-[#0B1B3F] md:text-3xl">{title(detailData)}</h3>
+                    <p className="text-[16px] leading-relaxed text-[#334155]">{subtitle(detailData)}</p>
+                    <div className="rounded-2xl bg-[#F5F8FF] p-4">
+                      <p className="mb-1 text-sm text-[#64748B]">{t('leadership.periodLabel')}</p>
+                      <p className="text-xl font-bold text-[#0B1B3F]">{years(detailData)}</p>
                     </div>
                   </div>
                 </div>
-                {/* Description */}
-                <div>
-                  <h4 className="flex items-center gap-2 mb-4 text-xl font-bold text-gray-900">
-                    <span className="w-1 h-6 bg-blue-500 rounded"></span> {t('leadership.bioTitle')}
-                  </h4>
-
-                  <MathJax dynamic className="leading-relaxed text-gray-700">
-                    {i18n.language === 'ru' ? detailData.description_ru : detailData.description_uz}
-                  </MathJax>
-                </div>
+                <h4 className="mb-3 flex items-center gap-2 text-xl font-bold text-[#0B1B3F]">
+                  <span className="h-6 w-1 rounded bg-[#1D6BFF]" /> {t('leadership.bioTitle')}
+                </h4>
+                <MathJax dynamic className="leading-relaxed text-[#334155]">
+                  {lang === 'ru' ? detailData.description_ru : detailData.description_uz}
+                </MathJax>
               </div>
-              {/* Modal Footer */}
-              <div className="sticky bottom-0 p-6 border-t border-gray-200 bg-gray-50">
+              <div className="sticky bottom-0 border-t border-[#EEF1F6] bg-white p-5">
                 <button
-                  onClick={() => setSelectedScientist(null)}
-                  className="w-full py-3 font-semibold text-white transition bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  className="h-12 w-full rounded-xl bg-[#1D6BFF] font-semibold text-white transition hover:bg-[#1557D6]"
                 >
                   {t('leadership.close')}
                 </button>
@@ -246,7 +255,20 @@ const LeadershipSlider = () => {
             </div>
           </MathJaxContext>
         </div>
-      )}
+      ) : null}
+
+      <style jsx global>{`
+        @keyframes leaderFade {
+          from {
+            opacity: 0;
+            transform: translateY(8px) scale(0.985);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      `}</style>
     </div>
   )
 }

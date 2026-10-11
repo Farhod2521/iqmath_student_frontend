@@ -1,64 +1,53 @@
 import React from 'react'
+import { Crown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import LeadershipSlider from './LeadershipSlider'
-import { Container, Grid, Typography } from '@mui/material'
 
+const TEXTS = {
+  uz: {
+    badge: 'Buyuk olimlar',
+    title: 'Matematika tarixidagi',
+    accent: 'ulug‘ shaxslar',
+    subtitle: 'O‘rta Osiyo va dunyo matematikasiga katta hissa qo‘shgan buyuk olimlar bilan tanishing.'
+  },
+  ru: {
+    badge: 'Великие учёные',
+    title: 'Великие личности',
+    accent: 'в истории математики',
+    subtitle: 'Познакомьтесь с великими учёными, внёсшими огромный вклад в математику Средней Азии и мира.'
+  }
+}
+
+/** Bosh sahifa: "Matematika tarixidagi ulug' shaxslar" */
 const Leadership = () => {
-  const { t } = useTranslation()
+  const { i18n } = useTranslation()
+  const text = TEXTS[i18n.language === 'ru' ? 'ru' : 'uz']
 
   return (
-    <section className="relative py-12 sm:py-20  overflow-hidden bg-gray-50">
-      {/* Background blur blobs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full bg-blue-200/40 blur-3xl" />
-        <div className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full bg-purple-200/40 blur-3xl" />
-      </div>
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#F8FAFE] via-white to-[#F8FAFE] py-14 md:py-20">
+      <span className="pointer-events-none absolute -left-40 top-20 h-[420px] w-[420px] rounded-full bg-[#EEF3FF]/70 blur-3xl" />
+      <span className="pointer-events-none absolute -right-40 bottom-0 h-[420px] w-[420px] rounded-full bg-[#F3EEFF]/70 blur-3xl" />
 
-      <Container
-        sx={{
-          maxWidth: '1400px !important',
-          position: 'relative',
-          py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' }
-        }}
-      >
-        <div className="relative mx-auto max-w-7xl">
-          {/* Header */}
-
-          <div className="flex justify-center ">
-            <Grid size={{ xs: 12, lg: 7 }}>
-              <Typography
-                textAlign="center"
-                variant="h4"
-                lineHeight={1.4}
-                mb={1}
-                fontWeight={700}
-                sx={{
-                  fontSize: { xs: '24px', sm: '34px', md: '42px' }
-                }}
-              >
-                {t('leadership.title')}
-              </Typography>
-              <Typography
-                textAlign="center"
-                variant="body1"
-                mb={2}
-                sx={{
-                  mx: 'auto',
-                  fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                  color: 'text.secondary'
-                }}
-              >
-                {t('leadership.subtitle')}
-              </Typography>
-            </Grid>
-          </div>
-
-          {/* Slider */}
-          <div className="relative">
-            <LeadershipSlider />
-          </div>
+      <div className="relative mx-auto max-w-[1440px] px-4">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#E8F0FF] px-4 py-1.5 text-[13px] font-bold uppercase tracking-wide text-[#1E4FD8]">
+            <Crown size={16} className="fill-[#FBBF24] text-[#D97706]" />
+            {text.badge}
+          </span>
+          <h2 className="mt-5 text-[32px] font-extrabold leading-[1.08] tracking-tight text-[#0B1B3F] sm:text-[44px] lg:text-[56px]">
+            {text.title}
+            <br />
+            <span className="text-[#1D6BFF]">{text.accent}</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-[680px] text-[16px] leading-relaxed text-[#475569] sm:text-[19px]">
+            {text.subtitle}
+          </p>
         </div>
-      </Container>
+
+        <div className="mt-8 md:mt-10">
+          <LeadershipSlider />
+        </div>
+      </div>
     </section>
   )
 }

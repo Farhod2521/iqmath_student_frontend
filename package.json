@@ -42,6 +42,7 @@
     "brainly-style-guide": "^208.1.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "docx": "^9.9.0",
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
     "framer-motion": "^12.10.4",

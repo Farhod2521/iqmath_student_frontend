@@ -19,6 +19,7 @@ export const CONTENT = {
       { id: 'subjects', label: 'Fanlar' },
       { id: 'results', label: 'Natijalar' },
       { id: 'pricing', label: 'Tariflar' },
+      { id: 'app', label: 'Ilova' },
       { id: 'faq', label: 'Savollar' }
     ],
     telegram: "Telegram orqali bog'lanish",
@@ -32,10 +33,11 @@ export const CONTENT = {
       checks: ["Ro'yxatdan oson o'tish", 'Dastlabki darslar bepul', 'Barcha qurilmalarda']
     },
     stats: [
-      { value: 10000, suffix: '+', label: "O'quvchilar" },
-      { value: 500, suffix: '+', label: 'Video darslar' },
+      // students / lessons — bazadan (landing-stats API), qolganlari sobit
+      { key: 'students', value: 0, suffix: '+', label: "O'quvchilar" },
+      { key: 'lessons', value: 0, suffix: '+', label: 'Video darslar' },
       { value: 98, suffix: '%', label: 'Mamnunlik' },
-      { value: 10, suffix: '+', label: 'Yillik tajriba' }
+      { value: 3, suffix: '+', label: 'Yillik tajriba' }
     ],
     results: {
       tag: 'OTA-ONALAR UCHUN',
@@ -102,13 +104,16 @@ export const CONTENT = {
       tag: 'HAR QAYERDA SIZ BILAN',
       title: "Mobil ilova orqali istalgan joyda o'rganing",
       text: 'IQMath mobil ilovasi bilan darslarni telefoningizda ham davom ettiring. Barcha imkoniyatlar siz bilan doimo va har joyda.',
-      google: ['Google Play', 'yuklab oling'],
-      apple: ['App Store', 'yuklab oling']
+      google: ["Google Play'dan", 'Yuklab oling'],
+      apple: ["App Store'dan", 'Yuklab oling'],
+      qrHint: 'QR kodni skaner qilib, ilovani oling',
+      points: ['Darslar va testlar telefoningizda', 'Kunlik eslatmalar va seriyalar', 'Ota-ona nazorati ilovada ham']
     },
     pricing: {
       tag: 'TARIFLAR',
-      title: 'Sizga mos paketni tanlang',
-      subtitle: "Sifatli ta'lim — barcha uchun",
+      title: "O'quvchilaringizga mos",
+      accent: 'tariflarni tanlang',
+      subtitle: "IQmath platformasidagi eng mos tarifni tanlab, matematikani tez va samarali o'rganing",
       popular: 'Eng ommabop',
       currency: "so'm",
       perMonth: 'oyiga',
@@ -187,6 +192,7 @@ export const CONTENT = {
       { id: 'subjects', label: 'Предметы' },
       { id: 'results', label: 'Результаты' },
       { id: 'pricing', label: 'Тарифы' },
+      { id: 'app', label: 'Приложение' },
       { id: 'faq', label: 'Вопросы' }
     ],
     telegram: 'Связаться в Telegram',
@@ -200,10 +206,10 @@ export const CONTENT = {
       checks: ['Простая регистрация', 'Первые уроки бесплатно', 'На всех устройствах']
     },
     stats: [
-      { value: 10000, suffix: '+', label: 'Учеников' },
-      { value: 500, suffix: '+', label: 'Видеоуроков' },
+      { key: 'students', value: 0, suffix: '+', label: 'Учеников' },
+      { key: 'lessons', value: 0, suffix: '+', label: 'Видеоуроков' },
       { value: 98, suffix: '%', label: 'Довольны' },
-      { value: 10, suffix: '+', label: 'Лет опыта' }
+      { value: 3, suffix: '+', label: 'Лет опыта' }
     ],
     results: {
       tag: 'ДЛЯ РОДИТЕЛЕЙ',
@@ -270,13 +276,16 @@ export const CONTENT = {
       tag: 'ВСЕГДА С ВАМИ',
       title: 'Учитесь где угодно с мобильным приложением',
       text: 'Продолжайте уроки на телефоне в приложении IQMath. Все возможности всегда под рукой.',
-      google: ['Google Play', 'скачать'],
-      apple: ['App Store', 'скачать']
+      google: ['Google Play', 'Скачать'],
+      apple: ['App Store', 'Скачать'],
+      qrHint: 'Отсканируйте QR-код и установите приложение',
+      points: ['Уроки и тесты в вашем телефоне', 'Ежедневные напоминания и серии', 'Родительский контроль в приложении']
     },
     pricing: {
       tag: 'ТАРИФЫ',
-      title: 'Выберите подходящий тариф',
-      subtitle: 'Качественное образование — для всех',
+      title: 'Выберите тарифы',
+      accent: 'для ваших учеников',
+      subtitle: 'Выберите оптимальный тариф IQmath и изучайте математику быстро и эффективно',
       popular: 'Популярный',
       currency: 'сум',
       perMonth: 'в месяц',

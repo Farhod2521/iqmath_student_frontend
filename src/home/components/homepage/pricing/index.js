@@ -1,61 +1,52 @@
 import React from 'react'
-import { Box, Typography, Container } from '@mui/material'
-import Grid from '@mui/material/Grid2'
-import PricingContent from '@/pages/prices/components/PricingContent'
+import { Tag } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import PricingContent from '@/pages/prices/components/PricingContent'
 
+const TEXTS = {
+  uz: {
+    badge: 'Maxsus taklif – bilim olishni bugunoq boshlang!',
+    title: 'O‘quvchilaringizga mos',
+    accent: 'tariflarni tanlang'
+  },
+  ru: {
+    badge: 'Специальное предложение – начните учиться уже сегодня!',
+    title: 'Выберите тарифы',
+    accent: 'для ваших учеников'
+  }
+}
+
+/** Bosh sahifadagi "Tariflar" bo'limi: sarlavha + tarif kartalari */
 const Pricing = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const text = TEXTS[i18n.language === 'ru' ? 'ru' : 'uz']
 
   return (
-    <Box
-      id="prices"
-      sx={{
-        py: {
-          xs: '16px',
-          sm: '20px',
-          md: '35px',
-          lg: '40px'
-        }
-      }}
-    >
-      <Container sx={{ maxWidth: '1400px !important', py: { xs: '16px', sm: '22px', md: '28px', lg: '30px' } }}>
-        <Grid container spacing={3} alignItems="center" justifyContent="center">
-          <Grid size={{ xs: 12, lg: 7 }}>
-            <Typography
-              textAlign="center"
-              variant="h4"
-              lineHeight={1.4}
-              mb={2}
-              fontWeight={700}
-              sx={{
-                fontSize: { xs: '24px', sm: '34px', md: '42px' },
-                lineHeight: 1.1
-              }}
-            >
-              {/* i18n bilan title */}
-              {t('pricingPageHeader', 'O‘quvchilaringizga mos tariflarni tanlang')}
-            </Typography>
-            <Typography
-              textAlign="center"
-              variant="body1"
-              mb={2}
-              sx={{
-                mx: 'auto',
-                fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                color: 'text.secondary'
-              }}
-            >
-              {t(
-                'pricingPageSubHeader',
-                'IQmath platformasidagi eng mos tariflarni tanlab, matematikani tez va samarali o‘rganing'
-              )}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Container>
+    <section id="prices" className="relative overflow-hidden bg-gradient-to-b from-[#F7F9FE] via-white to-white py-10 md:py-16">
+      {/* fondagi yumshoq bezaklar */}
+      <span className="pointer-events-none absolute -left-40 top-24 h-[420px] w-[420px] rounded-full border border-[#E8EEF9]" />
+      <span className="pointer-events-none absolute -right-48 bottom-10 h-[520px] w-[520px] rounded-full border border-[#E8EEF9]" />
+
+      <div className="relative mx-auto max-w-[1280px] px-4 text-center">
+        <span className="inline-flex items-center gap-2 rounded-full bg-[#E8F0FF] px-4 py-2 text-[13px] font-medium text-[#1E3A8A]">
+          <Tag size={15} className="text-[#2563EB]" />
+          {text.badge}
+        </span>
+        <h2 className="mt-5 text-[30px] font-extrabold leading-[1.1] tracking-tight text-[#0B1B3F] sm:text-[42px] lg:text-[52px]">
+          {text.title}
+          <br />
+          <span className="bg-gradient-to-r from-[#1D6BFF] to-[#3B8BFF] bg-clip-text text-transparent">{text.accent}</span>
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-[15px] text-[#475569] sm:text-[17px]">
+          {t(
+            'pricingPageSubHeader',
+            'IQmath platformasidagi eng mos tariflarni tanlab, matematikani tez va samarali o‘rganing'
+          )}
+        </p>
+      </div>
+
       <PricingContent />
-    </Box>
+    </section>
   )
 }
 

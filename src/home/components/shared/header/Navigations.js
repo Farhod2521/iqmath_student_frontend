@@ -7,22 +7,42 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  fontSize: '15px',
-  color: theme.palette.text.secondary,
+// Menyu bandi: oddiy matn, faol bandi — ko'k gradientli "pill" va ostida chiziq
+const StyledButton = styled(Button)(() => ({
+  fontFamily: "'Manrope', 'Inter', system-ui, sans-serif",
+  fontSize: '17px',
+  color: '#1E293B',
   backgroundColor: 'transparent',
-  fontWeight: 500,
+  fontWeight: 600,
+  textTransform: 'none',
+  letterSpacing: 0,
+  padding: '9px 20px',
+  borderRadius: '14px',
   position: 'relative',
-  transition: 'all 0.3s ease',
+  whiteSpace: 'nowrap',
+  transition: 'all 0.25s ease',
 
   '&:hover': {
-    backgroundColor: theme.palette.primary.main,
-    color: '#fff'
+    backgroundColor: '#EEF3FF',
+    color: '#1D6BFF'
   },
 
   '&.active': {
-    backgroundColor: theme.palette.primary.main,
-    color: '#fff'
+    background: 'linear-gradient(135deg, #2F7BFF 0%, #1D5BF0 100%)',
+    color: '#fff',
+    boxShadow: '0 10px 22px -12px rgba(29, 91, 240, 0.9)'
+  },
+
+  '&.active::after': {
+    content: '""',
+    position: 'absolute',
+    left: '50%',
+    bottom: '-9px',
+    width: '72%',
+    height: '3px',
+    borderRadius: '3px',
+    transform: 'translateX(-50%)',
+    background: '#1D6BFF'
   }
 }))
 

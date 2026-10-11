@@ -15,6 +15,7 @@ import {
   Users,
   X
 } from 'lucide-react'
+import { config } from '@/config'
 import { LINKS } from './content'
 import { Container, Counter, PrimaryButton, Reveal, SectionTag, SectionTitle, scrollToId } from './ui'
 import { ClipboardArt, CubesArt, InfinityArt, PyramidArt } from './Illustrations'
@@ -112,7 +113,7 @@ export const SiteHeader = ({ c, lang, onLang }) => {
       <Container className="flex h-[72px] items-center gap-6">
         <a href="#top" onClick={scrollToId('top')} className="flex shrink-0 items-center gap-2">
           <img src={LOGO} alt="IQMath" className="h-9 w-9 object-contain" />
-          <span className="text-[22px] font-extrabold tracking-tight text-[#0B1B3F]">IQMath</span>
+          <span className="text-[22px] font-extrabold tracking-tight text-[#0B1B3F]">MATH</span>
         </a>
 
         <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex">
@@ -253,9 +254,31 @@ export const Hero = ({ c, onVideo }) => (
     </Container>
 
     {/* Statistika */}
+    <StatsBar stats={c.stats} />
+  </section>
+)
+
+/** O'quvchilar va darslar soni — bazadan (landing-stats), qolganlari content.js dan */
+const StatsBar = ({ stats }) => {
+  const [live, setLive] = useState(null)
+
+  useEffect(() => {
+    let alive = true
+    fetch(`${config.API_URL}/api/v1/func_student/landing-stats/`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (alive && data) setLive(data)
+      })
+      .catch(() => {})
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  return (
     <Container className="relative pb-10 xl:-mt-14">
       <div className="grid grid-cols-2 gap-y-6 rounded-3xl border border-white bg-white/90 px-6 py-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.35)] backdrop-blur md:grid-cols-4 md:px-10">
-        {c.stats.map((stat, index) => {
+        {stats.map((stat, index) => {
           const Icon = STAT_ICONS[index]
           return (
             <div key={stat.label} className="flex items-center gap-3">
@@ -264,7 +287,7 @@ export const Hero = ({ c, onVideo }) => (
               </span>
               <span>
                 <span className="block text-2xl font-extrabold text-[#0B1B3F]">
-                  <Counter target={stat.value} suffix={stat.suffix} />
+                  <Counter target={(stat.key && live?.[stat.key]) ?? stat.value} suffix={stat.suffix} />
                 </span>
                 <span className="text-sm text-[#64748B]">{stat.label}</span>
               </span>
@@ -273,8 +296,8 @@ export const Hero = ({ c, onVideo }) => (
         })}
       </div>
     </Container>
-  </section>
-)
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /* Ota-onalar uchun natijalar                                         */

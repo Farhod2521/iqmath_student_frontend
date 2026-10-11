@@ -1,155 +1,89 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Box,
-  Container,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Dialog,
-  IconButton,
-  Typography
-} from '@mui/material'
-import Grid from '@mui/material/Grid2'
-import { styled } from '@mui/material/styles'
-import { IconChevronDown, IconChevronUp, IconMinus, IconPlayerPlay, IconPlus, IconX } from '@tabler/icons'
+import { ChevronDown, ChevronUp, CircleHelp, Minus, PlayCircle, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { usePathname } from 'next/navigation'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
-import { Button } from '@heroui/react'
-import { FaEye } from 'react-icons/fa'
-import { Link } from 'brainly-style-guide'
-import { usePathname } from 'next/navigation'
 
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  borderRadius: '8px',
-  marginBottom: '16px !important',
-  boxShadow: theme.palette.mode === 'light' ? '0px 3px 0px rgba(235, 241, 246, 0.25)' : 'none',
-  border: `1px solid ${theme.palette.divider}`,
-  '&:before': { display: 'none' },
-  '&.Mui-expanded': { margin: 0 },
-  '& .MuiAccordionSummary-root': {
-    padding: '8px 24px',
-    minHeight: '60px',
-    fontSize: '18px',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '14px'
-    },
-    fontWeight: 500
+const TEXTS = {
+  uz: {
+    badge: 'Savollarga javoblar',
+    title: "Tez-tez so'raladigan",
+    accent: 'savollar',
+    subtitle: 'Platformadan foydalanish, to‘lovlar va darslar bo‘yicha eng ko‘p beriladigan savollarga javoblar',
+    more: "Ko'proq savollar",
+    less: 'Yopish',
+    video: "Videoni ko'rish"
   },
-  '& .MuiAccordionDetails-root': {
-    padding: '0 24px 24px'
+  ru: {
+    badge: 'Ответы на вопросы',
+    title: 'Часто задаваемые',
+    accent: 'вопросы',
+    subtitle: 'Ответы на самые частые вопросы об использовании платформы, оплате и уроках',
+    more: 'Больше вопросов',
+    less: 'Свернуть',
+    video: 'Смотреть видео'
   }
-}))
-
-const VideoModal = ({ open, onClose, videoId }) => {
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="md"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: '12px',
-          bgcolor: 'background.paper'
-        }
-      }}
-    >
-      <Box sx={{ position: 'relative', bgcolor: '#000' }}>
-        <IconButton
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            zIndex: 10,
-            bgcolor: 'rgba(0, 0, 0, 0.5)',
-            color: 'white',
-            '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.7)' }
-          }}
-        >
-          <IconX size={24} />
-        </IconButton>
-
-        <Box sx={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', bgcolor: '#000' }}>
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              border: 'none'
-            }}
-          />
-        </Box>
-      </Box>
-    </Dialog>
-  )
 }
 
-const FAQ = () => {
-  const [expandedIndex, setExpandedIndex] = useState(0)
-  const { t, i18n } = useTranslation()
-  const [modalOpen, setModalOpen] = useState(false)
-  const [selectedVideoId, setSelectedVideoId] = useState(null)
-  const [showAll, setShowAll] = useState(false)
+const LIMIT = 5
 
+const isYoutube = (url) => /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)[a-zA-Z0-9_-]{11}/.test(url || '')
+
+/** 3D uslubidagi ko'k savol belgisi (chap tomondagi bezak) */
+const QuestionBubble = () => (
+  <div className="pointer-events-none absolute left-[3%] top-16 hidden xl:block" aria-hidden="true">
+    <span className="absolute -left-16 top-6 h-24 w-24 rounded-full bg-[#DCE8FF]/70" />
+    <div className="relative h-[130px] w-[140px] -rotate-6 rounded-[34px] bg-gradient-to-br from-[#7FB0FF] via-[#3F7DFF] to-[#2257E8] shadow-[0_30px_50px_-20px_rgba(37,99,235,0.7),inset_0_-10px_20px_rgba(15,40,140,0.35),inset_0_8px_16px_rgba(255,255,255,0.45)]">
+      <span className="absolute inset-0 flex items-center justify-center text-[78px] font-black leading-none text-white drop-shadow-[0_6px_6px_rgba(15,40,140,0.35)]">
+        ?
+      </span>
+      <span className="absolute -bottom-5 left-10 h-10 w-10 rotate-45 rounded-md bg-[#2C63EE]" />
+    </div>
+  </div>
+)
+
+/** Oq "chat" pufakchasi (o'ng tomondagi bezak) */
+const ChatBubble = () => (
+  <div className="pointer-events-none absolute right-[4%] top-40 hidden xl:block" aria-hidden="true">
+    <span className="absolute -left-10 top-16 h-12 w-12 rounded-full bg-[#E3ECFF]" />
+    <div className="relative flex h-[86px] w-[110px] rotate-6 items-center justify-center gap-2 rounded-[28px] bg-gradient-to-br from-white to-[#E6EEFF] shadow-[0_24px_40px_-20px_rgba(37,99,235,0.45)]">
+      {[0, 1, 2].map((dot) => (
+        <span key={dot} className="h-3.5 w-3.5 rounded-full bg-[#BFD3FF]" />
+      ))}
+      <span className="absolute -bottom-3 right-6 h-7 w-7 rotate-45 rounded-sm bg-[#E9F0FF]" />
+    </div>
+  </div>
+)
+
+const FAQ = () => {
+  const { i18n } = useTranslation()
+  const lang = i18n.language === 'ru' ? 'ru' : 'uz'
+  const text = TEXTS[lang]
   const pathname = usePathname()
   const isFaqPage = pathname === '/faqs'
 
-  const language = i18n.language
-
-  const handleChange = (index) => (_, isExpanded) => {
-    setExpandedIndex(isExpanded ? index : false)
-  }
-
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [openIndex, setOpenIndex] = useState(0)
+  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     setLoading(true)
     request
       .get(URLS.systemFaqs)
-      .then((res) => {
-        setData(res.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching social links:', error)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      .then((res) => setData(Array.isArray(res.data) ? res.data : []))
+      .catch((error) => console.error('FAQ yuklanmadi:', error))
+      .finally(() => setLoading(false))
   }, [])
 
-  const extractYoutubeId = (text) => {
-    if (!text) return null
-    const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-    const match = text.match(regExp)
-    return match ? match[1] : null
-  }
-
-  const handleWatchVideo = (url) => {
-    const youtubeId = extractYoutubeId(url)
-    if (youtubeId) {
-      setSelectedVideoId(youtubeId)
-      setModalOpen(true)
-    }
-  }
-
-  // const visibleData = isFaqPage ? data : data.slice(0, 5)
-  const LIMIT = 5
   const visibleData = isFaqPage || showAll ? data : data.slice(0, LIMIT)
   const canToggle = !isFaqPage && data.length > LIMIT
 
   const handleToggle = () => {
-    setShowAll((p) => !p)
+    setShowAll((prev) => !prev)
     if (showAll) {
-      // yopayotganda tepaga qaytarsin
+      // yig'ilganda ro'yxat boshiga qaytadi
       setTimeout(() => {
         document.getElementById('faq-list-top')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 50)
@@ -157,176 +91,133 @@ const FAQ = () => {
   }
 
   return (
-    <Box mt={7} id="faq-list-top">
-      <Container sx={{ maxWidth: '1400px !important', mt: 3, pb: { xs: '30px', lg: '60px' } }}>
-        <Grid container spacing={3} alignItems="center" justifyContent="center">
-          <Grid size={{ xs: 12, lg: 7 }}>
-            <Typography
-              textAlign="center"
-              variant="h4"
-              lineHeight={1.4}
-              mb={2}
-              fontWeight={700}
-              sx={{
-                fontSize: { xs: '24px', sm: '34px', md: '42px' },
-                lineHeight: 1.1
-              }}
-            >
-              {/* i18n bilan title */}
-              {t('faq', "Tez-tez so'raladigan savollar")}
-            </Typography>
-            <Typography
-              textAlign="center"
-              variant="body1"
-              mb={2}
-              sx={{
-                fontSize: { xs: '14px', sm: '16px', md: '18px' },
-                color: 'text.secondary'
-              }}
-            >
-              {t(
-                'faqSubtitle',
-                'Platformadan foydalanish, to‘lovlar va darslar bo‘yicha eng ko‘p beriladigan savollarga javoblar'
-              )}
-            </Typography>
-          </Grid>
-        </Grid>
+    <section
+      id="faq-list-top"
+      className="relative overflow-hidden bg-gradient-to-b from-[#F7F9FE] via-white to-white pb-14 pt-12 md:pb-20 md:pt-16"
+    >
+      {/* Fon bezaklari */}
+      <span className="pointer-events-none absolute -left-40 bottom-0 h-[380px] w-[380px] rounded-full bg-[#EEF3FF]" />
+      <span className="pointer-events-none absolute -right-32 -top-20 h-[340px] w-[340px] rounded-full bg-[#F1F5FF]" />
+      <QuestionBubble />
+      <ChatBubble />
 
-        <Grid container spacing={3} justifyContent="center">
-          <Grid xs={12} lg={8}>
-            <Box mt={7}>
-              {loading ? (
-                <div className="flex justify-center mt-12">
-                  <div className="w-12 h-12 border-b-2 border-blue-500 rounded-full animate-spin" />
-                </div>
-              ) : (
-                visibleData?.map((item, index) => (
-                  <StyledAccordion key={index} expanded={expandedIndex === index} onChange={handleChange(index)}>
-                    <AccordionSummary
-                      expandIcon={
-                        expandedIndex === index ? (
-                          <IconMinus size={21} stroke={1.5} />
-                        ) : (
-                          <IconPlus size={21} stroke={1.5} />
-                        )
-                      }
-                    >
-                      {language === 'uz' ? item.question_uz : item.question_ru}
-                    </AccordionSummary>
-                    {/* <AccordionDetails>
-                  <div dangerouslySetInnerHTML={{ __html: language === 'uz' ? item.answer_uz : item.answer_ru }} />
-                </AccordionDetails> */}
-                    <AccordionDetails>
-                      <Box>
-                        {(() => {
-                          const answer = language === 'uz' ? item.answer_uz : item.answer_ru
-                          const url = item?.url
-                          const youtubeId = extractYoutubeId(url)
+      <div className="relative mx-auto max-w-[1100px] px-4">
+        {/* Sarlavha */}
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#E8F0FF] px-4 py-2 text-[13px] font-medium text-[#1E3A8A]">
+            <CircleHelp size={17} className="fill-[#2563EB] text-white" />
+            {text.badge}
+          </span>
+          <h2 className="mt-5 text-[30px] font-extrabold leading-[1.1] tracking-tight text-[#0B1B3F] sm:text-[40px] lg:text-[48px]">
+            {text.title} <span className="text-[#1D6BFF]">{text.accent}</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-[15px] text-[#475569] sm:text-[17px]">{text.subtitle}</p>
+        </div>
 
-                          return (
-                            <>
-                              {answer && (
-                                <Box mb={youtubeId ? 2 : 0}>
-                                  <div dangerouslySetInnerHTML={{ __html: answer }} />
-                                </Box>
-                              )}
-
-                              {youtubeId && (
-                                <Box>
-                                  {/* <Link
-                                onClick={() => handleWatchVideo(url)}
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '8px',
-                                  padding: '5px 10px',
-                                  backgroundColor: '#ef4444',
-                                  color: 'white',
-                                  border: 'none',
-                                  borderRadius: '6px',
-                                  fontSize: '14px',
-                                  fontWeight: 500,
-                                  cursor: 'pointer',
-                                  transition: 'all 0.3s ease'
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.target.style.backgroundColor = '#dc2626'
-                                  // e.target.style.transform = 'translateY(-2px)'
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.target.style.backgroundColor = '#ef4444'
-                                  // e.target.style.transform = 'translateY(0)'
-                                }}
-                              >
-                                <IconPlayerPlay size={18} stroke={2} />
-                                Video ko'rish
-                              </Link> */}
-                                  <a
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      gap: '6px',
-                                      color: '#1677ff', // Ant Design primary blue
-                                      fontSize: '14px',
-                                      fontWeight: 500,
-                                      textDecoration: 'none',
-                                      cursor: 'pointer'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.textDecoration = 'underline'
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.textDecoration = 'none'
-                                    }}
-                                  >
-                                    Ko'rish
-                                  </a>
-                                </Box>
-                              )}
-                            </>
-                          )
-                        })()}
-                      </Box>
-                    </AccordionDetails>
-                  </StyledAccordion>
-                ))
-              )}
-              {canToggle && (
-                <Box display="flex" justifyContent="center" mt={1}>
-                  <button
-                    onClick={handleToggle}
-                    className={`
-        inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white
-        bg-[#5D87FF] shadow-lg shadow-blue-500/20
-        transition-all duration-200
-        hover:opacity-95 hover:-translate-y-0.5 hover:shadow-xl
-        active:translate-y-0 active:scale-[0.98]
-        ${showAll ? 'animate-pulse' : 'animate-bounce'}
-      `}
+        {/* Savollar */}
+        <div className="mt-10 space-y-4">
+          {loading
+            ? [1, 2, 3, 4, 5].map((i) => <div key={i} className="h-[68px] animate-pulse rounded-2xl bg-[#EEF2F8]" />)
+            : visibleData.map((item, index) => {
+                const open = openIndex === index
+                const question = lang === 'ru' ? item.question_ru || item.question_uz : item.question_uz
+                const answer = lang === 'ru' ? item.answer_ru || item.answer_uz : item.answer_uz
+                return (
+                  <div
+                    key={item.id ?? index}
+                    className={`rounded-2xl border bg-white transition duration-300 ${
+                      open
+                        ? 'border-[#9DBBFF] shadow-[0_24px_50px_-34px_rgba(37,99,235,0.55)]'
+                        : 'border-[#E6EBF5] shadow-[0_10px_30px_-28px_rgba(15,23,42,0.4)] hover:border-[#C9D9FF]'
+                    }`}
                   >
-                    {showAll ? (
-                      <>
-                        <IconChevronUp size={20} stroke={2} />
-                        {t('close', 'Yopish')}
-                      </>
-                    ) : (
-                      <>
-                        <IconChevronDown size={20} stroke={2} />
-                        {t('more', "Ko'proq")}
-                      </>
-                    )}
-                  </button>
-                </Box>
-              )}
-            </Box>
-          </Grid>
-        </Grid>
-        <VideoModal open={modalOpen} onClose={() => setModalOpen(false)} videoId={selectedVideoId} />
-      </Container>
-    </Box>
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(open ? -1 : index)}
+                      aria-expanded={open}
+                      className="flex w-full items-center gap-4 px-4 py-4 text-left sm:px-6"
+                    >
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EAF1FF] text-[17px] font-bold text-[#2563EB]">
+                        {index + 1}
+                      </span>
+                      <span className="flex-1 text-[15px] font-bold text-[#0B1B3F] sm:text-[18px]">{question}</span>
+                      <span
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition ${
+                          open ? 'bg-[#EAF1FF] text-[#2563EB]' : 'bg-[#F4F6FA] text-[#334155]'
+                        }`}
+                      >
+                        {open ? <Minus size={20} /> : <Plus size={20} />}
+                      </span>
+                    </button>
+
+                    {/* Javob: silliq ochilib-yopiladi */}
+                    <div
+                      className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                        open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="mx-4 border-t border-[#EEF1F6] pb-5 pt-4 sm:mx-6">
+                          {answer ? (
+                            <div
+                              className="faq-answer text-[15px] leading-relaxed text-[#334155]"
+                              dangerouslySetInnerHTML={{ __html: answer }}
+                            />
+                          ) : null}
+                          {isYoutube(item?.url) ? (
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-[#FEECEC] px-3.5 py-2 text-sm font-semibold text-[#DC2626] transition hover:bg-[#FEE2E2]"
+                            >
+                              <PlayCircle size={18} />
+                              {text.video}
+                            </a>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+        </div>
+
+        {canToggle ? (
+          <div className="mt-7 flex justify-center">
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="inline-flex items-center gap-2.5 rounded-full bg-[#EAF1FF] py-2.5 pl-3 pr-6 text-[15px] font-semibold text-[#1D4ED8] shadow-[0_12px_24px_-16px_rgba(37,99,235,0.7)] transition hover:bg-[#DCE8FF]"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+                {showAll ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
+              </span>
+              {showAll ? text.less : text.more}
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      <style jsx global>{`
+        .faq-answer p {
+          margin: 0 0 8px;
+        }
+        .faq-answer p:last-child {
+          margin-bottom: 0;
+        }
+        .faq-answer a {
+          color: #2563eb;
+          text-decoration: underline;
+        }
+        .faq-answer ul,
+        .faq-answer ol {
+          margin: 6px 0;
+          padding-left: 20px;
+          list-style: disc;
+        }
+      `}</style>
+    </section>
   )
 }
 

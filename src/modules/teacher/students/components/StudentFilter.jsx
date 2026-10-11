@@ -1,5 +1,6 @@
-import SearchInput from '@/components/search'
-import SelectBox from '@/components/select-box'
+import { FileSpreadsheet, FileText, ScrollText, Search } from 'lucide-react'
+import { FilterSelect } from './PupilsUi'
+import MonthlyReportModal from '../report/MonthlyReportModal'
 import React, { useState, useEffect, useCallback, useRef, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import StudentRewardHistory from './StudentRewardHistory'
@@ -8,7 +9,8 @@ import { URLS } from '@/constants/url'
 
 const StudentFilter = memo(
   ({ onFilterChange, isExportingAll = false, onExportStart, onExportEnd, studentsData = [], filterData }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
+    const [isReportOpen, setIsReportOpen] = useState(false)
     const [search, setSearch] = useState('')
     const [classValue, setClassValue] = useState('') // Default: "Hammasi" (empty value)
     const [subjectValue, setSubjectValue] = useState('') // Default: "Hammasi" (empty value)
@@ -252,134 +254,138 @@ const StudentFilter = memo(
       setTimeout(onExportEnd, 1000)
     }, [onExportStart, onExportEnd, roleValue])
 
+    const wordLabel = i18n.language === 'ru' ? 'Word отчёт' : 'Word hisobot'
+    const actionButton =
+      'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-white transition sm:flex-none 2xl:w-11 2xl:px-0 min-[1800px]:w-auto min-[1800px]:px-4'
+    const actionLabel = 'whitespace-nowrap 2xl:hidden min-[1800px]:inline'
+
     return (
       <>
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between py-[16px]">
-          <div className="flex flex-wrap items-center gap-3">
-            <SearchInput
-              placeholder={t('searchStudents')}
-              value={search}
-              onChange={handleSearchChange}
-              className="w-60"
-            />
+        {/* 2xl+ ekranda filtrlar va tugmalar bitta qatorda; kichikroqda qatorlarga bo'linadi */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[#EEF1F6] p-4 2xl:flex-nowrap">
+          <div className="flex w-full flex-wrap items-center gap-2 2xl:w-auto 2xl:min-w-0 2xl:flex-1 2xl:flex-nowrap">
+            {/* Qidiruv */}
+            <label className="relative w-full sm:w-56 2xl:w-52 min-[1800px]:w-60">
+              <Search size={17} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8A93A6]" />
+              <input
+                value={search}
+                onChange={handleSearchChange}
+                placeholder={t('searchStudents')}
+                className="h-11 w-full rounded-xl border border-[#E3E8F1] bg-[#F8FAFD] pl-10 pr-9 text-sm text-[#0F1B3D] outline-none transition placeholder:text-[#8A93A6] focus:border-[#2563EB] focus:bg-white focus:ring-4 focus:ring-[#2563EB]/10"
+              />
+              {isLoading ? (
+                <span className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-[#2563EB] border-t-transparent" />
+              ) : null}
+            </label>
 
-            <SelectBox
+            <FilterSelect
               label={t('all')}
               options={roleOptions}
               value={roleValue}
               onChange={handleRoleChange}
-              className="w-30"
+              className="w-[calc(50%-4px)] sm:w-32 2xl:shrink-0"
             />
             {/* Faqat "O'quvchi" tanlanganda sinf va fan filtrlari ko'rinadi */}
             {roleValue === 'student' && (
               <>
-                <SelectBox
+                <FilterSelect
                   label={t('class')}
                   options={classOptions}
                   value={classValue}
                   onChange={handleClassChange}
-                  className="w-30"
+                  className="w-[calc(50%-4px)] sm:w-28 2xl:shrink-0"
                 />
-                <SelectBox
+                <FilterSelect
                   label={t('subject')}
                   options={subjectOptions}
                   value={subjectValue}
                   onChange={handleSubjectChange}
-                  className="w-30"
+                  className="w-[calc(50%-4px)] sm:w-32 2xl:shrink-0"
                 />
               </>
             )}
-            <SelectBox
+            <FilterSelect
               label={t('status')}
               options={statusOptions}
               value={statusValue}
               onChange={handleStatusChange}
-              className="w-30"
+              className="w-[calc(50%-4px)] sm:w-28 2xl:shrink-0"
             />
-            <SelectBox
+            <FilterSelect
               label={t('registeredLanguage')}
               options={langOptions}
               value={langValue}
               onChange={handleLangChange}
-              className="w-20"
+              className="w-[calc(50%-4px)] sm:w-24 2xl:shrink-0"
             />
-
-            <SelectBox
+            <FilterSelect
               label={t('device')}
               options={deviceOptions}
               value={deviceValue}
               onChange={handleDeviceChange}
-              className="w-30"
+              className="w-[calc(50%-4px)] sm:w-28 2xl:shrink-0"
             />
-            {/* <SelectBox
-              label={t('diagnosticsStatus')}
-              options={diagnosticsOptions}
-              value={deviceValue}
-              onChange={handleDeviceChange}
-              className="w-30"
-            /> */}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          {/* Tugmalar: 1800px+ da yozuv bilan, 2xl..1800 oralig'ida faqat ikonka (tooltip bilan) */}
+          <div className="flex w-full items-center gap-2 sm:w-auto 2xl:shrink-0">
             <button
-              onClick={() => setIsRewardHistoryOpen(true)}
-              className="bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+              type="button"
+              title={wordLabel}
+              onClick={() => setIsReportOpen(true)}
+              className={`${actionButton} bg-gradient-to-r from-[#2B579A] to-[#1E3F73] shadow-[0_10px_20px_-12px_rgba(43,87,154,0.9)] hover:brightness-110`}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              {t('rewardHistory')}
+              <FileText size={17} className="shrink-0" />
+              <span className={actionLabel}>{wordLabel}</span>
             </button>
 
-            {/* Excel export tugmasi */}
             <button
+              type="button"
+              title={t('rewardHistory')}
+              onClick={() => setIsRewardHistoryOpen(true)}
+              className={`${actionButton} bg-[#2563EB] shadow-[0_10px_20px_-12px_rgba(37,99,235,0.9)] hover:bg-[#1D4ED8]`}
+            >
+              <ScrollText size={17} className="shrink-0" />
+              <span className={actionLabel}>{t('rewardHistory')}</span>
+            </button>
+
+            <button
+              type="button"
+              title={t('excelExport')}
               onClick={handleExport}
               disabled={isExportingAll || isLoading}
-              className="flex items-center gap-2 px-4 py-2 font-medium text-white transition-colors duration-200 bg-green-600 rounded-lg shadow-md hover:bg-green-700 disabled:bg-gray-400"
+              className={`${actionButton} bg-[#16A34A] shadow-[0_10px_20px_-12px_rgba(22,163,74,0.9)] hover:bg-[#15803D] disabled:cursor-not-allowed disabled:bg-[#A0A8BA] disabled:shadow-none`}
             >
               {isExportingAll ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
-                  Export...
-                </>
+                <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  {t('excelExport')}
-                </>
+                <FileSpreadsheet size={17} className="shrink-0" />
               )}
+              <span className={actionLabel}>{isExportingAll ? 'Export...' : t('excelExport')}</span>
             </button>
           </div>
         </div>
 
-        {/* Search results info */}
-        {search && (
-          <div className="p-3 mb-4 border border-blue-200 rounded-lg bg-blue-50">
-            <p className="text-sm text-blue-800">
-              {t('searchResultsFor')}: <span className="font-semibold">"{search}"</span>
-              {studentsData.length > 0 && (
-                <span className="ml-2 text-blue-600">
+        {/* Qidiruv natijasi */}
+        {search ? (
+          <div className="mx-4 mt-3 flex items-center gap-2 rounded-xl border border-[#DCE7FF] bg-[#F1F5FF] px-3 py-2 text-sm text-[#1D4ED8]">
+            <Search size={15} />
+            <span>
+              {t('searchResultsFor')}: <b>&quot;{search}&quot;</b>
+              {studentsData.length > 0 ? (
+                <span className="ml-1 text-[#2563EB]">
                   ({studentsData.length} {t('studentsFound')})
                 </span>
-              )}
-            </p>
+              ) : null}
+            </span>
           </div>
-        )}
+        ) : null}
 
         {/* Reward History Modal */}
         <StudentRewardHistory isOpen={isRewardHistoryOpen} onClose={() => setIsRewardHistoryOpen(false)} />
+
+        {/* Oylik PPTX hisobot */}
+        <MonthlyReportModal isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
       </>
     )
   }
