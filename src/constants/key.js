@@ -57,6 +57,8 @@ export const KEYS = {
   systemSettings: 'systemSettings',
   systemFaqs: 'systemFaqs',
   statistics: 'statistics',
+  siteStatistics: 'siteStatistics',
+  siteRegistrations: 'siteRegistrations',
   studentStatistics: 'studentStatistics',
   universalStatistics: 'universalStatistics',
   studentSubjectChapters: 'studentSubjectChapters',

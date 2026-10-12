@@ -10,6 +10,7 @@ import '@/services/i18n'
 
 import { UserProfileProvider } from '@/context/responseProvider'
 import { HeroUIProvider } from '@heroui/react'
+import SiteTracker from '@/components/SiteTracker'
 
 // function TawkManager() {
 //   const router = useRouter()
@@ -45,6 +46,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
           <Hydrate state={pageProps?.dehydratedState}>
             <UserProfileProvider>
               <Component {...pageProps} />
+              <SiteTracker />
               <Toaster />
               {/* <TawkManager /> */}
             </UserProfileProvider>
