@@ -286,8 +286,10 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                 <th className={headClass}>{tp('dailyTask')}</th>
                 {isStudent ? (
                   <>
-                    <th className={headClass}>{t('class')}</th>
-                    <th className={headClass}>{t('subject')}</th>
+                    <th className={headClass}>
+                      {t('class')} / {t('subject')}
+                    </th>
+                    <th className={headClass}>{t('registrationDate')}</th>
                     <th className={headClass}>{t('subscriptionDeadline')}</th>
                   </>
                 ) : null}
@@ -304,6 +306,8 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                 const device = String(row.device || '').toLowerCase()
                 const DeviceIcon = device.includes('web') ? Monitor : Smartphone
                 const classNumber = String(row.class_num || '').split(' ')[0]
+                // date_joined: "dd/mm/YYYY HH:MM" — haqiqiy ro'yxatdan o'tgan vaqt
+                const [registeredDate, registeredTime] = String(row.date_joined || row.registration_date || '').split(' ')
 
                 return (
                   <tr
@@ -356,8 +360,28 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                     </td>
                     {isStudent ? (
                       <>
-                        <td className={cellClass}>{classNumber ? `${classNumber}-${t('class')}` : '—'}</td>
-                        <td className={cellClass}>{row.subject_name_uz || '—'}</td>
+                        <td className={cellClass}>
+                          {classNumber || row.subject_name_uz ? (
+                            <span className="flex flex-col leading-tight">
+                              <span className="font-medium text-[#0F1B3D]">
+                                {classNumber ? `${classNumber}-${t('class')}` : '—'}
+                              </span>
+                              <span className="text-xs text-[#8A93A6]">{row.subject_name_uz || '—'}</span>
+                            </span>
+                          ) : (
+                            <span className="text-[#A0A8BA]">—</span>
+                          )}
+                        </td>
+                        <td className={cellClass}>
+                          {registeredDate ? (
+                            <span className="flex flex-col leading-tight">
+                              <span className="font-medium text-[#0F1B3D]">{registeredDate}</span>
+                              {registeredTime ? <span className="text-xs text-[#8A93A6]">{registeredTime}</span> : null}
+                            </span>
+                          ) : (
+                            <span className="text-[#A0A8BA]">—</span>
+                          )}
+                        </td>
                         <td className={cellClass}>
                           {row.remaining_days || row.subscription_end_date ? (
                             <span className="flex flex-col leading-tight">
