@@ -1382,6 +1382,88 @@
     "hoursAgo": "{{count}} soat oldin",
     "daysAgo": "{{count}} kun oldin"
   },
+  "parentQr": {
+    "qrCaption": "QR kodni skanerlang",
+    "qrCaptionSub": "Ota-ona hisobiga ulanish uchun",
+    "heroTitle": "Farzandingiz ta'limi",
+    "heroAccent": "endi siz bilan yanada yaqin!",
+    "heroText": "Ota-onangiz natijalaringizni, uy vazifalaringizni va o'sishingizni o'z telefonidan kuzatib borishi uchun ularga shu QR kodni ko'rsating.",
+    "features": {
+      "results": "Natijalarni kuzating",
+      "homework": "Uy vazifalarini tekshiring",
+      "progress": "Farzandingiz rivojlanishini kuzating",
+      "news": "Maktab yangiliklaridan xabardor bo'ling"
+    },
+    "menuLabel": "Ota-ona uchun",
+    "title": "Ota-ona sahifasiga kirish",
+    "subtitle": "Ota-onangiz telefon kamerasi bilan QR kodni skanerlasin",
+    "hint": "Telefoningiz kamera ilovasini oching va QR kodni skanerlang.",
+    "copyLink": "Havolani nusxalash",
+    "copied": "Havola nusxalandi",
+    "refresh": "Yangilash",
+    "loadError": "QR kodni yuklab bo'lmadi. Qayta urinish",
+    "howTitle": "Qanday ishlaydi?",
+    "step1": "Ota-onangiz telefon kamerasi bilan QR kodni skanerlaydi.",
+    "step2": "Telefon raqamini kiritadi: hisobi bo'lsa parolni, bo'lmasa ism-familiya va SMS kodni kiritib ro'yxatdan o'tadi.",
+    "step3": "Ota-ona sahifasi ochiladi va siz unga avtomatik biriktirilasiz.",
+    "linkedTitle": "Biriktirilgan ota-onalar",
+    "noParents": "Hozircha ota-ona biriktirilmagan.",
+    "stepsTitle": "Ota-ona qanday ulanadi?",
+    "steps": {
+      "1": {
+        "title": "QR kodni skanerlang",
+        "text": "Ota-onangiz telefon kamerasini ochib, yuqoridagi QR kodga qaratadi."
+      },
+      "2": {
+        "title": "Telefon raqamini kiriting",
+        "text": "Ochilgan sahifada ota-onangiz o'z telefon raqamini kiritadi."
+      },
+      "3": {
+        "title": "Kirish yoki ro'yxatdan o'tish",
+        "text": "Hisobi bo'lsa — parolini kiritadi. Bo'lmasa — ism-familiyasini yozadi, SMS kodni tasdiqlab parol o'rnatadi."
+      },
+      "4": {
+        "title": "Ota-ona sahifasi",
+        "text": "Siz ota-onangiz hisobiga avtomatik biriktirilasiz va u natijalaringizni kuzata boshlaydi."
+      }
+    },
+    "stepsHint": "Atigi 4 qadamda farzandingiz ta'lim jarayonini kuzata boshlang"
+  },
+  "parentConnect": {
+    "badge": "Ota-ona sahifasi",
+    "noToken": "QR kod topilmadi. Farzandingiz profilidagi \"Ota-ona uchun\" bo'limidagi QR kodni skanerlang.",
+    "invalidQr": "QR kod noto'g'ri yoki eskirgan.",
+    "invalidTitle": "QR kod yaroqsiz",
+    "yourChild": "Farzandingiz",
+    "phoneTitle": "Telefon raqamingizni kiriting",
+    "phoneText": "Farzandingiz hisobiga ulanish uchun telefon raqamingizni yozing.",
+    "passwordTitle": "Parolni kiriting",
+    "passwordText": "Hisobingiz topildi. Kirish uchun parolingizni kiriting.",
+    "welcomeBack": "Xush kelibsiz",
+    "nameTitle": "Ro'yxatdan o'tish",
+    "nameText": "Bu raqam hali ro'yxatdan o'tmagan. Ism-familiyangizni kiriting — telefoningizga SMS kod yuboramiz.",
+    "codeTitle": "SMS kodni kiriting",
+    "codeText": "{{phone}} raqamiga yuborilgan kodni kiriting.",
+    "setPasswordTitle": "Parol o'rnating",
+    "setPasswordText": "Keyingi safar shu telefon raqam va parol bilan kirasiz.",
+    "continue": "Davom etish",
+    "login": "Kirish",
+    "getCode": "SMS kod olish",
+    "confirm": "Tasdiqlash",
+    "finish": "Saqlash va kirish",
+    "back": "Orqaga",
+    "password": "Parol",
+    "newPassword": "Yangi parol (kamida 6 belgi)",
+    "repeatPassword": "Parolni takrorlang",
+    "fullName": "Ism-familiya",
+    "nameRequired": "Ism-familiyangizni kiriting",
+    "passwordMin": "Parol kamida 6 ta belgidan iborat bo'lsin",
+    "passwordMismatch": "Parollar mos kelmadi",
+    "codeSent": "SMS kod yuborildi",
+    "resend": "Kodni qayta yuborish",
+    "resendIn": "Kodni qayta yuborish: {{time}}",
+    "linked": "Farzandingiz hisobingizga biriktirildi"
+  },
   "parentHome": {
     "menuLabel": "Bosh sahifa",
     "welcome": "Xush kelibsiz,",

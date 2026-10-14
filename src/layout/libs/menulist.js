@@ -630,6 +630,20 @@ export const getMenuItems = (t) => [
     type: MenuType.LINK
   },
   {
+    key: 'parent-qr',
+    path: '/dashboard/student/parent-qr',
+    label: t('parentQr.menuLabel'),
+    icon: (isActive) => (
+      <LuUsers
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={26}
+      />
+    ),
+    disabled: false,
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
     key: 'profile',
     path: '/dashboard/student/profile',
     label: t('profile'),

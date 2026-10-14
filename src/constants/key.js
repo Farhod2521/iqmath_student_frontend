@@ -49,6 +49,7 @@ export const KEYS = {
   diagnosticAttempts: 'diagnosticAttempts',
   myDevices: 'myDevices',
   parentDashboard: 'parentDashboard',
+  studentParentQr: 'studentParentQr',
   parentChildOverview: 'parentChildOverview',
   parentChildPayments: 'parentChildPayments',
   studentMyPayments: 'studentMyPayments',

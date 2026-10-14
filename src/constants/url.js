@@ -79,6 +79,13 @@ export const URLS = {
   achievements: '/api/v1/func_student/achievements/',
   // Parent management endpoints
   parentCreate: '/api/v1/auth/parent/create/',
+  // Ota-onani QR kod orqali farzandga biriktirish
+  studentParentQr: '/api/v1/auth/student/parent-qr/',
+  parentQrInfo: '/api/v1/auth/parent-qr/info/',
+  parentQrCheckPhone: '/api/v1/auth/parent-qr/check-phone/',
+  parentQrRegister: '/api/v1/auth/parent-qr/register/',
+  parentQrRegisterVerify: '/api/v1/auth/parent-qr/register/verify/',
+  parentQrRegisterComplete: '/api/v1/auth/parent-qr/register/complete/',
   parentProfile: '/api/v1/auth/parent/profile/',
   parentProfileUpdate: '/api/v1/auth/parent/profile-update/',
   systemSettings: '/api/v1/management/system-settings/',

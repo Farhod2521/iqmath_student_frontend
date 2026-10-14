@@ -22,13 +22,20 @@ export default NextAuth({
             replace_device_id,
             switch_child_id,
             return_to_parent,
-            current_token
+            current_token,
+            parent_qr_token
           } = credentials
           const formData = new FormData()
           let url = 'https://api.iqmath.uz/api/v1/auth/student/login/'
           const headers = { Accept: 'application/json' }
 
-          if (switch_child_id) {
+          if (parent_qr_token) {
+            // Ota-ona farzandning QR kodi orqali kiradi (farzand avtomatik biriktiriladi)
+            formData.append('token', parent_qr_token)
+            formData.append('phone', phone)
+            formData.append('password', password)
+            url = 'https://api.iqmath.uz/api/v1/auth/parent-qr/login/'
+          } else if (switch_child_id) {
             // Ota-ona farzand profiliga o'tadi (ota-ona tokeni bilan)
             url = `https://api.iqmath.uz/api/v1/auth/parent/children/${encodeURIComponent(switch_child_id)}/switch/`
             headers.Authorization = `Bearer ${current_token}`

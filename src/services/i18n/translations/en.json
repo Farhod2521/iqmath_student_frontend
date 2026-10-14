@@ -994,6 +994,88 @@
     "hoursAgo": "{{count}}h ago",
     "daysAgo": "{{count}}d ago"
   },
+  "parentQr": {
+    "qrCaption": "Scan the QR code",
+    "qrCaptionSub": "To connect to the parent account",
+    "heroTitle": "Your child's learning",
+    "heroAccent": "is now closer to you!",
+    "heroText": "Show this QR code to your parents so they can follow your results, homework and progress from their own phone.",
+    "features": {
+      "results": "Track results",
+      "homework": "Check homework",
+      "progress": "Watch your child's progress",
+      "news": "Stay up to date with school news"
+    },
+    "menuLabel": "For parents",
+    "title": "Parent page sign-in",
+    "subtitle": "Ask your parent to scan the QR code with their phone camera",
+    "hint": "Open your phone's camera app and scan the QR code.",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "refresh": "Refresh",
+    "loadError": "Couldn't load the QR code. Retry",
+    "howTitle": "How it works",
+    "step1": "Your parent scans the QR code with their phone camera.",
+    "step2": "They enter their phone number: the password if they have an account, otherwise their name and an SMS code to sign up.",
+    "step3": "The parent page opens and you're linked to it automatically.",
+    "linkedTitle": "Linked parents",
+    "noParents": "No parents linked yet.",
+    "stepsTitle": "How does a parent connect?",
+    "steps": {
+      "1": {
+        "title": "Scan the QR code",
+        "text": "Your parent opens the phone camera and points it at the QR code above."
+      },
+      "2": {
+        "title": "Enter the phone number",
+        "text": "On the page that opens, your parent enters their phone number."
+      },
+      "3": {
+        "title": "Sign in or sign up",
+        "text": "With an account — they enter the password. Without one — they enter their name, confirm the SMS code and set a password."
+      },
+      "4": {
+        "title": "Parent page",
+        "text": "You're linked to your parent's account automatically and they can start following your results."
+      }
+    },
+    "stepsHint": "Just 4 steps to start following your child's learning"
+  },
+  "parentConnect": {
+    "badge": "Parent page",
+    "noToken": "QR code not found. Scan the QR code from the \"For parents\" section of your child's profile.",
+    "invalidQr": "The QR code is invalid or expired.",
+    "invalidTitle": "Invalid QR code",
+    "yourChild": "Your child",
+    "phoneTitle": "Enter your phone number",
+    "phoneText": "Enter your phone number to connect to your child's account.",
+    "passwordTitle": "Enter your password",
+    "passwordText": "Account found. Enter your password to sign in.",
+    "welcomeBack": "Welcome back",
+    "nameTitle": "Sign up",
+    "nameText": "This number isn't registered yet. Enter your full name — we'll send an SMS code to your phone.",
+    "codeTitle": "Enter the SMS code",
+    "codeText": "Enter the code sent to {{phone}}.",
+    "setPasswordTitle": "Set a password",
+    "setPasswordText": "Next time, sign in with this phone number and password.",
+    "continue": "Continue",
+    "login": "Sign in",
+    "getCode": "Get SMS code",
+    "confirm": "Confirm",
+    "finish": "Save and sign in",
+    "back": "Back",
+    "password": "Password",
+    "newPassword": "New password (at least 6 characters)",
+    "repeatPassword": "Repeat password",
+    "fullName": "Full name",
+    "nameRequired": "Enter your full name",
+    "passwordMin": "Password must be at least 6 characters",
+    "passwordMismatch": "Passwords don't match",
+    "codeSent": "SMS code sent",
+    "resend": "Resend code",
+    "resendIn": "Resend code in {{time}}",
+    "linked": "Your child has been linked to your account"
+  },
   "parentHome": {
     "menuLabel": "Home",
     "welcome": "Welcome,",
