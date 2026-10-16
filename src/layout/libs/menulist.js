@@ -1,7 +1,7 @@
 import { LuBookText, LuUser, LuHouse } from 'react-icons/lu'
 import { TbCheckbox, TbCoins, TbWorldWww } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
-import { BsBarChart, BsGraphUpArrow } from 'react-icons/bs'
+import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
 import { PiBooksLight, PiTrophy } from 'react-icons/pi'
 import { PiUsers } from 'react-icons/pi'
@@ -346,19 +346,6 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TEACHER, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-  {
-    key: 'kpi-dashboard',
-    path: '/dashboard/teacher/kpi',
-    label: t('kpiDashboard'),
-    icon: (isActive) => (
-      <BsGraphUpArrow
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={24}
-      />
-    ),
-    roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

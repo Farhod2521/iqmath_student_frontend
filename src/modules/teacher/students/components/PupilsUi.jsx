@@ -20,7 +20,20 @@ const TEXTS = {
     registered: "Ro'yxatdan o'tgan",
     lastLogin: 'Oxirgi kirish',
     empty: 'Foydalanuvchilar topilmadi',
-    emptyHint: "Filtrlarni o'zgartirib ko'ring"
+    emptyHint: "Filtrlarni o'zgartirib ko'ring",
+    filters: 'Filtrlar',
+    registeredDate: "Ro'yxatdan o'tgan sana",
+    dateFrom: 'dan',
+    dateTo: 'gacha',
+    yesterday: 'Kecha',
+    last7: '7 kun',
+    last30: '30 kun',
+    thisMonth: 'Shu oy',
+    language: 'Tili',
+    device: 'Qurilma',
+    resetFilters: 'Tozalash',
+    close: 'Yopish',
+    allShort: 'Hammasi'
   },
   ru: {
     subtitle: 'Список и статистика всех пользователей платформы',
@@ -38,7 +51,20 @@ const TEXTS = {
     registered: 'Регистрация',
     lastLogin: 'Последний вход',
     empty: 'Пользователи не найдены',
-    emptyHint: 'Попробуйте изменить фильтры'
+    emptyHint: 'Попробуйте изменить фильтры',
+    filters: 'Фильтры',
+    registeredDate: 'Дата регистрации',
+    dateFrom: 'с',
+    dateTo: 'по',
+    yesterday: 'Вчера',
+    last7: '7 дней',
+    last30: '30 дней',
+    thisMonth: 'Этот месяц',
+    language: 'Язык',
+    device: 'Устройство',
+    resetFilters: 'Сбросить',
+    close: 'Закрыть',
+    allShort: 'Все'
   }
 }
 
