@@ -1,5 +1,5 @@
 import { LuBookText, LuUser, LuHouse } from 'react-icons/lu'
-import { TbCheckbox, TbCoins, TbWorldWww } from 'react-icons/tb'
+import { TbCheckbox, TbCoins } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
 import { BsBarChart } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
@@ -333,19 +333,6 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
-    type: MenuType.LINK
-  },
-  {
-    key: 'site-statistics',
-    path: '/dashboard/teacher/site-statistics',
-    label: t('siteStatistics'),
-    icon: (isActive) => (
-      <TbWorldWww
-        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
-        size={26}
-      />
-    ),
-    roles: [RolesList.TEACHER, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

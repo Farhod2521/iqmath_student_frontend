@@ -25,6 +25,7 @@ export const URLS = {
   studentSubjects: '/api/v1/func_student/my-subjects/',
   studentHomeDashboard: '/api/v1/func_student/student/home-dashboard/app',
   studentStudyStats: '/api/v1/func_student/student/studystats-by-date/app',
+  studentStreak: '/api/v1/func_student/streak/',
   studentRating: '/api/v1/func_student/student/rating/app',
   teacherSubjects: '/api/v1/func_teacher/my-subjects/',
   subjectNameList: '/api/v1/func_student/subject/name-list/',

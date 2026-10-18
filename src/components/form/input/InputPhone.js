@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Phone } from 'lucide-react'
+import { useAuthMascot } from '@/home/components/auth/AuthMascot'
 import { fieldBorder, fieldBox, fieldIcon, fieldInput } from '../field/fieldStyles'
 
 const getDigits = (value = '') => value.replace(/\D/g, '').slice(0, 9)
@@ -26,15 +27,19 @@ const countDigitsBeforeCursor = (value, cursorPos) => {
   return value.slice(0, cursorPos).replace(/\D/g, '').length
 }
 
-const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, ...props }, ref) => {
+const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, onFocus, name, ...props }, ref) => {
   const { t } = useTranslation()
   const [digits, setDigits] = useState('')
   const [error, setError] = useState(false)
+  // Maskot ko'zlari yozilayotgan raqamlar ortidan yuradi
+  const mascotLook = useAuthMascot((state) => state.look)
+  const mascotReset = useAuthMascot((state) => state.reset)
 
   const displayValue = formatPhone(digits)
 
   const syncChange = (nextDigits) => {
     setDigits(nextDigits)
+    mascotLook(nextDigits.length / 9)
 
     if (nextDigits.length === 9 || nextDigits.length === 0) {
       setError(false)
@@ -74,6 +79,7 @@ const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, .
   }
 
   const handleBlur = (e) => {
+    mascotReset()
     if (digits.length > 0 && digits.length < 9) {
       setError(true)
     } else {
@@ -109,6 +115,10 @@ const InputPhone = React.forwardRef(({ className = '', onChange, onBlur, name, .
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
+          onFocus={(event) => {
+            mascotLook(digits.length / 9, event.target)
+            onFocus?.(event)
+          }}
           {...props}
         />
       </div>

@@ -13,48 +13,73 @@ function SidebarPlan() {
   const router = useRouter()
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
+  // Ma'lumot kelguncha "Muddati tugagan" ko'rsatilmaydi — yuklanish holati turadi
+  const [loaded, setLoaded] = useState(false)
   const { openPricingModal } = usePricingModalStore()
 
   const handleInitiatePayment = () => {
     openPricingModal(data.payment_amount)
   }
 
+  // Login qilingan zahoti rol hali aniqlanmagan bo'ladi — shuning uchun rol aniqlanganda qayta so'raladi
   useEffect(() => {
-    if (currentRole !== RolesList.STUDENT) return
+    if (currentRole !== RolesList.STUDENT) return undefined
+    let alive = true
+    setLoaded(false)
     getPaymentTrailDays()
       .then((res) => {
-        setData((prev) => ({ ...prev, ...res?.data }))
+        if (alive) setData((prev) => ({ ...prev, ...res?.data }))
       })
-      .catch((error) => {})
-  }, [])
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setLoaded(true)
+      })
+    return () => {
+      alive = false
+    }
+  }, [currentRole])
 
   if (currentRole !== RolesList.STUDENT) {
     return <></>
+  }
+
+  if (!loaded) {
+    return (
+      <div className="border-t px-[24px] py-[24px]">
+        <div className="h-[130px] animate-pulse rounded-[16px] bg-gradient-to-r from-[#E9E7FF] to-[#DCD9FF]" />
+      </div>
+    )
   }
 
   const isActive = data.is_paid || data.days_until_next_payment > 0
 
   return (
     <div className="border-t px-[24px] py-[24px]">
-      <div
-        className="rounded-[16px] bg-cover bg-right bg-no-repeat p-[16px] text-white"
-        style={{ backgroundImage: `url(/images/homepage/tolovbacground.png)` }}
-      >
-        <div className="flex items-center gap-1.5 text-[13px] font-bold tracking-wide">
+      <div className="relative overflow-hidden rounded-[16px] bg-[#0E2A6B] p-[16px] text-white">
+        {/* Samarqand — Registon manzarasi */}
+        <div
+          className="absolute inset-0 bg-cover bg-[65%_center] bg-no-repeat"
+          style={{ backgroundImage: `url(/images/homepage/samarkand-card.webp)` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F5C]/95 via-[#0E2A6B]/70 to-[#0E2A6B]/10" />
+
+        <div className="relative flex items-center gap-1.5 text-[13px] font-bold tracking-wide">
           <Gem size={14} />
           {t('premiumLabel')}
         </div>
 
-        <p className="mt-2 text-[13px] font-medium text-white/85">
+        <p className="relative mt-2 text-[13px] font-medium text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.35)]">
           {isActive ? t('premiumActive') : t('premiumExpired')}
           {data.days_until_next_payment > 0 && <> • {t('premiumDaysLeft', { day: data.days_until_next_payment })}</>}
         </p>
 
-        {data.end_date && <p className="text-[13px] text-white/70">{t('premiumUntil', { date: data.end_date })}</p>}
+        {data.end_date && (
+          <p className="relative text-[13px] text-white/80 [text-shadow:0_1px_4px_rgba(0,0,0,0.35)]">{t('premiumUntil', { date: data.end_date })}</p>
+        )}
 
         <button
           onClick={isActive ? () => router.push('/dashboard/student/subjects') : handleInitiatePayment}
-          className="mt-4 flex w-1/2 items-center justify-center gap-1.5 rounded-[10px] bg-white/95 py-2 text-[12px] font-semibold text-[#5453f4] transition hover:bg-white"
+          className="relative mt-4 flex w-1/2 items-center justify-center gap-1.5 rounded-[10px] bg-white/95 py-2 text-[12px] font-semibold text-[#1D4ED8] transition hover:bg-white"
         >
           {isActive ? t('extendPlan') : t('makePayment')}
           <ArrowRight size={15} />

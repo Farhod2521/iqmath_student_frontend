@@ -41,8 +41,14 @@ const MONTH_LABELS_UZ = [
   'Dekabr'
 ]
 
+const STREAK_TEXT = {
+  uz: { streak: 'kun ketma-ket', best: 'Eng uzun seriya', days: 'kun' },
+  ru: { streak: 'дн. подряд', best: 'Лучшая серия', days: 'дн.' }
+}
+
 const HomeCalendarCard = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const streakText = STREAK_TEXT[i18n.language === 'ru' ? 'ru' : 'uz']
   const { data: session } = useSession()
   const today = useMemo(() => new Date(), [])
   const [cursor, setCursor] = useState({ year: today.getFullYear(), month: today.getMonth() })
@@ -65,14 +71,23 @@ const HomeCalendarCard = () => {
     enabled: !!session?.accessToken
   })
 
+  // Kirilgan kunlar (har kuni birinchi kirishda Navbar belgilaydi)
+  const { data: streakData } = useGetQuery({
+    key: [KEYS.studentStreak, cursor.year, cursor.month],
+    url: URLS.studentStreak,
+    params: { year: cursor.year, month: cursor.month + 1 },
+    enabled: !!session?.accessToken
+  })
+  const streak = get(streakData, 'data.streak', 0)
+  const bestStreak = get(streakData, 'data.best_streak', 0)
+
   const activeDays = useMemo(() => {
-    const results = get(studyStats, 'data.results', [])
-    const set = new Set()
-    results.forEach((item) => {
+    const set = new Set(get(streakData, 'data.days', []))
+    get(studyStats, 'data.results', []).forEach((item) => {
       if (item.completed) set.add(item.date)
     })
     return set
-  }, [studyStats])
+  }, [studyStats, streakData])
 
   const goToMonth = (delta) => {
     setCursor((prev) => {
@@ -83,7 +98,16 @@ const HomeCalendarCard = () => {
 
   return (
     <div className="rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm">
-      <h3 className="text-base font-bold text-[#191C1D]">{t('studentHome.calendar')}</h3>
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-base font-bold text-[#191C1D]">{t('studentHome.calendar')}</h3>
+        <span
+          className="inline-flex shrink-0 items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-semibold text-[#F97316]"
+          title={`${streakText.best}: ${bestStreak} ${streakText.days}`}
+        >
+          <Flame size={13} className="fill-[#F97316] text-[#F97316]" />
+          {streak} {streakText.streak}
+        </span>
+      </div>
 
       <div className="mt-3 flex items-center justify-between">
         <button

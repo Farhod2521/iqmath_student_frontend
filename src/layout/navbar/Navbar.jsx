@@ -2,6 +2,8 @@ import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { Bell, Flame, Gem, Menu, Search } from 'lucide-react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { request } from '@/services/api'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
@@ -13,8 +15,7 @@ import NavbarCoins from './NavbarCoins'
 import NavbarPoints from './NavbarPoints'
 import NavbarProfile from './NavbarProfile'
 import LanguageDropdown from '@/components/language'
-
-const STREAK_DAYS = 5 // TODO: static placeholder until the backend exposes a streak endpoint
+import PremiumCrown from '@/components/icons/PremiumCrown'
 
 const Navbar = () => {
   const { t, i18n } = useTranslation()
@@ -37,6 +38,31 @@ const Navbar = () => {
   )[0]
 
   const isStudent = currentRole === RolesList.STUDENT
+  const queryClient = useQueryClient()
+
+  // Kunlik kirish: saytga kirilganda bugun belgilanadi (backend kuniga bitta yozuv saqlaydi)
+  const { data: streakData } = useQuery(
+    [KEYS.studentStreakCheckin, session?.id],
+    () => request.post(URLS.studentStreak).then((res) => res.data),
+    {
+      enabled: !!session?.accessToken && isStudent,
+      staleTime: 30 * 60_000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+      onSuccess: () => queryClient.invalidateQueries([KEYS.studentStreak])
+    }
+  )
+  const streakDays = get(streakData, 'streak', 0)
+
+  // Obunasi faol o'quvchilar ismi oldida oltin toj chiqadi
+  const { data: subscription } = useGetQuery({
+    key: KEYS.subscription,
+    url: URLS.subscription,
+    enabled: !!session?.accessToken && isStudent
+  })
+  const isPremium = isStudent && !!get(subscription, 'data.is_paid', false)
+  const crownTitle = i18n.language === 'ru' ? 'Премиум подписка' : 'Premium obuna'
+  const [greetBefore = '', greetAfter = ''] = t('studentHome.greeting', { name: '%%NAME%%' }).split('%%NAME%%')
   const ROLE_LABEL_KEY = { teacher: 'tutor', tutor: 'tutor', parent: 'parent', student: 'student' }
   const roleLabel = t(ROLE_LABEL_KEY[currentRole] || 'student')
 
@@ -56,7 +82,12 @@ const Navbar = () => {
           {isStudent ? (
             <>
               <h1 className="truncate text-[15px] font-bold leading-tight text-[#191C1D] sm:text-xl">
-                {t('studentHome.greeting', { name: fullName || t('studentHome.you') })} 👋
+                {greetBefore}
+                {isPremium ? (
+                  <PremiumCrown title={crownTitle} className="mx-0.5 inline-block h-[0.95em] w-[1.15em] -translate-y-[0.12em]" />
+                ) : null}
+                {fullName || t('studentHome.you')}
+                {greetAfter} 👋
               </h1>
               <p className="mt-0.5 truncate text-[11px] text-[#8A8A8E] sm:text-sm">
                 {t('studentHome.dailyGoal', { classNum: classNum || '', minutes: 15 })}
@@ -79,7 +110,7 @@ const Navbar = () => {
                 <Flame size={14} className="fill-[#F97316] text-[#F97316]" />
               </div>
               <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
-                <span className="text-sm font-bold text-[#191C1D] sm:text-base">{STREAK_DAYS}</span>
+                <span className="text-sm font-bold text-[#191C1D] sm:text-base">{streakDays}</span>
                 <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">
                   {t('studentHome.streakUnit')}
                 </span>
@@ -106,7 +137,10 @@ const Navbar = () => {
 
           {fullName && (
             <div className={`hidden max-w-[180px] text-right leading-tight ${isStudent ? '2xl:block' : 'sm:block'}`}>
-              <p className="truncate text-sm font-bold text-[#191C1D]">{fullName}</p>
+              <p className="flex items-center justify-end gap-1 text-sm font-bold text-[#191C1D]">
+                {isPremium ? <PremiumCrown title={crownTitle} className="h-4 w-5 shrink-0" /> : null}
+                <span className="truncate">{fullName}</span>
+              </p>
               <p className="text-xs text-[#8A8A8E]">{roleLabel}</p>
             </div>
           )}

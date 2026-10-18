@@ -1,12 +1,13 @@
-import LayoutAdmin from '@/layout/LayoutAdmin'
-import SiteStatistics from '@/modules/teacher/site-statistics/SiteStatistics'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
+// Sayt statistikasi endi "Statistika" sahifasining o'zida (kartalar ostida) — eski manzil o'sha yerga yo'naltiriladi
 function Index() {
-  return (
-    <LayoutAdmin>
-      <SiteStatistics />
-    </LayoutAdmin>
-  )
+  const router = useRouter()
+  useEffect(() => {
+    router.replace('/dashboard/teacher/statistics')
+  }, [router])
+  return null
 }
 
 export default Index
