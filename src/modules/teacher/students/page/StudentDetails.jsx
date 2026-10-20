@@ -4,12 +4,11 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import ContentLoader from '@/components/loader/content-loader'
 import { useTranslation } from 'react-i18next'
-import Image from 'next/image'
-import StudentSubjectsList from '../components/StudentSubjectsList'
 import StudentRewardModal from '../components/StudentRewardModal'
 import { useEffect, useRef, useState } from 'react'
 import { useUserStore } from '@/store'
 import { RolesList } from '@/layout/libs/menulist'
+import StudentOverview from '../overview/StudentOverview'
 
 const getRoleForAPI = (role) => {
   if (role === 'PARENT') return 'parent'
@@ -30,6 +29,9 @@ const StudentDetails = () => {
   const hasFetchedRef = useRef(false)
 
   const apiRole = role || getRoleForAPI(user?.role)
+  // O'qituvchi / admin o'quvchini ochsa — kabinet ko'rinishidagi yangi sahifa (chat bilan)
+  const isStaffViewer = [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN].includes(user?.role)
+  const showStudentOverview = apiRole === 'student' && isStaffViewer
 
   const { mutate, isLoading } = usePostQuery({
     hideSuccessToast: true
@@ -37,7 +39,7 @@ const StudentDetails = () => {
 
   // 🚀 FETCH DATA
   useEffect(() => {
-    if (!id || !session?.accessToken || !apiRole) return
+    if (!id || !session?.accessToken || !apiRole || showStudentOverview) return
     if (hasFetchedRef.current) return
 
     hasFetchedRef.current = true
@@ -53,12 +55,20 @@ const StudentDetails = () => {
         }
       }
     )
-  }, [id, apiRole, session?.accessToken])
+  }, [id, apiRole, session?.accessToken, showStudentOverview])
 
   // reset if id changes
   useEffect(() => {
     hasFetchedRef.current = false
   }, [id])
+
+  if (showStudentOverview) {
+    return (
+      <div className="p-4">
+        <StudentOverview studentId={id} />
+      </div>
+    )
+  }
 
   if (isLoading || !studentData) {
     return <ContentLoader />
@@ -66,83 +76,6 @@ const StudentDetails = () => {
 
   return (
     <div className="p-4 space-y-6">
-      {/* ================= ADMIN / TEACHER VIEW ================= */}
-      {(user?.role === RolesList.ADMIN || user?.role === RolesList.TEACHER) && apiRole === 'student' && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* LEFT */}
-          <div className="p-6 bg-white border rounded-xl">
-            <div className="flex flex-col items-center text-center">
-              <Image src="/icons/pupil.svg" alt="pupil" width={96} height={96} />
-              <h1 className="mt-2 text-xl font-bold">{studentData.full_name}</h1>
-
-              <span
-                className={`mt-2 px-3 py-1 rounded-full text-xs ${
-                  studentData.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                }`}
-              >
-                {studentData.is_active ? t('active') : t('inactive')}
-              </span>
-
-              <button
-                onClick={() => setIsRewardModalOpen(true)}
-                className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg"
-              >
-                {t('giveReward')}
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="p-6 bg-white border lg:col-span-2 rounded-xl">
-            <h3 className="mb-4 font-semibold">{t('paymentInfo')}</h3>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-              <div>
-                <p className="text-sm text-gray-500">{t('lastPayment')}</p>
-                <p className="font-semibold text-log">{studentData?.last_payment_amount?.toLocaleString()} UZS</p>
-                <p className="text-xs text-gray-400">
-                  {studentData?.last_payment_date} {studentData?.last_payment_time}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{t('total')}</p>
-                <p className="text-lg font-semibold">{studentData.total_paid_amount?.toLocaleString()} UZS</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{t('paymentStatus')}</p>
-                <div className="flex flex-col flex-wrap items-start mt-1 gap-x-3 gap-y-1">
-                  <span className="flex items-center text-sm text-yellow-600">
-                    <div className="w-2 h-2 mr-2 bg-yellow-400 rounded-full"></div>
-                    {studentData?.payment_status_count?.pending} {t('pending')}
-                  </span>
-                  <span className="flex items-center text-sm text-green-600">
-                    <div className="w-2 h-2 mr-2 bg-green-400 rounded-full"></div>
-                    {studentData?.payment_status_count?.success} {t('success')}
-                  </span>
-                  <span className="flex items-center text-sm text-red-600">
-                    <div className="w-2 h-2 mr-2 bg-red-400 rounded-full"></div>
-                    {studentData?.payment_status_count?.failed} {t('failed')}
-                  </span>
-                  <span className="flex items-center text-sm text-red-600">
-                    <div className="w-2 h-2 mr-2 bg-red-400 rounded-full"></div>
-                    {studentData?.is_active ? t('active') : t('inactive')}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{t('coins')}</p>
-                <p className="text-lg font-semibold">{studentData.coin}</p>
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">{t('SumScore')}</p>
-                <p className="text-lg font-semibold">{studentData.score}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ================= PARENT VIEW ================= */}
       {apiRole === RolesList.PARENT && (
         <div className="space-y-6">
@@ -338,9 +271,6 @@ const StudentDetails = () => {
           </div>
         </div>
       )}
-
-      {/* ================= STUDENT VIEW ================= */}
-      {apiRole === 'student' && <StudentSubjectsList />}
 
       {/* MODAL */}
       <StudentRewardModal

@@ -23,6 +23,22 @@ export const chatAPI = {
 
   getTeachersForTransfer: async () => (await request.get('/api/v1/func_chat/conversation/transfer/')).data,
 
+  // O'qituvchi o'quvchi sahifasidan to'g'ridan-to'g'ri chat ochadi (bor bo'lsa — o'shani qaytaradi)
+  createDirect: async (studentId) =>
+    (await request.post('/api/v1/func_chat/chat/create-direct/', { student_id: studentId })).data,
+
+  // Rasm / fayl yuborish (multipart)
+  sendFile: async ({ chatId, file, text }) => {
+    const form = new FormData()
+    form.append('file', file)
+    if (text) form.append('text', text)
+    return (
+      await request.post(`/api/v1/func_chat/chat/${chatId}/send/`, form, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+    ).data
+  },
+
   // *** YANGI CHAT BOSHLASH *** (TO'G'RILANGAN)
   startNewChat: async ({ text }) =>
     (
