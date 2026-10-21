@@ -95,7 +95,9 @@ function AuthSignIn() {
         window.location.href = '/dashboard/student/home'
       }
     } else {
-      toast.error(t('invalidLogin'))
+      // Serverning tushunarli xabari (masalan: "... 5 daqiqadan keyin qayta urinib ko'ring!")
+      const serverMessage = result?.error && !/^(CredentialsSignin|Login failed|Something went wrong)$/.test(result.error)
+      toast.error(serverMessage ? result.error : t('invalidLogin'))
     }
   }
 

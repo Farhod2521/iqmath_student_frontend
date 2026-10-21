@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Clock3, Info, ShieldAlert, Trash2, X } from 'lucide-react'
 import { DeviceIcon, formatDeviceDate } from './DeviceRow'
@@ -9,11 +11,28 @@ import { DeviceIcon, formatDeviceDate } from './DeviceRow'
  */
 function DeviceLimitModal({ info, onRemove, onClose, removingId }) {
   const { t } = useTranslation()
-  if (!info) return null
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
-  return (
-    <div className="fixed inset-0 z-[1000] flex items-end justify-center bg-[#0F172A]/55 backdrop-blur-sm sm:items-center sm:p-4">
-      <div className="relative max-h-[92dvh] w-full overflow-y-auto rounded-t-[28px] bg-white px-5 pb-6 pt-3 text-left shadow-2xl dark:bg-[#111A2B] sm:max-w-md sm:rounded-3xl sm:p-7">
+  // Oyna ochiq paytda orqadagi sahifa aylanmaydi
+  useEffect(() => {
+    if (!info) return undefined
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [info])
+
+  if (!info || !mounted) return null
+
+  // Portal: login kartasi (blur/transform) ichida "fixed" oyna karta chegarasiga qamalib, chetida ramka chiqib qolardi
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[1000] flex items-end justify-center bg-[#0F172A]/55 backdrop-blur-sm sm:items-center sm:p-4"
+      onClick={(e) => e.target === e.currentTarget && onClose?.()}
+    >
+      <div className="relative max-h-[92dvh] w-full overflow-y-auto overflow-x-hidden rounded-t-[28px] bg-white px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-3 text-left shadow-2xl dark:bg-[#111A2B] sm:max-w-md sm:rounded-3xl sm:p-7">
         {/* Mobil "tutqich" */}
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-[#E2E8F0] sm:hidden" />
 
@@ -26,12 +45,14 @@ function DeviceLimitModal({ info, onRemove, onClose, removingId }) {
           <X size={18} />
         </button>
 
-        <div className="flex flex-col items-center text-center">
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FEF3C7] text-[#D97706] ring-8 ring-[#FFFBEB] dark:ring-[#D97706]/10">
-            <ShieldAlert size={30} />
+        <div className="flex flex-col items-center px-2 text-center sm:px-6">
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#FEF3C7] text-[#D97706] ring-8 ring-[#FFFBEB] dark:ring-[#D97706]/10 sm:h-16 sm:w-16">
+            <ShieldAlert size={28} />
           </span>
-          <h3 className="mt-4 text-xl font-bold text-[#191C1D] dark:text-white">{t('devices.limitTitle')}</h3>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#5B6478] dark:text-gray-300">
+          <h3 className="mt-4 break-words text-lg font-bold leading-snug text-[#191C1D] dark:text-white sm:text-xl">
+            {t('devices.limitTitle')}
+          </h3>
+          <p className="mt-2 w-full max-w-sm break-words text-sm leading-relaxed text-[#5B6478] dark:text-gray-300">
             {t('devices.limitText', { count: info.max_devices || 2 })}
           </p>
         </div>
@@ -57,9 +78,9 @@ function DeviceLimitModal({ info, onRemove, onClose, removingId }) {
                     {device.is_current ? (
                       <p className="mt-1 text-xs font-medium text-[#16A34A]">{t('devices.thisDevice')}</p>
                     ) : (
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#8A93A6]">
-                        <Clock3 size={13} className="shrink-0" />
-                        <span>{t('devices.lastActive', { date: formatDeviceDate(device.last_used_at) })}</span>
+                      <p className="mt-1 flex items-start gap-1.5 text-xs leading-snug text-[#8A93A6]">
+                        <Clock3 size={13} className="mt-px shrink-0" />
+                        <span className="min-w-0 break-words">{t('devices.lastActive', { date: formatDeviceDate(device.last_used_at) })}</span>
                       </p>
                     )}
                   </div>
@@ -87,10 +108,11 @@ function DeviceLimitModal({ info, onRemove, onClose, removingId }) {
 
         <div className="mt-4 flex items-start gap-2 rounded-xl bg-[#EFF6FF] px-3 py-2.5 text-xs leading-relaxed text-[#3B5BAA] dark:bg-[#1E2B48] dark:text-[#9DB8F5]">
           <Info size={15} className="mt-px shrink-0" />
-          <span>{t('devices.limitHint')}</span>
+          <span className="min-w-0 break-words">{t('devices.limitHint')}</span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

@@ -5,6 +5,7 @@ import { URLS } from '../../constants/url'
 import { useUserStore } from '@/store/userStore'
 import { useAuthTabStore } from '@/store'
 import { DEVICE_ID_KEY } from '@/shared/utils/device'
+import { exitImpersonation } from '@/components/ImpersonationBar'
 
 const request = axios.create({
   baseURL: config.API_URL,
@@ -32,8 +33,30 @@ const clearUserData = () => {
   sessionStorage.clear()
 }
 
+/**
+ * Mentor "O'quvchi sifatida kirish" rejimi: o'quvchi tokeni sessionStorage'da (access_token),
+ * mentorniki esa old_token'da turadi. Bu rejimda barcha so'rovlar o'quvchi nomidan ketishi kerak —
+ * aks holda backend mentorni ko'radi (boblar 100%, mavzular ballsiz).
+ */
+const getImpersonationToken = () => {
+  if (typeof window === 'undefined') return null
+  try {
+    return sessionStorage.getItem('old_token') ? sessionStorage.getItem('access_token') : null
+  } catch {
+    return null
+  }
+}
+
+// O'quvchi tokeni (30 daqiqa) tugasa — mentor tizimdan chiqarilmaydi, o'z sahifasiga qaytariladi
+const endImpersonation = exitImpersonation
+
 request.interceptors.request.use(
   async (axiosConfig) => {
+    const impersonationToken = getImpersonationToken()
+    if (impersonationToken) {
+      axiosConfig.headers.Authorization = `Bearer ${impersonationToken}`
+      return axiosConfig
+    }
     const session = await getSession()
     if (session?.accessToken) {
       axiosConfig.headers.Authorization = `Bearer ${session.accessToken}`
@@ -47,6 +70,12 @@ request.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { status, config: originalRequest } = error?.response || {}
+
+    // O'quvchi sifatida kirilgan: mentor tokeni bilan qayta urinish ham, chiqarib yuborish ham kerak emas
+    if (getImpersonationToken()) {
+      if (status === 401) endImpersonation()
+      return Promise.reject(error)
+    }
 
     // Handle 401 - Unauthorized
     if (status === 401) {

@@ -2,7 +2,7 @@ import React from 'react'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { FilterSelect, formatNumber, usePupilsText } from './PupilsUi'
 
-const PAGE_SIZES = [100, 200, 300, 400, 500, 1000]
+const PAGE_SIZES = [10, 20, 50, 100, 200, 300, 400, 500, 1000]
 
 /** Ko'rsatiladigan sahifa raqamlari: 1 … 4 5 6 … 125 */
 const pageItems = (current, total) => {

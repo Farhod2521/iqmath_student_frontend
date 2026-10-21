@@ -90,6 +90,7 @@ function Students() {
   const [filterData, setFilterData] = useState(null)
   const [isExportingAll, setIsExportingAll] = useState(false)
   const [studentsData, setStudentsData] = useState([])
+  const [studentsTotal, setStudentsTotal] = useState(0)
   const [counts, setCounts] = useState(null)
 
   useEffect(() => {
@@ -152,8 +153,9 @@ function Students() {
     setIsExportingAll(false)
   }, [])
 
-  const handleStudentsDataChange = useCallback((data) => {
+  const handleStudentsDataChange = useCallback((data, total) => {
     setStudentsData(data)
+    setStudentsTotal(total ?? data.length)
   }, [])
 
   const lang = i18n.language === 'ru' ? 'ru' : 'uz'
@@ -208,6 +210,7 @@ function Students() {
           onExportStart={handleExportStart}
           onExportEnd={handleExportEnd}
           studentsData={studentsData}
+          studentsTotal={studentsTotal}
         />
         <StudentTable
           filterData={filterData}

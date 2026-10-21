@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LuCalendar, LuEllipsis, LuLink, LuMonitor, LuMousePointerClick, LuSearch, LuSend, LuShare2, LuSmartphone, LuTablet } from 'react-icons/lu'
+import { LuCalendar, LuEllipsis, LuLink, LuMonitor, LuMousePointerClick, LuSearch, LuSend, LuShare2, LuSmartphone, LuTablet, LuX } from 'react-icons/lu'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
@@ -10,6 +10,7 @@ import DonutCard from './components/DonutCard'
 import BarList from './components/BarList'
 import TopPages from './components/TopPages'
 import NewUsersChart from './components/NewUsersChart'
+import ProductMetrics from './components/ProductMetrics'
 import { COLORS, PERIODS, countryName, flagUrl, formatLongDate } from './utils'
 
 const DEVICE_META = {
@@ -44,16 +45,31 @@ const todayIso = () => {
 
 const SiteStatistics = () => {
   const [period, setPeriod] = useState('today')
-  const [date, setDate] = useState(todayIso)
+  // Sana oralig'i filtri: ikkalasi tanlansa — shu oraliq bo'yicha statistika
+  const [range, setRange] = useState({ start: '', end: '' })
+  const isCustom = Boolean(range.start && range.end)
 
   const { data, isLoading, isFetching, isError } = useGetQuery({
     key: KEYS.siteStatistics,
     url: URLS.siteStatistics,
-    params: { period, date },
+    params: isCustom ? { start: range.start, end: range.end } : { period },
     refetchOnWindowFocus: true
   })
   const stats = data?.data
-  const periodMeta = PERIODS.find((p) => p.key === period)
+  const periodMeta = isCustom ? { previous: 'Oldingi davr' } : PERIODS.find((p) => p.key === period)
+
+  const changeRange = (field, value) =>
+    setRange((prev) => {
+      const next = { ...prev, [field]: value }
+      // "dan" "gacha"dan keyin bo'lib qolsa — joyini almashtiramiz
+      if (next.start && next.end && next.start > next.end) return { start: next.end, end: next.start }
+      return next
+    })
+
+  const choosePeriod = (key) => {
+    setPeriod(key)
+    setRange({ start: '', end: '' })
+  }
 
   const devices = (stats?.devices?.items || []).map((d) => ({ ...d, ...(DEVICE_META[d.key] || DEVICE_META.other) }))
   const sources = (stats?.sources?.items || []).map((s) => ({ ...s, ...(SOURCE_META[s.key] || SOURCE_META.referral) }))
@@ -92,31 +108,61 @@ const SiteStatistics = () => {
       <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#2A3547] dark:text-white">Sayt statistikasi</h1>
-          <p className="text-sm text-[#5A6A85] dark:text-[#7C8FAC]">iqmath.uz platformasining umumiy ko'rsatkichlari</p>
+          <p className="text-sm text-[#5A6A85] dark:text-[#7C8FAC]">
+            {isCustom
+              ? `${formatLongDate(range.start)} — ${formatLongDate(range.end)} oralig'idagi ko'rsatkichlar`
+              : "iqmath.uz platformasining umumiy ko'rsatkichlari"}
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <label className="relative flex items-center gap-2 rounded-lg border border-[#E9E9E9] bg-white px-3 py-2 text-sm text-[#2A3547] dark:border-[#2A3447] dark:bg-[#202936] dark:text-white">
-            <LuCalendar className="text-[#5A6A85]" />
-            <span>{formatLongDate(date)}</span>
+          <div
+            className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-1.5 text-sm text-[#2A3547] dark:bg-[#202936] dark:text-white ${
+              isCustom ? 'border-[#4F7CFF] ring-1 ring-[#4F7CFF]/30' : 'border-[#E9E9E9] dark:border-[#2A3447]'
+            }`}
+          >
+            <LuCalendar className="shrink-0 text-[#5A6A85]" />
             <input
               type="date"
-              value={date}
-              max={todayIso()}
-              onChange={(e) => e.target.value && setDate(e.target.value)}
-              className="absolute inset-0 cursor-pointer opacity-0"
-              aria-label="Sanani tanlash"
+              value={range.start}
+              max={range.end || todayIso()}
+              onChange={(e) => changeRange('start', e.target.value)}
+              className="w-[118px] bg-transparent text-sm outline-none dark:[color-scheme:dark]"
+              aria-label="Boshlanish sanasi"
+              title="Dan"
             />
-          </label>
+            <span className="text-[#5A6A85]">—</span>
+            <input
+              type="date"
+              value={range.end}
+              min={range.start || undefined}
+              max={todayIso()}
+              onChange={(e) => changeRange('end', e.target.value)}
+              className="w-[118px] bg-transparent text-sm outline-none dark:[color-scheme:dark]"
+              aria-label="Tugash sanasi"
+              title="Gacha"
+            />
+            {range.start || range.end ? (
+              <button
+                type="button"
+                onClick={() => setRange({ start: '', end: '' })}
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[#5A6A85] hover:bg-[#F6F8FB] dark:hover:bg-[#2A3447]"
+                aria-label="Oraliqni tozalash"
+                title="Tozalash"
+              >
+                <LuX />
+              </button>
+            ) : null}
+          </div>
 
           <div className="flex overflow-hidden rounded-lg border border-[#E9E9E9] bg-white dark:border-[#2A3447] dark:bg-[#202936]">
             {PERIODS.map((p) => (
               <button
                 key={p.key}
                 type="button"
-                onClick={() => setPeriod(p.key)}
+                onClick={() => choosePeriod(p.key)}
                 className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  period === p.key
+                  !isCustom && period === p.key
                     ? 'bg-[#4F7CFF] text-white'
                     : 'text-[#5A6A85] hover:bg-[#F6F8FB] dark:text-[#AAB7CF] dark:hover:bg-[#2A3447]'
                 }`}
@@ -137,6 +183,12 @@ const SiteStatistics = () => {
       ) : (
         <div className={`transition-opacity ${isFetching ? 'opacity-60' : 'opacity-100'}`}>
           <StatCards cards={stats?.cards} previousLabel={periodMeta?.previous} />
+
+          <ProductMetrics
+            status={stats?.student_status}
+            conversion={stats?.conversion}
+            retention={stats?.retention}
+          />
 
           <div className="grid grid-cols-1 gap-6 mb-6 2xl:grid-cols-2">
             <VisitsChart data={stats?.timeline} />

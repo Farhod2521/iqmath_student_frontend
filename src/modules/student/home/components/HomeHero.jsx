@@ -3,18 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { ArrowRight, Star } from 'lucide-react'
 
-const JUBILEE = {
-  uz: { years: 'YIL', line1: 'YANGI O‘ZBEKISTON', line2: 'YANGI IMKONIYATLAR' },
-  ru: { years: 'ЛЕТ', line1: 'НОВЫЙ УЗБЕКИСТАН', line2: 'НОВЫЕ ВОЗМОЖНОСТИ' }
-}
-
 const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, continueLearning, isLoading }) => {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const visibleClasses = (classes || []).slice(-5)
 
   const lang = i18n.language === 'ru' ? 'ru' : 'uz'
-  const jubilee = JUBILEE[lang]
   const subjectName = get(continueLearning, `subject_name_${lang}`, '')
   const chapterName = get(continueLearning, `chapter_name_${lang}`, '')
   const chapterOrder = get(continueLearning, 'chapter_order', 1)
@@ -36,33 +30,13 @@ const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, conti
   return (
     <div className="flex flex-col gap-4">
       <div className="relative overflow-hidden rounded-2xl bg-[#DCEBFF] px-4 py-5 sm:min-h-[250px] sm:px-8 sm:py-7 lg:min-h-[272px]">
-        {/* Registon manzarasi */}
+        {/* Banner: Registon manzarasi, IQMATH kitoblari va noutbuk */}
         <div
-          className="absolute inset-0 bg-cover bg-[70%_center] sm:bg-center"
-          style={{ backgroundImage: 'url(/images/homepage/registan-hero.webp)' }}
+          className="absolute inset-0 bg-cover bg-[62%_center] sm:bg-center"
+          style={{ backgroundImage: 'url(/images/homepage/student-banner.webp)' }}
         />
         {/* Matn o'qilishi uchun chap tomonda yengil oq parda */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-white/25 sm:from-white/80 sm:via-white/45 sm:via-30% sm:to-transparent sm:to-55%" />
-
-        {/* O'zbekiston bayrog'i lentasi */}
-        <img
-          src="/images/homepage/uz-flag-ribbon.svg"
-          alt=""
-          className="pointer-events-none absolute bottom-0 right-0 hidden h-full w-[42%] object-contain object-right-bottom drop-shadow-[0_8px_14px_rgba(15,40,90,0.35)] sm:block"
-        />
-
-        {/* 35 yil — Yangi O'zbekiston */}
-        <div className="pointer-events-none absolute left-[66%] top-4 hidden -translate-x-1/2 text-center text-[#0E2A6B] md:block lg:top-5">
-          <p className="font-['Playfair_Display',Georgia,serif] text-[64px] font-extrabold leading-[0.9] lg:text-[84px]">
-            35
-            <span className="ml-1 align-[0.35em] text-[18px] font-bold lg:text-[22px]">{jubilee.years}</span>
-          </p>
-          <p className="mt-2 font-['Playfair_Display',Georgia,serif] text-[12px] font-bold leading-snug tracking-[0.06em] lg:text-[15px]">
-            {jubilee.line1}
-            <br />
-            {jubilee.line2}
-          </p>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-white/25 sm:from-white/85 sm:via-white/55 sm:via-30% sm:to-transparent sm:to-50%" />
 
         <div className="relative flex flex-col items-start justify-between gap-5 sm:min-h-[196px] sm:flex-row sm:items-end lg:min-h-[212px]">
           <div className="w-full max-w-md self-start">

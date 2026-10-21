@@ -21,7 +21,9 @@ const EMPTY_FILTERS = {
 }
 
 const StudentFilter = memo(
-  ({ onFilterChange, isExportingAll = false, onExportStart, onExportEnd, studentsData = [], filterData }) => {
+  ({ onFilterChange, isExportingAll = false, onExportStart, onExportEnd, studentsData = [], studentsTotal, filterData }) => {
+    // Topilganlar soni — sahifadagi qatorlar emas, bazadagi jami
+    const foundCount = studentsTotal ?? studentsData.length
     const { t, i18n } = useTranslation()
     const [isReportOpen, setIsReportOpen] = useState(false)
     const [isRewardHistoryOpen, setIsRewardHistoryOpen] = useState(false)
@@ -242,9 +244,9 @@ const StudentFilter = memo(
                 <Search size={15} />
                 <span>
                   {t('searchResultsFor')}: <b>&quot;{filters.search}&quot;</b>
-                  {studentsData.length > 0 ? (
+                  {!isLoading ? (
                     <span className="ml-1 text-[#2563EB]">
-                      ({studentsData.length} {t('studentsFound')})
+                      ({foundCount} {t('studentsFound')})
                     </span>
                   ) : null}
                 </span>

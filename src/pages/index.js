@@ -1,13 +1,8 @@
 import Landing from '@/home/Landing'
 import LayoutHome from '@/home/Layout'
-import { ThemeSettings } from '@/home/theme/Theme'
 import { useEffect } from 'react'
-import TawkChat from './tawk'
-import { useRouter } from 'next/router'
 
 export default function LandingPage() {
-  const router = useRouter()
-
   useEffect(() => {
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -16,27 +11,9 @@ export default function LandingPage() {
     }
   }, [])
 
-  const isDashboard = router.asPath.includes('/dashboard')
-
-  useEffect(() => {
-    if (!window.Tawk_API) return
-
-    // API method'larini tekshirib keyin chaqirish
-    try {
-      if (isDashboard) {
-        if (window.Tawk_API.hide) window.Tawk_API.hide()
-      } else {
-        if (window.Tawk_API.show) window.Tawk_API.show()
-      }
-    } catch (error) {
-      console.log('Tawk API not ready:', error)
-    }
-  }, [router.asPath])
-
   return (
     <LayoutHome>
       <Landing />
-      <TawkChat />
     </LayoutHome>
   )
 }

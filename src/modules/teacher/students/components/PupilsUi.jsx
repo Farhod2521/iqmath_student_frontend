@@ -33,7 +33,12 @@ const TEXTS = {
     device: 'Qurilma',
     resetFilters: 'Tozalash',
     close: 'Yopish',
-    allShort: 'Hammasi'
+    allShort: 'Hammasi',
+    children: 'Farzandlari',
+    childrenPending: '{count} tasi tasdiqlanmagan',
+    broughtStudents: "Olib kelgan o'quvchilar",
+    inGroups: 'Guruhlarda: {count}',
+    pcs: '{count} ta'
   },
   ru: {
     subtitle: 'Список и статистика всех пользователей платформы',
@@ -64,7 +69,12 @@ const TEXTS = {
     device: 'Устройство',
     resetFilters: 'Сбросить',
     close: 'Закрыть',
-    allShort: 'Все'
+    allShort: 'Все',
+    children: 'Дети',
+    childrenPending: '{count} не подтверждено',
+    broughtStudents: 'Привёл учеников',
+    inGroups: 'В группах: {count}',
+    pcs: '{count}'
   }
 }
 

@@ -11,6 +11,7 @@ import '@/services/i18n'
 import { UserProfileProvider } from '@/context/responseProvider'
 import { HeroUIProvider } from '@heroui/react'
 import SiteTracker from '@/components/SiteTracker'
+import ImpersonationBar from '@/components/ImpersonationBar'
 
 // function TawkManager() {
 //   const router = useRouter()
@@ -47,6 +48,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
             <UserProfileProvider>
               <Component {...pageProps} />
               <SiteTracker />
+              <ImpersonationBar />
               <Toaster />
               {/* <TawkManager /> */}
             </UserProfileProvider>

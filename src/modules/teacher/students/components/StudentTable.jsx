@@ -13,6 +13,27 @@ import { Avatar, LangFlag, usePupilsText } from './PupilsUi'
 
 const ROLE_LABEL = { student: 'student', parent: 'parent', teacher: 'teachers', tutor: 'tutor' }
 
+/** Ro'yxatdan o'tgan sana: kun + pastida vaqt */
+const DateCell = ({ date, time }) =>
+  date ? (
+    <span className="flex flex-col leading-tight">
+      <span className="font-medium text-[#0F1B3D]">{date}</span>
+      {time ? <span className="text-xs text-[#8A93A6]">{time}</span> : null}
+    </span>
+  ) : (
+    <span className="text-[#A0A8BA]">—</span>
+  )
+
+/** Son ("3 ta") + ixtiyoriy izoh */
+const CountCell = ({ value, hint, tp }) => (
+  <span className="flex flex-col leading-tight">
+    <span className={`font-semibold ${value ? 'text-[#0F1B3D]' : 'text-[#A0A8BA]'}`}>
+      {tp('pcs', { count: value || 0 })}
+    </span>
+    {hint ? <span className="text-xs text-[#8A93A6]">{hint}</span> : null}
+  </span>
+)
+
 /** Qatordagi "⋮" menyusi: mukofot, kunlik vazifalar, o'quvchi sifatida kirish */
 // Jadval gorizontal aylantiriladi (overflow) — menyu kesilib qolmasligi uchun
 // u ekranga nisbatan (fixed) joylashadi; pastda joy bo'lmasa tepaga ochiladi.
@@ -110,8 +131,16 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
   const [pagination, setPagination] = useState({ current: 1, limit: 100, total: 0, totalPages: 0 })
   const [data, setData] = useState([])
 
+  // Faqat oxirgi so'rov natijasi ko'rsatiladi: oldingisi bekor qilinadi.
+  // Aks holda sekin kelgan eski javob (masalan, qidiruvsiz "Faol emas") yangi qidiruv natijasini bosib ketardi.
+  const abortRef = useRef(null)
+  useEffect(() => () => abortRef.current?.abort(), [])
+
   const getData = useCallback(
     (page = 1, limit = 10, filters = {}) => {
+      abortRef.current?.abort()
+      const controller = new AbortController()
+      abortRef.current = controller
       setIsLoadingData(true)
 
       const params = { page, size: limit, ...filters }
@@ -120,8 +149,9 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
       })
 
       request
-        .get(URLS.studentList, { params })
+        .get(URLS.studentList, { params, signal: controller.signal })
         .then((res) => {
+          if (controller.signal.aborted) return
           const newData = res.data.results || []
           setData(newData)
           setPagination({
@@ -130,29 +160,40 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
             total: res.data.total || 0,
             totalPages: res.data.total_pages || 0
           })
-          if (onStudentsDataChange) onStudentsDataChange(newData)
+          if (onStudentsDataChange) onStudentsDataChange(newData, res.data.total || 0)
         })
         .catch((error) => {
+          if (controller.signal.aborted || error?.name === 'CanceledError' || error?.code === 'ERR_CANCELED') return
           console.error(t('errorStudentInformation'), error)
           setData([])
-          if (onStudentsDataChange) onStudentsDataChange([])
+          if (onStudentsDataChange) onStudentsDataChange([], 0)
           toast.error(t('errorLoadingStudents'))
         })
-        .finally(() => setIsLoadingData(false))
+        .finally(() => {
+          if (abortRef.current === controller) setIsLoadingData(false)
+        })
     },
     [t, onStudentsDataChange]
   )
 
+  // Qaysi sahifa yuklangan — ikki effekt bir xil so'rovni ikki marta yubormasligi uchun
+  const loadedPageRef = useRef(1)
+
+  // Filtr yoki sahifa hajmi o'zgarsa — 1-sahifadan
   useEffect(() => {
     if (!filterData) return
+    loadedPageRef.current = 1
     setPagination((prev) => ({ ...prev, current: 1 }))
     getData(1, pagination.limit, filterData)
   }, [filterData, getData, pagination.limit])
 
+  // Foydalanuvchi sahifani almashtirganda (1-sahifaga qaytganda ham)
   useEffect(() => {
-    if (!filterData) return
-    if (pagination.current > 1) getData(pagination.current, pagination.limit, filterData)
-  }, [pagination.current, pagination.limit, filterData, getData])
+    if (!filterData || pagination.current === loadedPageRef.current) return
+    loadedPageRef.current = pagination.current
+    getData(pagination.current, pagination.limit, filterData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagination.current])
 
   const handleExportAllStudents = useCallback(async () => {
     onExportStart()
@@ -197,23 +238,18 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
   const handleSignAsStudent = (s) => {
     postLoginAsStudent(s.id)
       .then((res) => {
-        // Avval joriy tokenni saqlaymiz — sessionStorage yoki NextAuth session'dan
-        let currentAccessToken = sessionStorage.getItem('access_token')
-        if (!currentAccessToken && session?.accessToken) currentAccessToken = session.accessToken
-        if (!currentAccessToken) return
+        const studentToken = res.data?.access_token
+        if (!studentToken || !session?.accessToken) return
 
-        // Yangi tokenni o'quvchi tokeni sifatida, o'qituvchi tokenini vaqtincha saqlaymiz
-        sessionStorage.setItem('access_token', res.data?.access_token)
-        sessionStorage.setItem('old_token', currentAccessToken)
+        // O'quvchi tokeni bilan barcha so'rovlar o'quvchi nomidan ketadi (services/api interceptor).
+        // old_token — rejim belgisi (sessionStorage faqat shu tab uchun, tab yopilsa rejim tugaydi)
+        sessionStorage.setItem('access_token', studentToken)
+        sessionStorage.setItem('old_token', session.accessToken)
+        sessionStorage.setItem('impersonated_name', res.data?.full_name || s.full_name || '')
 
-        // User-store ni vaqtincha student qilib o'zgartiramiz
-        const currentUser = JSON.parse(localStorage.getItem('user-store') || '{}')
-        if (currentUser.user) {
-          currentUser.user.role = 'student'
-          localStorage.setItem('user-store', JSON.stringify(currentUser))
-        }
-
-        router.push('/dashboard/student/subjects')
+        // To'liq qayta yuklash: mentor nomidan keshlangan so'rovlar (boblar 100% va h.k.) qolib ketmasin,
+        // profil o'quvchi tokeni bilan qayta olinadi va menyu o'quvchiniki bo'ladi
+        window.location.href = '/dashboard/student/subjects'
       })
       .catch((err) => {
         console.log(err)
@@ -256,6 +292,11 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
   }, [])
 
   const isStudent = filterData?.role === 'student'
+  const isParent = filterData?.role === 'parent'
+  const isTutor = filterData?.role === 'tutor'
+  // Diagnostika va kunlik vazifa faqat o'quvchilarga tegishli (aralash ro'yxatda ustun qoladi, boshqalarda "—")
+  const showStudentColumns = isStudent || !filterData?.role
+  const rowIsStudent = (row) => isStudent || row?.role === 'Student'
   const canOpenDetails = filterData?.role !== 'teacher'
   const roleLabel = (row) => {
     const role = filterData?.role || row?.role
@@ -282,8 +323,15 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                 <th className={`${headClass} w-14 pl-5`}>ID</th>
                 <th className={headClass}>{t('user')}</th>
                 <th className={headClass}>{t('status')}</th>
-                <th className={headClass}>{t('diagnosticsStatus')}</th>
-                <th className={headClass}>{tp('dailyTask')}</th>
+                {showStudentColumns ? (
+                  <>
+                    <th className={headClass}>{t('diagnosticsStatus')}</th>
+                    <th className={headClass}>{tp('dailyTask')}</th>
+                  </>
+                ) : null}
+                {isParent ? <th className={headClass}>{tp('children')}</th> : null}
+                {isTutor ? <th className={headClass}>{tp('broughtStudents')}</th> : null}
+                {!showStudentColumns ? <th className={headClass}>{t('registrationDate')}</th> : null}
                 {isStudent ? (
                   <>
                     <th className={headClass}>
@@ -338,6 +386,8 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                         <Pill tone="bg-[#F1F5F9] text-[#64748B]">{t('statusInactive')}</Pill>
                       )}
                     </td>
+                    {showStudentColumns && rowIsStudent(row) ? (
+                      <>
                     <td className={cellClass}>
                       {row.has_diagnost ? (
                         <Pill tone="bg-[#DBEAFE] text-[#1D4ED8]">{t('submitted')}</Pill>
@@ -358,6 +408,40 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                         {t(row.completed_today ? 'yes' : 'no')}
                       </button>
                     </td>
+                      </>
+                    ) : showStudentColumns ? (
+                      <>
+                        <td className={`${cellClass} text-[#A0A8BA]`}>—</td>
+                        <td className={`${cellClass} text-[#A0A8BA]`}>—</td>
+                      </>
+                    ) : null}
+                    {isParent ? (
+                      <td className={cellClass}>
+                        <CountCell
+                          value={row.children_count}
+                          hint={
+                            row.children_count > row.confirmed_children_count
+                              ? tp('childrenPending', { count: row.children_count - row.confirmed_children_count })
+                              : null
+                          }
+                          tp={tp}
+                        />
+                      </td>
+                    ) : null}
+                    {isTutor ? (
+                      <td className={cellClass}>
+                        <CountCell
+                          value={row.brought_students_count}
+                          hint={row.group_students_count ? tp('inGroups', { count: row.group_students_count }) : null}
+                          tp={tp}
+                        />
+                      </td>
+                    ) : null}
+                    {!showStudentColumns ? (
+                      <td className={cellClass}>
+                        <DateCell date={registeredDate} time={registeredTime} />
+                      </td>
+                    ) : null}
                     {isStudent ? (
                       <>
                         <td className={cellClass}>
@@ -373,14 +457,7 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                           )}
                         </td>
                         <td className={cellClass}>
-                          {registeredDate ? (
-                            <span className="flex flex-col leading-tight">
-                              <span className="font-medium text-[#0F1B3D]">{registeredDate}</span>
-                              {registeredTime ? <span className="text-xs text-[#8A93A6]">{registeredTime}</span> : null}
-                            </span>
-                          ) : (
-                            <span className="text-[#A0A8BA]">—</span>
-                          )}
+                          <DateCell date={registeredDate} time={registeredTime} />
                         </td>
                         <td className={cellClass}>
                           {row.remaining_days || row.subscription_end_date ? (
@@ -441,18 +518,23 @@ function StudentTable({ filterData = {}, isExportingAll, onExportStart, onExport
                               tone: 'bg-[#FEF3C7] text-[#D97706]',
                               onClick: () => handleGiveReward(row)
                             },
-                            {
-                              icon: ListChecks,
-                              label: tp('dailyTasks'),
-                              tone: 'bg-[#DCFCE7] text-[#16A34A]',
-                              onClick: () => handleOpenDailyTasks(row)
-                            },
-                            {
-                              icon: LogIn,
-                              label: t('loginAsStudent'),
-                              tone: 'bg-[#DBEAFE] text-[#2563EB]',
-                              onClick: () => handleSignAsStudent(row)
-                            }
+                            // Kunlik vazifa va o'quvchi sifatida kirish — faqat o'quvchilar uchun
+                            ...(rowIsStudent(row)
+                              ? [
+                                  {
+                                    icon: ListChecks,
+                                    label: tp('dailyTasks'),
+                                    tone: 'bg-[#DCFCE7] text-[#16A34A]',
+                                    onClick: () => handleOpenDailyTasks(row)
+                                  },
+                                  {
+                                    icon: LogIn,
+                                    label: t('loginAsStudent'),
+                                    tone: 'bg-[#DBEAFE] text-[#2563EB]',
+                                    onClick: () => handleSignAsStudent(row)
+                                  }
+                                ]
+                              : [])
                           ]}
                         />
                       </div>

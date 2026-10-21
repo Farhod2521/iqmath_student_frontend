@@ -115,13 +115,13 @@ const StoreCard = ({ href, icon, small, big, scan, qrIcon }) => (
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="group block w-full rounded-[24px] bg-white p-2.5 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.45)] ring-1 ring-[#E9EFF8] transition hover:-translate-y-0.5 hover:shadow-[0_26px_50px_-24px_rgba(37,99,235,0.45)]"
+    className="group block w-full rounded-[22px] bg-white p-1.5 sm:rounded-[24px] sm:p-2.5 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.45)] ring-1 ring-[#E9EFF8] transition hover:-translate-y-0.5 hover:shadow-[0_26px_50px_-24px_rgba(37,99,235,0.45)]"
   >
-    <span className="flex items-center gap-3 rounded-[18px] bg-[#0B0D12] px-5 py-3 text-white">
+    <span className="flex items-center gap-2 rounded-[18px] bg-[#0B0D12] px-3 py-2.5 text-white sm:gap-3 sm:px-5 sm:py-3 [&>svg]:h-6 [&>svg]:w-6 sm:[&>svg]:h-8 sm:[&>svg]:w-8">
       {icon}
-      <span className="leading-tight">
-        <span className="block text-[13px] font-medium text-white/85">{small}</span>
-        <span className="block text-[22px] font-semibold tracking-tight">{big}</span>
+      <span className="min-w-0 whitespace-nowrap leading-tight">
+        <span className="block text-[10.5px] font-medium text-white/85 sm:text-[13px]">{small}</span>
+        <span className="block text-[15px] font-semibold tracking-tight min-[380px]:text-[16px] sm:text-[22px]">{big}</span>
       </span>
     </span>
     <span className="hidden items-center gap-4 px-3 pb-2 pt-4 sm:flex">
@@ -180,7 +180,8 @@ export default function IqMathAppPage() {
         />
       </Head>
 
-      <main className="relative min-h-[100svh] overflow-hidden bg-[#EEF4FF] text-[#0B1B3F]">
+      {/* Telefonda butun sahifa bitta ekranga sig'adi (100svh), rasm qolgan joyga qarab kichrayadi */}
+      <main className="relative h-[100svh] overflow-x-hidden overflow-y-auto bg-[#EEF4FF] text-[#0B1B3F] lg:h-auto lg:min-h-[100svh] lg:overflow-hidden">
         {/* Fon: yumshoq ko'k gradient; kompyuterda o'ng tomonda telefonlar rasmi (chetlari fonga singib ketadi) */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#F7FAFF] via-[#EEF4FF] to-[#DCE9FF]" />
         <div className="pointer-events-none absolute -left-32 top-1/3 h-[420px] w-[420px] rounded-full bg-[#BFD7FF]/40 blur-3xl" />
@@ -198,20 +199,20 @@ export default function IqMathAppPage() {
           />
         </div>
 
-        <div className="relative mx-auto flex min-h-[100svh] w-full max-w-[1440px] flex-col px-4 py-5 sm:px-8 lg:px-14 lg:py-8">
+        <div className="relative mx-auto flex h-full min-h-[100svh] w-full max-w-[1440px] flex-col px-4 py-3 sm:px-8 sm:py-5 lg:h-auto lg:px-14 lg:py-8">
           {/* Yuqori qator: logo va til */}
           <header className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-[0_10px_25px_-12px_rgba(37,99,235,0.6)] sm:h-14 sm:w-14">
-                <img src={LOGO} alt="IQ Math" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white shadow-[0_10px_25px_-12px_rgba(37,99,235,0.6)] sm:h-14 sm:w-14">
+                <img src={LOGO} alt="IQ Math" className="h-7 w-7 object-contain sm:h-9 sm:w-9" />
               </span>
-              <span className="text-[26px] font-extrabold tracking-tight sm:text-[32px]">MATH</span>
+              <span className="text-[22px] font-extrabold tracking-tight sm:text-[32px]">MATH</span>
             </div>
             <div ref={menuRef} className="relative">
               <button
                 type="button"
                 onClick={() => setMenuOpen((prev) => !prev)}
-                className="flex h-11 items-center gap-2 rounded-full bg-white/90 px-4 text-sm font-bold shadow-[0_10px_25px_-15px_rgba(15,23,42,0.5)] backdrop-blur"
+                className="flex h-10 items-center gap-2 rounded-full sm:h-11 bg-white/90 px-4 text-sm font-bold shadow-[0_10px_25px_-15px_rgba(15,23,42,0.5)] backdrop-blur"
               >
                 <Flag lang={lang} />
                 {lang.toUpperCase()}
@@ -243,15 +244,21 @@ export default function IqMathAppPage() {
             </div>
           </header>
 
-          {/* Mobil: telefonlar rasmi */}
-          <HeroImage className="mx-auto mt-4 w-full max-w-[560px] rounded-[28px] lg:hidden" />
+          {/* Mobil: telefonlar rasmi — bo'sh qolgan balandlikni egallaydi, kerak bo'lsa kichrayadi */}
+          <div className="mt-3 flex min-h-[110px] flex-1 items-center justify-center lg:hidden">
+            <img
+              src="/images/app-back.png"
+              alt="IQ Math ilovasi"
+              className="h-full max-h-[78vw] w-full max-w-[560px] rounded-[24px] object-cover object-right"
+            />
+          </div>
 
-          <section className="py-6 lg:flex lg:flex-1 lg:items-center lg:py-10">
+          <section className="shrink-0 pt-3 sm:py-6 lg:flex lg:flex-1 lg:items-center lg:py-10">
             <div className="w-full max-w-[640px] lg:max-w-[46%] xl:max-w-[600px]">
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#E3EDFF] px-4 py-2 text-[13px] font-semibold text-[#2563EB] sm:text-sm">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#E3EDFF] px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] sm:px-4 sm:py-2 sm:text-sm">
                 🎓 {t.badge}
               </span>
-              <h1 className="mt-5 text-[34px] font-extrabold leading-[1.08] tracking-tight sm:text-[48px] lg:text-[46px] xl:text-[56px]">
+              <h1 className="mt-3 text-[27px] font-extrabold leading-[1.1] tracking-tight min-[400px]:text-[30px] sm:mt-5 sm:text-[48px] lg:text-[46px] xl:text-[56px]">
                 {t.title1}
                 <br />
                 {t.title2}
@@ -260,9 +267,11 @@ export default function IqMathAppPage() {
                   {t.accent}
                 </span>
               </h1>
-              <p className="mt-5 max-w-[540px] text-[15px] leading-relaxed text-[#475569] sm:text-[18px]">{t.lead}</p>
+              <p className="mt-2.5 max-w-[540px] text-[13.5px] leading-snug text-[#475569] sm:mt-5 sm:text-[18px] sm:leading-relaxed">
+                {t.lead}
+              </p>
 
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-8 sm:gap-4">
                 <StoreCard
                   href={GOOGLE_PLAY_URL}
                   icon={<PlayIcon />}
@@ -284,13 +293,14 @@ export default function IqMathAppPage() {
           </section>
 
           {/* Afzalliklar */}
-          <footer className="grid grid-cols-2 gap-3 pb-2 lg:max-w-[1000px] lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-[#D9E3F3]">
+          {/* Past bo'yli telefonlarda afzalliklar yashiriladi — asosiy tugmalar ekranda qolsin */}
+          <footer className="mt-3 grid shrink-0 grid-cols-2 gap-2 pb-1 sm:mt-0 sm:gap-3 sm:pb-2 [@media(max-height:680px)]:max-lg:hidden lg:max-w-[1000px] lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-[#D9E3F3]">
             {FEATURES.map(({ key, bg, Icon }) => (
-              <div key={key} className="flex items-center gap-3 rounded-2xl bg-white/80 p-3 backdrop-blur lg:rounded-none lg:bg-transparent lg:px-5 lg:py-1 lg:backdrop-blur-0 lg:first:pl-0">
-                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm ${bg}`}>
+              <div key={key} className="flex items-center gap-2 rounded-2xl bg-white/80 p-2 backdrop-blur sm:gap-3 sm:p-3 lg:rounded-none lg:bg-transparent lg:px-5 lg:py-1 lg:backdrop-blur-0 lg:first:pl-0">
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-sm sm:h-11 sm:w-11 sm:rounded-xl [&>svg]:h-4 [&>svg]:w-4 sm:[&>svg]:h-[21px] sm:[&>svg]:w-[21px] ${bg}`}>
                   <Icon size={21} strokeWidth={2.2} />
                 </span>
-                <span className="text-[13px] font-semibold leading-snug text-[#0F172A] sm:text-sm">{t[key]}</span>
+                <span className="text-[11.5px] font-semibold leading-tight text-[#0F172A] sm:text-sm sm:leading-snug">{t[key]}</span>
               </div>
             ))}
           </footer>
