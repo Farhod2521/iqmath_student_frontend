@@ -135,6 +135,7 @@ export const usePricingModal = () => {
 
   const plans =
     plansData?.data?.map((plan) => {
+      const tariffName = (p) => (i18n.language === 'ru' ? p.name_ru || p.name_uz : p.name_uz) || ''
       const originalPrice =
         plan.discount_percent > 0 ? Math.round(plan.sale_price / (1 - plan.discount_percent / 100)) : plan.sale_price
 
@@ -157,8 +158,9 @@ export const usePricingModal = () => {
       return {
         id: plan.id,
         is_active: plan.is_active,
-        original_name: plan.name,
-        name: getTranslatedName(plan.months),
+        original_name: tariffName(plan),
+        // Bir muddatda bir nechta tarif (Start, Start Pro) bo'lgani uchun nomi ham ko'rsatiladi
+        name: tariffName(plan) ? `${tariffName(plan)} — ${getTranslatedName(plan.months)}` : getTranslatedName(plan.months),
         duration: getTranslatedName(plan.months),
         price: plan.sale_price,
         price_per_month: plan.price_per_month,

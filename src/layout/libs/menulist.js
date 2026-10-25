@@ -11,7 +11,7 @@ import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { RiCoupon5Line } from 'react-icons/ri'
-import { Swords, Trophy, History, Gift } from 'lucide-react'
+import { Swords, Trophy, History, Gift, ClipboardList } from 'lucide-react'
 import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
@@ -472,6 +472,19 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
+    type: MenuType.LINK
+  },
+  {
+    key: 'free-lessons',
+    path: '/dashboard/teacher/free-lessons',
+    label: t('freeLessonsMenu'),
+    icon: (isActive) => (
+      <ClipboardList
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={24}
+      />
+    ),
+    roles: [RolesList.TEACHER, RolesList.SUPERADMIN],
     type: MenuType.LINK
   },
   {

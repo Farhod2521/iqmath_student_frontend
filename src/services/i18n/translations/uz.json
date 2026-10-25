@@ -1,4 +1,5 @@
 {
+  "freeLessonsMenu": "Arizalar",
   "trialSettingsMenu": "Tekin muddat",
   "childSwitch": {
     "resend": "Kodni qayta yuborish",
@@ -2442,6 +2443,7 @@
     "chapters": "Boblar bo'yicha natija",
     "recent": "So'nggi faoliyatlar",
     "recent_login": "Saytga kirish",
+    "recent_logout": "Saytdan chiqish",
     "recent_topic_test": "Mavzu testi ishlandi",
     "recent_diagnostic": "Diagnostika topshirildi",
     "recent_achievement": "Yangi yutuq",

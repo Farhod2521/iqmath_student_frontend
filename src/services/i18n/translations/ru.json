@@ -1,4 +1,5 @@
 {
+  "freeLessonsMenu": "Заявки",
   "trialSettingsMenu": "Бесплатный период",
   "childSwitch": {
     "resend": "Отправить код повторно",
@@ -2354,6 +2355,7 @@
     "chapters": "Результаты по главам",
     "recent": "Последние действия",
     "recent_login": "Вход на сайт",
+    "recent_logout": "Выход с сайта",
     "recent_topic_test": "Решён тест по теме",
     "recent_diagnostic": "Пройдена диагностика",
     "recent_achievement": "Новое достижение",

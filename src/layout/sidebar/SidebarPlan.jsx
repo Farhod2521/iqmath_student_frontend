@@ -1,5 +1,4 @@
 import { getPaymentTrailDays } from '@/services/controllers'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Gem } from 'lucide-react'
@@ -10,7 +9,6 @@ import { RolesList } from '../libs/menulist'
 function SidebarPlan() {
   const { t } = useTranslation()
   const { role: currentRole } = useRoleDetection()
-  const router = useRouter()
 
   const [data, setData] = useState({ days_until_next_payment: 0, end_date: '', is_paid: false, payment_amount: 0 })
   // Ma'lumot kelguncha "Muddati tugagan" ko'rsatilmaydi — yuklanish holati turadi
@@ -78,7 +76,8 @@ function SidebarPlan() {
         )}
 
         <button
-          onClick={isActive ? () => router.push('/dashboard/student/subjects') : handleInitiatePayment}
+          // Faol obunada ham "Uzaytirish" tarif tanlash oynasini ochadi (yangi muddat joriy muddatga qo'shiladi)
+          onClick={handleInitiatePayment}
           className="relative mt-4 flex w-1/2 items-center justify-center gap-1.5 rounded-[10px] bg-white/95 py-2 text-[12px] font-semibold text-[#1D4ED8] transition hover:bg-white"
         >
           {isActive ? t('extendPlan') : t('makePayment')}

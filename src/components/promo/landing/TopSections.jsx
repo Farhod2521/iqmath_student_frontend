@@ -19,6 +19,7 @@ import { config } from '@/config'
 import { LINKS } from './content'
 import { Container, Counter, PrimaryButton, Reveal, SectionTag, SectionTitle, scrollToId } from './ui'
 import { ClipboardArt, CubesArt, InfinityArt, PyramidArt } from './Illustrations'
+import FreeLessonForm from './FreeLessonForm'
 
 const LOGO = 'https://api.iqmath.uz/system/logo/logo.png'
 
@@ -219,7 +220,7 @@ export const Hero = ({ c, onVideo }) => (
         </h1>
         <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-[#475569]">{c.hero.subtitle}</p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-          <PrimaryButton onClick={scrollToId('lead')} className="h-[52px] px-7">
+          <PrimaryButton onClick={scrollToId('free-lesson')} className="h-[52px] px-7">
             {c.hero.primary}
             <ArrowRight size={18} />
           </PrimaryButton>
@@ -240,6 +241,13 @@ export const Hero = ({ c, onVideo }) => (
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* "Bepul darsga yoziling" formasi → mentor panelidagi "Arizalar" va Telegram bot */}
+      <div id="free-lesson" className="w-full scroll-mt-24 xl:flex xl:justify-end">
+        <div className="mx-auto w-full max-w-[460px] xl:mx-0">
+          <FreeLessonForm source="math_hero" />
+        </div>
       </div>
 
       {/* Mobil va planshetda rasm matn ostida */}

@@ -12,7 +12,12 @@ const SubscriptionExitPromo = ({ onSkip }) => {
   const router = useRouter()
 
   const { data: plansResponse, isLoading } = useGetPlans()
-  const plans = get(plansResponse, 'data', []) || []
+  const allPlans = get(plansResponse, 'data', []) || []
+  // Bir nechta tarif (Start, Start Pro) bo'lsa — eng arzon tarifning 1/3/12 oylik variantlari
+  const base = [...allPlans].sort((a, b) => a.months - b.months || a.sale_price - b.sale_price)[0]
+  const plans = (base?.name_uz ? allPlans.filter((p) => p.name_uz === base.name_uz) : allPlans).sort(
+    (a, b) => a.months - b.months
+  )
 
   const goToPlans = () => {
     router.push(PLANS_URL)

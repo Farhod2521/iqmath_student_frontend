@@ -4,7 +4,7 @@ import { Check, Loader2, Mail, MapPin, Phone } from 'lucide-react'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 
-// Ariza formasi: leadCreate API ga yuboriladi (reklama UTM parametrlari bilan).
+// Ariza formasi: "Bepul darsga arizalar" API ga yuboriladi (mentor paneli + Telegram bot), UTM parametrlari bilan.
 
 const formatUzPhone = (input) => {
   let d = input.replace(/\D/g, '')
@@ -51,12 +51,12 @@ const LeadForm = () => {
     // Reklama kampaniyasini kuzatish uchun URL'dagi UTM parametrlarni olamiz.
     const q = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
     const payload = {
-      full_name: name.trim(),
+      parent_name: name.trim(),
       phone: raw,
       region: region || null,
       role: role || null,
       lang,
-      source: 'landing:math',
+      source: 'math_bottom',
       utm_source: q.get('utm_source') || null,
       utm_medium: q.get('utm_medium') || null,
       utm_campaign: q.get('utm_campaign') || null,
@@ -65,7 +65,7 @@ const LeadForm = () => {
     }
 
     mutate(
-      { url: URLS.leadCreate, attributes: payload },
+      { url: URLS.freeLesson, attributes: payload },
       {
         onSuccess: () => setSubmitted(true),
         onError: () => setError(t('promo.form.error'))

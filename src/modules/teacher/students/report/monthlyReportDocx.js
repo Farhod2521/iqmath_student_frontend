@@ -22,7 +22,20 @@ const C = {
 
 export const REPORT_MONTHS = {
   uz: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
-  ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+  ru: [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь'
+  ]
 }
 
 // Bo'limlar tartibi va rangi (sahifadagi kartalar bilan bir xil)
@@ -68,6 +81,20 @@ const TEXTS = {
     empty: "Bu oyda ro'yxatdan o'tgan foydalanuvchi yo'q.",
     page: 'Sahifa',
     roles: { student: "O'quvchilar", parent: 'Ota-onalar', tutor: "O'qituvchilar", teacher: 'Mentorlar' },
+    sales: 'Sotuvlar',
+    buyers: 'Sotib olganlar',
+    revenue: 'Tushum',
+    payments: "To'lovlar",
+    som: "so'm",
+    newBought: 'Yangilardan sotib olgan',
+    newNotBought: 'Yangilardan sotib olmagan',
+    ofNew: "{total} ta yangi o'quvchidan",
+    tariff: 'Tarif',
+    period: 'Muddat',
+    countCol: 'Soni',
+    months: '{n} oylik',
+    otherTariff: 'Boshqa',
+    noSales: "Bu oyda to'lov bo'lmagan.",
     fileName: 'IQMath_hisobot'
   },
   ru: {
@@ -104,6 +131,20 @@ const TEXTS = {
     empty: 'В этом месяце новых пользователей нет.',
     page: 'Страница',
     roles: { student: 'Ученики', parent: 'Родители', tutor: 'Учителя', teacher: 'Менторы' },
+    sales: 'Продажи',
+    buyers: 'Купили',
+    revenue: 'Выручка',
+    payments: 'Платежи',
+    som: 'сум',
+    newBought: 'Купили из новых',
+    newNotBought: 'Не купили из новых',
+    ofNew: 'из {total} новых учеников',
+    tariff: 'Тариф',
+    period: 'Срок',
+    countCol: 'Кол-во',
+    months: '{n} мес.',
+    otherTariff: 'Другое',
+    noSales: 'В этом месяце платежей не было.',
     fileName: 'IQMath_otchet'
   }
 }
@@ -172,9 +213,15 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
 
   // ───────────── Sarlavha ─────────────
   const header = [
-    para([run('iQ', { bold: true, color: C.blue, size: 22 }), run(` MATH  ·  ${t.brand}`, { bold: true, color: C.muted, size: 18 })], {
-      spacing: { after: 160 }
-    }),
+    para(
+      [
+        run('iQ', { bold: true, color: C.blue, size: 22 }),
+        run(` MATH  ·  ${t.brand}`, { bold: true, color: C.muted, size: 18 })
+      ],
+      {
+        spacing: { after: 160 }
+      }
+    ),
     para(run(periodLabel, { bold: true, color: C.ink, size: 52 }), { spacing: { after: 40 } }),
     para(
       [
@@ -198,43 +245,157 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
       color: role.color
     }))
   ]
-  const kpiWidth = Math.floor(PAGE_WIDTH / kpiItems.length)
-  const kpiWidths = kpiItems.map((_, i) => (i === kpiItems.length - 1 ? PAGE_WIDTH - kpiWidth * (kpiItems.length - 1) : kpiWidth))
   // Oq qalin chegaralar kartalar orasida bo'shliq hosil qiladi
   const gap = { style: BorderStyle.SINGLE, size: 36, color: C.white }
 
-  const kpiTable = new Table({
-    width: { size: PAGE_WIDTH, type: WidthType.DXA },
-    columnWidths: kpiWidths,
-    rows: [
-      new TableRow({
-        children: kpiItems.map((item, index) => {
-          const change = changeOf(item.value || 0, item.prev || 0)
-          const changeText =
-            change.dir === 'new'
-              ? `▲ ${t.newBadge}`
-              : change.dir === 'same'
-                ? '— 0%'
-                : `${change.dir === 'up' ? '▲' : '▼'} ${change.pct}%`
-          const changeColor = change.dir === 'down' ? C.red : change.dir === 'same' ? C.subtle : C.green
-          return new TableCell({
-            width: { size: kpiWidths[index], type: WidthType.DXA },
-            shading: { type: ShadingType.CLEAR, color: 'auto', fill: C.cardFill },
-            borders: { top: gap, bottom: gap, left: index === 0 ? none : gap, right: index === kpiItems.length - 1 ? none : gap },
-            margins: { top: 160, bottom: 160, left: 220, right: 160 },
-            children: [
-              para([run('■ ', { color: item.color, size: 14 }), run(item.label, { color: C.muted, size: 17 })], { spacing: { after: 60 } }),
-              para(run(num(item.value), { bold: true, color: C.ink, size: 40 }), { spacing: { after: 40 } }),
-              para([
-                run(changeText, { bold: true, color: changeColor, size: 16 }),
-                run(`   ${prevName.toLowerCase()}: ${num(item.prev)}`, { color: C.subtle, size: 16 })
-              ])
-            ]
+  const buildKpiTable = (kpiItems) => {
+    const kpiWidth = Math.floor(PAGE_WIDTH / kpiItems.length)
+    const kpiWidths = kpiItems.map((_, i) =>
+      i === kpiItems.length - 1 ? PAGE_WIDTH - kpiWidth * (kpiItems.length - 1) : kpiWidth
+    )
+    return new Table({
+      width: { size: PAGE_WIDTH, type: WidthType.DXA },
+      columnWidths: kpiWidths,
+      rows: [
+        new TableRow({
+          children: kpiItems.map((item, index) => {
+            const change = changeOf(item.value || 0, item.prev || 0)
+            const changeText =
+              change.dir === 'new'
+                ? `▲ ${t.newBadge}`
+                : change.dir === 'same'
+                  ? '— 0%'
+                  : `${change.dir === 'up' ? '▲' : '▼'} ${change.pct}%`
+            const changeColor = change.dir === 'down' ? C.red : change.dir === 'same' ? C.subtle : C.green
+            const footer =
+              item.note !== undefined
+                ? [run(item.note, { color: C.subtle, size: 16 })]
+                : [
+                    run(changeText, { bold: true, color: changeColor, size: 16 }),
+                    run(`   ${prevName.toLowerCase()}: ${item.format ? item.format(item.prev) : num(item.prev)}`, {
+                      color: C.subtle,
+                      size: 16
+                    })
+                  ]
+            return new TableCell({
+              width: { size: kpiWidths[index], type: WidthType.DXA },
+              shading: { type: ShadingType.CLEAR, color: 'auto', fill: C.cardFill },
+              borders: {
+                top: gap,
+                bottom: gap,
+                left: index === 0 ? none : gap,
+                right: index === kpiItems.length - 1 ? none : gap
+              },
+              margins: { top: 160, bottom: 160, left: 220, right: 160 },
+              children: [
+                para([run('■ ', { color: item.color, size: 14 }), run(item.label, { color: C.muted, size: 17 })], {
+                  spacing: { after: 60 }
+                }),
+                para(
+                  run(item.format ? item.format(item.value) : num(item.value), {
+                    bold: true,
+                    color: C.ink,
+                    size: item.format ? 32 : 40
+                  }),
+                  {
+                    spacing: { after: 40 }
+                  }
+                ),
+                para(footer)
+              ]
+            })
           })
         })
-      })
-    ]
-  })
+      ]
+    })
+  }
+
+  const kpiTable = buildKpiTable(kpiItems)
+
+  // ───────────── Sotuvlar ─────────────
+  const sales = data.sales
+  const somFmt = (value) => `${num(Math.round(Number(value) || 0))} ${t.som}`
+  // headCell/bodyCell pastda e'lon qilinadi — blok hujjat yig'ilayotganda (keyin) quriladi
+  const buildSalesBlock = () => {
+    const salesBlock = []
+    if (sales) {
+      const newTotal = sales.new_students || 0
+      const pct = (value) => (newTotal ? Math.round(((value || 0) * 100) / newTotal) : 0)
+      salesBlock.push(
+        para([run('■  ', { color: C.green, size: 22 }), run(t.sales, { bold: true, color: C.ink, size: 28 })], {
+          spacing: { before: 420, after: 160 },
+          keepNext: true
+        }),
+        buildKpiTable([
+          { label: t.buyers, value: sales.buyers, prev: sales.previous?.buyers, color: C.green },
+          { label: t.revenue, value: sales.revenue, prev: sales.previous?.revenue, color: C.blue, format: somFmt },
+          { label: t.payments, value: sales.payments, prev: sales.previous?.payments, color: '7C3AED' },
+          {
+            label: t.newBought,
+            value: sales.new_bought,
+            color: C.green,
+            note: `${pct(sales.new_bought)}% · ${fill(t.ofNew, { total: num(newTotal) })}`
+          },
+          {
+            label: t.newNotBought,
+            value: sales.new_not_bought,
+            color: C.red,
+            note: `${pct(sales.new_not_bought)}% · ${fill(t.ofNew, { total: num(newTotal) })}`
+          }
+        ])
+      )
+      const rows = sales.by_tariff || []
+      if (rows.length) {
+        const widths = [6000, 3000, 2400, PAGE_WIDTH - 11400]
+        salesBlock.push(
+          para(run(''), { spacing: { after: 120 } }),
+          new Table({
+            width: { size: PAGE_WIDTH, type: WidthType.DXA },
+            columnWidths: widths,
+            borders: { top: none, bottom: none, left: none, right: none, insideHorizontal: none, insideVertical: none },
+            rows: [
+              new TableRow({
+                tableHeader: true,
+                children: [
+                  headCell(t.tariff, widths[0], AlignmentType.LEFT),
+                  headCell(t.period, widths[1], AlignmentType.LEFT),
+                  headCell(t.countCol, widths[2], AlignmentType.CENTER),
+                  headCell(t.revenue, widths[3], AlignmentType.RIGHT)
+                ]
+              }),
+              ...rows.map(
+                (row) =>
+                  new TableRow({
+                    cantSplit: true,
+                    children: [
+                      bodyCell(
+                        widths[0],
+                        AlignmentType.LEFT,
+                        run((lang === 'ru' ? row.name_ru : row.name_uz) || t.otherTariff, { bold: true, color: C.ink })
+                      ),
+                      bodyCell(
+                        widths[1],
+                        AlignmentType.LEFT,
+                        run(fill(t.months, { n: row.months }), { color: C.muted })
+                      ),
+                      bodyCell(widths[2], AlignmentType.CENTER, run(num(row.count), { bold: true, color: C.blue })),
+                      bodyCell(
+                        widths[3],
+                        AlignmentType.RIGHT,
+                        run(keep(somFmt(row.revenue)), { bold: true, color: C.ink })
+                      )
+                    ]
+                  })
+              )
+            ]
+          })
+        )
+      } else {
+        salesBlock.push(para(run(t.noSales, { color: C.subtle, italics: true }), { spacing: { before: 160 } }))
+      }
+    }
+    return salesBlock
+  }
 
   // ───────────── Jadvallar ─────────────
   const headCell = (text, width, align) =>
@@ -262,7 +423,12 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
 
   // Har bir ustun: sarlavha, kenglik, tekislash va qiymat (TextRun yoki Paragraph'lar)
   const columnDefs = {
-    no: { title: t.no, width: 460, align: AlignmentType.CENTER, render: (_, i) => run(i + 1, { color: C.subtle, size: 16 }) },
+    no: {
+      title: t.no,
+      width: 460,
+      align: AlignmentType.CENTER,
+      render: (_, i) => run(i + 1, { color: C.subtle, size: 16 })
+    },
     name: { title: t.name, render: (u) => run(u.full_name || '—', { bold: true, color: C.ink }) },
     className: {
       title: t.className,
@@ -288,12 +454,17 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
     diagnostic: {
       title: t.diagnostic,
       render: (u) =>
-        run(u.has_diagnost ? t.submitted : t.notSubmitted, { bold: true, color: u.has_diagnost ? C.blue : C.red, size: 17 })
+        run(u.has_diagnost ? t.submitted : t.notSubmitted, {
+          bold: true,
+          color: u.has_diagnost ? C.blue : C.red,
+          size: 17
+        })
     },
     daily: {
       title: t.daily,
       align: AlignmentType.CENTER,
-      render: (u) => run(u.completed_today ? t.yes : t.no_, { bold: true, color: u.completed_today ? C.green : C.orange, size: 17 })
+      render: (u) =>
+        run(u.completed_today ? t.yes : t.no_, { bold: true, color: u.completed_today ? C.green : C.orange, size: 17 })
     },
     subscription: {
       title: t.subscription,
@@ -307,11 +478,21 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
       }
     },
     phone: { title: t.phone, render: (u) => run(formatPhone(u.phone)) },
-    lang: { title: t.lang, align: AlignmentType.CENTER, render: (u) => (u.lang ? run(u.lang, { bold: true, color: C.muted, size: 16 }) : dashRun()) },
-    device: { title: t.device, render: (u) => (u.device ? run(String(u.device).replaceAll('-', '.'), { color: C.muted }) : dashRun()) },
+    lang: {
+      title: t.lang,
+      align: AlignmentType.CENTER,
+      render: (u) => (u.lang ? run(u.lang, { bold: true, color: C.muted, size: 16 }) : dashRun())
+    },
+    device: {
+      title: t.device,
+      render: (u) => (u.device ? run(String(u.device).replaceAll('-', '.'), { color: C.muted }) : dashRun())
+    },
     lastLogin: {
       title: t.lastLogin,
-      render: (u) => (u.last_login_time ? run(keep(String(u.last_login_time).replaceAll('/', '.')), { color: C.muted, size: 17 }) : dashRun())
+      render: (u) =>
+        u.last_login_time
+          ? run(keep(String(u.last_login_time).replaceAll('/', '.')), { color: C.muted, size: 17 })
+          : dashRun()
     },
     registered: { title: t.registered, render: (u) => run(keep(u.date || '—'), { color: C.muted, size: 17 }) }
   }
@@ -319,7 +500,21 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
   // O'quvchilar uchun to'liq ustunlar, qolgan rollar uchun — faqat umumiylari
   const LAYOUTS = {
     student: {
-      cols: ['no', 'name', 'className', 'subject', 'status', 'diagnostic', 'daily', 'subscription', 'phone', 'lang', 'device', 'lastLogin', 'registered'],
+      cols: [
+        'no',
+        'name',
+        'className',
+        'subject',
+        'status',
+        'diagnostic',
+        'daily',
+        'subscription',
+        'phone',
+        'lang',
+        'device',
+        'lastLogin',
+        'registered'
+      ],
       widths: [460, 2420, 940, 1150, 1100, 1220, 980, 1400, 1780, 560, 1000, 1220, 1248]
     },
     other: {
@@ -399,7 +594,7 @@ export async function downloadMonthlyReportDocx(data, lang = 'uz') {
             ]
           })
         },
-        children: [...header, kpiTable, ...sections]
+        children: [...header, kpiTable, ...buildSalesBlock(), ...sections]
       }
     ]
   })

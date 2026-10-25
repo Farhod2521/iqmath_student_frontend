@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { Download, FileText, TrendingDown, TrendingUp, X } from 'lucide-react'
+import { Download, FileText, ShoppingBag, TrendingDown, TrendingUp, UserX, Wallet, X } from 'lucide-react'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import { FilterSelect, formatNumber } from '../components/PupilsUi'
@@ -30,7 +30,20 @@ const TEXTS = {
     preparing: 'Tayyorlanmoqda...',
     loadError: "Hisobot ma'lumotini olib bo'lmadi",
     success: 'Hisobot yuklab olindi',
-    cancel: 'Bekor qilish'
+    cancel: 'Bekor qilish',
+    sales: 'Sotuvlar',
+    buyers: 'Sotib olganlar',
+    revenue: 'Tushum',
+    payments: "To'lovlar",
+    som: "so'm",
+    pieces: 'ta',
+    monthsShort: (n) => `${n} oylik`,
+    otherTariff: 'Boshqa',
+    byTariff: 'Tariflar kesimida',
+    noSales: "Bu oyda to'lov bo'lmagan",
+    newConversion: (total) => `Shu oyda ro'yxatdan o'tgan ${total} o'quvchidan`,
+    bought: 'sotib oldi',
+    notBought: 'sotib olmadi'
   },
   ru: {
     title: 'Ежемесячный отчёт (Word)',
@@ -48,7 +61,20 @@ const TEXTS = {
     preparing: 'Готовится...',
     loadError: 'Не удалось получить данные отчёта',
     success: 'Отчёт скачан',
-    cancel: 'Отмена'
+    cancel: 'Отмена',
+    sales: 'Продажи',
+    buyers: 'Купили',
+    revenue: 'Выручка',
+    payments: 'Платежи',
+    som: 'сум',
+    pieces: 'шт.',
+    monthsShort: (n) => `${n} мес.`,
+    otherTariff: 'Другое',
+    byTariff: 'По тарифам',
+    noSales: 'В этом месяце платежей не было',
+    newConversion: (total) => `Из ${total} учеников, зарегистрированных в этом месяце`,
+    bought: 'купили',
+    notBought: 'не купили'
   }
 }
 
@@ -75,6 +101,127 @@ const ChangeBadge = ({ cur, prev, t }) => {
       <Icon size={12} />
       {change.dir === 'new' ? t.newBadge : `${change.pct}%`}
     </span>
+  )
+}
+
+const money = (value) => formatNumber(Math.round(Number(value) || 0))
+
+/** Tanlangan oydagi sotuvlar: xaridorlar, tushum, tariflar kesimi va yangi o'quvchilar konversiyasi */
+const SalesBlock = ({ sales, loading, t, lang }) => {
+  if (!loading && !sales) return null
+  const tiles = [
+    {
+      key: 'buyers',
+      label: t.buyers,
+      Icon: ShoppingBag,
+      color: 'text-[#16A34A] bg-[#E8F8EF]',
+      value: formatNumber(sales?.buyers),
+      cur: sales?.buyers,
+      prev: sales?.previous?.buyers
+    },
+    {
+      key: 'revenue',
+      label: t.revenue,
+      Icon: Wallet,
+      color: 'text-[#2563EB] bg-[#EAF1FF]',
+      value: `${money(sales?.revenue)} ${t.som}`,
+      cur: sales?.revenue,
+      prev: sales?.previous?.revenue
+    },
+    {
+      key: 'payments',
+      label: t.payments,
+      Icon: FileText,
+      color: 'text-[#7C3AED] bg-[#F1EBFF]',
+      value: formatNumber(sales?.payments),
+      cur: sales?.payments,
+      prev: sales?.previous?.payments
+    }
+  ]
+  const total = sales?.new_students || 0
+  const bought = sales?.new_bought || 0
+  const notBought = sales?.new_not_bought || 0
+  const boughtPct = total ? Math.round((bought * 100) / total) : 0
+
+  return (
+    <div className="rounded-2xl border border-[#EEF1F6] bg-[#F8FAFD] p-4">
+      <p className="text-xs font-semibold text-[#5B6478]">{t.sales}</p>
+
+      <div className="mt-2 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+        {tiles.map(({ key, label, Icon, color, value, cur, prev }) => (
+          <div key={key} className="rounded-xl border border-white bg-white p-3 shadow-sm">
+            <div className="flex items-center gap-2">
+              <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>
+                <Icon size={15} />
+              </span>
+              <span className="text-xs font-semibold text-[#5B6478]">{label}</span>
+            </div>
+            {loading ? (
+              <span className="mt-2 block h-6 w-16 animate-pulse rounded bg-[#E3E8F1]" />
+            ) : (
+              <>
+                <p className="mt-1.5 truncate text-[17px] font-extrabold text-[#0F1B3D]">{value}</p>
+                <div className="mt-1">
+                  <ChangeBadge cur={cur} prev={prev} t={t} />
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {!loading && sales ? (
+        <>
+          {/* Tariflar kesimi */}
+          <p className="mt-4 text-xs font-semibold text-[#5B6478]">{t.byTariff}</p>
+          {sales.by_tariff?.length ? (
+            <ul className="mt-2 divide-y divide-[#EEF1F6] overflow-hidden rounded-xl border border-[#EEF1F6] bg-white">
+              {sales.by_tariff.map((row) => (
+                <li key={`${row.name_uz}-${row.months}`} className="flex items-center gap-3 px-3 py-2.5 text-sm">
+                  <span className="min-w-0 flex-1 truncate font-semibold text-[#0F1B3D]">
+                    {(lang === 'ru' ? row.name_ru : row.name_uz) || t.otherTariff}
+                    <span className="ml-1.5 font-normal text-[#8A93A6]">· {t.monthsShort(row.months)}</span>
+                  </span>
+                  <span className="shrink-0 rounded-full bg-[#EAF1FF] px-2 py-0.5 text-xs font-bold text-[#2563EB]">
+                    {formatNumber(row.count)} {t.pieces}
+                  </span>
+                  <span className="w-[110px] shrink-0 text-right text-[13px] font-semibold text-[#334155]">
+                    {money(row.revenue)} {t.som}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 rounded-xl bg-white px-3 py-2.5 text-sm text-[#8A93A6]">{t.noSales}</p>
+          )}
+
+          {/* Yangi o'quvchilar: sotib olgan / olmagan */}
+          <p className="mt-4 text-xs font-semibold text-[#5B6478]">{t.newConversion(formatNumber(total))}</p>
+          <div className="mt-2 grid grid-cols-2 gap-2.5">
+            <div className="rounded-xl border border-white bg-white p-3 shadow-sm">
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-[#16A34A]">
+                <ShoppingBag size={14} /> {t.bought}
+              </span>
+              <p className="mt-0.5 text-xl font-extrabold text-[#0F1B3D]">
+                {formatNumber(bought)} <span className="text-sm font-semibold text-[#8A93A6]">({boughtPct}%)</span>
+              </p>
+            </div>
+            <div className="rounded-xl border border-white bg-white p-3 shadow-sm">
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-[#DC2626]">
+                <UserX size={14} /> {t.notBought}
+              </span>
+              <p className="mt-0.5 text-xl font-extrabold text-[#0F1B3D]">
+                {formatNumber(notBought)}{' '}
+                <span className="text-sm font-semibold text-[#8A93A6]">({total ? 100 - boughtPct : 0}%)</span>
+              </p>
+            </div>
+          </div>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#FDE2E2]">
+            <div className="h-full rounded-full bg-[#16A34A]" style={{ width: `${boughtPct}%` }} />
+          </div>
+        </>
+      ) : null}
+    </div>
   )
 }
 
@@ -181,11 +328,21 @@ function MonthlyReportModal({ isOpen, onClose }) {
           <div className="grid grid-cols-2 gap-3">
             <label>
               <span className="mb-1 block text-xs font-semibold text-[#5B6478]">{t.month}</span>
-              <FilterSelect label={t.month} options={monthOptions} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
+              <FilterSelect
+                label={t.month}
+                options={monthOptions}
+                value={month}
+                onChange={(e) => setMonth(Number(e.target.value))}
+              />
             </label>
             <label>
               <span className="mb-1 block text-xs font-semibold text-[#5B6478]">{t.year}</span>
-              <FilterSelect label={t.year} options={yearOptions} value={year} onChange={(e) => setYear(Number(e.target.value))} />
+              <FilterSelect
+                label={t.year}
+                options={yearOptions}
+                value={year}
+                onChange={(e) => setYear(Number(e.target.value))}
+              />
             </label>
           </div>
 
@@ -197,7 +354,9 @@ function MonthlyReportModal({ isOpen, onClose }) {
                 {loading ? (
                   <span className="mt-1 block h-8 w-20 animate-pulse rounded-lg bg-[#E3E8F1]" />
                 ) : (
-                  <p className="text-[28px] font-extrabold leading-tight text-[#0F1B3D]">{formatNumber(data?.total_current)}</p>
+                  <p className="text-[28px] font-extrabold leading-tight text-[#0F1B3D]">
+                    {formatNumber(data?.total_current)}
+                  </p>
                 )}
               </div>
               {!loading && data ? (
@@ -221,7 +380,9 @@ function MonthlyReportModal({ isOpen, onClose }) {
                     <span className="mt-1 block h-6 w-12 animate-pulse rounded bg-[#E3E8F1]" />
                   ) : (
                     <div className="mt-0.5 flex items-center justify-between gap-2">
-                      <span className="text-xl font-extrabold text-[#0F1B3D]">{formatNumber(data?.current?.[role])}</span>
+                      <span className="text-xl font-extrabold text-[#0F1B3D]">
+                        {formatNumber(data?.current?.[role])}
+                      </span>
                       {data ? <ChangeBadge cur={data.current?.[role]} prev={data.previous?.[role]} t={t} /> : null}
                     </div>
                   )}
@@ -229,6 +390,9 @@ function MonthlyReportModal({ isOpen, onClose }) {
               ))}
             </div>
           </div>
+
+          {/* Sotuvlar */}
+          <SalesBlock sales={data?.sales} loading={loading} t={t} lang={lang} />
 
           <div className="flex gap-3">
             <button

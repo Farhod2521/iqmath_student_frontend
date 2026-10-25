@@ -136,7 +136,11 @@ export default function SubscriptionPromoModal() {
       .get(URLS.paymentPlans)
       .then((res) => {
         const list = Array.isArray(res?.data) ? res.data : res?.data?.data || []
-        if (alive) setPlans(list.filter((p) => p.is_active !== false).sort((a, b) => a.months - b.months))
+        const active = list.filter((p) => p.is_active !== false)
+        // Bir nechta tarif (Start, Start Pro) bo'lsa — eng arzon tarifning muddatlari ko'rsatiladi
+        const base = [...active].sort((a, b) => a.months - b.months || a.sale_price - b.sale_price)[0]
+        const sameTariff = base?.name_uz ? active.filter((p) => p.name_uz === base.name_uz) : active
+        if (alive) setPlans(sameTariff.sort((a, b) => a.months - b.months))
       })
       .catch(() => {})
 

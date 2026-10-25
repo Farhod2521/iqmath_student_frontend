@@ -7,7 +7,6 @@ import FAQ from './components/homepage/faq'
 import Pricing from './components/homepage/pricing'
 import Reviews from './components/homepage/reviews'
 import PowerfulDozens from './components/homepage/powerful-dozens'
-import Leadership from './components/homepage/leadership'
 import Benefits from './components/homepage/benefits'
 import HomePage from './components/homepage/defend-focus/NewsDetail'
 
@@ -30,7 +29,6 @@ function Landing() {
       <HomePage /> {/*news */}
       {/* <ExceptionalFeature /> */}
       <Reviews />
-      <Leadership />
       <Pricing />
       <FAQ />
       <Footer />

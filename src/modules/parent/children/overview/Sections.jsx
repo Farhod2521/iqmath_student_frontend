@@ -12,6 +12,8 @@ import {
   Clock3,
   Crown,
   LogIn,
+  LogOut,
+  Activity,
   MonitorSmartphone,
   Shapes,
   Sigma,
@@ -212,6 +214,7 @@ export const SubjectResults = ({ items = [], limit, onViewAll }) => {
 
 const RECENT = {
   login: { Icon: LogIn, color: '#16A34A', soft: '#E7F8EE' },
+  logout: { Icon: LogOut, color: '#64748B', soft: '#F1F5F9' },
   topic_test: { Icon: ClipboardList, color: '#2563EB', soft: '#EAF1FF' },
   diagnostic: { Icon: BookOpen, color: '#7C3AED', soft: '#F1EBFF' },
   achievement: { Icon: Trophy, color: '#F59E0B', soft: '#FFF6E0' }
@@ -264,6 +267,11 @@ export const ChildRecent = ({ items = [], limit, onViewAll }) => {
                   </p>
                   {sub ? <p className="truncate text-xs text-[#64748B]">{sub}</p> : null}
                 </div>
+                {item.seconds ? (
+                  <span className="shrink-0 rounded-lg bg-[#F1F5F9] px-2 py-0.5 text-xs font-bold text-[#475569]">
+                    {formatDuration(item.seconds, t)}
+                  </span>
+                ) : null}
                 {item.value !== null && item.value !== undefined ? (
                   <span
                     className={`shrink-0 rounded-lg px-2 py-0.5 text-xs font-bold ${
@@ -284,6 +292,162 @@ export const ChildRecent = ({ items = [], limit, onViewAll }) => {
             )
           })}
         </ul>
+      )}
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Onlayn vaqt                                                        */
+/* ------------------------------------------------------------------ */
+
+const ONLINE_TEXT = {
+  uz: {
+    title: 'Onlayn vaqt',
+    now: 'Hozir onlayn',
+    offline: 'Oflayn',
+    today: 'Bugun',
+    week: 'Bu hafta (7 kun)',
+    month: 'Bu oy (30 kun)',
+    year: 'Bu yil (365 kun)',
+    perDay: 'O‘rtacha kuniga',
+    perSession: 'O‘rtacha bir kirishda',
+    maxDay: 'Eng ko‘p onlayn kun',
+    minDay: 'Eng kam onlayn kun',
+    longest: 'Eng uzun sessiya',
+    peak: 'Eng faol vaqt',
+    last7: 'Oxirgi 7 kun',
+    activeDays: (n) => `30 kundan ${n} kun faol`,
+    empty: 'Hali ma’lumot yo‘q. Farzandingiz saytga kirgach, onlayn vaqt shu yerda ko‘rinadi.',
+    since: 'Hisob boshlangan',
+    days: ['Ya', 'Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh']
+  },
+  ru: {
+    title: 'Время онлайн',
+    now: 'Сейчас онлайн',
+    offline: 'Не в сети',
+    today: 'Сегодня',
+    week: 'Неделя (7 дн.)',
+    month: 'Месяц (30 дн.)',
+    year: 'Год (365 дн.)',
+    perDay: 'В среднем в день',
+    perSession: 'В среднем за вход',
+    maxDay: 'Самый активный день',
+    minDay: 'Наименее активный день',
+    longest: 'Самая долгая сессия',
+    peak: 'Самое активное время',
+    last7: 'Последние 7 дней',
+    activeDays: (n) => `активен ${n} из 30 дней`,
+    empty: 'Данных пока нет. Время онлайн появится, когда ребёнок зайдёт на сайт.',
+    since: 'Учёт ведётся с',
+    days: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+  }
+}
+
+export const ChildOnline = ({ online }) => {
+  const { t, i18n } = useTranslation()
+  const text = ONLINE_TEXT[i18n.language === 'ru' ? 'ru' : 'uz']
+  if (!online) return null
+
+  const dur = (seconds) => formatDuration(seconds, t)
+  const totals = [
+    { key: 'today', label: text.today, color: '#2563EB' },
+    { key: 'week', label: text.week, color: '#7C3AED' },
+    { key: 'month', label: text.month, color: '#16A34A' },
+    { key: 'year', label: text.year, color: '#F59E0B' }
+  ]
+  const daily = online.daily || []
+  const maxDaily = Math.max(...daily.map((d) => d.seconds), 1)
+  const hasData = Boolean(online.tracking_since)
+  const peak =
+    online.peak_hour === null || online.peak_hour === undefined
+      ? '—'
+      : `${String(online.peak_hour).padStart(2, '0')}:00–${String((online.peak_hour + 1) % 24).padStart(2, '0')}:00`
+  const facts = [
+    { label: text.perDay, value: dur(online.average?.per_day), sub: text.activeDays(online.active_days || 0) },
+    { label: text.perSession, value: dur(online.average?.per_session) },
+    { label: text.maxDay, value: online.max_day ? dur(online.max_day.seconds) : '—', sub: online.max_day ? formatDate(online.max_day.date) : '' },
+    { label: text.minDay, value: online.min_day ? dur(online.min_day.seconds) : '—', sub: online.min_day ? formatDate(online.min_day.date) : '' },
+    {
+      label: text.longest,
+      value: online.longest_session ? dur(online.longest_session.seconds) : '—',
+      sub: online.longest_session ? formatDateTime(online.longest_session.started_at) : ''
+    },
+    { label: text.peak, value: peak }
+  ]
+
+  return (
+    <div className={`${card} p-4 sm:p-5`}>
+      <CardHeader
+        icon={Activity}
+        title={text.title}
+        right={
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${
+              online.online_now ? 'bg-[#DCFCE7] text-[#16A34A]' : 'bg-[#F1F5F9] text-[#64748B]'
+            }`}
+          >
+            <span className={`h-2 w-2 rounded-full ${online.online_now ? 'animate-pulse bg-[#16A34A]' : 'bg-[#94A3B8]'}`} />
+            {online.online_now ? text.now : text.offline}
+          </span>
+        }
+      />
+
+      {!hasData ? (
+        <EmptyNote>{text.empty}</EmptyNote>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <div>
+            {/* Hafta / oy / yil */}
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+              {totals.map(({ key, label, color }) => (
+                <div key={key} className="rounded-xl bg-[#F8FAFC] p-3 dark:bg-[#0F172A]">
+                  <p className="truncate text-xs text-[#64748B]">{label}</p>
+                  <p className="mt-1 truncate text-[17px] font-extrabold" style={{ color }}>
+                    {dur(online.totals?.[key])}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {/* O'rtacha, eng ko'p / eng kam */}
+            <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+              {facts.map(({ label, value, sub }) => (
+                <div key={label} className="rounded-xl border border-[#EEF1F6] p-3 dark:border-[#26324A]">
+                  <p className="truncate text-xs text-[#64748B]">{label}</p>
+                  <p className="mt-1 truncate text-[15px] font-bold text-[#0F172A] dark:text-white">{value}</p>
+                  {sub ? <p className="truncate text-[11px] text-[#94A3B8]">{sub}</p> : null}
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-[11px] text-[#94A3B8]">
+              {text.since}: {formatDate(online.tracking_since)}
+            </p>
+          </div>
+
+          {/* Oxirgi 7 kun */}
+          <div className="rounded-xl bg-[#F8FAFC] p-3 dark:bg-[#0F172A]">
+            <p className="text-xs font-semibold text-[#64748B]">{text.last7}</p>
+            <div className="mt-3 flex h-[150px] items-end gap-2">
+              {daily.map((d) => {
+                const date = new Date(d.date)
+                return (
+                  <div key={d.date} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1.5">
+                    <span className="text-[10px] font-semibold text-[#64748B]">
+                      {d.seconds ? Math.round(d.seconds / 60) : ''}
+                    </span>
+                    <span
+                      className="w-full max-w-[28px] rounded-t-md bg-gradient-to-t from-[#2563EB] to-[#60A5FA]"
+                      style={{ height: `${Math.max(d.seconds ? 6 : 2, (d.seconds / maxDaily) * 100)}%`, opacity: d.seconds ? 1 : 0.25 }}
+                      title={dur(d.seconds)}
+                    />
+                    <span className="text-[11px] text-[#94A3B8]">{text.days[date.getDay()]}</span>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="mt-1 text-right text-[10px] text-[#94A3B8]">{t('childPage.minutes', { m: '' }).trim()}</p>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -15,7 +15,7 @@ import DevicesTab from './DevicesTab'
 import ExtendSubscriptionModal from './ExtendSubscriptionModal'
 import SetPhoneModal from './SetPhoneModal'
 import { useQueryClient } from '@tanstack/react-query'
-import { ChildRecent, ChildStats, DevicesCard, SubjectResults, SubscriptionCard } from './Sections'
+import { ChildRecent, ChildStats, DevicesCard, SubjectResults, SubscriptionCard, ChildOnline } from './Sections'
 
 const TABS = [
   { key: 'overview', Icon: House },
@@ -130,6 +130,7 @@ const ChildOverview = () => {
             <ChaptersCard items={data.chapters} />
             <ChildRecent items={data.recent} limit={5} />
           </div>
+          {data.online ? <ChildOnline online={data.online} /> : null}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
             <ActivityChart days={data.activity_days} />
             <SubscriptionCard
