@@ -8,7 +8,9 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useSidebarCount } from '@/hooks'
+import { useGetQuery, useSidebarCount } from '@/hooks'
+import { KEYS } from '@/constants/key'
+import { URLS } from '@/constants/url'
 
 const HIDDEN_MENU_KEYS_WHEN_INACTIVE = [
   'diagnostics-history',
@@ -30,6 +32,17 @@ const SidebarMenu = () => {
 
   const chat_read_count = data?.data?.total_unread_messages
 
+  // Kutubxonada kitob bo'lmasa, menyuda ham ko'rinmaydi
+  const canSeeLibrary = ['student', 'tutor', 'superadmin'].includes(userRole)
+  const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useGetQuery({
+    key: KEYS.libraryCount,
+    url: URLS.libraryBooks,
+    params: { count_only: 'true' },
+    enabled: canSeeLibrary,
+    staleTime: 10 * 60_000
+  })
+  const hideLibrary = canSeeLibrary && !libraryError && (libraryLoading || !libraryData?.data?.count)
+
   useEffect(() => {
     const checkScrollbar = () => {
       const menuContainer = document.querySelector('.sidebar-menu')
@@ -46,6 +59,7 @@ const SidebarMenu = () => {
   const menuItems = getMenuItems(t)
     .filter((item) => {
       if (item.key === 'recommended' && !user?.has_diagnost) return false
+      if (item.key === 'library' && hideLibrary) return false
       if (role && item.roles && Array.isArray(item.roles)) {
         return item.roles.includes(userRole)
       }

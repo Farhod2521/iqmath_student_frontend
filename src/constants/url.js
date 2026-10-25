@@ -2,6 +2,8 @@ export const URLS = {
   login: '/api/v1/student/login/',
   register: 'api/v1/auth/student/register/',
   studentProfile: '/api/v1/auth/student/profile/',
+  deleteAccount: '/api/v1/auth/delete-account/',
+  subscriptionSetting: '/api/v1/payments/superadmin/subscription-setting/',
   teacherProfile: '/api/v1/auth/teacher/profile/',
   olimpiadaQuizList: '/api/v1/quiz/sciences/list/',
   quizTest: '/api/v1/quiz/quizzes/',

@@ -1,3 +1,4 @@
+import DeleteAccountModal from '@/components/account/DeleteAccountModal'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
@@ -23,6 +24,7 @@ const ParentProfile = () => {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -169,18 +171,6 @@ const ParentProfile = () => {
     )
   }
 
-  const handleDelete = () => {
-    if (!window.confirm(t('parentProfile.deleteConfirm'))) return
-    request
-      .delete('/api/v1/auth/student/delete-profile/')
-      .then(() => {
-        toast.success("Hisob o'chirildi")
-        window.location.reload()
-      })
-      .catch(() => {
-        toast.error("O'chirib bo'lmadi")
-      })
-  }
 
   if (isLoading) {
     return <ContentLoader classNames="!min-h-[400px] !w-full" />
@@ -205,10 +195,12 @@ const ParentProfile = () => {
           <ParentProfileQuickActions
             onEditInfo={() => setIsEditModalOpen(true)}
             onChangePassword={() => setIsPasswordModalOpen(true)}
-            onDeleteAccount={handleDelete}
+            onDeleteAccount={() => setIsDeleteModalOpen(true)}
           />
         </div>
       </div>
+
+      <DeleteAccountModal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} role="parent" />
 
       <ParentEditInfoModal
         isOpen={isEditModalOpen}

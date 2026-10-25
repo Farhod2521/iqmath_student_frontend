@@ -27,6 +27,7 @@ export const KEYS = {
   studentHomeDashboard: 'studentHomeDashboard',
   studentStudyStats: 'studentStudyStats',
   studentStreak: 'studentStreak',
+  libraryCount: 'libraryCount',
   studentStreakCheckin: 'studentStreakCheckin',
   studentRating: 'studentRating',
   teacherSubjects: 'teacherSubjects',

@@ -1,3 +1,4 @@
+import DeleteAccountModal from '@/components/account/DeleteAccountModal'
 import { useState, useEffect } from 'react'
 import RightIcon from '@/components/icons/right'
 import Input from '@/components/input'
@@ -232,17 +233,8 @@ const Index = () => {
     )
   }
 
-  const handleDelete = () => {
-    request
-      .delete('/api/v1/auth/student/delete-profile/')
-      .then((res) => {
-        toast.success("Hisob o'chirildi")
-        window.location.reload()
-      })
-      .catch((err) => {
-        toast.error("O'chirib bo'lmadi")
-      })
-  }
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const handleDelete = () => setIsDeleteModalOpen(true)
 
   if (isLoading) {
     return (
@@ -633,6 +625,7 @@ const Index = () => {
           </div>
         </div>
       )}
+      <DeleteAccountModal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} role="student" />
     </LayoutAdmin>
   )
 }

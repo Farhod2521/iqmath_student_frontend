@@ -1,4 +1,5 @@
 {
+  "trialSettingsMenu": "Tekin muddat",
   "childSwitch": {
     "resend": "Kodni qayta yuborish",
     "resendIn": "Kodni qayta yuborish: {{time}}",
@@ -2205,6 +2206,7 @@
     "tab": "Qurilmalar",
     "title": "Faol qurilmalar",
     "limitInfo": "Hisobingizga bir vaqtda ko'pi bilan {{count}} ta qurilmadan kirish mumkin",
+    "noLimitInfo": "Hisobingizga istalgancha qurilmadan kirish mumkin. Bu yerda ular ro'yxati turadi",
     "activeDevices": "Faol qurilmalar",
     "filterActive": "Faol qurilmalar",
     "filterAll": "Barchasi (tarix bilan)",

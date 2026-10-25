@@ -10,6 +10,7 @@ import TutorProfileQuickLinks from '../components/TutorProfileQuickLinks'
 import TutorProfileInfo from '../components/TutorProfileInfo'
 import TutorProfileStats from '../components/TutorProfileStats'
 import TutorProfileActivity from '../components/TutorProfileActivity'
+import DeleteAccountCard from '@/components/account/DeleteAccountCard'
 
 // "998944180008" -> "+998 94 418 00 08"
 const formatPhone = (phone) => {
@@ -78,6 +79,8 @@ const TutorProfile = () => {
           <TutorProfileActivity />
         </div>
       </div>
+
+      <DeleteAccountCard role="tutor" />
     </div>
   )
 }

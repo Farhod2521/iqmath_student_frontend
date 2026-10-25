@@ -128,7 +128,7 @@ export const CONTENT = {
       items: [
         {
           q: 'IQMath qanday qurilmalarda ishlaydi?',
-          a: 'Kompyuter, planshet va telefonda — brauzer orqali yoki Android va iOS uchun mobil ilova orqali. Bitta hisobdan bir vaqtda 2 ta qurilmada foydalanish mumkin.'
+          a: 'Kompyuter, planshet va telefonda — brauzer orqali yoki Android va iOS uchun mobil ilova orqali. Bitta hisobdan istalgancha qurilmada foydalanish mumkin.'
         },
         {
           q: 'Darslar qaysi sinflar uchun mavjud?',
@@ -300,7 +300,7 @@ export const CONTENT = {
       items: [
         {
           q: 'На каких устройствах работает IQMath?',
-          a: 'На компьютере, планшете и телефоне — через браузер или мобильное приложение для Android и iOS. Одним аккаунтом можно пользоваться одновременно на 2 устройствах.'
+          a: 'На компьютере, планшете и телефоне — через браузер или мобильное приложение для Android и iOS. Одним аккаунтом можно пользоваться на любом количестве устройств.'
         },
         {
           q: 'Для каких классов есть уроки?',

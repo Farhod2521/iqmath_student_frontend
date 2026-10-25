@@ -1,3 +1,4 @@
+import DeleteAccountCard from '@/components/account/DeleteAccountCard'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
@@ -182,6 +183,7 @@ const ProfileInfoTab = () => {
           </div>
         </div>
       </div>
+      <DeleteAccountCard role="student" className="mt-4" />
     </div>
   )
 }

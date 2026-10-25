@@ -27,7 +27,8 @@ const DevicesTab = () => {
   })
   const payload = data?.data || {}
   const devices = payload.devices || []
-  const max = payload.max_devices || 2
+  // Backend max_devices: null qaytarsa — qurilmalar soni cheklanmagan
+  const max = payload.max_devices === null ? null : payload.max_devices || 2
   const activeCount = payload.active_count ?? devices.filter((d) => d.is_active).length
 
   const removeDevice = async (device) => {
@@ -53,8 +54,11 @@ const DevicesTab = () => {
         </span>
         <div className="min-w-0 flex-1">
           <p className="font-bold text-[#191C1D] dark:text-white">{t('devices.title')}</p>
-          <p className="text-sm text-[#5B6478] dark:text-gray-300">{t('devices.limitInfo', { count: max })}</p>
+          <p className="text-sm text-[#5B6478] dark:text-gray-300">
+            {max ? t('devices.limitInfo', { count: max }) : t('devices.noLimitInfo')}
+          </p>
         </div>
+        {max ? (
         <div className="w-full sm:w-56">
           <div className="mb-1 flex justify-between text-xs font-semibold text-[#5B6478]">
             <span>{t('devices.activeDevices')}</span>
@@ -69,6 +73,11 @@ const DevicesTab = () => {
             />
           </div>
         </div>
+        ) : (
+          <span className="rounded-xl bg-white px-3 py-2 text-sm font-semibold text-[#2563EB] shadow-sm dark:bg-[#0F172A]">
+            {t('devices.activeDevices')}: {activeCount}
+          </span>
+        )}
       </div>
 
       {/* Filtr */}
