@@ -6,6 +6,7 @@ import { URLS } from '@/constants/url'
 import { getPaymentInitiate } from '@/services/controllers'
 import { useGetPlans } from '@/hooks'
 import toast from 'react-hot-toast'
+import { GOALS, reachGoal } from '@/utils/metrika'
 
 export const usePricingModal = () => {
   const { t, i18n } = useTranslation()
@@ -113,6 +114,8 @@ export const usePricingModal = () => {
         if (!checkoutUrl) {
           throw new Error('Checkout URL topilmadi')
         }
+
+        reachGoal(GOALS.paymentStart, { plan_id: selectedPlan.id, coupon: Boolean(couponCode) })
 
         // To'lov sahifasiga yo'naltirish
         window.open(checkoutUrl, '_blank')

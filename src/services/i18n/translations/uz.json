@@ -74,6 +74,13 @@
   "roleHint": {
     "parent": "Bu hisob farzandingizni kuzatish uchun. Farzandingiz o'qishi uchun \"O'quvchi\" sifatida ro'yxatdan o'ting."
   },
+  "passwordNotFound": "Parol topilmadi",
+  "signUpConsentStart": "Men ",
+  "signUpConsentLink": "maxfiylik siyosati",
+  "signUpConsentEnd": " shartlariga hamda shaxsiy ma'lumotlarim (shu jumladan farzandimning ma'lumotlari) qayta ishlanishiga roziman.",
+  "signUpConsentRequired": "Ro'yxatdan o'tish uchun shartlarga rozilik bildiring",
+  "topByScore": "Ball bo'yicha",
+  "noRankYet": "Hali o'rin yo'q — birinchi topshiriqni bajaring",
   "basicInformation": "Asosiy ma'lumotlar",
   "ratings": "Reytinglar",
   "studentRating": "O'quvchilar reytingi",
@@ -1063,7 +1070,7 @@
   "couponStudentListDescription": "Bu sahifada kupondan foydalangan o'quvchilar ro'yxati chiqadi",
   "noInvitedFriends": "Taklif qilingan do'stlar mavjud emas!",
   "inviteFriendsDescription": "Do'stlaringizni taklif qiling va ularni ro'yxatdan o'tkazing",
-  "prices": "Ta'riflar",
+  "prices": "Tariflar",
   "subscriptionPlans": "Obuna rejalari",
   "benifits": "Foyda",
   "category": "Kategoriya",
@@ -1619,7 +1626,7 @@
     "legal": "Huquqiy",
     "links": {
       "courses": "Kurslar",
-      "pricing": "Narxlar",
+      "pricing": "Tariflar",
       "about": "Biz haqimizda",
       "faq": "FAQs",
       "support": "Qo'llab-quvvatlash",

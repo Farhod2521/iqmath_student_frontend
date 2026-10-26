@@ -14,6 +14,7 @@ import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
 import { RolesList } from '@/layout/libs/menulist'
+import { GOALS, reachGoal } from '@/utils/metrika'
 
 const AuthRecieveCode = () => {
   const [timer, setTimer] = useState(120)
@@ -80,6 +81,7 @@ const AuthRecieveCode = () => {
         setIsLoading(false) // Faqat xatolik bo'lsagina loading'ni to'xtatamiz
       } else {
         toast.success(t('loggedInSuccessfully'))
+        reachGoal(GOALS.registration, { role: selectedRole?.value || 'student' })
 
         if (selectedRole?.value === RolesList.STUDENT) {
           window.location.href = `/dashboard/student/home?phone=${phoneTab}`

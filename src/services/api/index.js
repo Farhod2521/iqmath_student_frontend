@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { config } from '../../config/index'
 import { signOut, getSession } from 'next-auth/react'
-import { URLS } from '../../constants/url'
 import { useUserStore } from '@/store/userStore'
 import { useAuthTabStore } from '@/store'
 import { DEVICE_ID_KEY } from '@/shared/utils/device'
@@ -89,14 +88,8 @@ request.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const session = await getSession()
-        if (!session?.refreshToken) {
-          throw new Error('No refresh token')
-        }
-
-        const response = await axios.post(`${config.API_URL}${URLS.refreshToken}`, {
-          refresh: session.refreshToken
-        })
+        // refreshToken faqat serverda — yangilash Next API orqali
+        const response = await axios.post('/api/auth/refresh')
 
         const { access } = response.data
         originalRequest.headers.Authorization = `Bearer ${access}`

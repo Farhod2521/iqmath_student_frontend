@@ -3,21 +3,28 @@ import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SimpleModal from '@/components/modal/simple-modal'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 const ModalConfidentiality = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const searchParams = useSearchParams()
   const phone = searchParams.get('phone')
   const [copied, setCopied] = useState(false)
   const [showModal, setShowModal] = useState(true)
 
-  // Use password from session or show fallback message
-  const displayPassword = session?.password || 'Parol topilmadi'
+  // Ro'yxatdan o'tgandagi parol sessiyada faqat bir marta keladi: uni olib, sessiyadan darhol o'chiramiz
+  const [initialPassword, setInitialPassword] = useState(null)
+  useEffect(() => {
+    if (session?.initialPassword) {
+      setInitialPassword(session.initialPassword)
+      update({ clearInitialPassword: true })
+    }
+  }, [session?.initialPassword, update])
+  const displayPassword = initialPassword || t('passwordNotFound')
 
   const handleCopy = () => {
     const text = `Login: ${session?.login}\nPassword: ${displayPassword}`

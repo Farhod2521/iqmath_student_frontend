@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UsersRound } from 'lucide-react'
+import { Info, UsersRound } from 'lucide-react'
 import { fieldBorder, fieldBox, fieldIcon } from '../field/fieldStyles'
 
 const SelectRole = ({ value, onChange, placeholder }) => {
@@ -20,7 +20,8 @@ const SelectRole = ({ value, onChange, placeholder }) => {
   }, [])
 
   const options = [
-    // Ota-ona bu yerda ro'yxatdan o'tmaydi — farzandining "Ota-ona uchun" QR kodi orqali kiradi
+    // Ota-ona birinchi: to'lovchi — u o'zi ro'yxatdan o'tib, keyin farzandlarini qo'shadi
+    { value: 'parent', label: t('parent') },
     { value: 'student', label: t('student') },
     { value: 'tutor', label: t('tutor') }
   ]
@@ -70,6 +71,14 @@ const SelectRole = ({ value, onChange, placeholder }) => {
           ))}
         </ul>
       )}
+
+      {/* Tanlangan rol uchun qisqa izoh — ota-onalar adashib qolmasligi uchun */}
+      {value?.value === 'parent' ? (
+        <p className="mt-2 flex items-start gap-2 rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2.5 text-left text-[13px] font-medium leading-snug text-[#92400E]">
+          <Info size={16} className="mt-px shrink-0 text-[#D97706]" />
+          {t('roleHint.parent')}
+        </p>
+      ) : null}
     </div>
   )
 }

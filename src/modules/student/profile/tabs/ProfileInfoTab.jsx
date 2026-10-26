@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import Image from 'next/image'
 import { Avatar, AvatarIcon } from '@heroui/react'
-import { SiWebmoney } from 'react-icons/si'
 import {
   Phone,
   Cake,
@@ -74,19 +73,24 @@ const ProfileInfoTab = () => {
     ).match(/\d+/) || []
   )[0]
 
-  // TODO: static placeholder until the backend exposes a per-metric ranking endpoint
+  // Bosh sahifa bilan bir xil manba: /student/rating/app (0 bo'lsa o'rin yo'q)
+  const { data: rating } = useGetQuery({
+    key: KEYS.studentRating,
+    url: URLS.studentRating,
+    enabled: !!session?.accessToken
+  })
+
   const rankStats = [
-    { key: 'sum', label: t('sum'), rank: 21, icon: <SiWebmoney size={16} className="text-[#FDA001]" /> },
     {
       key: 'coin',
       label: t('coin'),
-      rank: 7,
+      rank: get(rating, 'data.coin.my_rank', null),
       icon: <Image src="/icons/ball.svg" alt="tanga" width={16} height={16} />
     },
     {
       key: 'ball',
       label: t('ball'),
-      rank: 42,
+      rank: get(rating, 'data.score.my_rank', null),
       icon: <Image src="/icons/coins-logo.svg" alt="ball" width={16} height={16} />
     }
   ]
@@ -169,14 +173,16 @@ const ProfileInfoTab = () => {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="grid grid-cols-2 gap-2 mt-3">
             {rankStats.map((stat) => (
               <div
                 key={stat.key}
                 className="bg-[#F5F7FA] rounded-lg text-center py-3 px-1.5 flex flex-col items-center gap-1"
               >
                 {stat.icon}
-                <p className="text-[15px] font-bold text-[#5D87FF]">#{stat.rank}</p>
+                <p className="text-[15px] font-bold text-[#5D87FF]" title={stat.rank ? undefined : t('noRankYet')}>
+                  {stat.rank ? `#${stat.rank}` : '—'}
+                </p>
                 <p className="text-[10px] text-[#8A8A8E]">{stat.label}</p>
               </div>
             ))}

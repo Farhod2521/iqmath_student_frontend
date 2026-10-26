@@ -10,6 +10,7 @@ import PricingCouponModal from '@/modules/student/payment/components/PricingCoup
 import AuthModal from '@/home/components/auth/AuthModal'
 import Auth from '@/home/components/auth/Auth'
 import { closeAuthModal, openAuthWithReturn } from '@/home/components/auth/AuthGate'
+import { GOALS, reachGoal } from '@/utils/metrika'
 
 const formatMoney = (value) =>
   Math.round(Number(value) || 0)
@@ -82,6 +83,7 @@ const PricingContent = () => {
   }
 
   const handleBuy = async (plan) => {
+    reachGoal(GOALS.buyClick, { plan_id: plan.id })
     const session = await getSession()
     if (!session) {
       // plan ni vaqtincha saqlab turamiz (login bo'lgach davom ettirish uchun)

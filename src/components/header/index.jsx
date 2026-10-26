@@ -99,7 +99,7 @@ const Header = ({ color = 'white' }) => {
 
             <div className="hidden lg:flex items-center gap-x-[10px]">
               <Image src={'/icons/phone.svg'} alt="phone" width={24} height={24} />
-              <a className="text-[15px] font-medium text-black" href="tel:+998 78 888 18 81">
+              <a className="text-[15px] font-medium text-black" href="tel:+998788881881">
                 +998 78 888 18 81
               </a>
             </div>
@@ -199,7 +199,7 @@ const Header = ({ color = 'white' }) => {
                       <InstagramIcon className="text-black hover:text-[#5d87ff]" />
                     </a>
                   ) : (
-                    <a href="tel: +998 78 888 08 00" className="text-sm">
+                    <a href="tel:+998788880800" className="text-sm">
                       {" "}
                       <PhoneIcon className="text-black hover:text-[#5d87ff]" />{" "}
                     </a>

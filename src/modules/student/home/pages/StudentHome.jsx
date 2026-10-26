@@ -8,7 +8,6 @@ import HomeHero from '../components/HomeHero'
 import HomeStatsGrid from '../components/HomeStatsGrid'
 import HomeRecentActivity from '../components/HomeRecentActivity'
 import HomeCalendarCard from '../components/HomeCalendarCard'
-import HomeRemindersCard from '../components/HomeRemindersCard'
 import HomeTopStudents from '../components/HomeTopStudents'
 
 const StudentHome = () => {
@@ -65,7 +64,6 @@ const StudentHome = () => {
 
         <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 xl:col-span-3 xl:flex xl:flex-col">
           <HomeCalendarCard />
-          <HomeRemindersCard />
           <HomeTopStudents
             topStudents={topStudents}
             currentStudent={{ name: firstName, rank: myRank, score: myValue }}

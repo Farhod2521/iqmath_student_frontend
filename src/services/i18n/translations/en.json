@@ -1,4 +1,11 @@
 {
+  "topByScore": "By points",
+  "noRankYet": "No rank yet — complete your first task",
+  "passwordNotFound": "Password not found",
+  "signUpConsentStart": "I agree to the ",
+  "signUpConsentLink": "privacy policy",
+  "signUpConsentEnd": " and consent to the processing of my personal data (including my child's data).",
+  "signUpConsentRequired": "Please accept the terms to sign up",
   "childSwitch": {
     "resend": "Resend code",
     "resendIn": "Resend code in {{time}}",

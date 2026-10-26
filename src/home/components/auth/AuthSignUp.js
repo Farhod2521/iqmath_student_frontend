@@ -5,8 +5,6 @@ import { KEYS } from '@/constants/key'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-// import UserAgreement from '@/components/oferta'
-
 import InputText from '@/components/form/input/InputText'
 import InputPhone from '@/components/form/input/InputPhone'
 import SelectClass from '@/components/form/select/SelectClass'
@@ -16,7 +14,6 @@ import { URLS } from '@/constants/url'
 import SimpleLoader from '@/components/loader/simple-loader'
 import toast from 'react-hot-toast'
 import AuthButton from './AuthButton'
-// import UserAgreement from '@/components/oferta'
 
 function AuthSignUp() {
   const { t, i18n } = useTranslation()
@@ -28,6 +25,7 @@ function AuthSignUp() {
   const [selectedOptionCourse, setSelectedOptionCourse] = useState(null)
   const [selectedRole, setSelectedRoleLocal] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   const { register, handleSubmit } = useForm()
 
@@ -51,6 +49,11 @@ function AuthSignUp() {
 
     if (selectedRole.value === 'student' && !selectedOptionCourse) {
       toast.error(t('classRequired'))
+      return
+    }
+
+    if (!consent) {
+      toast.error(t('signUpConsentRequired'))
       return
     }
 
@@ -142,11 +145,26 @@ function AuthSignUp() {
         <SelectClass onChange={setSelectedOptionCourse} option={selectedOptionCourse} />
       )}
 
-      {/* <UserAgreement /> */}
+      {/* Shaxsiy ma'lumotlarni qayta ishlashga rozilik */}
+      <label className="flex cursor-pointer items-start gap-2 text-left text-[13px] leading-snug text-[#475569]">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-[#2563EB]"
+        />
+        <span>
+          {t('signUpConsentStart')}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-[#2563EB] underline">
+            {t('signUpConsentLink')}
+          </a>
+          {t('signUpConsentEnd')}
+        </span>
+      </label>
 
       <div className="pt-2">
-        <AuthButton type="submit" disabled={isLoading}>
-          {isLoading ? <SimpleLoader /> : t('login')}
+        <AuthButton type="submit" disabled={isLoading || !consent}>
+          {isLoading ? <SimpleLoader /> : t('signIn')}
         </AuthButton>
       </div>
     </form>

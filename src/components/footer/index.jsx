@@ -34,7 +34,7 @@ const Footer = () => {
       icon: '/icons/phone.svg',
       label: t('footer.contact.iqmathCallCenter'),
       value: '+998 78 888 18 81',
-      href: 'tel:+9987888881881',
+      href: 'tel:+998788881881',
       type: 'phone'
     },
     {

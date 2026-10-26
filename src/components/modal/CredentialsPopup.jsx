@@ -2,16 +2,12 @@ import React from 'react'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { useAuthTabStore } from '@/store'
-import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 
 const CredentialsPopup = () => {
   const { t } = useTranslation()
   const { loginCredentials, showCredentialsPopup, setShowCredentialsPopup, clearCredentials } = useAuthTabStore()
-  const { data: session } = useSession()
-
-  // Use password from session if not available in loginCredentials
-  const displayPassword = loginCredentials?.password || session?.password || 'Parol topilmadi'
+  const displayPassword = loginCredentials?.password || t('passwordNotFound')
 
   if (!showCredentialsPopup || !loginCredentials) {
     return null

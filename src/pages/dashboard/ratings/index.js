@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react'
 import { RolesList } from '@/layout/libs/menulist'
 import { Coins } from 'lucide-react'
 
-const COUNTS = [10, 50, 100, 1000]
+const COUNTS = [10, 50, 100]
 
 const AVATAR_COLORS = [
   'from-blue-400 to-blue-600',
@@ -111,8 +111,7 @@ const StudentTopLeaderboard = () => {
 
   const TYPES = [
     { label: t('topBall'), value: 'score' },
-    { label: t('topTanga'), value: 'coin' },
-    { label: t('topSum'), value: 'som' }
+    { label: t('topTanga'), value: 'coin' }
   ]
 
   useEffect(() => {
@@ -135,14 +134,12 @@ const StudentTopLeaderboard = () => {
   const getValueByType = (item) => {
     if (type === 'score') return item.score
     if (type === 'coin') return item.coin
-    if (type === 'som') return item.som
     return 0
   }
 
   const getUnitByType = () => {
     if (type === 'score') return <span className="lowercase">{t('ball')}</span>
     if (type === 'coin') return t('tanga')
-    if (type === 'som') return <span className="lowercase">{t('sum')}</span>
     return ''
   }
 

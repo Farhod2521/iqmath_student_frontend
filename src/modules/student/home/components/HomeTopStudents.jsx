@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 
 const RANK_STYLES = {
@@ -13,8 +14,13 @@ const HomeTopStudents = ({ topStudents, currentStudent, isLoading }) => {
   return (
     <div className="rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-bold text-[#191C1D]">{t('studentHome.topStudents')}</h3>
-        <button className="text-sm font-semibold text-[#5D87FF] hover:underline">{t('studentHome.viewAll')}</button>
+        <div>
+          <h3 className="text-base font-bold text-[#191C1D]">{t('studentHome.topStudents')}</h3>
+          <p className="text-xs text-[#8A8A8E]">{t('topByScore')}</p>
+        </div>
+        <Link href="/dashboard/ratings" className="text-sm font-semibold text-[#5D87FF] hover:underline">
+          {t('studentHome.viewAll')}
+        </Link>
       </div>
 
       <div className="mt-3 flex flex-col gap-2.5">

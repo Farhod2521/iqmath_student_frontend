@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { authSecret } from '@/config/authSecret'
 
 export default NextAuth({
   session: {
@@ -75,15 +76,14 @@ export default NextAuth({
             throw new Error(data.message || data.detail || 'Login failed')
           }
 
-          // Get password from API response if using sms_code
-          const userPassword = sms_code ? data.password : password
-
           return {
             token: data.access_token,
             refreshToken: data.refresh_token,
             phone: data.phone || phone || '',
             login: data.login || phone || '', // Assuming `login` exists in response
-            password: userPassword, // Use password from API response or credentials
+            // Parol sessiyaga yozilmaydi. Faqat SMS bilan ro'yxatdan o'tganda server yaratgan parol
+            // bir marta ko'rsatish uchun saqlanadi va ModalConfidentiality uni darhol o'chiradi
+            initialPassword: sms_code ? data.password || null : null,
             id: data.id,
             role: data.role || 'student', // Role ni qo'shamiz, default student
             full_name: data.full_name,
@@ -98,13 +98,16 @@ export default NextAuth({
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session?.clearInitialPassword) {
+        delete token.initialPassword
+      }
       if (user) {
         token.accessToken = user.token
         token.refreshToken = user.refreshToken
         token.phone = user.phone
         token.login = user.login
-        token.password = user.password
+        token.initialPassword = user.initialPassword || null
         token.id = user.id
         token.role = user.role // Role ni JWT ga qo'shamiz
         token.full_name = user.full_name
@@ -117,11 +120,11 @@ export default NextAuth({
       if (Date.now() / 1000 > token.expiresAt) {
         return null // 2 soat o'tgach, sessiyani tozalash
       }
+      // refreshToken brauzerga berilmaydi — u faqat shifrlangan cookie ichida qoladi (/api/auth/refresh)
       session.accessToken = token.accessToken
-      session.refreshToken = token.refreshToken
       session.phone = token.phone
       session.login = token.login
-      session.password = token.password
+      if (token.initialPassword) session.initialPassword = token.initialPassword
       session.id = token.id
       session.role = token.role // Role ni session ga qo'shamiz
       session.full_name = token.full_name
@@ -133,7 +136,7 @@ export default NextAuth({
       return url.startsWith(baseUrl) ? url : baseUrl
     }
   },
-  secret: process.env.NEXTAUTH_SECRET || '0bb43cd9f73216be2a5676af4f6b4de5efdcb40443e84b962c6b07267a108f7c',
+  secret: authSecret,
   pages: {
     signIn: '/'
   }
