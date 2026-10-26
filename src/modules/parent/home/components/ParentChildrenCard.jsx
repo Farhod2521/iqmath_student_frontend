@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { Plus, ChevronRight, GraduationCap, BookOpen, Calendar, Clock, Coins, UserPlus, Award } from 'lucide-react'
+import { formatMoney } from '@/utils/formatMoney'
 
 const AVATAR_COLORS = ['#5D87FF', '#8B5CF6', '#22C55E', '#F59E0B', '#EC4899']
 
@@ -102,7 +103,7 @@ const ParentChildrenCard = ({ children, isLoading, onAddChild, onDownloadCertifi
                 <DetailItem
                   icon={<Coins size={16} />}
                   label={t('lastPayment')}
-                  value={`${child.last_payment_amount?.toLocaleString() ?? 0} ${t('sum')}`}
+                  value={`${formatMoney(child.last_payment_amount) ?? 0} ${t('sum')}`}
                 />
               </div>
 

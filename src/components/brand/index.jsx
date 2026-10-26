@@ -41,7 +41,7 @@ const Brand = ({ onLoad, footer = false }) => {
             object-contain
           "
         />
-        <h1
+        <span
           className={`
             font-bicubik font-myriad font-normal
             text-xl sm:text-2xl md:text-3xl lg:text-[32px]
@@ -51,7 +51,7 @@ const Brand = ({ onLoad, footer = false }) => {
           `}
         >
           MATH
-        </h1>
+        </span>
       </button>
     </div>
   )

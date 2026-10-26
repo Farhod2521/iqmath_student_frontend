@@ -12,6 +12,7 @@ import { UserProfileProvider } from '@/context/responseProvider'
 import { HeroUIProvider } from '@heroui/react'
 import SiteTracker from '@/components/SiteTracker'
 import ImpersonationBar from '@/components/ImpersonationBar'
+import DefaultSeo from '@/components/seo/DefaultSeo'
 
 // function TawkManager() {
 //   const router = useRouter()
@@ -46,6 +47,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         <HeroUIProvider>
           <Hydrate state={pageProps?.dehydratedState}>
             <UserProfileProvider>
+              <DefaultSeo />
               <Component {...pageProps} />
               <SiteTracker />
               <ImpersonationBar />

@@ -29,4 +29,11 @@ i18n
     }
   })
 
+// <html lang> tanlangan tilga mos bo'lsin (SEO va ekran o'quvchilar uchun)
+const syncHtmlLang = (lng) => {
+  if (typeof document !== 'undefined' && lng) document.documentElement.lang = lng.split('-')[0]
+}
+i18n.on('languageChanged', syncHtmlLang)
+syncHtmlLang(i18n.language)
+
 export default i18n

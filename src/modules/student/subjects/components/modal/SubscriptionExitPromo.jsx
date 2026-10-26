@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import { motion } from 'framer-motion'
 import { Calendar, Check, Sparkles } from 'lucide-react'
 import { useGetPlans } from '@/hooks'
+import { formatMoney } from '@/utils/formatMoney'
 
 const PLANS_URL = '/prices'
 
@@ -75,7 +76,7 @@ const SubscriptionExitPromo = ({ onSkip }) => {
                 </span>
 
                 <p className="mt-3 text-[18px] font-extrabold text-[#1E2A4A]">
-                  {Number(plan.sale_price || 0).toLocaleString()} {t('pricing.currency')}
+                  {formatMoney(Number(plan.sale_price || 0))} {t('pricing.currency')}
                 </p>
 
                 {plan.discount_percent > 0 && (

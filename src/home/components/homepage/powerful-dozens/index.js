@@ -29,10 +29,11 @@ const PowerfulDozens = () => {
             </div>
 
             <h1 className="text-3xl font-extrabold leading-[1.15] text-[#1E2A4A] sm:text-4xl md:text-5xl lg:text-6xl">
-              <span className="block">{t('newMatem')}</span>
+              <span className="block">{t('newMatem')}</span>{' '}
               <span className="text-transparent bg-gradient-to-r from-[#048ffd] to-[#272efc] bg-clip-text">
                 {t('learnPrefix') ? `${t('learnPrefix')} ` : ''}
-                <span className="relative inline-block">
+                {/* Gradient so'zning o'ziga ham beriladi: eski brauzerlarda inline-block ichida bg-clip-text meros bo'lmaydi */}
+                <span className="relative inline-block text-transparent bg-gradient-to-r from-[#048ffd] to-[#272efc] bg-clip-text">
                   {t('learn')}
                   <svg
                     className="absolute -bottom-1 left-0 h-2 w-full sm:h-2.5"

@@ -14,16 +14,16 @@ const Footer = () => {
     {
       title: t('footer.platform'),
       links: [
-        { name: t('footer.links.courses'), href: '/' },
-        { name: t('footer.links.pricing'), href: '#prices' },
+        // "Kurslar" sahifasi hali yo'q — bo'sh havola qo'yilmaydi
+        { name: t('footer.links.pricing'), href: '/#prices' },
         { name: t('footer.links.about'), href: '/about' }
       ]
     },
     {
       title: t('footer.support'),
       links: [
-        { name: t('footer.links.faq'), href: '#faq-list-top' },
-        { name: t('footer.links.support'), href: '/' },
+        { name: t('footer.links.faq'), href: '/#faq-list-top' },
+        { name: t('footer.links.support'), href: 'https://t.me/Iqmath_help' },
         { name: t('footer.links.contact'), href: 'tel:+998881989000' }
       ]
     }
@@ -48,7 +48,7 @@ const Footer = () => {
       icon: '/icons/address.svg',
       label: t('footer.contact.address'),
       value: "Toshkent, O'zbekiston",
-      href: '#',
+      href: null,
       type: 'address'
     }
   ]
@@ -120,12 +120,13 @@ const Footer = () => {
               {footerLinks?.map((section, idx) => (
                 <div key={idx} className="lg:col-span-2">
                   <h3 className="mb-4 text-base font-semibold text-white">{section.title}</h3>
-                  <ul className="space-y-3">
+                  <ul className="space-y-1 lg:space-y-3">
                     {section.links?.map((link, linkIdx) => (
                       <li key={linkIdx}>
                         <a
                           href={link.href}
-                          className="text-gray-400 hover:text-white transition text-[15px] inline-flex items-center group"
+                          {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                          className="text-gray-400 hover:text-white transition text-[15px] inline-flex min-h-[44px] items-center group lg:min-h-0"
                         >
                           <span className="transition-transform group-hover:translate-x-1">{link.name}</span>
                         </a>
@@ -142,8 +143,8 @@ const Footer = () => {
                   {contactInfo?.map((contact, idx) => (
                     <li key={idx}>
                       <a
-                        href={contact.href}
-                        className="flex items-start gap-3 text-gray-400 transition hover:text-white group"
+                        {...(contact.href ? { href: contact.href } : {})}
+                        className={`flex items-start gap-3 text-gray-400 transition group ${contact.href ? 'hover:text-white' : 'cursor-default'}`}
                       >
                         <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 transition bg-gray-800 rounded-lg group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600">
                           <Image

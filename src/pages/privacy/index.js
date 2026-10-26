@@ -113,7 +113,7 @@ function Privacy() {
   return (
     <LayoutHome>
       <Head>
-        <title>{`${content.title} — IQMath`}</title>
+        <title key="title">{`${content.title} — IQMath`}</title>
       </Head>
       <Container sx={{ maxWidth: '900px !important' }}>
         <article className="py-12 text-[#2A3547]">

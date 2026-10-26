@@ -83,6 +83,13 @@ const AuthRecieveCode = () => {
         toast.success(t('loggedInSuccessfully'))
         reachGoal(GOALS.registration, { role: selectedRole?.value || 'student' })
 
+        // N5: "Sotib olish" dan kelgan bo'lsa — tanlangan tarif to'loviga qaytamiz (PricingContent pending_plan_id ni ochadi)
+        const returnUrl = new URLSearchParams(window.location.search).get('returnUrl')
+        if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//') && localStorage.getItem('pending_plan_id')) {
+          window.location.href = returnUrl
+          return
+        }
+
         if (selectedRole?.value === RolesList.STUDENT) {
           window.location.href = `/dashboard/student/home?phone=${phoneTab}`
         } else if (selectedRole?.value === RolesList.PARENT) {

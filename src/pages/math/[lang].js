@@ -27,18 +27,18 @@ export default function MathLangPage() {
   return (
     <>
       <Head>
-        <title>{meta.title}</title>
-        <meta name="description" content={meta.description} />
+        <title key="title">{meta.title}</title>
+        <meta key="description" name="description" content={meta.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="https://api.iqmath.uz/system/logo/logo.png" />
 
         {/* Open Graph — reklama/ijtimoiy tarmoqlar uchun */}
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description} />
-        <meta property="og:image" content="https://api.iqmath.uz/system/logo/logo.png" />
-        <meta property="og:url" content={`https://iqmath.uz/math/${lang}`} />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta key="og:type" property="og:type" content="website" />
+        <meta key="og:title" property="og:title" content={meta.title} />
+        <meta key="og:description" property="og:description" content={meta.description} />
+        <meta key="og:image" property="og:image" content="https://api.iqmath.uz/system/logo/logo.png" />
+        <meta key="og:url" property="og:url" content={`https://iqmath.uz/math/${lang}`} />
+        <meta key="twitter:card" name="twitter:card" content="summary_large_image" />
 
         {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

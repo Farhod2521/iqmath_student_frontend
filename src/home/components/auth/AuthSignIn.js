@@ -76,7 +76,9 @@ function AuthSignIn() {
     if (result?.ok) {
       const session = await getSession()
 
-      const returnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
+      // Faqat sayt ichidagi manzilga qaytamiz (//boshqa-sayt.uz kabi tashqi yo'naltirish bo'lmasin)
+      const rawReturnUrl = typeof router.query.returnUrl === 'string' ? router.query.returnUrl : ''
+      const returnUrl = rawReturnUrl.startsWith('/') && !rawReturnUrl.startsWith('//') ? rawReturnUrl : ''
 
       toast.success(t('loggedInSuccessfully'))
 

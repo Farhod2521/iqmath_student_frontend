@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { CreditCard, Calculator, Info, Percent, Star, Zap, Calendar, Wallet, BarChart3 } from 'lucide-react'
 import NasiyaWordmark from '@/assets/images/logos/uzumnasiya.png'
 import NasiyaIcon from '@/assets/images/logos/uzumlogo.png'
+import { formatMoney } from '@/utils/formatMoney'
 
 const NASIYA_WORDMARK = NasiyaWordmark.src
 const NASIYA_ICON = NasiyaIcon.src
@@ -93,7 +94,7 @@ const NasiyaInstallmentOption = ({ price }) => {
         <div className="flex items-center justify-between p-3.5 bg-white dark:bg-[#2A3447] border border-[#EAEFF4] dark:border-[#2A3447] rounded-2xl">
           <span className="text-sm text-[#5A6A85] dark:text-gray-400">{t('pricing.nasiya.oneTimeAmount')}</span>
           <span className="text-xl font-bold text-[#2A3547] dark:text-white">
-            {basePrice.toLocaleString()} {t('sum')}
+            {formatMoney(basePrice)} {t('sum')}
           </span>
         </div>
       ) : (
@@ -171,7 +172,7 @@ const NasiyaInstallmentOption = ({ price }) => {
                     <span
                       className={`text-base font-extrabold ${isActive ? 'text-[#033AEF]' : 'text-[#2A3547] dark:text-white'}`}
                     >
-                      {term.monthly.toLocaleString()}
+                      {formatMoney(term.monthly)}
                     </span>
                     <span className={`text-[10px] ${isActive ? 'text-[#5F86FC]' : 'text-gray-400'}`}>
                       {t('pricing.nasiya.perMonth')}
@@ -213,7 +214,7 @@ const NasiyaInstallmentOption = ({ price }) => {
               </div>
             </div>
             <span className="text-lg font-bold text-[#2F5FD0] whitespace-nowrap">
-              {activeTerm.total.toLocaleString()} {t('sum')}
+              {formatMoney(activeTerm.total)} {t('sum')}
             </span>
           </div>
         </div>

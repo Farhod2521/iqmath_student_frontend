@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="uz">
       <Head>
         {/* Manrope — bosh sahifa menyusi uchun; Playfair Display — o'quvchi bannerining "35 YIL" yozuvi */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,10 +16,8 @@ export default function Document() {
       <body className="antialiased">
         <Main />
         <NextScript />
-        <script
-          src="https://styleguide.brainly.com/images/math-symbols-icons-76ec20f543.js"
-          strategy="afterInteractive"
-        ></script>
+        {/* Matematik belgilar ikonkalari — brainly-style-guide paketidan o'z serverimizda (public/vendor) */}
+        <script src="/vendor/math-symbols-icons.js"></script>
 
         {/* <!-- Google tag (gtag.js) --> */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-691ESLP31P"></script>

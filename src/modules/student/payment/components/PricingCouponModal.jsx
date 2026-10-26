@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { ModalHeader, PlanGrid, CouponSection } from './index'
+import PaymentWaiting from './PaymentWaiting'
 import { usePricingModal } from '../hooks/usePricingModal'
 
 const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) => {
@@ -7,6 +8,7 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
     activeTab,
     couponCode,
     couponData,
+    checkoutUrl,
     isCheckingCoupon,
     plans,
     isLoadingPlans,
@@ -40,6 +42,9 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
         <ModalHeader activeTab={activeTab} onClose={handleClose} />
 
         <div className="p-4 overflow-hidden">
+          {checkoutUrl ? (
+            <PaymentWaiting checkoutUrl={checkoutUrl} />
+          ) : (
           <CouponSection
             selectedPlan={selectedPlan}
             couponCode={couponCode}
@@ -51,6 +56,7 @@ const PricingCouponModal = ({ selectedPlan, isOpen, onClose, originalPrice }) =>
             onSkipCoupon={handleSkipCoupon}
             onApplyCoupon={handleApplyCoupon}
           />
+          )}
         </div>
       </div>
     </div>

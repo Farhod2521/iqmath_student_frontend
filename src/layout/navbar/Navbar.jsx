@@ -30,6 +30,8 @@ const Navbar = () => {
   })
 
   const fullName = get(studentProfile, 'data.full_name', '')
+  // K3: salomlashuvda faqat ism — to'liq F.I.Sh. shapkada kesilib qolardi
+  const firstName = fullName.trim().split(/\s+/)[0] || ''
   const classNum = (
     (i18n.language === 'uz'
       ? get(studentProfile, 'data.class_name_uz', '')
@@ -86,11 +88,12 @@ const Navbar = () => {
                 {isPremium ? (
                   <PremiumCrown title={crownTitle} className="mx-0.5 inline-block h-[0.95em] w-[1.15em] -translate-y-[0.12em]" />
                 ) : null}
-                {fullName || t('studentHome.you')}
+                {firstName || t('studentHome.you')}
                 {greetAfter} 👋
               </h1>
               <p className="mt-0.5 truncate text-[11px] text-[#8A8A8E] sm:text-sm">
-                {t('studentHome.dailyGoal', { classNum: classNum || '', minutes: 15 })}
+                {/* Qotib qolgan "bugun 15 daqiqa" maqsadi olib tashlandi — haqiqiy maqsad sozlamasi yo'q */}
+                {classNum ? `${classNum}-${t('studentHome.classSuffix')}` : ''}
               </p>
             </>
           ) : (

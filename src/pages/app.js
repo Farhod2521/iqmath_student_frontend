@@ -173,8 +173,9 @@ export default function IqMathAppPage() {
   return (
     <>
       <Head>
-        <title>IQ Math ilovasi</title>
+        <title key="title">IQ Math ilovasi</title>
         <meta
+          key="description"
           name="description"
           content="IQ Math mobil ilovasini Android yoki iOS uchun yuklab oling. Скачайте мобильное приложение IQ Math для Android или iOS."
         />

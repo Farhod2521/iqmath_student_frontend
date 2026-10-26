@@ -73,7 +73,8 @@ const MonthlyChart = ({ items = [] }) => {
   const [hover, setHover] = useState(null)
   const max = Math.max(1, ...items.map((m) => m.amount))
   const step = Math.pow(10, Math.max(0, String(Math.round(max)).length - 1))
-  const top = Math.ceil(max / step) * step
+  // Yuqori chegara 3 ga bo'linadigan qilib olinadi — o'q bo'linmalari butun va takrorlanmas bo'lsin
+  const top = Math.ceil(max / (3 * step)) * 3 * step
   const ticks = [top, (top * 2) / 3, top / 3, 0]
 
   return (
@@ -267,7 +268,12 @@ const PaymentsTab = ({ childId, onExtend, url, queryKey }) => {
 
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <InfoTile icon={CalendarCheck} label={p('payDate')} value={formatDate(summary.last_date)} />
-            <InfoTile icon={CalendarClock} label={p('nextPay')} value={formatDate(current?.next_payment_date)} />
+            {/* Avtomatik yechib olish yo'q — "keyingi to'lov" emas, ruxsat qachongacha ekani */}
+            <InfoTile
+              icon={CalendarClock}
+              label={t('accessUntil')}
+              value={formatDate(current?.end_date || current?.next_payment_date)}
+            />
             <InfoTile
               icon={Coins}
               label={p('totalPaid')}

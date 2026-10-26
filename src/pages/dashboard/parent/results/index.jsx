@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { LoadingState } from '@/modules/student/products/components'
 import Link from 'next/link'
 import HeaderTitle from '@/components/header-title'
+import { formatMoney } from '@/utils/formatMoney'
 
 const Index = () => {
   const { t, i18n } = useTranslation()
@@ -242,7 +243,7 @@ const Index = () => {
                               <div className="p-4 bg-white border border-gray-200 rounded-lg">
                                 <p className="text-sm text-gray-500">{lang.lastPayment}</p>
                                 <p className="text-lg font-semibold text-gray-900">
-                                  {child.last_payment_amount?.toLocaleString() || '0'} {lang.sum}
+                                  {formatMoney(child.last_payment_amount) || '0'} {lang.sum}
                                 </p>
                               </div>
                               <div className="p-4 bg-white border border-gray-200 rounded-lg">
@@ -362,7 +363,7 @@ const Index = () => {
                           <div className="p-3 rounded-lg bg-gray-50">
                             <p className="mb-1 text-xs text-gray-500">{lang.lastPayment}</p>
                             <p className="text-base font-semibold text-gray-900">
-                              {child.last_payment_amount?.toLocaleString() || '0'} {lang.sum}
+                              {formatMoney(child.last_payment_amount) || '0'} {lang.sum}
                             </p>
                           </div>
                           <div className="p-3 rounded-lg bg-gray-50">
@@ -475,7 +476,7 @@ const Index = () => {
                       <div className="p-3 rounded-lg bg-gray-50">
                         <p className="mb-1 text-xs text-gray-500">{lang.lastPayment}</p>
                         <p className="text-base font-semibold text-gray-900">
-                          {child.last_payment_amount?.toLocaleString() || '0'} {lang.sum}
+                          {formatMoney(child.last_payment_amount) || '0'} {lang.sum}
                         </p>
                       </div>
                       <div className="p-3 rounded-lg bg-gray-50">

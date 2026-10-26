@@ -1,6 +1,7 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import { Check, Pencil, Sparkles, Trash2, X, Zap } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@/utils/formatMoney'
 
 // const categoryColors = {
 //   'Best Value': 'from-emerald-500 to-teal-500',
@@ -92,7 +93,7 @@ export default function SubscriptionPlansGrid({ plans = [], onEdit, onDelete, is
                 </div>
                 {item.sale_price > 0 && (
                   // <span className="block mt-1 text-sm text-gray-400 line-through">
-                  <span className="text-sm font-extrabold text-gray-900">{item.sale_price.toLocaleString()} so'm</span>
+                  <span className="text-sm font-extrabold text-gray-900">{formatMoney(item.sale_price)} so'm</span>
                 )}
               </div>
 

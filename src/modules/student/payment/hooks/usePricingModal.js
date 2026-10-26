@@ -14,6 +14,8 @@ export const usePricingModal = () => {
   const [activeTab, setActiveTab] = useState('plans')
   const [couponCode, setCouponCode] = useState('')
   const [couponData, setCouponData] = useState(null)
+  // To'lov sahifasi ochilgach — modal "to'lov kutilmoqda" holatiga o'tadi
+  const [checkoutUrl, setCheckoutUrl] = useState(null)
 
   const { data: plansData, isLoading: isLoadingPlans, error: plansError } = useGetPlans()
 
@@ -117,8 +119,13 @@ export const usePricingModal = () => {
 
         reachGoal(GOALS.paymentStart, { plan_id: selectedPlan.id, coupon: Boolean(couponCode) })
 
-        // To'lov sahifasiga yo'naltirish
-        window.open(checkoutUrl, '_blank')
+        // To'lov sahifasini yangi oynada ochamiz; brauzer bloklasa — shu oynada
+        const opened = window.open(checkoutUrl, '_blank')
+        if (!opened) {
+          window.location.href = checkoutUrl
+          return true
+        }
+        setCheckoutUrl(checkoutUrl)
         return true
       })
       .catch((error) => {
@@ -134,6 +141,7 @@ export const usePricingModal = () => {
     setActiveTab('plans')
     setCouponCode('')
     setCouponData(null)
+    setCheckoutUrl(null)
   }
 
   const plans =
@@ -192,6 +200,7 @@ export const usePricingModal = () => {
     activeTab,
     couponCode,
     couponData,
+    checkoutUrl,
     isCheckingCoupon,
     plans,
     isLoadingPlans,

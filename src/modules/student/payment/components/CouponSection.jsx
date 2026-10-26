@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTag, FaSpinner } from 'react-icons/fa'
 import { ShoppingBag, Ticket, ArrowRight, Crown } from 'lucide-react'
 import Button from '@/components/button'
 import NasiyaInstallmentOption from './NasiyaInstallmentOption'
+import { formatMoney } from '@/utils/formatMoney'
 
 const CouponSection = ({
   selectedPlan,
@@ -17,6 +18,8 @@ const CouponSection = ({
   onApplyCoupon
 }) => {
   const { t } = useTranslation()
+  // Promokod ixtiyoriy: maydon faqat so'ralganda ochiladi
+  const [showCoupon, setShowCoupon] = useState(Boolean(couponCode))
 
   const categoryTitle = selectedPlan?.category?.title
   const discountPercent = selectedPlan?.discount_percent || selectedPlan?.discount || 0
@@ -57,12 +60,12 @@ const CouponSection = ({
                 </span>
               )}
               <div className="text-xl font-bold text-[#2A3547] dark:text-white">
-                {selectedPlan.price.toLocaleString()} {t('sum')}
+                {formatMoney(selectedPlan.price)} {t('sum')}
               </div>
               {selectedPlan.originalPrice > selectedPlan.price && (
                 <div className="flex items-center justify-end gap-2 mt-0.5">
                   <span className="text-sm text-[#5A6A85] dark:text-gray-400 line-through">
-                    {selectedPlan.originalPrice.toLocaleString()} {t('sum')}
+                    {formatMoney(selectedPlan.originalPrice)} {t('sum')}
                   </span>
                   {discountPercent > 0 && (
                     <span className="px-2 py-0.5 rounded-full bg-[#4F46E5] text-white text-[11px] font-bold">
@@ -79,7 +82,18 @@ const CouponSection = ({
       {/* Uzum Nasiya temporarily disabled — Uzum-side integration issue, re-enable once resolved */}
       {/* {selectedPlan && <NasiyaInstallmentOption price={selectedPlan.price} />} */}
 
-      {/* Coupon Input */}
+      {/* Coupon Input (ixtiyoriy, yig'ilgan) */}
+      {!showCoupon && !couponData ? (
+        <button
+          type="button"
+          onClick={() => setShowCoupon(true)}
+          className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#2F5FD0] hover:underline"
+        >
+          <Ticket size={16} />
+          {t('haveCoupon')}
+        </button>
+      ) : null}
+      {showCoupon && !couponData ? (
       <div className="mb-4">
         <div className="flex gap-3">
           <div className="relative flex-1">
@@ -105,6 +119,7 @@ const CouponSection = ({
           </Button>
         </div>
       </div>
+      ) : null}
 
       {/* Coupon Result */}
       {couponData && (
@@ -117,7 +132,7 @@ const CouponSection = ({
             <div className="flex justify-between">
               <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
               <span className="text-[#5A6A85] dark:text-gray-400 line-through">
-                {couponData.price?.toLocaleString()} {t('sum')}
+                {formatMoney(couponData.price)} {t('sum')}
               </span>
             </div>
             <div className="flex justify-between">
@@ -133,13 +148,13 @@ const CouponSection = ({
             <div className="flex justify-between">
               <span className="text-[#2A3547] dark:text-white">{t('discount_price')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9]">
-                -{couponData.saved_amount?.toLocaleString()} {t('sum')}
+                -{formatMoney(couponData.saved_amount)} {t('sum')}
               </span>
             </div>
             <div className="flex justify-between border-t border-[#13DEB9]/30 dark:border-[#13DEB9]/30 pt-3">
               <span className="text-[#2A3547] dark:text-white font-semibold text-lg">{t('finalPrice')}:</span>
               <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-xl">
-                {couponData.sale_price?.toLocaleString()} {t('sum')}
+                {formatMoney(couponData.sale_price)} {t('sum')}
               </span>
             </div>
           </div>
@@ -148,12 +163,14 @@ const CouponSection = ({
 
       {/* Actions */}
       <div className="flex gap-3 pb-1">
-        <Button
-          classname="flex-1 py-2.5 text-base bg-[#EAEFF4] hover:bg-[#DFE5EF] text-[#2A3547] dark:bg-[#2A3447] dark:hover:bg-[#1F2937] dark:text-white rounded-2xl"
-          onclick={onBack}
+        {/* Ikkilamchi tugma: oddiy <button> — Button komponentining oq matni ustidan yozilmasin */}
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex-1 rounded-2xl border border-[#CBD5E1] bg-white py-2.5 text-base font-medium text-[#1E293B] hover:bg-[#F1F5F9] dark:border-[#2A3447] dark:bg-[#2A3447] dark:text-white"
         >
           {t('back')}
-        </Button>
+        </button>
 
         {couponData ? (
           <Button
@@ -167,7 +184,7 @@ const CouponSection = ({
             classname="flex-1 flex items-center justify-center gap-2 py-2.5 text-base bg-gradient-to-r from-[#4C7CF3] to-[#2F5FD0] rounded-2xl"
             onclick={onSkipCoupon}
           >
-            {t('skipCoupon')}
+            {t('proceedToPayment')}
             <ArrowRight size={16} />
           </Button>
         )}

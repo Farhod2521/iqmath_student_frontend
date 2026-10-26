@@ -78,7 +78,7 @@ const NewsSlider = ({ news }) => {
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-        <Typography variant="h1" fontWeight={600}>
+        <Typography variant="h1" component="h2" fontWeight={600}>
           {t('news')}
         </Typography>
         <Button variant="contained" color="primary" onClick={() => router.push('/news')}>

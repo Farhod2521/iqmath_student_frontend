@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import Button from '@/components/button'
 import { usePricingModal } from '../hooks/usePricingModal'
 import { ModalHeader, PlanGrid, CouponSection } from './index'
+import PaymentWaiting from './PaymentWaiting'
+import { formatMoney } from '@/utils/formatMoney'
 
 const PricingModal = ({ isOpen, onClose, originalPrice }) => {
   const { t } = useTranslation()
@@ -11,6 +13,7 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
     activeTab,
     couponCode,
     couponData,
+    checkoutUrl,
     isCheckingCoupon,
     plans,
     isLoadingPlans,
@@ -38,7 +41,9 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
         <ModalHeader activeTab={activeTab} onClose={handleClose} />
 
         <div className="p-3 sm:p-4 overflow-hidden">
-          {activeTab === 'plans' ? (
+          {checkoutUrl ? (
+            <PaymentWaiting checkoutUrl={checkoutUrl} />
+          ) : activeTab === 'plans' ? (
             <>
               {isLoadingPlans ? (
                 <div className="flex items-center justify-center py-12">
@@ -58,7 +63,7 @@ const PricingModal = ({ isOpen, onClose, originalPrice }) => {
                         classname="w-full sm:w-auto bg-[#5D87FF] hover:bg-[#4570EA] text-white px-4 sm:px-12 py-3 sm:py-4 text-base sm:text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
                         onclick={handleNext}
                       >
-                        {t('proceedToPayment')} - {selectedPlan.price.toLocaleString()} {t('sum')}
+                        {t('proceedToPayment')} - {formatMoney(selectedPlan.price)} {t('sum')}
                       </Button>
                       <p className="text-sm text-[#5A6A85] dark:text-gray-400 mt-3">{t('nextStep')}</p>
                     </div>

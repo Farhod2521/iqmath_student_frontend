@@ -7,6 +7,7 @@ import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import toast from 'react-hot-toast'
 import { getPaymentInitiate } from '@/services/controllers'
+import { formatMoney } from '@/utils/formatMoney'
 
 const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
   const { t } = useTranslation()
@@ -136,13 +137,13 @@ const CouponModal = ({ isOpen, onClose, onApplyCoupon, originalPrice }) => {
               <div className="flex justify-between">
                 <span className="text-[#2A3547] dark:text-white">{t('originalPrice')}:</span>
                 <span className="text-[#5A6A85] dark:text-gray-400 text-lg">
-                  {couponData.discounted_price?.toLocaleString()} so'm
+                  {formatMoney(couponData.discounted_price)} so'm
                 </span>
               </div>
               <div className="flex justify-between border-t border-[#13DEB9]/30 dark:border-[#13DEB9]/30 pt-3">
                 <span className="text-[#2A3547] dark:text-white font-semibold text-lg">{t('finalPrice')}:</span>
                 <span className="font-bold text-[#13DEB9] dark:text-[#13DEB9] text-xl">
-                  {couponData.original_price?.toLocaleString()} so'm
+                  {formatMoney(couponData.original_price)} so'm
                 </span>
               </div>
             </div>

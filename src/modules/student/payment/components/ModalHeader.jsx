@@ -5,19 +5,20 @@ import { FaTimes } from 'react-icons/fa'
 const ModalHeader = ({ activeTab, onClose }) => {
   const { t } = useTranslation()
 
+  // O1/O3: sarlavha va izoh takrorlanmasin; to'lov bosqichi "Kuponlar" deb atalmasin
   const getTitle = () => {
-    return activeTab === 'plans' ? t('selectPlan') : t('coupons')
+    return activeTab === 'plans' ? t('selectPlan') : t('paymentStepTitle')
   }
 
   const getSubtitle = () => {
-    return activeTab === 'plans' ? t('selectPlan') : t('enterCouponCode')
+    return activeTab === 'plans' ? t('selectPlanHint') : t('paymentStepHint')
   }
 
   return (
     <div className="sticky top-0 bg-white dark:bg-[#202936] border-b border-[#EAEFF4] dark:border-[#2A3447] p-4 rounded-t-2xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-[#2A3547] dark:text-white">{getTitle()}</h1>
+          <h2 className="text-xl font-bold text-[#2A3547] dark:text-white">{getTitle()}</h2>
           <p className="text-sm text-[#5A6A85] dark:text-gray-400 mt-0.5">{getSubtitle()}</p>
         </div>
         <button
