@@ -1,11 +1,13 @@
+import { SOCIAL_LINKS } from '@/constants/socialLinks'
+
 // /math/uz va /math/ru landing sahifasi matnlari.
 // Ariza formasi matnlari i18n faylida (promo.form.*) qoladi.
 
 export const LINKS = {
   telegram: 'https://t.me/Iqmath_help',
   telegramChannel: 'https://t.me/iqmathuzz',
-  instagram: 'https://www.instagram.com/iqmath__uz/',
-  youtube: 'https://www.youtube.com/@iqmathuz',
+  instagram: SOCIAL_LINKS.instagram,
+  youtube: SOCIAL_LINKS.youtube,
   googlePlay: 'https://play.google.com/store/apps/details?id=com.iqmath.mobile',
   appStore: 'https://apps.apple.com/us/app/iqmath/id6753702778',
   video: '/videos/iqmath-battle-yangilik.mp4'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { FaBullseye, FaChartSimple, FaHeartPulse, FaLightbulb, FaRocket, FaUsers } from 'react-icons/fa6'
 import { useTranslation } from 'react-i18next'
 
@@ -125,15 +125,7 @@ const Reviews = () => {
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-start gap-3">
-                    <h3 className="flex-1 text-[19px] font-bold leading-snug text-[#0B1B3F]">{title}</h3>
-                    <span
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition group-hover:translate-x-0.5"
-                      style={{ backgroundColor: style.soft, color: style.arrow }}
-                    >
-                      <ArrowRight size={20} strokeWidth={2.4} />
-                    </span>
-                  </div>
+                  <h3 className="text-[19px] font-bold leading-snug text-[#0B1B3F]">{title}</h3>
                   <p className="mt-2.5 text-[15.5px] leading-relaxed text-[#64748B]">{description}</p>
                 </div>
               </div>

@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 const TEXTS = {
   uz: {
-    badge: 'IQmath bilan erishish',
-    title: ['IQmath', 'Bilan Erishish', 'Mumkin'],
+    badge: 'Erishiladigan natijalar',
+    title: ['IQmath', 'bilan erishish', 'mumkin'],
     subtitle:
       'IQmath bilan o‘qish natijasida nafaqat akademik ko‘rsatkichlar yaxshilanadi, balki mantiqiy fikrlash ham kuchayadi.',
     items: [

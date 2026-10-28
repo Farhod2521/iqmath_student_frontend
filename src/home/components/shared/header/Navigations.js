@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-// Menyu bandi: oddiy matn, faol bandi — ko'k gradientli "pill" va ostida chiziq
+// Menyu bandi: oddiy matn, faol bandi — ko'k matn va ostida chiziq
 const StyledButton = styled(Button)(() => ({
   fontFamily: "'Manrope', 'Inter', system-ui, sans-serif",
   fontSize: '17px',
@@ -28,17 +28,16 @@ const StyledButton = styled(Button)(() => ({
   },
 
   '&.active': {
-    background: 'linear-gradient(135deg, #2F7BFF 0%, #1D5BF0 100%)',
-    color: '#fff',
-    boxShadow: '0 10px 22px -12px rgba(29, 91, 240, 0.9)'
+    backgroundColor: 'transparent',
+    color: '#1D6BFF'
   },
 
   '&.active::after': {
     content: '""',
     position: 'absolute',
     left: '50%',
-    bottom: '-9px',
-    width: '72%',
+    bottom: '0px',
+    width: '60%',
     height: '3px',
     borderRadius: '3px',
     transform: 'translateX(-50%)',
@@ -54,7 +53,8 @@ const Navigations = () => {
     // { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/#prices' },
-    { title: t('news'), to: '/#news-detail' },
+    { title: t('parentsNav'), to: '/parents' },
+    { title: t('news'), to: '/news' },
     { title: t('games.hero.navTitle'), to: '/mental-games' },
     { title: t('faqTitle'), to: '/#faq-list-top' }
   ]

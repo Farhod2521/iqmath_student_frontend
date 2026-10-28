@@ -18,6 +18,7 @@ import Navigations from './Navigations'
 import MobileSidebar from './MobileSidebar'
 import LanguageDropdown from '@/components/language'
 import { request } from '@/services/api'
+import { SOCIAL_LINKS } from '@/constants/socialLinks'
 import { URLS } from '@/constants/url'
 import { FaFacebook, FaInstagram, FaPhone, FaTelegram, FaTwitter, FaYoutube } from 'react-icons/fa'
 import AuthModal from '../../auth/AuthModal'
@@ -55,14 +56,14 @@ const defaultLinks = {
   facebook: '',
   youtube: '',
   twitter: '',
-  phone: '+998881989000'
+  phone: '+998788881881'
 }
 
 const socialIcons = [
-  { key: 'telegram', Icon: FaTelegram, size: 20, link_url: 'https://t.me/iqmathuzz' },
-  { key: 'instagram', Icon: FaInstagram, size: 20, link_url: 'https://www.instagram.com/iqmath__uz/' },
-  { key: 'youtube', Icon: FaYoutube, size: 20, link_url: 'https://www.youtube.com/@iqmathuz' }
-]
+  { key: 'telegram', Icon: FaTelegram, size: 20, link_url: SOCIAL_LINKS.telegramChannel },
+  { key: 'instagram', Icon: FaInstagram, size: 20, link_url: SOCIAL_LINKS.instagram },
+  { key: 'youtube', Icon: FaYoutube, size: 20, link_url: SOCIAL_LINKS.youtube }
+].filter((item) => item.link_url) // havolasi yo'q tarmoq ko'rsatilmaydi
 
 const HpHeader = () => {
   const { t } = useTranslation()
@@ -238,7 +239,7 @@ const HpHeader = () => {
                 <Icon size={size} />
               </IconButton>
             ))}
-            <IconButton component="a" href={`tel:+998881989000`} color="primary" size="small">
+            <IconButton component="a" href={`tel:+998788881881`} color="primary" size="small">
               <FaPhone size={16} />
             </IconButton>
           </Stack>

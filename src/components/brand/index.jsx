@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-const Brand = ({ onLoad, footer = false }) => {
+// href — logotip bosilganda qayerga o'tadi (kabinet ichida: rolning bosh sahifasi), default: sayt bosh sahifasi
+const Brand = ({ onLoad, footer = false, href = '/' }) => {
   const router = useRouter()
   const [imageError, setImageError] = useState(false)
 
   const handleLogoClick = (e) => {
     e.preventDefault()
-    router.push('/')
+    router.push(href)
   }
 
   const handleImageError = () => {

@@ -6,6 +6,7 @@ import YoutubeIcon from '../icons/social-media/youtube'
 import { Container } from '@mui/material'
 
 import { useTranslation } from 'react-i18next'
+import { ADDRESS_MAP_URL, SOCIAL_LINKS } from '@/constants/socialLinks'
 
 const Footer = () => {
   const { t } = useTranslation()
@@ -23,8 +24,7 @@ const Footer = () => {
       title: t('footer.support'),
       links: [
         { name: t('footer.links.faq'), href: '/#faq-list-top' },
-        { name: t('footer.links.support'), href: 'https://t.me/Iqmath_help' },
-        { name: t('footer.links.contact'), href: 'tel:+998881989000' }
+        { name: t('footer.links.contact'), href: 'tel:+998788881881' }
       ]
     }
   ]
@@ -48,7 +48,9 @@ const Footer = () => {
       icon: '/icons/address.svg',
       label: t('footer.contact.address'),
       value: "Toshkent, O'zbekiston",
-      href: null,
+      // Yandex Xaritalar (O'zbekistonda keng ishlatiladi). Ofisning aniq manzili bo'lsa — shu yerga qo'yiladi
+      href: ADDRESS_MAP_URL,
+      external: true,
       type: 'address'
     }
   ]
@@ -65,17 +67,17 @@ const Footer = () => {
       key: 'instagram',
       icon: <InstagramIcon />,
       name: 'Instagram',
-      href: 'https://www.instagram.com/iqmath__uz/',
+      href: SOCIAL_LINKS.instagram,
       brand: 'instagram'
     },
     {
       key: 'youtube',
       icon: <YoutubeIcon />,
       name: 'YouTube',
-      href: 'https://www.youtube.com/@iqmathuz',
+      href: SOCIAL_LINKS.youtube,
       brand: 'youtube'
     }
-  ]
+  ].filter((social) => social.href) // havolasi yo'q tarmoqlar ko'rsatilmaydi
 
   return (
     <footer className="relative overflow-hidden text-white bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 font-sf">
@@ -144,6 +146,7 @@ const Footer = () => {
                     <li key={idx}>
                       <a
                         {...(contact.href ? { href: contact.href } : {})}
+                        {...(contact.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                         className={`flex items-start gap-3 text-gray-400 transition group ${contact.href ? 'hover:text-white' : 'cursor-default'}`}
                       >
                         <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 transition bg-gray-800 rounded-lg group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600">

@@ -7,11 +7,11 @@ import iqmathImg from '@/assets/images/about/iqmath.png'
 
 const TEXTS = {
   uz: {
-    students: "O'quvchilar",
+    students: "Ro'yxatdan o'tganlar",
     lessons: 'Video darslar',
     subjects: 'Asosiy fanlar',
     experience: 'Yillik tajriba',
-    activeStudents: 'faol o‘quvchi',
+    activeStudents: 'foydalanuvchi',
     lessonsChip: 'video dars',
     detailsBadge: 'Batafsil',
     detailsTitle: 'Platforma haqida',
@@ -27,11 +27,11 @@ const TEXTS = {
     ]
   },
   ru: {
-    students: 'Учеников',
+    students: 'Зарегистрировано',
     lessons: 'Видеоуроков',
     subjects: 'Основных предмета',
     experience: 'Года опыта',
-    activeStudents: 'активных учеников',
+    activeStudents: 'пользователей',
     lessonsChip: 'видеоуроков',
     detailsBadge: 'Подробнее',
     detailsTitle: 'О платформе',
@@ -92,8 +92,8 @@ const KeyMetric = () => {
   const loading = about === null
 
   const numbers = [
-    { Icon: GraduationCap, value: stats ? `${formatCount(stats.students)}+` : '—', label: text.students, color: '#2563EB' },
-    { Icon: PlayCircle, value: stats ? `${formatCount(stats.lessons)}+` : '—', label: text.lessons, color: '#7C3AED' },
+    { Icon: GraduationCap, value: stats ? `${formatCount(stats.users ?? stats.students)}+` : '—', label: text.students, color: '#2563EB' },
+    { Icon: PlayCircle, value: stats ? `${formatCount(stats.videos ?? stats.lessons)}+` : '—', label: text.lessons, color: '#7C3AED' },
     { Icon: Layers, value: '3', label: text.subjects, color: '#16A34A' },
     { Icon: Sparkles, value: '3+', label: text.experience, color: '#F59E0B' }
   ]
@@ -115,7 +115,7 @@ const KeyMetric = () => {
               </span>
               <span>
                 <span className="block text-lg font-extrabold leading-tight text-[#0B1B3F]">
-                  {stats ? `${formatCount(stats.students)}+` : '—'}
+                  {stats ? `${formatCount(stats.users ?? stats.students)}+` : '—'}
                 </span>
                 <span className="text-xs text-[#64748B]">{text.activeStudents}</span>
               </span>
@@ -126,7 +126,7 @@ const KeyMetric = () => {
               </span>
               <span>
                 <span className="block text-lg font-extrabold leading-tight text-[#0B1B3F]">
-                  {stats ? `${formatCount(stats.lessons)}+` : '—'}
+                  {stats ? `${formatCount(stats.videos ?? stats.lessons)}+` : '—'}
                 </span>
                 <span className="text-xs text-[#64748B]">{text.lessonsChip}</span>
               </span>

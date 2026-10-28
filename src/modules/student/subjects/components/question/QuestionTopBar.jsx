@@ -34,7 +34,7 @@ function QuestionTopBar({ title, subtitle, current = 0, total = 0, elapsed = 0, 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-3 py-3 md:px-6 lg:flex-nowrap lg:gap-x-6">
         {/* Chap: logo, breadcrumb, orqaga */}
         <div className="flex min-w-0 items-center gap-3 lg:gap-5">
-          <Brand />
+          <Brand href="/dashboard/student/home" />
           <div className="hidden h-7 w-px bg-[#E5EAF2] dark:bg-[#26324A] xl:block" />
           <nav className="hidden min-w-0 items-center gap-1.5 text-[15px] xl:flex">
             <span className="truncate font-semibold text-[#191C1D] dark:text-white">{title}</span>

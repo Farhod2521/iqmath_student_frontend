@@ -5,14 +5,14 @@ import PricingContent from '@/pages/prices/components/PricingContent'
 const TEXTS = {
   uz: {
     badge: 'Maxsus taklif – bilim olishni bugunoq boshlang!',
-    title: 'O‘quvchingizga mos',
+    title: 'O‘zingizga qulay',
     accent: 'tarifni tanlang',
     sub: 'IQmath platformasida matematikani tez va samarali o‘rganing'
   },
   ru: {
     badge: 'Специальное предложение – начните учиться уже сегодня!',
-    title: 'Выберите тариф',
-    accent: 'для вашего ученика',
+    title: 'Выберите удобный',
+    accent: 'для вас тариф',
     sub: 'Изучайте математику быстро и эффективно на платформе IQmath'
   }
 }

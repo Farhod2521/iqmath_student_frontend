@@ -1,7 +1,6 @@
 import React from 'react'
-import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, Award, BookOpen, Sparkles, TrendingUp, Video } from 'lucide-react'
+import { Award, BookOpen, Sparkles, TrendingUp, Video } from 'lucide-react'
 
 const TEXTS = {
   uz: {
@@ -9,7 +8,6 @@ const TEXTS = {
     title: 'Platformaning',
     accent: 'Imkoniyatlari',
     subtitle: 'Zamonaviy ta’lim uchun kerak bo‘lgan barcha narsalar bitta platformada jamlangan.',
-    more: 'Batafsil',
     items: [
       [
         'Video Darsliklar',
@@ -34,7 +32,6 @@ const TEXTS = {
     title: 'Возможности',
     accent: 'платформы',
     subtitle: 'Всё необходимое для современного обучения собрано на одной платформе.',
-    more: 'Подробнее',
     items: [
       [
         'Видеоуроки',
@@ -67,7 +64,8 @@ const CARD_STYLES = [
 /** Bosh sahifa: "Platformaning imkoniyatlari" — 4 ta karta */
 const C2a = () => {
   const { i18n } = useTranslation()
-  const text = TEXTS[i18n.language === 'ru' ? 'ru' : 'uz']
+  const lang = i18n.language === 'ru' ? 'ru' : 'uz'
+  const text = TEXTS[lang]
 
   return (
     <section id="features" className="relative overflow-hidden bg-gradient-to-b from-[#F7F9FE] via-white to-white py-14 md:py-20">
@@ -115,7 +113,7 @@ const C2a = () => {
                 key={title}
                 className="group rounded-[28px] border border-[#EEF1F7] bg-white p-3 shadow-[0_24px_50px_-40px_rgba(15,23,42,0.55)] transition duration-300 hover:-translate-y-1"
               >
-                <div className={`relative flex h-full flex-col overflow-hidden rounded-[22px] bg-gradient-to-b ${style.panel} px-6 pb-6 pt-7`}>
+                <div className={`relative flex h-full flex-col overflow-hidden rounded-[22px] bg-gradient-to-b ${style.panel} px-6 pb-8 pt-7`}>
                   {/* Kartadagi bezaklar */}
                   <span
                     className="pointer-events-none absolute -right-10 -top-12 h-40 w-48 rounded-[45%] opacity-50 blur-[2px]"
@@ -142,28 +140,16 @@ const C2a = () => {
                     <style.Icon size={46} strokeWidth={2.4} className="relative" />
                   </span>
 
-                  <h3 className="relative mt-6 text-[24px] font-extrabold text-[#0B1B3F]">{title}</h3>
-                  <p className="relative mt-2.5 text-[16px] leading-relaxed text-[#475569]">{description}</p>
+                  <h3 className="relative mt-7 text-[24px] font-extrabold leading-[1.25] text-[#0B1B3F]">{title}</h3>
+                  <p className="relative mt-4 text-[16px] leading-relaxed text-[#475569]">{description}</p>
 
-                  <Link
-                    href="/about"
-                    className="relative mt-auto inline-flex w-fit items-center gap-3 pt-6 text-[18px] font-bold"
-                    style={{ color: style.text }}
-                  >
-                    {text.more}
-                    <span
-                      className="flex h-12 w-12 items-center justify-center rounded-full transition group-hover:translate-x-1"
-                      style={{ backgroundColor: style.soft }}
-                    >
-                      <ArrowRight size={22} strokeWidth={2.4} />
-                    </span>
-                  </Link>
                 </div>
               </div>
             )
           })}
         </div>
       </div>
+
     </section>
   )
 }

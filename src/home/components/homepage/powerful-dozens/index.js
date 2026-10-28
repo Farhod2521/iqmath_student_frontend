@@ -1,10 +1,26 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Rocket, Sparkles } from 'lucide-react'
 import { Container } from '@mui/material'
 import AppStoreButtons from '@/components/app-store-buttons'
+import { request } from '@/services/api'
+
+const formatCount = (value) => Number(value || 0).toLocaleString('ru-RU').replace(/,/g, ' ')
 
 const PowerfulDozens = () => {
   const { t } = useTranslation()
+  // Ro'yxatdan o'tganlar va video darslar soni bazadan — "Biz haqimizda" sahifasi bilan bir xil manba
+  const [stats, setStats] = useState(null)
+
+  useEffect(() => {
+    request
+      .get('/api/v1/func_student/landing-stats/')
+      .then((res) => setStats(res.data || null))
+      .catch(() => setStats(null))
+  }, [])
+
+  const users = stats ? (stats.users ?? stats.students ?? null) : null
+  const videos = stats ? (stats.videos ?? stats.lessons ?? null) : null
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -69,20 +85,21 @@ const PowerfulDozens = () => {
             <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
               <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
                 <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                  <p>8,000</p> <span>+</span>
+                  <p>{users === null ? '—' : formatCount(users)}</p>
+                  {users !== null ? <span>+</span> : null}
                 </div>
                 <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('activeReader')}</div>
               </div>
               <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
                 <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                  <p>400</p>
-                  <span>+</span>
+                  <p>{videos === null ? '—' : formatCount(videos)}</p>
+                  {videos !== null ? <span>+</span> : null}
                 </div>
                 <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('VideoTutorials')}</div>
               </div>
               <div className="p-4 text-[#1E2A4A] border rounded-2xl border-black/5 bg-white/70 shadow-sm backdrop-blur-md">
                 <div className="flex items-center gap-1 text-2xl font-extrabold md:text-3xl">
-                  <p>4.9</p>
+                  <p>4.5</p>
                   <span>⭐</span>
                 </div>
                 <div className="mt-1 text-xs text-[#6B7590] sm:text-sm">{t('ratings')}</div>

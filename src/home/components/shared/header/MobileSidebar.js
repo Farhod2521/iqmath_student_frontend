@@ -17,7 +17,8 @@ const MobileSidebar = () => {
     // { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/#prices' },
-    { title: t('news'), to: '/#news-detail' },
+    { title: t('parentsNav'), to: '/parents' },
+    { title: t('news'), to: '/news' },
     { title: t('games.hero.navTitle'), to: '/mental-games' },
     { title: t('faqTitle'), to: '/#faq-list-top' }
     // { title: t('contactus'), to: 'tel:+998881989000' }

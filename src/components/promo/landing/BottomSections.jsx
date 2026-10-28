@@ -443,7 +443,9 @@ export const SiteFooter = ({ c }) => (
             [LINKS.telegramChannel, FaTelegramPlane],
             [LINKS.youtube, FaYoutube],
             [LINKS.instagram, FaInstagram]
-          ].map(([href, Icon]) => (
+          ]
+            .filter(([href]) => href) // havolasi yo'q tarmoq ko'rsatilmaydi
+            .map(([href, Icon]) => (
             <a
               key={href}
               href={href}
