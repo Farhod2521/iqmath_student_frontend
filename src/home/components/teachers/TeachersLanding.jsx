@@ -41,9 +41,9 @@ const TEXT = {
     ],
     login: 'Tizimga kirish',
     badge: 'O‘qituvchilar uchun',
-    title: ['O‘quvchilaringiz natijasi', 'bir joyda'],
+    title: ['O‘quvchilaringizni qo‘shing va', 'daromad qiling'],
     subtitle:
-      'Guruhlar yarating, o‘quvchilarni promo havola orqali ulang va ularning yutuqlarini kuzatib boring. Video darslar va misollar tayyor — siz faqat yo‘naltirasiz.',
+      'Promo havolangiz orqali o‘quvchilarni ulang — ular to‘lov qilganda bonus balansingizga tushadi. Guruhlar yarating va natijalarini bir joyda kuzating, darslar va misollar tayyor.',
     start: 'O‘qituvchi sifatida boshlash',
     how: 'Qanday ishlaydi',
     checks: ['Tayyor video darslar va misollar', 'Javoblar avtomatik tekshiriladi'],
@@ -124,9 +124,9 @@ const TEXT = {
     ],
     login: 'Вход',
     badge: 'Для учителей',
-    title: ['Результаты ваших учеников', 'в одном месте'],
+    title: ['Подключайте учеников и', 'зарабатывайте'],
     subtitle:
-      'Создавайте группы, подключайте учеников по промо-ссылке и следите за их успехами. Видеоуроки и задания уже готовы — вы только направляете.',
+      'Подключайте учеников по своей промо-ссылке — когда они оплачивают подписку, бонус поступает на ваш баланс. Создавайте группы и следите за результатами, уроки и задания уже готовы.',
     start: 'Начать как учитель',
     how: 'Как это работает',
     checks: ['Готовые видеоуроки и задания', 'Ответы проверяются автоматически'],
@@ -372,9 +372,10 @@ const TeachersLanding = () => {
       <Band tone="white">
         <Section className="py-14 sm:py-16">
           <div className="text-center">
-            <span className="inline-flex rounded-full bg-[#EAF1FF] px-5 py-2 text-[12px] font-bold uppercase tracking-[0.2em] text-[#4F6BF5]">
+            {/* Boshqa bo'limlardagi belgilar bilan bir xil uslub */}
+            <Badge accent="teacher" className="!bg-[#EAF1FF] !text-[#1D6BFF]">
               {t.whyBadge}
-            </span>
+            </Badge>
             <h2 className="mt-4 text-[30px] font-extrabold tracking-[-0.02em] sm:text-[44px]">
               {t.whyTitle[0]} <span className="text-[#1D6BFF]">{t.whyTitle[1]}</span>
             </h2>
