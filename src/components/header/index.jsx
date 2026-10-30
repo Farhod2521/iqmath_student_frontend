@@ -199,7 +199,7 @@ const Header = ({ color = 'white' }) => {
                       <InstagramIcon className="text-black hover:text-[#5d87ff]" />
                     </a>
                   ) : (
-                    <a href="tel:+998788880800" className="text-sm">
+                    <a href="tel:+998788881881" className="text-sm">
                       {" "}
                       <PhoneIcon className="text-black hover:text-[#5d87ff]" />{" "}
                     </a>

@@ -4,8 +4,9 @@ import { SOCIAL_LINKS } from '@/constants/socialLinks'
 // Ariza formasi matnlari i18n faylida (promo.form.*) qoladi.
 
 export const LINKS = {
-  telegram: 'https://t.me/Iqmath_help',
-  telegramChannel: 'https://t.me/iqmathuzz',
+  // Yordam/bog'lanish — yagona Telegram (@Iqmath_help); kanal faqat ijtimoiy tarmoq ikonkasida
+  telegram: SOCIAL_LINKS.telegramHelp,
+  telegramChannel: SOCIAL_LINKS.telegramChannel,
   instagram: SOCIAL_LINKS.instagram,
   youtube: SOCIAL_LINKS.youtube,
   googlePlay: 'https://play.google.com/store/apps/details?id=com.iqmath.mobile',

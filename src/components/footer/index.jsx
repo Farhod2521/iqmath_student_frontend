@@ -60,7 +60,7 @@ const Footer = () => {
       key: 'telegram',
       icon: <TelegramIcon />,
       name: 'Telegram',
-      href: 'https://t.me/Iqmath_help',
+      href: SOCIAL_LINKS.telegramHelp,
       brand: 'telegram'
     },
     {

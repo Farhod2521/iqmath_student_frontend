@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { KEYS } from '@/constants/key'
 import { useForm } from 'react-hook-form'
@@ -28,6 +28,18 @@ function AuthSignUp() {
   const [consent, setConsent] = useState(false)
 
   const { register, handleSubmit } = useForm()
+
+  // Ota-ona / o'qituvchi landingidan kelinsa (?role=parent|tutor) — rol oldindan tanlanadi
+  useEffect(() => {
+    const roles = { parent: t('parent'), student: t('student'), tutor: t('tutor') }
+    const role = router.query.role
+    if (!selectedRole && roles[role]) {
+      const option = { value: role, label: roles[role] }
+      setSelectedRoleLocal(option)
+      setSelectedRole(option)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.role])
 
   const { mutate: registerRequest } = usePostQuery({
     listKeyId: KEYS.register

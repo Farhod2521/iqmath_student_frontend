@@ -1,19 +1,6 @@
-import Landing from '@/home/Landing'
-import LayoutHome from '@/home/Layout'
-import { useEffect } from 'react'
+import RoleChooser from '@/home/components/roles/RoleChooser'
 
-export default function LandingPage() {
-  useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [])
-
-  return (
-    <LayoutHome>
-      <Landing />
-    </LayoutHome>
-  )
+// Bosh sahifa: ota-ona / o'quvchi / o'qituvchi tanlanadi. O'quvchilar landingi — /students
+export default function HomePage() {
+  return <RoleChooser />
 }

@@ -1,11 +1,6 @@
 import Head from 'next/head'
 import { useTranslation } from 'react-i18next'
-import { CssBaseline, ThemeProvider } from '@mui/material'
-import LayoutHome from '@/home/Layout'
-import { ThemeSettings } from '@/home/theme/Theme'
 import ParentsLanding from '@/home/components/parents/ParentsLanding'
-import Footer from '@/components/footer'
-import ScrollToTop from '@/home/components/shared/scroll-to-top'
 
 const SEO = {
   uz: {
@@ -21,24 +16,18 @@ const SEO = {
 }
 
 export default function ParentsPage() {
-  const theme = ThemeSettings()
   const { i18n } = useTranslation()
   const seo = SEO[i18n.language === 'ru' ? 'ru' : 'uz']
 
   return (
-    <LayoutHome>
+    <>
       <Head>
         <title key="title">{seo.title}</title>
         <meta key="description" name="description" content={seo.description} />
         <meta key="og:title" property="og:title" content={seo.title} />
         <meta key="og:description" property="og:description" content={seo.description} />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ParentsLanding />
-        <Footer />
-        <ScrollToTop />
-      </ThemeProvider>
-    </LayoutHome>
+      <ParentsLanding />
+    </>
   )
 }
