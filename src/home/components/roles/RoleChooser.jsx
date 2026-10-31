@@ -199,15 +199,19 @@ const RoleChooser = () => {
               />
               <div className={`absolute inset-x-0 top-0 hidden h-2/3 bg-gradient-to-b to-transparent opacity-40 lg:block ${veil}`} />
 
-              {/* Matn: yuqori-chapda, rasmdagi bo'sh joyda */}
-              <div className="relative z-10 flex w-full flex-col px-6 pb-6 pt-8 sm:px-10 lg:px-[clamp(24px,3vw,60px)] lg:pt-[clamp(96px,13vh,140px)]">
+              {/* Matn: rasmdagi bo'sh yuqori qismda vertikal o'rtada — har qanday ekran balandligida.
+                  Pastdagi padding odamlar turgan qismni band qiladi, yuqoridagisi header uchun */}
+              <div className="relative z-10 flex w-full flex-col px-6 pb-6 pt-8 sm:px-10 lg:h-full lg:justify-center lg:px-[clamp(24px,3vw,60px)] lg:pb-[34vh] lg:pt-[clamp(88px,11vh,120px)]">
                 <span className={`flex h-16 w-16 items-center justify-center rounded-[20px] text-white lg:h-[clamp(56px,6.5vh,76px)] lg:w-[clamp(56px,6.5vh,76px)] ${iconBg}`}>
                   <Icon size={30} />
                 </span>
                 <h2 className="mt-5 text-[44px] font-extrabold leading-[1.02] tracking-[-0.035em] lg:text-[clamp(40px,4.4vw,76px)]">
                   {role.title}
                 </h2>
-                <p className="mt-2 max-w-[420px] text-[17px] font-medium text-[#334155] lg:text-[clamp(16px,1.25vw,22px)]">{role.text}</p>
+                {/* Kompyuterda doim 2 qatorlik joy — tavsif uzunligidan qat'i nazar uchala panelda ro'yxat va tugma bir chiziqda turadi */}
+                <p className="mt-2 max-w-[420px] text-[17px] font-medium leading-[1.35] text-[#334155] lg:min-h-[2.7em] lg:text-[clamp(16px,1.25vw,22px)]">
+                  {role.text}
+                </p>
 
                 <ul className="mt-6 space-y-3 lg:mt-[clamp(18px,3vh,36px)] lg:space-y-[clamp(8px,1.6vh,16px)]">
                   {role.points.map((point) => (

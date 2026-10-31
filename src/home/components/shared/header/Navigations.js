@@ -53,7 +53,6 @@ const Navigations = () => {
     // { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
     { title: t('prices'), to: '/#prices' },
-    { title: t('parentsNav'), to: '/parents' },
     { title: t('news'), to: '/news' },
     { title: t('games.hero.navTitle'), to: '/mental-games' },
     { title: t('faqTitle'), to: '/#faq-list-top' }
