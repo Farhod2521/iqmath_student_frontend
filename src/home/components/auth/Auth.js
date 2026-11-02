@@ -13,7 +13,8 @@ import CredentialsPopup from '@/components/modal/CredentialsPopup'
 import { getSession } from 'next-auth/react'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 
-function Auth() {
+/** role — ro'yxatdan o'tishda qat'iy rol (ota-ona / o'qituvchi landinglari) */
+function Auth({ role } = {}) {
   const { t } = useTranslation()
   const router = useRouter()
   const { currentTab } = useAuthTabStore((state) => state)
@@ -81,7 +82,7 @@ function Auth() {
                 {t('signIn')}
               </button>
             </div>
-            {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp />}
+            {currentTab === 'signIn' ? <AuthSignIn /> : <AuthSignUp role={role} />}
           </div>
         ) : null}
         {currentTab === 'forgetPassword' ? <AuthForgetPassword /> : null}

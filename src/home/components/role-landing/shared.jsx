@@ -66,7 +66,7 @@ export const useRoleLanding = (role) => {
     openSignIn: () => openAuth('signIn'),
     authModal: (
       <AuthModal open={authOpen} onClose={closeAuth} title={lang === 'ru' ? 'Вход / Регистрация' : 'Kirish / Ro‘yxatdan o‘tish'}>
-        <Auth />
+        <Auth role={role} />
       </AuthModal>
     )
   }

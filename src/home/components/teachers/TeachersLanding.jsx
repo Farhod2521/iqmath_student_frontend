@@ -44,7 +44,7 @@ const TEXT = {
     title: ['O‘quvchilaringizni qo‘shing va', 'daromad qiling'],
     subtitle:
       'Promo havolangiz orqali o‘quvchilarni ulang — ular to‘lov qilganda bonus balansingizga tushadi. Guruhlar yarating va natijalarini bir joyda kuzating, darslar va misollar tayyor.',
-    start: 'O‘qituvchi sifatida boshlash',
+    start: 'Ro‘yxatdan o‘tish',
     how: 'Qanday ishlaydi',
     checks: ['Tayyor video darslar va misollar', 'Javoblar avtomatik tekshiriladi'],
     floatGroup: ['Guruh: 7-A sinf', '24 o‘quvchi'],
@@ -127,7 +127,7 @@ const TEXT = {
     title: ['Подключайте учеников и', 'зарабатывайте'],
     subtitle:
       'Подключайте учеников по своей промо-ссылке — когда они оплачивают подписку, бонус поступает на ваш баланс. Создавайте группы и следите за результатами, уроки и задания уже готовы.',
-    start: 'Начать как учитель',
+    start: 'Регистрация',
     how: 'Как это работает',
     checks: ['Готовые видеоуроки и задания', 'Ответы проверяются автоматически'],
     floatGroup: ['Группа: 7-А класс', '24 ученика'],

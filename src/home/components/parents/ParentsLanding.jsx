@@ -43,7 +43,7 @@ const TEXT = {
     title: ['Farzandingiz matematikani', 'sevib o‘rgansin'],
     subtitle:
       'Siz esa uning har bir yutug‘ini ko‘rib borasiz. Maktab dasturiga mos video darslar, mashqlar va ota-ona kabineti — bitta platformada.',
-    start: 'Bepul boshlash',
+    start: 'Ro‘yxatdan o‘tish',
     how: 'Qanday ishlaydi',
     checks: ['Uyda, istalgan vaqtda', 'Javoblar avtomatik tekshiriladi'],
     painsTitle: ['Ota-onalarning eng ko‘p uchraydigan', 'muammolari'],
@@ -105,7 +105,7 @@ const TEXT = {
     title: ['Пусть ваш ребёнок', 'полюбит математику'],
     subtitle:
       'А вы будете видеть каждый его успех. Видеоуроки по школьной программе, упражнения и кабинет родителя — на одной платформе.',
-    start: 'Начать бесплатно',
+    start: 'Регистрация',
     how: 'Как это работает',
     checks: ['Дома, в любое время', 'Ответы проверяются автоматически'],
     painsTitle: ['Частые проблемы', 'родителей'],

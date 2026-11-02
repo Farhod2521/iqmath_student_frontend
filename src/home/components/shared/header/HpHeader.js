@@ -249,7 +249,8 @@ const HpHeader = () => {
         </Stack>
       </Drawer>
       <AuthModal open={authOpen} onClose={handleClose} title={t('auth', 'Kirish / Ro‘yxatdan o‘tish')}>
-        <Auth />
+        {/* O'quvchilar sahifasida ro'yxatdan o'tish faqat o'quvchi sifatida (rol qulflangan, sinf tanlanadi) */}
+        <Auth role={router.pathname === '/students' ? 'student' : undefined} />
       </AuthModal>
     </AppBarStyled>
   )

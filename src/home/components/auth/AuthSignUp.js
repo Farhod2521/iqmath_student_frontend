@@ -15,7 +15,8 @@ import SimpleLoader from '@/components/loader/simple-loader'
 import toast from 'react-hot-toast'
 import AuthButton from './AuthButton'
 
-function AuthSignUp() {
+/** role — landing sahifasidan (parent / tutor): rol qat'iy belgilanadi, tanlash maydoni ko'rinmaydi */
+function AuthSignUp({ role: fixedRole }) {
   const { t, i18n } = useTranslation()
   const { setTab, setPhoneTab, setLoginCredentials, setShowCredentialsPopup, setSelectedRole } = useAuthTabStore(
     (state) => state
@@ -29,17 +30,19 @@ function AuthSignUp() {
 
   const { register, handleSubmit } = useForm()
 
-  // Ota-ona / o'qituvchi landingidan kelinsa (?role=parent|tutor) — rol oldindan tanlanadi
+  // Rol landingdan (prop) yoki havoladan (?role=parent|tutor) kelsa — oldindan tanlanadi va o'zgartirilmaydi
+  const presetRole = fixedRole || router.query.role
+  const roles = { parent: t('parent'), student: t('student'), tutor: t('tutor') }
+  const isRoleFixed = Boolean(roles[presetRole])
+
   useEffect(() => {
-    const roles = { parent: t('parent'), student: t('student'), tutor: t('tutor') }
-    const role = router.query.role
-    if (!selectedRole && roles[role]) {
-      const option = { value: role, label: roles[role] }
+    if (isRoleFixed) {
+      const option = { value: presetRole, label: roles[presetRole] }
       setSelectedRoleLocal(option)
       setSelectedRole(option)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.role])
+  }, [presetRole])
 
   const { mutate: registerRequest } = usePostQuery({
     listKeyId: KEYS.register
@@ -143,9 +146,10 @@ function AuthSignUp() {
         })}
       />
 
-      {/* Foydalanuvchi turi */}
+      {/* Foydalanuvchi turi (rol landingdan kelsa — ko'rinib turadi, lekin o'zgartirib bo'lmaydi) */}
       <SelectRole
         value={selectedRole}
+        disabled={isRoleFixed}
         onChange={(role) => {
           setSelectedRoleLocal(role)
           setSelectedRole(role)

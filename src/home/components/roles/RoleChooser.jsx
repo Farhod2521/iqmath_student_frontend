@@ -15,23 +15,21 @@ const TEXT = {
     title: 'O‘zingizga mos yo‘nalishni tanlang',
     login: 'Tizimga kirish',
     auth: 'Kirish / Ro‘yxatdan o‘tish',
+    more: 'Batafsil',
     roles: {
       parent: {
         title: 'Ota-ona',
         text: 'Farzandingiz natijasini kuzating',
-        button: 'Ota-onalar uchun',
         points: ['Farzandingizning o‘qish natijalari', 'Darslar va mashqlar hisoboti', 'Rivojlanish grafigi', 'Bir nechta farzand — bitta kabinet']
       },
       student: {
         title: 'O‘quvchi',
         text: 'O‘ynab o‘rgan, bilimingni sina',
-        button: 'O‘quvchilar uchun',
         points: ['Video darslar va tushuntirishlar', 'Mavzular bo‘yicha mashqlar', 'Testlar va sinovlar', 'O‘yinlar va bellashuvlar']
       },
       teacher: {
         title: 'O‘qituvchi',
         text: 'O‘quvchilaringizni qo‘shing va daromad qiling',
-        button: 'O‘qituvchilar uchun',
         points: ['Guruhlar va o‘quvchilarni boshqarish', 'Promo havola orqali bonus', 'Natijalar tahlili va statistika', 'Tayyor darslar va misollar']
       }
     }
@@ -40,23 +38,21 @@ const TEXT = {
     title: 'Выберите своё направление',
     login: 'Вход',
     auth: 'Вход / Регистрация',
+    more: 'Подробнее',
     roles: {
       parent: {
         title: 'Родитель',
         text: 'Следите за успехами ребёнка',
-        button: 'Для родителей',
         points: ['Результаты учёбы ребёнка', 'Отчёт по урокам и упражнениям', 'График прогресса', 'Несколько детей — один кабинет']
       },
       student: {
         title: 'Ученик',
         text: 'Учись играя, проверяй свои знания',
-        button: 'Для учеников',
         points: ['Видеоуроки и объяснения', 'Упражнения по темам', 'Тесты и проверки', 'Игры и баттлы']
       },
       teacher: {
         title: 'Учитель',
         text: 'Подключайте учеников и зарабатывайте',
-        button: 'Для учителей',
         points: ['Управление группами и учениками', 'Бонус по промо-ссылке', 'Анализ результатов и статистика', 'Готовые уроки и задания']
       }
     }
@@ -227,7 +223,7 @@ const RoleChooser = () => {
                 <span
                   className={`mt-8 inline-flex h-14 w-fit items-center gap-3 rounded-2xl px-8 text-[17px] font-bold text-white transition group-hover:brightness-110 lg:mt-[clamp(20px,4vh,44px)] lg:h-[clamp(52px,6.5vh,64px)] lg:text-[clamp(16px,1.15vw,20px)] ${button}`}
                 >
-                  {role.button}
+                  {text.more}
                   <ArrowRight size={20} strokeWidth={2.5} className="transition group-hover:translate-x-1" />
                 </span>
               </div>
