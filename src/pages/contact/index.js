@@ -17,7 +17,7 @@ function Contact() {
   return (
     <LayoutHome>
       <Head>
-        <title>{ru ? 'Контакты | IQMath' : 'Bog‘lanish | IQMath'}</title>
+        <title key="title">{ru ? 'Контакты | IQMath' : 'Bog‘lanish | IQMath'}</title>
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

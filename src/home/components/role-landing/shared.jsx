@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, Check, ChevronDown, CircleHelp, Quote } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, CircleHelp, Menu, Quote, X } from 'lucide-react'
 import Brand from '@/components/brand'
 import LanguageDropdown from '@/components/language'
 import Footer from '@/components/footer'
@@ -114,7 +114,11 @@ export const Decorations = () => (
 )
 
 /** Header — saytning asosiy headeri bilan bir xil uslubda: menyu, bayroqli til tanlash, "Tizimga kirish" */
-export const LandingHeader = ({ nav, onLogin, loginLabel }) => (
+export const LandingHeader = ({ nav, onLogin, loginLabel }) => {
+  // Telefon va planshetda menyu ☰ tugmasi orqali ochiladi
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  return (
   <header className="relative z-20 border-b border-[#EEF2F7] bg-white/90 backdrop-blur">
     <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10">
       <Brand />
@@ -130,17 +134,46 @@ export const LandingHeader = ({ nav, onLogin, loginLabel }) => (
         ))}
       </nav>
       <div className="flex items-center gap-2 sm:gap-3">
-        <LanguageDropdown />
+        <div className="hidden min-[440px]:block">
+          <LanguageDropdown />
+        </div>
         <button
           onClick={onLogin}
-          className="h-10 whitespace-nowrap rounded-lg bg-[#5D87FF] px-4 text-[14px] font-black text-white shadow-[0_6px_16px_-6px_rgba(93,135,255,0.8)] transition hover:bg-[#4570EA] sm:px-6 sm:text-[15px]"
+          className="h-10 whitespace-nowrap rounded-lg bg-[#5D87FF] px-3.5 text-[14px] font-black text-white shadow-[0_6px_16px_-6px_rgba(93,135,255,0.8)] transition hover:bg-[#4570EA] sm:px-6 sm:text-[15px]"
         >
           {loginLabel}
         </button>
+        <button
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#1D6BFF] ring-1 ring-[#E3E9F4] transition hover:bg-[#EEF3FF] lg:hidden"
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </div>
     </div>
+    {menuOpen && (
+      <nav className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-[#EEF2F7] bg-white px-4 py-3 shadow-[0_20px_40px_-20px_rgba(30,64,175,0.35)] sm:px-6 lg:hidden">
+        {nav.map(([href, label]) => (
+          <a
+            key={href}
+            href={href}
+            onClick={() => setMenuOpen(false)}
+            className="rounded-xl px-4 py-3 font-['Manrope','Inter',system-ui,sans-serif] text-[16px] font-semibold text-[#1E293B] transition hover:bg-[#EEF3FF] hover:text-[#1D6BFF]"
+          >
+            {label}
+          </a>
+        ))}
+        {/* Tor telefonda til tanlash headerga sig'maydi — menyu ichida */}
+        <div className="mt-1 border-t border-[#EEF2F7] px-2 pt-3 min-[440px]:hidden">
+          <LanguageDropdown />
+        </div>
+      </nav>
+    )}
   </header>
-)
+  )
+}
 
 export const PrimaryButton = ({ accent, onClick, children, className = '' }) => (
   <button

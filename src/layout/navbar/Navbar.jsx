@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
+import { pluralRu } from '@/utils/pluralRu'
 import { get } from 'lodash'
 import { Bell, Flame, Gem, Menu, Search } from 'lucide-react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -115,7 +116,8 @@ const Navbar = () => {
               <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
                 <span className="text-sm font-bold text-[#191C1D] sm:text-base">{streakDays}</span>
                 <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">
-                  {t('studentHome.streakUnit')}
+                  {/* RU2: «1 день / 2 дня / 5 дней» */}
+                  {i18n.language === 'ru' ? pluralRu(streakDays, ['день', 'дня', 'дней']) : t('studentHome.streakUnit')}
                 </span>
               </span>
             </div>

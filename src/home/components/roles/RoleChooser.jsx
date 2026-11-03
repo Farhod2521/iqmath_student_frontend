@@ -298,7 +298,7 @@ const RoleChooser = () => {
                   </div>
                 </div>
 
-                <ul className="mt-6 space-y-3 xl:mt-[clamp(14px,2.4vh,28px)] xl:space-y-[clamp(6px,1.3vh,13px)]">
+                <ul className="mt-6 space-y-3 pl-[22px] md:pl-[26px] xl:mt-[clamp(14px,2.4vh,28px)] xl:space-y-[clamp(6px,1.3vh,13px)] xl:pl-0">
                   {role.points.map((point) => (
                     <li key={point} className="flex items-center gap-3 text-[15px] font-medium text-[#1E293B] xl:gap-3 xl:text-[clamp(14px,0.92vw,18px)]">
                       <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white xl:h-[22px] xl:w-[22px] ${check}`}>

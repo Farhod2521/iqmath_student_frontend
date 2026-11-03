@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { RolesList } from '@/layout/libs/menulist'
 import { Coins } from 'lucide-react'
+import { shortName } from '@/utils/shortName'
 
 const COUNTS = [10, 50, 100]
 
@@ -326,7 +327,7 @@ const StudentTopLeaderboard = () => {
                         </div>
 
                         <h2 className={`font-bold text-gray-900 ${isWinner ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'}`}>
-                          {item.full_name}
+                          {shortName(item.full_name)}
                         </h2>
                         {getClassLabel(item) ? (
                           <p className={`text-gray-400 text-[11px] ${isWinner ? 'mb-3' : 'mb-2'}`}>{getClassLabel(item)}</p>
@@ -389,7 +390,7 @@ const StudentTopLeaderboard = () => {
                       <span className="w-5 text-sm font-semibold text-center text-gray-400 shrink-0">{index + 4}</span>
                       <InitialAvatar name={item.full_name} className="w-9 h-9 text-sm" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-800 truncate">{item.full_name}</p>
+                        <p className="text-sm font-medium text-gray-800 truncate">{shortName(item.full_name)}</p>
                         {getClassLabel(item) ? (
                           <p className="text-xs text-gray-400 truncate">{getClassLabel(item)}</p>
                         ) : null}

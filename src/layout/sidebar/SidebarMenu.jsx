@@ -96,7 +96,8 @@ const SidebarMenu = () => {
             }
             if (type === MenuType.LINK) {
               // Check if current path matches any active patterns
-              let isActive = router.pathname === path || router.pathname.endsWith(path)
+              // Ichki sahifalarda ham (masalan, dars ichida "Fanlar") faqat o'z bandi yonadi
+              let isActive = router.pathname === path || router.pathname.endsWith(path) || router.pathname.startsWith(`${path}/`)
               if (activePatterns && activePatterns.length > 0) {
                 isActive = isActive || activePatterns?.some((pattern) => router.pathname.startsWith(pattern))
               }

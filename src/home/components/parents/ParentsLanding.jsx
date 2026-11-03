@@ -1,9 +1,7 @@
 import {
-  ArrowRight,
   BarChart3,
   BookOpen,
   CalendarDays,
-  ChevronRight,
   Clock3,
   Crown,
   FileText,
@@ -179,9 +177,9 @@ const FEATURE_ICONS = [
 ]
 
 const PAIN_CARDS = [
-  { Icon: BookOpen, tone: 'bg-[#E3EDFF] text-[#1D6BFF]', card: 'from-[#F4F8FF]', arrow: 'bg-[#E3EDFF] text-[#1D6BFF]', glow: 'bg-[#DCE7FF]/70' },
-  { Icon: Clock3, tone: 'bg-[#FFE9D6] text-[#F97316]', card: 'from-[#FFF5EC]', arrow: 'bg-[#FFE9D6] text-[#F97316]', glow: 'bg-[#FFE2C7]/70' },
-  { Icon: NotebookPen, tone: 'bg-[#D9F5E4] text-[#16A34A]', card: 'from-[#F0FBF4]', arrow: 'bg-[#DDF3EC] text-[#0F9F80]', glow: 'bg-[#D6F3E2]/70' }
+  { Icon: BookOpen, tone: 'bg-[#E3EDFF] text-[#1D6BFF]', card: 'from-[#F4F8FF]', glow: 'bg-[#DCE7FF]/70' },
+  { Icon: Clock3, tone: 'bg-[#FFE9D6] text-[#F97316]', card: 'from-[#FFF5EC]', glow: 'bg-[#FFE2C7]/70' },
+  { Icon: NotebookPen, tone: 'bg-[#D9F5E4] text-[#16A34A]', card: 'from-[#F0FBF4]', glow: 'bg-[#D6F3E2]/70' }
 ]
 
 /** Ota-onalar landingi (/parents) */
@@ -238,7 +236,7 @@ const ParentsLanding = () => {
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-3 lg:gap-7">
             {t.pains.map(([title, text], i) => {
-              const { Icon, tone, card, arrow, glow } = PAIN_CARDS[i]
+              const { Icon, tone, card, glow } = PAIN_CARDS[i]
               return (
                 <div
                   key={title}
@@ -252,12 +250,7 @@ const ParentsLanding = () => {
                       <span className="absolute -right-1.5 -top-1.5 h-5 w-5 rounded-full bg-white/70 ring-1 ring-white" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-start gap-3">
-                        <h3 className="flex-1 text-[18px] font-extrabold leading-snug lg:text-[19px]">{title}</h3>
-                        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition group-hover:translate-x-0.5 ${arrow}`}>
-                          <ArrowRight size={18} strokeWidth={2.5} />
-                        </span>
-                      </div>
+                      <h3 className="text-[18px] font-extrabold leading-snug lg:text-[19px]">{title}</h3>
                       <p className="mt-2 text-[15px] leading-relaxed text-[#5B6478]">{text}</p>
                     </div>
                   </div>
@@ -313,7 +306,6 @@ const ParentsLanding = () => {
                           <span className="block text-[16px] font-bold">{title}</span>
                           <span className="block text-[13px] text-[#64748B]">{text}</span>
                         </span>
-                        <ChevronRight size={20} className="text-[#94A3B8]" />
                       </div>
                     )
                   })}

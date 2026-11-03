@@ -6,7 +6,11 @@ import { ArrowRight, Star } from 'lucide-react'
 const HomeHero = ({ activeClass, onSelectClass, currentClassName, classes, continueLearning, isLoading }) => {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const visibleClasses = (classes || []).slice(-5)
+  // K6: avval faqat oxirgi 5 ta sinf chiqardi (1–7-sinflar yo'q edi) va "Testlar" ham "sinf" bo'lib ko'rinardi.
+  // Endi barcha raqamli sinflar tartib bilan; testlar to'plami sinf emas — bu qatorda ko'rsatilmaydi
+  const visibleClasses = (classes || [])
+    .filter((cls) => /^\d+$/.test(String(cls.name).trim()))
+    .sort((a, b) => Number(a.name) - Number(b.name))
 
   const lang = i18n.language === 'ru' ? 'ru' : 'uz'
   const subjectName = get(continueLearning, `subject_name_${lang}`, '')

@@ -37,7 +37,7 @@ function Prices() {
   return (
     <LayoutHome>
       <Head>
-        <title>{`${text.crumb} | IQMath`}</title>
+        <title key="title">{`${text.crumb} | IQMath`}</title>
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

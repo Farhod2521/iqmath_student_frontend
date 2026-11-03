@@ -249,7 +249,7 @@ const BattleSetupForm = ({ onRoomReady }) => {
               ) : null}
 
               <div className="pt-5 border-t border-gray-100">
-                <p className="mb-3 text-sm font-semibold text-gray-700">3. {t('battle.extraSettings')}</p>
+                <p className="mb-3 text-sm font-semibold text-gray-700">2. {t('battle.extraSettings')}</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-1 text-xs text-gray-400">{t('battle.questionCount')}</label>
