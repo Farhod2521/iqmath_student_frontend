@@ -23,6 +23,11 @@ export const ACCENTS = {
     button: 'bg-gradient-to-r from-[#7C3AED] to-[#9B3CF5] shadow-[0_14px_28px_-12px_rgba(124,58,237,0.9)]',
     badge: 'bg-[#F1EBFF] text-[#7C3AED]',
     highlight: 'text-[#7C3AED]',
+  },
+  league: {
+    button: 'bg-gradient-to-r from-[#1F6BFF] to-[#1D3FD8] shadow-[0_14px_28px_-12px_rgba(29,79,224,0.9)]',
+    badge: 'bg-[#EAF1FF] text-[#1D4FE0]',
+    highlight: 'text-[#1D4FE0]',
   }
 }
 
@@ -205,7 +210,7 @@ export const HeroText = ({ accent, badge, title, highlightClass, subtitle, start
 /** Sarlavha: [oddiy qism, ajratilgan qism] */
 export const SectionTitle = ({ accent, badge, title, subtitle, highlightClass }) => (
   <div className="mx-auto max-w-[760px] text-center">
-    {badge && <Badge accent={accent} className="!bg-[#EAF1FF] !text-[#1D6BFF]">{badge}</Badge>}
+    {badge && <Badge accent={accent} className={ACCENTS[accent].sectionBadge || '!bg-[#EAF1FF] !text-[#1D6BFF]'}>{badge}</Badge>}
     <h2 className="mt-3 text-[28px] font-extrabold leading-tight tracking-[-0.02em] sm:text-[38px]">
       {title[0]} {title[1] && <span className={highlightClass || ACCENTS[accent].highlight}>{title[1]}</span>}
     </h2>
@@ -348,7 +353,7 @@ export const Faq = ({ accent, badge, title, items, className = 'pt-20 sm:pt-24' 
                 className="flex w-full items-center gap-3 px-5 py-4 text-left sm:px-6"
                 aria-expanded={isOpen}
               >
-                <CircleHelp size={22} className="shrink-0 fill-[#1D6BFF] text-white" />
+                <CircleHelp size={22} className={`shrink-0 text-white ${ACCENTS[accent].faqIcon || 'fill-[#1D6BFF]'}`} />
                 <span className="flex-1 text-[16px] font-bold">{question}</span>
                 <ChevronDown size={20} className={`shrink-0 text-[#64748B] transition ${isOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -361,10 +366,18 @@ export const Faq = ({ accent, badge, title, items, className = 'pt-20 sm:pt-24' 
   )
 }
 
-/** Sahifa qobig'i: fon, bezaklar, header, footer va kirish oynasi */
-export const LandingShell = ({ accent, nav, landing, loginLabel, children }) => (
-  <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#F5F8FF] via-[#F8FAFF] to-[#F3F6FF] text-[#0B1220]">
-    <Decorations />
+/** Sahifa qobig'i: fon, bezaklar, header, footer va kirish oynasi. background — sahifa foni (liga uchun iliq sariq) */
+export const LandingShell = ({
+  accent,
+  nav,
+  landing,
+  loginLabel,
+  background = 'bg-gradient-to-b from-[#F5F8FF] via-[#F8FAFF] to-[#F3F6FF]',
+  decorations = true,
+  children
+}) => (
+  <div className={`relative min-h-screen overflow-hidden text-[#0B1220] ${background}`}>
+    {decorations && <Decorations />}
     <LandingHeader nav={nav} onLogin={landing.openSignIn} loginLabel={loginLabel} />
     <main className="relative z-10">{children}</main>
     <div className="relative z-10 mt-16 sm:mt-20">

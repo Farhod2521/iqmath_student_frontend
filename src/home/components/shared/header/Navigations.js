@@ -52,10 +52,11 @@ const Navigations = () => {
   const navs = [
     // { title: t('homePage'), to: '/' },
     { title: t('aboutus'), to: '/about' },
-    { title: t('prices'), to: '/#prices' },
+    { title: t('prices'), to: '/prices' },
     { title: t('news'), to: '/news' },
     { title: t('games.hero.navTitle'), to: '/mental-games' },
-    { title: t('faqTitle'), to: '/#faq-list-top' }
+    { title: t('faqTitle'), to: '/faqs' },
+    { title: t('contactus'), to: '/contact' }
   ]
 
   const isActive = (path) => {

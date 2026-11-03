@@ -16,15 +16,15 @@ const Footer = () => {
       title: t('footer.platform'),
       links: [
         // "Kurslar" sahifasi hali yo'q — bo'sh havola qo'yilmaydi
-        { name: t('footer.links.pricing'), href: '/#prices' },
+        { name: t('footer.links.pricing'), href: '/prices' },
         { name: t('footer.links.about'), href: '/about' }
       ]
     },
     {
       title: t('footer.support'),
       links: [
-        { name: t('footer.links.faq'), href: '/#faq-list-top' },
-        { name: t('footer.links.contact'), href: 'tel:+998788881881' }
+        { name: t('footer.links.faq'), href: '/faqs' },
+        { name: t('footer.links.contact'), href: '/contact' }
       ]
     }
   ]
