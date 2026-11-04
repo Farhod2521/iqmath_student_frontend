@@ -201,5 +201,8 @@ export const URLS = {
   battleLeaderboard: '/api/v1/battle/leaderboard/',
   battleHistory: '/api/v1/battle/history/',
   battleEloHistory: '/api/v1/battle/elo-history/',
-  battleGradeStats: '/api/v1/battle/grade-stats/'
+  battleGradeStats: '/api/v1/battle/grade-stats/',
+  ligaCurrent: '/api/v1/liga/current/',
+  ligaWinners: '/api/v1/liga/winners/',
+  ligaAdmin: '/api/v1/liga/admin/'
 }

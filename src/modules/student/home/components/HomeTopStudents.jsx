@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { shortName } from '@/utils/shortName'
 
 const RANK_STYLES = {
   1: 'bg-[#F59E0B] text-white',
@@ -46,7 +45,7 @@ const HomeTopStudents = ({ topStudents, currentStudent, isLoading }) => {
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EAF0FF] text-xs font-bold text-[#5D87FF]">
                   {student.full_name?.charAt(0)}
                 </div>
-                <p className="flex-1 truncate text-sm font-medium text-[#191C1D]">{shortName(student.full_name)}</p>
+                <p className="flex-1 truncate text-sm font-medium text-[#191C1D]">{student.full_name}</p>
                 <p className="text-sm font-bold text-[#191C1D]">{(student.score ?? 0).toLocaleString()}</p>
               </div>
             )
