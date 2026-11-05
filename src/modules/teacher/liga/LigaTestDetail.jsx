@@ -87,6 +87,13 @@ const Questions = ({ test, subjects, onChange }) => {
   const { data: response, refetch } = useGetQuery({ key: ['liga-questions', test.id], url: `${API}questions/`, params: { test: test.id }, staleTime: 0, refetchOnMount: 'always' })
   const questions = response?.data || []
   const locked = test.attempts_count > 0
+  const onlySubject = subjects.length === 1 ? subjects[0].id : null
+
+  // Sinfda bitta fan bo'lsa, tanlab o'tirish shart emas
+  useEffect(() => {
+    if (onlySubject) setForm((current) => (current.subject ? current : { ...current, subject: String(onlySubject) }))
+  }, [onlySubject])
+
   const update = (field) => (event) => setForm({ ...form, [field]: event.target.value })
   const setChoice = (letter, lang, value) =>
     setForm({ ...form, choices: { ...form.choices, [letter]: { ...form.choices[letter], [lang]: value } } })
@@ -139,7 +146,7 @@ const Questions = ({ test, subjects, onChange }) => {
       {!locked ? (
         <form onSubmit={save} className={`${CARD} flex flex-col gap-3`}>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <IconField Icon={BookOpen} required value={form.subject} onChange={update('subject')}>
+            <IconField label="Fan" Icon={BookOpen} required value={form.subject} onChange={update('subject')}>
               <option value="">Fanni tanlang</option>
               {subjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>
@@ -147,11 +154,11 @@ const Questions = ({ test, subjects, onChange }) => {
                 </option>
               ))}
             </IconField>
-            <IconField Icon={Layers} value={form.question_type} onChange={update('question_type')}>
+            <IconField label="Savol turi" Icon={Layers} value={form.question_type} onChange={update('question_type')}>
               <option value="choice">Variantli</option>
               <option value="text">Matnli javob</option>
             </IconField>
-            <IconField Icon={BarChart3} required type="number" min={1} value={form.score} onChange={update('score')} placeholder="Ball" title="Ball" />
+            <IconField label="Savol balli (to'g'ri javob uchun)" Icon={BarChart3} required type="number" min={1} value={form.score} onChange={update('score')} />
           </div>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <textarea required rows={3} value={form.question_text_uz} onChange={update('question_text_uz')} placeholder="Savol (o'zbekcha). Formula: \( x^2 \)" className={TEXTAREA} />

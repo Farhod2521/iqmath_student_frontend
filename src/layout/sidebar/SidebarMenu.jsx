@@ -103,7 +103,7 @@ const SidebarMenu = () => {
               }
 
               if (children) {
-                const hasActiveChild = children?.some(
+                const hasActiveChild = isActive || children?.some(
                   (child) => router.pathname === child.path || router.pathname.endsWith(child.path)
                 )
                 // Auto-open a group when the current page is one of its

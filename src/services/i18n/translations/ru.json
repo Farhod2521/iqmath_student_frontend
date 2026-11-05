@@ -1,5 +1,9 @@
 {
   "liga": "Лига",
+  "ligaOverview": "Показатели",
+  "ligaParticipants": "Участники",
+  "ligaStandings": "Рейтинг",
+  "ligaWinners": "Победители",
   "freeLessonsMenu": "Заявки",
   "trialSettingsMenu": "Бесплатный период",
   "childSwitch": {

@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { CheckCircle2, Clock, Lock, Trophy } from 'lucide-react'
+import { CheckCircle2, Clock, Lock } from 'lucide-react'
 import toast from 'react-hot-toast'
+import LigaSeasonEmpty from '@/components/liga/LigaSeasonEmpty'
 import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
 import { request } from '@/services/api'
@@ -14,7 +15,8 @@ const TEXT = {
     title: 'Matematik Liga',
     season: (n) => `${n}-mavsum`,
     grade: (n) => `${n}-sinf`,
-    empty: 'Hozircha ochiq mavsum yo‘q',
+    emptyTitle: ['Hali', 'mavsum', 'yo‘q'],
+    empty: 'Hozirda Matematika Ligasida faol mavsum mavjud emas. Yangi mavsum boshlanganda bu yerda testlar, reyting va natijalar paydo bo‘ladi.',
     closed: 'Mavsum yakunlandi',
     joinTitle: 'Ligaga qo‘shiling',
     joinText: 'Qo‘shilgach har kuni kirganingiz, fanlarda yechgan savollaringiz va haftalik testlar uchun ball olasiz.',
@@ -50,7 +52,8 @@ const TEXT = {
     title: 'Математическая лига',
     season: (n) => `Сезон ${n}`,
     grade: (n) => `${n} класс`,
-    empty: 'Пока нет открытого сезона',
+    emptyTitle: ['Пока нет', 'сезона', ''],
+    empty: 'Сейчас в Математической лиге нет активного сезона. Когда начнётся новый сезон, здесь появятся тесты, рейтинг и результаты.',
     closed: 'Сезон завершён',
     joinTitle: 'Присоединяйтесь к лиге',
     joinText: 'После вступления вы получаете баллы за ежедневный вход, решённые задания и еженедельные тесты.',
@@ -225,14 +228,7 @@ const LigaHome = () => {
 
   if (isLoading) return <div className="h-64 animate-pulse rounded-2xl bg-gray-100" />
 
-  if (!season) {
-    return (
-      <div className={`${CARD} py-16 text-center`}>
-        <Trophy size={36} className="mx-auto text-[#C7CDD8]" />
-        <p className="mt-3 text-[15px] text-[#8A8A8E]">{text.empty}</p>
-      </div>
-    )
-  }
+  if (!season) return <LigaSeasonEmpty title={text.emptyTitle} text={text.empty} />
 
   const prizes = [1, 2, 3].map((place) => season[`prize_${place}_${lang}`])
   const closed = season.is_closed

@@ -1,12 +1,18 @@
-import { ArrowRight, ChartColumnIncreasing, ClipboardCheck, Gift, GraduationCap, Layers, Target, UserPlus, Zap } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowRight, CalendarDays, ChartColumnIncreasing, ClipboardCheck, CreditCard, Flag, Gift, Layers, Target, UserPlus, Zap } from 'lucide-react'
 import { FaSignal, FaTrophy, FaUsers } from 'react-icons/fa'
+import { URLS } from '@/constants/url'
+import { request } from '@/services/api'
 import { Card, Faq, LandingShell, Section, useRoleLanding } from '../role-landing/shared'
+import LeagueDetails from './LeagueDetails'
 
 const TEXT = {
   uz: {
     nav: [
       ['/', 'Asosiy'],
       ['#features', 'Liga haqida'],
+      ['#prizes', 'Sovg‘alar'],
+      ['#rules', 'Qoidalar'],
       ['#faq', 'Savollar']
     ],
     login: 'Tizimga kirish',
@@ -14,6 +20,8 @@ const TEXT = {
     title: ['Matematik', 'Liga'],
     subtitle: '1–11-sinf o‘quvchilari o‘rtasida respublika miqyosidagi onlayn matematik musobaqa',
     join: 'Ro‘yxatdan o‘tish',
+    season: (number, weeks) => `${number}-mavsum · ${weeks} hafta`,
+    soon: '1-mavsum tez kunda',
     stats: [
       ['1–11', 'sinflar'],
       ['100 000+', 'qatnashchi'],
@@ -21,22 +29,23 @@ const TEXT = {
     ],
     howBadge: 'Ishtirok tartibi',
     howTitle: ['Qanday', 'ishtirok', 'etiladi?'],
-    steps: ['Ro‘yxatdan o‘ting', 'Sinfingizni tanlang', 'Haftalik testlarni yeching', 'Reytingda ko‘tariling'],
+    steps: ['Ro‘yxatdan o‘ting', 'Obunani faollashtiring', 'Ligaga qo‘shiling', 'Haftalik testlarni yeching'],
     featuresTitle: ['Ligada nimalar', 'kutmoqda?'],
     features: [
       ['Bilim sinovi', 'O‘z bilimingizni sinab ko‘ring'],
       ['Sog‘lom raqobat', 'O‘z sinfingizdagi o‘quvchilar bilan bellashing'],
-      ['Reyting tizimi', 'Har bir sinf uchun TOP-100 reyting'],
-      ['Sovrinlar', 'G‘oliblar uchun diplom va qimmatbaho sovg‘alar']
+      ['Reyting tizimi', 'Har bir sinf uchun alohida reyting'],
+      ['Sovrinlar', 'Har bir sinfning 3 g‘olibi uchun qimmatbaho sovg‘alar']
     ],
     faqBadge: 'Savollar va javoblar',
     faqTitle: 'Ko‘p beriladigan savollar',
     faq: [
       ['Ligada kimlar qatnasha oladi?', '1–11-sinf o‘quvchilari. Har bir o‘quvchi o‘z sinfining alohida ligasida, tengdoshlari bilan bellashadi.'],
       ['Qanday ro‘yxatdan o‘tiladi?', '“Ro‘yxatdan o‘tish” tugmasini bosing, ism-familiyangiz, telefon raqamingiz va sinfingizni kiriting.'],
-      ['Musobaqalar qachon o‘tkaziladi?', 'Musobaqalar haftalik va oylik bosqichlarda o‘tkaziladi. Aniq sanalar shaxsiy kabinetda e’lon qilinadi.'],
-      ['Reyting qanday hisoblanadi?', 'Har bir test natijasi avtomatik tekshiriladi va to‘plangan ball reytingga qo‘shiladi. Reyting har bir sinf uchun alohida — TOP-100.'],
-      ['G‘oliblar qanday taqdirlanadi?', 'Har bir sinf g‘oliblari diplom va qimmatbaho sovg‘alar bilan taqdirlanadi.'],
+      ['Ligada qatnashish pullikmi?', 'Ligada obunasi faol bo‘lgan o‘quvchilar qatnashadi. Alohida ishtirok to‘lovi yo‘q.'],
+      ['Musobaqalar qachon o‘tkaziladi?', 'Har haftada bitta test o‘tkaziladi. Aniq kun va soat shaxsiy kabinetdagi Liga bo‘limida e’lon qilinadi.'],
+      ['Reyting qanday hisoblanadi?', 'Kunlik kirish, fanlarni ishlash va haftalik testlar uchun ball beriladi. Reyting har bir sinf uchun alohida.'],
+      ['G‘oliblar qanday taqdirlanadi?', 'Mavsum yakunida har bir sinfning 3 g‘olibi sovg‘a oladi. Sovg‘a berishdan oldin hujjatlar tekshiriladi.'],
       ['Telefondan qatnashsa bo‘ladimi?', 'Ha, ligada telefon, planshet yoki kompyuter orqali qatnashish mumkin.']
     ]
   },
@@ -44,6 +53,8 @@ const TEXT = {
     nav: [
       ['/', 'Главная'],
       ['#features', 'О лиге'],
+      ['#prizes', 'Призы'],
+      ['#rules', 'Правила'],
       ['#faq', 'Вопросы']
     ],
     login: 'Вход',
@@ -51,6 +62,8 @@ const TEXT = {
     title: ['Математическая', 'лига'],
     subtitle: 'Республиканское онлайн-соревнование по математике среди учеников 1–11 классов',
     join: 'Регистрация',
+    season: (number, weeks) => `Сезон ${number} · недель: ${weeks}`,
+    soon: 'Сезон 1 скоро',
     stats: [
       ['1–11', 'классы'],
       ['100 000+', 'участников'],
@@ -58,29 +71,30 @@ const TEXT = {
     ],
     howBadge: 'Порядок участия',
     howTitle: ['Как', 'принять', 'участие?'],
-    steps: ['Зарегистрируйтесь', 'Выберите свой класс', 'Решайте еженедельные тесты', 'Поднимайтесь в рейтинге'],
+    steps: ['Зарегистрируйтесь', 'Активируйте подписку', 'Вступите в лигу', 'Решайте еженедельные тесты'],
     featuresTitle: ['Что ждёт', 'в лиге?'],
     features: [
       ['Проверка знаний', 'Проверьте свои знания'],
       ['Здоровая конкуренция', 'Соревнуйтесь с учениками своего класса'],
-      ['Система рейтинга', 'ТОП-100 для каждого класса'],
-      ['Призы', 'Дипломы и ценные подарки для победителей']
+      ['Система рейтинга', 'Отдельный рейтинг для каждого класса'],
+      ['Призы', 'Ценные подарки для 3 победителей каждого класса']
     ],
     faqBadge: 'Вопросы и ответы',
     faqTitle: 'Часто задаваемые вопросы',
     faq: [
       ['Кто может участвовать в лиге?', 'Ученики 1–11 классов. Каждый соревнуется в отдельной лиге своего класса — со сверстниками.'],
       ['Как зарегистрироваться?', 'Нажмите «Регистрация» и укажите имя, номер телефона и свой класс.'],
-      ['Когда проходят соревнования?', 'Соревнования проходят еженедельными и ежемесячными этапами. Точные даты публикуются в личном кабинете.'],
-      ['Как считается рейтинг?', 'Каждый тест проверяется автоматически, набранные баллы добавляются в рейтинг. Рейтинг отдельный для каждого класса — ТОП-100.'],
-      ['Как награждают победителей?', 'Победители каждого класса получают дипломы и ценные подарки.'],
+      ['Участие в лиге платное?', 'В лиге участвуют ученики с активной подпиской. Отдельной платы за участие нет.'],
+      ['Когда проходят соревнования?', 'Каждую неделю проходит один тест. Точные день и время публикуются в разделе Лига в личном кабинете.'],
+      ['Как считается рейтинг?', 'Баллы начисляются за ежедневный вход, занятия по предметам и еженедельные тесты. Рейтинг отдельный для каждого класса.'],
+      ['Как награждают победителей?', 'В конце сезона 3 победителя каждого класса получают призы. Перед вручением проверяются документы.'],
       ['Можно ли участвовать с телефона?', 'Да, участвовать можно с телефона, планшета или компьютера.']
     ]
   }
 }
 
 const STAT_ICONS = [FaUsers, FaTrophy, FaSignal]
-const STEP_ICONS = [UserPlus, GraduationCap, ClipboardCheck, ChartColumnIncreasing]
+const STEP_ICONS = [UserPlus, CreditCard, Flag, ClipboardCheck]
 // [burchakdagi ikonka, 3D rasm]
 const FEATURES = [
   [Target, '/images/league/feature-test.webp'],
@@ -94,6 +108,14 @@ const LeagueLanding = () => {
   // Liga o'quvchilar uchun — ro'yxatdan o'tishda rol "O'quvchi" bo'lib qulflanadi
   const landing = useRoleLanding('student')
   const t = TEXT[landing.lang]
+  const [season, setSeason] = useState(null)
+  const [winners, setWinners] = useState(null)
+
+  // Mavsum yo'q yoki so'rov o'tmasa sahifa odatiy matnlar bilan chiqadi
+  useEffect(() => {
+    request.get(URLS.ligaCurrent).then(({ data }) => setSeason(data?.season || null)).catch(() => {})
+    request.get(URLS.ligaWinners).then(({ data }) => setWinners(data?.[0] || null)).catch(() => {})
+  }, [])
 
   return (
     <LandingShell accent="league" nav={t.nav} landing={landing} loginLabel={t.login}>
@@ -112,10 +134,18 @@ const LeagueLanding = () => {
 
         <div className="relative mx-auto max-w-[1400px] px-4 pb-10 pt-2 sm:px-6 lg:flex lg:min-h-[640px] lg:items-center lg:px-10 lg:pb-24 lg:pt-6 xl:min-h-[700px]">
           <div className="font-['Manrope','Inter',system-ui,sans-serif] lg:w-[54%]">
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-[#C9D8F5] bg-[#EAF1FF]/80 px-5 py-2.5 text-[15px] font-bold text-[#0B1B3F] shadow-[0_8px_24px_-14px_rgba(29,79,224,0.5)] backdrop-blur xl:text-[17px]">
-              <FaTrophy size={20} className="text-[#F5A524]" />
-              {t.badge}
-            </span>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-2.5 rounded-full border border-[#C9D8F5] bg-[#EAF1FF]/80 px-5 py-2.5 text-[15px] font-bold text-[#0B1B3F] shadow-[0_8px_24px_-14px_rgba(29,79,224,0.5)] backdrop-blur xl:text-[17px]">
+                <FaTrophy size={20} className="text-[#F5A524]" />
+                {t.badge}
+              </span>
+              {season?.is_closed ? null : (
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2.5 text-[14px] font-bold text-[#1D4FE0] backdrop-blur xl:text-[16px]">
+                  <CalendarDays size={18} />
+                  {season ? t.season(season.number, season.weeks_count) : t.soon}
+                </span>
+              )}
+            </div>
             {/* "Liga" — ko'k, qiya, ostida mo'yqalam chizig'i */}
             <h1 className="mt-6 text-[42px] font-extrabold leading-[1.1] tracking-[-0.03em] text-[#0B1B3F] sm:text-[58px] lg:whitespace-nowrap lg:text-[clamp(54px,4.3vw,84px)]">
               {t.title[0]}{' '}
@@ -230,6 +260,8 @@ const LeagueLanding = () => {
           })}
         </div>
       </Section>
+
+      <LeagueDetails lang={landing.lang} season={season} winners={winners} onJoin={landing.openSignUp} />
 
       {/* ================= SAVOLLAR ================= */}
       <Faq accent="league" badge={t.faqBadge} title={t.faqTitle} items={t.faq} />

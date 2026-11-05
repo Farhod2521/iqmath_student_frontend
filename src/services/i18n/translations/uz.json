@@ -1,5 +1,9 @@
 {
   "liga": "Liga",
+  "ligaOverview": "Ko'rsatkichlar",
+  "ligaParticipants": "Ishtirokchilar",
+  "ligaStandings": "Reyting",
+  "ligaWinners": "G'oliblar",
   "freeLessonsMenu": "Arizalar",
   "trialSettingsMenu": "Tekin muddat",
   "childSwitch": {

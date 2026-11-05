@@ -1,5 +1,9 @@
 {
   "liga": "League",
+  "ligaOverview": "Overview",
+  "ligaParticipants": "Participants",
+  "ligaStandings": "Rating",
+  "ligaWinners": "Winners",
   "heroStartLabel": "GET STARTED",
   "heroStartButton": "Start",
   "perMonthShort": "mo",

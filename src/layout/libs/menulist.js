@@ -11,7 +11,7 @@ import { LuUsers } from 'react-icons/lu'
 import { LuShoppingBag } from 'react-icons/lu'
 import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 import { RiCoupon5Line } from 'react-icons/ri'
-import { Swords, Trophy, History, Gift, ClipboardList, Medal } from 'lucide-react'
+import { BarChart3, Crown, Swords, Trophy, History, Gift, ClipboardList, Medal, Users } from 'lucide-react'
 import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
@@ -372,7 +372,53 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TEACHER, RolesList.ADMIN, RolesList.SUPERADMIN],
-    type: MenuType.LINK
+    type: MenuType.LINK,
+    children: [
+      {
+        key: 'teacher-liga-overview',
+        path: '/dashboard/teacher/liga',
+        label: t('ligaOverview'),
+        icon: (isActive) => (
+          <BarChart3
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'teacher-liga-participants',
+        path: '/dashboard/teacher/liga/participants',
+        label: t('ligaParticipants'),
+        icon: (isActive) => (
+          <Users
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'teacher-liga-standings',
+        path: '/dashboard/teacher/liga/standings',
+        label: t('ligaStandings'),
+        icon: (isActive) => (
+          <Trophy
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'teacher-liga-winners',
+        path: '/dashboard/teacher/liga/winners',
+        label: t('ligaWinners'),
+        icon: (isActive) => (
+          <Crown
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      }
+    ]
   },
   {
     key: 'teacher-groups',

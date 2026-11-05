@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, Trophy } from 'lucide-react'
-import { TEST_STATUS, TH } from './utils'
+import { BUTTON_LIGHT, TEST_STATUS, TH } from './utils'
 
 const HERO_MASK = 'linear-gradient(to right, transparent, #000 14%)'
 const PICKER = '[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-3 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0'
@@ -70,6 +70,23 @@ export const LigaTable = ({ head, children }) => (
     </table>
   </div>
 )
+
+export const PAGE_SIZE = 50
+
+export const LigaPager = ({ page, total, onChange }) =>
+  total > PAGE_SIZE ? (
+    <div className="mt-3 flex items-center justify-end gap-2 text-sm text-[#8A8A8E]">
+      <button disabled={page === 1} onClick={() => onChange(page - 1)} className={BUTTON_LIGHT}>
+        Oldingi
+      </button>
+      <span>
+        {page} / {Math.ceil(total / PAGE_SIZE)}
+      </span>
+      <button disabled={page * PAGE_SIZE >= total} onClick={() => onChange(page + 1)} className={BUTTON_LIGHT}>
+        Keyingi
+      </button>
+    </div>
+  ) : null
 
 export const HeadCell = ({ Icon, label }) => (
   <span className="inline-flex items-center gap-1.5">

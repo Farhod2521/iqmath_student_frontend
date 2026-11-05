@@ -1,24 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import {
-  Activity, ArrowUpDown, Award, BarChart3, CalendarDays, ClipboardCheck, Clock, Crown, Eye, EyeOff, FileText,
-  GraduationCap, Hash, Layers, Lock, Pencil, Plus, PlusCircle, Target, Trophy, Users
+  Activity, ArrowUpDown, BarChart3, CalendarDays, Check, ClipboardCheck, Clock, Eye, EyeOff, FileText,
+  GraduationCap, Hash, Layers, Lock, Pencil, Plus, PlusCircle, Target, Users
 } from 'lucide-react'
+import LigaSeasonEmpty from '@/components/liga/LigaSeasonEmpty'
 import LigaDialog from '@/components/modal/LigaDialog'
 import { useGetQuery } from '@/hooks'
 import { request } from '@/services/api'
 import { HeadCell, IconField, LigaHero, LigaTable as Table, SectionHead, StatusPill } from './LigaParts'
+import { MAIN_HERO, SeasonSelect, useLigaSeason } from './LigaSeasonPage'
 import {
-  API, BUTTON, BUTTON_LIGHT, CARD, INPUT, TD,
-  downloadExcel, formatDateTime, formatDuration, showError, toIso
+  API, BUTTON, CARD, INPUT, TD,
+  formatDateTime, formatDuration, isNumberGrade, showError, toIso
 } from './utils'
 
-const MAIN_HERO = {
-  image: '/images/league/trophy-hero.webp',
-  width: 1000,
-  height: 499,
-  subtitle: "Sinflar bo'yicha matematika ligasi natijalari va statistikasi"
-}
 const TESTS_HERO = {
   image: '/images/league/tests-hero.webp',
   width: 956,
@@ -28,9 +24,7 @@ const TESTS_HERO = {
 
 const TABS = [
   ['overview', "Ko'rsatkichlar", BarChart3],
-  ['tests', 'Testlar', FileText],
-  ['standings', 'Reyting', Trophy],
-  ['winners', "G'oliblar", Crown]
+  ['tests', 'Testlar', FileText]
 ]
 
 const SOURCE_LABELS = { daily: 'Kunlik kirish', subject: 'Fanlarni ishlash', test: 'Haftalik testlar' }
@@ -55,7 +49,8 @@ const Overview = ({ season }) => {
     ["O'rtacha vaqt", formatDuration(cards.avg_seconds), Clock, 'bg-[#EFF8FF]', 'bg-[#D8EEFF] text-[#2F9BE8]']
   ]
   const maxAttempts = Math.max(1, ...data.weeks.map((week) => week.attempts))
-  const gradeRows = descending ? [...data.grades].reverse() : data.grades
+  const numberRows = data.grades.filter((row) => isNumberGrade({ name: row.grade }))
+  const gradeRows = descending ? [...numberRows].reverse() : numberRows
   const sortHead = (
     <button onClick={() => setDescending(!descending)} className="inline-flex items-center gap-1.5 hover:text-[#191C1D]">
       Sinf
@@ -160,8 +155,11 @@ const EMPTY_TEST = { week_number: '', start_at: '', end_at: '', duration_minutes
 const Tests = ({ season, grades }) => {
   const [form, setForm] = useState(EMPTY_TEST)
   const [saving, setSaving] = useState(false)
+  const [week, setWeek] = useState(null)
   const { data: response, refetch } = useGetQuery({ key: ['liga-tests', season.id], url: `${API}tests/`, params: { season: season.id }, staleTime: 0, refetchOnMount: 'always' })
   const tests = response?.data || []
+  const weeks = [...new Set(tests.map((test) => test.week_number))].sort((a, b) => a - b)
+  const shownTests = week ? tests.filter((test) => test.week_number === week) : tests
   const update = (field) => (event) => setForm({ ...form, [field]: event.target.value })
   const toggleGrade = (id) =>
     setForm({ ...form, grades: form.grades.includes(id) ? form.grades.filter((item) => item !== id) : [...form.grades, id] })
@@ -220,21 +218,33 @@ const Tests = ({ season, grades }) => {
               />
             ))}
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-sm text-[#475569]">Sinflar:</span>
-            {grades.map((grade) => (
-              <button
-                key={grade.id}
-                type="button"
-                onClick={() => toggleGrade(grade.id)}
-                className={`h-9 min-w-9 rounded-xl px-2.5 text-sm font-semibold transition ${
-                  form.grades.includes(grade.id) ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#191C1D] hover:bg-[#E6EBF5]'
-                }`}
-              >
-                {grade.name}
-              </button>
-            ))}
-            <button type="button" onClick={() => setForm({ ...form, grades: grades.map((grade) => grade.id) })} className="h-9 px-2 text-sm font-semibold text-[#5D87FF]">
+          <div className="mt-4 flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span className="mr-1 inline-flex h-10 items-center rounded-xl bg-[#F1F4F9] px-3 text-sm font-semibold text-[#191C1D]">Sinflar:</span>
+            {grades.map((grade) => {
+              const selected = form.grades.includes(grade.id)
+              return (
+                <button
+                  key={grade.id}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => toggleGrade(grade.id)}
+                  className={`relative flex h-14 w-[52px] flex-col items-center justify-center rounded-2xl border transition sm:h-16 sm:w-[60px] ${
+                    selected
+                      ? 'border-transparent bg-gradient-to-b from-[#6F95FF] to-[#4570EA] text-white shadow-[0_10px_18px_-10px_rgba(69,112,234,0.9)]'
+                      : 'border-[#E8ECF3] bg-gradient-to-b from-white to-[#F3F6FC] text-[#191C1D] shadow-sm hover:border-[#C9D8F5]'
+                  }`}
+                >
+                  <GraduationCap size={18} className={selected ? 'text-white' : 'text-[#64748B]'} />
+                  <span className="text-base font-bold leading-6 sm:text-lg">{grade.name}</span>
+                  {selected ? (
+                    <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#5D87FF] bg-white text-[#5D87FF]">
+                      <Check size={12} strokeWidth={3} />
+                    </span>
+                  ) : null}
+                </button>
+              )
+            })}
+            <button type="button" onClick={() => setForm({ ...form, grades: grades.map((grade) => grade.id) })} className="h-10 px-2 text-sm font-semibold text-[#5D87FF]">
               Hammasi
             </button>
             <button disabled={saving || !form.grades.length} className={`${BUTTON} ml-auto`}>
@@ -249,9 +259,24 @@ const Tests = ({ season, grades }) => {
         <div className="mb-3">
           <SectionHead Icon={Layers} title="Haftalik testlar ro'yxati" />
         </div>
+        {weeks.length > 1 ? (
+          <div className="no-scrollbar mb-3 flex gap-1.5 overflow-x-auto">
+            {[null, ...weeks].map((item) => (
+              <button
+                key={item || 'all'}
+                onClick={() => setWeek(item)}
+                className={`h-9 shrink-0 rounded-full px-4 text-sm font-semibold transition ${
+                  week === item ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#475569] hover:bg-[#E6EBF5]'
+                }`}
+              >
+                {item ? `${item}-hafta` : 'Barcha haftalar'}
+              </button>
+            ))}
+          </div>
+        ) : null}
         <Table
           head={[
-            '#',
+            'Hafta',
             <HeadCell key="grade" Icon={GraduationCap} label="Sinf" />,
             <HeadCell key="start" Icon={CalendarDays} label="Boshlanish" />,
             <HeadCell key="end" Icon={CalendarDays} label="Tugash" />,
@@ -262,7 +287,7 @@ const Tests = ({ season, grades }) => {
             ''
           ]}
         >
-          {tests.map((test) => (
+          {shownTests.map((test) => (
             <tr key={test.id}>
               <td className={TD}>
                 <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg bg-[#F1F4F9] px-1.5 text-sm font-semibold">{test.week_number}</span>
@@ -306,164 +331,14 @@ const Tests = ({ season, grades }) => {
   )
 }
 
-const Standings = ({ season, grades }) => {
-  const [grade, setGrade] = useState('')
-  const [search, setSearch] = useState('')
-  const [page, setPage] = useState(1)
-  const params = { page, page_size: 50, ...(grade ? { grade } : {}), ...(search ? { search } : {}) }
-  const url = `${API}seasons/${season.id}/standings/`
-  const { data: response } = useGetQuery({ key: ['liga-standings', season.id], url, params, staleTime: 0, refetchOnMount: 'always' })
-  const rows = response?.data?.results || []
-  const total = response?.data?.count || 0
-
-  return (
-    <div className={CARD}>
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <select value={grade} onChange={(event) => { setGrade(event.target.value); setPage(1) }} className={INPUT}>
-          <option value="">Barcha sinflar</option>
-          {grades.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}-sinf
-            </option>
-          ))}
-        </select>
-        <input value={search} onChange={(event) => { setSearch(event.target.value); setPage(1) }} placeholder="Ism yoki telefon" className={INPUT} />
-        <button onClick={() => downloadExcel(url, { ...(grade ? { grade } : {}), ...(search ? { search } : {}) }, `liga_${season.number}_reyting.xlsx`)} className={`${BUTTON_LIGHT} ml-auto`}>
-          Excel
-        </button>
-      </div>
-      <Table head={["O'rin", 'Sinf', 'F.I.Sh.', 'Telefon', 'Viloyat', 'Maktab', 'Ballar', 'Testlar', 'Test ballari']}>
-        {rows.map((row) => (
-          <tr key={row.student_id}>
-            <td className={`${TD} font-semibold`}>{row.rank}</td>
-            <td className={TD}>{row.grade}</td>
-            <td className={TD}>{row.full_name}</td>
-            <td className={TD}>{row.phone}</td>
-            <td className={TD}>{row.region || '—'}</td>
-            <td className={TD}>{row.school || '—'}</td>
-            <td className={`${TD} font-semibold`}>{row.points}</td>
-            <td className={TD}>{row.tests_taken}</td>
-            <td className={TD}>{row.test_score}</td>
-          </tr>
-        ))}
-      </Table>
-      {!rows.length ? <p className="py-8 text-center text-sm text-[#8A8A8E]">Ishtirokchilar yo'q</p> : null}
-      {total > 50 ? (
-        <div className="mt-3 flex items-center justify-end gap-2 text-sm text-[#8A8A8E]">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)} className={BUTTON_LIGHT}>
-            Oldingi
-          </button>
-          <span>
-            {page} / {Math.ceil(total / 50)}
-          </span>
-          <button disabled={page * 50 >= total} onClick={() => setPage(page + 1)} className={BUTTON_LIGHT}>
-            Keyingi
-          </button>
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
-const Winners = ({ season }) => {
-  const [target, setTarget] = useState(null)
-  const [reason, setReason] = useState('')
-  const { data: response, refetch } = useGetQuery({ key: ['liga-winners-admin', season.id], url: `${API}winners/`, params: { season: season.id }, staleTime: 0, refetchOnMount: 'always' })
-  const rows = response?.data || []
-
-  const patch = async (winner, body) => {
-    try {
-      await request.patch(`${API}winners/${winner.id}/`, body)
-      refetch()
-    } catch (error) {
-      showError(error)
-    }
-  }
-
-  const toggleDisqualify = (winner) => {
-    if (winner.is_disqualified) return patch(winner, { is_disqualified: false, disqualify_reason: '' })
-    setReason('')
-    return setTarget(winner)
-  }
-
-  const disqualify = async () => {
-    await patch(target, { is_disqualified: true, disqualify_reason: reason.trim() })
-    setTarget(null)
-  }
-
-  if (!season.is_closed) {
-    return <div className={`${CARD} py-10 text-center text-sm text-[#8A8A8E]`}>G'oliblar mavsum yopilgach aniqlanadi</div>
-  }
-
-  return (
-    <div className={CARD}>
-      <Table head={['Sinf', "O'rin", 'F.I.Sh.', 'Telefon', 'Ballar', "Sovg'a", 'Hujjatlar', 'Holat']}>
-        {rows.map((row) => (
-          <tr key={row.id}>
-            <td className={TD}>{row.grade_name}-sinf</td>
-            <td className={`${TD} font-semibold`}>{row.place}</td>
-            <td className={TD}>{row.full_name}</td>
-            <td className={TD}>{row.phone}</td>
-            <td className={TD}>{row.points}</td>
-            <td className={TD}>{row.prize_uz}</td>
-            <td className={TD}>
-              <input type="checkbox" checked={row.documents_checked} onChange={(event) => patch(row, { documents_checked: event.target.checked })} />
-            </td>
-            <td className={TD}>
-              <button onClick={() => toggleDisqualify(row)} className={`text-xs font-semibold ${row.is_disqualified ? 'text-[#DC2626]' : 'text-[#475569]'}`}>
-                {row.is_disqualified ? `Mahrum: ${row.disqualify_reason}` : 'Mahrum qilish'}
-              </button>
-            </td>
-          </tr>
-        ))}
-      </Table>
-      {!rows.length ? <p className="py-8 text-center text-sm text-[#8A8A8E]">G'oliblar yo'q</p> : null}
-
-      <LigaDialog
-        open={Boolean(target)}
-        tone="danger"
-        Icon={Award}
-        title="Sovg'adan mahrum qilish"
-        text={target ? `${target.full_name}, ${target.grade_name}-sinf, ${target.place}-o'rin` : ''}
-        confirmLabel="Mahrum qilish"
-        cancelLabel="Bekor qilish"
-        disabled={!reason.trim()}
-        onConfirm={disqualify}
-        onClose={() => setTarget(null)}
-      >
-        <label className="flex flex-col gap-1.5 text-sm font-medium text-[#475569]">
-          Sababi
-          <textarea
-            autoFocus
-            rows={3}
-            value={reason}
-            onChange={(event) => setReason(event.target.value)}
-            placeholder="Masalan: hujjatga ko'ra sinfi boshqa"
-            className={`${INPUT} h-auto py-2`}
-          />
-        </label>
-      </LigaDialog>
-    </div>
-  )
-}
-
-/** Mentor: liga ko'rsatkichlari, testlar, reyting va g'oliblar */
+/** Mentor: liga ko'rsatkichlari va testlari */
 const LigaDashboard = () => {
-  const [seasonId, setSeasonId] = useState(null)
+  const { seasons, season, grades, setSeasonId, refetch, loaded } = useLigaSeason()
   const [tab, setTab] = useState('overview')
   const [creating, setCreating] = useState(false)
   const [closing, setClosing] = useState(false)
+  const [hiding, setHiding] = useState(false)
   const [weeks, setWeeks] = useState(12)
-  const { data: seasonsResponse, refetch } = useGetQuery({ key: 'liga-seasons-admin', url: `${API}seasons/`, staleTime: 0, refetchOnMount: 'always' })
-  const { data: metaResponse } = useGetQuery({ key: 'liga-meta', url: `${API}meta/` })
-
-  const seasons = seasonsResponse?.data || []
-  const grades = [...(metaResponse?.data?.grades || [])].sort((a, b) => Number(a.name) - Number(b.name))
-  const season = seasons.find((item) => item.id === seasonId) || seasons[0]
-
-  useEffect(() => {
-    if (!seasonId && seasons.length) setSeasonId(seasons[0].id)
-  }, [seasonId, seasons])
 
   const nextNumber = (seasons[0]?.number || 0) + 1
 
@@ -481,7 +356,8 @@ const LigaDashboard = () => {
   const togglePublish = async () => {
     try {
       await request.patch(`${API}seasons/${season.id}/`, { is_published: !season.is_published })
-      refetch()
+      await refetch()
+      setHiding(false)
     } catch (error) {
       showError(error)
     }
@@ -521,20 +397,10 @@ const LigaDashboard = () => {
         <div className="flex flex-wrap items-center gap-2 lg:ml-auto">
           {season ? (
             <>
-              <select
-                value={season.id}
-                onChange={(event) => setSeasonId(Number(event.target.value))}
-                className="h-11 rounded-full border border-[#EBEDF0] bg-white px-4 text-sm font-semibold text-[#191C1D] outline-none focus:border-[#5D87FF]"
-              >
-                {seasons.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.number}-mavsum{item.is_closed ? ' (yopilgan)' : ''}
-                  </option>
-                ))}
-              </select>
+              <SeasonSelect seasons={seasons} season={season} onChange={setSeasonId} />
               {!season.is_closed ? (
                 <>
-                  <button onClick={togglePublish} className={ACTION_LIGHT}>
+                  <button onClick={season.is_published ? () => setHiding(true) : togglePublish} className={ACTION_LIGHT}>
                     {season.is_published ? <EyeOff size={18} /> : <Eye size={18} />}
                     {season.is_published ? 'Yashirish' : "E'lon qilish"}
                   </button>
@@ -556,12 +422,15 @@ const LigaDashboard = () => {
       {season ? (
         <>
           {tab === 'overview' ? <Overview season={season} /> : null}
-          {tab === 'tests' ? <Tests season={season} grades={grades} /> : null}
-          {tab === 'standings' ? <Standings season={season} grades={grades} /> : null}
-          {tab === 'winners' ? <Winners season={season} /> : null}
+          {tab === 'tests' ? <Tests key={season.id} season={season} grades={grades} /> : null}
         </>
+      ) : loaded ? (
+        <LigaSeasonEmpty
+          title={['Hali', 'mavsum', "yo'q"]}
+          text="Hozirda Matematika Ligasida faol mavsum mavjud emas. Yangi mavsum boshlanganda bu yerda testlar, reyting va natijalar paydo bo'ladi."
+        />
       ) : (
-        <div className={`${CARD} py-16 text-center text-sm text-[#8A8A8E]`}>Hali mavsum yo'q</div>
+        <div className="h-64 animate-pulse rounded-2xl bg-gray-100" />
       )}
 
       <LigaDialog
@@ -590,6 +459,18 @@ const LigaDashboard = () => {
           12 hafta taxminan 3 oy degani. Oxirgi hafta testi tugagach mavsum avtomatik yopiladi va g'oliblar e'lon qilinadi.
         </p>
       </LigaDialog>
+
+      <LigaDialog
+        open={hiding}
+        tone="danger"
+        Icon={EyeOff}
+        title={season ? `${season.number}-mavsumni yashirish` : ''}
+        text="Mavsum va uning testlari o'quvchilarga ko'rinmay qoladi. Ballar va natijalar saqlanadi, keyin yana e'lon qilish mumkin. Yashirin mavsum avtomatik yopilmaydi."
+        confirmLabel="Mavsumni yashirish"
+        cancelLabel="Bekor qilish"
+        onConfirm={togglePublish}
+        onClose={() => setHiding(false)}
+      />
 
       <LigaDialog
         open={closing}

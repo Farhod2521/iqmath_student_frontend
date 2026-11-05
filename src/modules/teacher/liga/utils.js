@@ -13,6 +13,9 @@ export const TD = 'whitespace-nowrap px-3 py-2.5 text-sm text-[#191C1D]'
 export const TEST_STATUS = { draft: 'Qoralama', upcoming: 'Kutilmoqda', live: 'Davom etmoqda', finished: 'Tugagan' }
 export const ATTEMPT_STATUS = { in_progress: 'Ishlamoqda', finished: 'Yakunlagan', expired: 'Vaqti tugagan' }
 
+// Liga faqat 1–11-sinflar uchun: "Testlar" kabi raqamsiz sinflar chiqmaydi
+export const isNumberGrade = (grade) => !Number.isNaN(Number(grade.name))
+
 export const formatDateTime = (value) =>
   value
     ? new Date(value).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
