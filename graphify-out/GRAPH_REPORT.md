@@ -1,17 +1,17 @@
 # Graph Report - iqmath_student  (2026-11-06)
 
 ## Corpus Check
-- 791 files · ~4,157,244 words
+- 791 files · ~4,157,949 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 37 file(s) not represented in the graph (top: .otf 18, .css 6, .glb 4)
 
 ## Summary
-- 3371 nodes · 10164 edges · 147 communities (90 shown, 57 thin omitted)
+- 3372 nodes · 10166 edges · 153 communities (99 shown, 54 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 47 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8732bc65`
+- Built from commit: `e49dedb7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,9 +21,9 @@
 - h
 - QuestionForm.jsx
 - dependencies
-- echarts-for-react
+- react
 - useGetQuery
-- DiagnosticQuestions.jsx
+- SubjectQuestions.jsx
 - Theme.js
 - ChatBoxModule.js
 - QuestionWorkspace.jsx
@@ -40,9 +40,9 @@
 - a
 - liga/utils.js
 - Auth.js
-- StudentHome.jsx
+- @heroui/react
 - L
-- StudentOverview.jsx
+- _app.js
 - @tabler/icons
 - PricingContent.jsx
 - BattleArena.jsx
@@ -71,52 +71,58 @@
 - menuConfig.js
 - student/chat/index.js
 - ParentConnect.jsx
-- next-auth
+- ContentLoader
 - next
 - LigaTestDetail.jsx
 - MessageBubble.jsx
 - n
 - r
 - StudentProfile.jsx
-- ParentProfile.jsx
+- store/index.js
 - @dnd-kit/sortable
 - HpHeader.js
 - TutorProfile.jsx
 - menulist.js
 - AuthMascot.jsx
 - form/index.js
-- Theme.js
+- SwitchToChildButton.jsx
 - MathEditor.jsx
 - StudentExampleTable.jsx
 - FreeLessons.jsx
 - react-icons
-- LigaHome.jsx
+- LigaDashboard.jsx
 - key-metric/index.js
 - ratings/index.js
-- Landing.jsx
+- powerful-dozens/index.js
 - useImageAccentColor.js
-- HeaderAlert.js
+- MyChildren.jsx
 - SubscriptionPromoModal.jsx
 - eslint.config.mjs
-- LeadershipSlider.js
+- wrapAnswer.js
 - i18n/index.js
-- ParentQr.jsx
+- app.js
 - ckeditor.js
 - RobotWalker.jsx
 - react-circular-progressbar
-- SubjectsBanner.jsx
+- uzbekistan-map/index.jsx
 - AGENTS.md
-- MentalGames.js
-- ParentQuickActions.jsx
-- ParentStatsGrid.jsx
-- BannerHeader.js
-- roomTypeProvider.js
-- topic-context.js
+- history/index.js
+- [id]/index.jsx
+- dummy-data/index.js
+- library/[id]/index.js
+- [...nextauth].js
+- CouponUsersList.jsx
 - .singletonFocus
 - LigaWinners
+- ProductsExchange.jsx
 - api/index.js
 - devDependencies
 - scripts
+- TrialSettings.jsx
+- CoinsTab.jsx
+- MultiplicationModal.jsx
+- ParentQr
+- ImpersonationBar.jsx
 - StudentExampleDetailLayout.jsx
 - Editing this README
 - TeacherGroupDetail.jsx
@@ -146,28 +152,28 @@
 ## Surprising Connections (you probably didn't know these)
 - `Index()` --calls--> `EyeIcon()`  [EXTRACTED]
   src/pages/dashboard/parent/results/[id]/index.jsx → public/icons/eyeIcon.jsx
-- `Benefits()` --calls--> `LayoutAdmin()`  [EXTRACTED]
-  src/pages/dashboard/prices/benifits/index.js → src/layout/LayoutAdmin.jsx
-- `Category()` --calls--> `LayoutAdmin()`  [EXTRACTED]
-  src/pages/dashboard/prices/category/index.js → src/layout/LayoutAdmin.jsx
-- `StudentProfile()` --indirect_call--> `ProfileInfoTab()`  [INFERRED]
-  src/modules/student/profile/StudentProfile.jsx → src/modules/student/profile/tabs/ProfileInfoTab.jsx
-- `StudentProfile()` --indirect_call--> `ReferralTab()`  [INFERRED]
-  src/modules/student/profile/StudentProfile.jsx → src/modules/student/profile/tabs/ReferralTab.jsx
+- `StudentProfile()` --indirect_call--> `CoinsTab()`  [INFERRED]
+  src/modules/student/profile/StudentProfile.jsx → src/modules/student/profile/tabs/CoinsTab.jsx
+- `StudentProfile()` --indirect_call--> `CouponsTab()`  [INFERRED]
+  src/modules/student/profile/StudentProfile.jsx → src/modules/student/profile/tabs/CouponsTab.jsx
+- `DeleteAccountCard()` --calls--> `DeleteAccountModal()`  [EXTRACTED]
+  src/components/account/DeleteAccountCard.jsx → src/components/account/DeleteAccountModal.jsx
+- `ProfileInfoTab()` --calls--> `DeleteAccountCard()`  [EXTRACTED]
+  src/modules/student/profile/tabs/ProfileInfoTab.jsx → src/components/account/DeleteAccountCard.jsx
 
 ## Import Cycles
 - 2-file cycle: `src/hooks/index.js -> src/hooks/useRoleDetection.js -> src/hooks/index.js`
 - 3-file cycle: `src/hooks/api/usePurchasedProducts.js -> src/hooks/useRoleDetection.js -> src/hooks/index.js -> src/hooks/api/usePurchasedProducts.js`
 
-## Communities (147 total, 57 thin omitted)
+## Communities (153 total, 54 thin omitted)
 
 ### Community 0 - "LayoutAdmin"
-Cohesion: 0.07
-Nodes (52): next-themes, HeaderTitle(), OnlinePing(), LayoutAdmin(), CoverImage(), MyPurchasedBooks(), STATUS_CONFIG, StatusBadge() (+44 more)
+Cohesion: 0.09
+Nodes (37): HeaderTitle(), OnlinePing(), Individual(), LayoutAdmin(), StudentInvitationsModal(), LigaHome(), SubjectBreadcrumbs(), PaymentTable() (+29 more)
 
 ### Community 1 - "LigaDashboard.jsx"
-Cohesion: 0.14
-Nodes (27): LigaDialog(), TONES, EMPTY_TEST, LigaDashboard(), Overview(), SOURCE_LABELS, TABS, Tests() (+19 more)
+Cohesion: 0.24
+Nodes (15): LigaDialog(), TONES, Tests(), PRIZE_FIELDS, PRIZES, SeasonEditDialog(), WEEK_FIELDS, WeekEditDialog() (+7 more)
 
 ### Community 2 - "h"
 Cohesion: 0.07
@@ -181,57 +187,57 @@ Nodes (9): ChoiceAnswerInput(), CompositeAnswerInput(), ImageChoiceInput(), Ques
 Cohesion: 0.03
 Nodes (76): dependencies, ag-grid-community, @ag-grid-community/client-side-row-model, ag-grid-react, apexcharts, autoprefixer, axios, better-react-mathjax (+68 more)
 
-### Community 5 - "echarts-for-react"
-Cohesion: 0.11
-Nodes (5): echarts-for-react, days, heatmapData, hours, DONUT_COLORS
+### Community 5 - "react"
+Cohesion: 0.03
+Nodes (13): echarts-for-react, react, RoomContext, TopicContext, ChatEmptyState(), ChatRequestCard(), ChatRequestList(), days (+5 more)
 
 ### Community 6 - "useGetQuery"
-Cohesion: 0.11
-Nodes (24): lodash, next-auth, UserAgreement(), ProfileDetails(), TopicDropdown(), KEYS, URLS, useGetPlans() (+16 more)
+Cohesion: 0.07
+Nodes (46): lodash, next-auth, swiper, UserAgreement(), ProfileDetails(), TopicDropdown(), KEYS, URLS (+38 more)
 
-### Community 7 - "DiagnosticQuestions.jsx"
-Cohesion: 0.15
-Nodes (24): html-react-parser, SuccessPopupSendChat(), ActionSolution(), DiagnosticResultModal(), ModalLevel(), readStart(), removeStart(), usePersistentTimer() (+16 more)
+### Community 7 - "SubjectQuestions.jsx"
+Cohesion: 0.11
+Nodes (25): framer-motion, SimpleModal(), SuccessPopup(), SuccessPopupSendChat(), useGetPlans(), BookCard(), BuyBookModal(), nf() (+17 more)
 
 ### Community 8 - "Theme.js"
-Cohesion: 0.23
-Nodes (16): Footer(), ContactPage(), BannerFaq(), ScrollToTop(), LayoutHome(), ThemeSettings(), NotFound(), Contact() (+8 more)
+Cohesion: 0.07
+Nodes (45): Footer(), AuthLanding(), ContactPage(), BannerFaq(), Benefits(), CARD_STYLES, TEXTS, ChatBubble() (+37 more)
 
 ### Community 9 - "ChatBoxModule.js"
-Cohesion: 0.12
-Nodes (20): lucide-react, ChatBoxModule(), ChatHeader(), ROLE_LABELS, ChatAvatar(), ChatsList(), formatDate(), CloseModal() (+12 more)
+Cohesion: 0.15
+Nodes (15): ChatBoxModule(), ChatHeader(), ROLE_LABELS, ChatAvatar(), ChatsList(), formatDate(), CloseModal(), EmptyMessage() (+7 more)
 
 ### Community 10 - "QuestionWorkspace.jsx"
-Cohesion: 0.14
-Nodes (15): react-mathquill, Calculator(), availableMathSymbols, MathSymbols(), symbolsList, compositeMathStyle, ExamAnswerComposite(), ExamAnswerText() (+7 more)
+Cohesion: 0.17
+Nodes (15): react-mathquill, Calculator(), compositeMathStyle, ExamAnswerComposite(), ExamAnswerText(), textMathStyle, mathConfig, plainLength() (+7 more)
 
 ### Community 12 - "@mui/material"
-Cohesion: 0.03
-Nodes (12): @mui/material, react, BaseCard(), keys, cardStyle, FeatureCard(), Features(), IconHeader() (+4 more)
+Cohesion: 0.04
+Nodes (11): @mui/material, BaseCard(), keys, cardStyle, FeatureCard(), Features(), IconHeader(), images (+3 more)
 
 ### Community 13 - "react-i18next"
-Cohesion: 0.08
-Nodes (14): @heroui/react, react-i18next, exitImpersonation(), SimpleModal(), SuccessPopup(), Individual(), CreateReferalModal(), SendToMentorModal() (+6 more)
+Cohesion: 0.11
+Nodes (21): react-i18next, CreateReferalModal(), Friends(), RANK_STYLES, StatisticsHero(), GROUP_ICON_BG, progressColor(), TutorGroupsCard() (+13 more)
 
 ### Community 14 - "SiteStatistics.jsx"
-Cohesion: 0.07
-Nodes (59): recharts, BarList(), DonutCard(), bucketRange(), NewUsersChart(), TABS, toIso(), CONVERSION_LINES (+51 more)
+Cohesion: 0.08
+Nodes (55): recharts, BarList(), DonutCard(), bucketRange(), NewUsersChart(), TABS, toIso(), CONVERSION_LINES (+47 more)
 
 ### Community 15 - "package.json"
 Cohesion: 0.05
-Nodes (38): name, private, version, @ag-grid-community/client-side-row-model, apexcharts, autoprefixer, @ckeditor/ckeditor5-build-classic, @ckeditor/ckeditor5-image (+30 more)
+Nodes (37): name, private, version, @ag-grid-community/client-side-row-model, apexcharts, autoprefixer, @ckeditor/ckeditor5-build-classic, @ckeditor/ckeditor5-image (+29 more)
 
 ### Community 16 - "s"
 Cohesion: 0.05
 Nodes (3): getFactory(), parseList(), s()
 
 ### Community 17 - "usePostQuery"
-Cohesion: 0.16
-Nodes (28): axios, @ckeditor/ckeditor5-react, DeleteAccountModal(), TEXTS, EditIcon(), QuestionCountIcon(), RightIcon(), TrashIcon() (+20 more)
+Cohesion: 0.17
+Nodes (24): DeleteAccountModal(), TEXTS, RightIcon(), TrashIcon(), ImageUploader(), Input(), AnimateUp(), postRequest() (+16 more)
 
 ### Community 18 - "ProductCard.jsx"
-Cohesion: 0.10
-Nodes (18): dayjs, usePurchasedProducts(), EmptyState(), ErrorState(), ProductCard(), ProductGrid(), StatusBadge(), PurchasedProducts() (+10 more)
+Cohesion: 0.11
+Nodes (19): dayjs, EmptyState(), ErrorState(), LoadingState(), ProductCard(), ProductGrid(), StatusBadge(), PurchasedProducts() (+11 more)
 
 ### Community 20 - "tex-mml-svg.js"
 Cohesion: 0.05
@@ -239,31 +245,31 @@ Nodes (23): applyConstraint(), applyCustomQuery(), applyQuery(), applySelector()
 
 ### Community 22 - "liga/utils.js"
 Cohesion: 0.17
-Nodes (25): LigaParticipants(), Participants(), STARTED, LigaHero(), LigaPager(), LigaTable(), PAGE_SIZE, STATUS_COLORS (+17 more)
+Nodes (23): LigaParticipants(), Participants(), STARTED, LigaPager(), LigaTable(), PAGE_SIZE, STATUS_COLORS, LigaStandings() (+15 more)
 
 ### Community 23 - "Auth.js"
-Cohesion: 0.19
-Nodes (17): react-hook-form, SpinnerIcon(), SimpleLoader(), CredentialsPopup(), Auth(), AuthForgetPassword(), AuthNewPassword(), AuthRecieveCode() (+9 more)
+Cohesion: 0.22
+Nodes (20): react-hook-form, InputPassword, InputPhone, SelectRole(), SpinnerIcon(), SimpleLoader(), CredentialsPopup(), Auth() (+12 more)
 
-### Community 24 - "StudentHome.jsx"
+### Community 24 - "@heroui/react"
 Cohesion: 0.19
-Nodes (12): buildMonthGrid(), formatDDMMYYYY(), HomeCalendarCard(), HomeHero(), HomeRecentActivity(), CompletedIcon(), HomeStatsGrid(), THEMES (+4 more)
+Nodes (11): @heroicons/react, @heroui/react, useDeleteQuery(), CouponCard(), CouponsList(), EmptyCuponState(), CouponsTab(), CreateReferralModal() (+3 more)
 
-### Community 26 - "StudentOverview.jsx"
-Cohesion: 0.05
-Nodes (35): ImpersonationBar(), DefaultSeo(), SEO, SiteTracker(), authSecret, config, reactQueryClient, UserProfileContext (+27 more)
+### Community 26 - "_app.js"
+Cohesion: 0.17
+Nodes (11): ImpersonationBar(), DefaultSeo(), SEO, SiteTracker(), reactQueryClient, UserProfileContext, UserProfileProvider(), App() (+3 more)
 
 ### Community 27 - "@tabler/icons"
-Cohesion: 0.15
-Nodes (9): @tabler/icons, StyledAccordian, TabEmbedding(), StyledAccordian, TabPayments(), StyledAccordian, TabTeamScheduling(), StyledAccordian (+1 more)
+Cohesion: 0.10
+Nodes (13): @tabler/icons, StyledAccordian, TabEmbedding(), StyledAccordian, TabPayments(), StyledAccordian, TabTeamScheduling(), StyledAccordian (+5 more)
 
 ### Community 28 - "PricingContent.jsx"
-Cohesion: 0.18
-Nodes (17): closeAuthModal(), openAuthWithReturn(), AuthModal(), GamesSection(), normalizeTitle(), GameRenderer(), MentalGamePlayPage(), LANGS (+9 more)
+Cohesion: 0.15
+Nodes (21): closeAuthModal(), openAuthWithReturn(), AuthModal(), GamesSection(), normalizeTitle(), GameRenderer(), MentalGamePlayPage(), CATEGORY_ICONS (+13 more)
 
 ### Community 29 - "BattleArena.jsx"
-Cohesion: 0.12
-Nodes (23): BattleArena(), BattleChat(), BattleLevelBadge(), LEVEL_COLORS, AVATAR_COLORS, BattlePlayerAvatar(), getColor(), getInitial() (+15 more)
+Cohesion: 0.10
+Nodes (29): BattleArena(), BattleChat(), BattleLevelBadge(), LEVEL_COLORS, AVATAR_COLORS, BattlePlayerAvatar(), getColor(), getInitial() (+21 more)
 
 ### Community 30 - "role-landing/shared.jsx"
 Cohesion: 0.08
@@ -271,195 +277,195 @@ Nodes (52): DEFAULT_PRIZES, Heading(), LeagueDetails(), POINT_ICONS, PRIZES, RUL
 
 ### Community 31 - "StudentTable.jsx"
 Cohesion: 0.08
-Nodes (48): docx, Chip(), DateInput(), daysAgo(), formatDay(), MoreFilters(), toISO(), Avatar() (+40 more)
+Nodes (49): docx, Chip(), DateInput(), daysAgo(), formatDay(), MoreFilters(), toISO(), Avatar() (+41 more)
 
 ### Community 32 - "student/my-study/index.js"
-Cohesion: 0.29
-Nodes (9): EmptyPage(), ButtonCellRenderer(), GridExample(), MyStudyAcitve(), NavbarStudy(), colDefs, Index(), Index() (+1 more)
+Cohesion: 0.30
+Nodes (8): EmptyPage(), ButtonCellRenderer(), MyStudyAcitve(), NavbarStudy(), colDefs, Index(), Index(), useMyStudyStore
 
 ### Community 33 - "gamesData.js"
 Cohesion: 0.08
-Nodes (8): safekidSeeds, cache, handler(), pick(), toTitle(), categoryConfig, MentalGames(), normalizeTitle()
+Nodes (5): safekidSeeds, cache, handler(), pick(), toTitle()
 
 ### Community 35 - "store/index.js"
-Cohesion: 0.14
-Nodes (14): zustand, PremiumCrown(), Main(), MainWrapper(), Navbar(), SearchInput(), NavbarCoins(), NavbarPoints() (+6 more)
+Cohesion: 0.18
+Nodes (13): PremiumCrown(), Main(), MainWrapper(), Navbar(), SearchInput(), NavbarCoins(), NavbarPoints(), NavbarProfile() (+5 more)
 
 ### Community 36 - "i"
 Cohesion: 0.03
 Nodes (4): getSeparator(), i(), merge(), pauseValue()
 
 ### Community 37 - "GameRenderer.js"
-Cohesion: 0.16
-Nodes (16): GameRenderer(), BiggerSmaller(), rand(), FocusClick(), LogicSequence(), rand(), MemoryCards(), shuffle() (+8 more)
+Cohesion: 0.09
+Nodes (26): GameRenderer(), BiggerSmaller(), rand(), FocusClick(), LogicSequence(), rand(), MemoryCards(), shuffle() (+18 more)
 
 ### Community 38 - "DiagnosticMistakes.jsx"
-Cohesion: 0.12
-Nodes (34): AttemptPicker(), AttemptsCarousel(), AttemptsTrendChart(), PAD, RANGES, BalanceCard(), answersOf(), ChoiceRow() (+26 more)
+Cohesion: 0.11
+Nodes (35): ActionSolution(), AttemptPicker(), AttemptsCarousel(), AttemptsTrendChart(), PAD, RANGES, BalanceCard(), answersOf() (+27 more)
 
 ### Community 39 - "ChildOverview.jsx"
-Cohesion: 0.05
-Nodes (94): DeviceLimitModal(), DeviceIcon(), DeviceRow(), formatDeviceDate(), ICONS, RemoveChildModal(), SwitchToChildButton(), VARIANTS (+86 more)
+Cohesion: 0.07
+Nodes (76): qrcode.react, ChildHero(), InfoChip(), ChaptersCard(), ChildOverview(), TABS, BrowserIcon(), browserOs() (+68 more)
 
 ### Community 42 - "ReviewCarousel.js"
 Cohesion: 0.11
 Nodes (6): react-slick, slick-carousel, ReviewCarousel(), Reviews, SampleNextArrow(), SamplePrevArrow()
 
 ### Community 43 - "LigaTestRun.jsx"
-Cohesion: 0.26
-Nodes (10): useScreenshotGuard(), LigaGuard(), clock(), LigaTestRun(), MathAnswerField, MJ_CONFIG, Result(), RichText() (+2 more)
+Cohesion: 0.17
+Nodes (13): KEYS, MATH_FIELD_CONFIG, useScreenshotGuard(), LigaGuard(), clock(), LigaTestRun(), MathAnswerField, MJ_CONFIG (+5 more)
 
 ### Community 44 - "framer-motion"
-Cohesion: 0.14
-Nodes (18): framer-motion, InfoCircleIcon(), SimpleModalTeacher(), WarningModal(), fractionsData, groupsPupil, howItWorks, questions (+10 more)
+Cohesion: 0.21
+Nodes (12): InfoCircleIcon(), SimpleModalTeacher(), WarningModal(), InfoWarning(), ActionInfo(), SubjectHeader(), buttons, Index() (+4 more)
 
 ### Community 45 - "exceptional-feature/index.js"
 Cohesion: 0.11
 Nodes (7): ExceptionalFeature(), slide1, slide2, slide3, StyledAnimationContent, StyledAnimationContent2, StyledAnimationFeature
 
 ### Community 46 - "[student_id].js"
-Cohesion: 0.10
-Nodes (28): react-dom, Eye(), buttons, CalculatorModal(), MultiplicationMathModal(), numbers, generateAllQuestions(), MultiplicationQuizModal() (+20 more)
+Cohesion: 0.19
+Nodes (17): Eye(), DailyTaskDetailModal(), buildApiParams(), DailyTasksPage(), formatScore(), getCurrentWeek(), getDaysInRange(), getLocalizedName() (+9 more)
 
 ### Community 47 - "BattleSetupForm.jsx"
-Cohesion: 0.13
-Nodes (18): SearchInput(), SelectBox(), BattleRatingWidget(), WidgetShell(), BattleRulesCard(), RULES, BattleSetupForm(), getSubjectIcon() (+10 more)
+Cohesion: 0.18
+Nodes (13): BattleRatingWidget(), WidgetShell(), BattleRulesCard(), RULES, BattleSetupForm(), getSubjectIcon(), GRADE_ICON_STYLE, QUESTION_COUNT_OPTIONS (+5 more)
 
 ### Community 48 - "BottomSections.jsx"
 Cohesion: 0.09
 Nodes (55): AppSection(), CtaBanner(), FaqSection(), FEATURE_COLORS, FEATURE_ICONS, MotivationSection(), PILL_COLORS, PILL_ICONS (+47 more)
 
 ### Community 49 - "LanguageDropdown"
-Cohesion: 0.17
-Nodes (14): Flag(), FLAGS, LanguageDropdown(), languages, useKeyboardShortcut(), LayoutQuestion(), NavbarLangue(), mathConfig (+6 more)
+Cohesion: 0.26
+Nodes (9): Flag(), FLAGS, LanguageDropdown(), languages, useKeyboardShortcut(), LayoutQuestion(), formatTime(), QuestionTopBar() (+1 more)
 
 ### Community 50 - "lucide-react"
 Cohesion: 0.20
-Nodes (18): fieldBorder, fieldBox, fieldIcon, fieldInput, countDigitsBeforeCursor(), formatPhone(), getDigits(), InputPhone (+10 more)
+Nodes (16): fieldBorder, fieldBox, fieldIcon, fieldInput, countDigitsBeforeCursor(), formatPhone(), getDigits(), InputText (+8 more)
 
 ### Community 51 - "NewsSingle.jsx"
-Cohesion: 0.25
-Nodes (14): TEXTS, NewsSingle(), Shell(), TEXTS, FILTERS, NewsAll(), TEXTS, CARD_TEXTS (+6 more)
+Cohesion: 0.24
+Nodes (15): HomePage(), TEXTS, NewsSingle(), Shell(), TEXTS, FILTERS, NewsAll(), TEXTS (+7 more)
 
 ### Community 52 - "menuConfig.js"
-Cohesion: 0.23
-Nodes (8): DiagnosticsIcon(), GraduationHatIcon(), IndividualIcon(), PupilProfileIcon(), StudentExamplesIcon(), SubjectIcon(), TeacherPupil(), createMenuConfig()
+Cohesion: 0.21
+Nodes (9): DiagnosticsIcon(), GraduationHatIcon(), IndividualIcon(), ProductsIcon(), PupilProfileIcon(), StudentExamplesIcon(), SubjectIcon(), TeacherPupil() (+1 more)
 
 ### Community 53 - "student/chat/index.js"
-Cohesion: 0.25
-Nodes (8): ChatEmptyState(), ChatFilters(), ChatPagination(), ChatRequestCard(), ChatRequestList(), useChatData(), useStatusUtils(), ChatPage()
+Cohesion: 0.39
+Nodes (5): ChatFilters(), ChatPagination(), useChatData(), useStatusUtils(), ChatPage()
 
 ### Community 54 - "ParentConnect.jsx"
-Cohesion: 0.16
-Nodes (20): ActingParentBar(), AuthButton(), AuthSignIn(), BrandMark(), api, errorText(), Field(), formatPhone() (+12 more)
+Cohesion: 0.20
+Nodes (14): BrandMark(), LOGO_URL, api, errorText(), Field(), formatPhone(), ParentConnect(), PasswordField() (+6 more)
 
-### Community 55 - "next-auth"
-Cohesion: 0.12
-Nodes (19): EyeIcon(), @dnd-kit/core, ContentLoader(), ChildNotFoundState(), ChildDetail(), ReferralTab(), StudentRewardModal(), StudentSubjectsList() (+11 more)
+### Community 55 - "ContentLoader"
+Cohesion: 0.13
+Nodes (21): clsx, ContentLoader(), NoActivityState(), ChildDetail(), StudentRewardModal(), StudentSubjectsList(), ACTION_STYLES, Card() (+13 more)
 
 ### Community 56 - "next"
-Cohesion: 0.15
-Nodes (14): next, DashboardNav(), Dashboard(), MainContentHead(), MainContent(), MenuSection(), ProfileSection(), Sidebar() (+6 more)
+Cohesion: 0.14
+Nodes (11): next, next-themes, DashboardNav(), Dashboard(), MainContentHead(), MainContent(), MenuSection(), ProfileSection() (+3 more)
 
 ### Community 57 - "LigaTestDetail.jsx"
-Cohesion: 0.19
-Nodes (20): SectionHead(), emptyQuestion(), LETTERS, LigaTestDetail(), MathEditor, Questions(), Results(), answerHtml() (+12 more)
+Cohesion: 0.23
+Nodes (16): SectionHead(), emptyQuestion(), LETTERS, LigaTestDetail(), Questions(), answerHtml(), escapeHtml(), FileImage() (+8 more)
 
 ### Community 58 - "MessageBubble.jsx"
 Cohesion: 0.17
 Nodes (11): IndependentResultCard(), formatClock(), LinkRow(), MessageBubble(), ReplyButton(), dayKey(), formatDay(), MessagesList() (+3 more)
 
 ### Community 61 - "StudentProfile.jsx"
-Cohesion: 0.10
-Nodes (24): swiper, CoinsIcon(), CouponsList(), CouponUsersList(), EmptyUserState(), CoinConvert(), RATES, StudentProfile() (+16 more)
+Cohesion: 0.15
+Nodes (17): StudentProfile(), TEXT, CoinsHistoryTab(), DevicesTab(), FinesTab(), PaymentsTab(), InfoRow(), ProfileInfoTab() (+9 more)
 
-### Community 62 - "ParentProfile.jsx"
-Cohesion: 0.24
-Nodes (10): ParentChangePasswordModal(), ParentEditInfoModal(), ParentProfileHero(), ParentProfileInfoCard(), Row(), ActionRow(), ParentProfileQuickActions(), ParentProfileSecurityCard() (+2 more)
+### Community 62 - "store/index.js"
+Cohesion: 0.22
+Nodes (4): zustand, NavbarLangue(), useLangStore, useSettingsStore
 
 ### Community 63 - "@dnd-kit/sortable"
 Cohesion: 0.35
 Nodes (6): @dnd-kit/sortable, @dnd-kit/utilities, DndList(), SortableItem(), DragIcon(), SortableTableRow()
 
 ### Community 64 - "HpHeader.js"
-Cohesion: 0.29
-Nodes (9): AppBarStyled, defaultLinks, DrawerHeader, HpHeader(), socialIcons, ToolbarStyled, MobileSidebar(), Navigations() (+1 more)
+Cohesion: 0.14
+Nodes (18): Brand(), LANGS, RoleChooser(), ROLES, TEXT, AppBarStyled, defaultLinks, DrawerHeader (+10 more)
 
 ### Community 65 - "TutorProfile.jsx"
-Cohesion: 0.09
-Nodes (26): DeleteAccountCard(), TEXTS, normalize(), regionNameById, stripSuffix(), UzbekistanMap(), regionsUz, UZBEKISTAN_MAP_VIEWBOX (+18 more)
+Cohesion: 0.19
+Nodes (13): DeleteAccountCard(), TEXTS, TutorProfileActivity(), initialsOf(), TutorProfileHero(), Row(), TutorProfileInfo(), TutorProfileQuickLinks() (+5 more)
 
 ### Community 66 - "menulist.js"
-Cohesion: 0.22
-Nodes (12): Brand(), ProductsIcon(), getMenuItems(), MenuType, CouponModal(), Sidebar(), SidebarFooter(), SidebarLogo() (+4 more)
+Cohesion: 0.42
+Nodes (7): CouponModal(), Sidebar(), SidebarFooter(), SidebarPlan(), logout(), useCouponStore, usePricingModalStore
 
 ### Community 67 - "AuthMascot.jsx"
-Cohesion: 0.31
-Nodes (9): InputPassword, AuthCard(), Logo(), AuthMascot(), Eye(), PHRASES, useAuthMascot, Wing() (+1 more)
+Cohesion: 0.29
+Nodes (9): AuthCard(), Logo(), AuthMascot(), Eye(), PHRASES, useAuthMascot, Wing(), WINGS (+1 more)
 
 ### Community 68 - "form/index.js"
 Cohesion: 0.27
 Nodes (4): Address(), ShapeBg, Form(), numbers
 
-### Community 69 - "Theme.js"
-Cohesion: 0.19
-Nodes (9): components(), DarkThemeColors, baseDarkTheme, baselightTheme, LightThemeColors, darkshadows, shadows, buildTheme() (+1 more)
+### Community 69 - "SwitchToChildButton.jsx"
+Cohesion: 0.24
+Nodes (11): ActingParentBar(), DeviceLimitModal(), DeviceIcon(), DeviceRow(), formatDeviceDate(), ICONS, SwitchToChildButton(), VARIANTS (+3 more)
 
 ### Community 70 - "MathEditor.jsx"
-Cohesion: 0.26
-Nodes (9): KEYS, MATH_FIELD_CONFIG, closeBrace(), commandEnd(), MathEditor(), serialize(), splitBare(), splitBy() (+1 more)
+Cohesion: 0.39
+Nodes (8): closeBrace(), commandEnd(), MathEditor(), serialize(), splitBare(), splitBy(), splitMath(), MathEditor
 
 ### Community 71 - "StudentExampleTable.jsx"
-Cohesion: 0.29
-Nodes (7): ag-grid-community, ag-grid-react, react-paginate, Pagination(), ActivityTable(), StudentExamplePagination(), StudentExampleTable()
+Cohesion: 0.19
+Nodes (13): ag-grid-community, ag-grid-react, react-paginate, GridExample(), Pagination(), SearchInput(), SelectBox(), ActivityTable() (+5 more)
 
 ### Community 73 - "FreeLessons.jsx"
 Cohesion: 0.29
 Nodes (9): formatDateTime(), formatPhone(), FreeLessons(), LeadRow(), pad(), STATUS_KEYS, STATUS_STYLE, TEXTS (+1 more)
 
 ### Community 74 - "react-icons"
-Cohesion: 0.11
-Nodes (11): react-icons, MultiplicationModal(), numbers, NavbarMultiplication(), BookCard(), BuyBookModal(), nf(), PayPill() (+3 more)
+Cohesion: 0.13
+Nodes (12): react-dom, react-icons, buttons, CalculatorModal(), MultiplicationMathModal(), numbers, generateAllQuestions(), MultiplicationQuizModal() (+4 more)
 
-### Community 75 - "LigaHome.jsx"
-Cohesion: 0.36
-Nodes (7): LigaSeasonEmpty(), Countdown(), formatDate(), LigaHome(), TestRow(), TEXT, Index()
+### Community 75 - "LigaDashboard.jsx"
+Cohesion: 0.19
+Nodes (18): LigaSeasonEmpty(), EMPTY_TEST, LigaDashboard(), Overview(), SOURCE_LABELS, TABS, TESTS_HERO, HeadCell() (+10 more)
 
 ### Community 76 - "key-metric/index.js"
 Cohesion: 0.24
 Nodes (8): Banner(), FEATURES, formatCount(), highlightBrand(), KeyMetric(), splitParagraphs(), TEXTS, AboutUs()
 
 ### Community 77 - "ratings/index.js"
-Cohesion: 0.28
-Nodes (6): AVATAR_COLORS, COUNTS, getAvatarColor(), getInitial(), InitialAvatar(), PODIUM_STYLES
+Cohesion: 0.24
+Nodes (7): AVATAR_COLORS, COUNTS, getAvatarColor(), getInitial(), InitialAvatar(), PODIUM_STYLES, StudentTopLeaderboard()
 
-### Community 78 - "Landing.jsx"
-Cohesion: 0.11
-Nodes (22): AppStoreButtons(), Benefits(), CARD_STYLES, TEXTS, HomePage(), ChatBubble(), FAQ(), isYoutube() (+14 more)
+### Community 78 - "powerful-dozens/index.js"
+Cohesion: 0.67
+Nodes (3): AppStoreButtons(), FEATURES, PowerfulDozens()
 
 ### Community 79 - "useImageAccentColor.js"
 Cohesion: 0.53
 Nodes (5): colorCache, extractAccentColor(), hslToHex(), rgbToHsl(), useImageAccentColor()
 
-### Community 80 - "HeaderAlert.js"
-Cohesion: 0.36
-Nodes (4): HeaderAlert(), NotificationBg, NotificationBg2, NotificationBg3
+### Community 80 - "MyChildren.jsx"
+Cohesion: 0.28
+Nodes (10): RemoveChildModal(), GRADE_TONES, gradeTone(), isActive(), MyChildren(), RowMenu(), splitDateTime(), subjectStyle() (+2 more)
 
 ### Community 81 - "SubscriptionPromoModal.jsx"
 Cohesion: 0.08
-Nodes (28): @mui/icons-material, AVATAR_COLORS, DetailItem(), ParentChildrenCard(), CouponSection(), ModalHeader(), NASIYA_TERMS, NasiyaInstallmentOption() (+20 more)
+Nodes (27): @mui/icons-material, AVATAR_COLORS, DetailItem(), ParentChildrenCard(), CouponSection(), ModalHeader(), NASIYA_TERMS, NasiyaInstallmentOption() (+19 more)
 
 ### Community 82 - "eslint.config.mjs"
 Cohesion: 0.25
 Nodes (4): compat, __dirname, eslintConfig, __filename
 
-### Community 83 - "LeadershipSlider.js"
-Cohesion: 0.32
-Nodes (6): Leadership(), TEXTS, leadershipApi, LeadershipSlider(), mathJaxConfig, PROFESSIONS
+### Community 83 - "wrapAnswer.js"
+Cohesion: 0.40
+Nodes (10): addWrapper(), isSimpleNumber(), isWrapped(), needsWrapper(), normalizeAnswerForBackend(), normalizeLatex(), normalizeMultiplicationForBackend(), stripDelimiters() (+2 more)
 
-### Community 85 - "ParentQr.jsx"
-Cohesion: 0.11
-Nodes (22): qrcode.react, APP_STORE_URL, GOOGLE_PLAY_URL, SMART_APP_DOWNLOAD_PATH, LOGO_URL, Corner(), FeatureCard(), FEATURES (+14 more)
+### Community 85 - "app.js"
+Cohesion: 0.24
+Nodes (11): APP_STORE_URL, GOOGLE_PLAY_URL, SMART_APP_DOWNLOAD_PATH, AppleIcon(), FEATURES, Flag(), HeroImage(), IqMathAppPage() (+3 more)
 
 ### Community 86 - "ckeditor.js"
 Cohesion: 0.25
@@ -469,17 +475,37 @@ Nodes (7): DEFAULT_CKEDITOR_CONFIG, DEFAULT_REMOVE_PLUGINS, DEFAULT_TOOLBAR, EDI
 Cohesion: 0.47
 Nodes (4): three, random(), RobotWalker(), stripRootMotion()
 
-### Community 92 - "MentalGames.js"
-Cohesion: 0.29
-Nodes (6): CATEGORY_ICONS, FILTERS, GAME_INFO, MentalGames(), TEXTS, titleOf()
+### Community 89 - "uzbekistan-map/index.jsx"
+Cohesion: 0.33
+Nodes (7): normalize(), regionNameById, stripSuffix(), UzbekistanMap(), regionsUz, UZBEKISTAN_MAP_VIEWBOX, uzbekistanMapPaths
 
-### Community 95 - "BannerHeader.js"
-Cohesion: 0.60
-Nodes (3): AuthLanding(), BannerHeader(), LandingPage()
+### Community 92 - "history/index.js"
+Cohesion: 0.36
+Nodes (7): CoverImage(), MyPurchasedBooks(), STATUS_CONFIG, StatusBadge(), toAbs(), MyBooksPage(), LibraryPage()
+
+### Community 93 - "[id]/index.jsx"
+Cohesion: 0.43
+Nodes (4): EyeIcon(), ChildNotFoundState(), Index(), StatBadge()
+
+### Community 94 - "dummy-data/index.js"
+Cohesion: 0.29
+Nodes (5): fractionsData, groupsPupil, howItWorks, questions, topics
+
+### Community 95 - "library/[id]/index.js"
+Cohesion: 0.36
+Nodes (6): Statistics(), BookDetail(), InfoRow(), SkeletonDetail(), toAbs(), Index()
+
+### Community 97 - "CouponUsersList.jsx"
+Cohesion: 0.48
+Nodes (3): CouponUsersList(), EmptyUserState(), CouponsUsers()
+
+### Community 100 - "ProductsExchange.jsx"
+Cohesion: 0.48
+Nodes (3): EmptyState(), LoadingState(), ProductsExchange()
 
 ### Community 101 - "api/index.js"
-Cohesion: 0.07
-Nodes (30): @heroicons/react, react-hot-toast, @tanstack/react-query, NEWS, newsApi, NewsPage(), newsApi, NewsSlider() (+22 more)
+Cohesion: 0.09
+Nodes (22): axios, react-hot-toast, @tanstack/react-query, NEWS, newsApi, NewsPage(), newsApi, NewsSlider() (+14 more)
 
 ### Community 102 - "devDependencies"
 Cohesion: 0.40
@@ -488,6 +514,22 @@ Nodes (5): devDependencies, eslint, postcss, tailwindcss, @types/react
 ### Community 103 - "scripts"
 Cohesion: 0.40
 Nodes (5): scripts, build, dev, lint, start
+
+### Community 104 - "TrialSettings.jsx"
+Cohesion: 0.38
+Nodes (5): PRESETS, QUERY_KEY, TEXTS, TrialSettings(), Index()
+
+### Community 105 - "CoinsTab.jsx"
+Cohesion: 0.60
+Nodes (4): CoinsIcon(), CoinConvert(), CoinsTab(), Index()
+
+### Community 106 - "MultiplicationModal.jsx"
+Cohesion: 0.60
+Nodes (3): MultiplicationModal(), numbers, NavbarMultiplication()
+
+### Community 107 - "ParentQr"
+Cohesion: 0.50
+Nodes (4): Corner(), FeatureCard(), ParentQr(), Index()
 
 ### Community 109 - "StudentExampleDetailLayout.jsx"
 Cohesion: 0.14
@@ -498,24 +540,24 @@ Cohesion: 0.10
 Nodes (20): Add your files, Authors and acknowledgment, Badges, Collaborate with your team, Contributing, Description, Editing this README, Getting started (+12 more)
 
 ### Community 113 - "TeacherGroupDetail.jsx"
-Cohesion: 0.12
-Nodes (32): UngroupedStudentsModal(), GROUPS_PATH, TEACHER_GROUP_KEYS, TeacherGroupDetail(), StatTile(), TeacherGroups(), AddStudentsModal(), ConfirmModal() (+24 more)
+Cohesion: 0.06
+Nodes (51): lucide-react, Leadership(), TEXTS, leadershipApi, LeadershipSlider(), mathJaxConfig, PROFESSIONS, ActionTile() (+43 more)
 
 ### Community 124 - "SubjectOld.jsx"
-Cohesion: 0.14
-Nodes (20): react-player, Button(), CloseIcon(), VideoPlayer(), useDeleteQuestion(), ConfirmPurchaseModal(), PurchaseSuccessModal(), Products() (+12 more)
+Cohesion: 0.07
+Nodes (39): @ckeditor/ckeditor5-react, @dnd-kit/core, html-react-parser, react-player, Button(), CloseIcon(), EditIcon(), QuestionCountIcon() (+31 more)
 
 ### Community 129 - "test-calc/index.js"
-Cohesion: 0.22
-Nodes (7): brainly-style-guide, availableMathSymbols, Symbols(), MathKeyboard(), texSymbols, Index(), MathKeyboard
+Cohesion: 0.15
+Nodes (10): brainly-style-guide, availableMathSymbols, Symbols(), MathKeyboard(), texSymbols, availableMathSymbols, MathSymbols(), symbolsList (+2 more)
 
 ### Community 165 - "header/index.jsx"
 Cohesion: 0.24
 Nodes (9): Header(), navLinks, InstagramIcon(), PhoneIcon(), TelegramIcon(), YoutubeIcon(), ADDRESS_MAP_URL, SOCIAL_LINKS (+1 more)
 
 ### Community 170 - "DiagnosticSubjects.jsx"
-Cohesion: 0.07
-Nodes (42): CardDiagnostic(), scoreColor(), CardLockedSubject(), CardSubject(), DEFAULT_THEME, ModalConfidentiality(), SectionHeader(), StatsCarousel() (+34 more)
+Cohesion: 0.12
+Nodes (29): CardDiagnostic(), scoreColor(), CardLockedSubject(), CardSubject(), DEFAULT_THEME, ModalConfidentiality(), SectionHeader(), StatsCarousel() (+21 more)
 
 ### Community 175 - "student/subjects/[id]/index.js"
 Cohesion: 0.12
@@ -524,22 +566,22 @@ Nodes (20): BaseBreadcrumbs(), ChartIcon(), ClockIcon(), formatDuration(), ListI
 ## Knowledge Gaps
 - **33 isolated node(s):** `@ag-grid-community/client-side-row-model`, `@ckeditor/ckeditor5-build-classic`, `@ckeditor/ckeditor5-image`, `@ckeditor/ckeditor5-source-editing`, `@ckeditor/ckeditor5-special-characters` (+28 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1014 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **54 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `@mui/material` to `LayoutAdmin`, `LigaDashboard.jsx`, `QuestionForm.jsx`, `echarts-for-react`, `useGetQuery`, `DiagnosticQuestions.jsx`, `Theme.js`, `ChatBoxModule.js`, `QuestionWorkspace.jsx`, `react-i18next`, `SiteStatistics.jsx`, `package.json`, `usePostQuery`, `ProductCard.jsx`, `liga/utils.js`, `Auth.js`, `StudentHome.jsx`, `StudentOverview.jsx`, `@tabler/icons`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `student/my-study/index.js`, `gamesData.js`, `footer/index.js`, `store/index.js`, `GameRenderer.js`, `DiagnosticMistakes.jsx`, `ChildOverview.jsx`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `framer-motion`, `exceptional-feature/index.js`, `[student_id].js`, `BattleSetupForm.jsx`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `student/chat/index.js`, `ParentConnect.jsx`, `next-auth`, `next`, `LigaTestDetail.jsx`, `MessageBubble.jsx`, `StudentProfile.jsx`, `ParentProfile.jsx`, `@dnd-kit/sortable`, `HpHeader.js`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `form/index.js`, `Theme.js`, `MathEditor.jsx`, `StudentExampleTable.jsx`, `PaymentMethods.js`, `FreeLessons.jsx`, `react-icons`, `LigaHome.jsx`, `key-metric/index.js`, `ratings/index.js`, `Landing.jsx`, `useImageAccentColor.js`, `HeaderAlert.js`, `SubscriptionPromoModal.jsx`, `LeadershipSlider.js`, `ParentQr.jsx`, `RobotWalker.jsx`, `react-circular-progressbar`, `MentalGames.js`, `BannerHeader.js`, `roomTypeProvider.js`, `topic-context.js`, `api/index.js`, `StudentExampleDetailLayout.jsx`, `TeacherGroupDetail.jsx`, `SubjectOld.jsx`, `test-calc/index.js`, `header/index.jsx`, `DiagnosticSubjects.jsx`, `student/subjects/[id]/index.js`?**
+- **Why does `react` connect `react` to `LayoutAdmin`, `LigaDashboard.jsx`, `QuestionForm.jsx`, `useGetQuery`, `SubjectQuestions.jsx`, `Theme.js`, `ChatBoxModule.js`, `QuestionWorkspace.jsx`, `@mui/material`, `react-i18next`, `SiteStatistics.jsx`, `package.json`, `usePostQuery`, `ProductCard.jsx`, `liga/utils.js`, `Auth.js`, `@heroui/react`, `_app.js`, `@tabler/icons`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `student/my-study/index.js`, `footer/index.js`, `store/index.js`, `GameRenderer.js`, `DiagnosticMistakes.jsx`, `ChildOverview.jsx`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `framer-motion`, `exceptional-feature/index.js`, `[student_id].js`, `BattleSetupForm.jsx`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `menuConfig.js`, `student/chat/index.js`, `ParentConnect.jsx`, `ContentLoader`, `next`, `LigaTestDetail.jsx`, `MessageBubble.jsx`, `StudentProfile.jsx`, `store/index.js`, `@dnd-kit/sortable`, `HpHeader.js`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `form/index.js`, `SwitchToChildButton.jsx`, `MathEditor.jsx`, `StudentExampleTable.jsx`, `PaymentMethods.js`, `FreeLessons.jsx`, `react-icons`, `LigaDashboard.jsx`, `key-metric/index.js`, `ratings/index.js`, `useImageAccentColor.js`, `MyChildren.jsx`, `SubscriptionPromoModal.jsx`, `app.js`, `RobotWalker.jsx`, `react-circular-progressbar`, `uzbekistan-map/index.jsx`, `[id]/index.jsx`, `dummy-data/index.js`, `library/[id]/index.js`, `CouponUsersList.jsx`, `ProductsExchange.jsx`, `api/index.js`, `TrialSettings.jsx`, `MultiplicationModal.jsx`, `ImpersonationBar.jsx`, `StudentExampleDetailLayout.jsx`, `TeacherGroupDetail.jsx`, `SubjectOld.jsx`, `test-calc/index.js`, `header/index.jsx`, `DiagnosticSubjects.jsx`, `student/subjects/[id]/index.js`?**
   _High betweenness centrality (0.213) - this node is a cross-community bridge._
 - **What connects `@ag-grid-community/client-side-row-model`, `@ckeditor/ckeditor5-build-classic`, `@ckeditor/ckeditor5-image` to the rest of the system?**
   _33 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `LayoutAdmin` be split into smaller, more focused modules?**
-  _Cohesion score 0.06759259259259259 - nodes in this community are weakly interconnected._
-- **Why does `react-i18next` connect `react-i18next` to `LayoutAdmin`, `QuestionForm.jsx`, `echarts-for-react`, `useGetQuery`, `DiagnosticQuestions.jsx`, `Theme.js`, `ChatBoxModule.js`, `QuestionWorkspace.jsx`, `@mui/material`, `SiteStatistics.jsx`, `package.json`, `usePostQuery`, `ProductCard.jsx`, `Auth.js`, `StudentHome.jsx`, `StudentOverview.jsx`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `student/my-study/index.js`, `gamesData.js`, `store/index.js`, `header/index.jsx`, `DiagnosticMistakes.jsx`, `ChildOverview.jsx`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `framer-motion`, `DiagnosticSubjects.jsx`, `[student_id].js`, `student/subjects/[id]/index.js`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `BattleSetupForm.jsx`, `student/chat/index.js`, `ParentConnect.jsx`, `next-auth`, `next`, `MessageBubble.jsx`, `StudentProfile.jsx`, `ParentProfile.jsx`, `HpHeader.js`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `StudentExampleTable.jsx`, `FreeLessons.jsx`, `react-icons`, `LigaHome.jsx`, `key-metric/index.js`, `ratings/index.js`, `Landing.jsx`, `SubscriptionPromoModal.jsx`, `LeadershipSlider.js`, `i18n/index.js`, `ParentQr.jsx`, `react-circular-progressbar`, `SubjectsBanner.jsx`, `MentalGames.js`, `ParentQuickActions.jsx`, `ParentStatsGrid.jsx`, `api/index.js`, `StudentExampleDetailLayout.jsx`, `TeacherGroupDetail.jsx`, `SubjectOld.jsx`?**
+  _Cohesion score 0.08619777895293496 - nodes in this community are weakly interconnected._
+- **Why does `react-i18next` connect `react-i18next` to `LayoutAdmin`, `QuestionForm.jsx`, `react`, `useGetQuery`, `SubjectQuestions.jsx`, `Theme.js`, `ChatBoxModule.js`, `QuestionWorkspace.jsx`, `@mui/material`, `package.json`, `usePostQuery`, `ProductCard.jsx`, `Auth.js`, `@heroui/react`, `_app.js`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `student/my-study/index.js`, `store/index.js`, `header/index.jsx`, `GameRenderer.js`, `ChildOverview.jsx`, `DiagnosticMistakes.jsx`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `framer-motion`, `DiagnosticSubjects.jsx`, `[student_id].js`, `student/subjects/[id]/index.js`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `BattleSetupForm.jsx`, `student/chat/index.js`, `ParentConnect.jsx`, `ContentLoader`, `next`, `MessageBubble.jsx`, `StudentProfile.jsx`, `store/index.js`, `HpHeader.js`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `SwitchToChildButton.jsx`, `StudentExampleTable.jsx`, `FreeLessons.jsx`, `react-icons`, `key-metric/index.js`, `ratings/index.js`, `powerful-dozens/index.js`, `MyChildren.jsx`, `SubscriptionPromoModal.jsx`, `i18n/index.js`, `react-circular-progressbar`, `history/index.js`, `[id]/index.jsx`, `library/[id]/index.js`, `CouponUsersList.jsx`, `ProductsExchange.jsx`, `api/index.js`, `TrialSettings.jsx`, `CoinsTab.jsx`, `MultiplicationModal.jsx`, `ImpersonationBar.jsx`, `StudentExampleDetailLayout.jsx`, `TeacherGroupDetail.jsx`, `SubjectOld.jsx`?**
   _High betweenness centrality (0.117) - this node is a cross-community bridge._
-- **Should `LigaDashboard.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.14193548387096774 - nodes in this community are weakly interconnected._
-- **Why does `lucide-react` connect `ChatBoxModule.js` to `LayoutAdmin`, `LigaDashboard.jsx`, `QuestionForm.jsx`, `useGetQuery`, `DiagnosticQuestions.jsx`, `Theme.js`, `QuestionWorkspace.jsx`, `@mui/material`, `react-i18next`, `SiteStatistics.jsx`, `package.json`, `usePostQuery`, `liga/utils.js`, `Auth.js`, `StudentHome.jsx`, `StudentOverview.jsx`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `store/index.js`, `header/index.jsx`, `DiagnosticMistakes.jsx`, `ChildOverview.jsx`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `DiagnosticSubjects.jsx`, `BattleSetupForm.jsx`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `ParentConnect.jsx`, `next-auth`, `LigaTestDetail.jsx`, `MessageBubble.jsx`, `StudentProfile.jsx`, `ParentProfile.jsx`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `FreeLessons.jsx`, `LigaHome.jsx`, `key-metric/index.js`, `ratings/index.js`, `Landing.jsx`, `SubscriptionPromoModal.jsx`, `LeadershipSlider.js`, `ParentQr.jsx`, `SubjectsBanner.jsx`, `MentalGames.js`, `ParentQuickActions.jsx`, `ParentStatsGrid.jsx`, `api/index.js`, `TeacherGroupDetail.jsx`?**
-  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **Should `h` be split into smaller, more focused modules?**
   _Cohesion score 0.06533646322378717 - nodes in this community are weakly interconnected._
+- **Why does `lucide-react` connect `TeacherGroupDetail.jsx` to `LigaDashboard.jsx`, `QuestionForm.jsx`, `useGetQuery`, `SubjectQuestions.jsx`, `Theme.js`, `ChatBoxModule.js`, `QuestionWorkspace.jsx`, `@mui/material`, `react-i18next`, `SiteStatistics.jsx`, `package.json`, `usePostQuery`, `liga/utils.js`, `Auth.js`, `@heroui/react`, `PricingContent.jsx`, `BattleArena.jsx`, `role-landing/shared.jsx`, `StudentTable.jsx`, `store/index.js`, `header/index.jsx`, `DiagnosticMistakes.jsx`, `ChildOverview.jsx`, `GameRenderer.js`, `ReviewCarousel.js`, `LigaTestRun.jsx`, `DiagnosticSubjects.jsx`, `BattleSetupForm.jsx`, `BottomSections.jsx`, `LanguageDropdown`, `lucide-react`, `NewsSingle.jsx`, `ParentConnect.jsx`, `ContentLoader`, `LigaTestDetail.jsx`, `MessageBubble.jsx`, `HpHeader.js`, `TutorProfile.jsx`, `menulist.js`, `AuthMascot.jsx`, `SwitchToChildButton.jsx`, `FreeLessons.jsx`, `LigaDashboard.jsx`, `key-metric/index.js`, `ratings/index.js`, `powerful-dozens/index.js`, `MyChildren.jsx`, `SubscriptionPromoModal.jsx`, `app.js`, `history/index.js`, `[id]/index.jsx`, `CouponUsersList.jsx`, `api/index.js`, `TrialSettings.jsx`, `ImpersonationBar.jsx`?**
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
+- **Should `dependencies` be split into smaller, more focused modules?**
+  _Cohesion score 0.02631578947368421 - nodes in this community are weakly interconnected._

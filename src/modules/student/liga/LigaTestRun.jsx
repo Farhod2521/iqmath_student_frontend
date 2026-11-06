@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { useTranslation } from 'react-i18next'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
-import { AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2, Clock } from 'lucide-react'
+import {
+  AlertTriangle, ArrowLeft, ArrowRight, BarChart3, Check, CheckCircle2, ChevronRight, Clock, FileText, Info, Layers, Target, Timer
+} from 'lucide-react'
 import toast from 'react-hot-toast'
 import LigaDialog from '@/components/modal/LigaDialog'
 import { request } from '@/services/api'
@@ -13,14 +16,41 @@ import LigaGuard from './LigaGuard'
 const MathAnswerField = dynamic(() => import('@/components/liga/MathAnswerField'), { ssr: false })
 
 const MJ_CONFIG = { loader: { load: ['input/tex', 'output/chtml'] } }
+const CARD = 'rounded-3xl border border-[#E6ECF7] bg-white shadow-[0_16px_36px_-28px_rgba(31,122,236,0.55)]'
 
 const TEXT = {
   uz: {
     week: (n) => `${n}-hafta testi`,
     question: (i, total) => `${i} / ${total}`,
     answerPlaceholder: 'Javobingizni kiriting',
-    prev: 'Oldingi',
-    next: 'Keyingi',
+    prev: 'Oldingi savol',
+    next: 'Keyingi savol',
+    liga: 'Liga',
+    grade: (name) => `${name}-sinf`,
+    count: (n) => `${n} ta savol`,
+    questionTitle: (n) => `${n}-savol`,
+    questionsTitle: (n) => `Savollar (${n})`,
+    remaining: 'Qolgan vaqt',
+    answered: 'Javob berilgan',
+    currentQuestion: 'Joriy savol',
+    unanswered: 'Javob berilmagan',
+    infoTitle: 'Test ma‘lumotlari',
+    subject: 'Fan',
+    questionCount: 'Savollar soni',
+    allotted: 'Ajratilgan vaqt',
+    maxScore: 'Maksimal ball',
+    minutes: (n) => `${n} daqiqa`,
+    points: (n) => `${n} ball`,
+    rules: 'Test qoidalari',
+    rulesOk: 'Tushunarli',
+    rulesList: [
+      'Har bir savolda bitta javob tanlanadi, javob darhol saqlanadi.',
+      'Savollar orasida erkin o‘tishingiz va javobni o‘zgartirishingiz mumkin.',
+      'Vaqt to‘xtatilmaydi. Vaqt tugasa test avtomatik yakunlanadi.',
+      'Javob berilmagan savollar xato hisoblanadi.',
+      'Sahifadan chiqsangiz test yakunlanadi va uni qayta ishlab bo‘lmaydi.',
+      'Skrinshot olish va nusxalash taqiqlanadi.'
+    ],
     finish: 'Yakunlash',
     finishConfirm: (left) =>
       left ? `${left} ta savolga javob berilmagan, ular xato hisoblanadi. Testni yakunlaysizmi?` : 'Testni yakunlaysizmi?',
@@ -43,8 +73,34 @@ const TEXT = {
     week: (n) => `Тест недели ${n}`,
     question: (i, total) => `${i} / ${total}`,
     answerPlaceholder: 'Введите ответ',
-    prev: 'Назад',
-    next: 'Далее',
+    prev: 'Предыдущий вопрос',
+    next: 'Следующий вопрос',
+    liga: 'Лига',
+    grade: (name) => `${name} класс`,
+    count: (n) => `${n} вопросов`,
+    questionTitle: (n) => `Вопрос ${n}`,
+    questionsTitle: (n) => `Вопросы (${n})`,
+    remaining: 'Осталось времени',
+    answered: 'Есть ответ',
+    currentQuestion: 'Текущий вопрос',
+    unanswered: 'Нет ответа',
+    infoTitle: 'Информация о тесте',
+    subject: 'Предмет',
+    questionCount: 'Количество вопросов',
+    allotted: 'Выделенное время',
+    maxScore: 'Максимальный балл',
+    minutes: (n) => `${n} мин`,
+    points: (n) => `${n} баллов`,
+    rules: 'Правила теста',
+    rulesOk: 'Понятно',
+    rulesList: [
+      'В каждом вопросе выбирается один ответ, он сохраняется сразу.',
+      'Можно свободно переходить между вопросами и менять ответ.',
+      'Время не останавливается. Когда оно закончится, тест завершится автоматически.',
+      'Вопросы без ответа считаются неверными.',
+      'Если вы покинете страницу, тест завершится и пройти его снова будет нельзя.',
+      'Скриншоты и копирование запрещены.'
+    ],
     finish: 'Завершить',
     finishConfirm: (left) =>
       left ? `На ${left} вопросов нет ответа, они будут считаться неверными. Завершить тест?` : 'Завершить тест?',
@@ -76,6 +132,20 @@ const RichText = ({ html }) => (
   <MathJax dynamic hideUntilTypeset="first">
     <div dangerouslySetInnerHTML={{ __html: html || '' }} />
   </MathJax>
+)
+
+const TimerCard = ({ remaining, label }) => (
+  <div
+    className={`flex items-center gap-4 rounded-3xl bg-gradient-to-r px-6 py-5 text-white shadow-[0_16px_30px_-20px_rgba(31,122,236,0.9)] ${
+      remaining <= 60 ? 'from-[#F87171] to-[#DC2626]' : 'from-[#46B1F4] to-[#1F6FEB]'
+    }`}
+  >
+    <Timer size={42} strokeWidth={1.75} className="shrink-0" />
+    <div>
+      <p className="text-sm text-white/90">{label}</p>
+      <p className="text-[32px] font-bold leading-9 tabular-nums">{clock(remaining)}</p>
+    </div>
+  </div>
 )
 
 const Result = ({ attempt, text, onBack }) => (
@@ -114,6 +184,7 @@ const LigaTestRun = () => {
   const [index, setIndex] = useState(0)
   const [remaining, setRemaining] = useState(0)
   const [finishOpen, setFinishOpen] = useState(false)
+  const [rulesOpen, setRulesOpen] = useState(false)
   // Foydalanuvchi ketmoqchi bo'lgan manzil ('back' — brauzerning orqaga tugmasi)
   const [leaveTo, setLeaveTo] = useState(null)
   const endAt = useRef(0)
@@ -223,109 +294,231 @@ const LigaTestRun = () => {
   const pick = (item, field) => (lang === 'ru' ? item[`${field}_ru`] || item[`${field}_uz`] : item[`${field}_uz`])
   const current = answers[question.id]
 
+  const subjects = [...new Set(questions.map((item) => item.subject_name))].join(', ')
+  const maxScore = questions.reduce((sum, item) => sum + item.score, 0)
+  const minutes = Math.round((new Date(attempt.deadline_at) - new Date(attempt.started_at)) / 60000)
+  const percent = Math.round(((index + 1) / questions.length) * 100)
+  const isLast = index === questions.length - 1
+
   return (
     <LigaGuard viewer={attempt.viewer} notice={text.notice}>
       <MathJaxContext config={MJ_CONFIG}>
-        <div className="mx-auto flex max-w-3xl flex-col gap-4">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-[#191C1D]">{text.week(attempt.week_number)}</p>
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-base font-bold tabular-nums ${
-                remaining <= 60 ? 'bg-[#FEE2E2] text-[#DC2626]' : 'bg-[#EAF0FF] text-[#5D87FF]'
-              }`}
-            >
-              <Clock size={16} />
-              {clock(remaining)}
-            </span>
-          </div>
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-4">
+          <nav className="flex flex-wrap items-center gap-1.5 text-sm text-[#475569]">
+            <Link href="/dashboard/student/liga" className="transition hover:text-[#1F7AEC]">
+              {text.liga}
+            </Link>
+            {attempt.grade_name ? (
+              <>
+                <ChevronRight size={15} className="text-[#94A3B8]" />
+                <span>{text.grade(attempt.grade_name)}</span>
+              </>
+            ) : null}
+            <ChevronRight size={15} className="text-[#94A3B8]" />
+            <span className="font-semibold text-[#191C1D]">{text.week(attempt.week_number)}</span>
+          </nav>
 
-          <div className="rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm sm:p-6">
-            <div className="flex items-center justify-between text-xs text-[#8A8A8E]">
-              <span>{text.question(index + 1, questions.length)}</span>
-              <span>{question.subject_name}</span>
-            </div>
-            <div className="mt-3 text-[16px] leading-relaxed text-[#191C1D]">
-              <RichText html={pick(question, 'question_text')} />
-            </div>
-            {question.image ? <img src={question.image} alt="" className="mt-3 max-h-64 rounded-xl" /> : null}
-
-            {question.question_type === 'choice' ? (
-              <div className="mt-5 flex flex-col gap-2">
-                {question.choices.map((choice) => {
-                  const active = current?.choice === choice.id
-                  return (
-                    <button
-                      key={choice.id}
-                      onClick={() => save(question.id, { choice: choice.id })}
-                      className={`flex items-center gap-3 rounded-xl border p-3 text-left text-[15px] transition ${
-                        active ? 'border-[#5D87FF] bg-[#EAF0FF]' : 'border-[#EBEDF0] hover:border-[#C9D6F2]'
-                      }`}
-                    >
-                      <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${active ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#475569]'}`}>
-                        {choice.letter}
-                      </span>
-                      <span className="min-w-0">
-                        <RichText html={pick(choice, 'text')} />
-                        {choice.image ? <img src={choice.image} alt="" className="mt-1 max-h-40 rounded-lg" /> : null}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            ) : (
-              <MathAnswerField
-                key={question.id}
-                value={current?.text_answer || ''}
-                label={text.answerPlaceholder}
-                onSave={(value) => save(question.id, { text_answer: value })}
-              />
-            )}
-
-            <div className="mt-6 flex items-center justify-between">
-              <button
-                disabled={index === 0}
-                onClick={() => setIndex(index - 1)}
-                className="inline-flex h-10 items-center gap-1.5 rounded-xl px-3 text-sm font-semibold text-[#475569] transition hover:bg-[#F1F4F9] disabled:opacity-40"
-              >
-                <ArrowLeft size={16} />
-                {text.prev}
-              </button>
-              {index < questions.length - 1 ? (
-                <button onClick={() => setIndex(index + 1)} className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-[#5D87FF] px-4 text-sm font-semibold text-white transition hover:bg-[#4570EA]">
-                  {text.next}
-                  <ArrowRight size={16} />
+          <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <main className={`${CARD} min-w-0 p-4 sm:p-7`}>
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#EAF3FF] text-[#1F7AEC] sm:h-14 sm:w-14">
+                  <FileText size={26} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl font-bold text-[#191C1D] sm:text-2xl">{text.week(attempt.week_number)}</h1>
+                  <p className="mt-0.5 text-sm text-[#64748B]">
+                    {subjects} • {text.count(questions.length)}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setRulesOpen(true)}
+                  className="inline-flex h-11 shrink-0 items-center gap-2 rounded-2xl border border-[#DFE6F2] bg-white px-4 text-sm font-semibold text-[#334155] transition hover:border-[#A9C8F5]"
+                >
+                  <Info size={18} />
+                  {text.rules}
                 </button>
+              </div>
+
+              <div className="mt-4 lg:hidden">
+                <TimerCard remaining={remaining} label={text.remaining} />
+              </div>
+
+              <div className="mt-5 flex items-center gap-3 rounded-2xl border border-[#EDF1F8] p-2.5 sm:gap-5">
+                <span className="rounded-xl bg-[#F1F5FB] px-3.5 py-2 text-sm font-bold tabular-nums text-[#191C1D]">
+                  {text.question(index + 1, questions.length)}
+                </span>
+                <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-[#E4ECF8]">
+                  <span className="block h-full rounded-full bg-[#1F7AEC] transition-all" style={{ width: `${percent}%` }} />
+                </span>
+                <span className="pr-1 text-sm font-semibold tabular-nums text-[#475569]">{percent}%</span>
+              </div>
+
+              <div className="mt-6 flex items-center justify-between gap-3">
+                <span className="rounded-full bg-[#EAF3FF] px-4 py-2 text-sm font-bold text-[#1F7AEC]">{text.questionTitle(index + 1)}</span>
+                <span className="inline-flex min-w-0 items-center gap-2 rounded-full bg-[#F1F5FB] px-3.5 py-2 text-sm font-semibold text-[#334155]">
+                  <Layers size={16} className="shrink-0" />
+                  <span className="truncate">{question.subject_name}</span>
+                </span>
+              </div>
+
+              <div className="mt-5 text-lg font-semibold leading-relaxed text-[#191C1D] sm:text-xl [&_mjx-container]:!text-[150%]">
+                <RichText html={pick(question, 'question_text')} />
+              </div>
+              {question.image ? <img src={question.image} alt="" className="mt-4 max-h-72 rounded-2xl" /> : null}
+
+              {question.question_type === 'choice' ? (
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {question.choices.map((choice) => {
+                    const active = current?.choice === choice.id
+                    return (
+                      <button
+                        key={choice.id}
+                        aria-pressed={active}
+                        onClick={() => save(question.id, { choice: choice.id })}
+                        className={`flex min-h-[72px] min-w-0 items-center gap-4 rounded-2xl border p-3 text-left text-base font-semibold text-[#191C1D] transition sm:px-4 ${
+                          active ? 'border-[#1F7AEC] bg-[#EAF3FF]' : 'border-[#DFE6F2] bg-white hover:border-[#A9C8F5]'
+                        }`}
+                      >
+                        <span
+                          className={`flex h-10 w-12 shrink-0 items-center justify-center rounded-full text-base font-bold ${
+                            active ? 'bg-[#1F7AEC] text-white' : 'bg-[#EAF3FF] text-[#1F7AEC]'
+                          }`}
+                        >
+                          {choice.letter}
+                        </span>
+                        <span className="min-w-0 [&_mjx-container]:!text-[130%]">
+                          <RichText html={pick(choice, 'text')} />
+                          {choice.image ? <img src={choice.image} alt="" className="mt-1 max-h-40 rounded-lg" /> : null}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               ) : (
-                <button onClick={() => setFinishOpen(true)} className="h-10 rounded-xl bg-[#13A97F] px-5 text-sm font-semibold text-white transition hover:brightness-110">
+                <MathAnswerField
+                  key={question.id}
+                  value={current?.text_answer || ''}
+                  label={text.answerPlaceholder}
+                  onSave={(value) => save(question.id, { text_answer: value })}
+                />
+              )}
+
+              <div className="mt-8 flex items-center justify-between gap-3">
+                <button
+                  disabled={index === 0}
+                  onClick={() => setIndex(index - 1)}
+                  className="inline-flex h-12 items-center gap-2 rounded-2xl bg-[#EEF2F8] px-4 text-sm font-semibold text-[#334155] transition hover:bg-[#E3E9F3] disabled:opacity-50 sm:px-6 sm:text-base"
+                >
+                  <ArrowLeft size={18} />
+                  {text.prev}
+                </button>
+                {isLast ? (
+                  <button onClick={() => setFinishOpen(true)} className="h-12 rounded-2xl bg-[#13A97F] px-6 text-sm font-semibold text-white transition hover:brightness-110 sm:text-base">
+                    {text.finish}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIndex(index + 1)}
+                    className="inline-flex h-12 items-center gap-2 rounded-2xl bg-[#1F7AEC] px-4 text-sm font-semibold text-white transition hover:bg-[#1767CC] sm:px-6 sm:text-base"
+                  >
+                    {text.next}
+                    <ArrowRight size={18} />
+                  </button>
+                )}
+              </div>
+            </main>
+
+            <aside className="flex min-w-0 flex-col gap-4">
+              <div className="hidden lg:block">
+                <TimerCard remaining={remaining} label={text.remaining} />
+              </div>
+
+              <section className={`${CARD} p-5`}>
+                <h2 className="text-lg font-bold text-[#191C1D]">{text.questionsTitle(questions.length)}</h2>
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#475569]">
+                  {[
+                    ['bg-[#22C55E]', text.answered],
+                    ['bg-[#1F7AEC]', text.currentQuestion],
+                    ['bg-[#CBD9EE]', text.unanswered]
+                  ].map(([color, label]) => (
+                    <span key={label} className="inline-flex items-center gap-1.5">
+                      <span className={`h-2.5 w-2.5 rounded-full ${color}`} />
+                      {label}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-4 grid grid-cols-5 gap-2">
+                  {questions.map((item, i) => {
+                    const answered = Boolean(answers[item.id])
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setIndex(i)}
+                        aria-current={i === index}
+                        className={`relative h-10 rounded-xl text-sm font-semibold transition ${
+                          i === index
+                            ? 'bg-[#1F7AEC] text-white'
+                            : answered
+                              ? 'bg-[#DFF7EA] text-[#15803D]'
+                              : 'bg-[#EEF3FA] text-[#334155] hover:bg-[#E2EAF6]'
+                        }`}
+                      >
+                        {i + 1}
+                        {answered && i !== index ? <Check size={12} strokeWidth={3} className="absolute right-1 top-1 text-[#16A34A]" /> : null}
+                      </button>
+                    )
+                  })}
+                </div>
+                <button
+                  onClick={() => setFinishOpen(true)}
+                  className="mt-4 h-11 w-full rounded-2xl bg-[#E6F8F2] text-sm font-semibold text-[#0F8A68] transition hover:bg-[#D5F3E9]"
+                >
                   {text.finish}
                 </button>
-              )}
-            </div>
-          </div>
+              </section>
 
-          <div className="flex flex-wrap items-center gap-1.5">
-            {questions.map((item, i) => (
-              <button
-                key={item.id}
-                onClick={() => setIndex(i)}
-                className={`h-8 w-8 rounded-lg text-xs font-semibold transition ${
-                  i === index
-                    ? 'bg-[#5D87FF] text-white'
-                    : answers[item.id]
-                      ? 'bg-[#EAF0FF] text-[#5D87FF]'
-                      : 'bg-[#F1F4F9] text-[#8A8A8E] hover:bg-[#E6EBF5]'
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button onClick={() => setFinishOpen(true)} className="ml-auto h-8 rounded-lg px-3 text-xs font-semibold text-[#13A97F] transition hover:bg-[#E6FFFA]">
-              {text.finish}
-            </button>
+              <section className={`${CARD} p-5`}>
+                <h2 className="flex items-center gap-3 border-b border-[#EDF1F8] pb-3 text-base font-bold text-[#191C1D]">
+                  <FileText size={20} className="text-[#1F7AEC]" />
+                  {text.infoTitle}
+                </h2>
+                <dl className="mt-3 flex flex-col gap-3 text-sm">
+                  {[
+                    [Layers, text.subject, subjects],
+                    [BarChart3, text.questionCount, text.count(questions.length)],
+                    [Clock, text.allotted, text.minutes(minutes)],
+                    [Target, text.maxScore, text.points(maxScore)]
+                  ].map(([Icon, label, value]) => (
+                    <div key={label} className="flex items-start gap-3">
+                      <Icon size={18} className="mt-0.5 shrink-0 text-[#475569]" />
+                      <dt className="text-[#475569]">{label}:</dt>
+                      <dd className="min-w-0 font-semibold text-[#191C1D]">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            </aside>
           </div>
         </div>
       </MathJaxContext>
 
+      <LigaDialog
+        open={rulesOpen}
+        Icon={Info}
+        title={text.rules}
+        confirmLabel={text.rulesOk}
+        onConfirm={() => setRulesOpen(false)}
+        onClose={() => setRulesOpen(false)}
+      >
+        <ul className="flex flex-col gap-2.5 text-sm leading-relaxed text-[#475569]">
+          {text.rulesList.map((rule) => (
+            <li key={rule} className="flex gap-2.5">
+              <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0 text-[#1F7AEC]" />
+              {rule}
+            </li>
+          ))}
+        </ul>
+      </LigaDialog>
       <LigaDialog
         open={finishOpen}
         Icon={CheckCircle2}

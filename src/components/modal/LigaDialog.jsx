@@ -55,7 +55,7 @@ const LigaDialog = ({
           type="button"
           onClick={onClose}
           disabled={busy}
-          aria-label={cancelLabel}
+          aria-label={cancelLabel || confirmLabel}
           className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-[#8A8A8E] transition hover:bg-[#F1F4F9]"
         >
           <X size={18} />
@@ -71,14 +71,16 @@ const LigaDialog = ({
         {children ? <div className="mt-4">{children}</div> : null}
 
         <div className="mt-6 flex gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={busy}
-            className="h-11 flex-1 rounded-xl bg-[#F1F4F9] text-sm font-semibold text-[#475569] transition hover:bg-[#E6EBF5]"
-          >
-            {cancelLabel}
-          </button>
+          {cancelLabel ? (
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={busy}
+              className="h-11 flex-1 rounded-xl bg-[#F1F4F9] text-sm font-semibold text-[#475569] transition hover:bg-[#E6EBF5]"
+            >
+              {cancelLabel}
+            </button>
+          ) : null}
           <button
             type="submit"
             disabled={busy || disabled}

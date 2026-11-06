@@ -6222,9 +6222,9 @@
     "semantic_hash": ""
   },
   "src/components/modal/LigaDialog.jsx": {
-    "mtime": 1793960438.954607,
-    "seen": 1793961874.9998996,
-    "ast_hash": "cab1f91509ac1bf4d5a20a394af59794",
+    "mtime": 1793966904.761024,
+    "seen": 1793967408.3359544,
+    "ast_hash": "6e2f6191899b250257bbf442fef44d5d",
     "semantic_hash": ""
   },
   "src/components/online/OnlinePing.jsx": {
@@ -6486,9 +6486,9 @@
     "semantic_hash": ""
   },
   "src/modules/student/liga/LigaTestRun.jsx": {
-    "mtime": 1793949059.7091277,
-    "seen": 1793961875.0001948,
-    "ast_hash": "c1eee288b1dc4d191ff3a5fe5a13d3e1",
+    "mtime": 1793967335.0349019,
+    "seen": 1793967408.336244,
+    "ast_hash": "0ec5acd2844b28113af0c8ec8959126b",
     "semantic_hash": ""
   },
   "src/modules/student/parent-qr/ParentQr.jsx": {

@@ -7464,9 +7464,9 @@
     "semantic_hash": ""
   },
   "src/components/liga/MathEditor.jsx": {
-    "mtime": 1793949441.3518958,
-    "seen": 1793961874.999893,
-    "ast_hash": "1a58ee4d6564509d7aac8c37f9bcb0fc",
+    "mtime": 1793963573.9337134,
+    "seen": 1793963595.6813483,
+    "ast_hash": "7b7817f3f8de17c040c115a77787d9ac",
     "semantic_hash": ""
   },
   "src/components/liga/mathConfig.js": {
