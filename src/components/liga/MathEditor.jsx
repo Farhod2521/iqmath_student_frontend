@@ -7,7 +7,7 @@ addStyles()
 // Formula yonida kursor tura olishi uchun ko'rinmas belgi
 const GAP = '​'
 const DELIMITED = /\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g
-const BARE = /\\[a-zA-Z]+(?:\[[^\]]*\])?(?:\{(?:[^{}]|\{[^{}]*\})*\})*(?:[\^_](?:\{[^{}]*\}|\w))*/g
+const COMMAND = /\\[a-zA-Z]+(?:\[[^\]]*\])?/g
 
 const splitBy = (text, pattern, pick) => {
   const parts = []
@@ -21,10 +21,53 @@ const splitBy = (text, pattern, pick) => {
   return parts
 }
 
+// Ichma-ich kasrning chuqurligi cheklanmagan: regex emas, qavslar sanaladi
+const closeBrace = (text, open) => {
+  let depth = 0
+  for (let index = open; index < text.length; index += 1) {
+    if (text[index] === '\\') index += 1
+    else if (text[index] === '{') depth += 1
+    else if (text[index] === '}') depth -= 1
+    if (!depth) return index + 1
+  }
+  return open
+}
+
+/** Buyruqdan keyingi {..} guruhlari va ^, _ qo'shimchalari qayerda tugashini topadi */
+const commandEnd = (text, start) => {
+  let end = start
+  while (text[end] === '{') {
+    const next = closeBrace(text, end)
+    if (next === end) return end
+    end = next
+  }
+  while (text[end] === '^' || text[end] === '_') {
+    const next = text[end + 1] === '{' ? closeBrace(text, end + 1) : end + 2
+    if (next <= end + 1 || !/[\w}]/.test(text[next - 1] || '')) return end
+    end = next
+  }
+  return end
+}
+
+/** Belgisiz yozilgan "\frac{1}{2}" kabi kodlarni matndan ajratadi */
+const splitBare = (text) => {
+  const parts = []
+  let last = 0
+  for (const match of text.matchAll(COMMAND)) {
+    if (match.index < last) continue
+    const end = commandEnd(text, match.index + match[0].length)
+    if (match.index > last) parts.push({ text: text.slice(last, match.index) })
+    parts.push({ math: text.slice(match.index, end).trim() })
+    last = end
+  }
+  if (last < text.length) parts.push({ text: text.slice(last) })
+  return parts
+}
+
 /** "Hisoblang \( \frac{1}{2} \)" kabi matnni oddiy matn va formula bo'laklariga ajratadi */
 const splitMath = (text) =>
   splitBy(text, DELIMITED, (match) => match.slice(1).find(Boolean)).flatMap((part) =>
-    part.text ? splitBy(part.text, BARE, (match) => match[0]) : [part]
+    part.text ? splitBare(part.text) : [part]
   )
 
 const serialize = (node) =>
