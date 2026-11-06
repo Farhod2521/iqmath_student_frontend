@@ -1,17 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { MathJaxContext } from 'better-react-mathjax'
 import { BarChart3, BookOpen, CalendarDays, Clock, Info, Layers, ListChecks, Plus, Save, Trash2, Users } from 'lucide-react'
 import LigaDialog from '@/components/modal/LigaDialog'
 import { useGetQuery } from '@/hooks'
 import { request } from '@/services/api'
 import { IconField, LigaHero, LigaTable, SectionHead } from './LigaParts'
+import { FileImage, ImagePick, MATH_CONFIG, MathHtml, MathToolbar, answerHtml, toQuestionHtml } from './MathTools'
 import {
   API, ATTEMPT_STATUS, BUTTON, BUTTON_LIGHT, CARD, INPUT, TD, TEST_STATUS,
   downloadExcel, formatDateTime, formatDuration, showError, toIso, toLocalInput
 } from './utils'
 
-const TEXTAREA = 'rounded-xl border border-[#E8ECF3] bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#5D87FF]'
-const VARIANT = 'h-10 min-w-0 rounded-xl border border-[#E8ECF3] bg-white px-4 text-sm outline-none transition focus:border-[#5D87FF]'
+// MathQuill faqat brauzerda ishlaydi
+const MathEditor = dynamic(() => import('@/components/liga/MathEditor'), { ssr: false })
+
+const TEXTAREA = 'min-h-[84px] rounded-xl border border-[#E8ECF3] bg-white px-4 py-2.5 text-sm transition focus-within:border-[#5D87FF]'
+const VARIANT = 'min-h-10 min-w-0 rounded-xl border border-[#E8ECF3] bg-white px-4 py-2 text-sm leading-6 transition focus-within:border-[#5D87FF]'
 const SETTING = 'h-11 w-full rounded-xl border border-[#E8ECF3] bg-white px-4 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF] disabled:bg-[#F8FAFC]'
 
 const LETTERS = ['A', 'B', 'C', 'D']
@@ -23,10 +29,9 @@ const emptyQuestion = () => ({
   correct_text_answer: '',
   score: 1,
   correct: 'A',
-  choices: Object.fromEntries(LETTERS.map((letter) => [letter, { uz: '', ru: '' }]))
+  image: null,
+  choices: Object.fromEntries(LETTERS.map((letter) => [letter, { uz: '', ru: '', image: null }]))
 })
-
-const strip = (html) => (html || '').replace(/<[^>]+>/g, ' ').trim()
 
 const TestSettings = ({ test, onSaved }) => {
   const [form, setForm] = useState(null)
@@ -88,6 +93,9 @@ const Questions = ({ test, subjects, onChange }) => {
   const questions = response?.data || []
   const locked = test.attempts_count > 0
   const onlySubject = subjects.length === 1 ? subjects[0].id : null
+  const filledChoices = LETTERS.filter((letter) => form.choices[letter].uz.trim() || form.choices[letter].image)
+  const isChoice = form.question_type === 'choice'
+  const canSave = form.question_text_uz.trim() && (isChoice || form.correct_text_answer.trim())
 
   // Sinfda bitta fan bo'lsa, tanlab o'tirish shart emas
   useEffect(() => {
@@ -95,32 +103,50 @@ const Questions = ({ test, subjects, onChange }) => {
   }, [onlySubject])
 
   const update = (field) => (event) => setForm({ ...form, [field]: event.target.value })
-  const setChoice = (letter, lang, value) =>
-    setForm({ ...form, choices: { ...form.choices, [letter]: { ...form.choices[letter], [lang]: value } } })
+  const setField = (field) => (value) => setForm((current) => ({ ...current, [field]: value }))
+  const setChoice = (letter, field) => (value) =>
+    setForm((current) => ({
+      ...current,
+      choices: { ...current.choices, [letter]: { ...current.choices[letter], [field]: value } }
+    }))
+
+  const [editorKey, setEditorKey] = useState(0)
+  const activeEditor = useRef(null)
+  const firstEditor = useRef(null)
+  const rememberEditor = (editor) => {
+    activeEditor.current = editor
+  }
+  // Maydon bosilmagan bo'lsa, formula savol matniga yoziladi
+  const getEditor = () => (activeEditor.current?.connected() ? activeEditor.current : firstEditor.current)
 
   const save = async (event) => {
     event.preventDefault()
     setSaving(true)
-    const isChoice = form.question_type === 'choice'
-    try {
-      await request.post(`${API}questions/`, {
-        test: test.id,
-        subject: Number(form.subject),
-        question_text_uz: form.question_text_uz,
-        question_text_ru: form.question_text_ru,
-        question_type: form.question_type,
-        score: Number(form.score),
-        correct_text_answer: isChoice ? null : form.correct_text_answer,
-        choices: isChoice
-          ? LETTERS.filter((letter) => form.choices[letter].uz.trim()).map((letter) => ({
-              letter,
-              text_uz: form.choices[letter].uz,
-              text_ru: form.choices[letter].ru,
-              is_correct: letter === form.correct
-            }))
-          : []
+    const data = new FormData()
+    data.append('test', test.id)
+    data.append('subject', form.subject)
+    data.append('question_text_uz', toQuestionHtml(form.question_text_uz))
+    data.append('question_text_ru', toQuestionHtml(form.question_text_ru))
+    data.append('question_type', form.question_type)
+    data.append('score', form.score)
+    if (form.image) data.append('image', form.image)
+    if (form.question_type === 'choice') {
+      filledChoices.forEach((letter, index) => {
+        const choice = form.choices[letter]
+        data.append(`choices[${index}]letter`, letter)
+        data.append(`choices[${index}]text_uz`, toQuestionHtml(choice.uz))
+        data.append(`choices[${index}]text_ru`, toQuestionHtml(choice.ru))
+        data.append(`choices[${index}]is_correct`, letter === form.correct)
+        if (choice.image) data.append(`choices[${index}]image`, choice.image)
       })
+    } else {
+      data.append('correct_text_answer', form.correct_text_answer)
+    }
+
+    try {
+      await request.post(`${API}questions/`, data, { headers: { 'Content-Type': 'multipart/form-data' } })
       setForm({ ...emptyQuestion(), subject: form.subject })
+      setEditorKey((key) => key + 1)
       refetch()
       onChange()
     } catch (error) {
@@ -142,6 +168,7 @@ const Questions = ({ test, subjects, onChange }) => {
   }
 
   return (
+    <MathJaxContext config={MATH_CONFIG}>
     <div className="flex flex-col gap-4">
       {!locked ? (
         <form onSubmit={save} className={`${CARD} flex flex-col gap-3`}>
@@ -160,34 +187,79 @@ const Questions = ({ test, subjects, onChange }) => {
             </IconField>
             <IconField label="Savol balli (to'g'ri javob uchun)" Icon={BarChart3} required type="number" min={1} value={form.score} onChange={update('score')} />
           </div>
+          <MathToolbar getEditor={getEditor} />
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <textarea required rows={3} value={form.question_text_uz} onChange={update('question_text_uz')} placeholder="Savol (o'zbekcha). Formula: \( x^2 \)" className={TEXTAREA} />
-            <textarea rows={3} value={form.question_text_ru} onChange={update('question_text_ru')} placeholder="Savol (ruscha)" className={TEXTAREA} />
+            <MathEditor
+              key={`uz-${editorKey}`}
+              value={form.question_text_uz}
+              onChange={setField('question_text_uz')}
+              onActive={rememberEditor}
+              onReady={(editor) => {
+                firstEditor.current = editor
+              }}
+              placeholder="Savol (o'zbekcha)"
+              className={TEXTAREA}
+            />
+            <MathEditor
+              key={`ru-${editorKey}`}
+              value={form.question_text_ru}
+              onChange={setField('question_text_ru')}
+              onActive={rememberEditor}
+              placeholder="Savol (ruscha)"
+              className={TEXTAREA}
+            />
           </div>
-          {form.question_type === 'choice' ? (
+          <div className="flex items-center gap-3">
+            <ImagePick file={form.image} label={form.image ? '' : 'Savolga rasm qo\'shish'} onChange={setField('image')} />
+            {form.image ? <span className="min-w-0 truncate text-sm text-[#64748B]">{form.image.name}</span> : null}
+          </div>
+          {isChoice ? (
             <div className="flex flex-col gap-2">
               {LETTERS.map((letter) => (
-                <div key={letter} className="grid grid-cols-[auto_1fr_1fr] items-center gap-2 sm:gap-3">
+                <div key={letter} className="grid grid-cols-[auto_1fr_1fr_auto] items-center gap-2 sm:gap-3">
                   <label className="flex w-12 items-center gap-2 text-sm font-bold text-[#191C1D] sm:w-14">
                     <input type="radio" name="correct" checked={form.correct === letter} onChange={() => setForm({ ...form, correct: letter })} className="h-4 w-4 accent-[#5D87FF]" />
                     {letter}
                   </label>
-                  <input value={form.choices[letter].uz} onChange={(event) => setChoice(letter, 'uz', event.target.value)} placeholder="Variant (uz)" className={VARIANT} />
-                  <input value={form.choices[letter].ru} onChange={(event) => setChoice(letter, 'ru', event.target.value)} placeholder="Variant (ru)" className={VARIANT} />
+                  <MathEditor key={`${letter}-uz-${editorKey}`} single value={form.choices[letter].uz} onChange={setChoice(letter, 'uz')} onActive={rememberEditor} placeholder="Variant (uz)" className={VARIANT} />
+                  <MathEditor key={`${letter}-ru-${editorKey}`} single value={form.choices[letter].ru} onChange={setChoice(letter, 'ru')} onActive={rememberEditor} placeholder="Variant (ru)" className={VARIANT} />
+                  <ImagePick file={form.choices[letter].image} title={`${letter} variantiga rasm`} onChange={setChoice(letter, 'image')} />
                 </div>
               ))}
             </div>
           ) : (
-            <input required value={form.correct_text_answer} onChange={update('correct_text_answer')} placeholder="To'g'ri javob" className={VARIANT} />
+            <MathEditor key={`answer-${editorKey}`} single value={form.correct_text_answer} onChange={setField('correct_text_answer')} onActive={rememberEditor} placeholder="To'g'ri javob" className={VARIANT} />
           )}
+          {form.question_text_uz.trim() ? (
+            <div className="rounded-xl border border-dashed border-[#C9D8F5] bg-[#F9FBFF] p-4 text-sm text-[#191C1D]">
+              <p className="mb-2 text-xs font-semibold text-[#64748B]">O'quvchiga shunday ko'rinadi</p>
+              <MathHtml html={toQuestionHtml(form.question_text_uz)} />
+              <FileImage file={form.image} className="mt-2 max-h-48 rounded-lg" />
+              {isChoice ? (
+                <div className="mt-2 flex flex-col gap-1">
+                  {filledChoices.map((letter) => (
+                    <div key={letter} className="flex items-center gap-2">
+                      <span className={`font-bold ${letter === form.correct ? 'text-[#15803D]' : 'text-[#64748B]'}`}>{letter})</span>
+                      <MathHtml inline html={toQuestionHtml(form.choices[letter].uz)} />
+                      <FileImage file={form.choices[letter].image} className="max-h-20 rounded-lg" />
+                    </div>
+                  ))}
+                </div>
+              ) : form.correct_text_answer.trim() ? (
+                <p className="mt-2 text-[#15803D]">
+                  Javob: <MathHtml inline html={answerHtml(form.correct_text_answer)} />
+                </p>
+              ) : null}
+            </div>
+          ) : null}
           <div className="flex flex-wrap items-center gap-3">
-            {form.question_type === 'choice' ? (
+            {isChoice ? (
               <p className="inline-flex items-center gap-2 text-sm text-[#64748B]">
                 <Info size={16} className="shrink-0 text-[#5D87FF]" />
                 To'g'ri variantni chapdagi doiracha bilan belgilang.
               </p>
             ) : null}
-            <button disabled={saving} className={`${BUTTON} ml-auto`}>
+            <button disabled={saving || !canSave} className={`${BUTTON} ml-auto`}>
               <Plus size={18} />
               Savol qo'shish
             </button>
@@ -212,12 +284,29 @@ const Questions = ({ test, subjects, onChange }) => {
             <div key={question.id} className="flex items-start gap-3 py-2.5 text-sm">
               <span className="w-6 shrink-0 text-[#8A8A8E]">{index + 1}</span>
               <div className="min-w-0 flex-1">
-                <p className="text-[#191C1D]">{strip(question.question_text_uz)}</p>
+                <MathHtml html={question.question_text_uz} className="text-[#191C1D]" />
+                {question.image ? <img src={question.image} alt="" className="mt-1.5 max-h-28 rounded-lg" /> : null}
+                {question.choices.some((choice) => choice.image) ? (
+                  <div className="mt-1.5 flex flex-wrap gap-2">
+                    {question.choices.map((choice) =>
+                      choice.image ? (
+                        <span key={choice.id} className="inline-flex items-center gap-1 text-xs font-bold text-[#64748B]">
+                          {choice.letter})
+                          <img src={choice.image} alt="" className="max-h-14 rounded-lg" />
+                        </span>
+                      ) : null
+                    )}
+                  </div>
+                ) : null}
                 <p className="mt-0.5 text-xs text-[#8A8A8E]">
                   {question.subject_name} · {question.score} ball ·{' '}
-                  {question.question_type === 'text'
-                    ? `Javob: ${question.correct_text_answer}`
-                    : `To'g'ri: ${question.choices.find((choice) => choice.is_correct)?.letter || '—'}`}
+                  {question.question_type === 'text' ? (
+                    <>
+                      Javob: <MathHtml inline html={answerHtml(question.correct_text_answer)} />
+                    </>
+                  ) : (
+                    `To'g'ri: ${question.choices.find((choice) => choice.is_correct)?.letter || '—'}`
+                  )}
                 </p>
               </div>
               {!locked ? (
@@ -243,13 +332,15 @@ const Questions = ({ test, subjects, onChange }) => {
         tone="danger"
         Icon={Trash2}
         title="Savolni o'chirish"
-        text={deleting ? strip(deleting.question_text_uz) : ''}
         confirmLabel="O'chirish"
         cancelLabel="Bekor qilish"
         onConfirm={remove}
         onClose={() => setDeleting(null)}
-      />
+      >
+        {deleting ? <MathHtml html={deleting.question_text_uz} className="text-sm leading-relaxed text-[#64748B]" /> : null}
+      </LigaDialog>
     </div>
+    </MathJaxContext>
   )
 }
 

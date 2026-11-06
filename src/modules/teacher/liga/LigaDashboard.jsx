@@ -2,12 +2,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import {
   Activity, ArrowUpDown, BarChart3, CalendarDays, Check, ClipboardCheck, Clock, Eye, EyeOff, FileText,
-  GraduationCap, Hash, Layers, Lock, Pencil, Plus, PlusCircle, Target, Users
+  GraduationCap, Hash, Layers, Lock, Pencil, Plus, PlusCircle, Target, Trash2, Users
 } from 'lucide-react'
 import LigaSeasonEmpty from '@/components/liga/LigaSeasonEmpty'
 import LigaDialog from '@/components/modal/LigaDialog'
 import { useGetQuery } from '@/hooks'
 import { request } from '@/services/api'
+import { SeasonEditDialog, WeekEditDialog } from './LigaEditDialogs'
 import { HeadCell, IconField, LigaHero, LigaTable as Table, SectionHead, StatusPill } from './LigaParts'
 import { MAIN_HERO, SeasonSelect, useLigaSeason } from './LigaSeasonPage'
 import {
@@ -31,6 +32,9 @@ const SOURCE_LABELS = { daily: 'Kunlik kirish', subject: 'Fanlarni ishlash', tes
 
 const ACTION = 'inline-flex h-11 shrink-0 items-center gap-2 rounded-full px-4 text-sm font-semibold transition sm:px-5'
 const ACTION_LIGHT = `${ACTION} bg-[#F1F4F9] text-[#191C1D] hover:bg-[#E6EBF5]`
+const ICON_ACTION = 'inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition'
+const WEEK_ACTION = 'inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold transition'
+const DANGER_LIGHT = 'bg-[#FEE2E2] text-[#DC2626] hover:bg-[#FECACA]'
 
 const Overview = ({ season }) => {
   const [descending, setDescending] = useState(false)
@@ -152,13 +156,16 @@ const Overview = ({ season }) => {
 
 const EMPTY_TEST = { week_number: '', start_at: '', end_at: '', duration_minutes: 60, question_count: 25, grades: [] }
 
-const Tests = ({ season, grades }) => {
+const Tests = ({ season, grades, onChanged }) => {
   const [form, setForm] = useState(EMPTY_TEST)
   const [saving, setSaving] = useState(false)
-  const [week, setWeek] = useState(null)
+  const [pickedWeek, setPickedWeek] = useState(null)
+  const [editingWeek, setEditingWeek] = useState(false)
+  const [deleting, setDeleting] = useState(null)
   const { data: response, refetch } = useGetQuery({ key: ['liga-tests', season.id], url: `${API}tests/`, params: { season: season.id }, staleTime: 0, refetchOnMount: 'always' })
   const tests = response?.data || []
   const weeks = [...new Set(tests.map((test) => test.week_number))].sort((a, b) => a - b)
+  const week = weeks.includes(pickedWeek) ? pickedWeek : null
   const shownTests = week ? tests.filter((test) => test.week_number === week) : tests
   const update = (field) => (event) => setForm({ ...form, [field]: event.target.value })
   const toggleGrade = (id) =>
@@ -192,6 +199,36 @@ const Tests = ({ season, grades }) => {
     }
   }
 
+  const removeTests = async () => {
+    try {
+      await request.delete(deleting.url, { params: deleting.params })
+      setDeleting(null)
+      await Promise.all([refetch(), onChanged()])
+    } catch (error) {
+      showError(error)
+    }
+  }
+
+  const askDeleteWeek = () => {
+    const blocked = shownTests.some((test) => test.attempts_count > 0)
+    setDeleting({
+      title: `${week}-haftani o'chirish`,
+      text: blocked
+        ? "Bu haftada o'quvchilar natijalari bor, shuning uchun uni o'chirib bo'lmaydi."
+        : `Shu haftaning ${shownTests.length} ta sinf testi savollari bilan o'chadi. Buni qaytarib bo'lmaydi.`,
+      blocked,
+      url: `${API}tests/week/`,
+      params: { season: season.id, week_number: week }
+    })
+  }
+
+  const askDeleteTest = (test) =>
+    setDeleting({
+      title: `${test.week_number}-hafta, ${test.grade_name}-sinf testini o'chirish`,
+      text: "Test savollari bilan o'chadi. Buni qaytarib bo'lmaydi.",
+      url: `${API}tests/${test.id}/`
+    })
+
   return (
     <div className="flex flex-col gap-4">
       {!season.is_closed ? (
@@ -212,6 +249,7 @@ const Tests = ({ season, grades }) => {
                 required
                 type={type}
                 min={type === 'number' ? 1 : undefined}
+                max={field === 'week_number' ? season.weeks_count : undefined}
                 placeholder={field === 'week_number' ? 'Masalan: 1' : undefined}
                 value={form[field]}
                 onChange={update(field)}
@@ -259,19 +297,36 @@ const Tests = ({ season, grades }) => {
         <div className="mb-3">
           <SectionHead Icon={Layers} title="Haftalik testlar ro'yxati" />
         </div>
-        {weeks.length > 1 ? (
-          <div className="no-scrollbar mb-3 flex gap-1.5 overflow-x-auto">
-            {[null, ...weeks].map((item) => (
-              <button
-                key={item || 'all'}
-                onClick={() => setWeek(item)}
-                className={`h-9 shrink-0 rounded-full px-4 text-sm font-semibold transition ${
-                  week === item ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#475569] hover:bg-[#E6EBF5]'
-                }`}
-              >
-                {item ? `${item}-hafta` : 'Barcha haftalar'}
-              </button>
-            ))}
+        {weeks.length ? (
+          <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <div className="no-scrollbar flex min-w-0 max-w-full gap-1.5 overflow-x-auto">
+              {[null, ...weeks].map((item) => (
+                <button
+                  key={item || 'all'}
+                  onClick={() => setPickedWeek(item)}
+                  className={`h-9 shrink-0 rounded-full px-4 text-sm font-semibold transition ${
+                    week === item ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#475569] hover:bg-[#E6EBF5]'
+                  }`}
+                >
+                  {item ? `${item}-hafta` : 'Barcha haftalar'}
+                </button>
+              ))}
+            </div>
+            {!season.is_closed && week ? (
+              <div className="flex gap-1.5 sm:ml-auto">
+                <button onClick={() => setEditingWeek(true)} className={`${WEEK_ACTION} bg-[#E6EFFF] text-[#5D87FF] hover:bg-[#D9E6FF]`}>
+                  <Pencil size={15} />
+                  Tahrirlash
+                </button>
+                <button onClick={askDeleteWeek} className={`${WEEK_ACTION} ${DANGER_LIGHT}`}>
+                  <Trash2 size={15} />
+                  O'chirish
+                </button>
+              </div>
+            ) : null}
+            {!season.is_closed && !week ? (
+              <span className="text-xs text-[#8A8A8E] sm:ml-auto">Tahrirlash yoki o'chirish uchun haftani tanlang</span>
+            ) : null}
           </div>
         ) : null}
         <Table
@@ -320,6 +375,16 @@ const Tests = ({ season, grades }) => {
                     <Pencil size={14} />
                     Ochish
                   </Link>
+                  {!season.is_closed && !test.attempts_count ? (
+                    <button
+                      onClick={() => askDeleteTest(test)}
+                      aria-label="Testni o'chirish"
+                      title="Testni o'chirish"
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${DANGER_LIGHT}`}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  ) : null}
                 </div>
               </td>
             </tr>
@@ -327,6 +392,33 @@ const Tests = ({ season, grades }) => {
         </Table>
         {!tests.length ? <p className="py-8 text-center text-sm text-[#8A8A8E]">Testlar yo'q</p> : null}
       </div>
+
+      {editingWeek ? (
+        <WeekEditDialog
+          season={season}
+          week={week}
+          tests={shownTests}
+          onSaved={async (number) => {
+            setEditingWeek(false)
+            setPickedWeek(number)
+            await refetch()
+          }}
+          onClose={() => setEditingWeek(false)}
+        />
+      ) : null}
+
+      <LigaDialog
+        open={Boolean(deleting)}
+        tone="danger"
+        Icon={Trash2}
+        title={deleting?.title}
+        text={deleting?.text}
+        confirmLabel="O'chirish"
+        cancelLabel="Bekor qilish"
+        disabled={deleting?.blocked}
+        onConfirm={removeTests}
+        onClose={() => setDeleting(null)}
+      />
     </div>
   )
 }
@@ -338,6 +430,8 @@ const LigaDashboard = () => {
   const [creating, setCreating] = useState(false)
   const [closing, setClosing] = useState(false)
   const [hiding, setHiding] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [weeks, setWeeks] = useState(12)
 
   const nextNumber = (seasons[0]?.number || 0) + 1
@@ -368,6 +462,16 @@ const LigaDashboard = () => {
       await request.post(`${API}seasons/${season.id}/close/`)
       await refetch()
       setClosing(false)
+    } catch (error) {
+      showError(error)
+    }
+  }
+
+  const deleteSeason = async () => {
+    try {
+      await request.delete(`${API}seasons/${season.id}/`)
+      setDeleting(false)
+      await refetch()
     } catch (error) {
       showError(error)
     }
@@ -408,8 +512,14 @@ const LigaDashboard = () => {
                     <Lock size={18} />
                     Yopish
                   </button>
+                  <button onClick={() => setEditing(true)} aria-label="Mavsumni tahrirlash" title="Mavsumni tahrirlash" className={`${ICON_ACTION} bg-[#F1F4F9] text-[#191C1D] hover:bg-[#E6EBF5]`}>
+                    <Pencil size={18} />
+                  </button>
                 </>
               ) : null}
+              <button onClick={() => setDeleting(true)} aria-label="Mavsumni o'chirish" title="Mavsumni o'chirish" className={`${ICON_ACTION} ${DANGER_LIGHT}`}>
+                <Trash2 size={18} />
+              </button>
             </>
           ) : null}
           <button onClick={() => setCreating(true)} className={`${ACTION} bg-[#5D87FF] text-white hover:bg-[#4570EA]`}>
@@ -422,7 +532,7 @@ const LigaDashboard = () => {
       {season ? (
         <>
           {tab === 'overview' ? <Overview season={season} /> : null}
-          {tab === 'tests' ? <Tests key={season.id} season={season} grades={grades} /> : null}
+          {tab === 'tests' ? <Tests key={season.id} season={season} grades={grades} onChanged={refetch} /> : null}
         </>
       ) : loaded ? (
         <LigaSeasonEmpty
@@ -482,6 +592,34 @@ const LigaDashboard = () => {
         cancelLabel="Bekor qilish"
         onConfirm={closeSeason}
         onClose={() => setClosing(false)}
+      />
+
+      {editing && season ? (
+        <SeasonEditDialog
+          season={season}
+          onSaved={async () => {
+            setEditing(false)
+            await refetch()
+          }}
+          onClose={() => setEditing(false)}
+        />
+      ) : null}
+
+      <LigaDialog
+        open={deleting}
+        tone="danger"
+        Icon={Trash2}
+        title={season ? `${season.number}-mavsumni o'chirish` : ''}
+        text={
+          season?.participants_count
+            ? `Bu mavsumda ${season.participants_count} ta ishtirokchi bor. Ballari va natijalari yo'qolmasligi uchun uni o'chirib bo'lmaydi.`
+            : `Mavsum ${season?.tests_count || 0} ta testi va savollari bilan o'chadi. Buni qaytarib bo'lmaydi.`
+        }
+        confirmLabel="Mavsumni o'chirish"
+        cancelLabel="Bekor qilish"
+        disabled={Boolean(season?.participants_count)}
+        onConfirm={deleteSeason}
+        onClose={() => setDeleting(false)}
       />
     </div>
   )

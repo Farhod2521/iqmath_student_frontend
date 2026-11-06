@@ -5,7 +5,7 @@ import { BUTTON_LIGHT, TEST_STATUS, TH } from './utils'
 
 const HERO_MASK = 'linear-gradient(to right, transparent, #000 14%)'
 const PICKER = '[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-3 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0'
-const FIELD = `relative h-11 w-full rounded-xl border border-[#E8ECF3] bg-white pl-10 pr-3 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF] ${PICKER}`
+const FIELD = `relative h-11 w-full rounded-xl border border-[#E8ECF3] bg-white pl-10 pr-3 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF] disabled:bg-[#F5F6F8] disabled:text-[#8A8A8E] ${PICKER}`
 
 const STATUS_COLORS = {
   draft: 'bg-[#F1F4F9] text-[#64748B]',

@@ -6222,9 +6222,9 @@
     "semantic_hash": ""
   },
   "src/components/modal/LigaDialog.jsx": {
-    "mtime": 1793776480.3338792,
-    "seen": 1793879898.8456268,
-    "ast_hash": "045b888d274527f53e17aac063e1eae6",
+    "mtime": 1793960438.954607,
+    "seen": 1793961874.9998996,
+    "ast_hash": "cab1f91509ac1bf4d5a20a394af59794",
     "semantic_hash": ""
   },
   "src/components/online/OnlinePing.jsx": {
@@ -6486,9 +6486,9 @@
     "semantic_hash": ""
   },
   "src/modules/student/liga/LigaTestRun.jsx": {
-    "mtime": 1793776482.4496038,
-    "seen": 1793879898.845913,
-    "ast_hash": "e1871c2d875a61ca1eea83048e4abc35",
+    "mtime": 1793949059.7091277,
+    "seen": 1793961875.0001948,
+    "ast_hash": "c1eee288b1dc4d191ff3a5fe5a13d3e1",
     "semantic_hash": ""
   },
   "src/modules/student/parent-qr/ParentQr.jsx": {
@@ -6618,9 +6618,9 @@
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaDashboard.jsx": {
-    "mtime": 1793879827.492951,
-    "seen": 1793879898.846002,
-    "ast_hash": "f919fc98609992666b2af3271c55bd6b",
+    "mtime": 1793960438.954607,
+    "seen": 1793961875.000287,
+    "ast_hash": "41bc37e8ba3600633c39d6c9168c0248",
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaParticipants.jsx": {
@@ -6630,9 +6630,9 @@
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaParts.jsx": {
-    "mtime": 1793879827.492951,
-    "seen": 1793879898.846004,
-    "ast_hash": "761c47ba4ce231a9529f614f38f9155b",
+    "mtime": 1793960438.954607,
+    "seen": 1793961875.0002904,
+    "ast_hash": "c31776400cadf343ee69215326787fcd",
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaSeasonPage.jsx": {
@@ -6648,9 +6648,9 @@
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaTestDetail.jsx": {
-    "mtime": 1793879070.6083388,
-    "seen": 1793879898.8460062,
-    "ast_hash": "a23ed717d6743c999ad361c410424e44",
+    "mtime": 1793949059.7081277,
+    "seen": 1793961875.000293,
+    "ast_hash": "06066a4032dae61fb75a0cbc399f94d4",
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaWinners.jsx": {
@@ -7455,6 +7455,36 @@
     "mtime": 1793591933.3518803,
     "seen": 1793879898.8464637,
     "ast_hash": "81bb956c170268ab0808119d3b31288c",
+    "semantic_hash": ""
+  },
+  "src/components/liga/MathAnswerField.jsx": {
+    "mtime": 1793949059.7091277,
+    "seen": 1793961874.9998913,
+    "ast_hash": "4f8701f76bba15a4c9a071377d213b0f",
+    "semantic_hash": ""
+  },
+  "src/components/liga/MathEditor.jsx": {
+    "mtime": 1793949441.3518958,
+    "seen": 1793961874.999893,
+    "ast_hash": "1a58ee4d6564509d7aac8c37f9bcb0fc",
+    "semantic_hash": ""
+  },
+  "src/components/liga/mathConfig.js": {
+    "mtime": 1793949055.297419,
+    "seen": 1793961874.9998944,
+    "ast_hash": "8a37dea09e142af79da04d0706af72c5",
+    "semantic_hash": ""
+  },
+  "src/modules/teacher/liga/LigaEditDialogs.jsx": {
+    "mtime": 1793960437.1279821,
+    "seen": 1793961875.0002885,
+    "ast_hash": "181ef2f4db77e4b1190aaf98778233c3",
+    "semantic_hash": ""
+  },
+  "src/modules/teacher/liga/MathTools.jsx": {
+    "mtime": 1793949057.004229,
+    "seen": 1793961875.0002952,
+    "ast_hash": "a40994f001cadfbb2bd58097cd752670",
     "semantic_hash": ""
   }
 }

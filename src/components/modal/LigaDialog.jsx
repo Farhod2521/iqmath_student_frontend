@@ -50,7 +50,7 @@ const LigaDialog = ({
 
   return createPortal(
     <div className="fixed inset-0 z-[1300] flex items-center justify-center bg-[#0B1B3F]/40 p-4 backdrop-blur-sm">
-      <form onSubmit={submit} className="relative w-full max-w-[440px] rounded-2xl bg-white p-6 shadow-2xl">
+      <form onSubmit={submit} className="relative max-h-full w-full max-w-[440px] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
         <button
           type="button"
           onClick={onClose}

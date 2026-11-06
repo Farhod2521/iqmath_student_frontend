@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import { useTranslation } from 'react-i18next'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import { AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2, Clock } from 'lucide-react'
@@ -7,6 +8,9 @@ import toast from 'react-hot-toast'
 import LigaDialog from '@/components/modal/LigaDialog'
 import { request } from '@/services/api'
 import LigaGuard from './LigaGuard'
+
+// MathQuill faqat brauzerda ishlaydi
+const MathAnswerField = dynamic(() => import('@/components/liga/MathAnswerField'), { ssr: false })
 
 const MJ_CONFIG = { loader: { load: ['input/tex', 'output/chtml'] } }
 
@@ -260,21 +264,20 @@ const LigaTestRun = () => {
                       <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${active ? 'bg-[#5D87FF] text-white' : 'bg-[#F1F4F9] text-[#475569]'}`}>
                         {choice.letter}
                       </span>
-                      <RichText html={pick(choice, 'text')} />
+                      <span className="min-w-0">
+                        <RichText html={pick(choice, 'text')} />
+                        {choice.image ? <img src={choice.image} alt="" className="mt-1 max-h-40 rounded-lg" /> : null}
+                      </span>
                     </button>
                   )
                 })}
               </div>
             ) : (
-              <input
+              <MathAnswerField
                 key={question.id}
-                defaultValue={current?.text_answer || ''}
-                placeholder={text.answerPlaceholder}
-                onBlur={(event) => {
-                  const value = event.target.value.trim()
-                  if (value && value !== current?.text_answer) save(question.id, { text_answer: value })
-                }}
-                className="mt-5 h-12 w-full select-text rounded-xl border border-[#EBEDF0] px-4 text-[15px] outline-none focus:border-[#5D87FF]"
+                value={current?.text_answer || ''}
+                label={text.answerPlaceholder}
+                onSave={(value) => save(question.id, { text_answer: value })}
               />
             )}
 
