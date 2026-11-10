@@ -1,5 +1,6 @@
 import { getToken } from 'next-auth/jwt'
 import { authSecret } from '@/config/authSecret'
+import { serverFetch } from '@/utils/serverFetch'
 import { config } from '@/config'
 import { URLS } from '@/constants/url'
 
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(`${config.API_URL}${URLS.refreshToken}`, {
+    const response = await serverFetch(`${config.API_URL}${URLS.refreshToken}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ refresh: token.refreshToken })

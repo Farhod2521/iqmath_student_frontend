@@ -5,6 +5,7 @@ import Sidebar from './sidebar/Sidebar'
 import Main from './Main'
 import StudentInvitationsModal from '@/modules/student/invitations/StudentInvitationsModal'
 import SubscriptionPromoModal from '@/modules/student/subscription/SubscriptionPromoModal'
+import DailyRewardModal from '@/modules/student/daily-reward/DailyRewardModal'
 import OnlinePing from '@/components/online/OnlinePing'
 import { useScoreStore, useSettingStore, useUserStore } from '@/store'
 import { useGetQuery } from '@/hooks'
@@ -79,6 +80,8 @@ const LayoutAdmin = ({ children, title }) => {
         </div>
 
         {role === 'student' ? <StudentInvitationsModal /> : null}
+        {/* Kundalik kirish mukofoti (1..7 ball, ketma-ketlik) — obuna oynasidan oldin chiqadi */}
+        {role === 'student' ? <DailyRewardModal /> : null}
         {/* Obuna sotib olmaganlarga (local'da hammaga) — login qilgandan keyin taklif oynasi */}
         {role === 'student' ? <SubscriptionPromoModal /> : null}
         {role === 'student' ? <OnlinePing /> : null}

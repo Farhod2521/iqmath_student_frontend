@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { authSecret } from '@/config/authSecret'
+import { serverFetch } from '@/utils/serverFetch'
 
 export default NextAuth({
   session: {
@@ -57,7 +58,7 @@ export default NextAuth({
           if (user_agent) formData.append('user_agent', user_agent)
           if (replace_device_id) formData.append('replace_device_id', replace_device_id)
 
-          const response = await fetch(url, {
+          const response = await serverFetch(url, {
             method: 'POST',
             headers,
             body: formData

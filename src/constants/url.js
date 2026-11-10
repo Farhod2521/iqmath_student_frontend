@@ -83,6 +83,13 @@ export const URLS = {
   studentMyPayments: '/api/v1/func_student/my-payments/',
   // ?student=<id> — ota-ona uchun farzand yutuqlari
   achievements: '/api/v1/func_student/achievements/',
+  // Kundalik kirish mukofoti: GET holat, POST claim
+  dailyReward: '/api/v1/func_student/daily-reward/',
+  dailyRewardClaim: '/api/v1/func_student/daily-reward/claim/',
+  // Gol tarixi (kundalik kirish, haftalik test): ?source=daily_login|weekly_test, ?page=
+  myGolLog: '/api/v1/func_student/my-gol-log/',
+  // Tarix sahifasi: ?currency=gol|score|coin|som&date_from=YYYY-MM-DD&date_to=YYYY-MM-DD&page=
+  walletHistory: '/api/v1/func_student/wallet-history/',
   // Parent management endpoints
   parentCreate: '/api/v1/auth/parent/create/',
   // Ota-onani QR kod orqali farzandga biriktirish

@@ -8,9 +8,13 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useUserStore } from '@/store'
 import { getMenuItemClasses, getMenuItems, MenuType } from '../libs/menulist'
 import { useRoleDetection } from '@/hooks/useRoleDetection'
-import { useGetQuery, useSidebarCount } from '@/hooks'
+import { useGetQuery, useMyTariff, useSidebarCount } from '@/hooks'
 import { KEYS } from '@/constants/key'
 import { URLS } from '@/constants/url'
+
+// O'quvchi menyusidagi bu bandlar faqat Start Pro tarifida (va sinov muddatida) ko'rinadi;
+// oddiy Start'da "Ota-ona uchun" va "Chat" yashiriladi
+const PRO_ONLY_STUDENT_MENU_KEYS = ['parent-qr', 'chat']
 
 const HIDDEN_MENU_KEYS_WHEN_INACTIVE = [
   'diagnostics-history',
@@ -43,6 +47,13 @@ const SidebarMenu = () => {
   })
   const hideLibrary = canSeeLibrary && !libraryError && (libraryLoading || !libraryData?.data?.count)
 
+  // Tarif ma'lumoti kelguncha Pro bandlari ko'rsatilmaydi (Start'da "miltillab" chiqmasin)
+  const isStudent = userRole === 'student'
+  const { loaded: tariffLoaded, isError: tariffError, isPro } = useMyTariff(isStudent)
+  const hideProMenus = isStudent && !tariffError && (!tariffLoaded || !isPro)
+  // "Bog'lanish" (Telegram) — faqat oddiy Start'da; Start Pro'da uning o'rniga "Chat" bor
+  const showStartContact = isStudent && tariffLoaded && !tariffError && !isPro
+
   useEffect(() => {
     const checkScrollbar = () => {
       const menuContainer = document.querySelector('.sidebar-menu')
@@ -60,6 +71,8 @@ const SidebarMenu = () => {
     .filter((item) => {
       if (item.key === 'recommended' && !user?.has_diagnost) return false
       if (item.key === 'library' && hideLibrary) return false
+      if (hideProMenus && PRO_ONLY_STUDENT_MENU_KEYS.includes(item.key)) return false
+      if (item.key === 'contact-help' && !showStartContact) return false
       if (role && item.roles && Array.isArray(item.roles)) {
         return item.roles.includes(userRole)
       }
@@ -87,12 +100,25 @@ const SidebarMenu = () => {
       <ul className="space-y-[12px] px-[24px] pt-[20px]">
         {menuItems
           .filter((item) => !item.roles || item.roles.includes(userRole))
-          .map(({ key, path, label, icon, disabled, type, children, activePatterns }, idx) => {
+          .map(({ key, path, label, icon, disabled, type, children, activePatterns, external }, idx) => {
             if (type === MenuType.TITLE) {
               return <SidebarTitle key={key || idx}>{label}</SidebarTitle>
             }
             if (type === MenuType.GROUP) {
               return <div key={key || idx} className="my-3 border-t border-gray-200" />
+            }
+            if (type === MenuType.LINK && external) {
+              // Tashqi havola (Telegram "Bog'lanish") — yangi oynada ochiladi
+              return (
+                <li key={key} className="cursor-pointer">
+                  <a href={path} target="_blank" rel="noopener noreferrer">
+                    <div className={getMenuItemClasses(false, disabled)}>
+                      {typeof icon === 'function' ? icon(false) : icon}
+                      <p>{label}</p>
+                    </div>
+                  </a>
+                </li>
+              )
             }
             if (type === MenuType.LINK) {
               // Check if current path matches any active patterns

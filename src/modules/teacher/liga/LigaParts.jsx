@@ -4,6 +4,8 @@ import { ChevronLeft, Trophy } from 'lucide-react'
 import { BUTTON_LIGHT, TEST_STATUS, TH } from './utils'
 
 const HERO_MASK = 'linear-gradient(to right, transparent, #000 14%)'
+// Oq fonli rasm o'ng tomonda ham fonga singib ketadi
+const HERO_MASK_BOTH = 'linear-gradient(to right, transparent, #000 16%, #000 84%, transparent)'
 const PICKER = '[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-3 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0'
 const FIELD = `relative h-11 w-full rounded-xl border border-[#E8ECF3] bg-white pl-10 pr-3 text-sm text-[#191C1D] outline-none transition focus:border-[#5D87FF] disabled:bg-[#F5F6F8] disabled:text-[#8A8A8E] ${PICKER}`
 
@@ -14,7 +16,7 @@ const STATUS_COLORS = {
   finished: 'bg-[#E6EFFF] text-[#3B66E0]'
 }
 
-export const LigaHero = ({ image, width, height, title, subtitle, backHref }) => (
+export const LigaHero = ({ image, width, height, title, subtitle, backHref, fadeRight = false }) => (
   <div className="relative -mx-3 -mt-3 min-h-[116px] overflow-hidden bg-gradient-to-r from-white via-[#F2F7FF] to-[#D5E7FD] sm:-mx-4 sm:-mt-4 sm:min-h-[130px] md:-mx-6 md:-mt-6 xl:-mx-8 xl:-mt-8">
     <svg viewBox="0 0 600 130" preserveAspectRatio="none" aria-hidden="true" className="absolute bottom-0 right-0 hidden h-full w-3/5 md:block">
       <defs>
@@ -31,8 +33,8 @@ export const LigaHero = ({ image, width, height, title, subtitle, backHref }) =>
       width={width}
       height={height}
       priority
-      style={{ WebkitMaskImage: HERO_MASK, maskImage: HERO_MASK }}
-      className="absolute bottom-0 right-0 h-full w-[130px] object-cover sm:w-auto sm:max-w-[45%]"
+      style={{ WebkitMaskImage: fadeRight ? HERO_MASK_BOTH : HERO_MASK, maskImage: fadeRight ? HERO_MASK_BOTH : HERO_MASK }}
+      className={`absolute bottom-0 ${fadeRight ? 'right-[4%]' : 'right-0'} h-full w-[130px] object-cover sm:w-auto sm:max-w-[45%]`}
     />
     <div className="relative flex min-h-[116px] flex-col justify-center gap-1 py-4 pl-3 pr-[136px] sm:min-h-[130px] sm:pl-4 sm:pr-[46%] md:pl-6 xl:pl-8">
       {backHref ? (

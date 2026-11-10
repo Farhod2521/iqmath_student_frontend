@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
-import { ChevronLeft, ChevronRight, Flame } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { FaFutbol } from 'react-icons/fa'
 import { get } from 'lodash'
 import { useGetQuery } from '@/hooks'
 import { KEYS } from '@/constants/key'
@@ -104,7 +105,7 @@ const HomeCalendarCard = () => {
           className="inline-flex shrink-0 items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-semibold text-[#F97316]"
           title={`${streakText.best}: ${bestStreak} ${streakText.days}`}
         >
-          <Flame size={13} className="fill-[#F97316] text-[#F97316]" />
+          <FaFutbol size={13} className="text-[#191C1D]" />
           {streak} {streakText.streak}
         </span>
       </div>
@@ -156,9 +157,9 @@ const HomeCalendarCard = () => {
                 {day ?? ''}
               </span>
               {isActive && (
-                <Flame
+                <FaFutbol
                   size={10}
-                  className="absolute -bottom-1 -right-0.5 fill-[#F97316] text-[#F97316] drop-shadow-sm"
+                  className="absolute -bottom-1 -right-0.5 rounded-full bg-white text-[#191C1D] drop-shadow-sm"
                 />
               )}
             </span>

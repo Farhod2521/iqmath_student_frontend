@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { CheckCircle2, Clock, Lock } from 'lucide-react'
+import {
+  ArrowRight, BarChart3, CalendarCheck, CalendarDays, CalendarX, CheckCircle2, ClipboardList, Clock, Gift, Layers, Lock, Trophy, Users
+} from 'lucide-react'
 import toast from 'react-hot-toast'
 import LigaSeasonEmpty from '@/components/liga/LigaSeasonEmpty'
+import LigaJoinModal from '@/components/liga/LigaJoinModal'
 import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
+import { LigaHero } from '@/modules/teacher/liga/LigaParts'
 import { request } from '@/services/api'
 import LigaGuard from './LigaGuard'
 
@@ -23,24 +28,30 @@ const TEXT = {
     join: 'Ligada qatnashish',
     needPay: 'Ligada qatnashish uchun obuna faol bo‘lishi kerak.',
     pay: 'Tarifni tanlash',
+    seasonLabel: 'Mavsum',
+    gradeLabel: 'Sinf',
     points: 'Ballaringiz',
-    rank: 'O‘rningiz',
-    participants: 'Ishtirokchilar',
+    rank: 'Sizning o‘rningiz',
     prizes: 'Sovg‘alar',
+    prizesText: 'Reytingda yuqori o‘rinlarni egallang va sovg‘alar yutib oling',
     place: (n) => `${n}-o‘rin`,
     prizeNote: 'Har bir sinfdan 3 ta g‘olib. Sovg‘a topshirishda hujjatlar tekshiriladi: sinf noto‘g‘ri ko‘rsatilgan bo‘lsa, sovg‘a berilmaydi.',
     tests: 'Haftalik testlar',
+    testsText: 'Har hafta yangi test va reytingda ko‘tarilish imkoniyati',
     noTests: 'Testlar hali e’lon qilinmagan',
-    week: (n) => `${n}-hafta`,
+    weekTest: (n) => `${n}-hafta testi`,
     minutes: (n) => `${n} daqiqa`,
     questions: (n) => `${n} ta savol`,
     start: 'Boshlash',
     resume: 'Davom ettirish',
-    ended: 'Tugagan',
-    missed: 'Ishlanmagan',
+    missed: 'Muddati tugagan',
     result: (score, max) => `Natija: ${score} / ${max}`,
+    showResult: 'Natijani ko‘rish',
     joinFirst: 'Avval ligaga qo‘shiling',
     top: 'Sinf reytingi',
+    all: 'Barchasi',
+    less: 'Yopish',
+    ball: (n) => `${n} ball`,
     noTop: 'Hali natijalar yo‘q',
     winners: 'G‘oliblar',
     pastWinners: 'Oldingi mavsum g‘oliblari',
@@ -60,24 +71,30 @@ const TEXT = {
     join: 'Участвовать в лиге',
     needPay: 'Для участия в лиге нужна активная подписка.',
     pay: 'Выбрать тариф',
+    seasonLabel: 'Сезон',
+    gradeLabel: 'Класс',
     points: 'Ваши баллы',
     rank: 'Ваше место',
-    participants: 'Участники',
     prizes: 'Призы',
+    prizesText: 'Займите высокое место в рейтинге и выиграйте призы',
     place: (n) => `${n} место`,
     prizeNote: 'В каждом классе 3 победителя. При вручении приза проверяются документы: если класс указан неверно, приз не выдаётся.',
     tests: 'Еженедельные тесты',
+    testsText: 'Каждую неделю новый тест и шанс подняться в рейтинге',
     noTests: 'Тесты ещё не объявлены',
-    week: (n) => `Неделя ${n}`,
+    weekTest: (n) => `Тест недели ${n}`,
     minutes: (n) => `${n} мин`,
     questions: (n) => `${n} вопросов`,
     start: 'Начать',
     resume: 'Продолжить',
-    ended: 'Завершён',
-    missed: 'Не пройден',
+    missed: 'Срок истёк',
     result: (score, max) => `Результат: ${score} / ${max}`,
+    showResult: 'Посмотреть результат',
     joinFirst: 'Сначала вступите в лигу',
     top: 'Рейтинг класса',
+    all: 'Все',
+    less: 'Свернуть',
+    ball: (n) => `${n} балл.`,
     noTop: 'Результатов пока нет',
     winners: 'Победители',
     pastWinners: 'Победители прошлых сезонов',
@@ -87,7 +104,19 @@ const TEXT = {
   }
 }
 
-const CARD = 'rounded-2xl border border-[#F0F0F0] bg-white p-4 shadow-sm sm:p-5'
+const HERO = { image: '/images/league/student-hero.webp', width: 700, height: 420 }
+const CARD = 'rounded-3xl border border-[#E6ECF7] bg-white shadow-[0_16px_36px_-30px_rgba(31,122,236,0.55)]'
+const PRIMARY = 'inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#1F7AEC] px-5 text-sm font-semibold text-white transition hover:bg-[#1767CC] disabled:opacity-60'
+const TOP_SHOWN = 5
+
+const MEDALS = [
+  'bg-gradient-to-b from-[#FDE68A] to-[#F59E0B] text-white',
+  'bg-gradient-to-b from-[#E2E8F0] to-[#94A3B8] text-white',
+  'bg-gradient-to-b from-[#FDBA74] to-[#C2410C] text-white'
+]
+
+// Standart sovg'alar rasmi: mentor boshqa sovg'a yozsa, rasm o'rniga ikonka chiqadi
+const PRIZE_IMAGES = { planshet: 'prize-tablet', telefon: 'prize-phone', quloqchin: 'prize-headphones' }
 
 const formatDate = (value, lang) =>
   new Date(value).toLocaleString(lang === 'ru' ? 'ru-RU' : 'uz-UZ', {
@@ -96,6 +125,29 @@ const formatDate = (value, lang) =>
     hour: '2-digit',
     minute: '2-digit'
   })
+
+const Medal = ({ place }) => (
+  <span
+    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
+      MEDALS[place - 1] || 'bg-[#EEF3FA] text-[#64748B]'
+    }`}
+  >
+    {place}
+  </span>
+)
+
+const CardHead = ({ Icon, title, text, children }) => (
+  <div className="flex items-center gap-3">
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#EAF3FF] text-[#1F7AEC]">
+      <Icon size={22} />
+    </span>
+    <div className="min-w-0 flex-1">
+      <h2 className="text-lg font-bold text-[#191C1D]">{title}</h2>
+      {text ? <p className="text-sm text-[#64748B]">{text}</p> : null}
+    </div>
+    {children}
+  </div>
+)
 
 /** Test boshlanishigacha orqaga sanash */
 const Countdown = ({ to, daysLabel, onEnd }) => {
@@ -118,8 +170,8 @@ const Countdown = ({ to, daysLabel, onEnd }) => {
   const days = Math.floor(total / 86400)
 
   return (
-    <span className="inline-flex items-center gap-1.5 text-sm font-semibold tabular-nums text-[#5D87FF]">
-      <Clock size={15} />
+    <span className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#EAF3FF] px-4 text-sm font-semibold tabular-nums text-[#1F7AEC]">
+      <Clock size={16} />
       {days > 0 ? `${days} ${daysLabel} ` : ''}
       {pad(Math.floor((total % 86400) / 3600))}:{pad(Math.floor((total % 3600) / 60))}:{pad(total % 60)}
     </span>
@@ -133,59 +185,100 @@ const TestRow = ({ test, joined, text, lang, busy, onStart, onOpen, onRefresh })
   let action
   if (attempt && !inProgress) {
     action = (
-      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#13A97F]">
-        <CheckCircle2 size={16} />
-        {text.result(attempt.score, attempt.max_score)}
-      </span>
+      <>
+        <span className="inline-flex h-10 items-center gap-2 rounded-full bg-[#E7F8EF] px-4 text-sm font-semibold text-[#15803D]">
+          <CheckCircle2 size={18} />
+          {text.result(attempt.score, attempt.max_score)}
+        </span>
+        <button onClick={() => onOpen(attempt.id)} className={PRIMARY}>
+          {text.showResult}
+          <ArrowRight size={17} />
+        </button>
+      </>
     )
   } else if (inProgress) {
     action = (
-      <button onClick={() => onOpen(attempt.id)} className="h-10 rounded-xl bg-[#5D87FF] px-5 text-sm font-semibold text-white transition hover:bg-[#4570EA]">
+      <button onClick={() => onOpen(attempt.id)} className={PRIMARY}>
         {text.resume}
+        <ArrowRight size={17} />
       </button>
     )
   } else if (status === 'live') {
     action = joined ? (
-      <button
-        disabled={busy}
-        onClick={() => onStart(test.id)}
-        className="h-10 rounded-xl bg-[#5D87FF] px-5 text-sm font-semibold text-white transition hover:bg-[#4570EA] disabled:opacity-60"
-      >
+      <button disabled={busy} onClick={() => onStart(test.id)} className={PRIMARY}>
         {text.start}
+        <ArrowRight size={17} />
       </button>
     ) : (
-      <span className="inline-flex items-center gap-1.5 text-sm text-[#8A8A8E]">
-        <Lock size={14} />
+      <span className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#F1F5FB] px-4 text-sm text-[#64748B]">
+        <Lock size={15} />
         {text.joinFirst}
       </span>
     )
   } else if (status === 'upcoming') {
-    action = <Countdown to={test.start_at} daysLabel={text.days} onEnd={onRefresh} />
+    action = (
+      <>
+        <Countdown to={test.start_at} daysLabel={text.days} onEnd={onRefresh} />
+        <button disabled className={`${PRIMARY} cursor-not-allowed !bg-[#CBD5E1]`}>
+          <Lock size={16} />
+          {text.start}
+        </button>
+      </>
+    )
   } else {
-    action = <span className="text-sm text-[#8A8A8E]">{text.missed}</span>
+    action = (
+      <span className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#F1F5FB] px-4 text-sm text-[#64748B]">
+        <CalendarX size={16} />
+        {text.missed}
+      </span>
+    )
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#F4F4F5] py-3.5 last:border-0">
-      <div className="min-w-0">
-        <p className="text-[15px] font-semibold text-[#191C1D]">{text.week(test.week_number)}</p>
-        <p className="mt-0.5 text-[13px] text-[#8A8A8E]">
-          {formatDate(test.start_at, lang)} – {formatDate(test.end_at, lang)} · {text.minutes(test.duration_minutes)} ·{' '}
-          {text.questions(test.question_count)}
-        </p>
+    <div className="flex flex-col gap-4 rounded-2xl border border-[#E3EAF6] bg-white p-4 sm:p-5 xl:flex-row xl:items-center">
+      <div className="flex min-w-0 flex-1 items-center gap-4">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#EAF3FF] text-[#1F7AEC]">
+          <ClipboardList size={26} />
+        </span>
+        <div className="min-w-0">
+          <p className="text-lg font-bold text-[#191C1D]">{text.weekTest(test.week_number)}</p>
+          <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm text-[#64748B]">
+            <span className="inline-flex items-center gap-1.5">
+              <CalendarDays size={16} />
+              {formatDate(test.start_at, lang)} – {formatDate(test.end_at, lang)}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock size={16} />
+              {text.minutes(test.duration_minutes)}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Layers size={16} />
+              {text.questions(test.question_count)}
+            </span>
+          </div>
+        </div>
       </div>
-      {action}
+      <div className="flex flex-wrap items-center gap-3">{action}</div>
     </div>
   )
 }
 
-/** O'quvchining liga sahifasi: mavsum, sovg'alar, haftalik testlar va sinf reytingi */
+const PrizeImage = ({ name }) => {
+  const file = PRIZE_IMAGES[(name || '').trim().toLowerCase()]
+  if (!file) return <Gift size={26} className="text-[#1F7AEC]" />
+  return <Image src={`/images/league/${file}.webp`} alt="" width={40} height={40} className="h-10 w-10 object-contain" />
+}
+
+/** O'quvchining liga sahifasi: mavsum, haftalik testlar, sinf reytingi va sovg'alar */
 const LigaHome = () => {
   const { i18n } = useTranslation()
   const router = useRouter()
   const lang = i18n.language === 'ru' ? 'ru' : 'uz'
   const text = TEXT[lang]
   const [busy, setBusy] = useState(false)
+  const [showAll, setShowAll] = useState(false)
+  // Ligaga qo'shilish oynasi: sinf tanlash + qoidalarga rozilik
+  const [joinOpen, setJoinOpen] = useState(false)
 
   const { data: response, isLoading, refetch } = useGetQuery({
     key: 'liga-current',
@@ -214,9 +307,23 @@ const LigaHome = () => {
     }
   }
 
-  const join = () =>
+  // Sinflar: liga javobida `grades` bo'lmasa (eski backend) — umumiy sinflar ro'yxatidan
+  const [fallbackGrades, setFallbackGrades] = useState([])
+  const openJoin = async () => {
+    if (!data?.grades?.length && !fallbackGrades.length) {
+      try {
+        const { data: list } = await request.get('/api/v1/auth/class/class_name_listview/')
+        const order = (item) => parseInt(String(item.name).match(/\d+/)?.[0] || '999', 10)
+        setFallbackGrades([...(list || [])].sort((a, b) => order(a) - order(b)))
+      } catch {}
+    }
+    setJoinOpen(true)
+  }
+
+  const join = (grade) =>
     run(async () => {
-      await request.post(`/api/v1/liga/seasons/${season.id}/join/`)
+      await request.post(`/api/v1/liga/seasons/${season.id}/join/`, { grade, accept_rules: true })
+      setJoinOpen(false)
       await refetch()
     })
 
@@ -230,138 +337,155 @@ const LigaHome = () => {
 
   if (!season) return <LigaSeasonEmpty title={text.emptyTitle} text={text.empty} />
 
-  const prizes = [1, 2, 3].map((place) => season[`prize_${place}_${lang}`])
   const closed = season.is_closed
+  const prizes = [1, 2, 3].map((place) => ({ place, name: season[`prize_${place}_${lang}`], key: season[`prize_${place}_uz`] }))
+  const top = data?.top || []
+  const shownTop = showAll ? top : top.slice(0, TOP_SHOWN)
+  const subtitle = [text.season(season.number), data?.grade ? text.grade(data.grade) : null, closed ? text.closed : null]
+    .filter(Boolean)
+    .join(' • ')
+
+  const stats = [
+    [CalendarDays, 'text-[#1F7AEC]', text.seasonLabel, text.season(season.number)],
+    [Users, 'text-[#1F7AEC]', text.gradeLabel, data?.grade ? text.grade(data.grade) : '—'],
+    [Trophy, 'text-[#F59E0B]', text.rank, data?.joined && data.rank ? `#${data.rank}` : '—'],
+    [BarChart3, 'text-[#16A34A]', text.points, data?.joined ? data.points : '—']
+  ]
 
   return (
     <LigaGuard viewer={data?.viewer} notice={text.notice}>
       <div className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold text-[#191C1D]">{text.title}</h1>
-            <p className="mt-0.5 text-sm text-[#8A8A8E]">
-              {text.season(season.number)}
-              {data?.grade ? ` · ${text.grade(data.grade)}` : ''}
-              {closed ? ` · ${text.closed}` : ''}
-            </p>
-          </div>
-          {data?.joined && !closed ? (
-            <div className="flex gap-6">
-              {[
-                [text.points, data.points],
-                [text.rank, data.rank ? `#${data.rank}` : '—'],
-                [text.participants, data.participants_count]
-              ].map(([label, value]) => (
-                <div key={label}>
-                  <p className="text-xs text-[#8A8A8E]">{label}</p>
-                  <p className="text-xl font-bold text-[#191C1D]">{value}</p>
+        <LigaHero {...HERO} title={text.title} subtitle={subtitle} fadeRight />
+
+        <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="flex min-w-0 flex-col gap-4">
+            <div className={`${CARD} grid grid-cols-2 gap-y-4 p-4 sm:p-5 xl:grid-cols-4 xl:divide-x xl:divide-[#EDF1F8]`}>
+              {stats.map(([Icon, color, label, value]) => (
+                <div key={label} className="flex min-w-0 items-center gap-3 xl:px-5 xl:first:pl-1">
+                  <Icon size={28} className={`shrink-0 ${color}`} />
+                  <div className="min-w-0">
+                    <p className="truncate text-xs text-[#64748B]">{label}</p>
+                    <p className="truncate text-lg font-bold text-[#191C1D]">{value}</p>
+                  </div>
                 </div>
               ))}
             </div>
-          ) : null}
-        </div>
 
-        {!data?.joined && !closed ? (
-          <div className={`${CARD} flex flex-wrap items-center justify-between gap-3`}>
-            <div className="min-w-0 sm:max-w-[70%]">
-              <p className="text-[15px] font-semibold text-[#191C1D]">{text.joinTitle}</p>
-              <p className="mt-1 text-sm text-[#8A8A8E]">{data?.subscription_active ? text.joinText : text.needPay}</p>
-            </div>
-            {data?.subscription_active ? (
-              <button
-                disabled={busy}
-                onClick={join}
-                className="h-11 rounded-xl bg-[#5D87FF] px-6 text-sm font-semibold text-white transition hover:bg-[#4570EA] disabled:opacity-60"
-              >
-                {text.join}
-              </button>
-            ) : (
-              <Link href="/prices" className="flex h-11 items-center rounded-xl bg-[#5D87FF] px-6 text-sm font-semibold text-white transition hover:bg-[#4570EA]">
-                {text.pay}
-              </Link>
-            )}
-          </div>
-        ) : null}
+            {!data?.joined && !closed ? (
+              <div className={`${CARD} flex flex-wrap items-center justify-between gap-4 p-5`}>
+                <div className="min-w-0 sm:max-w-[70%]">
+                  <p className="text-base font-bold text-[#191C1D]">{text.joinTitle}</p>
+                  <p className="mt-1 text-sm text-[#64748B]">{data?.subscription_active ? text.joinText : text.needPay}</p>
+                </div>
+                {data?.subscription_active ? (
+                  <button disabled={busy} onClick={openJoin} className={PRIMARY}>
+                    {text.join}
+                  </button>
+                ) : (
+                  <Link href="/prices" className={PRIMARY}>
+                    {text.pay}
+                  </Link>
+                )}
+              </div>
+            ) : null}
 
-        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_340px]">
-          <div className={CARD}>
-            <h2 className="text-base font-bold text-[#191C1D]">{text.tests}</h2>
-            <div className="mt-1">
-              {data?.tests?.length ? (
-                data.tests.map((test) => (
-                  <TestRow
-                    key={test.id}
-                    test={test}
-                    joined={data.joined}
-                    text={text}
-                    lang={lang}
-                    busy={busy}
-                    onStart={start}
-                    onOpen={openAttempt}
-                    onRefresh={refetch}
-                  />
-                ))
-              ) : (
-                <p className="py-8 text-center text-sm text-[#8A8A8E]">{text.noTests}</p>
-              )}
-            </div>
+            <section className={`${CARD} p-4 sm:p-5`}>
+              <CardHead Icon={CalendarCheck} title={text.tests} text={text.testsText} />
+              <div className="mt-4 flex flex-col gap-3">
+                {data?.tests?.length ? (
+                  data.tests.map((test) => (
+                    <TestRow
+                      key={test.id}
+                      test={test}
+                      joined={data.joined}
+                      text={text}
+                      lang={lang}
+                      busy={busy}
+                      onStart={start}
+                      onOpen={openAttempt}
+                      onRefresh={refetch}
+                    />
+                  ))
+                ) : (
+                  <p className="rounded-2xl bg-[#F7FAFE] py-8 text-center text-sm text-[#64748B]">{text.noTests}</p>
+                )}
+              </div>
+            </section>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <div className={CARD}>
-              <h2 className="text-base font-bold text-[#191C1D]">{closed ? text.winners : text.top}</h2>
-              <div className="mt-3 flex flex-col gap-2.5">
+          <div className="flex min-w-0 flex-col gap-4">
+            <section className={`${CARD} p-5`}>
+              <CardHead Icon={BarChart3} title={closed ? text.winners : text.top}>
+                {!closed && top.length > TOP_SHOWN ? (
+                  <button onClick={() => setShowAll(!showAll)} className="inline-flex items-center gap-1 text-sm font-semibold text-[#1F7AEC]">
+                    {showAll ? text.less : text.all}
+                    <ArrowRight size={16} className={showAll ? '-rotate-90' : ''} />
+                  </button>
+                ) : null}
+              </CardHead>
+              <div className="mt-4 flex flex-col gap-2">
                 {closed
                   ? (data?.winners || []).map((winner) => (
-                      <div key={winner.place} className="flex items-center gap-3 text-sm">
-                        <span className="w-5 font-bold text-[#5D87FF]">{winner.place}</span>
-                        <span className={`flex-1 truncate ${winner.is_disqualified ? 'text-[#8A8A8E] line-through' : 'text-[#191C1D]'}`}>
+                      <div key={winner.place} className="flex items-center gap-3 rounded-2xl bg-[#F7FAFE] px-3 py-2.5 text-sm">
+                        <Medal place={winner.place} />
+                        <span className={`min-w-0 flex-1 truncate font-semibold ${winner.is_disqualified ? 'text-[#94A3B8] line-through' : 'text-[#191C1D]'}`}>
                           {winner.full_name}
                         </span>
-                        <span className="text-[#8A8A8E]">{winner.is_disqualified ? text.disqualified : winner[`prize_${lang}`]}</span>
+                        <span className="shrink-0 text-[#64748B]">{winner.is_disqualified ? text.disqualified : winner[`prize_${lang}`]}</span>
                       </div>
                     ))
-                  : (data?.top || []).map((row) => (
-                      <div key={row.rank} className="flex items-center gap-3 text-sm">
-                        <span className={`w-5 font-bold ${row.rank <= 3 ? 'text-[#5D87FF]' : 'text-[#8A8A8E]'}`}>{row.rank}</span>
-                        <span className="flex-1 truncate text-[#191C1D]">{row.full_name}</span>
-                        <span className="font-semibold text-[#191C1D]">{row.points}</span>
+                  : shownTop.map((row) => (
+                      <div key={`${row.rank}-${row.full_name}`} className="flex items-center gap-3 rounded-2xl bg-[#F7FAFE] px-3 py-2.5">
+                        <Medal place={row.rank} />
+                        <span className="min-w-0 flex-1 truncate text-[15px] font-semibold text-[#191C1D]">{row.full_name}</span>
+                        <span className="shrink-0 rounded-full bg-[#EAF3FF] px-3 py-1 text-sm font-bold text-[#1F7AEC]">{text.ball(row.points)}</span>
                       </div>
                     ))}
-                {!closed && !data?.top?.length ? <p className="py-4 text-center text-sm text-[#8A8A8E]">{text.noTop}</p> : null}
+                {!closed && !top.length ? <p className="py-4 text-center text-sm text-[#64748B]">{text.noTop}</p> : null}
               </div>
-            </div>
+            </section>
 
-            <div className={CARD}>
-              <h2 className="text-base font-bold text-[#191C1D]">{text.prizes}</h2>
-              <div className="mt-3 flex flex-col gap-2">
-                {prizes.map((prize, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
-                    <span className="text-[#8A8A8E]">{text.place(index + 1)}</span>
-                    <span className="font-semibold text-[#191C1D]">{prize}</span>
+            <section className={`${CARD} p-5`}>
+              <CardHead Icon={Gift} title={text.prizes} text={text.prizesText} />
+              <div className="mt-4 flex flex-col gap-2">
+                {prizes.map((prize) => (
+                  <div key={prize.place} className="grid grid-cols-[auto_1fr_40px_auto] items-center gap-3 rounded-2xl bg-[#F7FAFE] px-3 py-2">
+                    <Medal place={prize.place} />
+                    <span className="text-sm font-semibold text-[#191C1D]">{text.place(prize.place)}</span>
+                    <PrizeImage name={prize.key} />
+                    <span className="max-w-[120px] truncate text-right text-sm font-bold text-[#191C1D]">{prize.name}</span>
                   </div>
                 ))}
               </div>
-              <p className="mt-3 text-xs leading-relaxed text-[#8A8A8E]">{text.prizeNote}</p>
-            </div>
+              <p className="mt-3 text-xs leading-relaxed text-[#64748B]">{text.prizeNote}</p>
+            </section>
 
             {pastWinners.length ? (
-              <div className={CARD}>
-                <h2 className="text-base font-bold text-[#191C1D]">{text.pastWinners}</h2>
-                <p className="mt-0.5 text-xs text-[#8A8A8E]">{text.season(past.number)}</p>
-                <div className="mt-3 flex flex-col gap-2">
+              <section className={`${CARD} p-5`}>
+                <CardHead Icon={Trophy} title={text.pastWinners} text={text.season(past.number)} />
+                <div className="mt-4 flex flex-col gap-2">
                   {pastWinners.map((winner) => (
-                    <div key={winner.place} className="flex items-center gap-3 text-sm">
-                      <span className="w-5 font-bold text-[#5D87FF]">{winner.place}</span>
-                      <span className="flex-1 truncate text-[#191C1D]">{winner.full_name}</span>
+                    <div key={winner.place} className="flex items-center gap-3 rounded-2xl bg-[#F7FAFE] px-3 py-2.5">
+                      <Medal place={winner.place} />
+                      <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[#191C1D]">{winner.full_name}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
             ) : null}
           </div>
         </div>
       </div>
+
+      <LigaJoinModal
+        open={joinOpen}
+        lang={lang}
+        grades={data?.grades?.length ? data.grades : fallbackGrades}
+        initialGrade={data?.profile_grade_id}
+        busy={busy}
+        onConfirm={join}
+        onClose={() => setJoinOpen(false)}
+      />
     </LigaGuard>
   )
 }

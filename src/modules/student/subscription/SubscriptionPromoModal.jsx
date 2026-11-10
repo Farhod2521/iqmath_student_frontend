@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSession } from 'next-auth/react'
 import {
   ArrowRight,
   BarChart3,
+  Box,
+  CalendarDays,
+  Check,
   CircleCheckBig,
   Clock3,
   Crown,
-  MessageCircleQuestion,
   PlayCircle,
-  Rocket,
-  Sprout,
   Trophy,
   UsersRound,
   X
@@ -19,6 +19,9 @@ import { getPaymentTrailDays } from '@/services/controllers'
 import { request } from '@/services/api'
 import { URLS } from '@/constants/url'
 import PricingCouponModal from '@/modules/student/payment/components/PricingCouponModal'
+import { releaseModal, requestModal } from '@/utils/modalQueue'
+
+const MODAL_ID = 'subscription-promo'
 
 const LOGO = 'https://api.iqmath.uz/system/logo/logo.png'
 
@@ -34,13 +37,13 @@ const TEXTS = {
       ['tests', 'Mavzu testlari', 'O‘rganganingizni mustahkamlang'],
       ['diag', 'Diagnostika', 'Bilim darajangizni aniqlang'],
       ['battle', 'Battle va reyting', 'Do‘stlar bilan bellashing'],
-      ['mentor', 'Mentor yordami', 'Savollaringizga javob oling'],
       ['parent', 'Ota-ona nazorati', 'Natijalar ota-onaga ko‘rinadi']
     ],
     months: '{{n}} oy',
-    perMonth: 'oyiga {{price}} so‘m',
-    discount: '{{n}}% chegirma',
-    popular: 'Eng mashhur',
+    period: '{{n}} oylik',
+    start: 'Boshlash uchun ideal tanlov',
+    pro: 'Ko‘proq imkoniyat, yuqori natija',
+    popular: 'Eng ommabop',
     choose: 'Tanlash',
     som: 'so‘m'
   },
@@ -55,13 +58,13 @@ const TEXTS = {
       ['tests', 'Тесты по темам', 'Закрепляйте изученное'],
       ['diag', 'Диагностика', 'Определите свой уровень'],
       ['battle', 'Battle и рейтинг', 'Соревнуйтесь с друзьями'],
-      ['mentor', 'Помощь ментора', 'Ответы на ваши вопросы'],
       ['parent', 'Контроль родителей', 'Результаты видны родителям']
     ],
     months: '{{n}} мес.',
-    perMonth: '{{price}} сум в месяц',
-    discount: 'скидка {{n}}%',
-    popular: 'Популярный',
+    period: '{{n}} мес.',
+    start: 'Идеальный выбор для начала',
+    pro: 'Больше возможностей, выше результат',
+    popular: 'Самый популярный',
     choose: 'Выбрать',
     som: 'сум'
   }
@@ -73,17 +76,11 @@ const FEATURE_ICONS = {
   tests: { Icon: CircleCheckBig, color: '#16A34A', soft: '#E3F8EB' },
   diag: { Icon: BarChart3, color: '#7C3AED', soft: '#EFE7FF' },
   battle: { Icon: Trophy, color: '#F59E0B', soft: '#FFF3DB' },
-  mentor: { Icon: MessageCircleQuestion, color: '#0EA5E9', soft: '#E0F4FD' },
   parent: { Icon: UsersRound, color: '#EC4899', soft: '#FDE7F2' }
 }
 
-// Tarif ikonkasi: eng qisqasi — nihol, eng uzuni — toj, o'rtadagilari — raketa
-const planIcon = (index, total) =>
-  index === 0
-    ? { Icon: Sprout, color: '#16A34A', soft: '#E3F8EB' }
-    : index === total - 1
-      ? { Icon: Crown, color: '#F59E0B', soft: '#FFF3DB' }
-      : { Icon: Rocket, color: '#2563EB', soft: '#E6EEFF' }
+// "Eng ommabop" tarif (Start Pro) — admin paneldagi kategoriya bo'yicha
+const isPopular = (plan) => /popular|ommabop|попул/i.test(plan?.category?.title_uz || plan?.category?.title_ru || '')
 
 const fill = (text, args) => Object.entries(args).reduce((out, [k, v]) => out.replace(`{{${k}}}`, v), text)
 const formatMoney = (value) =>
@@ -105,6 +102,7 @@ export default function SubscriptionPromoModal() {
   const [info, setInfo] = useState(null)
   const [plans, setPlans] = useState([])
   const [selectedPlan, setSelectedPlan] = useState(null)
+  const [months, setMonths] = useState(null)
 
   const storageKey = `iq_promo_${session?.id || session?.user?.id || 'user'}`
 
@@ -116,6 +114,7 @@ export default function SubscriptionPromoModal() {
 
     let alive = true
     let timer
+    let cancel = () => {}
     getPaymentTrailDays()
       .then((res) => {
         const data = res?.data || {}
@@ -123,10 +122,14 @@ export default function SubscriptionPromoModal() {
         setInfo(data)
         timer = setTimeout(() => {
           if (!alive) return
-          try {
-            sessionStorage.setItem(storageKey, '1')
-          } catch {}
-          setOpen(true)
+          // Boshqa oyna (masalan kundalik mukofot) ochiq bo'lsa — u yopilgach chiqadi
+          cancel = requestModal(MODAL_ID, () => {
+            if (!alive) return
+            try {
+              sessionStorage.setItem(storageKey, '1')
+            } catch {}
+            setOpen(true)
+          })
         }, 900)
       })
       .catch(() => {})
@@ -136,19 +139,27 @@ export default function SubscriptionPromoModal() {
       .get(URLS.paymentPlans)
       .then((res) => {
         const list = Array.isArray(res?.data) ? res.data : res?.data?.data || []
-        const active = list.filter((p) => p.is_active !== false)
-        // Bir nechta tarif (Start, Start Pro) bo'lsa — eng arzon tarifning muddatlari ko'rsatiladi
-        const base = [...active].sort((a, b) => a.months - b.months || a.sale_price - b.sale_price)[0]
-        const sameTariff = base?.name_uz ? active.filter((p) => p.name_uz === base.name_uz) : active
-        if (alive) setPlans(sameTariff.sort((a, b) => a.months - b.months))
+        // Barcha faol tariflar (Start, Start Pro) — muddat almashtirgich bilan ko'rsatiladi
+        if (alive) setPlans(list.filter((p) => p.is_active !== false))
       })
       .catch(() => {})
 
     return () => {
       alive = false
       clearTimeout(timer)
+      cancel()
     }
   }, [session?.accessToken, storageKey])
+
+  // Oyna yopilganda navbatdagi oynaga yo'l beriladi
+  const wasOpen = useRef(false)
+  useEffect(() => {
+    if (open) wasOpen.current = true
+    else if (wasOpen.current) {
+      wasOpen.current = false
+      releaseModal(MODAL_ID)
+    }
+  }, [open])
 
   useEffect(() => {
     if (!open) return undefined
@@ -164,16 +175,28 @@ export default function SubscriptionPromoModal() {
     // To'lov oynasi (promokod → to'lov) kutgan ko'rinishda
     setSelectedPlan({
       id: plan.id,
-      name: (lang === 'ru' ? plan.name_ru : plan.name_uz) || fill(text.months, { n: plan.months }),
+      name: [lang === 'ru' ? plan.name_ru : plan.name_uz, fill(text.months, { n: plan.months })]
+        .filter(Boolean)
+        .join(' — '),
       price: sale,
       originalPrice: discount > 0 ? Math.round(sale / (1 - discount / 100)) : sale,
       months: plan.months
     })
   }
 
-  const popularId =
-    plans.find((p) => /popular|ommabop|попул/i.test(p.category?.title_uz || p.category?.title_ru || ''))?.id ||
-    plans[Math.floor(plans.length / 2)]?.id
+  // Muddatlar (1 / 3 / 12 oylik) — har birida tariflar (Start, Start Pro) yonma-yon
+  const monthOptions = useMemo(() => [...new Set(plans.map((p) => Number(p.months)))].sort((a, b) => a - b), [plans])
+  const periodSaving = useMemo(() => {
+    const cheapest = (n) => Math.min(...plans.filter((p) => Number(p.months) === n).map((p) => Number(p.sale_price) / n))
+    const base = monthOptions.length ? cheapest(monthOptions[0]) : 0
+    return Object.fromEntries(
+      monthOptions.slice(1).map((n) => [n, base > 0 ? Math.max(0, Math.round((1 - cheapest(n) / base) * 100)) : 0])
+    )
+  }, [plans, monthOptions])
+  const activeMonths = monthOptions.includes(months) ? months : monthOptions[0]
+  const visible = plans
+    .filter((p) => Number(p.months) === activeMonths)
+    .sort((a, b) => Number(isPopular(a)) - Number(isPopular(b)) || a.sale_price - b.sale_price)
 
   const days = Number(info?.days_until_next_payment) || 0
   const trialActive = days > 0
@@ -263,75 +286,131 @@ export default function SubscriptionPromoModal() {
                 })}
               </div>
 
-              {plans.length ? (
-                <div className={`mt-6 grid grid-cols-1 gap-4 ${plans.length >= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
-                  {plans.map((plan, index) => {
-                    const popular = plan.id === popularId
-                    const sale = Number(plan.sale_price) || 0
-                    const months = Number(plan.months) || 1
-                    const discount = Number(plan.discount_percent) || 0
-                    const icon = planIcon(index, plans.length)
-                    return (
-                      <div
-                        key={plan.id}
-                        className={`relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-[22px] px-4 py-4 text-left transition duration-300 hover:-translate-y-1 sm:flex sm:flex-col sm:items-center sm:gap-0 sm:px-4 sm:pb-5 sm:pt-7 sm:text-center ${
-                          popular
-                            ? 'border-2 border-[#1D6BFF] bg-[#F3F7FF] shadow-[0_24px_44px_-28px_rgba(29,107,255,0.8)]'
-                            : 'border border-[#EDF1F7] bg-white shadow-[0_18px_40px_-34px_rgba(15,23,42,0.55)]'
-                        }`}
-                      >
-                        {popular ? (
-                          <span className="absolute -top-3 left-4 whitespace-nowrap rounded-full bg-[#1D6BFF] px-3 py-0.5 text-[12px] font-bold text-white sm:-top-3.5 sm:left-1/2 sm:-translate-x-1/2 sm:px-4 sm:py-1 sm:text-[12.5px]">
-                            {text.popular}
-                          </span>
-                        ) : null}
-                        <span
-                          className="flex h-12 w-12 items-center justify-center rounded-2xl sm:h-14 sm:w-14"
-                          style={{ backgroundColor: icon.soft, color: icon.color }}
-                        >
-                          <icon.Icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.2} />
-                        </span>
-                        {/* Telefonda: muddat, narx va chegirma bir ustunda; kompyuterda ustma-ust markazda */}
-                        <div className="min-w-0 sm:contents">
-                          <p className="text-[17px] font-extrabold leading-tight text-[#0B1B3F] sm:mt-3 sm:text-[22px]">
-                            {fill(text.months, { n: months })}
-                            <span className="ml-2 text-[15px] sm:hidden">
-                              · {formatMoney(sale)} {text.som}
-                            </span>
-                          </p>
-                          <p className="mt-1 hidden text-[19px] font-extrabold text-[#0B1B3F] sm:block">
-                            {formatMoney(sale)} {text.som}
-                          </p>
-                          <p className="mt-0.5 text-[12.5px] text-[#64748B]">
-                            {fill(text.perMonth, { price: formatMoney(sale / months) })}
-                            {discount > 0 ? (
-                              <span className="ml-1.5 font-bold text-[#15803D] sm:hidden">−{discount}%</span>
-                            ) : null}
-                          </p>
-                          <span
-                            className={`mt-2 hidden rounded-full bg-[#DCFCE7] px-3 py-1 text-[12.5px] font-bold text-[#15803D] sm:inline-block ${
-                              discount > 0 ? '' : 'sm:invisible'
+              {visible.length ? (
+                <>
+                  {/* Muddat almashtirgich: 1 / 3 / 12 oylik */}
+                  {monthOptions.length > 1 ? (
+                    <div role="tablist" className="mt-6 flex w-full rounded-2xl border border-[#E6EBF5] bg-white p-1.5">
+                      {monthOptions.map((n) => {
+                        const active = n === activeMonths
+                        return (
+                          <button
+                            key={n}
+                            type="button"
+                            role="tab"
+                            aria-selected={active}
+                            onClick={() => setMonths(n)}
+                            className={`inline-flex min-w-0 flex-1 flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 whitespace-nowrap rounded-xl px-2 py-2 text-[14px] font-bold transition sm:text-[15px] ${
+                              active
+                                ? 'bg-[#1D6BFF] text-white shadow-[0_10px_20px_-10px_rgba(29,107,255,0.9)]'
+                                : 'text-[#0B1B3F] hover:bg-[#F4F7FC]'
                             }`}
                           >
-                            {fill(text.discount, { n: discount })}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => choosePlan(plan)}
-                          className={`inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl px-4 text-[15px] font-bold transition sm:mt-4 sm:h-12 sm:w-full sm:text-[16px] ${
-                            popular
-                              ? 'bg-[#1D6BFF] text-white shadow-[0_12px_24px_-12px_rgba(29,107,255,0.9)] hover:bg-[#1557D6]'
-                              : 'border-2 border-[#1D6BFF] text-[#1D4ED8] hover:bg-[#EEF4FF]'
+                            {fill(text.period, { n })}
+                            {periodSaving[n] > 0 ? (
+                              <span
+                                className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                                  active ? 'bg-white/20 text-white' : 'bg-[#DCFCE7] text-[#16A34A]'
+                                }`}
+                              >
+                                -{periodSaving[n]}%
+                              </span>
+                            ) : null}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ) : null}
+
+                  {/* Tariflar: Start va Start Pro yonma-yon */}
+                  <div className={`mt-4 grid grid-cols-1 gap-4 ${visible.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
+                    {visible.map((plan) => {
+                      const highlighted = isPopular(plan)
+                      const PlanIcon = highlighted ? Crown : Box
+                      const sale = Number(plan.sale_price) || 0
+                      const discount = Number(plan.discount_percent) || 0
+                      const original = discount > 0 ? Math.round(sale / (1 - discount / 100)) : sale
+                      const name = lang === 'ru' ? plan.name_ru : plan.name_uz
+                      const benefits = (plan.benefits || []).filter((b) => b.is_selected)
+                      return (
+                        <div
+                          key={plan.id}
+                          className={`relative flex flex-col rounded-[22px] bg-white p-4 text-left transition duration-300 hover:-translate-y-1 sm:p-5 ${
+                            highlighted
+                              ? 'border-2 border-[#1D6BFF] shadow-[0_24px_44px_-28px_rgba(29,107,255,0.8)]'
+                              : 'border border-[#E6EBF5] shadow-[0_18px_40px_-34px_rgba(15,23,42,0.55)]'
                           }`}
                         >
-                          {text.choose}
-                          <ArrowRight size={18} />
-                        </button>
-                      </div>
-                    )
-                  })}
-                </div>
+                          {highlighted ? (
+                            <span className="absolute -right-0.5 -top-0.5 inline-flex items-center gap-1 rounded-bl-2xl rounded-tr-[22px] bg-[#1D6BFF] px-3 py-1.5 text-[12px] font-bold text-white">
+                              <Crown size={13} className="fill-white" />
+                              {(lang === 'ru' ? plan.category?.title_ru : plan.category?.title_uz) || text.popular}
+                            </span>
+                          ) : null}
+
+                          <div className="flex items-center gap-3">
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#EAF1FF] text-[#1D6BFF]">
+                              <PlanIcon size={22} strokeWidth={1.8} />
+                            </span>
+                            <div className="min-w-0">
+                              <h3 className="truncate text-[18px] font-extrabold text-[#0B1B3F]">{name}</h3>
+                              <p className="text-[12.5px] leading-snug text-[#64748B]">
+                                {highlighted ? text.pro : text.start}
+                              </p>
+                            </div>
+                          </div>
+
+                          <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-lg bg-[#F1F4F9] px-2.5 py-1 text-[13px] font-bold text-[#0F172A]">
+                            <CalendarDays size={14} className="text-[#1D6BFF]" />
+                            {fill(text.period, { n: plan.months })}
+                          </span>
+
+                          <div className="mt-2">
+                            {discount > 0 && original > sale ? (
+                              <div className="flex items-center gap-2">
+                                <span className="text-[14px] text-[#94A3B8] line-through">
+                                  {formatMoney(original)} {text.som}
+                                </span>
+                                <span className="rounded-full bg-[#FEE2E2] px-2 py-0.5 text-[12px] font-bold text-[#DC2626]">
+                                  -{discount}%
+                                </span>
+                              </div>
+                            ) : null}
+                            <p className="text-[24px] font-extrabold leading-tight tracking-tight text-[#0B1B3F] sm:text-[26px]">
+                              {formatMoney(sale)} {text.som}
+                            </p>
+                          </div>
+
+                          {benefits.length ? (
+                            <ul className="mt-3 flex-1 space-y-1.5 rounded-2xl bg-[#F5F8FD] px-3.5 py-3">
+                              {benefits.map((benefit) => (
+                                <li key={benefit.id} className="flex items-center gap-2 text-[13.5px] text-[#1E293B]">
+                                  <Check size={15} strokeWidth={3} className="shrink-0 text-[#1D6BFF]" />
+                                  {lang === 'ru' ? benefit.title_ru : benefit.title_uz}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="flex-1" />
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => choosePlan(plan)}
+                            className={`mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-2xl px-4 text-[15px] font-bold transition active:scale-[0.98] ${
+                              highlighted
+                                ? 'bg-[#1D6BFF] text-white shadow-[0_12px_24px_-12px_rgba(29,107,255,0.9)] hover:bg-[#1557D6]'
+                                : 'border-2 border-[#1D6BFF] text-[#1D4ED8] hover:bg-[#EEF4FF]'
+                            }`}
+                          >
+                            {text.choose}
+                            <ArrowRight size={18} />
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
               ) : null}
             </div>
           </div>

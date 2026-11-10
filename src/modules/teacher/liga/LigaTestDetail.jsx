@@ -185,7 +185,7 @@ const Questions = ({ test, subjects, onChange }) => {
               <option value="choice">Variantli</option>
               <option value="text">Matnli javob</option>
             </IconField>
-            <IconField label="Savol balli (to'g'ri javob uchun)" Icon={BarChart3} required type="number" min={1} value={form.score} onChange={update('score')} />
+            <IconField label="Savol goli (to'g'ri javob uchun)" Icon={BarChart3} required type="number" min={1} value={form.score} onChange={update('score')} />
           </div>
           <MathToolbar getEditor={getEditor} />
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -299,7 +299,7 @@ const Questions = ({ test, subjects, onChange }) => {
                   </div>
                 ) : null}
                 <p className="mt-0.5 text-xs text-[#8A8A8E]">
-                  {question.subject_name} · {question.score} ball ·{' '}
+                  {question.subject_name} · {question.score} gol ·{' '}
                   {question.question_type === 'text' ? (
                     <>
                       Javob: <MathHtml inline html={answerHtml(question.correct_text_answer)} />
@@ -352,7 +352,7 @@ const Results = ({ test }) => {
   const { data: response } = useGetQuery({ key: ['liga-participants', test.id], url, params, staleTime: 0, refetchOnMount: 'always' })
   const rows = response?.data?.results || []
   const total = response?.data?.count || 0
-  const head = ["O'rin", 'F.I.Sh.', 'Telefon', 'Maktab', 'Holat', 'Boshlagan', 'Yakunlagan', 'Ishlagan vaqti', "To'g'ri", 'Xato', 'Ball']
+  const head = ["O'rin", 'F.I.Sh.', 'Telefon', 'Maktab', 'Holat', 'Boshlagan', 'Yakunlagan', 'Ishlagan vaqti', "To'g'ri", 'Xato', 'Gol']
 
   return (
     <div className={CARD}>

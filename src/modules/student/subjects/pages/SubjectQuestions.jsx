@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 
-import { useGetQuery } from '@/hooks'
+import { useGetQuery, useMyTariff } from '@/hooks'
 import usePostQuery from '@/hooks/api/usePostQuery'
 import { URLS } from '@/constants/url'
 import { KEYS } from '@/constants/key'
@@ -65,6 +65,8 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
   const { mutate: sendToMentor } = usePostQuery({
     listKeyId: 'send-to-mentor'
   })
+  // Start Pro tarifi (mentorga yuborish faqat shunda)
+  const { isPro } = useMyTariff()
 
   useEffect(() => {
     const loadMathQuillStyles = async () => {
@@ -456,12 +458,15 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
             >
               {t('close')}
             </Button>
-            <Button
-              className="px-4 bg-[#007AFF] py-2 rounded-md  text-white hover:bg-blue-600 transition-colors"
-              onPress={handleSendAllToMentor}
-            >
-              {t('sendMentor')}
-            </Button>
+            {/* Misolni mentorga yuborish — faqat Start Pro (oddiy Start'da yo'q) */}
+            {isPro ? (
+              <Button
+                className="px-4 bg-[#007AFF] py-2 rounded-md  text-white hover:bg-blue-600 transition-colors"
+                onPress={handleSendAllToMentor}
+              >
+                {t('sendMentor')}
+              </Button>
+            ) : null}
           </div>
         </SimpleModal>
       )}

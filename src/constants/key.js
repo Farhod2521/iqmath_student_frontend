@@ -29,6 +29,8 @@ export const KEYS = {
   studentStreak: 'studentStreak',
   libraryCount: 'libraryCount',
   studentStreakCheckin: 'studentStreakCheckin',
+  studentGol: 'studentGol',
+  walletHistory: 'walletHistory',
   studentRating: 'studentRating',
   teacherSubjects: 'teacherSubjects',
   teacherStudents: 'teacherStudents',

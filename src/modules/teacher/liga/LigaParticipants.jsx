@@ -66,7 +66,7 @@ const Participants = ({ season, grades }) => {
           Excel
         </button>
       </div>
-      <Table head={["O'rin", 'Sinf', 'F.I.Sh.', 'Telefon', 'Viloyat', 'Maktab', 'Holat', "To'g'ri", 'Ball', 'Vaqt']}>
+      <Table head={["O'rin", 'Sinf', 'F.I.Sh.', 'Telefon', 'Viloyat', 'Maktab', 'Holat', "To'g'ri", 'Gol', 'Vaqt']}>
         {rows.map((row) => (
           <tr key={row.attempt_id}>
             <td className={`${TD} font-semibold`}>{row.rank || '—'}</td>

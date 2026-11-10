@@ -1,4 +1,4 @@
-import { LuBookText, LuUser, LuHouse } from 'react-icons/lu'
+import { LuBookText, LuUser, LuHouse, LuHistory } from 'react-icons/lu'
 import { TbCheckbox, TbCoins } from 'react-icons/tb'
 import { FaClipboardList, FaCoins, FaMoneyBillWave, FaTags } from 'react-icons/fa6'
 import { BsBarChart } from 'react-icons/bs'
@@ -16,6 +16,8 @@ import { MdOutlinePayments, MdWarning } from 'react-icons/md'
 import { FaAddressBook, FaDollarSign, FaTag } from 'react-icons/fa'
 import ProductsIcon from '@/components/icons/products'
 import { IoLibraryOutline } from 'react-icons/io5'
+import { FaTelegramPlane } from 'react-icons/fa'
+import { SOCIAL_LINKS } from '@/constants/socialLinks'
 
 export const MenuType = { LINK: 'LINK', GROUP: 'GROUP', TITLE: 'TITLE' }
 
@@ -767,6 +769,36 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.TUTOR],
+    type: MenuType.LINK
+  },
+  {
+    // Tarix — ball, tanga, so'm va gol bo'yicha barcha kirim/chiqimlar
+    key: 'wallet-history',
+    path: '/dashboard/student/history',
+    label: t('walletHistoryMenu', 'Tarix'),
+    icon: (isActive) => (
+      <LuHistory
+        className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+        size={24}
+      />
+    ),
+    roles: [RolesList.STUDENT],
+    type: MenuType.LINK
+  },
+  {
+    // Bog'lanish — yordam uchun Telegram (@Iqmath_help), yangi oynada ochiladi.
+    // Faqat oddiy Start tarifida (Start Pro'da "Chat" bor) — SidebarMenu'da filtrlanadi
+    key: 'contact-help',
+    path: SOCIAL_LINKS.telegramHelp,
+    external: true,
+    label: t('contact', 'Bog‘lanish'),
+    icon: () => (
+      <FaTelegramPlane
+        className="text-[#5d87ff] group-hover:text-white transition-colors duration-300"
+        size={24}
+      />
+    ),
+    roles: [RolesList.STUDENT],
     type: MenuType.LINK
   }
 ]

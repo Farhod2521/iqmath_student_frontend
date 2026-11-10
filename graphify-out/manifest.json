@@ -6480,15 +6480,15 @@
     "semantic_hash": ""
   },
   "src/modules/student/liga/LigaHome.jsx": {
-    "mtime": 1793878333.9663663,
-    "seen": 1793879898.8459117,
-    "ast_hash": "57bff2fd049979d05bc3df8c8f449f5d",
+    "mtime": 1794199833.6881866,
+    "seen": 1794199852.4015477,
+    "ast_hash": "aec821c75c5bf310da0aac5e434bdcdc",
     "semantic_hash": ""
   },
   "src/modules/student/liga/LigaTestRun.jsx": {
-    "mtime": 1793967335.0349019,
-    "seen": 1793967408.336244,
-    "ast_hash": "0ec5acd2844b28113af0c8ec8959126b",
+    "mtime": 1794199624.9651587,
+    "seen": 1794199852.401549,
+    "ast_hash": "eb7d1f8ab55a3e565845056b1d1412ed",
     "semantic_hash": ""
   },
   "src/modules/student/parent-qr/ParentQr.jsx": {
@@ -6630,9 +6630,9 @@
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaParts.jsx": {
-    "mtime": 1793960438.954607,
-    "seen": 1793961875.0002904,
-    "ast_hash": "c31776400cadf343ee69215326787fcd",
+    "mtime": 1794199624.957649,
+    "seen": 1794199852.4016478,
+    "ast_hash": "fcb5bed83ad80237bcb0eb7d52f7fe09",
     "semantic_hash": ""
   },
   "src/modules/teacher/liga/LigaSeasonPage.jsx": {
@@ -7485,6 +7485,12 @@
     "mtime": 1793949057.004229,
     "seen": 1793961875.0002952,
     "ast_hash": "a40994f001cadfbb2bd58097cd752670",
+    "semantic_hash": ""
+  },
+  "public/images/league/student-hero.webp": {
+    "mtime": 1794199823.257437,
+    "seen": 1794199852.4020717,
+    "ast_hash": "fe99486bf66c3c9c9971fd660e07b21e",
     "semantic_hash": ""
   }
 }

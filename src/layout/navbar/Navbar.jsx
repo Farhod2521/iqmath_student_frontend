@@ -2,7 +2,8 @@ import { useSession } from 'next-auth/react'
 import { useTranslation } from 'react-i18next'
 import { pluralRu } from '@/utils/pluralRu'
 import { get } from 'lodash'
-import { Bell, Flame, Gem, Menu, Search } from 'lucide-react'
+import { Bell, Gem, Menu, Search } from 'lucide-react'
+import { FaFutbol } from 'react-icons/fa'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { request } from '@/services/api'
 import { useGetQuery } from '@/hooks'
@@ -57,6 +58,14 @@ const Navbar = () => {
   )
   const streakDays = get(streakData, 'streak', 0)
 
+  // Jami gol (kundalik kirish + haftalik testlar) — StudentScore.gol
+  const { data: golData } = useQuery(
+    [KEYS.studentGol, session?.id],
+    () => request.get(URLS.dailyReward).then((res) => res.data),
+    { enabled: !!session?.accessToken && isStudent, staleTime: 5 * 60_000, refetchOnWindowFocus: false, retry: 1 }
+  )
+  const golTotal = get(golData, 'gol_total', 0)
+
   // Obunasi faol o'quvchilar ismi oldida oltin toj chiqadi
   const { data: subscription } = useGetQuery({
     key: KEYS.subscription,
@@ -109,15 +118,22 @@ const Navbar = () => {
 
         {isStudent && (
           <div className="order-last grid w-full grid-cols-4 gap-1.5 sm:flex sm:w-auto sm:basis-full sm:flex-wrap sm:items-center sm:gap-2 2xl:order-none 2xl:basis-auto 2xl:shrink-0">
-            <div className="flex min-w-0 items-center justify-center gap-1 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-2 sm:gap-1.5 sm:pl-1.5 sm:pr-3">
+            <div
+              className="flex min-w-0 items-center justify-center gap-1 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-2 sm:gap-1.5 sm:pl-1.5 sm:pr-3"
+              title={
+                i18n.language === 'ru'
+                  ? `Серия: ${streakDays} ${pluralRu(streakDays, ['день', 'дня', 'дней'])}`
+                  : `Ketma-ket: ${streakDays} kun`
+              }
+            >
               <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-100 sm:h-7 sm:w-7">
-                <Flame size={14} className="fill-[#F97316] text-[#F97316]" />
+                <FaFutbol size={15} className="text-[#191C1D]" aria-label="gol" />
               </div>
+              {/* Jami gol: kundalik kirish (+1) va haftalik testlar */}
               <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
-                <span className="text-sm font-bold text-[#191C1D] sm:text-base">{streakDays}</span>
+                <span className="text-sm font-bold text-[#191C1D] sm:text-base">{golTotal}</span>
                 <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">
-                  {/* RU2: «1 день / 2 дня / 5 дней» */}
-                  {i18n.language === 'ru' ? pluralRu(streakDays, ['день', 'дня', 'дней']) : t('studentHome.streakUnit')}
+                  {i18n.language === 'ru' ? pluralRu(golTotal, ['гол', 'гола', 'голов']) : 'gol'}
                 </span>
               </span>
             </div>

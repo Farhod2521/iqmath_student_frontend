@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic'
 import { useTranslation } from 'react-i18next'
 import { MathJax, MathJaxContext } from 'better-react-mathjax'
 import {
-  AlertTriangle, ArrowLeft, ArrowRight, BarChart3, Check, CheckCircle2, ChevronRight, Clock, FileText, Info, Layers, Target, Timer
+  AlertTriangle, ArrowLeft, ArrowRight, BarChart3, Check, CheckCircle2, ChevronRight, Clock, FileText, Info, Layers, Target, Timer,
+  Trophy, XCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import LigaDialog from '@/components/modal/LigaDialog'
@@ -38,9 +39,9 @@ const TEXT = {
     subject: 'Fan',
     questionCount: 'Savollar soni',
     allotted: 'Ajratilgan vaqt',
-    maxScore: 'Maksimal ball',
+    maxScore: 'Maksimal gol',
     minutes: (n) => `${n} daqiqa`,
-    points: (n) => `${n} ball`,
+    points: (n) => `${n} gol`,
     rules: 'Test qoidalari',
     rulesOk: 'Tushunarli',
     rulesList: [
@@ -61,13 +62,16 @@ const TEXT = {
     finishTitle: 'Testni yakunlash',
     resultTitle: 'Test yakunlandi',
     expired: 'Vaqt tugadi. Belgilangan javoblar hisobga olindi, qolganlari xato deb hisoblandi.',
-    score: 'Ball',
+    score: 'Gol',
     correct: 'To‘g‘ri',
     wrong: 'Xato',
     time: 'Vaqt',
     back: 'Liga sahifasiga qaytish',
     notice: 'Skrinshot olish mumkin emas',
-    saveError: 'Javob saqlanmadi, internetni tekshiring'
+    saveError: 'Javob saqlanmadi, internetni tekshiring',
+    unansweredPart: (n) => `shundan ${n} tasi javobsiz`,
+    bySubject: 'Fanlar bo‘yicha natija',
+    correctOf: (correct, total) => `${correct} / ${total} to‘g‘ri`
   },
   ru: {
     week: (n) => `Тест недели ${n}`,
@@ -88,9 +92,9 @@ const TEXT = {
     subject: 'Предмет',
     questionCount: 'Количество вопросов',
     allotted: 'Выделенное время',
-    maxScore: 'Максимальный балл',
+    maxScore: 'Максимум голов',
     minutes: (n) => `${n} мин`,
-    points: (n) => `${n} баллов`,
+    points: (n) => `${n} гол.`,
     rules: 'Правила теста',
     rulesOk: 'Понятно',
     rulesList: [
@@ -111,13 +115,16 @@ const TEXT = {
     finishTitle: 'Завершение теста',
     resultTitle: 'Тест завершён',
     expired: 'Время вышло. Учтены отмеченные ответы, остальные считаются неверными.',
-    score: 'Баллы',
+    score: 'Голы',
     correct: 'Верно',
     wrong: 'Неверно',
     time: 'Время',
     back: 'Вернуться в лигу',
     notice: 'Скриншоты запрещены',
-    saveError: 'Ответ не сохранён, проверьте интернет'
+    saveError: 'Ответ не сохранён, проверьте интернет',
+    unansweredPart: (n) => `из них ${n} без ответа`,
+    bySubject: 'Результат по предметам',
+    correctOf: (correct, total) => `${correct} / ${total} верно`
   }
 }
 
@@ -148,28 +155,103 @@ const TimerCard = ({ remaining, label }) => (
   </div>
 )
 
-const Result = ({ attempt, text, onBack }) => (
-  <div className="mx-auto max-w-md rounded-2xl border border-[#F0F0F0] bg-white p-6 text-center shadow-sm">
-    <h1 className="text-xl font-bold text-[#191C1D]">{text.resultTitle}</h1>
-    {attempt.status === 'expired' ? <p className="mt-2 text-sm text-[#8A8A8E]">{text.expired}</p> : null}
-    <div className="mt-6 grid grid-cols-2 gap-4">
-      {[
-        [text.score, `${attempt.score} / ${attempt.max_score}`],
-        [text.time, clock(attempt.duration_seconds)],
-        [text.correct, attempt.correct_count],
-        [text.wrong, attempt.wrong_count]
-      ].map(([label, value]) => (
-        <div key={label}>
-          <p className="text-xs text-[#8A8A8E]">{label}</p>
-          <p className="text-xl font-bold text-[#191C1D]">{value}</p>
+const Result = ({ attempt, text }) => {
+  const total = attempt.total_questions || 0
+  const unanswered = Math.max(0, total - (attempt.answered_count || 0))
+  const percent = total ? Math.round((attempt.correct_count / total) * 100) : 0
+  const tiles = [
+    [CheckCircle2, 'bg-[#E7F8EF] text-[#15803D]', text.correct, attempt.correct_count, null],
+    [XCircle, 'bg-[#FEECEC] text-[#DC2626]', text.wrong, attempt.wrong_count, unanswered ? text.unansweredPart(unanswered) : null],
+    [Clock, 'bg-[#EAF3FF] text-[#1F7AEC]', text.time, clock(attempt.duration_seconds), null]
+  ]
+
+  return (
+    <div className="mx-auto flex max-w-[880px] flex-col gap-4">
+      <nav className="flex flex-wrap items-center gap-1.5 text-sm text-[#475569]">
+        <Link href="/dashboard/student/liga" className="transition hover:text-[#1F7AEC]">
+          {text.liga}
+        </Link>
+        {attempt.grade_name ? (
+          <>
+            <ChevronRight size={15} className="text-[#94A3B8]" />
+            <span>{text.grade(attempt.grade_name)}</span>
+          </>
+        ) : null}
+        {attempt.week_number ? (
+          <>
+            <ChevronRight size={15} className="text-[#94A3B8]" />
+            <span className="font-semibold text-[#191C1D]">{text.week(attempt.week_number)}</span>
+          </>
+        ) : null}
+      </nav>
+
+      <section className={`${CARD} p-5 text-center sm:p-8`}>
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-[#EAF3FF] text-[#1F7AEC]">
+          <Trophy size={32} />
+        </span>
+        <h1 className="mt-4 text-2xl font-bold text-[#191C1D]">{text.resultTitle}</h1>
+        {attempt.status === 'expired' ? <p className="mx-auto mt-2 max-w-md text-sm text-[#64748B]">{text.expired}</p> : null}
+
+        <p className="mt-6 text-sm text-[#64748B]">{text.score}</p>
+        <p className="text-5xl font-bold tabular-nums text-[#1F7AEC]">
+          {attempt.score}
+          <span className="text-2xl text-[#94A3B8]"> / {attempt.max_score}</span>
+        </p>
+        <div className="mx-auto mt-4 flex max-w-md items-center gap-3">
+          <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-[#E4ECF8]">
+            <span className="block h-full rounded-full bg-[#22C55E]" style={{ width: `${percent}%` }} />
+          </span>
+          <span className="text-sm font-semibold tabular-nums text-[#475569]">{percent}%</span>
         </div>
-      ))}
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {tiles.map(([Icon, color, label, value, note]) => (
+            <div key={label} className="flex items-center gap-3 rounded-2xl border border-[#EDF1F8] p-4 text-left">
+              <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${color}`}>
+                <Icon size={22} />
+              </span>
+              <div className="min-w-0">
+                <p className="text-xs text-[#64748B]">{label}</p>
+                <p className="text-xl font-bold tabular-nums text-[#191C1D]">{value}</p>
+                {note ? <p className="text-xs text-[#94A3B8]">{note}</p> : null}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {attempt.by_subject?.length ? (
+        <section className={`${CARD} p-5 sm:p-6`}>
+          <h2 className="flex items-center gap-3 text-lg font-bold text-[#191C1D]">
+            <Layers size={20} className="text-[#1F7AEC]" />
+            {text.bySubject}
+          </h2>
+          <div className="mt-4 flex flex-col gap-3">
+            {attempt.by_subject.map((row) => {
+              const rowTotal = row.total || row.answered
+              return (
+                <div key={row.subject} className="rounded-2xl bg-[#F7FAFE] p-3.5">
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <span className="font-semibold text-[#191C1D]">{row.subject}</span>
+                    <span className="font-semibold tabular-nums text-[#475569]">{text.correctOf(row.correct, rowTotal)}</span>
+                  </div>
+                  <span className="mt-2 block h-2 overflow-hidden rounded-full bg-[#E4ECF8]">
+                    <span className="block h-full rounded-full bg-[#1F7AEC]" style={{ width: `${rowTotal ? (row.correct / rowTotal) * 100 : 0}%` }} />
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      ) : null}
+
+      <Link href="/dashboard/student/liga" className="mx-auto inline-flex h-12 items-center gap-2 rounded-2xl bg-[#1F7AEC] px-6 text-sm font-semibold text-white transition hover:bg-[#1767CC]">
+        <ArrowLeft size={18} />
+        {text.back}
+      </Link>
     </div>
-    <button onClick={onBack} className="mt-6 h-11 w-full rounded-xl bg-[#5D87FF] text-sm font-semibold text-white transition hover:bg-[#4570EA]">
-      {text.back}
-    </button>
-  </div>
-)
+  )
+}
 
 /** Test ishlash: vaqt serverdan olinadi, har javob darhol saqlanadi, sahifa yopilsa o'sha joyidan davom etadi */
 const LigaTestRun = () => {
@@ -286,7 +368,7 @@ const LigaTestRun = () => {
   if (!attempt) return <div className="h-64 animate-pulse rounded-2xl bg-gray-100" />
 
   if (!running) {
-    return <Result attempt={attempt} text={text} onBack={() => router.push('/dashboard/student/liga')} />
+    return <Result attempt={attempt} text={text} />
   }
 
   const questions = attempt.questions

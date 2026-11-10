@@ -1,6 +1,5 @@
 {
   "2": "h",
-  "3": "QuestionForm.jsx",
   "4": "dependencies",
   "9": "ChatBoxModule.js",
   "11": "T",
@@ -26,9 +25,7 @@
   "86": "ckeditor.js",
   "102": "devDependencies",
   "103": "scripts",
-  "109": "StudentExampleDetailLayout.jsx",
   "111": "Editing this README",
-  "113": "TeacherGroupDetail.jsx",
   "119": "compilerOptions",
   "120": "next.config.mjs",
   "129": "test-calc/index.js",

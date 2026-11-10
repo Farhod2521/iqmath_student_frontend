@@ -821,6 +821,8 @@
   "premiumUntil": "until {{date}}",
   "extendPlan": "Extend",
   "makePayment": "Pay now",
+  "tariffPill": "Plan",
+  "tariffTrial": "Trial",
   "studentHome": {
     "menuLabel": "Home",
     "greeting": "Hi, {{name}}!",
