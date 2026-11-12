@@ -39,7 +39,7 @@ const Winners = ({ season }) => {
 
   return (
     <div className={CARD}>
-      <Table head={['Sinf', "O'rin", 'F.I.Sh.', 'Telefon', 'Ballar', "Sovg'a", 'Hujjatlar', 'Holat']}>
+      <Table head={['Sinf', "O'rin", 'F.I.Sh.', 'Telefon', 'Gol', "Sovg'a", 'Hujjatlar', 'Holat']}>
         {rows.map((row) => (
           <tr key={row.id}>
             <td className={TD}>{row.grade_name}-sinf</td>

@@ -32,7 +32,7 @@ const Standings = ({ season, grades }) => {
           Excel
         </button>
       </div>
-      <Table head={["O'rin", 'Sinf', 'F.I.Sh.', 'Telefon', 'Viloyat', 'Maktab', 'Ballar', 'Testlar', 'Test ballari']}>
+      <Table head={["O'rin", 'Sinf', 'F.I.Sh.', 'Telefon', 'Viloyat', 'Maktab', 'Gol', 'Ball', 'Tanga', 'Testlar', 'Test goli']}>
         {rows.map((row) => (
           <tr key={row.student_id}>
             <td className={`${TD} font-semibold`}>{row.rank}</td>
@@ -41,15 +41,21 @@ const Standings = ({ season, grades }) => {
             <td className={TD}>{row.phone}</td>
             <td className={TD}>{row.region || '—'}</td>
             <td className={TD}>{row.school || '—'}</td>
-            <td className={`${TD} font-semibold`}>
-              <button
-                onClick={() => setOpened(row)}
-                title="Ballar qayerdan kelgani"
-                className="rounded-md px-2 py-1 text-[#5D87FF] underline decoration-dotted underline-offset-4 transition hover:bg-[#EAF0FF]"
-              >
-                {row.points}
-              </button>
-            </td>
+            {[
+              ['gol', row.points, 'Gollar', 'text-[#5D87FF] hover:bg-[#EAF0FF]'],
+              ['score', row.score ?? 0, 'Ballar', 'text-[#7C3AED] hover:bg-[#F3EEFF]'],
+              ['coin', row.coin ?? 0, 'Tangalar', 'text-[#C27803] hover:bg-[#FFF6E0]']
+            ].map(([key, value, label, color]) => (
+              <td key={key} className={`${TD} font-semibold`}>
+                <button
+                  onClick={() => setOpened({ row, currency: key })}
+                  title={`${label} qayerdan kelgani`}
+                  className={`rounded-md px-2 py-1 underline decoration-dotted underline-offset-4 transition ${color}`}
+                >
+                  {value}
+                </button>
+              </td>
+            ))}
             <td className={TD}>{row.tests_taken}</td>
             <td className={TD}>{row.test_score}</td>
           </tr>
@@ -57,14 +63,16 @@ const Standings = ({ season, grades }) => {
       </Table>
       {!rows.length ? <p className="py-8 text-center text-sm text-[#8A8A8E]">Ishtirokchilar yo'q</p> : null}
       <LigaPager page={page} total={total} onChange={setPage} />
-      {opened ? <LigaPointsModal season={season} student={opened} onClose={() => setOpened(null)} /> : null}
+      {opened ? (
+        <LigaPointsModal season={season} student={opened.row} initialCurrency={opened.currency} onClose={() => setOpened(null)} />
+      ) : null}
     </div>
   )
 }
 
 /** Mentor: mavsum reytingi */
 const LigaStandings = () => (
-  <LigaSeasonPage title="Reyting" subtitle="Mavsum ballari bo'yicha o'quvchilar reytingi">
+  <LigaSeasonPage title="Reyting" subtitle="Mavsum gollari bo'yicha o'quvchilar reytingi">
     {(season, grades) => <Standings key={season.id} season={season} grades={grades} />}
   </LigaSeasonPage>
 )

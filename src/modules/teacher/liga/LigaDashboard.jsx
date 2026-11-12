@@ -86,8 +86,8 @@ const Overview = ({ season }) => {
           <h3 className="mr-auto text-base font-bold text-[#191C1D] sm:text-lg">Sinflar bo'yicha natijalar</h3>
           <button
             onClick={() => setShowDetails(!showDetails)}
-            aria-label="Haftalar va ballar manbai"
-            title="Haftalar va ballar manbai"
+            aria-label="Haftalar va gollar manbai"
+            title="Haftalar va gollar manbai"
             className={`flex h-9 w-11 shrink-0 items-center justify-center rounded-xl border transition ${
               showDetails ? 'border-[#5D87FF] bg-[#5D87FF] text-white' : 'border-[#EBEDF0] text-[#5D87FF] hover:bg-[#F5F8FD]'
             }`}
@@ -95,7 +95,7 @@ const Overview = ({ season }) => {
             <BarChart3 size={18} />
           </button>
         </div>
-        <Table head={[sortHead, 'Ishtirokchilar', 'Ballar', 'Ishlangan testlar', "O'rtacha natija", "O'rtacha vaqt", 'Yetakchi']}>
+        <Table head={[sortHead, 'Ishtirokchilar', 'Gol', 'Ishlangan testlar', "O'rtacha natija", "O'rtacha vaqt", 'Yetakchi']}>
           {gradeRows.map((row) => (
             <tr key={row.grade_id}>
               <td className={`${TD} font-semibold`}>
@@ -138,7 +138,7 @@ const Overview = ({ season }) => {
             )}
           </div>
           <div className={CARD}>
-            <h3 className="mb-3 text-base font-bold text-[#191C1D]">Ballar manbai</h3>
+            <h3 className="mb-3 text-base font-bold text-[#191C1D]">Gollar manbai</h3>
             <div className="flex flex-col gap-2.5">
               {Object.entries(data.points_by_source).map(([source, value]) => (
                 <div key={source} className="flex justify-between text-sm">
@@ -212,7 +212,7 @@ const Tests = ({ season, grades, onChanged }) => {
   // Natijasi bor test ham o'chadi: avval nima yo'qolishi aniq aytiladi
   const resultsWarning = (attempts) =>
     attempts > 0
-      ? ` Diqqat: ${attempts} ta o'quvchi natijasi va shu test uchun olingan liga ballari ham o'chadi.`
+      ? ` Diqqat: ${attempts} ta o'quvchi natijasi va shu test uchun olingan liga gollari ham o'chadi.`
       : ''
 
   const askDeleteWeek = () => {
@@ -579,7 +579,7 @@ const LigaDashboard = () => {
         tone="danger"
         Icon={EyeOff}
         title={season ? `${season.number}-mavsumni yashirish` : ''}
-        text="Mavsum va uning testlari o'quvchilarga ko'rinmay qoladi. Ballar va natijalar saqlanadi, keyin yana e'lon qilish mumkin. Yashirin mavsum avtomatik yopilmaydi."
+        text="Mavsum va uning testlari o'quvchilarga ko'rinmay qoladi. Gollar va natijalar saqlanadi, keyin yana e'lon qilish mumkin. Yashirin mavsum avtomatik yopilmaydi."
         confirmLabel="Mavsumni yashirish"
         cancelLabel="Bekor qilish"
         onConfirm={togglePublish}
@@ -591,7 +591,7 @@ const LigaDashboard = () => {
         tone="danger"
         Icon={Lock}
         title={season ? `${season.number}-mavsumni yopish` : ''}
-        text="G'oliblar saqlanadi, hammaning liga ballari nolga tushadi. Buni qaytarib bo'lmaydi."
+        text="G'oliblar saqlanadi, hammaning liga gollari nolga tushadi. Buni qaytarib bo'lmaydi."
         confirmLabel="Mavsumni yopish"
         cancelLabel="Bekor qilish"
         onConfirm={closeSeason}
@@ -616,7 +616,7 @@ const LigaDashboard = () => {
         title={season ? `${season.number}-mavsumni o'chirish` : ''}
         text={`Mavsum unga bog'liq hamma narsa bilan o'chadi: ${season?.tests_count || 0} ta haftalik test va savollari${
           season?.participants_count
-            ? `, ${season.participants_count} ta ishtirokchi, ularning liga ballari, test natijalari va g'oliblar ro'yxati`
+            ? `, ${season.participants_count} ta ishtirokchi, ularning liga gollari, test natijalari va g'oliblar ro'yxati`
             : ''
         }. Buni qaytarib bo'lmaydi.`}
         confirmLabel="Mavsumni o'chirish"
