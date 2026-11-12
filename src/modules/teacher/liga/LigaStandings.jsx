@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useGetQuery } from '@/hooks'
 import { LigaPager, LigaTable as Table, PAGE_SIZE } from './LigaParts'
+import LigaPointsModal from './LigaPointsModal'
 import LigaSeasonPage from './LigaSeasonPage'
 import { API, BUTTON_LIGHT, CARD, INPUT, TD, downloadExcel } from './utils'
 
@@ -8,6 +9,7 @@ const Standings = ({ season, grades }) => {
   const [grade, setGrade] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [opened, setOpened] = useState(null)
   const params = { page, page_size: PAGE_SIZE, ...(grade ? { grade } : {}), ...(search ? { search } : {}) }
   const url = `${API}seasons/${season.id}/standings/`
   const { data: response } = useGetQuery({ key: ['liga-standings', season.id], url, params, staleTime: 0, refetchOnMount: 'always' })
@@ -39,7 +41,15 @@ const Standings = ({ season, grades }) => {
             <td className={TD}>{row.phone}</td>
             <td className={TD}>{row.region || '—'}</td>
             <td className={TD}>{row.school || '—'}</td>
-            <td className={`${TD} font-semibold`}>{row.points}</td>
+            <td className={`${TD} font-semibold`}>
+              <button
+                onClick={() => setOpened(row)}
+                title="Ballar qayerdan kelgani"
+                className="rounded-md px-2 py-1 text-[#5D87FF] underline decoration-dotted underline-offset-4 transition hover:bg-[#EAF0FF]"
+              >
+                {row.points}
+              </button>
+            </td>
             <td className={TD}>{row.tests_taken}</td>
             <td className={TD}>{row.test_score}</td>
           </tr>
@@ -47,6 +57,7 @@ const Standings = ({ season, grades }) => {
       </Table>
       {!rows.length ? <p className="py-8 text-center text-sm text-[#8A8A8E]">Ishtirokchilar yo'q</p> : null}
       <LigaPager page={page} total={total} onChange={setPage} />
+      {opened ? <LigaPointsModal season={season} student={opened} onClose={() => setOpened(null)} /> : null}
     </div>
   )
 }
