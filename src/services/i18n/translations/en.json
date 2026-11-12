@@ -1,5 +1,8 @@
 {
   "liga": "League",
+  "ligaHomeMenu": "Current season",
+  "ligaSeasonsMenu": "Seasons & winners",
+  "ligaMyHistoryMenu": "My history",
   "ligaOverview": "Overview",
   "ligaParticipants": "Participants",
   "ligaStandings": "Rating",
@@ -24,7 +27,7 @@
   "passwordNotFound": "Password not found",
   "signUpConsentStart": "I agree to the ",
   "signUpConsentLink": "privacy policy",
-  "signUpConsentEnd": " and consent to the processing of my personal data (including my child's data).",
+  "signUpConsentEnd": " and consent to the processing of my personal data.",
   "signUpConsentRequired": "Please accept the terms to sign up",
   "childSwitch": {
     "resend": "Resend code",

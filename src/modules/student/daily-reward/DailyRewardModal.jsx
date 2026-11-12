@@ -10,6 +10,8 @@ import { fireConfetti } from '@/utils/confetti'
 import { releaseModal, requestModal } from '@/utils/modalQueue'
 
 const MODAL_ID = 'daily-reward'
+/** Ligaga qo'shilgach chaqiriladi: bugungi gol shu zahoti beriladi va oyna ochiladi */
+export const LIGA_JOINED_EVENT = 'iq:liga-joined'
 const ILLUSTRATION = '/images/daily-reward/calendar.webp'
 
 const TEXTS = {
@@ -136,6 +138,20 @@ export default function DailyRewardModal() {
 
   const userId = session?.id || session?.user?.id || 'user'
   const storageKey = `iq_daily_reward_${userId}`
+  // Gol faqat ligaga qo'shilganlarga beriladi: o'quvchi ligaga qo'shilishi bilan bugungi gol qayta so'raladi
+  const [round, setRound] = useState(0)
+
+  useEffect(() => {
+    const onJoined = () => {
+      delete claimRequests[storageKey]
+      try {
+        sessionStorage.removeItem(storageKey)
+      } catch {}
+      setRound((value) => value + 1)
+    }
+    window.addEventListener(LIGA_JOINED_EVENT, onJoined)
+    return () => window.removeEventListener(LIGA_JOINED_EVENT, onJoined)
+  }, [storageKey])
 
   useEffect(() => {
     if (!session?.accessToken) return undefined
@@ -154,6 +170,8 @@ export default function DailyRewardModal() {
           sessionStorage.setItem(storageKey, '1')
         } catch {}
         const gained = Number(payload.awarded) || 0
+        // Ligaga qo'shilmagan bo'lsa gol yo'q (awarded = 0) — navbar'dagi gol ham yashirinadi
+        queryClient.invalidateQueries([KEYS.studentGol])
         if (gained <= 0) return
         setData(payload)
         setAwarded(gained)
@@ -169,7 +187,7 @@ export default function DailyRewardModal() {
       alive = false
       cancel()
     }
-  }, [session?.accessToken, storageKey, queryClient])
+  }, [session?.accessToken, storageKey, queryClient, round])
 
   const close = useCallback(() => {
     setOpen(false)

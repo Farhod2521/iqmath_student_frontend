@@ -209,14 +209,17 @@ const Tests = ({ season, grades, onChanged }) => {
     }
   }
 
+  // Natijasi bor test ham o'chadi: avval nima yo'qolishi aniq aytiladi
+  const resultsWarning = (attempts) =>
+    attempts > 0
+      ? ` Diqqat: ${attempts} ta o'quvchi natijasi va shu test uchun olingan liga ballari ham o'chadi.`
+      : ''
+
   const askDeleteWeek = () => {
-    const blocked = shownTests.some((test) => test.attempts_count > 0)
+    const attempts = shownTests.reduce((sum, test) => sum + (test.attempts_count || 0), 0)
     setDeleting({
       title: `${week}-haftani o'chirish`,
-      text: blocked
-        ? "Bu haftada o'quvchilar natijalari bor, shuning uchun uni o'chirib bo'lmaydi."
-        : `Shu haftaning ${shownTests.length} ta sinf testi savollari bilan o'chadi. Buni qaytarib bo'lmaydi.`,
-      blocked,
+      text: `Shu haftaning ${shownTests.length} ta sinf testi savollari bilan o'chadi.${resultsWarning(attempts)} Buni qaytarib bo'lmaydi.`,
       url: `${API}tests/week/`,
       params: { season: season.id, week_number: week }
     })
@@ -225,7 +228,7 @@ const Tests = ({ season, grades, onChanged }) => {
   const askDeleteTest = (test) =>
     setDeleting({
       title: `${test.week_number}-hafta, ${test.grade_name}-sinf testini o'chirish`,
-      text: "Test savollari bilan o'chadi. Buni qaytarib bo'lmaydi.",
+      text: `Test savollari bilan o'chadi.${resultsWarning(test.attempts_count)} Buni qaytarib bo'lmaydi.`,
       url: `${API}tests/${test.id}/`
     })
 
@@ -312,20 +315,24 @@ const Tests = ({ season, grades, onChanged }) => {
                 </button>
               ))}
             </div>
-            {!season.is_closed && week ? (
+            {week ? (
               <div className="flex gap-1.5 sm:ml-auto">
-                <button onClick={() => setEditingWeek(true)} className={`${WEEK_ACTION} bg-[#E6EFFF] text-[#5D87FF] hover:bg-[#D9E6FF]`}>
-                  <Pencil size={15} />
-                  Tahrirlash
-                </button>
+                {!season.is_closed ? (
+                  <button onClick={() => setEditingWeek(true)} className={`${WEEK_ACTION} bg-[#E6EFFF] text-[#5D87FF] hover:bg-[#D9E6FF]`}>
+                    <Pencil size={15} />
+                    Tahrirlash
+                  </button>
+                ) : null}
                 <button onClick={askDeleteWeek} className={`${WEEK_ACTION} ${DANGER_LIGHT}`}>
                   <Trash2 size={15} />
                   O'chirish
                 </button>
               </div>
             ) : null}
-            {!season.is_closed && !week ? (
-              <span className="text-xs text-[#8A8A8E] sm:ml-auto">Tahrirlash yoki o'chirish uchun haftani tanlang</span>
+            {!week ? (
+              <span className="text-xs text-[#8A8A8E] sm:ml-auto">
+                {season.is_closed ? "O'chirish uchun haftani tanlang" : "Tahrirlash yoki o'chirish uchun haftani tanlang"}
+              </span>
             ) : null}
           </div>
         ) : null}
@@ -375,16 +382,14 @@ const Tests = ({ season, grades, onChanged }) => {
                     <Pencil size={14} />
                     Ochish
                   </Link>
-                  {!season.is_closed && !test.attempts_count ? (
-                    <button
-                      onClick={() => askDeleteTest(test)}
-                      aria-label="Testni o'chirish"
-                      title="Testni o'chirish"
-                      className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${DANGER_LIGHT}`}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  ) : null}
+                  <button
+                    onClick={() => askDeleteTest(test)}
+                    aria-label="Testni o'chirish"
+                    title="Testni o'chirish"
+                    className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${DANGER_LIGHT}`}
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </td>
             </tr>
@@ -415,7 +420,6 @@ const Tests = ({ season, grades, onChanged }) => {
         text={deleting?.text}
         confirmLabel="O'chirish"
         cancelLabel="Bekor qilish"
-        disabled={deleting?.blocked}
         onConfirm={removeTests}
         onClose={() => setDeleting(null)}
       />
@@ -610,14 +614,13 @@ const LigaDashboard = () => {
         tone="danger"
         Icon={Trash2}
         title={season ? `${season.number}-mavsumni o'chirish` : ''}
-        text={
+        text={`Mavsum unga bog'liq hamma narsa bilan o'chadi: ${season?.tests_count || 0} ta haftalik test va savollari${
           season?.participants_count
-            ? `Bu mavsumda ${season.participants_count} ta ishtirokchi bor. Ballari va natijalari yo'qolmasligi uchun uni o'chirib bo'lmaydi.`
-            : `Mavsum ${season?.tests_count || 0} ta testi va savollari bilan o'chadi. Buni qaytarib bo'lmaydi.`
-        }
+            ? `, ${season.participants_count} ta ishtirokchi, ularning liga ballari, test natijalari va g'oliblar ro'yxati`
+            : ''
+        }. Buni qaytarib bo'lmaydi.`}
         confirmLabel="Mavsumni o'chirish"
         cancelLabel="Bekor qilish"
-        disabled={Boolean(season?.participants_count)}
         onConfirm={deleteSeason}
         onClose={() => setDeleting(false)}
       />

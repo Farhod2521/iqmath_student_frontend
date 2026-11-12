@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { config } from '../../config/index'
-import { signOut, getSession } from 'next-auth/react'
+import { signOut, getSession, getCsrfToken } from 'next-auth/react'
 import { useUserStore } from '@/store/userStore'
 import { useAuthTabStore } from '@/store'
 import { DEVICE_ID_KEY } from '@/shared/utils/device'
@@ -46,6 +46,42 @@ const getImpersonationToken = () => {
   }
 }
 
+const logout = () => {
+  clearUserData()
+  signOut({ callbackUrl: '/' })
+}
+
+/**
+ * Access token (30 daqiqa) tugaganda yangilash. Bir vaqtda kelgan bir nechta 401 uchun bitta so'rov.
+ * Yangi token NextAuth sessiyasiga ham yoziladi — keyingi so'rovlar eski token bilan ketmasligi uchun.
+ * Natija: yangi access token; refresh token ham tugagan bo'lsa — null.
+ */
+let refreshPromise = null
+const refreshAccessToken = () => {
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      try {
+        const { data } = await axios.post('/api/auth/refresh')
+        if (!data?.access) return null
+        try {
+          const csrfToken = await getCsrfToken()
+          await axios.post('/api/auth/session', { csrfToken, data: { accessToken: data.access } })
+        } catch {}
+        return data.access
+      } catch (refreshError) {
+        // 401 — refresh token tugagan / qurilma o'chirilgan. Boshqa xato (tarmoq) — chiqarmaymiz
+        if (refreshError?.response?.status === 401) return null
+        throw refreshError
+      }
+    })().finally(() => {
+      setTimeout(() => {
+        refreshPromise = null
+      }, 1000)
+    })
+  }
+  return refreshPromise
+}
+
 // O'quvchi tokeni (30 daqiqa) tugasa — mentor tizimdan chiqarilmaydi, o'z sahifasiga qaytariladi
 const endImpersonation = exitImpersonation
 
@@ -57,7 +93,12 @@ request.interceptors.request.use(
       return axiosConfig
     }
     const session = await getSession()
-    if (session?.accessToken) {
+    if (session?.error === 'RefreshTokenExpired') {
+      logout()
+      throw new axios.Cancel('Session expired')
+    }
+    // Qayta yuborilayotgan so'rovda yangilangan token allaqachon qo'yilgan
+    if (session?.accessToken && !axiosConfig._retry) {
       axiosConfig.headers.Authorization = `Bearer ${session.accessToken}`
     }
     return axiosConfig
@@ -76,33 +117,25 @@ request.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    // Handle 401 - Unauthorized
-    if (status === 401) {
-      clearUserData()
-      signOut({ callbackUrl: '/' })
-      return Promise.reject(error)
-    }
-
-    // Handle 403 - Token refresh
-    if (status === 403 && !originalRequest._retry) {
+    // 401/403 — access token muddati tugagan: yangilab, so'rovni qayta yuboramiz.
+    // Faqat refresh token ham yaroqsiz bo'lsagina tizimdan chiqariladi
+    if ((status === 401 || status === 403) && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true
-
       try {
-        // refreshToken faqat serverda — yangilash Next API orqali
-        const response = await axios.post('/api/auth/refresh')
-
-        const { access } = response.data
+        const access = await refreshAccessToken()
+        if (!access) {
+          logout()
+          return Promise.reject(error)
+        }
         originalRequest.headers.Authorization = `Bearer ${access}`
-
         return request(originalRequest)
       } catch (refreshError) {
-        if (refreshError?.response?.status === 401) {
-          clearUserData()
-          signOut({ callbackUrl: '/' })
-        }
-        return Promise.reject(refreshError)
+        return Promise.reject(error)
       }
     }
+
+    // Yangilangan token bilan ham 401 — sessiya haqiqatan yaroqsiz
+    if (status === 401) logout()
 
     return Promise.reject(error)
   }

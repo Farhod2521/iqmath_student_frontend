@@ -6,6 +6,7 @@ import Main from './Main'
 import StudentInvitationsModal from '@/modules/student/invitations/StudentInvitationsModal'
 import SubscriptionPromoModal from '@/modules/student/subscription/SubscriptionPromoModal'
 import DailyRewardModal from '@/modules/student/daily-reward/DailyRewardModal'
+import LigaAnnounceModal from '@/modules/student/liga/LigaAnnounceModal'
 import OnlinePing from '@/components/online/OnlinePing'
 import { useScoreStore, useSettingStore, useUserStore } from '@/store'
 import { useGetQuery } from '@/hooks'
@@ -82,6 +83,8 @@ const LayoutAdmin = ({ children, title }) => {
         {role === 'student' ? <StudentInvitationsModal /> : null}
         {/* Kundalik kirish mukofoti (1..7 ball, ketma-ketlik) — obuna oynasidan oldin chiqadi */}
         {role === 'student' ? <DailyRewardModal /> : null}
+        {/* Liga mavsumi ochilganda qo'shilmaganlarga e'lon oynasi ("Ishtirok etish" → sinf tanlash → qo'shilish) */}
+        {role === 'student' ? <LigaAnnounceModal /> : null}
         {/* Obuna sotib olmaganlarga (local'da hammaga) — login qilgandan keyin taklif oynasi */}
         {role === 'student' ? <SubscriptionPromoModal /> : null}
         {role === 'student' ? <OnlinePing /> : null}

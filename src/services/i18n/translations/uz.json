@@ -1,5 +1,8 @@
 {
   "liga": "Liga",
+  "ligaHomeMenu": "Joriy mavsum",
+  "ligaSeasonsMenu": "Mavsumlar va g‘oliblar",
+  "ligaMyHistoryMenu": "Mening tarixim",
   "ligaOverview": "Ko'rsatkichlar",
   "ligaParticipants": "Ishtirokchilar",
   "ligaStandings": "Reyting",
@@ -82,7 +85,7 @@
   "passwordNotFound": "Parol topilmadi",
   "signUpConsentStart": "Men ",
   "signUpConsentLink": "maxfiylik siyosati",
-  "signUpConsentEnd": " shartlariga hamda shaxsiy ma'lumotlarim (shu jumladan farzandimning ma'lumotlari) qayta ishlanishiga roziman.",
+  "signUpConsentEnd": " shartlariga hamda shaxsiy ma'lumotlarim qayta ishlanishiga roziman.",
   "signUpConsentRequired": "Ro'yxatdan o'tish uchun shartlarga rozilik bildiring",
   "topByScore": "Ball bo'yicha",
   "noRankYet": "Hali o'rin yo'q — birinchi topshiriqni bajaring",

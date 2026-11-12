@@ -2,11 +2,55 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { authSecret } from '@/config/authSecret'
 import { serverFetch } from '@/utils/serverFetch'
+import { config } from '@/config'
+import { URLS } from '@/constants/url'
+
+// Access token (backend) 30 daqiqa yashaydi, refresh token — 7 kun.
+// Sessiya refresh token bilan bir xil yashaydi; access token muddati tugashiga oz qolganda
+// jwt callback uni serverda o'zi yangilaydi — foydalanuvchi tizimdan chiqarib yuborilmaydi.
+const SESSION_MAX_AGE = 7 * 24 * 60 * 60
+const REFRESH_MARGIN_SECONDS = 120
+
+// JWT ichidagi `exp` (sekund). Imzo tekshirilmaydi — faqat qachon yangilashni bilish uchun
+const tokenExpiry = (jwt) => {
+  try {
+    const payload = JSON.parse(Buffer.from(String(jwt).split('.')[1], 'base64url').toString('utf8'))
+    return typeof payload.exp === 'number' ? payload.exp : null
+  } catch {
+    return null
+  }
+}
+
+async function refreshAccessToken(token) {
+  try {
+    const response = await serverFetch(`${config.API_URL}${URLS.refreshToken}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ refresh: token.refreshToken })
+    })
+    const data = await response.json().catch(() => ({}))
+    if (response.ok && data?.access) {
+      return {
+        ...token,
+        accessToken: data.access,
+        // ROTATE_REFRESH_TOKENS yoqilsa — yangi refresh token ham saqlanadi
+        refreshToken: data.refresh || token.refreshToken,
+        error: null
+      }
+    }
+    // Refresh token muddati tugagan yoki qurilma o'chirilgan — qayta kirish kerak
+    if (response.status === 401 || response.status === 400) return { ...token, error: 'RefreshTokenExpired' }
+    return token
+  } catch {
+    // Tarmoq xatosi — sessiyani o'chirmaymiz, keyingi so'rovda yana urinadi
+    return token
+  }
+}
 
 export default NextAuth({
   session: {
     strategy: 'jwt',
-    maxAge: 46800 // 2 soat (7200 sekund)
+    maxAge: SESSION_MAX_AGE
   },
   providers: [
     CredentialsProvider({
@@ -103,6 +147,11 @@ export default NextAuth({
       if (trigger === 'update' && session?.clearInitialPassword) {
         delete token.initialPassword
       }
+      // Brauzer (services/api) access tokenni yangilagach sessiyaga yozadi
+      if (trigger === 'update' && session?.accessToken && typeof session.accessToken === 'string') {
+        token.accessToken = session.accessToken
+        token.error = null
+      }
       if (user) {
         token.accessToken = user.token
         token.refreshToken = user.refreshToken
@@ -114,13 +163,19 @@ export default NextAuth({
         token.full_name = user.full_name
         token.children = user.children // Parent uchun farzandlar ma'lumotlari
         token.actingParent = user.actingParent || null
+        token.error = null
+        return token
+      }
+      if (!token.accessToken || !token.refreshToken || token.error) return token
+      const exp = tokenExpiry(token.accessToken)
+      if (exp && exp - Date.now() / 1000 < REFRESH_MARGIN_SECONDS) {
+        return refreshAccessToken(token)
       }
       return token
     },
     async session({ session, token }) {
-      if (Date.now() / 1000 > token.expiresAt) {
-        return null // 2 soat o'tgach, sessiyani tozalash
-      }
+      // Refresh token ham tugagan — brauzer qayta kirishga yo'naltiradi (services/api)
+      if (token.error) session.error = token.error
       // refreshToken brauzerga berilmaydi — u faqat shifrlangan cookie ichida qoladi (/api/auth/refresh)
       session.accessToken = token.accessToken
       session.phone = token.phone

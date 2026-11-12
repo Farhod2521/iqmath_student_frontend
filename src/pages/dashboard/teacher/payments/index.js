@@ -50,6 +50,13 @@ function Index() {
 
 export default Index
 
+// 998901234567 → +998 90 123 45 67
+const formatPhone = (phone) => {
+  const digits = String(phone).replace(/\D/g, '')
+  const match = digits.match(/^(998)(\d{2})(\d{3})(\d{2})(\d{2})$/)
+  return match ? `+${match[1]} ${match[2]} ${match[3]} ${match[4]} ${match[5]}` : phone
+}
+
 export function PaymentsTable({ payments }) {
   const { t, i18n } = useTranslation()
 
@@ -112,6 +119,9 @@ export function PaymentsTable({ payments }) {
               {i18n.language === 'ru' ? 'Ученик' : "O'quvchi"}
             </th>
             <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+              {i18n.language === 'ru' ? 'Телефон' : 'Telefon'}
+            </th>
+            <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
               {i18n.language === 'ru' ? `Сумма (${t('sum')})` : `Summa (${t('sum')})`}
             </th>
             <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
@@ -142,6 +152,15 @@ export function PaymentsTable({ payments }) {
             <tr key={payment.id} className="hover:bg-gray-50">
               <td className="px-6 py-2 text-sm text-gray-900 whitespace-nowrap">{idx + 1}</td>
               <td className="px-6 py-2 text-sm font-medium text-gray-900 whitespace-nowrap">{payment.student_name}</td>
+              <td className="px-6 py-2 text-sm text-gray-900 whitespace-nowrap">
+                {payment.student_phone ? (
+                  <a href={`tel:${payment.student_phone}`} className="hover:text-blue-600 hover:underline">
+                    {formatPhone(payment.student_phone)}
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </td>
               <td className="px-6 py-2 text-sm text-gray-900 whitespace-nowrap">
                 <div className="flex flex-col">
                   <span className="font-semibold">{formatAmount(payment.amount)}</span>

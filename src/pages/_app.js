@@ -42,7 +42,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const [queryClient] = useState(() => reactQueryClient)
 
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchInterval={10 * 60}>
       <QueryClientProvider client={queryClient}>
         <HeroUIProvider>
           <Hydrate state={pageProps?.dehydratedState}>

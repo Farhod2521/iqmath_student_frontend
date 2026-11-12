@@ -1,5 +1,8 @@
 {
   "liga": "Лига",
+  "ligaHomeMenu": "Текущий сезон",
+  "ligaSeasonsMenu": "Сезоны и победители",
+  "ligaMyHistoryMenu": "Моя история",
   "ligaOverview": "Показатели",
   "ligaParticipants": "Участники",
   "ligaStandings": "Рейтинг",
@@ -82,7 +85,7 @@
   "passwordNotFound": "Пароль не найден",
   "signUpConsentStart": "Я соглашаюсь с условиями ",
   "signUpConsentLink": "политики конфиденциальности",
-  "signUpConsentEnd": " и даю согласие на обработку моих персональных данных (включая данные моего ребёнка).",
+  "signUpConsentEnd": " и даю согласие на обработку моих персональных данных.",
   "signUpConsentRequired": "Чтобы зарегистрироваться, примите условия",
   "topByScore": "По баллам",
   "noRankYet": "Пока без места — выполните первое задание",

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { get } from 'lodash'
 import { toast } from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import parse from 'html-react-parser'
 
@@ -31,6 +32,7 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
   const router = useRouter()
   const { topicId } = router.query
   const { data: session } = useSession()
+  const queryClient = useQueryClient()
   const mathFieldRef = useRef(null)
   const mathFieldRefs = useRef({})
 
@@ -208,6 +210,12 @@ export default function SubjectQuestions({ title, subtitle, onBack, onClose }) {
       },
       {
         onSuccess: (res) => {
+          // Har bir yangi yechilgan misol uchun +1 gol (ligaga qo'shilganlarga) — navbar hisoblagichini yangilaymiz
+          const golGained = Number(res?.data?.gol_gained ?? res?.gol_gained ?? 0)
+          if (golGained > 0) {
+            queryClient.invalidateQueries([KEYS.studentGol])
+            toast.success(`+${golGained} gol`, { icon: '⚽' })
+          }
           setScore(res)
           setResults(res)
           finishTimer()

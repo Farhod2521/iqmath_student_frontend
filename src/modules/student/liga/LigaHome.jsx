@@ -13,6 +13,7 @@ import { useGetQuery } from '@/hooks'
 import { URLS } from '@/constants/url'
 import { LigaHero } from '@/modules/teacher/liga/LigaParts'
 import { request } from '@/services/api'
+import { LIGA_JOINED_EVENT } from '@/modules/student/daily-reward/DailyRewardModal'
 import LigaGuard from './LigaGuard'
 
 const TEXT = {
@@ -325,6 +326,8 @@ const LigaHome = () => {
       await request.post(`/api/v1/liga/seasons/${season.id}/join/`, { grade, accept_rules: true })
       setJoinOpen(false)
       await refetch()
+      // Ligaga qo'shilgach gol yig'ish boshlanadi: bugungi gol darhol beriladi (konfetti bilan)
+      window.dispatchEvent(new Event(LIGA_JOINED_EVENT))
     })
 
   const start = (testId) =>

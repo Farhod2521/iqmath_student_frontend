@@ -235,7 +235,42 @@ export const getMenuItems = (t) => [
       />
     ),
     roles: [RolesList.STUDENT],
-    type: MenuType.LINK
+    type: MenuType.LINK,
+    children: [
+      {
+        key: 'liga-home',
+        path: '/dashboard/student/liga',
+        label: t('ligaHomeMenu', 'Joriy mavsum'),
+        icon: (isActive) => (
+          <Trophy
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'liga-seasons',
+        path: '/dashboard/student/liga/seasons',
+        label: t('ligaSeasonsMenu', 'Mavsumlar va g‘oliblar'),
+        icon: (isActive) => (
+          <Crown
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      },
+      {
+        key: 'liga-my-history',
+        path: '/dashboard/student/liga/history',
+        label: t('ligaMyHistoryMenu', 'Mening tarixim'),
+        icon: (isActive) => (
+          <History
+            className={isActive ? 'text-white' : 'text-[#5d87ff] group-hover:text-white transition-colors duration-300'}
+            size={20}
+          />
+        )
+      }
+    ]
   },
   {
     key: 'library',

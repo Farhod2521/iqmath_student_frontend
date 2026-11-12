@@ -34,12 +34,10 @@ const Navbar = () => {
   const fullName = get(studentProfile, 'data.full_name', '')
   // K3: salomlashuvda faqat ism — to'liq F.I.Sh. shapkada kesilib qolardi
   const firstName = fullName.trim().split(/\s+/)[0] || ''
-  const classNum = (
-    (i18n.language === 'uz'
-      ? get(studentProfile, 'data.class_name_uz', '')
-      : get(studentProfile, 'data.class_name_ru', '')
-    ).match(/\d+/) || []
-  )[0]
+  const classNum = ((i18n.language === 'uz'
+    ? get(studentProfile, 'data.class_name_uz', '')
+    : get(studentProfile, 'data.class_name_ru', '')
+  ).match(/\d+/) || [])[0]
 
   const isStudent = currentRole === RolesList.STUDENT
   const queryClient = useQueryClient()
@@ -65,6 +63,8 @@ const Navbar = () => {
     { enabled: !!session?.accessToken && isStudent, staleTime: 5 * 60_000, refetchOnWindowFocus: false, retry: 1 }
   )
   const golTotal = get(golData, 'gol_total', 0)
+  // Gol faqat ligaga qo'shilganlarga: qo'shilmaganlar gol yig'olmaydi, shuning uchun ko'rsatilmaydi
+  const showGol = Boolean(golData) && golData.liga_joined !== false
 
   // Obunasi faol o'quvchilar ismi oldida oltin toj chiqadi
   const { data: subscription } = useGetQuery({
@@ -96,7 +96,10 @@ const Navbar = () => {
               <h1 className="truncate text-[15px] font-bold leading-tight text-[#191C1D] sm:text-xl">
                 {greetBefore}
                 {isPremium ? (
-                  <PremiumCrown title={crownTitle} className="mx-0.5 inline-block h-[0.95em] w-[1.15em] -translate-y-[0.12em]" />
+                  <PremiumCrown
+                    title={crownTitle}
+                    className="mx-0.5 inline-block h-[0.95em] w-[1.15em] -translate-y-[0.12em]"
+                  />
                 ) : null}
                 {firstName || t('studentHome.you')}
                 {greetAfter} 👋
@@ -117,26 +120,30 @@ const Navbar = () => {
         </div>
 
         {isStudent && (
-          <div className="order-last grid w-full grid-cols-4 gap-1.5 sm:flex sm:w-auto sm:basis-full sm:flex-wrap sm:items-center sm:gap-2 2xl:order-none 2xl:basis-auto 2xl:shrink-0">
-            <div
-              className="flex min-w-0 items-center justify-center gap-1 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-2 sm:gap-1.5 sm:pl-1.5 sm:pr-3"
-              title={
-                i18n.language === 'ru'
-                  ? `Серия: ${streakDays} ${pluralRu(streakDays, ['день', 'дня', 'дней'])}`
-                  : `Ketma-ket: ${streakDays} kun`
-              }
-            >
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-100 sm:h-7 sm:w-7">
-                <FaFutbol size={15} className="text-[#191C1D]" aria-label="gol" />
-              </div>
-              {/* Jami gol: kundalik kirish (+1) va haftalik testlar */}
-              <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
-                <span className="text-sm font-bold text-[#191C1D] sm:text-base">{golTotal}</span>
-                <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">
-                  {i18n.language === 'ru' ? pluralRu(golTotal, ['гол', 'гола', 'голов']) : 'gol'}
+          <div
+            className={`order-last grid w-full ${showGol ? 'grid-cols-4' : 'grid-cols-3'} gap-1.5 sm:flex sm:w-auto sm:basis-full sm:flex-wrap sm:items-center sm:gap-2 2xl:order-none 2xl:basis-auto 2xl:shrink-0`}
+          >
+            {showGol ? (
+              <div
+                className="flex min-w-0 items-center justify-center gap-1 rounded-full bg-[#F7F8FA] py-1 pl-1 pr-2 sm:gap-1.5 sm:pl-1.5 sm:pr-3"
+                title={
+                  i18n.language === 'ru'
+                    ? `Серия: ${streakDays} ${pluralRu(streakDays, ['день', 'дня', 'дней'])}`
+                    : `Ketma-ket: ${streakDays} kun`
+                }
+              >
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-100 sm:h-7 sm:w-7">
+                  <FaFutbol size={15} className="text-[#191C1D]" aria-label="gol" />
+                </div>
+                {/* Jami gol: kundalik kirish (+1) va haftalik testlar */}
+                <span className="flex min-w-0 items-baseline gap-0.5 leading-none sm:gap-1">
+                  <span className="text-sm font-bold text-[#191C1D] sm:text-base">{golTotal}</span>
+                  <span className="truncate text-[11px] font-medium text-[#8A8A8E] sm:text-xs">
+                    {i18n.language === 'ru' ? pluralRu(golTotal, ['гол', 'гола', 'голов']) : 'gol'}
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+            ) : null}
 
             <NavbarSum />
             <NavbarCoins />
