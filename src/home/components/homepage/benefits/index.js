@@ -10,10 +10,10 @@ const TEXTS = {
     subtitle:
       'IQmath bilan o‘qish natijasida nafaqat akademik ko‘rsatkichlar yaxshilanadi, balki mantiqiy fikrlash ham kuchayadi.',
     items: [
-      ['Akademik Natijalar', 'Sezilarli darajada yaxshi baholar va bilim darajasi.'],
+      ['Mustahkam bilim', 'Maktab dasturidagi mavzularni video va mashqlar bilan mustahkamlash.'],
       ['Mantiqiy Fikrlash', 'Muammolarni hal qilish va tahlil qilish ko‘nikmalari.'],
       ['Mustaqillik', 'O‘z-o‘zini rivojlantirish va mustaqil o‘rganish qobiliyati.'],
-      ['Imtihonga tayyorgarlik', 'Har qanday test va imtihonlarga ishonch bilan kirish.']
+      ['Imtihonga tayyorgarlik', 'Mavzu testlari bilan nazorat ishlari va imtihonlarga tayyorlanish.']
     ]
   },
   ru: {
@@ -21,10 +21,10 @@ const TEXTS = {
     title: ['С IQmath', 'можно', 'достичь'],
     subtitle: 'Обучение с IQmath улучшает не только успеваемость, но и развивает логическое мышление.',
     items: [
-      ['Академические результаты', 'Заметно лучшие оценки и уровень знаний.'],
+      ['Прочные знания', 'Закрепление тем школьной программы с помощью видео и упражнений.'],
       ['Логическое мышление', 'Навыки решения задач и анализа.'],
       ['Самостоятельность', 'Способность к саморазвитию и самостоятельному обучению.'],
-      ['Подготовка к экзаменам', 'Уверенность на любых тестах и экзаменах.']
+      ['Подготовка к экзаменам', 'Тесты по темам для подготовки к контрольным и экзаменам.']
     ]
   }
 }

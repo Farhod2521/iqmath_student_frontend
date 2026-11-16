@@ -14,6 +14,7 @@ import { URLS } from '@/constants/url'
 import SimpleLoader from '@/components/loader/simple-loader'
 import toast from 'react-hot-toast'
 import AuthButton from './AuthButton'
+import OfferLink, { useOfferUrl } from '@/components/oferta/OfferLink'
 
 /** role — landing sahifasidan (parent / tutor): rol qat'iy belgilanadi, tanlash maydoni ko'rinmaydi */
 function AuthSignUp({ role: fixedRole }) {
@@ -27,6 +28,7 @@ function AuthSignUp({ role: fixedRole }) {
   const [selectedRole, setSelectedRoleLocal] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [consent, setConsent] = useState(false)
+  const offerUrl = useOfferUrl()
 
   const { register, handleSubmit } = useForm()
 
@@ -175,6 +177,14 @@ function AuthSignUp({ role: fixedRole }) {
             {t('signUpConsentLink')}
           </a>
           {t('signUpConsentEnd')}
+          {offerUrl ? (
+            <>
+              {' '}
+              {t('signUpOfferStart')}
+              <OfferLink />
+              {t('signUpOfferEnd')}
+            </>
+          ) : null}
         </span>
       </label>
 

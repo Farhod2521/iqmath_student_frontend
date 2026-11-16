@@ -255,6 +255,7 @@ const StudentTopLeaderboard = () => {
           {session?.data?.role === RolesList.STUDENT ? (
             <button
               className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+              title={t('certificateHint')}
               onClick={() => downloadCertificate(session?.data?.id)}
             >
               {t('downloadCertificate')}

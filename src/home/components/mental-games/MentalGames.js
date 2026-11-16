@@ -247,7 +247,7 @@ export default function MentalGames() {
 
           {/* Filtrlar */}
           <div className="mt-8 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible">
-            {FILTERS.map(({ key, Icon }) => {
+            {FILTERS.filter(({ key }) => key === 'all' || games.some((g) => g.groups.includes(key))).map(({ key, Icon }) => {
               const active = filter === key
               return (
                 <button

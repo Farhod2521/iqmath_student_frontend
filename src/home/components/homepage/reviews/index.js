@@ -24,15 +24,15 @@ const TEXTS = {
       ],
       [
         'O‘z tezligingizda o‘rganish imkoniyati',
-        'Shaxsiy o‘quv rejasi, moslashuvchan darslar va istalgan vaqtda o‘qish imkoniyati.'
+        'Darslarni istalgan vaqtda, o‘zingizga qulay tezlikda ko‘rish va takrorlash imkoniyati.'
       ],
       [
-        'Imtihonlarga professional tayyorgarlik',
-        'DTM, maktab va xalqaro imtihonlar uchun maxsus kurslar va test bazalari.'
+        'Nazorat ishlari va testlarga tayyorgarlik',
+        'Mavzu testlari va diagnostika maktabdagi nazorat ishlari hamda imtihonlarga tayyorlanishga yordam beradi.'
       ],
       [
         'Doimiy progress monitoring',
-        'Natijalaringiz, kuchli va zaif tomonlaringizni tahlil qilib, shaxsiy tavsiyalar beriladi.'
+        'Natijalaringiz, kuchli va zaif mavzularingiz ko‘rinib turadi — nimani takrorlash kerakligi aniq.'
       ]
     ]
   },
@@ -56,15 +56,15 @@ const TEXTS = {
       ],
       [
         'Учёба в своём темпе',
-        'Персональный план, гибкие уроки и возможность заниматься в любое время.'
+        'Смотрите и повторяйте уроки в любое время и в удобном темпе.'
       ],
       [
-        'Профессиональная подготовка к экзаменам',
-        'Специальные курсы и базы тестов для ДТМ, школьных и международных экзаменов.'
+        'Подготовка к контрольным и тестам',
+        'Тесты по темам и диагностика помогают готовиться к школьным контрольным и экзаменам.'
       ],
       [
         'Постоянный мониторинг прогресса',
-        'Анализ результатов, сильных и слабых сторон с персональными рекомендациями.'
+        'Видны результаты, сильные и слабые темы — понятно, что нужно повторить.'
       ]
     ]
   }

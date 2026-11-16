@@ -5,6 +5,7 @@ import { ShoppingBag, Ticket, ArrowRight, Crown } from 'lucide-react'
 import Button from '@/components/button'
 import NasiyaInstallmentOption from './NasiyaInstallmentOption'
 import { formatMoney } from '@/utils/formatMoney'
+import OfferLink, { useOfferUrl } from '@/components/oferta/OfferLink'
 
 const CouponSection = ({
   selectedPlan,
@@ -20,6 +21,7 @@ const CouponSection = ({
   const { t } = useTranslation()
   // Promokod ixtiyoriy: maydon faqat so'ralganda ochiladi
   const [showCoupon, setShowCoupon] = useState(Boolean(couponCode))
+  const offerUrl = useOfferUrl()
 
   const categoryTitle = selectedPlan?.category?.title
   const discountPercent = selectedPlan?.discount_percent || selectedPlan?.discount || 0
@@ -160,6 +162,15 @@ const CouponSection = ({
           </div>
         </div>
       )}
+
+      {/* O7: to'lovdan oldin oferta havolasi (admin panelda fayl yuklangan bo'lsa) */}
+      {offerUrl ? (
+        <p className="mb-3 text-xs leading-snug text-[#5A6A85] dark:text-gray-400">
+          {t('paymentOfferStart')}
+          <OfferLink />
+          {t('paymentOfferEnd')}
+        </p>
+      ) : null}
 
       {/* Actions */}
       <div className="flex gap-3 pb-1">

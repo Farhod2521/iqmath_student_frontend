@@ -181,6 +181,8 @@ function QuestionWorkspace({
                         selectedQuestion={selectedQuestion}
                       />
                     </div>
+                    {/* C5: javob formati — backend teng qiymatli yozuvlarni (0.5 / 0,5 / 1/2) qabul qiladi */}
+                    <p className="mt-2 text-xs text-[#8A93A6]">{t('questionPage.answerFormatHint')}</p>
                   </div>
                 )
               default:

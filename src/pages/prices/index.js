@@ -11,6 +11,8 @@ import ScrollToTop from '@/home/components/shared/scroll-to-top'
 import { ThemeSettings } from '@/home/theme/Theme'
 
 import PricingContent from './components/PricingContent'
+import { config } from '@/config'
+import { URLS } from '@/constants/url'
 
 const TEXTS = {
   uz: {
@@ -29,7 +31,7 @@ const TEXTS = {
   }
 }
 
-function Prices() {
+function Prices({ initialPlans = [] }) {
   const theme = ThemeSettings()
   const { i18n } = useTranslation()
   const text = TEXTS[i18n.language === 'ru' ? 'ru' : 'uz']
@@ -74,7 +76,7 @@ function Prices() {
           </section>
 
           <div className="relative pb-10 sm:pb-16">
-            <PricingContent />
+            <PricingContent initialPlans={initialPlans} />
           </div>
         </div>
 
@@ -83,6 +85,28 @@ function Prices() {
       </ThemeProvider>
     </LayoutHome>
   )
+}
+
+// Tariflar serverda olinadi va sahifa HTML'iga yoziladi (qidiruv tizimlari va sekin internet uchun).
+// Har 5 daqiqada yangilanadi; API javob bermasa sahifa bo'sh ro'yxat bilan ochiladi va brauzerda qayta yuklanadi.
+export async function getStaticProps() {
+  let initialPlans = []
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 8000)
+    const response = await fetch(`${config.API_URL}${URLS.paymentPlans}`, {
+      headers: { Accept: 'application/json' },
+      signal: controller.signal
+    })
+    clearTimeout(timer)
+    if (response.ok) {
+      const data = await response.json()
+      if (Array.isArray(data)) initialPlans = data
+    }
+  } catch {
+    initialPlans = []
+  }
+  return { props: { initialPlans }, revalidate: 300 }
 }
 
 export default Prices

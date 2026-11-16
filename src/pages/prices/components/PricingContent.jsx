@@ -48,11 +48,12 @@ const tierStyle = (highlighted) =>
 
 const isPopular = (plan) => /popular|ommabop|попул/i.test(plan.categoryKey)
 
-const PricingContent = () => {
+// initialPlans — serverda (getStaticProps) olingan tariflar: narxlar HTML'ning o'zida bo'ladi
+const PricingContent = ({ initialPlans = [] }) => {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [dataSource, setDataSource] = useState([])
+  const [dataSource, setDataSource] = useState(initialPlans)
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [authOpen, setAuthOpen] = useState(false)
   const [months, setMonths] = useState(null)
@@ -68,9 +69,12 @@ const PricingContent = () => {
 
   const fetchData = async () => {
     try {
-      setIsLoading(true)
+      // Serverdan kelgan tariflar bo'lsa — ular ko'rinib turadi, yuklash belgisi ularni yopmaydi
+      setIsLoading(!initialPlans.length)
       const res = await request.get(URLS.paymentPlans)
-      setDataSource(res.data ?? [])
+      if (Array.isArray(res.data)) setDataSource(res.data)
+    } catch {
+      // API javob bermasa — serverdan kelgan (yoki bo'sh) ro'yxat qoladi
     } finally {
       setIsLoading(false)
     }

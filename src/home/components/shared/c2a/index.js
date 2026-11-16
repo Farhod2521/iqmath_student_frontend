@@ -14,16 +14,16 @@ const TEXTS = {
         'Har bir mavzu uchun batafsil video tushuntirishlar. Murakkab tushunchalarni oson va qiziqarli o‘rganing.'
       ],
       [
-        'Keng Kurslar',
-        'Algebra, geometriya, statistika va hisob bo‘yicha to‘liq kurslar to‘plami. Boshlang‘ichdan yuqori darajagacha.'
+        'Maktab dasturi bo‘yicha kurslar',
+        '1–11-sinflar uchun matematika, algebra va geometriya kurslari — maktab dasturi tartibida, mavzuma-mavzu.'
       ],
       [
-        'Moslashuvchan Ta’lim',
-        'O‘z tezligingizda o‘rganing. Platformamiz sizning darajangizga moslashadi va individual tavsiyalar beradi.'
+        'O‘z tezligingizda o‘qing',
+        'Istalgan vaqtda, o‘zingizga qulay tezlikda o‘qing. Diagnostik test natijasiga ko‘ra takrorlash kerak bo‘lgan mavzular tavsiya qilinadi.'
       ],
       [
         'Test va Baholash',
-        'Bilimingizni sinab ko‘ring va imtihonlarga tayyorlaning. Batafsil natijalar va tahlil oling.'
+        'Mavzu testlari va diagnostika bilan bilimingizni sinab ko‘ring. Natijalar va xatolar tahlilini oling.'
       ]
     ]
   },
@@ -38,16 +38,16 @@ const TEXTS = {
         'Подробные видеообъяснения по каждой теме. Изучайте сложные понятия легко и интересно.'
       ],
       [
-        'Полные курсы',
-        'Полный набор курсов по алгебре, геометрии, статистике и анализу. От начального до продвинутого уровня.'
+        'Курсы по школьной программе',
+        'Курсы по математике, алгебре и геометрии для 1–11 классов — в порядке школьной программы, тема за темой.'
       ],
       [
-        'Гибкое обучение',
-        'Учитесь в своём темпе. Платформа подстраивается под ваш уровень и даёт персональные рекомендации.'
+        'Учитесь в своём темпе',
+        'Занимайтесь в любое время и в удобном темпе. По результатам диагностического теста платформа подскажет темы для повторения.'
       ],
       [
         'Тесты и оценка',
-        'Проверяйте знания и готовьтесь к экзаменам. Получайте подробные результаты и анализ.'
+        'Проверяйте знания тестами по темам и диагностикой. Получайте результаты и разбор ошибок.'
       ]
     ]
   }

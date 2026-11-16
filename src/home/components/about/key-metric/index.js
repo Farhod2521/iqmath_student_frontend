@@ -10,7 +10,7 @@ const TEXTS = {
     students: "Ro'yxatdan o'tganlar",
     lessons: 'Video darslar',
     subjects: 'Asosiy fanlar',
-    experience: 'Yillik tajriba',
+    grades: 'Sinflar',
     activeStudents: 'foydalanuvchi',
     lessonsChip: 'video dars',
     detailsBadge: 'Batafsil',
@@ -30,7 +30,7 @@ const TEXTS = {
     students: 'Зарегистрировано',
     lessons: 'Видеоуроков',
     subjects: 'Основных предмета',
-    experience: 'Года опыта',
+    grades: 'Классы',
     activeStudents: 'пользователей',
     lessonsChip: 'видеоуроков',
     detailsBadge: 'Подробнее',
@@ -69,12 +69,13 @@ const highlightBrand = (html) =>
 
 const formatCount = (value) => Number(value || 0).toLocaleString('ru-RU').replace(/,/g, ' ')
 
-const KeyMetric = () => {
+// initialStats — serverda (getStaticProps) olingan raqamlar: HTML'da "—" o'rniga haqiqiy son turadi
+const KeyMetric = ({ initialStats = null }) => {
   const { t, i18n } = useTranslation()
   const lang = i18n.language === 'ru' ? 'ru' : 'uz'
   const text = TEXTS[lang]
   const [about, setAbout] = useState(null)
-  const [stats, setStats] = useState(null)
+  const [stats, setStats] = useState(initialStats)
 
   useEffect(() => {
     request
@@ -83,8 +84,10 @@ const KeyMetric = () => {
       .catch(() => setAbout({}))
     request
       .get('/api/v1/func_student/landing-stats/')
-      .then((res) => setStats(res.data || null))
-      .catch(() => setStats(null))
+      .then((res) => {
+        if (res.data) setStats(res.data)
+      })
+      .catch(() => {})
   }, [])
 
   const paragraphs = splitParagraphs((lang === 'ru' ? about?.about_ru : about?.about_uz) || '')
@@ -95,7 +98,7 @@ const KeyMetric = () => {
     { Icon: GraduationCap, value: stats ? `${formatCount(stats.users ?? stats.students)}+` : '—', label: text.students, color: '#2563EB' },
     { Icon: PlayCircle, value: stats ? `${formatCount(stats.videos ?? stats.lessons)}+` : '—', label: text.lessons, color: '#7C3AED' },
     { Icon: Layers, value: '3', label: text.subjects, color: '#16A34A' },
-    { Icon: Sparkles, value: '3+', label: text.experience, color: '#F59E0B' }
+    { Icon: Sparkles, value: '1–11', label: text.grades, color: '#F59E0B' }
   ]
 
   return (

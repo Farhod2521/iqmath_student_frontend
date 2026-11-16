@@ -4,7 +4,8 @@ import { request } from '@/services/api'
 
 export const newsApi = {
   getAll: async () => {
-    const { data } = await request.get('/api/v1/management/app/elon-list/')
+    // Faqat "Yangilik" deb belgilanganlar: ilova bildirishnomalari (takror e'lonlar, eski versiya xabarlari) saytga chiqmaydi
+    const { data } = await request.get('/api/v1/management/app/elon-list/', { params: { status: 'news_status' } })
     return data
   }
 }

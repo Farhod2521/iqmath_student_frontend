@@ -19,7 +19,7 @@ import wordcross from '@/assets/images/mental-games/wordcros.png'
 import wordfrog from '@/assets/images/mental-games/wordfrog.png'
 import wordsort from '@/assets/images/mental-games/wordsort.png'
 
-export const safekidSeeds = [
+const allSafekidSeeds = [
   {
     slug: 'puzzle-math',
     href: 'https://media.safekidgames.com/puzzle-math/index.html?ver=2.0',
@@ -141,3 +141,20 @@ export const safekidSeeds = [
     image: animalcrush
   }
 ]
+
+// Platforma matematika haqida: ko'ngilochar (match-3, baliq ovi, sport), bayram mavzusidagi va
+// inglizcha so'z o'yinlari ko'rsatilmaydi. Qaytarish kerak bo'lsa — slug'ni shu ro'yxatdan olib tashlang.
+const HIDDEN_GAME_SLUGS = new Set([
+  'lollipops-match-3',
+  'animals-crush-match-3',
+  'fishing-frenzy',
+  'super-pongoal',
+  'halloween-word-search',
+  'happy-halloween-memory',
+  'word-sort',
+  'word-cross',
+  'word-frog',
+  'type-fast-words'
+])
+
+export const safekidSeeds = allSafekidSeeds.filter((game) => !HIDDEN_GAME_SLUGS.has(game.slug))
