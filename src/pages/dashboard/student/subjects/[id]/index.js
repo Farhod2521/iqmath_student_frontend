@@ -18,6 +18,7 @@ import HeaderTitle from '@/components/header-title'
 import PanelCard from '@/modules/student/subjects/components/panel/PanelCard'
 import ProgressMeter from '@/modules/student/subjects/components/panel/ProgressMeter'
 import MotivationCard from '@/modules/student/subjects/components/panel/MotivationCard'
+import { usePricingModalStore } from '@/store'
 
 const ChapterIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
@@ -64,6 +65,7 @@ const TopicBadge = ({ index, score }) => {
 
 const SubjectsPage = () => {
   const { t, i18n } = useTranslation()
+  const { openPricingModal } = usePricingModalStore()
   const { data: session } = useSession()
   const router = useRouter()
   const { id } = router.query
@@ -224,9 +226,28 @@ const SubjectsPage = () => {
                               </MathJax>
                             </div>
 
-                            {(typeof item.score === 'number' || item.score === null) && (
+                            {item.is_demo ? (
+                              <span className="shrink-0 rounded-full bg-[#E7F8EF] px-2 py-0.5 text-[11px] font-bold normal-case text-[#16A34A]">
+                                {t('demoLesson')}
+                              </span>
+                            ) : (typeof item.score === 'number' || item.score === null) && (
                               <ProgressMeter value={item.score} />
                             )}
+                          </li>
+                        ) : item.requires_payment ? (
+                          // Demo darslardan tashqari mavzu — bosilganda tarif oynasi
+                          <li
+                            key={index}
+                            onClick={() => openPricingModal(0)}
+                            className="flex items-center justify-between gap-3 px-3 sm:px-4 py-3 text-[13px] sm:text-sm uppercase border-b border-[#f1f0f7] dark:border-[#374151] last:border-b-0 opacity-60 cursor-pointer"
+                          >
+                            <div className="flex items-center min-w-0 gap-3">
+                              <TopicBadge index={index} score={0} />
+                              <span className="break-words text-[#4a5273] dark:text-gray-300">
+                                {i18n.language === 'uz' ? item.name_uz : item.name_ru}
+                              </span>
+                            </div>
+                            <Image src="/icons/lock.svg" alt="lock" width={18} height={18} />
                           </li>
                         ) : (
                           <Popover key={index} size="md" showArrow backdrop="opaque" classNames={{ content: 'max-w-[calc(100vw-32px)] sm:max-w-[400px]' }}>

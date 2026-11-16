@@ -17,12 +17,24 @@ const SEO = {
   }
 }
 
+// K11: o'z <Head> i bo'lmagan ommaviy sahifalar uchun alohida sarlavha
+const PAGE_TITLES = {
+  '/about': { uz: 'Biz haqimizda — IQMath', ru: 'О нас — IQMath' },
+  '/students': { uz: "O'quvchilar uchun — IQMath", ru: 'Для учеников — IQMath' },
+  '/faqs': { uz: "Ko'p so'raladigan savollar — IQMath", ru: 'Частые вопросы — IQMath' },
+  '/news': { uz: 'Yangiliklar — IQMath', ru: 'Новости — IQMath' },
+  '/mental-games': { uz: "Mantiqiy o'yinlar — IQMath", ru: 'Логические игры — IQMath' },
+  '/auth': { uz: 'Kirish — IQMath', ru: 'Вход — IQMath' }
+}
+
 // Barcha sahifalar uchun standart title/description/Open Graph.
 // Sahifa o'zining <Head><title> ini bersa, u ustun turadi (key bir xil).
 const DefaultSeo = () => {
   const { i18n } = useTranslation()
-  const { asPath } = useRouter()
-  const seo = SEO[i18n.language] || SEO.uz
+  const { asPath, pathname } = useRouter()
+  const lang = i18n.language === 'ru' ? 'ru' : 'uz'
+  const pageTitle = PAGE_TITLES[pathname]?.[lang]
+  const seo = pageTitle ? { ...SEO[lang], title: pageTitle } : SEO[lang]
   const url = `${SITE_URL}${(asPath || '/').split(/[?#]/)[0]}`
 
   return (
