@@ -175,13 +175,9 @@ const StatChip = ({ icon, value, label }) => (
   </div>
 )
 
-// To'lov holati — halqa diagramma
+// To'lov holati — halqa diagramma (faqat muvaffaqiyatli to'lovlar; urinishlar ko'rsatilmaydi)
 const StatusDonut = ({ counts, tx }) => {
-  const parts = [
-    { key: 'success', value: counts.success || 0, color: '#22C55E', label: tx.successful },
-    { key: 'pending', value: counts.pending || 0, color: '#F59E0B', label: tx.pending },
-    { key: 'failed', value: counts.failed || 0, color: '#EF4444', label: tx.failed }
-  ]
+  const parts = [{ key: 'success', value: counts.success || 0, color: '#22C55E', label: tx.successful }]
   const total = parts.reduce((sum, p) => sum + p.value, 0)
   const r = 52
   const c = 2 * Math.PI * r
