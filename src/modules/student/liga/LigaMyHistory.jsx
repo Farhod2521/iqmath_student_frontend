@@ -302,7 +302,7 @@ const LigaMyHistory = () => {
   ]
 
   return (
-    <LigaGuard viewer={data?.viewer} notice={text.notice}>
+    <LigaGuard notice={text.notice}>
       <div className="flex flex-col gap-4">
         <LigaHero {...HERO} title={text.title} subtitle={text.subtitle} fadeRight />
         <StatTiles items={stats} />

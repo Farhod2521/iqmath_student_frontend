@@ -170,7 +170,7 @@ const LigaSeasons = () => {
   ]
 
   return (
-    <LigaGuard viewer={result?.viewer} notice={text.notice}>
+    <LigaGuard notice={text.notice}>
       <div className="flex flex-col gap-4">
         <LigaHero {...HERO} title={text.title} subtitle={text.subtitle} fadeRight />
 

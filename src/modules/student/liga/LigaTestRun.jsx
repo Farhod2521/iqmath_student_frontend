@@ -383,7 +383,7 @@ const LigaTestRun = () => {
   const isLast = index === questions.length - 1
 
   return (
-    <LigaGuard viewer={attempt.viewer} notice={text.notice}>
+    <LigaGuard notice={text.notice}>
       <MathJaxContext config={MJ_CONFIG}>
         <div className="mx-auto flex max-w-[1280px] flex-col gap-4">
           <nav className="flex flex-wrap items-center gap-1.5 text-sm text-[#475569]">
